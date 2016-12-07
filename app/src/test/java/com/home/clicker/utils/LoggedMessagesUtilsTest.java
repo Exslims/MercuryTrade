@@ -7,16 +7,16 @@ import org.junit.Test;
  * Exslims
  * 07.12.2016
  */
-public class LogedMessagesUtilsTest {
-    LogedMessagesUtils logedMessagesUtils;
+public class LoggedMessagesUtilsTest {
+    LoggedMessagesUtils loggedMessagesUtils;
 
     @Before
     public void setUp() throws Exception {
-        logedMessagesUtils = new LogedMessagesUtils();
+        loggedMessagesUtils = new LoggedMessagesUtils();
     }
 
     @Test
     public void testGetLoggedMessagesFile() throws Exception {
-        logedMessagesUtils.execute();
+        loggedMessagesUtils.execute();
     }
 }
