@@ -1,5 +1,7 @@
 package com.home.clicker;
 
+import com.home.clicker.utils.FileMonitor;
+import com.home.clicker.utils.LoggedMessagesUtils;
 import com.home.clicker.utils.User32;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
@@ -30,6 +32,8 @@ public class PrivateMessageManager {
     public PrivateMessageManager(JFrame jFrame) {
         this.frame = jFrame;
         keyboardHook.addKeyListener(getAdapter());
+        new LoggedMessagesUtils();
+        new FileMonitor();
     }
 
     private void execute(GlobalKeyAdapter adapter){

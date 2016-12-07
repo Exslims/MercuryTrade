@@ -7,7 +7,6 @@ public class Test{
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 WindowFrame frame = new WindowFrame();
-                PrivateMessageManager pmManager = new PrivateMessageManager(frame);
             }
         });
     }

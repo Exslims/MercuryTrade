@@ -14,9 +14,4 @@ public class LoggedMessagesUtilsTest {
     public void setUp() throws Exception {
         loggedMessagesUtils = new LoggedMessagesUtils();
     }
-
-    @Test
-    public void testGetLoggedMessagesFile() throws Exception {
-        loggedMessagesUtils.execute();
-    }
 }
