@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: ant-contrib:cpptasks:1.0b5">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.m2/repository/ant-contrib/cpptasks/1.0b5/cpptasks-1.0b5.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.m2/repository/ant-contrib/cpptasks/1.0b5/cpptasks-1.0b5-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.m2/repository/ant-contrib/cpptasks/1.0b5/cpptasks-1.0b5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
