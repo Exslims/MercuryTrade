@@ -5,6 +5,8 @@ import com.home.clicker.events.EventRouter;
 import com.home.clicker.events.custom.FileChangeEvent;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Exslims
@@ -22,6 +24,7 @@ public class LoggedMessagesUtils {
         });
     }
     private void parse(){
+        List<String> messages = new ArrayList<String>();
         File logFile = new File(logFilePath);
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(logFile,"r");
@@ -36,10 +39,8 @@ public class LoggedMessagesUtils {
                 builder.append(c);
                 if(c == '\n'){
                     builder = builder.reverse();
-                    System.out.println(builder.toString());
+                    messages.add(builder.toString());
                     lines++;
-                    builder = null;
-                    builder = new StringBuilder();
                     if (lines == 5){
                         break;
                     }
@@ -50,5 +51,7 @@ public class LoggedMessagesUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
     }
 }

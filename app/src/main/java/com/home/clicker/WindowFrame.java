@@ -1,5 +1,8 @@
 package com.home.clicker;
 
+import com.home.clicker.events.*;
+import com.home.clicker.events.Event;
+import com.home.clicker.events.custom.ActualWritersChangeEvent;
 import com.home.clicker.utils.CachedFilesUtils;
 
 import javax.swing.*;
@@ -39,6 +42,12 @@ public class WindowFrame extends JFrame {
         }else {
             new PrivateMessageManager(this);
         }
+
+        EventRouter.registerHandler(ActualWritersChangeEvent.class, new EventHandler<ActualWritersChangeEvent>() {
+            public void handle(ActualWritersChangeEvent event) {
+
+            }
+        });
 
     }
 
