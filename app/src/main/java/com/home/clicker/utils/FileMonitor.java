@@ -14,7 +14,7 @@ import java.io.File;
  * 08.12.2016
  */
 public class FileMonitor {
-    private static final long pollingInterval = 2 *1000;
+    private static final long pollingInterval = 1 *1000;
     public FileMonitor() {
         File folder = new File(CachedFilesUtils.getGamePath() + File.separator + "logs");
 

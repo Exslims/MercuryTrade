@@ -3,6 +3,7 @@ package com.home.clicker;
 import com.home.clicker.events.EventHandler;
 import com.home.clicker.events.EventRouter;
 import com.home.clicker.events.custom.SendMessageEvent;
+import com.home.clicker.misc.WhisperNotifier;
 import com.home.clicker.utils.FileMonitor;
 import com.home.clicker.utils.LoggedMessagesUtils;
 import com.home.clicker.utils.User32;
@@ -45,6 +46,7 @@ public class PrivateMessageManager {
             }
         });
         keyboardHook.addKeyListener(adapter);
+        new WhisperNotifier();
         new LoggedMessagesUtils();
         new FileMonitor();
 

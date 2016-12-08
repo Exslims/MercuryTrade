@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="app" target="1.5" />
+      <module name="app" target="1.7" />
       <module name="Clicker" target="1.5" />
     </bytecodeTargetLevel>
   </component>
