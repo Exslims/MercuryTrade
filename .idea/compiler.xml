@@ -9,6 +9,13 @@
         <module name="app" />
         <module name="netty-client-updater" />
         <module name="netty-server" />
+        <module name="updater-server" />
+      </profile>
+      <profile name="Annotation profile for netty-client-updater" enabled="true">
+        <sourceOutputDir name="../netty-client-updater/target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../netty-client-updater/target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="updater-client" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -16,6 +23,8 @@
       <module name="Clicker" target="1.5" />
       <module name="netty-client-updater" target="1.5" />
       <module name="netty-server" target="1.8" />
+      <module name="updater-client" target="1.5" />
+      <module name="updater-server" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

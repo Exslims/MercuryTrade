@@ -4,14 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>groupId</groupId>
+    <groupId>com.home.clicker</groupId>
     <artifactId>Clicker</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>${project.version}</version>
 
     <modules>
         <module>app</module>
     </modules>
     <packaging>pom</packaging>
+
+    <properties>
+        <project.version>0.0.3</project.version>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -69,7 +73,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.home.clicker.Test</mainClass>
+                            <mainClass>com.home.clicker.AppMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
