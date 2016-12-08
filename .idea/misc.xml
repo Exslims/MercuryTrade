@@ -5,6 +5,8 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/app/pom.xml" />
+        <option value="$PROJECT_DIR$/netty-server/pom.xml" />
+        <option value="$PROJECT_DIR$/netty-client-updater/pom.xml" />
       </list>
     </option>
   </component>

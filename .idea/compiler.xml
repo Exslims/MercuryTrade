@@ -7,11 +7,15 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="app" />
+        <module name="netty-client-updater" />
+        <module name="netty-server" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="app" target="1.7" />
       <module name="Clicker" target="1.5" />
+      <module name="netty-client-updater" target="1.5" />
+      <module name="netty-server" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
