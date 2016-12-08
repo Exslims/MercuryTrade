@@ -2,7 +2,9 @@ package com.home.clicker.utils;
 
 import com.home.clicker.events.EventHandler;
 import com.home.clicker.events.EventRouter;
+import com.home.clicker.events.custom.ActualWritersChangeEvent;
 import com.home.clicker.events.custom.FileChangeEvent;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -41,17 +43,29 @@ public class LoggedMessagesUtils {
                     builder = builder.reverse();
                     messages.add(builder.toString());
                     lines++;
-                    if (lines == 5){
+                    if (lines == 10){
                         break;
                     }
                 }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
+        List<String> writers = new ArrayList<String>();
+        for (String message : messages) {
+            if(message.contains("@From")){
+                String writerStub = StringUtils.substringBetween(message,"@From",":");
+                String writer = StringUtils.substringAfterLast(writerStub, "> ");
+                if(!writers.contains(writer)) {
+                    writers.add(writer);
+                }
+            }
+        }
+        System.out.println(writers);
+        EventRouter.fireEvent(new ActualWritersChangeEvent(writers));
     }
 }

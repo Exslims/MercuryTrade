@@ -3,22 +3,23 @@ package com.home.clicker;
 import com.home.clicker.events.*;
 import com.home.clicker.events.Event;
 import com.home.clicker.events.custom.ActualWritersChangeEvent;
+import com.home.clicker.events.custom.SendMessageEvent;
 import com.home.clicker.utils.CachedFilesUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.io.File;
+import java.util.*;
+import java.util.List;
 
 /**
  * Exslims
  * 07.12.2016
  */
 public class WindowFrame extends JFrame {
+    private JPanel nicknamesPanel = new JPanel();
     public WindowFrame() {
         super("ShapedWindow");
         setLayout(new GridBagLayout());
@@ -28,13 +29,13 @@ public class WindowFrame extends JFrame {
                 setShape(new Ellipse2D.Double(0,0,getWidth(),getHeight()));
             }
         });
-
         setUndecorated(true);
         setSize(300,300);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setOpacity(0.7f);
         setVisible(false);
+        setAlwaysOnTop(true);
 
         if(CachedFilesUtils.getGamePath().equals("")) {
             FileChooser fileChooser = new FileChooser();
@@ -45,9 +46,29 @@ public class WindowFrame extends JFrame {
 
         EventRouter.registerHandler(ActualWritersChangeEvent.class, new EventHandler<ActualWritersChangeEvent>() {
             public void handle(ActualWritersChangeEvent event) {
-
+                nicknamesPanel.removeAll();
+                List<String> writers = event.getWriters();
+                for (String writer :writers) {
+                    final JButton button = new JButton(writer);
+                    button.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            String message = button.getText();
+                            EventRouter.fireEvent(new SendMessageEvent(message));
+                        }
+                    });
+                    nicknamesPanel.add(button);
+                }
+                nicknamesPanel.revalidate();
+                WindowFrame.this.revalidate();
             }
         });
+
+        nicknamesPanel = new JPanel();
+        nicknamesPanel.setLayout(new BoxLayout(nicknamesPanel,BoxLayout.Y_AXIS));
+        add(nicknamesPanel);
+
+        nicknamesPanel.add(new JButton("TEST"));
 
     }
 

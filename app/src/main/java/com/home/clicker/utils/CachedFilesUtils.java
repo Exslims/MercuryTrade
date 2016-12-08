@@ -13,7 +13,6 @@ import java.nio.file.Paths;
  * 07.12.2016
  */
 public class CachedFilesUtils {
-    private static String messagesFile = "";
     private static String gamePath = "";
     private static final String CONFIG_PATH = System.getenv("USERPROFILE") + File.separator +
             "AppData" + File.separator + "Local" + File.separator + "PoeShortCast";
@@ -45,8 +44,5 @@ public class CachedFilesUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    public File getMessagesFile(){
-        return new File(gamePath + File.separator + "logs" + File.separator + "Client.txt");
     }
 }
