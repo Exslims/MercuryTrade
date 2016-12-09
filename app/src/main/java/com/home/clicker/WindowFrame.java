@@ -44,40 +44,35 @@ public class WindowFrame extends JFrame {
         setAlwaysOnTop(true);
         setFocusableWindowState(false);
 
-        EventRouter.registerHandler(ActualWritersChangeEvent.class, new SCEventHandler<ActualWritersChangeEvent>() {
-            public void handle(ActualWritersChangeEvent event) {
-                nicknamesPanel.removeAll();
-                List<String> writers = event.getWriters();
-                for (String writer :writers) {
-                    final JButton button = new JButton(writer);
-                    button.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            String message = button.getText();
-                            EventRouter.fireEvent(new SendMessageEvent(message));
-                        }
-                    });
-                    nicknamesPanel.add(button);
-                }
-                nicknamesPanel.revalidate();
-                WindowFrame.this.revalidate();
+        EventRouter.registerHandler(ActualWritersChangeEvent.class, event -> {
+            nicknamesPanel.removeAll();
+            List<String> writers = ((ActualWritersChangeEvent)event).getWriters();
+            for (String writer :writers) {
+                final JButton button = new JButton(writer);
+                button.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        String message = button.getText();
+                        EventRouter.fireEvent(new SendMessageEvent(message));
+                    }
+                });
+                nicknamesPanel.add(button);
             }
+            nicknamesPanel.revalidate();
+            WindowFrame.this.revalidate();
         });
 
 
         EventRouter.registerHandler(FrameStateChangeEvent.class, event -> {
             changeState(((FrameStateChangeEvent)event).getState());
         });
-        EventRouter.registerHandler(NewPatchSCEvent.class, new SCEventHandler<NewPatchSCEvent>() {
-            @Override
-            public void handle(final NewPatchSCEvent event) {
-                JFrame frame = new JFrame("New patch");
-                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                JLabel label = new JLabel(event.getPatchTitle());
-                frame.getContentPane().add(label);
-                frame.pack();
-                frame.setVisible(true);
-            }
+        EventRouter.registerHandler(NewPatchSCEvent.class, event -> {
+            JFrame frame = new JFrame("New patch");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            JLabel label = new JLabel(((NewPatchSCEvent)event).getPatchTitle());
+            frame.getContentPane().add(label);
+            frame.pack();
+            frame.setVisible(true);
         });
 
         nicknamesPanel = new JPanel();

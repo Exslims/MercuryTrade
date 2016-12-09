@@ -15,11 +15,7 @@ public class AppMain {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setVisible(true);
         }else {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    new WindowFrame();
-                }
-            });
+            SwingUtilities.invokeLater(() -> new WindowFrame());
             new PrivateMessageManager();
             new PatchNotifier();
         }

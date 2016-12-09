@@ -25,19 +25,9 @@ public class HideShowApp extends Application {
 
         HBox root = new HBox(10d);
         Button showButton = new Button("show");
-        showButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                window.show();
-            }
-        });
+        showButton.setOnAction(event -> window.show());
         Button hideButton = new Button("hide");
-        hideButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                window.hide();
-            }
-        });
+        hideButton.setOnAction(event -> window.hide());
         root.getChildren().add(showButton);
         root.getChildren().add(hideButton);
         stage.setScene(new Scene(root));

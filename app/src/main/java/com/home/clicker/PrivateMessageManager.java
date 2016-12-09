@@ -40,11 +40,8 @@ public class PrivateMessageManager {
         GlobalKeyAdapter adapter = getAdapter();
         this.adapter = adapter;
 
-        EventRouter.registerHandler(SendMessageEvent.class,new SCEventHandler<SendMessageEvent>(){
-            public void handle(SendMessageEvent event) {
-                execute(event.getMessage());
-            }
-        });
+        EventRouter.registerHandler(SendMessageEvent.class, event
+                -> execute(((SendMessageEvent)event).getMessage()));
         keyboardHook.addKeyListener(adapter);
         new WhisperNotifier();
         new LoggedMessagesUtils();
