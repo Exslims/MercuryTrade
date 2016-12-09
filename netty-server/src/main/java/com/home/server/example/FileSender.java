@@ -34,25 +34,26 @@ public class FileSender {
     public void sendFile(SocketChannel socketChannel){
         RandomAccessFile aFile = null;
         try {
-            File file = new File("D:\\PoeShortCast-SNAPSHOT-0.0.2.jar");
-            aFile = new RandomAccessFile(file,"r");
-            FileChannel inChannel = aFile.getChannel();
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
-            while (inChannel.read(buffer)>0){
-                buffer.flip();
-                socketChannel.write(buffer);
-                buffer.clear();
-            }
-            Thread.sleep(1000);
+//            File file = new File("D:\\PoeShortCast-SNAPSHOT-0.0.2.jar");
+//            aFile = new RandomAccessFile(file,"r");
+//            FileChannel inChannel = aFile.getChannel();
+//            ByteBuffer buffer = ByteBuffer.allocate(1024);
+//            while (inChannel.read(buffer)>0){
+//                buffer.flip();
+//                socketChannel.write(buffer);
+//                buffer.clear();
+//            }
+//            Thread.sleep(1000);
             System.out.println("End of file reached");
             socketChannel.close();
-            aFile.close();
+//            aFile.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 }

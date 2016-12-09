@@ -1,8 +1,10 @@
 package com.home.clicker;
 
-import com.home.clicker.events.EventHandler;
+import com.home.clicker.events.SCEventHandler;
 import com.home.clicker.events.EventRouter;
+import com.home.clicker.events.custom.FrameStateChangeEvent;
 import com.home.clicker.events.custom.SendMessageEvent;
+import com.home.clicker.javafx.FrameStates;
 import com.home.clicker.misc.WhisperNotifier;
 import com.home.clicker.utils.FileMonitor;
 import com.home.clicker.utils.LoggedMessagesUtils;
@@ -11,11 +13,11 @@ import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
+import javafx.stage.Stage;
 import lc.kra.system.keyboard.GlobalKeyboardHook;
 import lc.kra.system.keyboard.event.GlobalKeyAdapter;
 import lc.kra.system.keyboard.event.GlobalKeyEvent;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -30,17 +32,15 @@ import java.util.Timer;
 public class PrivateMessageManager {
     private GlobalKeyboardHook keyboardHook = new GlobalKeyboardHook();
     private GlobalKeyAdapter adapter;
-    private JFrame frame;
     private User32 user32 = User32.INSTANCE;
     private boolean isEndedDelay = true;
     private WinDef.HWND cachedWindow;
 
-    public PrivateMessageManager(JFrame jFrame) {
-        this.frame = jFrame;
+    public PrivateMessageManager() {
         GlobalKeyAdapter adapter = getAdapter();
         this.adapter = adapter;
 
-        EventRouter.registerHandler(SendMessageEvent.class,new EventHandler<SendMessageEvent>(){
+        EventRouter.registerHandler(SendMessageEvent.class,new SCEventHandler<SendMessageEvent>(){
             public void handle(SendMessageEvent event) {
                 execute(event.getMessage());
             }
@@ -49,13 +49,12 @@ public class PrivateMessageManager {
         new WhisperNotifier();
         new LoggedMessagesUtils();
         new FileMonitor();
-
     }
 
     private void execute(String message){
         try {
             keyboardHook.removeKeyListener(adapter);
-            frame.setVisible(false);
+            EventRouter.fireEvent(new FrameStateChangeEvent(FrameStates.HIDE));
             isEndedDelay = false;
             StringSelection selection = new StringSelection("@" + message + " TY");
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -95,16 +94,14 @@ public class PrivateMessageManager {
             @Override
             public void keyPressed(GlobalKeyEvent event) {
                 if (event.getVirtualKeyCode() == GlobalKeyEvent.VK_F2 && isEndedDelay) {
-                    System.out.println("ALT PRESSED");
-                    frame.setVisible(true);
+                    EventRouter.fireEvent(new FrameStateChangeEvent(FrameStates.SHOW));
+
                 }
             }
-
             @Override
             public void keyReleased(GlobalKeyEvent event) {
                 if (event.getVirtualKeyCode() == GlobalKeyEvent.VK_F2) {
-                    System.out.println("ALT RELEASED");
-                    frame.setVisible(false);
+                    EventRouter.fireEvent(new FrameStateChangeEvent(FrameStates.HIDE));
                 }
             }
         };

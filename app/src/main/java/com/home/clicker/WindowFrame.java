@@ -1,17 +1,23 @@
 package com.home.clicker;
 
 import com.home.clicker.events.*;
-import com.home.clicker.events.Event;
 import com.home.clicker.events.custom.ActualWritersChangeEvent;
+import com.home.clicker.events.custom.FrameStateChangeEvent;
+import com.home.clicker.events.custom.NewPatchSCEvent;
 import com.home.clicker.events.custom.SendMessageEvent;
+import com.home.clicker.javafx.FrameStates;
 import com.home.clicker.utils.CachedFilesUtils;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
-import java.io.File;
-import java.util.*;
 import java.util.List;
 
 /**
@@ -36,15 +42,9 @@ public class WindowFrame extends JFrame {
         setOpacity(0.7f);
         setVisible(false);
         setAlwaysOnTop(true);
+        setFocusableWindowState(false);
 
-        if(CachedFilesUtils.getGamePath().equals("")) {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setVisible(true);
-        }else {
-            new PrivateMessageManager(this);
-        }
-
-        EventRouter.registerHandler(ActualWritersChangeEvent.class, new EventHandler<ActualWritersChangeEvent>() {
+        EventRouter.registerHandler(ActualWritersChangeEvent.class, new SCEventHandler<ActualWritersChangeEvent>() {
             public void handle(ActualWritersChangeEvent event) {
                 nicknamesPanel.removeAll();
                 List<String> writers = event.getWriters();
@@ -64,6 +64,22 @@ public class WindowFrame extends JFrame {
             }
         });
 
+
+        EventRouter.registerHandler(FrameStateChangeEvent.class, event -> {
+            changeState(((FrameStateChangeEvent)event).getState());
+        });
+        EventRouter.registerHandler(NewPatchSCEvent.class, new SCEventHandler<NewPatchSCEvent>() {
+            @Override
+            public void handle(final NewPatchSCEvent event) {
+                JFrame frame = new JFrame("New patch");
+                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                JLabel label = new JLabel(event.getPatchTitle());
+                frame.getContentPane().add(label);
+                frame.pack();
+                frame.setVisible(true);
+            }
+        });
+
         nicknamesPanel = new JPanel();
         nicknamesPanel.setLayout(new BoxLayout(nicknamesPanel,BoxLayout.Y_AXIS));
         add(nicknamesPanel);
@@ -72,41 +88,26 @@ public class WindowFrame extends JFrame {
 
     }
 
-    public class FileChooser extends JFrame{
-        private String gamePath = "";
-        private JFileChooser fileChooser = new JFileChooser();
-        private JTextField textField = new JTextField();
-        public FileChooser() {
-            JButton openButton = new JButton("Select");
-            openButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    int returnVal = fileChooser.showOpenDialog(FileChooser.this);
-                    if(returnVal == JFileChooser.APPROVE_OPTION){
-                        gamePath = fileChooser.getSelectedFile().getPath();
-                        textField.setText(gamePath);
-                    }
+    private void changeState(FrameStates states){
+        switch (states){
+            case SHOW: {
+                if(!WindowFrame.this.isShowing()) {
+                    WindowFrame.this.setVisible(true);
                 }
-            });
-            JButton saveButton = new JButton("Save");
-            saveButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    CachedFilesUtils.setGamePath(gamePath);
-                    new PrivateMessageManager(WindowFrame.this);
-                    FileChooser.this.setVisible(false);
+                break;
+            }
+            case HIDE:{
+                if(WindowFrame.this.isShowing()) {
+                    WindowFrame.this.setVisible(false);
                 }
-            });
-            JPanel topPanel = new JPanel();
-            topPanel.add(textField);
-            JPanel buttonPanel = new JPanel();
-            buttonPanel.add(openButton);
-            buttonPanel.add(saveButton);
-            add(topPanel);
-            add(buttonPanel);
+            }
+        }
+    }
+    private class PatchNotifierWindow extends Application{
 
-            setSize(300,100);
-            setLocationRelativeTo(null);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        @Override
+        public void start(Stage primaryStage) throws Exception {
+
         }
     }
 }

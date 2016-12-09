@@ -1,6 +1,6 @@
 package com.home.clicker.utils;
 
-import com.home.clicker.events.EventHandler;
+import com.home.clicker.events.SCEventHandler;
 import com.home.clicker.events.EventRouter;
 import com.home.clicker.events.custom.ActualWritersChangeEvent;
 import com.home.clicker.events.custom.FileChangeEvent;
@@ -22,7 +22,7 @@ public class LoggedMessagesUtils {
     private Date lastMessageDate = new Date();
 
     public LoggedMessagesUtils() {
-        EventRouter.registerHandler(FileChangeEvent.class,new EventHandler<FileChangeEvent>(){
+        EventRouter.registerHandler(FileChangeEvent.class,new SCEventHandler<FileChangeEvent>(){
             public void handle(FileChangeEvent event) {
                 parse();
             }

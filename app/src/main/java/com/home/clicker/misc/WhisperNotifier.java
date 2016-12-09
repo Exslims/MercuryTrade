@@ -1,6 +1,6 @@
 package com.home.clicker.misc;
 
-import com.home.clicker.events.EventHandler;
+import com.home.clicker.events.SCEventHandler;
 import com.home.clicker.events.EventRouter;
 import com.home.clicker.events.custom.NewWhisperEvent;
 import org.apache.log4j.Logger;
@@ -16,7 +16,7 @@ import java.util.Arrays;
 public class WhisperNotifier {
     private final Logger logger = Logger.getLogger(WhisperNotifier.class);
     public WhisperNotifier() {
-        EventRouter.registerHandler(NewWhisperEvent.class,new EventHandler<NewWhisperEvent>(){
+        EventRouter.registerHandler(NewWhisperEvent.class,new SCEventHandler<NewWhisperEvent>(){
             public void handle(NewWhisperEvent event) {
                 ClassLoader classLoader = getClass().getClassLoader();
                 try(AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource("icq-message.wav"))){
@@ -24,7 +24,7 @@ public class WhisperNotifier {
                     clip.open(stream);
                     clip.start();
                 }catch (Exception e){
-                    logger.error("Cannot start playing music: " + e.getStackTrace());
+                    logger.debug("Cannot start playing music: " + Arrays.toString(e.getStackTrace()));
                 }
             }
         });
