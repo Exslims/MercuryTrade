@@ -1,7 +1,8 @@
 package com.home.clicker;
 
 import com.home.clicker.events.EventRouter;
-import com.home.clicker.events.custom.FrameStateChangeEvent;
+import com.home.clicker.events.custom.ChangeFrameVisibleEvent;
+import com.home.clicker.events.custom.StateChangeEvent;
 import com.home.clicker.events.custom.ChatCommandEvent;
 import com.home.clicker.ui.FrameStates;
 import com.home.clicker.misc.WhisperNotifier;
@@ -10,6 +11,7 @@ import com.home.clicker.utils.LoggedMessagesUtils;
 import com.home.clicker.utils.User32;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import com.sun.jna.PointerType;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
 import lc.kra.system.keyboard.GlobalKeyboardHook;
@@ -20,8 +22,8 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
-import java.util.*;
 import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Exslims
@@ -43,12 +45,30 @@ public class PrivateMessageManager {
         new WhisperNotifier();
         new LoggedMessagesUtils();
         new FileMonitor();
+
+        //TODO ЕБАНЫЙ КОСТЫЛЬ УБЕРИ НАХУЙ
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                byte[] windowText = new byte[512];
+                PointerType hwnd = user32.GetForegroundWindow();
+                User32.INSTANCE.GetWindowTextA(hwnd, windowText, 512);
+                System.out.println(Native.toString(windowText));
+                if(!Native.toString(windowText).equals("Path of Exile") &&
+                        !Native.toString(windowText).equals("PoeShortCast")){
+                    EventRouter.fireEvent(new ChangeFrameVisibleEvent(FrameStates.HIDE));
+                }else{
+                    EventRouter.fireEvent(new ChangeFrameVisibleEvent(FrameStates.SHOW));
+                }
+            }
+        },0,2000);
     }
 
     private void execute(String message){
         try {
             keyboardHook.removeKeyListener(adapter);
-            EventRouter.fireEvent(new FrameStateChangeEvent(FrameStates.HIDE));
+            EventRouter.fireEvent(new StateChangeEvent(FrameStates.HIDE));
             StringSelection selection = new StringSelection(message);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
@@ -80,16 +100,16 @@ public class PrivateMessageManager {
             @Override
             public void keyPressed(GlobalKeyEvent event) {
                 if (event.getVirtualKeyCode() == GlobalKeyEvent.VK_F2) {
-                    EventRouter.fireEvent(new FrameStateChangeEvent(FrameStates.SHOW));
+                    EventRouter.fireEvent(new StateChangeEvent(FrameStates.SHOW));
                 }
                 if (event.getVirtualKeyCode() == GlobalKeyEvent.VK_F3) {
-                    EventRouter.fireEvent(new FrameStateChangeEvent(FrameStates.UNDEFINED));
+                    EventRouter.fireEvent(new StateChangeEvent(FrameStates.UNDEFINED));
                 }
             }
             @Override
             public void keyReleased(GlobalKeyEvent event) {
                 if (event.getVirtualKeyCode() == GlobalKeyEvent.VK_F2) {
-                    EventRouter.fireEvent(new FrameStateChangeEvent(FrameStates.HIDE));
+                    EventRouter.fireEvent(new StateChangeEvent(FrameStates.HIDE));
                 }
             }
         };

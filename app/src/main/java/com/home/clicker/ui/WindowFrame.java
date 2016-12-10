@@ -1,10 +1,7 @@
 package com.home.clicker.ui;
 
 import com.home.clicker.events.*;
-import com.home.clicker.events.custom.ActualWritersChangeEvent;
-import com.home.clicker.events.custom.FrameStateChangeEvent;
-import com.home.clicker.events.custom.NewPatchSCEvent;
-import com.home.clicker.events.custom.RemoveChatEvent;
+import com.home.clicker.events.custom.*;
 import com.home.clicker.pojo.Message;
 import com.home.clicker.ui.chat.ChatTab;
 import com.pagosoft.plaf.PlafOptions;
@@ -16,10 +13,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.home.clicker.ui.FrameStates.SHOW;
 
 /**
  * Exslims
@@ -108,7 +106,7 @@ public class WindowFrame extends JFrame {
                 if(chatPanel.isVisible()) {
                     changeState(FrameStates.HIDE);
                 }else {
-                    changeState(FrameStates.SHOW);
+                    changeState(SHOW);
                 }
             }
         });
@@ -130,6 +128,7 @@ public class WindowFrame extends JFrame {
 
                     whisperChatTabs.put(message.getWhisperNickname(),chatTab);
                 }else {
+                    chatPanel.add(existChat.getWhisper(),existChat);
                     chatPanel.setSelectedComponent(existChat);
                     existChat.addNewMessage(message.getMessage());
                 }
@@ -153,8 +152,8 @@ public class WindowFrame extends JFrame {
             }
         });
 
-        EventRouter.registerHandler(FrameStateChangeEvent.class, event -> {
-            changeState(((FrameStateChangeEvent)event).getState());
+        EventRouter.registerHandler(StateChangeEvent.class, event -> {
+            changeState(((StateChangeEvent)event).getState());
         });
         //todo
         EventRouter.registerHandler(NewPatchSCEvent.class, event -> {
@@ -164,6 +163,22 @@ public class WindowFrame extends JFrame {
             frame.getContentPane().add(label);
             frame.pack();
             frame.setVisible(true);
+        });
+
+        EventRouter.registerHandler(ChangeFrameVisibleEvent.class, new SCEventHandler<ChangeFrameVisibleEvent>() {
+            @Override
+            public void handle(ChangeFrameVisibleEvent event) {
+                switch (event.getStates()){
+                    case SHOW:{
+                        WindowFrame.this.setVisible(true);
+                    }
+                    break;
+                    case HIDE:{
+                        WindowFrame.this.setVisible(false);
+                    }
+                    break;
+                }
+            }
         });
     }
 

@@ -1,7 +1,7 @@
 package com.home.clicker.javafx;
 
 import com.home.clicker.events.EventRouter;
-import com.home.clicker.events.custom.FrameStateChangeEvent;
+import com.home.clicker.events.custom.StateChangeEvent;
 import com.home.clicker.ui.FrameStates;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
@@ -41,11 +41,11 @@ public class CustomScene extends Scene {
         createChatPanel();
         chatPane.getTabs().add(getNewChatTab("Tester"));
 
-        EventRouter.registerHandler(FrameStateChangeEvent.class, event -> {
+        EventRouter.registerHandler(StateChangeEvent.class, event -> {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    changeState(chatPane,((FrameStateChangeEvent)event).getState());
+                    changeState(chatPane,((StateChangeEvent)event).getState());
                 }
             });
         });

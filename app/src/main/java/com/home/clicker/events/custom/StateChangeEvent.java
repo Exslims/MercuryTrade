@@ -6,10 +6,10 @@ import com.home.clicker.ui.FrameStates;
 /**
  * Created by Константин on 09.12.2016.
  */
-public class FrameStateChangeEvent implements SCEvent {
+public class StateChangeEvent implements SCEvent {
     private FrameStates state;
 
-    public FrameStateChangeEvent(FrameStates state) {
+    public StateChangeEvent(FrameStates state) {
         this.state = state;
     }
 

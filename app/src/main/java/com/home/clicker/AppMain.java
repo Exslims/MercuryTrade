@@ -16,7 +16,7 @@ public class AppMain {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setVisible(true);
         }else {
-            ExecutorService executor = Executors.newFixedThreadPool(3);
+            ExecutorService executor = Executors.newFixedThreadPool(4);
             executor.execute(() -> {
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
@@ -28,6 +28,8 @@ public class AppMain {
             });
             executor.execute(PrivateMessageManager::new);
             executor.execute(PatchNotifier::new);
+
+            //ебанутый кастыль //todo
         }
     }
 }

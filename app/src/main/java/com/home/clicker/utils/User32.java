@@ -2,6 +2,7 @@ package com.home.clicker.utils;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import com.sun.jna.PointerType;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
 import com.sun.jna.win32.StdCallLibrary;
@@ -15,5 +16,7 @@ public interface User32 extends StdCallLibrary {
     boolean EnumWindows(WinUser.WNDENUMPROC lpEnumFunc, Pointer arg);
     WinDef.HWND SetFocus(WinDef.HWND hWnd);
     int GetWindowTextA(WinDef.HWND hWnd, byte[] lpString, int nMaxCount);
+    int GetWindowTextA(PointerType hWnd, byte[] lpString, int nMaxCount);
     boolean SetForegroundWindow(WinDef.HWND hWnd);
+    WinDef.HWND GetForegroundWindow();
 }

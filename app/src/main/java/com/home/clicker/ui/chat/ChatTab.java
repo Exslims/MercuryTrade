@@ -52,6 +52,7 @@ public class ChatTab extends JPanel {
         messagesArea = new JTextArea();
         messagesArea.setText(whisper + ":" + initMessage);
         messagesArea.setLineWrap(true);
+        messagesArea.setWrapStyleWord(true);
         messagesArea.setMaximumSize(new Dimension(Integer.MAX_VALUE,Integer.MAX_VALUE));
         messagesArea.setMinimumSize((new Dimension(Integer.MAX_VALUE,Integer.MAX_VALUE)));
 
@@ -98,7 +99,7 @@ public class ChatTab extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 System.out.println("@" + whisper + " thanks");
                 EventRouter.fireEvent(new ChatCommandEvent("@" + whisper + " thanks"));
-                EventRouter.fireEvent(new RemoveChatEvent(whisper));
+//                EventRouter.fireEvent(new RemoveChatEvent(whisper));
             }
         });
         JButton nothanksButton = new JButton("No thanks");
@@ -108,14 +109,30 @@ public class ChatTab extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 System.out.println("@" + whisper + " no thanks");
                 EventRouter.fireEvent(new ChatCommandEvent("@" + whisper + " no thanks"));
-                EventRouter.fireEvent(new RemoveChatEvent(whisper));
+//                EventRouter.fireEvent(new RemoveChatEvent(whisper));
             }
         });
 
+        JPanel filler = new JPanel();
+        filler.setMaximumSize(new Dimension(120,Integer.MAX_VALUE));
         actionsPanel.add(inviteButton);
         actionsPanel.add(thanksButton);
         actionsPanel.add(nothanksButton);
+        actionsPanel.add(filler);
+
+        JButton closeChat = new JButton("Close chat");
+        closeChat.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                EventRouter.fireEvent(new RemoveChatEvent(whisper));
+            }
+        });
+        actionsPanel.add(closeChat);
         return actionsPanel;
 
+    }
+
+    public String getWhisper(){
+        return whisper;
     }
 }
