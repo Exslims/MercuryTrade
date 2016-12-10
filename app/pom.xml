@@ -57,5 +57,17 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.pushingpixels</groupId>
+            <artifactId>trident</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.arnabk</groupId>
+            <artifactId>pgslookandfeel</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.imgscalr</groupId>
+            <artifactId>imgscalr-lib</artifactId>
+        </dependency>
     </dependencies>
 </project>

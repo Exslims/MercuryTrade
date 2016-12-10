@@ -90,6 +90,7 @@ public class PrivateMessageManager {
         return new GlobalKeyAdapter() {
             @Override
             public void keyPressed(GlobalKeyEvent event) {
+                System.out.println(event.getVirtualKeyCode());
                 if (event.getVirtualKeyCode() == GlobalKeyEvent.VK_F2 && isEndedDelay) {
                     EventRouter.fireEvent(new FrameStateChangeEvent(FrameStates.SHOW));
 

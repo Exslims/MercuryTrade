@@ -21,9 +21,6 @@
     <bytecodeTargetLevel>
       <module name="app" target="1.8" />
       <module name="Clicker" target="1.5" />
-      <module name="netty-client-updater" target="1.5" />
-      <module name="netty-server" target="1.8" />
-      <module name="updater-client" target="1.5" />
       <module name="updater-server" target="1.8" />
     </bytecodeTargetLevel>
   </component>

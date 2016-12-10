@@ -6,21 +6,28 @@ import com.home.clicker.utils.CachedFilesUtils;
 import javafx.application.Application;
 
 import javax.swing.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class AppMain {
     public static void main(String[] args) {
-//        PatchNotifier patchNotifier = new PatchNotifier();
         if(CachedFilesUtils.getGamePath().equals("")) {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setVisible(true);
         }else {
-            SwingUtilities.invokeLater(() -> new WindowFrame());
-            new PrivateMessageManager();
-            new PatchNotifier();
+            ExecutorService executor = Executors.newFixedThreadPool(3);
+            executor.execute(() -> {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        new WindowFrame();
+                    }
+                });
+//                Application.launch(FXFrame.class);
+            });
+            executor.execute(PrivateMessageManager::new);
+            executor.execute(PatchNotifier::new);
         }
-
-//        new PrivateMessageManager();
-//        Application.launch(com.home.clicker.javafx.WindowFrame.class,args);
     }
 }
