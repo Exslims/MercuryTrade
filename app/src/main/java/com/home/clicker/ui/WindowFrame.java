@@ -1,45 +1,47 @@
-package com.home.clicker;
+package com.home.clicker.ui;
 
 import com.home.clicker.events.*;
 import com.home.clicker.events.custom.ActualWritersChangeEvent;
 import com.home.clicker.events.custom.FrameStateChangeEvent;
 import com.home.clicker.events.custom.NewPatchSCEvent;
-import com.home.clicker.events.custom.SendMessageEvent;
-import com.home.clicker.javafx.FrameStates;
-import com.home.clicker.utils.CachedFilesUtils;
+import com.home.clicker.events.custom.RemoveChatEvent;
+import com.home.clicker.pojo.Message;
+import com.home.clicker.ui.chat.ChatTab;
 import com.pagosoft.plaf.PlafOptions;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.imgscalr.Scalr;
-import org.pushingpixels.trident.Timeline;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Exslims
  * 07.12.2016
  */
 public class WindowFrame extends JFrame {
+    private static final int CHAT_WIDTH = 400;
+    private static final int CHAT_HEIGHT = 200;
+    private static final int CHAT_X = 300;
+    private static final int CHAT_Y = 300;
     private JTabbedPane chatPanel;
+    private JPopupMenu settingsMenu;
     private int x;
     private int y;
+
+    private Map<String,JPanel> whisperChatTabs = new HashMap<>();
     public WindowFrame() {
-        super("ShapedWindow");
+        super("PoeShortCast");
 
         PlafOptions.setAsLookAndFeel();
         PlafOptions.updateAllUIs();
+        UIManager.getLookAndFeelDefaults().put("Menu.arrowIcon", null);
 
         setLayout(null);
         getRootPane().setOpaque(false);
@@ -53,10 +55,12 @@ public class WindowFrame extends JFrame {
         setBackground(new Color(0,0,0,0));
         setOpacity(0.9f);
         setAlwaysOnTop(true);
-        setFocusableWindowState(false);
+//        setFocusableWindowState(false);
+        setFocusable(true);
 
         try {
-            add(createChatButton());
+            initSettingsContextMenu();
+            add(getChatButton());
             this.chatPanel = createChatPanel();
             add(chatPanel);
 
@@ -68,9 +72,9 @@ public class WindowFrame extends JFrame {
 
     private JTabbedPane createChatPanel(){
         JTabbedPane chat = new JTabbedPane();
-        chat.setPreferredSize(new Dimension(300,300));
-        chat.setSize(new Dimension(300,300));
-        chat.setLocation(300,300);
+        chat.setPreferredSize(new Dimension(CHAT_WIDTH,CHAT_HEIGHT));
+        chat.setSize(new Dimension(CHAT_WIDTH,CHAT_HEIGHT));
+        chat.setLocation(CHAT_X,CHAT_Y);
         chat.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -88,13 +92,8 @@ public class WindowFrame extends JFrame {
         chat.setVisible(false);
         return chat;
     }
-    private JPanel createChatTab(String whisperName){
-        JPanel panel = new JPanel();
-        panel.add(new JLabel(whisperName));
-        return panel;
-    }
 
-    private JButton createChatButton() throws IOException {
+    private JButton getChatButton() throws IOException {
         BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("chatImage.png"));
         BufferedImage icon = Scalr.resize(buttonIcon, 40);
         JButton button = new JButton(new ImageIcon(icon));
@@ -106,7 +105,6 @@ public class WindowFrame extends JFrame {
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("CLICKED");
                 if(chatPanel.isVisible()) {
                     changeState(FrameStates.HIDE);
                 }else {
@@ -114,32 +112,51 @@ public class WindowFrame extends JFrame {
                 }
             }
         });
+        button.setComponentPopupMenu(settingsMenu);
+        button.setFocusable(false);
         return button;
     }
 
     private void registerUIHandlers(){
         EventRouter.registerHandler(ActualWritersChangeEvent.class, event -> {
-            List<String> writers = ((ActualWritersChangeEvent)event).getWriters();
-            for (String writer :writers) {
-                JPanel chatTab = createChatTab(writer);
-                chatPanel.addTab(writer,chatTab);
-//                final JButton button = new JButton(writer);
-//                button.addMouseListener(new MouseAdapter() {
-//                    @Override
-//                    public void mouseClicked(MouseEvent e) {
-//                        String message = button.getText();
-//                        EventRouter.fireEvent(new SendMessageEvent(message));
-//                    }
-//                });
-//                nicknamesPanel.add(button);
+            List<Message> messages = ((ActualWritersChangeEvent)event).getMessages();
+            for (Message message : messages) {
+                ChatTab existChat = (ChatTab)whisperChatTabs.get(message.getWhisperNickname());
+                if(existChat == null){
+                    JPanel chatTab = new ChatTab(message.getWhisperNickname(),message.getMessage());
+                    chatTab.setMinimumSize(chatPanel.getPreferredSize());
+                    chatPanel.addTab(message.getWhisperNickname(),chatTab);
+                    chatPanel.setSelectedComponent(chatTab);
+
+                    whisperChatTabs.put(message.getWhisperNickname(),chatTab);
+                }else {
+                    chatPanel.setSelectedComponent(existChat);
+                    existChat.addNewMessage(message.getMessage());
+                }
             }
-//            nicknamesPanel.revalidate();
-//            WindowFrame.this.revalidate();
+        });
+        EventRouter.registerHandler(RemoveChatEvent.class, event -> {
+            String whisperNickname = ((RemoveChatEvent) event).getWhisperNickname();
+            int tabCount = chatPanel.getTabCount();
+            if(tabCount > 1) {
+                for (int i = 0; i < chatPanel.getTabCount(); i++) {
+                    String tabTitle = chatPanel.getTitleAt(i);
+                    if (whisperNickname.equals(tabTitle)) {
+                        chatPanel.remove(i);
+                        whisperChatTabs.remove(whisperNickname);
+                        break;
+                    }
+                }
+            }else {
+                chatPanel.remove(0);
+                changeState(FrameStates.HIDE);
+            }
         });
 
         EventRouter.registerHandler(FrameStateChangeEvent.class, event -> {
             changeState(((FrameStateChangeEvent)event).getState());
         });
+        //todo
         EventRouter.registerHandler(NewPatchSCEvent.class, event -> {
             JFrame frame = new JFrame("New patch");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -150,30 +167,29 @@ public class WindowFrame extends JFrame {
         });
     }
 
+    private void initSettingsContextMenu(){
+        settingsMenu = new JPopupMenu("Popup");
+        JMenuItem item = new JMenu("settings");
+        item.setHorizontalTextPosition(JMenuItem.CENTER);
+        item.setArmed(false);
+        settingsMenu.add(item);
+    }
     private void changeState(FrameStates states){
         switch (states){
             case SHOW: {
                 chatPanel.setVisible(true);
-//                Timeline opacityTimeLine = new Timeline(chatRootPanel);
-//                opacityTimeLine.addPropertyToInterpolate("opacity", 0f, 1f);
-//                opacityTimeLine.setDuration(300);
-//                opacityTimeLine.play();
                 break;
             }
             case HIDE:{
                 chatPanel.setVisible(false);
-//                Timeline opacityTimeLine = new Timeline(chatRootPanel);
-//                opacityTimeLine.addPropertyToInterpolate("opacity",1f,0f);
-//                opacityTimeLine.setDuration(300);
-//                opacityTimeLine.play();
             }
-        }
-    }
-    private class PatchNotifierWindow extends Application{
-
-        @Override
-        public void start(Stage primaryStage) throws Exception {
-
+            break;
+            case UNDEFINED:{
+                if(chatPanel.isVisible()){
+                    chatPanel.setVisible(false);
+                }else
+                    chatPanel.setVisible(true);
+            }
         }
     }
 }

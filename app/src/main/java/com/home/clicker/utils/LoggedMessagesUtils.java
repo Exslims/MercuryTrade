@@ -4,8 +4,11 @@ import com.home.clicker.events.SCEventHandler;
 import com.home.clicker.events.EventRouter;
 import com.home.clicker.events.custom.ActualWritersChangeEvent;
 import com.home.clicker.events.custom.FileChangeEvent;
-import com.home.clicker.events.custom.NewWhisperEvent;
+import com.home.clicker.events.custom.WhisperNotificationEvent;
+import com.home.clicker.events.custom.NewWhispersEvent;
+import com.home.clicker.pojo.Message;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ import java.util.List;
  */
 //TODO Cleanup Client.txt
 public class LoggedMessagesUtils {
+    private final Logger logger = Logger.getLogger(LoggedMessagesUtils.class);
     private final String logFilePath = CachedFilesUtils.getGamePath() + File.separator + "logs" + File.separator + "Client.txt";
     private Date lastMessageDate = new Date();
 
@@ -29,7 +33,7 @@ public class LoggedMessagesUtils {
         });
     }
     private void parse(){
-        List<String> messages = new ArrayList<String>();
+        List<String> stubMessages = new ArrayList<String>();
         File logFile = new File(logFilePath);
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(logFile,"r");
@@ -46,11 +50,11 @@ public class LoggedMessagesUtils {
                     builder = builder.reverse();
                     String stroke = builder.toString();
                     if(stroke.contains("@From")) {
-                        messages.add(stroke);
+                        stubMessages.add(stroke);
                         lines++;
                     }
                     builder = new StringBuilder();
-                    if (lines == 10){
+                    if (lines == 30){
                         break;
                     }
                 }
@@ -62,23 +66,28 @@ public class LoggedMessagesUtils {
             e.printStackTrace();
         }
 
-        Date date = new Date(StringUtils.substring(messages.get(0), 0, 20));
-        if(date.after(lastMessageDate)){
-            EventRouter.fireEvent(new NewWhisperEvent());
-            lastMessageDate = date;
-        }
-
-        List<String> writers = new ArrayList<String>();
-        for (String message : messages) {
-            String writerStub = StringUtils.substringBetween(message, "@From", ":");
-            String writer = StringUtils.substringAfterLast(writerStub, "> ");
-            if (!writers.contains(writer)) {
-                writers.add(writer);
+        List<Message> messages = new ArrayList<>();
+        for (String fullMessage : stubMessages) {
+            Date msgDate = new Date(StringUtils.substring(fullMessage, 0, 20));
+            if(msgDate.after(lastMessageDate)){
+                String wNickname = StringUtils.substringBetween(fullMessage, "@From", ":");
+                String content = StringUtils.substringAfter(fullMessage, wNickname + ":");
+                wNickname = StringUtils.deleteWhitespace(wNickname);
+                //todo regexp
+                if(wNickname.contains(">")){
+                    wNickname = StringUtils.substringAfterLast(wNickname, ">");
+                }
+                logger.info("content: " + content);
+                logger.info("nickname: " + wNickname);
+                Message message = new Message(wNickname,content);
+                messages.add(message);
             }
         }
-
-
-        System.out.println(writers);
-        EventRouter.fireEvent(new ActualWritersChangeEvent(writers));
+        Date date = new Date(StringUtils.substring(stubMessages.get(0), 0, 20));
+        if(date.after(lastMessageDate)){
+            EventRouter.fireEvent(new WhisperNotificationEvent());
+            lastMessageDate = date;
+        }
+        EventRouter.fireEvent(new ActualWritersChangeEvent(messages));
     }
 }

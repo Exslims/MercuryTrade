@@ -1,7 +1,7 @@
 package com.home.clicker.events.custom;
 
 import com.home.clicker.events.SCEvent;
-import com.home.clicker.javafx.FrameStates;
+import com.home.clicker.ui.FrameStates;
 
 /**
  * Created by Константин on 09.12.2016.

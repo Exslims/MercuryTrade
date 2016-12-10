@@ -6,10 +6,10 @@ import com.home.clicker.events.SCEvent;
  * Exslims
  * 08.12.2016
  */
-public class SendMessageEvent implements SCEvent {
+public class ChatCommandEvent implements SCEvent {
     private String message;
 
-    public SendMessageEvent(String message) {
+    public ChatCommandEvent(String message) {
         this.message = message;
     }
 

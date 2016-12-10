@@ -1,10 +1,8 @@
 package com.home.clicker.javafx;
 
 import com.home.clicker.events.EventRouter;
-import com.home.clicker.events.SCEventHandler;
-import com.home.clicker.events.custom.ActualWritersChangeEvent;
 import com.home.clicker.events.custom.FrameStateChangeEvent;
-import com.home.clicker.events.custom.SendMessageEvent;
+import com.home.clicker.ui.FrameStates;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.beans.NamedArg;
@@ -14,21 +12,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.*;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.*;
-import javafx.scene.text.Font;
 import javafx.util.Duration;
-import org.pushingpixels.trident.Timeline;
 
 import java.awt.*;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by Константин on 10.12.2016.
@@ -59,23 +50,23 @@ public class CustomScene extends Scene {
             });
         });
 
-        EventRouter.registerHandler(ActualWritersChangeEvent.class, event -> {
-            Platform.runLater(() -> {
-                List<String> writers = ((ActualWritersChangeEvent)event).getWriters();
-                for (String writer :writers) {
-                    chatPane.getTabs().add(getNewChatTab(writer));
-//                    Button button = new Button(writer);
-//                    button.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-//                        @Override
-//                        public void handle(MouseEvent event1) {
-//                            String message = button.getText();
-//                            EventRouter.fireEvent(new SendMessageEvent(message));
-//                        }
-//                    });
-//                    rootPanel.getChildren().add(button);
-                }
-            });
-        });
+//        EventRouter.registerHandler(ActualWritersChangeEvent.class, event -> {
+//            Platform.runLater(() -> {
+//                List<String> writers = ((ActualWritersChangeEvent)event).getMessages();
+//                for (String writer :writers) {
+//                    chatPane.getTabs().add(getNewChatTab(writer));
+////                    Button button = new Button(writer);
+////                    button.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+////                        @Override
+////                        public void handle(MouseEvent event1) {
+////                            String message = button.getText();
+////                            EventRouter.fireEvent(new ChatCommandEvent(message));
+////                        }
+////                    });
+////                    rootPanel.getChildren().add(button);
+//                }
+//            });
+//        });
     }
 
     private void createChatButton() {
@@ -85,7 +76,7 @@ public class CustomScene extends Scene {
         image.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                changeState(chatPane,FrameStates.SHOW);
+                changeState(chatPane, FrameStates.SHOW);
             }
         });
         image.setLayoutX(0);

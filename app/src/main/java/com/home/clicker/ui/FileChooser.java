@@ -1,10 +1,9 @@
-package com.home.clicker;
+package com.home.clicker.ui;
 
+import com.home.clicker.PrivateMessageManager;
 import com.home.clicker.utils.CachedFilesUtils;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Created by Константин on 09.12.2016.

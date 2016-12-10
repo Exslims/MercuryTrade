@@ -1,12 +1,5 @@
 package com.home.clicker.javafx;
 
-import com.home.clicker.PrivateMessageManager;
-import com.home.clicker.events.EventRouter;
-import com.home.clicker.events.SCEvent;
-import com.home.clicker.events.SCEventHandler;
-import com.home.clicker.events.custom.ActualWritersChangeEvent;
-import com.home.clicker.events.custom.FrameStateChangeEvent;
-import com.home.clicker.events.custom.SendMessageEvent;
 import com.home.clicker.utils.User32;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
@@ -14,18 +7,10 @@ import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-import java.util.List;
 
 /**
  * Created by Константин on 09.12.2016.
@@ -44,9 +29,8 @@ public class FXFrame extends Application {
         primaryStage.setAlwaysOnTop(true);
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setScene(new CustomScene(new Group()));
+        primaryStage.requestFocus();
         primaryStage.show();
-
-        setForegroundWindow("Path of Exile");
 
     }
     private void setForegroundWindow(final String titleName){

@@ -1,6 +1,7 @@
 package com.home.clicker.events.custom;
 
 import com.home.clicker.events.SCEvent;
+import com.home.clicker.pojo.Message;
 
 import java.util.List;
 
@@ -9,17 +10,17 @@ import java.util.List;
  * 08.12.2016
  */
 public class ActualWritersChangeEvent implements SCEvent {
-    private List<String> writers;
+    private List<Message> messages;
 
-    public ActualWritersChangeEvent(List<String> writers) {
-        this.writers = writers;
+    public ActualWritersChangeEvent(List<Message> messages) {
+        this.messages = messages;
     }
 
-    public List<String> getWriters() {
-        return writers;
+    public List<Message> getMessages() {
+        return messages;
     }
 
-    public void setWriters(List<String> writers) {
-        this.writers = writers;
+    public void setMessages(List<Message> writers) {
+        this.messages = writers;
     }
 }

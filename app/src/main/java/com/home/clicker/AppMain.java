@@ -1,9 +1,9 @@
 package com.home.clicker;
 
-import com.home.clicker.javafx.*;
 import com.home.clicker.misc.PatchNotifier;
+import com.home.clicker.ui.FileChooser;
+import com.home.clicker.ui.WindowFrame;
 import com.home.clicker.utils.CachedFilesUtils;
-import javafx.application.Application;
 
 import javax.swing.*;
 import java.util.concurrent.ExecutorService;

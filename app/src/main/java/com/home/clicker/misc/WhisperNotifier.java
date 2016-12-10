@@ -2,7 +2,7 @@ package com.home.clicker.misc;
 
 import com.home.clicker.events.SCEventHandler;
 import com.home.clicker.events.EventRouter;
-import com.home.clicker.events.custom.NewWhisperEvent;
+import com.home.clicker.events.custom.WhisperNotificationEvent;
 import org.apache.log4j.Logger;
 
 import javax.sound.sampled.AudioInputStream;
@@ -16,8 +16,8 @@ import java.util.Arrays;
 public class WhisperNotifier {
     private final Logger logger = Logger.getLogger(WhisperNotifier.class);
     public WhisperNotifier() {
-        EventRouter.registerHandler(NewWhisperEvent.class,new SCEventHandler<NewWhisperEvent>(){
-            public void handle(NewWhisperEvent event) {
+        EventRouter.registerHandler(WhisperNotificationEvent.class,new SCEventHandler<WhisperNotificationEvent>(){
+            public void handle(WhisperNotificationEvent event) {
                 ClassLoader classLoader = getClass().getClassLoader();
                 try(AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource("icq-message.wav"))){
                     Clip clip = AudioSystem.getClip();

@@ -14,7 +14,7 @@ import java.io.File;
  * 08.12.2016
  */
 public class FileMonitor {
-    private static final long pollingInterval = 1 *1000;
+    private static final long pollingInterval = 100;
     public FileMonitor() {
         File folder = new File(CachedFilesUtils.getGamePath() + File.separator + "logs");
 
@@ -23,7 +23,6 @@ public class FileMonitor {
         FileAlterationListener listener = new FileAlterationListenerAdaptor(){
             @Override
             public void onFileChange(File file) {
-                System.out.println("Changes detected: " + file.getName());
                 if (file.getAbsolutePath().contains("Client.txt")) {
                     EventRouter.fireEvent(new FileChangeEvent());
                 }
