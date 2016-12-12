@@ -33,6 +33,8 @@ public class PrivateMessageManager {
     private GlobalKeyboardHook keyboardHook = new GlobalKeyboardHook();
     private GlobalKeyAdapter adapter;
     private User32 user32 = User32.INSTANCE;
+    private Robot robot;
+    private boolean altPressed = false;
     private WinDef.HWND cachedWindow;
 
     public PrivateMessageManager() {
@@ -46,7 +48,12 @@ public class PrivateMessageManager {
         new LoggedMessagesUtils();
         new FileMonitor();
 
-        //TODO ЕБАНЫЙ КОСТЫЛЬ УБЕРИ НАХУЙ
+        try {
+            robot = new Robot();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -62,54 +69,71 @@ public class PrivateMessageManager {
                     EventRouter.fireEvent(new ChangeFrameVisibleEvent(FrameStates.SHOW));
                 }
             }
-        },0,2000);
+        },0,1000);
     }
 
-    private void execute(String message){
-        try {
-            keyboardHook.removeKeyListener(adapter);
-            EventRouter.fireEvent(new StateChangeEvent(FrameStates.HIDE));
-            StringSelection selection = new StringSelection(message);
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboard.setContents(selection, selection);
+    private void execute(String message) {
+        keyboardHook.removeKeyListener(adapter);
+        EventRouter.fireEvent(new StateChangeEvent(FrameStates.HIDE));
+        StringSelection selection = new StringSelection(message);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(selection, selection);
 
-            setForegroundWindow("Path of Exile");
+        setForegroundWindow("Path of Exile");
 
-            Robot robot = new Robot();
-            robot.keyRelease(KeyEvent.VK_ENTER);
-            robot.keyRelease(KeyEvent.VK_F2);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_F2);
 
-            robot.keyPress(KeyEvent.VK_ENTER);
-            robot.keyRelease(KeyEvent.VK_ENTER);
-            robot.keyPress(KeyEvent.VK_CONTROL);
-            robot.keyPress(KeyEvent.VK_V);
-            robot.keyRelease(KeyEvent.VK_V);
-            robot.keyRelease(KeyEvent.VK_CONTROL);
-            robot.keyPress(KeyEvent.VK_ENTER);
-            robot.keyRelease(KeyEvent.VK_ENTER);
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
 
-            keyboardHook.addKeyListener(adapter);
-
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
+        keyboardHook.addKeyListener(adapter);
     }
+
 
     private GlobalKeyAdapter getAdapter(){
         return new GlobalKeyAdapter() {
             @Override
             public void keyPressed(GlobalKeyEvent event) {
-                if (event.getVirtualKeyCode() == GlobalKeyEvent.VK_F2) {
-                    EventRouter.fireEvent(new StateChangeEvent(FrameStates.SHOW));
-                }
-                if (event.getVirtualKeyCode() == GlobalKeyEvent.VK_F3) {
-                    EventRouter.fireEvent(new StateChangeEvent(FrameStates.UNDEFINED));
+                switch (event.getVirtualKeyCode()){
+                    case GlobalKeyEvent.VK_F2: {
+                        EventRouter.fireEvent(new StateChangeEvent(FrameStates.SHOW));
+                    }
+                    break;
+                    case GlobalKeyEvent.VK_F3: {
+                        EventRouter.fireEvent(new StateChangeEvent(FrameStates.UNDEFINED));
+                    }
+                    break;
+                    case GlobalKeyEvent.VK_TAB: {
+//                        if(!altPressed) {
+//                            nextTab();
+//                        }
+                    }
+                    break;
+                    case GlobalKeyEvent.VK_LMENU: {
+                        altPressed = true;
+                    }
+                    break;
+
                 }
             }
             @Override
             public void keyReleased(GlobalKeyEvent event) {
-                if (event.getVirtualKeyCode() == GlobalKeyEvent.VK_F2) {
-                    EventRouter.fireEvent(new StateChangeEvent(FrameStates.HIDE));
+                switch (event.getVirtualKeyCode()){
+                    case GlobalKeyEvent.VK_LMENU: {
+                        altPressed = false;
+                    }
+                    break;
+                    case GlobalKeyEvent.VK_F2: {
+                        EventRouter.fireEvent(new StateChangeEvent(FrameStates.HIDE));
+                    }
+
                 }
             }
         };
@@ -139,6 +163,11 @@ public class PrivateMessageManager {
 //        }else {
 //            user32.SetForegroundWindow(cachedWindow);
 //        }
+    }
+
+    private void nextTab(){
+        robot.keyPress(KeyEvent.VK_RIGHT);
+        robot.keyRelease(KeyEvent.VK_RIGHT);
     }
 
 }

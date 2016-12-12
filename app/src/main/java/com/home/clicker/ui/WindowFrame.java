@@ -28,6 +28,7 @@ public class WindowFrame extends JFrame {
     private static final int CHAT_HEIGHT = 200;
     private static final int CHAT_X = 300;
     private static final int CHAT_Y = 300;
+    private int screenHeight;
     private JTabbedPane chatPanel;
     private JPopupMenu settingsMenu;
     private int x;
@@ -47,14 +48,17 @@ public class WindowFrame extends JFrame {
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize(screenSize.width,screenSize.height);
+
+        screenHeight = screenSize.height;
+
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         setBackground(new Color(0,0,0,0));
         setOpacity(0.9f);
         setAlwaysOnTop(true);
-//        setFocusableWindowState(false);
-        setFocusable(true);
+        setFocusableWindowState(false);
+        setFocusable(false);
 
         try {
             initSettingsContextMenu();
@@ -99,7 +103,7 @@ public class WindowFrame extends JFrame {
         button.setContentAreaFilled(false);
         button.setPreferredSize(new Dimension(50,50));
         button.setSize(new Dimension(50,50));
-        button.setLocation(0,680);
+        button.setLocation(30,screenHeight - 50);
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -170,11 +174,15 @@ public class WindowFrame extends JFrame {
             public void handle(ChangeFrameVisibleEvent event) {
                 switch (event.getStates()){
                     case SHOW:{
-                        WindowFrame.this.setVisible(true);
+                        if(!WindowFrame.this.isShowing()) {
+                            WindowFrame.this.setVisible(true);
+                        }
                     }
                     break;
                     case HIDE:{
-                        WindowFrame.this.setVisible(false);
+                        if(WindowFrame.this.isShowing()) {
+                            WindowFrame.this.setVisible(false);
+                        }
                     }
                     break;
                 }
@@ -187,7 +195,18 @@ public class WindowFrame extends JFrame {
         JMenuItem item = new JMenu("settings");
         item.setHorizontalTextPosition(JMenuItem.CENTER);
         item.setArmed(false);
+
+        JMenuItem exit = new JMenu("Exit program");
+        exit.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.exit(0);
+            }
+        });
+        exit.setHorizontalTextPosition(JMenuItem.CENTER);
+        exit.setArmed(false);
         settingsMenu.add(item);
+        settingsMenu.add(exit);
     }
     private void changeState(FrameStates states){
         switch (states){

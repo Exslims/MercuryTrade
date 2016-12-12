@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <project.version>0.0.4</project.version>
+        <project.version>0.0.4.2</project.version>
 
         <systemhook.version>2.5</systemhook.version>
         <jna.version>3.0.9</jna.version>

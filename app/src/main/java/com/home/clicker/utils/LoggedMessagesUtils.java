@@ -84,7 +84,7 @@ public class LoggedMessagesUtils {
             }
         }
         Date date = new Date(StringUtils.substring(stubMessages.get(0), 0, 20));
-        if(date.after(lastMessageDate)){
+        if(date.after(lastMessageDate) && PoeShortCastConstants.WHISPER_NOTIFIER_ENABLE){
             EventRouter.fireEvent(new WhisperNotificationEvent());
             lastMessageDate = date;
         }

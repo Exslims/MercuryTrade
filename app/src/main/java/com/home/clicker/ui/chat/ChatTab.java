@@ -55,6 +55,7 @@ public class ChatTab extends JPanel {
         messagesArea.setWrapStyleWord(true);
         messagesArea.setMaximumSize(new Dimension(Integer.MAX_VALUE,Integer.MAX_VALUE));
         messagesArea.setMinimumSize((new Dimension(Integer.MAX_VALUE,Integer.MAX_VALUE)));
+        messagesArea.setEditable(false);
 
 
         scrollContainer = new JScrollPane(messagesArea);
