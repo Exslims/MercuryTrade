@@ -4,10 +4,12 @@ import com.home.clicker.events.EventRouter;
 import com.home.clicker.events.custom.ChangeFrameVisibleEvent;
 import com.home.clicker.events.custom.StateChangeEvent;
 import com.home.clicker.events.custom.ChatCommandEvent;
+import com.home.clicker.misc.WhisperNotifierStatus;
 import com.home.clicker.ui.FrameStates;
 import com.home.clicker.misc.WhisperNotifier;
 import com.home.clicker.utils.FileMonitor;
 import com.home.clicker.utils.LoggedMessagesUtils;
+import com.home.clicker.utils.PoeShortCastSettings;
 import com.home.clicker.utils.User32;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
@@ -54,6 +56,7 @@ public class PrivateMessageManager {
             e.printStackTrace();
         }
 
+        //TODO UBERI NAHUI ETO
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -61,12 +64,13 @@ public class PrivateMessageManager {
                 byte[] windowText = new byte[512];
                 PointerType hwnd = user32.GetForegroundWindow();
                 User32.INSTANCE.GetWindowTextA(hwnd, windowText, 512);
-                System.out.println(Native.toString(windowText));
                 if(!Native.toString(windowText).equals("Path of Exile") &&
                         !Native.toString(windowText).equals("PoeShortCast")){
                     EventRouter.fireEvent(new ChangeFrameVisibleEvent(FrameStates.HIDE));
+                    PoeShortCastSettings.APP_STATUS = FrameStates.HIDE;
                 }else{
                     EventRouter.fireEvent(new ChangeFrameVisibleEvent(FrameStates.SHOW));
+                    PoeShortCastSettings.APP_STATUS = FrameStates.SHOW;
                 }
             }
         },0,1000);

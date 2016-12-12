@@ -3,6 +3,8 @@ package com.home.clicker.misc;
 import com.home.clicker.events.SCEventHandler;
 import com.home.clicker.events.EventRouter;
 import com.home.clicker.events.custom.WhisperNotificationEvent;
+import com.home.clicker.ui.FrameStates;
+import com.home.clicker.utils.PoeShortCastSettings;
 import org.apache.log4j.Logger;
 
 import javax.sound.sampled.AudioInputStream;
@@ -18,13 +20,19 @@ public class WhisperNotifier {
     public WhisperNotifier() {
         EventRouter.registerHandler(WhisperNotificationEvent.class,new SCEventHandler<WhisperNotificationEvent>(){
             public void handle(WhisperNotificationEvent event) {
-                ClassLoader classLoader = getClass().getClassLoader();
-                try(AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource("icq-message.wav"))){
-                    Clip clip = AudioSystem.getClip();
-                    clip.open(stream);
-                    clip.start();
-                }catch (Exception e){
-                    logger.debug("Cannot start playing music: " + Arrays.toString(e.getStackTrace()));
+                if (PoeShortCastSettings.WHISPER_NOTIFIER_STATUS == WhisperNotifierStatus.ALWAYS ||
+                        ((PoeShortCastSettings.WHISPER_NOTIFIER_STATUS == WhisperNotifierStatus.ALTAB) &&
+                                (PoeShortCastSettings.APP_STATUS == FrameStates.HIDE))) {
+                    logger.debug("PLAYING");
+                    ClassLoader classLoader = getClass().getClassLoader();
+                    try (AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource("icq-message.wav"))) {
+                        Clip clip = AudioSystem.getClip();
+                        clip.open(stream);
+                        clip.start();
+                        logger.debug("START");
+                    } catch (Exception e) {
+                        logger.debug("Cannot start playing music: " + Arrays.toString(e.getStackTrace()));
+                    }
                 }
             }
         });

@@ -4,6 +4,7 @@ import com.home.clicker.events.*;
 import com.home.clicker.events.custom.*;
 import com.home.clicker.pojo.Message;
 import com.home.clicker.ui.chat.ChatTab;
+import com.home.clicker.ui.misc.SettingsPanel;
 import com.pagosoft.plaf.PlafOptions;
 import org.imgscalr.Scalr;
 
@@ -28,13 +29,16 @@ public class WindowFrame extends JFrame {
     private static final int CHAT_HEIGHT = 200;
     private static final int CHAT_X = 300;
     private static final int CHAT_Y = 300;
-    private int screenHeight;
+
+    private Dimension screenSize;
     private JTabbedPane chatPanel;
     private JPopupMenu settingsMenu;
     private int x;
     private int y;
 
     private Map<String,JPanel> whisperChatTabs = new HashMap<>();
+    private JPanel settingsPanel;
+
     public WindowFrame() {
         super("PoeShortCast");
 
@@ -46,15 +50,13 @@ public class WindowFrame extends JFrame {
         getRootPane().setOpaque(false);
         setUndecorated(true);
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setSize(screenSize.width,screenSize.height);
-
-        screenHeight = screenSize.height;
+        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize(screenSize.width, screenSize.height);
 
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        setBackground(new Color(0,0,0,0));
+        setBackground(new Color(0, 0, 0, 0));
         setOpacity(0.9f);
         setAlwaysOnTop(true);
         setFocusableWindowState(false);
@@ -65,6 +67,8 @@ public class WindowFrame extends JFrame {
             add(getChatButton());
             this.chatPanel = createChatPanel();
             add(chatPanel);
+            this.settingsPanel = getSettingsPanel();
+            add(settingsPanel);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -103,14 +107,16 @@ public class WindowFrame extends JFrame {
         button.setContentAreaFilled(false);
         button.setPreferredSize(new Dimension(50,50));
         button.setSize(new Dimension(50,50));
-        button.setLocation(30,screenHeight - 50);
+        button.setLocation(30,screenSize.height - 50);
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(chatPanel.isVisible()) {
-                    changeState(FrameStates.HIDE);
-                }else {
-                    changeState(SHOW);
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    if (chatPanel.isVisible()) {
+                        changeState(FrameStates.HIDE);
+                    } else {
+                        changeState(SHOW);
+                    }
                 }
             }
         });
@@ -194,7 +200,15 @@ public class WindowFrame extends JFrame {
         settingsMenu = new JPopupMenu("Popup");
         JMenuItem item = new JMenu("settings");
         item.setHorizontalTextPosition(JMenuItem.CENTER);
-        item.setArmed(false);
+        item.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)){
+                    System.out.println("SettingsPanel visible: " + settingsPanel.isShowing());
+                    settingsPanel.setVisible(true);
+                }
+            }
+        });
 
         JMenuItem exit = new JMenu("Exit program");
         exit.addMouseListener(new MouseAdapter() {
@@ -207,6 +221,15 @@ public class WindowFrame extends JFrame {
         exit.setArmed(false);
         settingsMenu.add(item);
         settingsMenu.add(exit);
+    }
+
+    private JPanel getSettingsPanel() {
+        SettingsPanel sPanel = new SettingsPanel();
+        sPanel.setVisible(false);
+        sPanel.setPreferredSize(new Dimension(200,50));
+        sPanel.setSize(new Dimension(200,50));
+        sPanel.setLocation(500,500);
+        return sPanel;
     }
     private void changeState(FrameStates states){
         switch (states){

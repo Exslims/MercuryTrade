@@ -5,7 +5,6 @@ import com.home.clicker.events.EventRouter;
 import com.home.clicker.events.custom.ActualWritersChangeEvent;
 import com.home.clicker.events.custom.FileChangeEvent;
 import com.home.clicker.events.custom.WhisperNotificationEvent;
-import com.home.clicker.events.custom.NewWhispersEvent;
 import com.home.clicker.pojo.Message;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -84,7 +83,7 @@ public class LoggedMessagesUtils {
             }
         }
         Date date = new Date(StringUtils.substring(stubMessages.get(0), 0, 20));
-        if(date.after(lastMessageDate) && PoeShortCastConstants.WHISPER_NOTIFIER_ENABLE){
+        if(date.after(lastMessageDate)){
             EventRouter.fireEvent(new WhisperNotificationEvent());
             lastMessageDate = date;
         }
