@@ -2,9 +2,8 @@ package com.home.clicker;
 
 import com.home.clicker.events.EventRouter;
 import com.home.clicker.events.custom.ChangeFrameVisibleEvent;
-import com.home.clicker.events.custom.StateChangeEvent;
+import com.home.clicker.events.custom.OpenChatEvent;
 import com.home.clicker.events.custom.ChatCommandEvent;
-import com.home.clicker.misc.WhisperNotifierStatus;
 import com.home.clicker.ui.FrameStates;
 import com.home.clicker.misc.WhisperNotifier;
 import com.home.clicker.utils.FileMonitor;
@@ -44,7 +43,12 @@ public class PrivateMessageManager {
         this.adapter = adapter;
 
         EventRouter.registerHandler(ChatCommandEvent.class, event
-                -> execute(((ChatCommandEvent)event).getMessage()));
+                -> executeMessage(((ChatCommandEvent)event).getMessage()));
+
+        EventRouter.registerHandler(OpenChatEvent.class, event -> {
+            openChat();
+        });
+
         keyboardHook.addKeyListener(adapter);
         new WhisperNotifier();
         new LoggedMessagesUtils();
@@ -76,17 +80,13 @@ public class PrivateMessageManager {
         },0,1000);
     }
 
-    private void execute(String message) {
+    private void executeMessage(String message) {
         keyboardHook.removeKeyListener(adapter);
-        EventRouter.fireEvent(new StateChangeEvent(FrameStates.HIDE));
         StringSelection selection = new StringSelection(message);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(selection, selection);
 
         setForegroundWindow("Path of Exile");
-
-        robot.keyRelease(KeyEvent.VK_ENTER);
-        robot.keyRelease(KeyEvent.VK_F2);
 
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.keyRelease(KeyEvent.VK_ENTER);
@@ -99,46 +99,58 @@ public class PrivateMessageManager {
 
         keyboardHook.addKeyListener(adapter);
     }
+    private void openChat(){
+        keyboardHook.removeKeyListener(adapter);
+        setForegroundWindow("Path of Exile");
+
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+
+        keyboardHook.addKeyListener(adapter);
+    }
 
 
     private GlobalKeyAdapter getAdapter(){
         return new GlobalKeyAdapter() {
             @Override
             public void keyPressed(GlobalKeyEvent event) {
-                switch (event.getVirtualKeyCode()){
-                    case GlobalKeyEvent.VK_F2: {
-                        EventRouter.fireEvent(new StateChangeEvent(FrameStates.SHOW));
-                    }
-                    break;
-                    case GlobalKeyEvent.VK_F3: {
-                        EventRouter.fireEvent(new StateChangeEvent(FrameStates.UNDEFINED));
-                    }
-                    break;
-                    case GlobalKeyEvent.VK_TAB: {
+//                switch (event.getVirtualKeyCode()){
+//                    case GlobalKeyEvent.VK_F2: {
+//                        EventRouter.fireEvent(new StateChangeEvent(FrameStates.SHOW));
+//                    }
+//                    break;
+//                    case GlobalKeyEvent.VK_F3: {
+//                        EventRouter.fireEvent(new StateChangeEvent(FrameStates.UNDEFINED));
+//                    }
+//                    break;
+//                    case GlobalKeyEvent.VK_TAB: {
 //                        if(!altPressed) {
 //                            nextTab();
 //                        }
-                    }
-                    break;
-                    case GlobalKeyEvent.VK_LMENU: {
-                        altPressed = true;
-                    }
-                    break;
-
-                }
+//                    }
+//                    break;
+//                    case GlobalKeyEvent.VK_LMENU: {
+//                        altPressed = true;
+//                    }
+//                    break;
+//                    case GlobalKeyEvent.VK_2:{
+////                        useAllFlasks();
+//                    }
+//                    break;
+//                }
             }
             @Override
             public void keyReleased(GlobalKeyEvent event) {
-                switch (event.getVirtualKeyCode()){
-                    case GlobalKeyEvent.VK_LMENU: {
-                        altPressed = false;
-                    }
-                    break;
-                    case GlobalKeyEvent.VK_F2: {
-                        EventRouter.fireEvent(new StateChangeEvent(FrameStates.HIDE));
-                    }
-
-                }
+//                switch (event.getVirtualKeyCode()){
+//                    case GlobalKeyEvent.VK_LMENU: {
+//                        altPressed = false;
+//                    }
+//                    break;
+//                    case GlobalKeyEvent.VK_F2: {
+//                        EventRouter.fireEvent(new StateChangeEvent(FrameStates.HIDE));
+//                    }
+//
+//                }
             }
         };
     }
@@ -172,6 +184,14 @@ public class PrivateMessageManager {
     private void nextTab(){
         robot.keyPress(KeyEvent.VK_RIGHT);
         robot.keyRelease(KeyEvent.VK_RIGHT);
+    }
+    private void useAllFlasks(){
+        robot.keyPress(KeyEvent.VK_3);
+        robot.keyRelease(KeyEvent.VK_3);
+        robot.keyPress(KeyEvent.VK_4);
+        robot.keyRelease(KeyEvent.VK_4);
+        robot.keyPress(KeyEvent.VK_5);
+        robot.keyRelease(KeyEvent.VK_5);
     }
 
 }

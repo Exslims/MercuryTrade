@@ -25,4 +25,7 @@ public class EventRouter {
         }
         eventHandlerMap.put(eventClass,scEventHandlers);
     }
+    public static void clear(Class eventClass){
+        eventHandlerMap.remove(eventClass);
+    }
 }

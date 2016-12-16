@@ -2,7 +2,7 @@ package com.home.clicker.utils;
 
 import com.home.clicker.events.SCEventHandler;
 import com.home.clicker.events.EventRouter;
-import com.home.clicker.events.custom.ActualWritersChangeEvent;
+import com.home.clicker.events.custom.NewWhispersEvent;
 import com.home.clicker.events.custom.FileChangeEvent;
 import com.home.clicker.events.custom.WhisperNotificationEvent;
 import com.home.clicker.pojo.Message;
@@ -68,7 +68,7 @@ public class LoggedMessagesUtils {
         List<Message> messages = new ArrayList<>();
         for (String fullMessage : stubMessages) {
             Date msgDate = new Date(StringUtils.substring(fullMessage, 0, 20));
-            if(msgDate.after(lastMessageDate)){
+            if(msgDate.after(lastMessageDate) && (fullMessage.contains("Hi, I would like") || fullMessage.contains("Hi, I'd like"))){
                 String wNickname = StringUtils.substringBetween(fullMessage, "@From", ":");
                 String content = StringUtils.substringAfter(fullMessage, wNickname + ":");
                 wNickname = StringUtils.deleteWhitespace(wNickname);
@@ -87,6 +87,8 @@ public class LoggedMessagesUtils {
             EventRouter.fireEvent(new WhisperNotificationEvent());
             lastMessageDate = date;
         }
-        EventRouter.fireEvent(new ActualWritersChangeEvent(messages));
+        if(messages.size() != 0) {
+            EventRouter.fireEvent(new NewWhispersEvent(messages));
+        }
     }
 }

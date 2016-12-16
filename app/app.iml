@@ -39,5 +39,6 @@
     <orderEntry type="library" name="Maven: org.eclipse.swt.gtk.linux:x86:3.3.0-v3346" level="project" />
     <orderEntry type="library" name="Maven: com.github.arnabk:pgslookandfeel:1.1.4" level="project" />
     <orderEntry type="library" name="Maven: org.imgscalr:imgscalr-lib:4.2" level="project" />
+    <orderEntry type="library" name="Maven: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
   </component>
 </module>

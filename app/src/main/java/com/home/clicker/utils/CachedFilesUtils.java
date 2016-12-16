@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -44,5 +45,16 @@ public class CachedFilesUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public static File getCustomButtonConfig(){
+        File configFile = new File(CONFIG_PATH + File.separator + "buttons.json");
+        if(!configFile.exists()){
+            try {
+                Files.write(Paths.get(CONFIG_PATH + File.separator + "buttons.json"),"".getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return new File(CONFIG_PATH + File.separator + "buttons.json");
     }
 }
