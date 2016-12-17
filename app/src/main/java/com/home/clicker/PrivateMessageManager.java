@@ -35,8 +35,6 @@ public class PrivateMessageManager {
     private GlobalKeyAdapter adapter;
     private User32 user32 = User32.INSTANCE;
     private Robot robot;
-    private boolean altPressed = false;
-    private WinDef.HWND cachedWindow;
 
     public PrivateMessageManager() {
         GlobalKeyAdapter adapter = getAdapter();
@@ -46,7 +44,7 @@ public class PrivateMessageManager {
                 -> executeMessage(((ChatCommandEvent)event).getMessage()));
 
         EventRouter.registerHandler(OpenChatEvent.class, event -> {
-            openChat();
+            openChat(((OpenChatEvent) event).getWhisper());
         });
 
         keyboardHook.addKeyListener(adapter);
@@ -90,6 +88,15 @@ public class PrivateMessageManager {
 
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.keyRelease(KeyEvent.VK_ENTER);
+
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_A);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.keyRelease(KeyEvent.VK_A);
+
+        robot.keyPress(KeyEvent.VK_BACK_SPACE);
+        robot.keyRelease(KeyEvent.VK_BACK_SPACE);
+
         robot.keyPress(KeyEvent.VK_CONTROL);
         robot.keyPress(KeyEvent.VK_V);
         robot.keyRelease(KeyEvent.VK_V);
@@ -99,12 +106,29 @@ public class PrivateMessageManager {
 
         keyboardHook.addKeyListener(adapter);
     }
-    private void openChat(){
+    private void openChat(String whisper){
         keyboardHook.removeKeyListener(adapter);
         setForegroundWindow("Path of Exile");
 
+        StringSelection selection = new StringSelection("@" + whisper);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(selection, selection);
+
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.keyRelease(KeyEvent.VK_ENTER);
+
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_A);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.keyRelease(KeyEvent.VK_A);
+
+        robot.keyPress(KeyEvent.VK_BACK_SPACE);
+        robot.keyRelease(KeyEvent.VK_BACK_SPACE);
+
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
 
         keyboardHook.addKeyListener(adapter);
     }
@@ -114,30 +138,26 @@ public class PrivateMessageManager {
         return new GlobalKeyAdapter() {
             @Override
             public void keyPressed(GlobalKeyEvent event) {
-//                switch (event.getVirtualKeyCode()){
-//                    case GlobalKeyEvent.VK_F2: {
+                switch (event.getVirtualKeyCode()){
+                    case GlobalKeyEvent.VK_F2: {
 //                        EventRouter.fireEvent(new StateChangeEvent(FrameStates.SHOW));
-//                    }
-//                    break;
-//                    case GlobalKeyEvent.VK_F3: {
+                    }
+                    break;
+                    case GlobalKeyEvent.VK_F3: {
 //                        EventRouter.fireEvent(new StateChangeEvent(FrameStates.UNDEFINED));
-//                    }
-//                    break;
-//                    case GlobalKeyEvent.VK_TAB: {
+                    }
+                    break;
+                    case GlobalKeyEvent.VK_TAB: {
 //                        if(!altPressed) {
 //                            nextTab();
 //                        }
-//                    }
-//                    break;
-//                    case GlobalKeyEvent.VK_LMENU: {
-//                        altPressed = true;
-//                    }
-//                    break;
-//                    case GlobalKeyEvent.VK_2:{
-////                        useAllFlasks();
-//                    }
-//                    break;
-//                }
+                    }
+                    break;
+                    case GlobalKeyEvent.VK_2:{
+                        useAllFlasks();
+                    }
+                    break;
+                }
             }
             @Override
             public void keyReleased(GlobalKeyEvent event) {
@@ -169,7 +189,6 @@ public class PrivateMessageManager {
                         return true;
                     }
                     if (wText.equals(titleName)) {
-                        cachedWindow = hWnd;
                         user32.SetForegroundWindow(hWnd);
                         return false;
                     }

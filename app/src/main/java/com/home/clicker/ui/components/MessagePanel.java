@@ -92,7 +92,7 @@ public class MessagePanel extends JPanel {
         openChatButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                EventRouter.fireEvent(new OpenChatEvent());
+                EventRouter.fireEvent(new OpenChatEvent(whisper));
             }
         });
         buttonsPanel.add(openChatButton);
