@@ -2,6 +2,7 @@ package com.home.clicker.ui.components;
 
 import com.home.clicker.shared.events.EventRouter;
 import com.home.clicker.shared.events.custom.CloseFrameEvent;
+import com.home.clicker.shared.events.custom.DraggedWindowEvent;
 import com.home.clicker.shared.events.custom.RepaintEvent;
 import com.home.clicker.core.misc.WhisperNotifierStatus;
 import com.home.clicker.ui.components.fields.ExButton;
@@ -59,8 +60,7 @@ public class SettingsPanel extends JPanel {
         title.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                e.translatePoint(SettingsPanel.this.getLocation().x - x,SettingsPanel.this.getLocation().y - y);
-                SettingsPanel.this.setLocation(e.getX(),e.getY());
+                EventRouter.fireEvent(new DraggedWindowEvent(e.getLocationOnScreen().x -x,e.getLocationOnScreen().y - y));
             }
         });
 

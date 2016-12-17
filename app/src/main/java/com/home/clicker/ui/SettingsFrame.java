@@ -3,6 +3,7 @@ package com.home.clicker.ui;
 import com.home.clicker.shared.HasEventHandlers;
 import com.home.clicker.shared.events.EventRouter;
 import com.home.clicker.shared.events.custom.CloseFrameEvent;
+import com.home.clicker.shared.events.custom.DraggedWindowEvent;
 import com.home.clicker.shared.events.custom.RepaintEvent;
 import com.home.clicker.ui.components.SettingsPanel;
 
@@ -46,6 +47,11 @@ public class SettingsFrame extends JFrame implements HasEventHandlers {
             EventRouter.clear(RepaintEvent.class);
             SettingsFrame.this.revalidate();
             SettingsFrame.this.repaint();
+        });
+        EventRouter.registerHandler(DraggedWindowEvent.class, event -> {
+            int x = ((DraggedWindowEvent) event).getX();
+            int y = ((DraggedWindowEvent) event).getY();
+            SettingsFrame.this.setLocation(x,y);
         });
     }
 }
