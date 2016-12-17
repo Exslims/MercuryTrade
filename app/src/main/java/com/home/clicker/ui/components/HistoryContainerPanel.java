@@ -25,9 +25,6 @@ public class HistoryContainerPanel extends TransparencyContainerPanel{
     protected void initHandlers() {
         EventRouter.registerHandler(OpenHistoryEvent.class, event -> {
             if(!HistoryContainerPanel.this.isVisible()) {
-                int x = ((OpenHistoryEvent) event).getX();
-                int y = ((OpenHistoryEvent) event).getY();
-                HistoryContainerPanel.this.setLocation(x, y);
                 HistoryContainerPanel.this.setVisible(true);
             }else{
                 HistoryContainerPanel.this.setVisible(false);

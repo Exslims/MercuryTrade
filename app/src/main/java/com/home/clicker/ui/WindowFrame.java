@@ -60,7 +60,7 @@ public class WindowFrame extends JFrame {
 
     private void initHistoryContainer() {
         history = new HistoryContainerPanel();
-        history.setLocation(500,300);
+        history.setLocation(800,300);
         add(history);
     }
 

@@ -39,9 +39,7 @@ public class MessagesContainerPanel extends TransparencyContainerPanel {
         expandHistory.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                EventRouter.fireEvent(new OpenHistoryEvent(
-                        MessagesContainerPanel.this.getLocation().x + MessagesContainerPanel.this.getSize().width,
-                        MessagesContainerPanel.this.getLocation().y + MessagesContainerPanel.this.getSize().height));
+                EventRouter.fireEvent(new OpenHistoryEvent());
             }
         });
     }
