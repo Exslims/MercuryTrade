@@ -1,7 +1,8 @@
 package com.home.clicker.ui;
 
-import com.home.clicker.events.*;
-import com.home.clicker.events.custom.*;
+import com.home.clicker.shared.HasEventHandlers;
+import com.home.clicker.shared.events.*;
+import com.home.clicker.shared.events.custom.*;
 import com.home.clicker.ui.components.HistoryContainerPanel;
 import com.home.clicker.ui.components.MessagesContainerPanel;
 import com.home.clicker.ui.components.SettingsPanel;
@@ -18,7 +19,7 @@ import java.io.IOException;
  * Exslims
  * 07.12.2016
  */
-public class WindowFrame extends JFrame {
+public class WindowFrame extends JFrame implements HasEventHandlers {
     private Dimension screenSize;
     private JPopupMenu settingsMenu;
     private MessagesContainerPanel msgContainer;
@@ -55,7 +56,7 @@ public class WindowFrame extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        registerUIHandlers();
+        initHandlers();
     }
 
     private void initHistoryContainer() {
@@ -98,38 +99,6 @@ public class WindowFrame extends JFrame {
 
         add(button);
     }
-
-    private void registerUIHandlers(){
-        EventRouter.registerHandler(NewPatchSCEvent.class, event -> {
-            JFrame frame = new JFrame("New patch");
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            JLabel label = new JLabel(((NewPatchSCEvent)event).getPatchTitle());
-            frame.getContentPane().add(label);
-            frame.pack();
-            frame.setVisible(true);
-        });
-
-        EventRouter.registerHandler(ChangeFrameVisibleEvent.class, new SCEventHandler<ChangeFrameVisibleEvent>() {
-            @Override
-            public void handle(ChangeFrameVisibleEvent event) {
-                switch (event.getStates()){
-                    case SHOW:{
-                        if(!WindowFrame.this.isShowing()) {
-                            WindowFrame.this.setVisible(true);
-                        }
-                    }
-                    break;
-                    case HIDE:{
-                        if(WindowFrame.this.isShowing()) {
-                            WindowFrame.this.setVisible(false);
-                        }
-                    }
-                    break;
-                }
-            }
-        });
-    }
-
     private void initSettingsContextMenu(){
         settingsMenu = new JPopupMenu("Popup");
         JMenuItem item = new JMenu("settings");
@@ -161,6 +130,38 @@ public class WindowFrame extends JFrame {
         SettingsPanel sPanel = new SettingsPanel();
         sPanel.setLocation(500,500);
         return sPanel;
+    }
+
+    @Override
+    public void initHandlers() {
+        EventRouter.registerHandler(NewPatchSCEvent.class, event -> {
+            JFrame frame = new JFrame("New patch");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            JLabel label = new JLabel(((NewPatchSCEvent)event).getPatchTitle());
+            frame.getContentPane().add(label);
+            frame.pack();
+            frame.setVisible(true);
+        });
+
+        EventRouter.registerHandler(ChangeFrameVisibleEvent.class, new SCEventHandler<ChangeFrameVisibleEvent>() {
+            @Override
+            public void handle(ChangeFrameVisibleEvent event) {
+                switch (event.getStates()){
+                    case SHOW:{
+                        if(!WindowFrame.this.isShowing()) {
+                            WindowFrame.this.setVisible(true);
+                        }
+                    }
+                    break;
+                    case HIDE:{
+                        if(WindowFrame.this.isShowing()) {
+                            WindowFrame.this.setVisible(false);
+                        }
+                    }
+                    break;
+                }
+            }
+        });
     }
 //    private void changeState(FrameStates states){
 //        switch (states){

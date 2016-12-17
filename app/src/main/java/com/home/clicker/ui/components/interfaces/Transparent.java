@@ -1,7 +1,7 @@
 package com.home.clicker.ui.components.interfaces;
 
 /**
- * Created by Константин on 15.12.2016.
+ * in future for animations
  */
 public interface Transparent {
     void setOpacity(int percent);

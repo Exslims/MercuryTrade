@@ -1,8 +1,8 @@
 package com.home.clicker.ui.components;
 
-import com.home.clicker.events.EventRouter;
-import com.home.clicker.events.custom.MoveToHistoryEvent;
-import com.home.clicker.events.custom.OpenHistoryEvent;
+import com.home.clicker.shared.events.EventRouter;
+import com.home.clicker.shared.events.custom.MoveToHistoryEvent;
+import com.home.clicker.shared.events.custom.OpenHistoryEvent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +22,7 @@ public class HistoryContainerPanel extends TransparencyContainerPanel{
     }
 
     @Override
-    protected void initHandlers() {
+    public void initHandlers() {
         EventRouter.registerHandler(OpenHistoryEvent.class, event -> {
             if(!HistoryContainerPanel.this.isVisible()) {
                 HistoryContainerPanel.this.setVisible(true);

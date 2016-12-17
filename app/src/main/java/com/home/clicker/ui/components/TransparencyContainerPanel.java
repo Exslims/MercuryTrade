@@ -1,7 +1,9 @@
 package com.home.clicker.ui.components;
 
+import com.home.clicker.shared.HasEventHandlers;
+import com.home.clicker.ui.components.fields.ExButton;
 import com.home.clicker.ui.misc.AppThemeColor;
-import com.home.clicker.utils.PoeShortCastSettings;
+import com.home.clicker.shared.PoeShortCastSettings;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
@@ -16,7 +18,7 @@ import java.io.IOException;
 /**
  * Created by Константин on 16.12.2016.
  */
-public abstract class TransparencyContainerPanel extends JPanel{
+public abstract class TransparencyContainerPanel extends JPanel implements HasEventHandlers{
     protected JScrollPane scroll;
     protected JPanel container;
     protected JPanel headButtonsPanel;
@@ -110,7 +112,7 @@ public abstract class TransparencyContainerPanel extends JPanel{
         this.hideTimer = getHideTimer();
     }
 
-    protected abstract void initHandlers();
+    public abstract void initHandlers();
 
     private Timer getHideTimer(){
         Timer timer = new Timer(7000,null);

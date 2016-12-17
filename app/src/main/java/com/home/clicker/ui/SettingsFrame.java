@@ -1,10 +1,9 @@
 package com.home.clicker.ui;
 
-import com.home.clicker.events.EventRouter;
-import com.home.clicker.events.SCEvent;
-import com.home.clicker.events.SCEventHandler;
-import com.home.clicker.events.custom.CloseFrameEvent;
-import com.home.clicker.events.custom.RepaintEvent;
+import com.home.clicker.shared.HasEventHandlers;
+import com.home.clicker.shared.events.EventRouter;
+import com.home.clicker.shared.events.custom.CloseFrameEvent;
+import com.home.clicker.shared.events.custom.RepaintEvent;
 import com.home.clicker.ui.components.SettingsPanel;
 
 import javax.swing.*;
@@ -13,7 +12,7 @@ import java.awt.*;
 /**
  * Created by Константин on 16.12.2016.
  */
-public class SettingsFrame extends JFrame {
+public class SettingsFrame extends JFrame implements HasEventHandlers {
     public SettingsFrame(){
         super("Settings");
         setLayout(new FlowLayout());
@@ -33,7 +32,11 @@ public class SettingsFrame extends JFrame {
         settingsPanel.setLocation(500,500);
         this.add(settingsPanel);
 
+        initHandlers();
+    }
 
+    @Override
+    public void initHandlers() {
         EventRouter.registerHandler(CloseFrameEvent.class, event -> {
             EventRouter.clear(CloseFrameEvent.class);
             SettingsFrame.this.setVisible(false);

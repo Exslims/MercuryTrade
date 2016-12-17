@@ -1,10 +1,11 @@
 package com.home.clicker.ui.components;
 
-import com.home.clicker.events.EventRouter;
-import com.home.clicker.events.custom.MoveToHistoryEvent;
-import com.home.clicker.events.custom.NewWhispersEvent;
-import com.home.clicker.events.custom.OpenHistoryEvent;
-import com.home.clicker.pojo.Message;
+import com.home.clicker.shared.events.EventRouter;
+import com.home.clicker.shared.events.custom.MoveToHistoryEvent;
+import com.home.clicker.shared.events.custom.NewWhispersEvent;
+import com.home.clicker.shared.events.custom.OpenHistoryEvent;
+import com.home.clicker.shared.pojo.Message;
+import com.home.clicker.ui.components.fields.ExButton;
 import com.home.clicker.ui.misc.AppThemeColor;
 import org.imgscalr.Scalr;
 
@@ -45,7 +46,7 @@ public class MessagesContainerPanel extends TransparencyContainerPanel {
     }
 
     @Override
-    protected void initHandlers() {
+    public void initHandlers() {
         EventRouter.registerHandler(NewWhispersEvent.class, event -> {
             List<Message> messages = ((NewWhispersEvent) event).getMessages();
             for (Message message : messages) {

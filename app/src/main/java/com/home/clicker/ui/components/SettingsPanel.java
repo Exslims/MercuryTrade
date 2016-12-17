@@ -1,12 +1,15 @@
 package com.home.clicker.ui.components;
 
-import com.home.clicker.events.EventRouter;
-import com.home.clicker.events.custom.CloseFrameEvent;
-import com.home.clicker.events.custom.RepaintEvent;
-import com.home.clicker.misc.WhisperNotifierStatus;
+import com.home.clicker.shared.events.EventRouter;
+import com.home.clicker.shared.events.custom.CloseFrameEvent;
+import com.home.clicker.shared.events.custom.RepaintEvent;
+import com.home.clicker.core.misc.WhisperNotifierStatus;
+import com.home.clicker.ui.components.fields.ExButton;
+import com.home.clicker.ui.components.fields.ExLabel;
+import com.home.clicker.ui.components.fields.ExTextField;
 import com.home.clicker.ui.misc.AppThemeColor;
 import com.home.clicker.ui.misc.CustomButtonFactory;
-import com.home.clicker.utils.PoeShortCastSettings;
+import com.home.clicker.shared.PoeShortCastSettings;
 
 import javax.swing.*;
 import java.awt.*;

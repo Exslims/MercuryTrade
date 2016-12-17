@@ -1,8 +1,11 @@
 package com.home.clicker.ui.components;
 
-import com.home.clicker.events.EventRouter;
-import com.home.clicker.events.custom.ChatCommandEvent;
-import com.home.clicker.events.custom.OpenChatEvent;
+import com.home.clicker.shared.events.EventRouter;
+import com.home.clicker.shared.events.custom.ChatCommandEvent;
+import com.home.clicker.shared.events.custom.CopyToClipboardEvent;
+import com.home.clicker.shared.events.custom.OpenChatEvent;
+import com.home.clicker.ui.components.fields.ExButton;
+import com.home.clicker.ui.components.fields.ExLabel;
 import com.home.clicker.ui.misc.AppThemeColor;
 import com.home.clicker.ui.misc.CustomButtonFactory;
 import org.apache.commons.lang3.StringUtils;
@@ -27,6 +30,7 @@ public class MessagePanel extends JPanel {
     private String message;
 
     private ExLabel newLabel;
+    private ExLabel itemLabel;
     public MessagePanel(String whisper, String message) {
         super(new BorderLayout());
         this.whisper = whisper;
@@ -76,6 +80,7 @@ public class MessagePanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 EventRouter.fireEvent(new ChatCommandEvent("/invite " + whisper));
+//                EventRouter.fireEvent(new CopyToClipboardEvent(itemLabel.getText()));
             }
         });
         buttonsPanel.add(invite,0);
@@ -113,7 +118,7 @@ public class MessagePanel extends JPanel {
         if(itemName == null){
             itemName = StringUtils.substringBetween(message, "to buy your ", " for my");
         }
-        ExLabel itemLabel = new ExLabel(itemName);
+        itemLabel = new ExLabel(itemName);
         itemLabel.setForeground(AppThemeColor.TEXT_IMPORTANT);
         labelsPanel.add(itemLabel);
 

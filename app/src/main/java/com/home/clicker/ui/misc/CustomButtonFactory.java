@@ -1,9 +1,9 @@
 package com.home.clicker.ui.misc;
 
-import com.home.clicker.events.EventRouter;
-import com.home.clicker.events.custom.ChatCommandEvent;
-import com.home.clicker.ui.components.ExButton;
-import com.home.clicker.utils.CachedFilesUtils;
+import com.home.clicker.shared.events.EventRouter;
+import com.home.clicker.shared.events.custom.ChatCommandEvent;
+import com.home.clicker.ui.components.fields.ExButton;
+import com.home.clicker.core.utils.CachedFilesUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
