@@ -70,7 +70,7 @@ public class PrivateMessageManager implements HasEventHandlers {
                     PoeShortCastSettings.APP_STATUS = FrameStates.SHOW;
                 }
             }
-        },0,1000);
+        },0,700);
     }
 
     private void executeMessage(String message) {
@@ -93,33 +93,9 @@ public class PrivateMessageManager implements HasEventHandlers {
         robot.keyRelease(KeyEvent.VK_BACK_SPACE);
 
         robot.keyPress(KeyEvent.VK_CONTROL);
-        try {
-            String data = (String) clipboard.getData(DataFlavor.stringFlavor);
-            System.out.println("controll pressed" + " " + data);
-        } catch (UnsupportedFlavorException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         robot.keyPress(KeyEvent.VK_V);
-        try {
-            String data = (String) clipboard.getData(DataFlavor.stringFlavor);
-            System.out.println("v pressed" + " " + data);
-        } catch (UnsupportedFlavorException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         robot.keyRelease(KeyEvent.VK_V);
         robot.keyRelease(KeyEvent.VK_CONTROL);
-        try {
-            String data = (String) clipboard.getData(DataFlavor.stringFlavor);
-            System.out.println("ressed" + " " + data);
-        } catch (UnsupportedFlavorException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.keyRelease(KeyEvent.VK_ENTER);
 
@@ -219,12 +195,11 @@ public class PrivateMessageManager implements HasEventHandlers {
         EventRouter.registerHandler(OpenChatEvent.class, event -> {
             openChat(((OpenChatEvent) event).getWhisper());
         });
-//        EventRouter.registerHandler(CopyToClipboardEvent.class, event -> {
-//            System.out.println("in copy");
-//            String content = ((CopyToClipboardEvent) event).getContent();
-//            StringSelection selection = new StringSelection(content);
-//            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-//            clipboard.setContents(selection, null);
-//        });
+        EventRouter.registerHandler(CopyToClipboardEvent.class, event -> {
+            String content = ((CopyToClipboardEvent) event).getContent();
+            StringSelection selection = new StringSelection(content);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(selection, null);
+        });
     }
 }

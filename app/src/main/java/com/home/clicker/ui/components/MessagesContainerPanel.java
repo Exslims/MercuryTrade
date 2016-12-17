@@ -71,7 +71,6 @@ public class MessagesContainerPanel extends TransparencyContainerPanel {
                 if(container.getComponentCount() != 0) {
                     Component prevMessage = container.getComponent(0);
                     EventRouter.fireEvent(new MoveToHistoryEvent((JPanel) prevMessage));
-                    System.out.println("fire event");
                     container.removeAll();
                 }
                 container.add(messagePanel);

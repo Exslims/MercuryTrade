@@ -76,8 +76,6 @@ public class LoggedMessagesUtils {
                 if(wNickname.contains(">")){
                     wNickname = StringUtils.substringAfterLast(wNickname, ">");
                 }
-                logger.info("content: " + content);
-                logger.info("nickname: " + wNickname);
                 Message message = new Message(wNickname,content);
                 messages.add(message);
             }

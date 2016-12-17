@@ -68,7 +68,7 @@ public class MessagePanel extends JPanel {
         this.add(topPanel,BorderLayout.PAGE_START);
 
         Dimension rectSize = new Dimension();
-        rectSize.setSize(350, 140);
+        rectSize.setSize(350, 114);
         this.setMaximumSize(rectSize);
         this.setMinimumSize(rectSize);
         this.setPreferredSize(rectSize);
@@ -81,19 +81,20 @@ public class MessagePanel extends JPanel {
             buttonsPanel.setSize(new Dimension(buttonsPanel.getPreferredSize().width, (int)(buttonsPanel.getPreferredSize().height * 1.7)));
             buttonsPanel.setPreferredSize(new Dimension(buttonsPanel.getPreferredSize().width, (int)(buttonsPanel.getPreferredSize().height * 1.7)));
             buttonsPanel.setMinimumSize(new Dimension(buttonsPanel.getPreferredSize().width, (int)(buttonsPanel.getPreferredSize().height * 1.7)));
-
-            rectSize.setSize(350, 160);
-            this.setMaximumSize(rectSize);
-            this.setMinimumSize(rectSize);
-            this.setPreferredSize(rectSize);
-
         }
         ExButton invite = new ExButton("invite");
         invite.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 EventRouter.fireEvent(new ChatCommandEvent("/invite " + whisper));
-//                EventRouter.fireEvent(new CopyToClipboardEvent(itemLabel.getText()));
+
+                Timer timer = new Timer(500,null);
+                timer.addActionListener(event -> {
+                    EventRouter.fireEvent(new CopyToClipboardEvent(itemLabel.getText()));
+                    timer.stop();
+                });
+                timer.start();
+
             }
         });
         buttonsPanel.add(invite,0);
@@ -138,36 +139,51 @@ public class MessagePanel extends JPanel {
         if(price == null){
             price = StringUtils.substringBetween(message, "for my ", " in ");
         }
-        String[] split = price.split(" ");
-        ExLabel currencyLabel = null;
-        BufferedImage buttonIcon = null;
-        try {
-            switch (split[1]) {
-                case "chaos": {
-                    buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("Chaos_Orb.png"));
-                    BufferedImage icon = Scalr.resize(buttonIcon, 20);
-                    currencyLabel = new ExLabel(new ImageIcon(icon));
-                    break;
+        if(price != null) {
+            String[] split = price.split(" ");
+            ExLabel currencyLabel = null;
+            BufferedImage buttonIcon = null;
+            try {
+                switch (split[1]) {
+                    case "chaos": {
+                        buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("Chaos_Orb.png"));
+                        BufferedImage icon = Scalr.resize(buttonIcon, 20);
+                        currencyLabel = new ExLabel(new ImageIcon(icon));
+                        break;
+                    }
+                    case "exalted": {
+                        buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("Exalted_Orb.png"));
+                        BufferedImage icon = Scalr.resize(buttonIcon, 20);
+                        currencyLabel = new ExLabel(new ImageIcon(icon));
+                        break;
+                    }
+                    case "fusing": {
+                        buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("Orb_of_Fusing.png"));
+                        BufferedImage icon = Scalr.resize(buttonIcon, 20);
+                        currencyLabel = new ExLabel(new ImageIcon(icon));
+                        break;
+                    }
+                    case "vaal": {
+                        buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("Vaal_Orb.png"));
+                        BufferedImage icon = Scalr.resize(buttonIcon, 20);
+                        currencyLabel = new ExLabel(new ImageIcon(icon));
+                        break;
+                    }
+                    default:
+                        currencyLabel = new ExLabel(split[1]);
+                        currencyLabel.setForeground(AppThemeColor.TEXT_MESSAGE);
+                        break;
                 }
-                case "exalted": {
-                    buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("Exalted_Orb.png"));
-                    BufferedImage icon = Scalr.resize(buttonIcon, 20);
-                    currencyLabel = new ExLabel(new ImageIcon(icon));
-                    break;
-                }
-                default:
-                    currencyLabel = new ExLabel(split[1]);
-                    currencyLabel.setForeground(AppThemeColor.TEXT_MESSAGE);
-                    break;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        ExLabel priceLabel = new ExLabel(split[0]);
-        priceLabel.setForeground(AppThemeColor.TEXT_MESSAGE);
-        labelsPanel.add(priceLabel);
-        labelsPanel.add(currencyLabel);
+
+            ExLabel priceLabel = new ExLabel(split[0]);
+            priceLabel.setForeground(AppThemeColor.TEXT_MESSAGE);
+            labelsPanel.add(priceLabel);
+            labelsPanel.add(currencyLabel);
+        }
 
         String offer = StringUtils.substringAfterLast(message, "in Breach"); //todo
         String tabName = StringUtils.substringBetween(message, "(stash tab ", "; position:");
@@ -177,6 +193,13 @@ public class MessagePanel extends JPanel {
         ExLabel offerLabel = new ExLabel(offer);
         offerLabel.setForeground(AppThemeColor.TEXT_MESSAGE);
         labelsPanel.add(offerLabel);
+        if(offer.length() > 1){
+            Dimension rectSize = new Dimension();
+            rectSize.setSize(350, 130);
+            this.setMaximumSize(rectSize);
+            this.setMinimumSize(rectSize);
+            this.setPreferredSize(rectSize);
+        }
 
         return labelsPanel;
     }
