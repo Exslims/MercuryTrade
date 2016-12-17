@@ -24,7 +24,11 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
     private JPopupMenu settingsMenu;
     private MessagesContainerPanel msgContainer;
     private HistoryContainerPanel history;
-    private JPanel settingsPanel;
+
+    //app button inner point
+    private int x;
+    private int y;
+
 
     public WindowFrame() {
         super("PoeShortCast");
@@ -51,7 +55,6 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
             initAppButton();
             initMessagesContainer();
             initHistoryContainer();
-            this.settingsPanel = getSettingsPanel();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -75,7 +78,7 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
 
     private void initAppButton() throws IOException {
         BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("chatImage.png"));
-        BufferedImage icon = Scalr.resize(buttonIcon, 40);
+        BufferedImage icon = Scalr.resize(buttonIcon, 56);
         JButton button = new JButton(new ImageIcon(icon));
         button.setBorder(BorderFactory.createEmptyBorder());
         button.setContentAreaFilled(false);
@@ -83,6 +86,12 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
         button.setSize(new Dimension(50,50));
         button.setLocation(30,screenSize.height - 50);
         button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                x = e.getX();
+                y = e.getY();
+            }
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
@@ -92,6 +101,13 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
                         msgContainer.setVisible(true);
                     }
                 }
+            }
+        });
+        button.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                e.translatePoint(button.getLocation().x - x,button.getLocation().y - y);
+                button.setLocation(e.getX(),e.getY());
             }
         });
         button.setComponentPopupMenu(settingsMenu);
@@ -126,11 +142,11 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
         settingsMenu.add(exit);
     }
 
-    private JPanel getSettingsPanel() {
-        SettingsPanel sPanel = new SettingsPanel();
-        sPanel.setLocation(500,500);
-        return sPanel;
-    }
+//    private JPanel initSettingsPanel() {
+//        SettingsPanel sPanel = new SettingsPanel();
+//        sPanel.setLocation(500,500);
+//        return sPanel;
+//    }
 
     @Override
     public void initHandlers() {
@@ -168,22 +184,4 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
             }
         });
     }
-//    private void changeState(FrameStates states){
-//        switch (states){
-//            case SHOW: {
-//                chatPanel.setVisible(true);
-//                break;
-//            }
-//            case HIDE:{
-//                chatPanel.setVisible(false);
-//            }
-//            break;
-//            case UNDEFINED:{
-//                if(chatPanel.isVisible()){
-//                    chatPanel.setVisible(false);
-//                }else
-//                    chatPanel.setVisible(true);
-//            }
-//        }
-//    }
 }
