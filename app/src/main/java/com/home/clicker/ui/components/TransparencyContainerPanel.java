@@ -122,4 +122,8 @@ public abstract class TransparencyContainerPanel extends JPanel implements HasEv
         });
         return timer;
     }
+    protected void repaintPanel(){
+        TransparencyContainerPanel.this.revalidate();
+        TransparencyContainerPanel.this.repaint();
+    }
 }

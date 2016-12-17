@@ -4,7 +4,7 @@ import com.home.clicker.core.PrivateMessageManager;
 import com.home.clicker.core.misc.PatchNotifier;
 import com.home.clicker.ui.FileChooser;
 import com.home.clicker.ui.WindowFrame;
-import com.home.clicker.core.utils.CachedFilesUtils;
+import com.home.clicker.shared.CachedFilesUtils;
 
 import javax.swing.*;
 import java.util.concurrent.ExecutorService;

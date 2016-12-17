@@ -1,4 +1,4 @@
-package com.home.clicker.core.utils;
+package com.home.clicker.shared;
 
 import org.apache.commons.lang3.StringUtils;
 

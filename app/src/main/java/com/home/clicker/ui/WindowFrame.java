@@ -143,6 +143,11 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
             frame.setVisible(true);
         });
 
+        EventRouter.registerHandler(RepaintEvent.class, event -> {
+            WindowFrame.this.revalidate();
+            WindowFrame.this.repaint();
+        });
+
         EventRouter.registerHandler(ChangeFrameVisibleEvent.class, new SCEventHandler<ChangeFrameVisibleEvent>() {
             @Override
             public void handle(ChangeFrameVisibleEvent event) {

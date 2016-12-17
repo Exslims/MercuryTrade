@@ -1,15 +1,18 @@
 package com.home.clicker.core.utils;
 
+import com.home.clicker.shared.CachedFilesUtils;
 import com.home.clicker.shared.events.SCEventHandler;
 import com.home.clicker.shared.events.EventRouter;
 import com.home.clicker.shared.events.custom.NewWhispersEvent;
 import com.home.clicker.shared.events.custom.FileChangeEvent;
 import com.home.clicker.shared.events.custom.WhisperNotificationEvent;
 import com.home.clicker.shared.pojo.Message;
+import org.apache.commons.lang3.CharSet;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,14 +28,10 @@ public class LoggedMessagesUtils {
     private Date lastMessageDate = new Date();
 
     public LoggedMessagesUtils() {
-        EventRouter.registerHandler(FileChangeEvent.class,new SCEventHandler<FileChangeEvent>(){
-            public void handle(FileChangeEvent event) {
-                parse();
-            }
-        });
+        EventRouter.registerHandler(FileChangeEvent.class, event -> parse());
     }
     private void parse(){
-        List<String> stubMessages = new ArrayList<String>();
+        List<String> stubMessages = new ArrayList<>();
         File logFile = new File(logFilePath);
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(logFile,"r");
@@ -49,7 +48,8 @@ public class LoggedMessagesUtils {
                     builder = builder.reverse();
                     String stroke = builder.toString();
                     if(stroke.contains("@From")) {
-                        stubMessages.add(stroke);
+                        String utf8 = new String(stroke.getBytes("ISO-8859-1"),"UTF-8");
+                        stubMessages.add(utf8);
                         lines++;
                     }
                     builder = new StringBuilder();

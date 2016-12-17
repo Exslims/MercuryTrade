@@ -1,7 +1,7 @@
 package com.home.clicker.ui;
 
 import com.home.clicker.core.PrivateMessageManager;
-import com.home.clicker.core.utils.CachedFilesUtils;
+import com.home.clicker.shared.CachedFilesUtils;
 
 import javax.swing.*;
 

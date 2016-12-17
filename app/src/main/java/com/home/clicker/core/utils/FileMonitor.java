@@ -1,5 +1,6 @@
 package com.home.clicker.core.utils;
 
+import com.home.clicker.shared.CachedFilesUtils;
 import com.home.clicker.shared.events.EventRouter;
 import com.home.clicker.shared.events.custom.FileChangeEvent;
 import org.apache.commons.io.monitor.FileAlterationListener;
