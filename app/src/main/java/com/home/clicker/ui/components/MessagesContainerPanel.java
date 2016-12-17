@@ -4,6 +4,7 @@ import com.home.clicker.shared.events.EventRouter;
 import com.home.clicker.shared.events.custom.MoveToHistoryEvent;
 import com.home.clicker.shared.events.custom.NewWhispersEvent;
 import com.home.clicker.shared.events.custom.OpenHistoryEvent;
+import com.home.clicker.shared.events.custom.RepaintEvent;
 import com.home.clicker.shared.pojo.Message;
 import com.home.clicker.ui.components.fields.ExButton;
 import com.home.clicker.ui.misc.AppThemeColor;
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class MessagesContainerPanel extends TransparencyContainerPanel {
     public MessagesContainerPanel() {
-        super(new Dimension(355,200));
+        super(new Dimension(350,200));
     }
 
     @Override
@@ -74,6 +75,7 @@ public class MessagesContainerPanel extends TransparencyContainerPanel {
                     container.removeAll();
                 }
                 container.add(messagePanel);
+                EventRouter.fireEvent(new RepaintEvent());
             }
             container.revalidate();
             container.repaint();

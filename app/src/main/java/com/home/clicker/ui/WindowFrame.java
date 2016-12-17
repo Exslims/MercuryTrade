@@ -160,6 +160,7 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
         });
 
         EventRouter.registerHandler(RepaintEvent.class, event -> {
+            System.out.println("qwe");
             WindowFrame.this.revalidate();
             WindowFrame.this.repaint();
         });

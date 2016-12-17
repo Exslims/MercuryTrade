@@ -4,6 +4,7 @@ import com.home.clicker.shared.events.EventRouter;
 import com.home.clicker.shared.events.custom.ChatCommandEvent;
 import com.home.clicker.shared.events.custom.CopyToClipboardEvent;
 import com.home.clicker.shared.events.custom.OpenChatEvent;
+import com.home.clicker.shared.events.custom.RepaintEvent;
 import com.home.clicker.ui.components.fields.ExButton;
 import com.home.clicker.ui.components.fields.ExLabel;
 import com.home.clicker.ui.misc.AppThemeColor;
@@ -40,28 +41,34 @@ public class MessagePanel extends JPanel {
     //todo resizing
     private void init(){
         this.setBackground(AppThemeColor.TRANSPARENT);
+
         ExLabel whisperLabel = new ExLabel(whisper + ":");
         whisperLabel.setForeground(AppThemeColor.TEXT_NICKNAME);
-//        whisperLabel.setPreferredSize(new Dimension(Integer.MAX_VALUE,20));
         Border border = whisperLabel.getBorder();
-        whisperLabel.setBorder(new CompoundBorder(border,new EmptyBorder(10,5,10,10)));
-
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(AppThemeColor.TRANSPARENT);
-
-        topPanel.add(whisperLabel,BorderLayout.CENTER);
+        whisperLabel.setBorder(new CompoundBorder(border,new EmptyBorder(10,5,0,10)));
 
         newLabel = new ExLabel("NEW");
         newLabel.setForeground(AppThemeColor.TEXT_IMPORTANT);
         border = newLabel.getBorder();
-        newLabel.setBorder(new CompoundBorder(border,new EmptyBorder(10,5,10,25)));
+        newLabel.setBorder(new CompoundBorder(border,new EmptyBorder(10,5,0,25)));
+
+        JPanel topPanel = new JPanel(new BorderLayout());
+        String tabName = StringUtils.substringBetween(message, "(stash tab ", "; position:");
+        if(tabName != null) {
+            ExLabel tabNameLabel = new ExLabel("Tab: " + tabName);
+            tabNameLabel.setForeground(AppThemeColor.TEXT_MISC);
+            tabNameLabel.setBorder(new CompoundBorder(border, new EmptyBorder(10, 5, 0, 25)));
+            topPanel.add(tabNameLabel,BorderLayout.CENTER);
+        }
+
+        topPanel.setBackground(AppThemeColor.TRANSPARENT);
+        topPanel.add(whisperLabel,BorderLayout.LINE_START);
         topPanel.add(newLabel,BorderLayout.LINE_END);
 
         this.add(topPanel,BorderLayout.PAGE_START);
+
         Dimension rectSize = new Dimension();
-
-        rectSize.setSize(350, 170);
-
+        rectSize.setSize(350, 140);
         this.setMaximumSize(rectSize);
         this.setMinimumSize(rectSize);
         this.setPreferredSize(rectSize);
@@ -70,10 +77,16 @@ public class MessagePanel extends JPanel {
 
         JPanel buttonsPanel = CustomButtonFactory.getButtonsPanel(whisper);
         int buttonsCount = buttonsPanel.getComponentCount();
-        if(buttonsCount > 4) {
+        if(buttonsCount > 5) {
             buttonsPanel.setSize(new Dimension(buttonsPanel.getPreferredSize().width, (int)(buttonsPanel.getPreferredSize().height * 1.7)));
             buttonsPanel.setPreferredSize(new Dimension(buttonsPanel.getPreferredSize().width, (int)(buttonsPanel.getPreferredSize().height * 1.7)));
             buttonsPanel.setMinimumSize(new Dimension(buttonsPanel.getPreferredSize().width, (int)(buttonsPanel.getPreferredSize().height * 1.7)));
+
+            rectSize.setSize(350, 160);
+            this.setMaximumSize(rectSize);
+            this.setMinimumSize(rectSize);
+            this.setPreferredSize(rectSize);
+
         }
         ExButton invite = new ExButton("invite");
         invite.addMouseListener(new MouseAdapter() {
@@ -106,13 +119,8 @@ public class MessagePanel extends JPanel {
     }
 
     private JPanel getFormattedMessagePanel(String message){
-        JPanel labelsPanel = new JPanel(new FlowLayout());
+        JPanel labelsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         labelsPanel.setBackground(AppThemeColor.TRANSPARENT);
-
-
-        ExLabel firstPartLabel = new ExLabel("Hi, i'd like to buy ");
-        firstPartLabel.setForeground(AppThemeColor.TEXT_MESSAGE);
-        labelsPanel.add(firstPartLabel);
 
         String itemName = StringUtils.substringBetween(message, "to buy your ", " listed for");
         if(itemName == null){
@@ -122,7 +130,7 @@ public class MessagePanel extends JPanel {
         itemLabel.setForeground(AppThemeColor.TEXT_IMPORTANT);
         labelsPanel.add(itemLabel);
 
-        ExLabel secondPart = new ExLabel(" listed for ");
+        ExLabel secondPart = new ExLabel("listed for ");
         secondPart.setForeground(AppThemeColor.TEXT_MESSAGE);
         labelsPanel.add(secondPart);
 
@@ -161,11 +169,15 @@ public class MessagePanel extends JPanel {
         labelsPanel.add(priceLabel);
         labelsPanel.add(currencyLabel);
 
+        String offer = StringUtils.substringAfterLast(message, "in Breach"); //todo
+        String tabName = StringUtils.substringBetween(message, "(stash tab ", "; position:");
+        if(tabName !=null ){
+            offer = StringUtils.substringAfter(message, ")");
+        }
+        ExLabel offerLabel = new ExLabel(offer);
+        offerLabel.setForeground(AppThemeColor.TEXT_MESSAGE);
+        labelsPanel.add(offerLabel);
 
-        String lastPart = StringUtils.substringAfter(message, " in ");
-        ExLabel lastPartLabel = new ExLabel(" in " + lastPart);
-        lastPartLabel.setForeground(AppThemeColor.TEXT_MESSAGE);
-        labelsPanel.add(lastPartLabel);
         return labelsPanel;
     }
 
