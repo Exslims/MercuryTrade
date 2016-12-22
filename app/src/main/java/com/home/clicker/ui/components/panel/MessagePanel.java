@@ -6,7 +6,6 @@ import com.home.clicker.shared.events.custom.CopyToClipboardEvent;
 import com.home.clicker.shared.events.custom.OpenChatEvent;
 import com.home.clicker.ui.components.ComponentsFactory;
 import com.home.clicker.ui.components.fields.ExButton;
-import com.home.clicker.ui.components.fields.label.ExLabel;
 import com.home.clicker.ui.components.fields.label.FontStyle;
 import com.home.clicker.ui.components.fields.label.TextAlignment;
 import com.home.clicker.ui.misc.AppThemeColor;
@@ -32,7 +31,7 @@ import java.util.List;
  * Created by Константин on 15.12.2016.
  */
 public class MessagePanel extends JPanel {
-    private ComponentsFactory componentsFactory;
+    private ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
     private List<String> supportedIcons;
 
     private String whisper;
@@ -45,7 +44,6 @@ public class MessagePanel extends JPanel {
         supportedIcons = new ArrayList<>();
         supportedIcons.addAll(Collections.singletonList("chaos,exalted,fusing,vaal"));
 
-        this.componentsFactory = new ComponentsFactory();
         this.whisper = whisper;
         this.message = message;
         init();
@@ -58,7 +56,7 @@ public class MessagePanel extends JPanel {
         Border border = whisperLabel.getBorder();
         whisperLabel.setBorder(new CompoundBorder(border,new EmptyBorder(10,5,0,10)));
 
-        newLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT,TextAlignment.LEFTOP,15f,"NEW");
+        newLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT,TextAlignment.LEFTOP,16f,"NEW");
         border = newLabel.getBorder();
         newLabel.setBorder(new CompoundBorder(border,new EmptyBorder(10,5,0,25)));
 
@@ -137,10 +135,10 @@ public class MessagePanel extends JPanel {
         if(itemName == null){
             itemName = StringUtils.substringBetween(message, "to buy your ", " for my");
         }
-        itemLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT,TextAlignment.LEFTOP,15f,itemName);
+        itemLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT,TextAlignment.LEFTOP,17f,itemName);
         labelsPanel.add(itemLabel);
 
-        JLabel secondPart = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE,TextAlignment.LEFTOP,15f,"listed for");
+        JLabel secondPart = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_MESSAGE,TextAlignment.LEFTOP,16f,"listed for");
         labelsPanel.add(secondPart);
 
         String price = StringUtils.substringBetween(message, "listed for ", " in ");
@@ -149,22 +147,22 @@ public class MessagePanel extends JPanel {
         }
         if(price != null) {
             String[] split = price.split(" ");
-            JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_MESSAGE,TextAlignment.LEFTOP,15f,split[0]);
+            JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE,TextAlignment.LEFTOP,17f,split[0]);
             JLabel currencyLabel = null;
             if(supportedIcons.contains(split[1])){
                 currencyLabel = componentsFactory.getIconLabel("currency/" + split[1] + ".png",20);
             }else
-                currencyLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_MESSAGE,TextAlignment.LEFTOP,15f,split[1]);
+                currencyLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE,TextAlignment.LEFTOP,17f,split[1]);
             labelsPanel.add(priceLabel);
             labelsPanel.add(currencyLabel);
         }
 
-        String offer = StringUtils.substringAfterLast(message, "in Breach"); //todo
+        String offer = StringUtils.substringAfterLast(message, "in Breach."); //todo
         String tabName = StringUtils.substringBetween(message, "(stash tab ", "; position:");
         if(tabName !=null ){
             offer = StringUtils.substringAfter(message, ")");
         }
-        JLabel offerLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_MESSAGE,TextAlignment.LEFTOP,15f,offer);
+        JLabel offerLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_MESSAGE,TextAlignment.LEFTOP,16f,offer);
         labelsPanel.add(offerLabel);
         if(offer.length() > 1){
             Dimension rectSize = new Dimension();
@@ -179,5 +177,11 @@ public class MessagePanel extends JPanel {
         newLabel.setText("");
         MessagePanel.this.revalidate();
         MessagePanel.this.repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.fillRect(0,0,getWidth(),getHeight());
     }
 }

@@ -7,10 +7,8 @@ import com.home.clicker.shared.events.custom.RepaintEvent;
 import com.home.clicker.core.misc.WhisperNotifierStatus;
 import com.home.clicker.ui.components.ComponentsFactory;
 import com.home.clicker.ui.components.fields.ExButton;
-import com.home.clicker.ui.components.fields.label.ExLabel;
 import com.home.clicker.ui.components.fields.ExTextField;
 import com.home.clicker.ui.components.fields.label.FontStyle;
-import com.home.clicker.ui.components.fields.label.TextAlignment;
 import com.home.clicker.ui.misc.AppThemeColor;
 import com.home.clicker.ui.misc.CustomButtonFactory;
 import com.home.clicker.shared.PoeShortCastSettings;
@@ -25,7 +23,7 @@ import java.util.Map;
  * Created by Константин on 10.12.2016.
  */
 public class SettingsPanel extends JPanel {
-    private ComponentsFactory componentsFactory;
+    private ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
     private JPanel settingsContainer;
     private JScrollPane scroll;
     private int x;
@@ -34,7 +32,6 @@ public class SettingsPanel extends JPanel {
     private Map<ExTextField,ExTextField> inputs = new HashMap<>();
     public SettingsPanel() {
         super(new BorderLayout());
-        componentsFactory = new ComponentsFactory();
         init();
     }
 

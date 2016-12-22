@@ -17,6 +17,10 @@ import java.io.IOException;
 public class ComponentsFactory {
     private final static Logger log = Logger.getLogger(ComponentsFactory.class);
 
+    public static class ComponentsFactoryHolder {
+        static final ComponentsFactory HOLDER_INSTANCE = new ComponentsFactory();
+    }
+    public static ComponentsFactory INSTANCE = ComponentsFactoryHolder.HOLDER_INSTANCE;
     /**
      * Get label with custom params
      * @param fontStyle path of exile font type

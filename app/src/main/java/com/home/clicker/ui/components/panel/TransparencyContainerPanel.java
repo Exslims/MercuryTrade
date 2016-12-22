@@ -126,25 +126,25 @@ public abstract class TransparencyContainerPanel extends JPanel implements HasEv
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                if(hideTimeLine != null){
-                    hideTimeLine.end();
-                }
-                showTimeLine = new Timeline(TransparencyContainerPanel.this);
-                showTimeLine.addPropertyToInterpolate("opacity",opacity,100);
-                showTimeLine.setDuration(HIDE_TIME_MS);
-                showTimeLine.play();
+//                if(hideTimeLine != null){
+//                    hideTimeLine.end();
+//                }
+//                showTimeLine = new Timeline(TransparencyContainerPanel.this);
+//                showTimeLine.addPropertyToInterpolate("opacity",opacity,100);
+//                showTimeLine.setDuration(HIDE_TIME_MS);
+//                showTimeLine.play();
                 System.out.println("mouse entered");
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                if(showTimeLine != null){
-                    showTimeLine.end();
-                }
-                hideTimeLine = new Timeline(TransparencyContainerPanel.this);
-                hideTimeLine.addPropertyToInterpolate("opacity",opacity,0);
-                hideTimeLine.setDuration(HIDE_TIME_MS);
-                hideTimeLine.play();
+//                if(showTimeLine != null){
+//                    showTimeLine.end();
+//                }
+//                hideTimeLine = new Timeline(TransparencyContainerPanel.this);
+//                hideTimeLine.addPropertyToInterpolate("opacity",opacity,0);
+//                hideTimeLine.setDuration(HIDE_TIME_MS);
+//                hideTimeLine.play();
                 System.out.println("mouse exited");
             }
         });
