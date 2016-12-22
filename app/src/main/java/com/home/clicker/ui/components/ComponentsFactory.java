@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
- * Created by Константин on 23.12.2016.
+ * Factory for each element which uses in application
  */
 public class ComponentsFactory {
     private final static Logger log = Logger.getLogger(ComponentsFactory.class);
@@ -21,6 +21,33 @@ public class ComponentsFactory {
         static final ComponentsFactory HOLDER_INSTANCE = new ComponentsFactory();
     }
     public static ComponentsFactory INSTANCE = ComponentsFactoryHolder.HOLDER_INSTANCE;
+
+    private Font BOLD_FONT;
+    private Font ITALIC_FONT;
+    private Font REGULAR_FONT;
+    private Font SMALLCAPS_FONT;
+    private Font DEFAULT_FONT;
+
+    public ComponentsFactory() {
+        loadFonts();
+    }
+
+    /**
+     * Loading all application fonts
+     */
+    private void loadFonts(){
+        try {
+            BOLD_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-Bold.ttf"));
+            ITALIC_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-Italic.ttf"));
+            REGULAR_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-Regular.ttf"));
+            SMALLCAPS_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-SmallCaps.ttf"));
+            DEFAULT_FONT = new Font("Tahoma", Font.BOLD, 16);
+
+        } catch (Exception e) {
+            log.error(e);
+        }
+    }
+
     /**
      * Get label with custom params
      * @param fontStyle path of exile font type
@@ -32,26 +59,22 @@ public class ComponentsFactory {
      */
     public JLabel getTextLabel(FontStyle fontStyle, Color frColor, TextAlignment alignment, float size, String text){
         JLabel label = new JLabel(text);
-        Font font = new Font("Tahoma", Font.BOLD, 16); //default
-        try {
-            switch (fontStyle) {
-                case BOLD:
-                    font = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-Bold.ttf"));
-                    break;
-                case ITALIC:
-                    font = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-Italic.ttf"));
-                    break;
-                case REGULAR:
-                    font = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-Regular.ttf"));
-                    break;
-                case SMALLCAPS:
-                    font = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-SmallCaps.ttf"));
-                    break;
-            }
-        }catch (Exception e){
-            log.error(e);
+        switch (fontStyle) {
+            case BOLD:
+                label.setFont(BOLD_FONT.deriveFont(size));
+                break;
+            case ITALIC:
+                label.setFont(ITALIC_FONT.deriveFont(size));
+                break;
+            case REGULAR:
+                label.setFont(REGULAR_FONT.deriveFont(size));
+                break;
+            case SMALLCAPS:
+                label.setFont(SMALLCAPS_FONT.deriveFont(size));
+                break;
+            default:
+                label.setFont(DEFAULT_FONT.deriveFont(size));
         }
-        label.setFont(font.deriveFont(size));
         label.setForeground(frColor);
 
         if(alignment != null) {
