@@ -1,10 +1,14 @@
-package com.home.clicker.ui.components;
+package com.home.clicker.ui.components.panel;
 
 import com.home.clicker.shared.HasEventHandlers;
+import com.home.clicker.shared.events.EventRouter;
+import com.home.clicker.shared.events.custom.RepaintEvent;
 import com.home.clicker.ui.components.fields.ExButton;
+import com.home.clicker.ui.components.interfaces.HasOpacity;
 import com.home.clicker.ui.misc.AppThemeColor;
 import com.home.clicker.shared.PoeShortCastSettings;
 import org.imgscalr.Scalr;
+import org.pushingpixels.trident.Timeline;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,7 +22,13 @@ import java.io.IOException;
 /**
  * Created by Константин on 16.12.2016.
  */
-public abstract class TransparencyContainerPanel extends JPanel implements HasEventHandlers{
+public abstract class TransparencyContainerPanel extends JPanel implements HasEventHandlers, HasOpacity{
+    private static final int HIDE_TIME_MS = 200;
+
+    private int opacity;
+    private Timeline hideTimeLine;
+    private Timeline showTimeLine;
+
     protected JScrollPane scroll;
     protected JPanel container;
     protected JPanel headButtonsPanel;
@@ -85,7 +95,7 @@ public abstract class TransparencyContainerPanel extends JPanel implements HasEv
 
         BufferedImage buttonIcon = null;
         try {
-            buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("close.png"));
+            buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("app/close.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -110,7 +120,46 @@ public abstract class TransparencyContainerPanel extends JPanel implements HasEv
         add(titlePanel, BorderLayout.PAGE_START);
         this.setVisible(false);
         this.hideTimer = getHideTimer();
+
+
+//        initTimeLines();
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if(hideTimeLine != null){
+                    hideTimeLine.end();
+                }
+                showTimeLine = new Timeline(TransparencyContainerPanel.this);
+                showTimeLine.addPropertyToInterpolate("opacity",opacity,100);
+                showTimeLine.setDuration(HIDE_TIME_MS);
+                showTimeLine.play();
+                System.out.println("mouse entered");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if(showTimeLine != null){
+                    showTimeLine.end();
+                }
+                hideTimeLine = new Timeline(TransparencyContainerPanel.this);
+                hideTimeLine.addPropertyToInterpolate("opacity",opacity,0);
+                hideTimeLine.setDuration(HIDE_TIME_MS);
+                hideTimeLine.play();
+                System.out.println("mouse exited");
+            }
+        });
+
+        this.setBorder(BorderFactory.createLineBorder(Color.blue,6));
     }
+//    private void initTimeLines(){
+//        showTimeLine = new Timeline(TransparencyContainerPanel.this);
+//        showTimeLine.addPropertyToInterpolate("opacity",opacity,100);
+//        showTimeLine.setDuration(HIDE_TIME_MS);
+//
+//        hideTimeLine = new Timeline(TransparencyContainerPanel.this);
+//        hideTimeLine.addPropertyToInterpolate("opacity",opacity,0);
+//        hideTimeLine.setDuration(HIDE_TIME_MS);
+//    }
 
     public abstract void initHandlers();
 
@@ -122,6 +171,16 @@ public abstract class TransparencyContainerPanel extends JPanel implements HasEv
         });
         return timer;
     }
+
+    @Override
+    public void setOpacity(int percent) {
+//        System.out.println("in timeline: " + percent);
+        this.opacity = percent;
+        this.setBackground(new Color(AppThemeColor.BUTTON.getRed(),
+                AppThemeColor.BUTTON.getGreen(), AppThemeColor.BUTTON.getBlue(), percent));
+        EventRouter.fireEvent(new RepaintEvent());
+    }
+
     protected void repaintPanel(){
         TransparencyContainerPanel.this.revalidate();
         TransparencyContainerPanel.this.repaint();

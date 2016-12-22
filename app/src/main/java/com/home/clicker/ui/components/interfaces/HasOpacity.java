@@ -3,6 +3,6 @@ package com.home.clicker.ui.components.interfaces;
 /**
  * in future for animations
  */
-public interface Transparent {
+public interface HasOpacity {
     void setOpacity(int percent);
 }

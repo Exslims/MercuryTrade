@@ -1,19 +1,15 @@
 package com.home.clicker.ui.components.fields;
 
-import com.home.clicker.ui.components.interfaces.Transparent;
+import com.home.clicker.ui.components.interfaces.HasOpacity;
 import com.home.clicker.ui.misc.AppThemeColor;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 /**
  * Created by Константин on 15.12.2016.
  */
-public class ExButton extends JButton implements Transparent{
+public class ExButton extends JButton implements HasOpacity {
     public ExButton(String title) {
         super(title);
         init();

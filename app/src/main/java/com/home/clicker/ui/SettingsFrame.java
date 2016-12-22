@@ -5,7 +5,7 @@ import com.home.clicker.shared.events.EventRouter;
 import com.home.clicker.shared.events.custom.CloseFrameEvent;
 import com.home.clicker.shared.events.custom.DraggedWindowEvent;
 import com.home.clicker.shared.events.custom.RepaintEvent;
-import com.home.clicker.ui.components.SettingsPanel;
+import com.home.clicker.ui.components.panel.SettingsPanel;
 
 import javax.swing.*;
 import java.awt.*;

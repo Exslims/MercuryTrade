@@ -1,7 +1,8 @@
-package com.home.clicker.ui.components.fields;
+package com.home.clicker.ui.components.fields.label;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * Created by Константин on 15.12.2016.
@@ -27,6 +28,13 @@ public class ExLabel extends JLabel {
 //        this.setBorder(new CompoundBorder(border,new EmptyBorder(10,5,10,10)));
         this.setAlignmentX(Component.LEFT_ALIGNMENT);
         this.setAlignmentY(Component.TOP_ALIGNMENT);
-        this.setFont(new Font("Tahoma", Font.BOLD, 15));
+        try {
+            Font font = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-Bold.ttf"));
+            this.setFont(font.deriveFont(18f));
+        } catch (FontFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

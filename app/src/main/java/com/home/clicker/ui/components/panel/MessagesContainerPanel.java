@@ -1,4 +1,4 @@
-package com.home.clicker.ui.components;
+package com.home.clicker.ui.components.panel;
 
 import com.home.clicker.shared.events.EventRouter;
 import com.home.clicker.shared.events.custom.MoveToHistoryEvent;
@@ -30,7 +30,7 @@ public class MessagesContainerPanel extends TransparencyContainerPanel {
 
         BufferedImage buttonIcon = null;
         try {
-            buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("history.png"));
+            buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("app/history.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

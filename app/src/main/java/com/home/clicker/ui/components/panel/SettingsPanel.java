@@ -1,13 +1,16 @@
-package com.home.clicker.ui.components;
+package com.home.clicker.ui.components.panel;
 
 import com.home.clicker.shared.events.EventRouter;
 import com.home.clicker.shared.events.custom.CloseFrameEvent;
 import com.home.clicker.shared.events.custom.DraggedWindowEvent;
 import com.home.clicker.shared.events.custom.RepaintEvent;
 import com.home.clicker.core.misc.WhisperNotifierStatus;
+import com.home.clicker.ui.components.ComponentsFactory;
 import com.home.clicker.ui.components.fields.ExButton;
-import com.home.clicker.ui.components.fields.ExLabel;
+import com.home.clicker.ui.components.fields.label.ExLabel;
 import com.home.clicker.ui.components.fields.ExTextField;
+import com.home.clicker.ui.components.fields.label.FontStyle;
+import com.home.clicker.ui.components.fields.label.TextAlignment;
 import com.home.clicker.ui.misc.AppThemeColor;
 import com.home.clicker.ui.misc.CustomButtonFactory;
 import com.home.clicker.shared.PoeShortCastSettings;
@@ -22,6 +25,7 @@ import java.util.Map;
  * Created by Константин on 10.12.2016.
  */
 public class SettingsPanel extends JPanel {
+    private ComponentsFactory componentsFactory;
     private JPanel settingsContainer;
     private JScrollPane scroll;
     private int x;
@@ -30,6 +34,7 @@ public class SettingsPanel extends JPanel {
     private Map<ExTextField,ExTextField> inputs = new HashMap<>();
     public SettingsPanel() {
         super(new BorderLayout());
+        componentsFactory = new ComponentsFactory();
         init();
     }
 
@@ -84,8 +89,7 @@ public class SettingsPanel extends JPanel {
         wnSettingPanel.setPreferredSize(size);
         wnSettingPanel.setMaximumSize(size);
         wnSettingPanel.setBackground(AppThemeColor.TRANSPARENT);
-        ExLabel wnLabel = new ExLabel("Whisper notifier:");
-        wnLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
+        JLabel wnLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, null,15f,"Whisper notifier:");
         wnSettingPanel.add(wnLabel, BorderLayout.LINE_START);
 
         DefaultComboBoxModel status = new DefaultComboBoxModel();
@@ -194,14 +198,14 @@ public class SettingsPanel extends JPanel {
 
         rootPanel.setBackground(AppThemeColor.TRANSPARENT);
 
-        ExLabel buttonLabel = new ExLabel("Example", SwingConstants.CENTER);
-        buttonLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
+        JLabel buttonLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, null,15f,"Example");
+        buttonLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        ExLabel titleLabel = new ExLabel("Highlight", SwingConstants.CENTER);
-        titleLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
+        JLabel titleLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, null,15f,"Highlight");
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        ExLabel valueLabel = new ExLabel("Text to send", SwingConstants.CENTER);
-        valueLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
+        JLabel valueLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, null,15f,"Text to send");
+        valueLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         rootPanel.add(buttonLabel,buttonColumn);
         buttonColumn.gridy++;
@@ -209,7 +213,7 @@ public class SettingsPanel extends JPanel {
         titleColumn.gridy++;
         rootPanel.add(valueLabel,valueColumn);
         valueColumn.gridy++;
-        rootPanel.add(new ExLabel("UI"),utilColumn);
+        rootPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, null,15f,"UI"),utilColumn);
         utilColumn.gridy++;
 
         buttonsConfig.forEach((title,value) ->{

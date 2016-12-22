@@ -1,10 +1,11 @@
-package com.home.clicker.ui.components;
+package com.home.clicker.ui.components.panel;
 
 import com.home.clicker.shared.events.EventRouter;
 import com.home.clicker.shared.events.custom.MoveToHistoryEvent;
 import com.home.clicker.shared.events.custom.OpenHistoryEvent;
 import com.home.clicker.shared.events.custom.RepaintEvent;
 import com.home.clicker.ui.components.fields.ExButton;
+import com.home.clicker.ui.components.interfaces.HasOpacity;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
@@ -18,7 +19,7 @@ import java.io.IOException;
 /**
  * todo vinesti nahui v abstract
  */
-public class HistoryContainerPanel extends TransparencyContainerPanel{
+public class HistoryContainerPanel extends TransparencyContainerPanel implements HasOpacity{
     public HistoryContainerPanel() {
         super(new Dimension(600,500));
     }
@@ -30,7 +31,7 @@ public class HistoryContainerPanel extends TransparencyContainerPanel{
 
         BufferedImage buttonIcon = null;
         try {
-            buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("clear-icon.png"));
+            buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("app/clear-icon.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,5 +67,10 @@ public class HistoryContainerPanel extends TransparencyContainerPanel{
             container.revalidate();
             container.repaint();
         });
+    }
+
+    @Override
+    public void setOpacity(int percent) {
+
     }
 }

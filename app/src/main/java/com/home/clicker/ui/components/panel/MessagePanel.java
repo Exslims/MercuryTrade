@@ -1,12 +1,14 @@
-package com.home.clicker.ui.components;
+package com.home.clicker.ui.components.panel;
 
 import com.home.clicker.shared.events.EventRouter;
 import com.home.clicker.shared.events.custom.ChatCommandEvent;
 import com.home.clicker.shared.events.custom.CopyToClipboardEvent;
 import com.home.clicker.shared.events.custom.OpenChatEvent;
-import com.home.clicker.shared.events.custom.RepaintEvent;
+import com.home.clicker.ui.components.ComponentsFactory;
 import com.home.clicker.ui.components.fields.ExButton;
-import com.home.clicker.ui.components.fields.ExLabel;
+import com.home.clicker.ui.components.fields.label.ExLabel;
+import com.home.clicker.ui.components.fields.label.FontStyle;
+import com.home.clicker.ui.components.fields.label.TextAlignment;
 import com.home.clicker.ui.misc.AppThemeColor;
 import com.home.clicker.ui.misc.CustomButtonFactory;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +16,7 @@ import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -22,18 +25,27 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by Константин on 15.12.2016.
  */
 public class MessagePanel extends JPanel {
+    private ComponentsFactory componentsFactory;
+    private List<String> supportedIcons;
+
     private String whisper;
     private String message;
 
-    private ExLabel newLabel;
-    private ExLabel itemLabel;
+    private JLabel newLabel;
+    private JLabel itemLabel;
     public MessagePanel(String whisper, String message) {
         super(new BorderLayout());
+        supportedIcons = new ArrayList<>();
+        supportedIcons.addAll(Collections.singletonList("chaos,exalted,fusing,vaal"));
+
+        this.componentsFactory = new ComponentsFactory();
         this.whisper = whisper;
         this.message = message;
         init();
@@ -42,21 +54,19 @@ public class MessagePanel extends JPanel {
     private void init(){
         this.setBackground(AppThemeColor.TRANSPARENT);
 
-        ExLabel whisperLabel = new ExLabel(whisper + ":");
-        whisperLabel.setForeground(AppThemeColor.TEXT_NICKNAME);
+        JLabel whisperLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,15f,whisper + ":");
         Border border = whisperLabel.getBorder();
         whisperLabel.setBorder(new CompoundBorder(border,new EmptyBorder(10,5,0,10)));
 
-        newLabel = new ExLabel("NEW");
-        newLabel.setForeground(AppThemeColor.TEXT_IMPORTANT);
+        newLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT,TextAlignment.LEFTOP,15f,"NEW");
         border = newLabel.getBorder();
         newLabel.setBorder(new CompoundBorder(border,new EmptyBorder(10,5,0,25)));
 
         JPanel topPanel = new JPanel(new BorderLayout());
         String tabName = StringUtils.substringBetween(message, "(stash tab ", "; position:");
         if(tabName != null) {
-            ExLabel tabNameLabel = new ExLabel("Tab: " + tabName);
-            tabNameLabel.setForeground(AppThemeColor.TEXT_MISC);
+            JLabel tabNameLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MISC,TextAlignment.LEFTOP,15f,"Tab: " + tabName);
+            border = tabNameLabel.getBorder();
             tabNameLabel.setBorder(new CompoundBorder(border, new EmptyBorder(10, 5, 0, 25)));
             topPanel.add(tabNameLabel,BorderLayout.CENTER);
         }
@@ -101,7 +111,7 @@ public class MessagePanel extends JPanel {
 
         BufferedImage buttonIcon = null;
         try {
-            buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("openChat.png"));
+            buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("app/openChat.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -127,12 +137,10 @@ public class MessagePanel extends JPanel {
         if(itemName == null){
             itemName = StringUtils.substringBetween(message, "to buy your ", " for my");
         }
-        itemLabel = new ExLabel(itemName);
-        itemLabel.setForeground(AppThemeColor.TEXT_IMPORTANT);
+        itemLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT,TextAlignment.LEFTOP,15f,itemName);
         labelsPanel.add(itemLabel);
 
-        ExLabel secondPart = new ExLabel("listed for ");
-        secondPart.setForeground(AppThemeColor.TEXT_MESSAGE);
+        JLabel secondPart = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE,TextAlignment.LEFTOP,15f,"listed for");
         labelsPanel.add(secondPart);
 
         String price = StringUtils.substringBetween(message, "listed for ", " in ");
@@ -141,46 +149,12 @@ public class MessagePanel extends JPanel {
         }
         if(price != null) {
             String[] split = price.split(" ");
-            ExLabel currencyLabel = null;
-            BufferedImage buttonIcon = null;
-            try {
-                switch (split[1]) {
-                    case "chaos": {
-                        buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("Chaos_Orb.png"));
-                        BufferedImage icon = Scalr.resize(buttonIcon, 20);
-                        currencyLabel = new ExLabel(new ImageIcon(icon));
-                        break;
-                    }
-                    case "exalted": {
-                        buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("Exalted_Orb.png"));
-                        BufferedImage icon = Scalr.resize(buttonIcon, 20);
-                        currencyLabel = new ExLabel(new ImageIcon(icon));
-                        break;
-                    }
-                    case "fusing": {
-                        buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("Orb_of_Fusing.png"));
-                        BufferedImage icon = Scalr.resize(buttonIcon, 20);
-                        currencyLabel = new ExLabel(new ImageIcon(icon));
-                        break;
-                    }
-                    case "vaal": {
-                        buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("Vaal_Orb.png"));
-                        BufferedImage icon = Scalr.resize(buttonIcon, 20);
-                        currencyLabel = new ExLabel(new ImageIcon(icon));
-                        break;
-                    }
-                    default:
-                        currencyLabel = new ExLabel(split[1]);
-                        currencyLabel.setForeground(AppThemeColor.TEXT_MESSAGE);
-                        break;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-            ExLabel priceLabel = new ExLabel(split[0]);
-            priceLabel.setForeground(AppThemeColor.TEXT_MESSAGE);
+            JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_MESSAGE,TextAlignment.LEFTOP,15f,split[0]);
+            JLabel currencyLabel = null;
+            if(supportedIcons.contains(split[1])){
+                currencyLabel = componentsFactory.getIconLabel("currency/" + split[1] + ".png",20);
+            }else
+                currencyLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_MESSAGE,TextAlignment.LEFTOP,15f,split[1]);
             labelsPanel.add(priceLabel);
             labelsPanel.add(currencyLabel);
         }
@@ -190,8 +164,7 @@ public class MessagePanel extends JPanel {
         if(tabName !=null ){
             offer = StringUtils.substringAfter(message, ")");
         }
-        ExLabel offerLabel = new ExLabel(offer);
-        offerLabel.setForeground(AppThemeColor.TEXT_MESSAGE);
+        JLabel offerLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_MESSAGE,TextAlignment.LEFTOP,15f,offer);
         labelsPanel.add(offerLabel);
         if(offer.length() > 1){
             Dimension rectSize = new Dimension();
@@ -200,15 +173,7 @@ public class MessagePanel extends JPanel {
             this.setMinimumSize(rectSize);
             this.setPreferredSize(rectSize);
         }
-
         return labelsPanel;
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-//        g.setColor(new Color(0,0,0,0));
-        g.fillRect(0,0,getWidth(),getHeight());
     }
     public void viewed(){
         newLabel.setText("");

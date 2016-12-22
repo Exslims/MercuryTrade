@@ -24,7 +24,7 @@ public class WhisperNotifier {
                         ((PoeShortCastSettings.WHISPER_NOTIFIER_STATUS == WhisperNotifierStatus.ALTAB) &&
                                 (PoeShortCastSettings.APP_STATUS == FrameStates.HIDE))) {
                     ClassLoader classLoader = getClass().getClassLoader();
-                    try (AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource("icq-message.wav"))) {
+                    try (AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource("app/icq-message.wav"))) {
                         Clip clip = AudioSystem.getClip();
                         clip.open(stream);
                         clip.start();
