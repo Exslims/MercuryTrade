@@ -9,6 +9,7 @@ import com.home.clicker.ui.components.fields.label.FontStyle;
 import com.home.clicker.ui.components.fields.label.TextAlignment;
 import com.home.clicker.ui.misc.AppThemeColor;
 import com.home.clicker.ui.misc.CustomButtonFactory;
+import com.home.clicker.ui.misc.MessageParser;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -30,7 +31,7 @@ public class MessagePanel extends JPanel {
     private List<String> supportedIcons;
 
     private String whisper;
-    private String message;
+    private Map<String,String> parsedMessage;
 
     private JLabel newLabel;
     private JLabel itemLabel;
@@ -40,7 +41,7 @@ public class MessagePanel extends JPanel {
         supportedIcons.addAll(Collections.singletonList("chaos,exalted,fusing,vaal"));
 
         this.whisper = whisper;
-        this.message = message;
+        this.parsedMessage = MessageParser.parse(message);
         init();
     }
     //todo resizing
@@ -56,7 +57,7 @@ public class MessagePanel extends JPanel {
         newLabel.setBorder(new CompoundBorder(border,new EmptyBorder(10,5,0,25)));
 
         JPanel topPanel = new JPanel(new BorderLayout());
-        String tabName = StringUtils.substringBetween(message, "(stash tab ", "; position:");
+        String tabName = parsedMessage.get("tabName");
         if(tabName != null) {
             JLabel tabNameLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MISC,TextAlignment.LEFTOP,15f,"Tab: " + tabName);
             border = tabNameLabel.getBorder();
@@ -76,7 +77,7 @@ public class MessagePanel extends JPanel {
         this.setMinimumSize(rectSize);
         this.setPreferredSize(rectSize);
 
-        this.add(getFormattedMessagePanel(message),BorderLayout.CENTER);
+        this.add(getFormattedMessagePanel(),BorderLayout.CENTER);
 
         JPanel buttonsPanel = CustomButtonFactory.getButtonsPanel(whisper);
         int buttonsCount = buttonsPanel.getComponentCount();
@@ -115,49 +116,36 @@ public class MessagePanel extends JPanel {
         this.add(buttonsPanel,BorderLayout.PAGE_END);
     }
 
-    private JPanel getFormattedMessagePanel(String message){
+    private JPanel getFormattedMessagePanel(){
         JPanel labelsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         labelsPanel.setBackground(AppThemeColor.TRANSPARENT);
 
-        String itemName = StringUtils.substringBetween(message, "to buy your ", " listed for");
-        if(itemName == null){
-            itemName = StringUtils.substringBetween(message, "to buy your ", " for my");
-        }
-        itemLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT,TextAlignment.LEFTOP,17f,itemName);
+        itemLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT,TextAlignment.LEFTOP,17f,parsedMessage.get("itemName"));
         labelsPanel.add(itemLabel);
-
-        JLabel secondPart = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_MESSAGE,TextAlignment.LEFTOP,16f,"listed for");
-        labelsPanel.add(secondPart);
-
-        String price = StringUtils.substringBetween(message, "listed for ", " in ");
-        if(price == null){
-            price = StringUtils.substringBetween(message, "for my ", " in ");
-        }
-        if(price != null) {
-            String[] split = price.split(" ");
-            JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE,TextAlignment.LEFTOP,17f,split[0]);
-            JLabel currencyLabel = null;
-            if(supportedIcons.contains(split[1])){
-                currencyLabel = componentsFactory.getIconLabel("currency/" + split[1] + ".png",20);
-            }else
-                currencyLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE,TextAlignment.LEFTOP,17f,split[1]);
+        String curCount = parsedMessage.get("curCount");
+        String currency = parsedMessage.get("currency");
+        if(curCount != null && currency != null) {
+            JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP, 17f, curCount);
+            JLabel currencyLabel;
+            if (supportedIcons.contains(currency)){
+                currencyLabel = componentsFactory.getIconLabel("currency/" + currency + ".png", 20);
+            } else
+                currencyLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP, 17f, currency);
             labelsPanel.add(priceLabel);
             labelsPanel.add(currencyLabel);
         }
 
-        String offer = StringUtils.substringAfterLast(message, "in Breach."); //todo
-        String tabName = StringUtils.substringBetween(message, "(stash tab ", "; position:");
-        if(tabName !=null ){
-            offer = StringUtils.substringAfter(message, ")");
-        }
-        JLabel offerLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_MESSAGE,TextAlignment.LEFTOP,16f,offer);
-        labelsPanel.add(offerLabel);
-        if(offer.length() > 1){
-            Dimension rectSize = new Dimension();
-            rectSize.setSize(350, 130);
-            this.setMaximumSize(rectSize);
-            this.setMinimumSize(rectSize);
-            this.setPreferredSize(rectSize);
+        String offer = parsedMessage.get("offer");
+        if(offer != null) {
+            JLabel offerLabel = componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP, 16f, offer);
+            labelsPanel.add(offerLabel);
+            if (offer.length() > 1) {
+                Dimension rectSize = new Dimension();
+                rectSize.setSize(350, 130);
+                this.setMaximumSize(rectSize);
+                this.setMinimumSize(rectSize);
+                this.setPreferredSize(rectSize);
+            }
         }
         return labelsPanel;
     }
