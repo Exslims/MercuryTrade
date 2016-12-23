@@ -10,7 +10,6 @@ import com.home.clicker.ui.components.fields.label.TextAlignment;
 import com.home.clicker.ui.misc.AppThemeColor;
 import com.home.clicker.ui.misc.CustomButtonFactory;
 import com.home.clicker.ui.misc.MessageParser;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -38,7 +37,7 @@ public class MessagePanel extends JPanel {
     public MessagePanel(String whisper, String message) {
         super(new BorderLayout());
         supportedIcons = new ArrayList<>();
-        supportedIcons.addAll(Collections.singletonList("chaos,exalted,fusing,vaal"));
+        supportedIcons.addAll(Arrays.asList("chaos","exalted","fusing","vaal"));
 
         this.whisper = whisper;
         this.parsedMessage = MessageParser.parse(message);
@@ -47,27 +46,22 @@ public class MessagePanel extends JPanel {
     //todo resizing
     private void init(){
         this.setBackground(AppThemeColor.TRANSPARENT);
-
-        JLabel whisperLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,15f,whisper + ":");
-        Border border = whisperLabel.getBorder();
-        whisperLabel.setBorder(new CompoundBorder(border,new EmptyBorder(10,5,0,10)));
-
+        this.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
         newLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT,TextAlignment.LEFTOP,16f,"NEW");
-        border = newLabel.getBorder();
+        Border border = newLabel.getBorder();
         newLabel.setBorder(new CompoundBorder(border,new EmptyBorder(10,5,0,25)));
 
-        JPanel topPanel = new JPanel(new BorderLayout());
-        String tabName = parsedMessage.get("tabName");
-        if(tabName != null) {
-            JLabel tabNameLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MISC,TextAlignment.LEFTOP,15f,"Tab: " + tabName);
-            border = tabNameLabel.getBorder();
-            tabNameLabel.setBorder(new CompoundBorder(border, new EmptyBorder(10, 5, 0, 25)));
-            topPanel.add(tabNameLabel,BorderLayout.CENTER);
-        }
+        JPanel topPanel = getWhisperPanel();
+//        String tabName = parsedMessage.get("tabName");
+//        if(tabName != null) {
+//            JLabel tabNameLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MISC,TextAlignment.LEFTOP,15f,"Tab: " + tabName);
+//            border = tabNameLabel.getBorder();
+//            tabNameLabel.setBorder(new CompoundBorder(border, new EmptyBorder(10, 5, 0, 25)));
+//            topPanel.add(tabNameLabel,BorderLayout.CENTER);
+//        }
 
-        topPanel.setBackground(AppThemeColor.TRANSPARENT);
-        topPanel.add(whisperLabel,BorderLayout.LINE_START);
-        topPanel.add(newLabel,BorderLayout.LINE_END);
+//        topPanel.add(getWhisperPanel(),BorderLayout.LINE_START);
+//        topPanel.add(newLabel,BorderLayout.LINE_END);
 
         this.add(topPanel,BorderLayout.PAGE_START);
 
@@ -86,41 +80,16 @@ public class MessagePanel extends JPanel {
             buttonsPanel.setPreferredSize(new Dimension(buttonsPanel.getPreferredSize().width, (int)(buttonsPanel.getPreferredSize().height * 1.7)));
             buttonsPanel.setMinimumSize(new Dimension(buttonsPanel.getPreferredSize().width, (int)(buttonsPanel.getPreferredSize().height * 1.7)));
         }
-        JButton invite = componentsFactory.getBorderedButton("invite");
-        invite.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                EventRouter.fireEvent(new ChatCommandEvent("/invite " + whisper));
-
-                Timer timer = new Timer(500,null);
-                timer.addActionListener(event -> {
-                    EventRouter.fireEvent(new CopyToClipboardEvent(itemLabel.getText()));
-                    timer.stop();
-                });
-                timer.start();
-
-            }
-        });
-        buttonsPanel.add(invite,0);
-
-        JButton openChatButton = componentsFactory.getBorderedIconButton("app/openChat.png",15);
-        openChatButton.setToolTipText("Open chat");
-        openChatButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                EventRouter.fireEvent(new OpenChatEvent(whisper));
-            }
-        });
-        buttonsPanel.add(openChatButton);
 
         this.add(buttonsPanel,BorderLayout.PAGE_END);
     }
 
     private JPanel getFormattedMessagePanel(){
-        JPanel labelsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel labelsPanel = new JPanel();
+        labelsPanel.setLayout(new BoxLayout(labelsPanel,BoxLayout.Y_AXIS));
         labelsPanel.setBackground(AppThemeColor.TRANSPARENT);
 
-        itemLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT,TextAlignment.LEFTOP,17f,parsedMessage.get("itemName"));
+        itemLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT,TextAlignment.CENTER,17f,parsedMessage.get("itemName"));
         labelsPanel.add(itemLabel);
         String curCount = parsedMessage.get("curCount");
         String currency = parsedMessage.get("currency");
@@ -128,9 +97,10 @@ public class MessagePanel extends JPanel {
             JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP, 17f, curCount);
             JLabel currencyLabel;
             if (supportedIcons.contains(currency)){
-                currencyLabel = componentsFactory.getIconLabel("currency/" + currency + ".png", 20);
-            } else
+                currencyLabel = componentsFactory.getIconLabel("currency/" + currency + ".png", 28);
+            } else {
                 currencyLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP, 17f, currency);
+            }
             labelsPanel.add(priceLabel);
             labelsPanel.add(currencyLabel);
         }
@@ -153,6 +123,65 @@ public class MessagePanel extends JPanel {
         newLabel.setText("");
         MessagePanel.this.revalidate();
         MessagePanel.this.repaint();
+    }
+    private JPanel getWhisperPanel(){
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setBackground(AppThemeColor.TRANSPARENT);
+
+        JLabel whisperLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,15f,whisper + ":");
+        Border border = whisperLabel.getBorder();
+        whisperLabel.setBorder(new CompoundBorder(border,new EmptyBorder(0,5,0,0)));
+//        whisperLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        whisperLabel.setVerticalAlignment(SwingConstants.CENTER);
+
+        topPanel.add(whisperLabel,BorderLayout.CENTER);
+
+        JPanel interactionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        interactionPanel.setBackground(AppThemeColor.TRANSPARENT);
+        JButton inviteButton = componentsFactory.getIconButton("app/invite.png", 12);
+        inviteButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                EventRouter.fireEvent(new ChatCommandEvent("/invite " + whisper));
+                Timer timer = new Timer(500,null);
+                timer.addActionListener(event -> {
+                    EventRouter.fireEvent(new CopyToClipboardEvent(itemLabel.getText()));
+                    timer.stop();
+                });
+                timer.start();
+            }
+        });
+        JButton kickButton = componentsFactory.getIconButton("app/kick.png", 12);
+        kickButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                EventRouter.fireEvent(new ChatCommandEvent("/kick " + whisper));
+            }
+        });
+        JButton tradeButton = componentsFactory.getIconButton("app/trade.png",12);
+        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png",12);
+        openChatButton.setToolTipText("Open chat");
+        openChatButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                EventRouter.fireEvent(new OpenChatEvent(whisper));
+            }
+        });
+        JButton hideButton = componentsFactory.getIconButton("app/close.png",12);
+        hideButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+        });
+        interactionPanel.add(inviteButton);
+        interactionPanel.add(kickButton);
+        interactionPanel.add(tradeButton);
+        interactionPanel.add(openChatButton);
+        interactionPanel.add(hideButton);
+
+        topPanel.add(interactionPanel,BorderLayout.LINE_END);
+        return topPanel;
     }
 
     @Override

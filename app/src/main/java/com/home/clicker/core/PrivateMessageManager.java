@@ -124,6 +124,8 @@ public class PrivateMessageManager implements HasEventHandlers {
         robot.keyPress(KeyEvent.VK_V);
         robot.keyRelease(KeyEvent.VK_V);
         robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_SPACE);
+        robot.keyRelease(KeyEvent.VK_SPACE);
 
         keyboardHook.addKeyListener(adapter);
     }
@@ -149,7 +151,7 @@ public class PrivateMessageManager implements HasEventHandlers {
                     }
                     break;
                     case GlobalKeyEvent.VK_2:{
-                        useAllFlasks();
+//                        useAllFlasks();
                     }
                     break;
                 }

@@ -11,6 +11,10 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -79,6 +83,19 @@ public class ComponentsFactory {
                 button.setBackground(background);
             }
         });
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                button.setEnabled(false);
+                Timer timer = new Timer(1000,null);
+                timer.addActionListener(event -> {
+                    button.setEnabled(true);
+                    timer.stop();
+                });
+                timer.start();
+            }
+        });
+
         return button;
     }
 
@@ -116,11 +133,36 @@ public class ComponentsFactory {
      * @return JButton object with icon
      */
     public JButton getIconButton(String iconPath, int iconSize){
-        JButton button = getButton("");
-        button.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
-                BorderFactory.createLineBorder(AppThemeColor.BUTTON,3)
-        ));
+        JButton button = new JButton(""){
+            @Override
+            protected void paintBorder(Graphics g) {
+                if(!this.getModel().isPressed()) {
+                    super.paintBorder(g);
+                }
+            }
+        };
+        button.setBackground(AppThemeColor.TRANSPARENT);
+        button.setFocusPainted(false);
+        button.addChangeListener(e->{
+            if(!button.getModel().isPressed()){
+                button.setBackground(AppThemeColor.TRANSPARENT);
+            }
+        });
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                button.setEnabled(false);
+                Timer timer = new Timer(1000,null);
+                timer.addActionListener(event -> {
+                    button.setEnabled(true);
+                    timer.stop();
+                });
+                timer.start();
+            }
+        });
+        button.setContentAreaFilled(false);
+        button.setBorder(BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,4));
+        button.setVerticalAlignment(SwingConstants.CENTER);
         BufferedImage icon = null;
         try {
             BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
@@ -143,7 +185,7 @@ public class ComponentsFactory {
     public JButton getBorderedIconButton(String iconPath, int iconSize){
         CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
-                BorderFactory.createLineBorder(AppThemeColor.BUTTON, 3)
+                BorderFactory.createLineBorder(AppThemeColor.BUTTON, 2)
         );
         JButton iconButton = getIconButton(iconPath, iconSize);
         iconButton.setBorder(compoundBorder);
@@ -188,6 +230,9 @@ public class ComponentsFactory {
                 case RIGHTOP: {
                     label.setAlignmentX(Component.RIGHT_ALIGNMENT);
                     label.setAlignmentY(Component.TOP_ALIGNMENT);
+                }
+                case CENTER:{
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
                 }
                 break;
             }

@@ -31,9 +31,12 @@ public class CustomButtonFactory {
             JButton button = componentsFactory.getBorderedButton(title);
             button.addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseClicked(MouseEvent e) {
-                    EventRouter.fireEvent(new ChatCommandEvent("@" + whisper + " " + value));
+                public void mousePressed(MouseEvent e) {
+                    if(button.isEnabled()) {
+                        EventRouter.fireEvent(new ChatCommandEvent("@" + whisper + " " + value));
+                    }
                 }
+
             });
             panel.add(button,0);
         });
