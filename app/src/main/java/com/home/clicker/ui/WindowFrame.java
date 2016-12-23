@@ -3,6 +3,7 @@ package com.home.clicker.ui;
 import com.home.clicker.shared.HasEventHandlers;
 import com.home.clicker.shared.events.*;
 import com.home.clicker.shared.events.custom.*;
+import com.home.clicker.ui.components.ComponentsFactory;
 import com.home.clicker.ui.components.panel.HistoryContainerPanel;
 import com.home.clicker.ui.components.panel.MessagesContainerPanel;
 import org.imgscalr.Scalr;
@@ -23,6 +24,7 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
     private JPopupMenu settingsMenu;
     private MessagesContainerPanel msgContainer;
     private HistoryContainerPanel history;
+    private ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
 
     //app button inner point
     private int x;
@@ -76,13 +78,9 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
     }
 
     private void initAppButton() throws IOException {
-        BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("app/chatImage.png"));
-        BufferedImage icon = Scalr.resize(buttonIcon, 56);
-        JButton button = new JButton(new ImageIcon(icon));
+        JButton button = componentsFactory.getIconButton("app/chatImage.png",56,new Dimension(50,50));
         button.setBorder(BorderFactory.createEmptyBorder());
         button.setContentAreaFilled(false);
-        button.setPreferredSize(new Dimension(50,50));
-        button.setSize(new Dimension(50,50));
         button.setLocation(30,screenSize.height - 50);
         button.addMouseListener(new MouseAdapter() {
             @Override

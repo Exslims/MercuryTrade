@@ -2,6 +2,7 @@ package com.home.clicker.ui.misc;
 
 import com.home.clicker.shared.events.EventRouter;
 import com.home.clicker.shared.events.custom.ChatCommandEvent;
+import com.home.clicker.ui.components.ComponentsFactory;
 import com.home.clicker.ui.components.fields.ExButton;
 import com.home.clicker.shared.CachedFilesUtils;
 import org.json.simple.JSONArray;
@@ -21,13 +22,14 @@ import java.util.*;
 
 public class CustomButtonFactory {
     private static Map<String,String> cachedConfigs;
+    private static ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
     public static JPanel getButtonsPanel(String whisper){
         Map<String, String> buttonsConfig = getButtonsConfig();
         JPanel panel = new JPanel(new FlowLayout());
         panel.setBackground(AppThemeColor.TRANSPARENT);
 
         buttonsConfig.forEach((title,value)->{
-            ExButton button = new ExButton(title);
+            JButton button = componentsFactory.getBorderedButton(title);
             button.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {

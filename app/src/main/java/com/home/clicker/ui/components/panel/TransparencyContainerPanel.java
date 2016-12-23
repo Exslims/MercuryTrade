@@ -3,6 +3,7 @@ package com.home.clicker.ui.components.panel;
 import com.home.clicker.shared.HasEventHandlers;
 import com.home.clicker.shared.events.EventRouter;
 import com.home.clicker.shared.events.custom.RepaintEvent;
+import com.home.clicker.ui.components.ComponentsFactory;
 import com.home.clicker.ui.components.fields.ExButton;
 import com.home.clicker.ui.components.interfaces.HasOpacity;
 import com.home.clicker.ui.misc.AppThemeColor;
@@ -29,11 +30,13 @@ public abstract class TransparencyContainerPanel extends JPanel implements HasEv
     private Timeline hideTimeLine;
     private Timeline showTimeLine;
 
+    protected ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
+
     protected JScrollPane scroll;
     protected JPanel container;
     protected JPanel headButtonsPanel;
     protected Timer hideTimer;
-    protected ExButton title;
+    protected JButton title;
     protected int x;
     protected int y;
     protected Dimension size;
@@ -77,7 +80,7 @@ public abstract class TransparencyContainerPanel extends JPanel implements HasEv
         titlePanel.setBackground(AppThemeColor.TRANSPARENT);
 
 
-        title = new ExButton(PoeShortCastSettings.APP_VERSION);
+        title = componentsFactory.getButton(PoeShortCastSettings.APP_VERSION);
         title.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -93,15 +96,7 @@ public abstract class TransparencyContainerPanel extends JPanel implements HasEv
             }
         });
 
-        BufferedImage buttonIcon = null;
-        try {
-            buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("app/close.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        BufferedImage icon = Scalr.resize(buttonIcon, 15);
-        ExButton hideButton = new ExButton(new ImageIcon(icon));
-
+        JButton hideButton = componentsFactory.getIconButton("app/close.png",15);
         hideButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -122,34 +117,34 @@ public abstract class TransparencyContainerPanel extends JPanel implements HasEv
         this.hideTimer = getHideTimer();
 
 
-//        initTimeLines();
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-//                if(hideTimeLine != null){
-//                    hideTimeLine.end();
-//                }
-//                showTimeLine = new Timeline(TransparencyContainerPanel.this);
-//                showTimeLine.addPropertyToInterpolate("opacity",opacity,100);
-//                showTimeLine.setDuration(HIDE_TIME_MS);
-//                showTimeLine.play();
-                System.out.println("mouse entered");
-            }
+////        initTimeLines();
+//        this.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseEntered(MouseEvent e) {
+////                if(hideTimeLine != null){
+////                    hideTimeLine.end();
+////                }
+////                showTimeLine = new Timeline(TransparencyContainerPanel.this);
+////                showTimeLine.addPropertyToInterpolate("opacity",opacity,100);
+////                showTimeLine.setDuration(HIDE_TIME_MS);
+////                showTimeLine.play();
+//                System.out.println("mouse entered");
+//            }
+//
+//            @Override
+//            public void mouseExited(MouseEvent e) {
+////                if(showTimeLine != null){
+////                    showTimeLine.end();
+////                }
+////                hideTimeLine = new Timeline(TransparencyContainerPanel.this);
+////                hideTimeLine.addPropertyToInterpolate("opacity",opacity,0);
+////                hideTimeLine.setDuration(HIDE_TIME_MS);
+////                hideTimeLine.play();
+//                System.out.println("mouse exited");
+//            }
+//        });
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-//                if(showTimeLine != null){
-//                    showTimeLine.end();
-//                }
-//                hideTimeLine = new Timeline(TransparencyContainerPanel.this);
-//                hideTimeLine.addPropertyToInterpolate("opacity",opacity,0);
-//                hideTimeLine.setDuration(HIDE_TIME_MS);
-//                hideTimeLine.play();
-                System.out.println("mouse exited");
-            }
-        });
-
-        this.setBorder(BorderFactory.createLineBorder(Color.blue,6));
+//        this.setBorder(BorderFactory.createLineBorder(Color.blue,6));
     }
 //    private void initTimeLines(){
 //        showTimeLine = new Timeline(TransparencyContainerPanel.this);
@@ -174,7 +169,6 @@ public abstract class TransparencyContainerPanel extends JPanel implements HasEv
 
     @Override
     public void setOpacity(int percent) {
-//        System.out.println("in timeline: " + percent);
         this.opacity = percent;
         this.setBackground(new Color(AppThemeColor.BUTTON.getRed(),
                 AppThemeColor.BUTTON.getGreen(), AppThemeColor.BUTTON.getBlue(), percent));

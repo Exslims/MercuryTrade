@@ -90,7 +90,7 @@ public class MessagePanel extends JPanel {
             buttonsPanel.setPreferredSize(new Dimension(buttonsPanel.getPreferredSize().width, (int)(buttonsPanel.getPreferredSize().height * 1.7)));
             buttonsPanel.setMinimumSize(new Dimension(buttonsPanel.getPreferredSize().width, (int)(buttonsPanel.getPreferredSize().height * 1.7)));
         }
-        ExButton invite = new ExButton("invite");
+        JButton invite = componentsFactory.getBorderedButton("invite");
         invite.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -107,14 +107,7 @@ public class MessagePanel extends JPanel {
         });
         buttonsPanel.add(invite,0);
 
-        BufferedImage buttonIcon = null;
-        try {
-            buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("app/openChat.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        BufferedImage icon = Scalr.resize(buttonIcon, 15);
-        ExButton openChatButton = new ExButton(new ImageIcon(icon));
+        JButton openChatButton = componentsFactory.getBorderedIconButton("app/openChat.png",15);
         openChatButton.setToolTipText("Open chat");
         openChatButton.addMouseListener(new MouseAdapter() {
             @Override

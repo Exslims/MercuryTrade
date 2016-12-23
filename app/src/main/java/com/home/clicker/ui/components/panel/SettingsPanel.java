@@ -51,7 +51,7 @@ public class SettingsPanel extends JPanel {
 
 
 
-        ExButton title = new ExButton(PoeShortCastSettings.APP_VERSION);
+        JButton title = componentsFactory.getButton(PoeShortCastSettings.APP_VERSION);
         title.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -102,7 +102,7 @@ public class SettingsPanel extends JPanel {
 
         wnSettingPanel.add(statusBox,BorderLayout.CENTER);
 
-        ExButton saveButton = new ExButton("Save");
+        JButton saveButton = componentsFactory.getButton("Save");
         saveButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -127,7 +127,7 @@ public class SettingsPanel extends JPanel {
             }
         });
 
-        ExButton closeButton = new ExButton("Close");
+        JButton closeButton = componentsFactory.getButton("Close");
         closeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -217,7 +217,7 @@ public class SettingsPanel extends JPanel {
             addNewRow(rootPanel,title,value,buttonColumn,titleColumn,valueColumn,utilColumn);
         });
 
-        ExButton addNew = new ExButton("Add");
+        JButton addNew = componentsFactory.getButton("Add");
         addNew.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -243,7 +243,7 @@ public class SettingsPanel extends JPanel {
     }
 
     private void addNewRow(JPanel rootPanel, String title, String value, GridBagConstraints bC, GridBagConstraints tC, GridBagConstraints vC, GridBagConstraints uC){
-        ExButton button = new ExButton(title);
+        JButton button = componentsFactory.getButton(title);
 
         rootPanel.add(button,bC);
         bC.gridy++;
@@ -275,7 +275,7 @@ public class SettingsPanel extends JPanel {
         rootPanel.add(valueField,vC);
         vC.gridy++;
 
-        ExButton remove = new ExButton("x");
+        JButton remove = componentsFactory.getButton("x");
         remove.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

@@ -28,22 +28,15 @@ public class MessagesContainerPanel extends TransparencyContainerPanel {
     protected void init() {
         super.init();
 
-        BufferedImage buttonIcon = null;
-        try {
-            buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("app/history.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        BufferedImage icon = Scalr.resize(buttonIcon, 15);
-        ExButton expandHistory = new ExButton(new ImageIcon(icon));
-        headButtonsPanel.add(expandHistory,BorderLayout.CENTER);
-
+        JButton expandHistory = componentsFactory.getIconButton("app/history.png",15);
         expandHistory.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 EventRouter.fireEvent(new OpenHistoryEvent());
             }
         });
+
+        headButtonsPanel.add(expandHistory,BorderLayout.CENTER);
     }
 
     @Override

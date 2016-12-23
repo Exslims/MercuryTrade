@@ -29,14 +29,7 @@ public class HistoryContainerPanel extends TransparencyContainerPanel implements
         super.init();
         title.setText("History");
 
-        BufferedImage buttonIcon = null;
-        try {
-            buttonIcon = ImageIO.read(getClass().getClassLoader().getResource("app/clear-icon.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        BufferedImage icon = Scalr.resize(buttonIcon, 15);
-        ExButton clearHistory = new ExButton(new ImageIcon(icon));
+        JButton clearHistory = componentsFactory.getIconButton("app/clear-icon.png",15);
         headButtonsPanel.add(clearHistory,BorderLayout.CENTER);
 
         clearHistory.addMouseListener(new MouseAdapter() {

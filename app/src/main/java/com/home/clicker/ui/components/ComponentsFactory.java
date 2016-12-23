@@ -2,11 +2,14 @@ package com.home.clicker.ui.components;
 
 import com.home.clicker.ui.components.fields.label.FontStyle;
 import com.home.clicker.ui.components.fields.label.TextAlignment;
+import com.home.clicker.ui.misc.AppThemeColor;
 import org.apache.log4j.Logger;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -49,6 +52,119 @@ public class ComponentsFactory {
     }
 
     /**
+     * Get button with custom params
+     * @param fontStyle path of exile font type
+     * @param background button background
+     * @param border button border
+     * @param text default text
+     * @param fontSize font size
+     * @return JButton object
+     */
+    public JButton getButton(FontStyle fontStyle, Color background, Border border, String text, float fontSize){
+        JButton button = new JButton(text){
+            @Override
+            protected void paintBorder(Graphics g) {
+                if(!this.getModel().isPressed()) {
+                    super.paintBorder(g);
+                }
+            }
+        };
+        button.setBackground(background);
+        button.setForeground(AppThemeColor.TEXT_DEFAULT);
+        button.setFocusPainted(false);
+        button.setFont(getSelectedFont(fontStyle).deriveFont(fontSize));
+        button.setBorder(border);
+        button.addChangeListener(e->{
+            if(!button.getModel().isPressed()){
+                button.setBackground(background);
+            }
+        });
+        return button;
+    }
+
+    /**
+     * Get button with default properties
+     * @param text text on button
+     * @return Default app button
+     */
+    public JButton getButton(String text){
+        CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 1),
+                BorderFactory.createLineBorder(AppThemeColor.BUTTON, 3)
+        );
+
+        return getButton(FontStyle.BOLD, AppThemeColor.BUTTON, compoundBorder, text, 14f);
+    }
+
+    /**
+     * Get bordered button with default properties.
+     * @param text text on button
+     * @return Default bordered app button
+     */
+    public JButton getBorderedButton(String text){
+        CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
+                BorderFactory.createLineBorder(AppThemeColor.BUTTON, 3)
+        );
+        return getButton(FontStyle.BOLD, AppThemeColor.BUTTON, compoundBorder, text, 14f);
+    }
+
+    /**
+     * Get button with icon
+     * @param iconPath icon path from maven resources
+     * @param iconSize icon size
+     * @return JButton object with icon
+     */
+    public JButton getIconButton(String iconPath, int iconSize){
+        JButton button = getButton("");
+        button.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
+                BorderFactory.createLineBorder(AppThemeColor.BUTTON,3)
+        ));
+        BufferedImage icon = null;
+        try {
+            BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
+            icon = Scalr.resize(buttonIcon, iconSize);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(icon != null){
+            button.setIcon(new ImageIcon(icon));
+        }
+        return button;
+    }
+
+    /**
+     * Get bordered default button with icon
+     * @param iconPath icon path from maven resources
+     * @param iconSize icon size
+     * @return bordered JButton with icon
+     */
+    public JButton getBorderedIconButton(String iconPath, int iconSize){
+        CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
+                BorderFactory.createLineBorder(AppThemeColor.BUTTON, 3)
+        );
+        JButton iconButton = getIconButton(iconPath, iconSize);
+        iconButton.setBorder(compoundBorder);
+        return iconButton;
+    }
+
+    /**
+     * Get icon button with custom size
+     * @param iconPath icon path from maven resources
+     * @param iconSize icon size
+     * @param buttonSize button size (its only preferred)
+     * @return JButton with icon
+     */
+    public JButton getIconButton(String iconPath, int iconSize, Dimension buttonSize){
+        JButton iconButton = getIconButton(iconPath, iconSize);
+        iconButton.setPreferredSize(buttonSize);
+        iconButton.setSize(buttonSize);
+        return iconButton;
+    }
+
+    /**
      * Get label with custom params
      * @param fontStyle path of exile font type
      * @param frColor foreground color
@@ -59,22 +175,7 @@ public class ComponentsFactory {
      */
     public JLabel getTextLabel(FontStyle fontStyle, Color frColor, TextAlignment alignment, float size, String text){
         JLabel label = new JLabel(text);
-        switch (fontStyle) {
-            case BOLD:
-                label.setFont(BOLD_FONT.deriveFont(size));
-                break;
-            case ITALIC:
-                label.setFont(ITALIC_FONT.deriveFont(size));
-                break;
-            case REGULAR:
-                label.setFont(REGULAR_FONT.deriveFont(size));
-                break;
-            case SMALLCAPS:
-                label.setFont(SMALLCAPS_FONT.deriveFont(size));
-                break;
-            default:
-                label.setFont(DEFAULT_FONT.deriveFont(size));
-        }
+        label.setFont(getSelectedFont(fontStyle).deriveFont(size));
         label.setForeground(frColor);
 
         if(alignment != null) {
@@ -98,7 +199,7 @@ public class ComponentsFactory {
      * Get label with icon
      * @param iconPath icon path from maven resources
      * @param size icon size
-     * @return JLabel object
+     * @return JLabel object with icon
      */
     public JLabel getIconLabel(String iconPath, int size){
         JLabel iconLabel = new JLabel();
@@ -110,5 +211,19 @@ public class ComponentsFactory {
             log.error(e);
         }
         return iconLabel;
+    }
+
+    private Font getSelectedFont(FontStyle fontStyle){
+        switch (fontStyle) {
+            case BOLD:
+                return BOLD_FONT;
+            case ITALIC:
+                return ITALIC_FONT;
+            case REGULAR:
+                return REGULAR_FONT;
+            case SMALLCAPS:
+                return SMALLCAPS_FONT;
+        }
+        return DEFAULT_FONT;
     }
 }
