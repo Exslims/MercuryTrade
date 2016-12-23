@@ -6,17 +6,12 @@ import com.home.clicker.shared.events.custom.NewWhispersEvent;
 import com.home.clicker.shared.events.custom.OpenHistoryEvent;
 import com.home.clicker.shared.events.custom.RepaintEvent;
 import com.home.clicker.shared.pojo.Message;
-import com.home.clicker.ui.components.fields.ExButton;
 import com.home.clicker.ui.misc.AppThemeColor;
-import org.imgscalr.Scalr;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.List;
 
 public class MessagesContainerPanel extends TransparencyContainerPanel {

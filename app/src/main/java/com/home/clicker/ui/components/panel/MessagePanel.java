@@ -5,15 +5,12 @@ import com.home.clicker.shared.events.custom.ChatCommandEvent;
 import com.home.clicker.shared.events.custom.CopyToClipboardEvent;
 import com.home.clicker.shared.events.custom.OpenChatEvent;
 import com.home.clicker.ui.components.ComponentsFactory;
-import com.home.clicker.ui.components.fields.ExButton;
 import com.home.clicker.ui.components.fields.label.FontStyle;
 import com.home.clicker.ui.components.fields.label.TextAlignment;
 import com.home.clicker.ui.misc.AppThemeColor;
 import com.home.clicker.ui.misc.CustomButtonFactory;
 import org.apache.commons.lang3.StringUtils;
-import org.imgscalr.Scalr;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.border.Border;
@@ -22,8 +19,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.*;
 import java.util.List;
 

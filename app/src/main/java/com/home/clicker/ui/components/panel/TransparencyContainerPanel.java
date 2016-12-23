@@ -4,21 +4,16 @@ import com.home.clicker.shared.HasEventHandlers;
 import com.home.clicker.shared.events.EventRouter;
 import com.home.clicker.shared.events.custom.RepaintEvent;
 import com.home.clicker.ui.components.ComponentsFactory;
-import com.home.clicker.ui.components.fields.ExButton;
 import com.home.clicker.ui.components.interfaces.HasOpacity;
 import com.home.clicker.ui.misc.AppThemeColor;
 import com.home.clicker.shared.PoeShortCastSettings;
-import org.imgscalr.Scalr;
 import org.pushingpixels.trident.Timeline;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 /**
  * Created by Константин on 16.12.2016.

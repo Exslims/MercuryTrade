@@ -4,17 +4,12 @@ import com.home.clicker.shared.events.EventRouter;
 import com.home.clicker.shared.events.custom.MoveToHistoryEvent;
 import com.home.clicker.shared.events.custom.OpenHistoryEvent;
 import com.home.clicker.shared.events.custom.RepaintEvent;
-import com.home.clicker.ui.components.fields.ExButton;
 import com.home.clicker.ui.components.interfaces.HasOpacity;
-import org.imgscalr.Scalr;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 /**
  * todo vinesti nahui v abstract

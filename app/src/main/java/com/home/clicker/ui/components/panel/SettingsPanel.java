@@ -6,7 +6,6 @@ import com.home.clicker.shared.events.custom.DraggedWindowEvent;
 import com.home.clicker.shared.events.custom.RepaintEvent;
 import com.home.clicker.core.misc.WhisperNotifierStatus;
 import com.home.clicker.ui.components.ComponentsFactory;
-import com.home.clicker.ui.components.fields.ExButton;
 import com.home.clicker.ui.components.fields.ExTextField;
 import com.home.clicker.ui.components.fields.label.FontStyle;
 import com.home.clicker.ui.misc.AppThemeColor;
