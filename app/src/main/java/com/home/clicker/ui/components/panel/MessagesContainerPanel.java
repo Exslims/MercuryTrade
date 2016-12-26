@@ -36,43 +36,43 @@ public class MessagesContainerPanel extends TransparencyContainerPanel {
 
     @Override
     public void initHandlers() {
-        EventRouter.registerHandler(NewWhispersEvent.class, event -> {
-            List<Message> messages = ((NewWhispersEvent) event).getMessages();
-            for (Message message : messages) {
-                MessagePanel messagePanel = new MessagePanel(message.getWhisperNickname(), message.getMessage());
-                messagePanel.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseEntered(MouseEvent e) {
-                        messagePanel.viewed();
-//                        if(hideTimer.isRunning()){
-//                            hideTimer.stop();
-//                        }
-                    }
-
-                    @Override
-                    public void mouseExited(MouseEvent e) {
-//                        if(!hideTimer.isRunning()){
-//                            hideTimer.start();
-//                        }
-                    }
-                });
-                if(container.getComponentCount() != 0) {
-                    Component prevMessage = container.getComponent(0);
-                    EventRouter.fireEvent(new MoveToHistoryEvent((JPanel) prevMessage));
-                    container.removeAll();
-                }
-                container.add(messagePanel);
-                EventRouter.fireEvent(new RepaintEvent());
-            }
-            container.revalidate();
-            container.repaint();
-            container.scrollRectToVisible(new Rectangle(0, container.getPreferredSize().height-1,1,1));
-            MessagesContainerPanel.this.setVisible(true);
-//            if(hideTimer.isRunning()){
-//                hideTimer.stop();
+//        EventRouter.registerHandler(NewWhispersEvent.class, event -> {
+//            List<Message> messages = ((NewWhispersEvent) event).getMessages();
+//            for (Message message : messages) {
+//                MessagePanel messagePanel = new MessagePanel(message.getWhisperNickname(), message.getMessage());
+//                messagePanel.addMouseListener(new MouseAdapter() {
+//                    @Override
+//                    public void mouseEntered(MouseEvent e) {
+//                        messagePanel.viewed();
+////                        if(hideTimer.isRunning()){
+////                            hideTimer.stop();
+////                        }
+//                    }
+//
+//                    @Override
+//                    public void mouseExited(MouseEvent e) {
+////                        if(!hideTimer.isRunning()){
+////                            hideTimer.start();
+////                        }
+//                    }
+//                });
+//                if(container.getComponentCount() != 0) {
+//                    Component prevMessage = container.getComponent(0);
+//                    EventRouter.fireEvent(new MoveToHistoryEvent((JPanel) prevMessage));
+//                    container.removeAll();
+//                }
+//                container.add(messagePanel);
+//                EventRouter.fireEvent(new RepaintEvent());
 //            }
-//            hideTimer.start();
-        });
+//            container.revalidate();
+//            container.repaint();
+//            container.scrollRectToVisible(new Rectangle(0, container.getPreferredSize().height-1,1,1));
+//            MessagesContainerPanel.this.setVisible(true);
+////            if(hideTimer.isRunning()){
+////                hideTimer.stop();
+////            }
+////            hideTimer.start();
+//        });
     }
     public static class ExScrollBarUI extends BasicScrollBarUI{
         private final Dimension d = new Dimension();

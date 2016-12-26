@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -219,6 +220,8 @@ public class ComponentsFactory {
         JLabel label = new JLabel(text);
         label.setFont(getSelectedFont(fontStyle).deriveFont(size));
         label.setForeground(frColor);
+        Border border = label.getBorder();
+        label.setBorder(new CompoundBorder(border,new EmptyBorder(0,5,0,5)));
 
         if(alignment != null) {
             switch (alignment) {
@@ -232,7 +235,8 @@ public class ComponentsFactory {
                     label.setAlignmentY(Component.TOP_ALIGNMENT);
                 }
                 case CENTER:{
-                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                    label.setAlignmentX(Component.CENTER_ALIGNMENT);
+                    label.setAlignmentY(Component.TOP_ALIGNMENT);
                 }
                 break;
             }

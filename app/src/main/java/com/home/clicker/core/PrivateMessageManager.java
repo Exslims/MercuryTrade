@@ -151,7 +151,7 @@ public class PrivateMessageManager implements HasEventHandlers {
                     }
                     break;
                     case GlobalKeyEvent.VK_2:{
-//                        useAllFlasks();
+                        useAllFlasks();
                     }
                     break;
                 }

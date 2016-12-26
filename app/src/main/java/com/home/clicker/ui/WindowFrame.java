@@ -6,6 +6,7 @@ import com.home.clicker.shared.events.custom.*;
 import com.home.clicker.ui.components.ComponentsFactory;
 import com.home.clicker.ui.components.panel.HistoryContainerPanel;
 import com.home.clicker.ui.components.panel.MessagesContainerPanel;
+import com.home.clicker.ui.misc.AppThemeColor;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
@@ -24,6 +25,7 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
     private JPopupMenu settingsMenu;
     private MessagesContainerPanel msgContainer;
     private HistoryContainerPanel history;
+    private MessageFrame frame;
     private ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
 
     //app button inner point
@@ -39,13 +41,11 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
         getRootPane().setOpaque(false);
         setUndecorated(true);
 
-        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setSize(screenSize.width, screenSize.height);
+        setSize(50,50);
 
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
-        setBackground(new Color(0, 0, 0, 0));
+        setBackground(AppThemeColor.TRANSPARENT);
         setOpacity(0.9f);
         setAlwaysOnTop(true);
         setFocusableWindowState(false);
@@ -54,8 +54,8 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
         try {
             initSettingsContextMenu();
             initAppButton();
-            initMessagesContainer();
             initHistoryContainer();
+            frame = new MessageFrame();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,42 +69,23 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
         add(history);
     }
 
-    private void initMessagesContainer(){
-        MessagesContainerPanel containerPanel = new MessagesContainerPanel();
-        containerPanel.setLocation(300,300);
-        containerPanel.setVisible(true);
-        add(containerPanel);
-        this.msgContainer = containerPanel;
-    }
-
     private void initAppButton() throws IOException {
         JButton button = componentsFactory.getIconButton("app/chatImage.png",56,new Dimension(50,50));
         button.setBorder(BorderFactory.createEmptyBorder());
         button.setContentAreaFilled(false);
-        button.setLocation(30,screenSize.height - 50);
+        button.setLocation(0,0);
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 x = e.getX();
                 y = e.getY();
             }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
-                    if (msgContainer.isVisible()) {
-                        msgContainer.setVisible(false);
-                    } else {
-                        msgContainer.setVisible(true);
-                    }
-                }
-            }
         });
         button.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                e.translatePoint(button.getLocation().x - x,button.getLocation().y - y);
-                button.setLocation(e.getX(),e.getY());
+                e.translatePoint(WindowFrame.this.getLocation().x - x,WindowFrame.this.getLocation().y - y);
+                WindowFrame.this.setLocation(e.getX(),e.getY());
             }
         });
         button.setComponentPopupMenu(settingsMenu);
@@ -138,12 +119,6 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
         settingsMenu.add(item);
         settingsMenu.add(exit);
     }
-
-//    private JPanel initSettingsPanel() {
-//        SettingsPanel sPanel = new SettingsPanel();
-//        sPanel.setLocation(500,500);
-//        return sPanel;
-//    }
 
     @Override
     public void initHandlers() {
