@@ -34,6 +34,10 @@ public class MessageFrame extends OverlaidFrame {
             public void mouseEntered(MouseEvent e) {
                 MessageFrame.this.repaint();
             }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
         });
         setVisible(false);
     }
@@ -46,7 +50,6 @@ public class MessageFrame extends OverlaidFrame {
                 MessagePanel messagePanel = new MessagePanel(message.getWhisperNickname(), message.getMessage(), MessagePanelStyle.BIGGEST);
                 this.add(messagePanel);
             }
-            this.setVisible(true);
             this.pack();
         });
         EventRouter.registerHandler(CloseMessagePanelEvent.class, event -> {

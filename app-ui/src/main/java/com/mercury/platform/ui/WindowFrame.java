@@ -33,15 +33,14 @@ public class WindowFrame extends OverlaidFrame {
 
     @Override
     protected void init() {
+        messageFrame = new MessageFrame();
+        initSettingsContextMenu();
+        initAppButton();
+        initHistoryContainer();
         super.init();
         setLayout(null);
         setSize(50,50);
         setBackground(AppThemeColor.TRANSPARENT);
-
-        initSettingsContextMenu();
-        initAppButton();
-        initHistoryContainer();
-        messageFrame = new MessageFrame();
     }
 
     private void initHistoryContainer() {

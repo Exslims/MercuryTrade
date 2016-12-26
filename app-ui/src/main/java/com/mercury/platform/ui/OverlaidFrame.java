@@ -3,14 +3,22 @@ package com.mercury.platform.ui;
 
 import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.ui.components.ComponentsFactory;
+import org.pushingpixels.trident.Timeline;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Created by Константин on 26.12.2016.
  */
 public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
+    private final int HIDE_TIME = 200;
+    private final int SHOW_TIME = 150;
+
+    private Timeline hideAnimation;
+    private Timeline showAnimation;
     protected ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
     protected OverlaidFrame(String title){
         super(title);
@@ -21,11 +29,44 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         setUndecorated(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setOpacity(0.9f);
+        setOpacity(0.2f);
         setAlwaysOnTop(true);
         setFocusableWindowState(false);
         setFocusable(false);
 
         initHandlers();
+        initAnimationTimers();
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                System.out.println("in");
+                if(OverlaidFrame.this.getOpacity() < 0.9f) {
+                    hideAnimation.abort();
+                    showAnimation.play();
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                System.out.println("out");
+                if(!isMouseWithInFrame(e.getLocationOnScreen())){
+                    showAnimation.abort();
+                    hideAnimation.play();
+                }
+            }
+        });
+    }
+    private boolean isMouseWithInFrame(Point locationOnScreen){
+        return this.getBounds().contains(locationOnScreen);
+    }
+    private void initAnimationTimers(){
+        showAnimation = new Timeline(this);
+        showAnimation.setDuration(SHOW_TIME);
+        showAnimation.addPropertyToInterpolate("opacity", 0.2f, 0.9f);
+
+        hideAnimation = new Timeline(this);
+        hideAnimation.setDuration(HIDE_TIME);
+        hideAnimation.addPropertyToInterpolate("opacity",0.9f,0.2f);
     }
 }
