@@ -1,34 +1,23 @@
 package com.home.clicker.ui;
 
-import com.home.clicker.shared.HasEventHandlers;
 import com.home.clicker.shared.events.*;
 import com.home.clicker.shared.events.custom.*;
-import com.home.clicker.ui.components.ComponentsFactory;
 import com.home.clicker.ui.components.panel.HistoryContainerPanel;
-import com.home.clicker.ui.components.panel.MessagesContainerPanel;
 import com.home.clicker.ui.misc.AppThemeColor;
-import org.imgscalr.Scalr;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 /**
  * Exslims
  * 07.12.2016
  */
-public class WindowFrame extends JFrame implements HasEventHandlers {
-    private Dimension screenSize;
+public class WindowFrame extends OverlaidFrame {
     private JPopupMenu settingsMenu;
-    private MessagesContainerPanel msgContainer;
     private HistoryContainerPanel history;
     private MessageFrame frame;
-    private ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
 
-    //app button inner point
     private int x;
     private int y;
 
@@ -36,31 +25,19 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
     public WindowFrame() {
         super("PoeShortCast");
         UIManager.getLookAndFeelDefaults().put("Menu.arrowIcon", null);
+    }
 
+    @Override
+    protected void init() {
+        super.init();
         setLayout(null);
-        getRootPane().setOpaque(false);
-        setUndecorated(true);
-
         setSize(50,50);
-
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(AppThemeColor.TRANSPARENT);
-        setOpacity(0.9f);
-        setAlwaysOnTop(true);
-        setFocusableWindowState(false);
-        setFocusable(false);
 
-        try {
-            initSettingsContextMenu();
-            initAppButton();
-            initHistoryContainer();
-            frame = new MessageFrame();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        initHandlers();
+        initSettingsContextMenu();
+        initAppButton();
+        initHistoryContainer();
+        frame = new MessageFrame();
     }
 
     private void initHistoryContainer() {
@@ -69,7 +46,7 @@ public class WindowFrame extends JFrame implements HasEventHandlers {
         add(history);
     }
 
-    private void initAppButton() throws IOException {
+    private void initAppButton(){
         JButton button = componentsFactory.getIconButton("app/chatImage.png",56,new Dimension(50,50));
         button.setBorder(BorderFactory.createEmptyBorder());
         button.setContentAreaFilled(false);
