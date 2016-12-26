@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.components;
 
+import com.google.common.base.CharMatcher;
 import com.mercury.platform.ui.components.fields.label.FontStyle;
 import com.mercury.platform.ui.components.fields.label.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -77,7 +78,11 @@ public class ComponentsFactory {
         button.setBackground(background);
         button.setForeground(AppThemeColor.TEXT_DEFAULT);
         button.setFocusPainted(false);
-        button.setFont(getSelectedFont(fontStyle).deriveFont(fontSize));
+        if(CharMatcher.ascii().matchesAllOf(text)){
+            button.setFont(getSelectedFont(fontStyle).deriveFont(fontSize));
+        }else {
+            button.setFont(DEFAULT_FONT.deriveFont(fontSize));
+        }
         button.setBorder(border);
         button.addChangeListener(e->{
             if(!button.getModel().isPressed()){
@@ -218,7 +223,11 @@ public class ComponentsFactory {
      */
     public JLabel getTextLabel(FontStyle fontStyle, Color frColor, TextAlignment alignment, float size, String text){
         JLabel label = new JLabel(text);
-        label.setFont(getSelectedFont(fontStyle).deriveFont(size));
+        if(CharMatcher.ascii().matchesAllOf(text)){
+            label.setFont(getSelectedFont(fontStyle).deriveFont(size));
+        }else {
+            label.setFont(DEFAULT_FONT.deriveFont(size));
+        }
         label.setForeground(frColor);
         Border border = label.getBorder();
         label.setBorder(new CompoundBorder(border,new EmptyBorder(0,5,0,5)));
@@ -242,6 +251,15 @@ public class ComponentsFactory {
             }
         }
         return label;
+    }
+
+    /**
+     * Get default label
+     * @param text label text
+     * @return JLabel object
+     */
+    public JLabel getTextLabel(String text){
+        return getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT,TextAlignment.LEFTOP,15f,text);
     }
 
     /**

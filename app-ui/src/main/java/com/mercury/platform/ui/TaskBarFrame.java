@@ -17,7 +17,7 @@ import java.awt.event.*;
  * Exslims
  * 07.12.2016
  */
-public class WindowFrame extends OverlaidFrame {
+public class TaskBarFrame extends OverlaidFrame {
     private JPopupMenu settingsMenu;
     private HistoryContainerPanel history;
     private MessageFrame messageFrame;
@@ -26,21 +26,18 @@ public class WindowFrame extends OverlaidFrame {
     private int y;
 
 
-    public WindowFrame() {
+    public TaskBarFrame() {
         super("PoeShortCast");
-        UIManager.getLookAndFeelDefaults().put("Menu.arrowIcon", null);
     }
 
     @Override
     protected void init() {
         messageFrame = new MessageFrame();
-        initSettingsContextMenu();
-        initAppButton();
-        initHistoryContainer();
         super.init();
-        setLayout(null);
-        setSize(50,50);
-        setBackground(AppThemeColor.TRANSPARENT);
+//        setLayout(new BoxLayout(this.getContentPane(),BoxLayout.X_AXIS));
+        getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
+        add(getTaskBarPanel());
+        pack();
     }
 
     private void initHistoryContainer() {
@@ -49,29 +46,53 @@ public class WindowFrame extends OverlaidFrame {
         add(history);
     }
 
-    private void initAppButton(){
-        JButton button = componentsFactory.getIconButton("app/chatImage.png",56,new Dimension(50,50));
-        button.setBorder(BorderFactory.createEmptyBorder());
-        button.setContentAreaFilled(false);
-        button.setLocation(0,0);
-        button.addMouseListener(new MouseAdapter() {
+    private JPanel getTaskBarPanel(){
+        JPanel taskBarPanel = new JPanel();
+        taskBarPanel.setBackground(AppThemeColor.TRANSPARENT);
+        taskBarPanel.setLayout(new BoxLayout(taskBarPanel,BoxLayout.X_AXIS));
+
+        JButton historyButton = componentsFactory.getIconButton("app/history.png",24);
+        historyButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 x = e.getX();
                 y = e.getY();
             }
         });
-        button.addMouseMotionListener(new MouseAdapter() {
+        historyButton.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                e.translatePoint(WindowFrame.this.getLocation().x - x,WindowFrame.this.getLocation().y - y);
-                WindowFrame.this.setLocation(e.getX(),e.getY());
+                e.translatePoint(TaskBarFrame.this.getLocation().x - x,TaskBarFrame.this.getLocation().y - y);
+                TaskBarFrame.this.setLocation(e.getX(),e.getY());
             }
         });
-        button.setComponentPopupMenu(settingsMenu);
-        button.setFocusable(false);
+        JButton settingsButton = componentsFactory.getIconButton("app/settings.png", 26);
+        settingsButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)){
+                    SettingsFrame settingsFrame = new SettingsFrame();
+                    settingsFrame.setVisible(true);
+                }
+            }
+        });
+        settingsButton.setToolTipText("Settings");
+        JButton exitButton = componentsFactory.getIconButton("app/exit.png", 24);
+        exitButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.exit(0);
+            }
+        });
 
-        add(button);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        taskBarPanel.add(historyButton);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        taskBarPanel.add(settingsButton);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        taskBarPanel.add(exitButton);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        return taskBarPanel;
     }
     private void initSettingsContextMenu(){
         settingsMenu = new JPopupMenu("Popup");
@@ -112,8 +133,8 @@ public class WindowFrame extends OverlaidFrame {
         });
 
         EventRouter.registerHandler(RepaintEvent.class, event -> {
-            WindowFrame.this.revalidate();
-            WindowFrame.this.repaint();
+            TaskBarFrame.this.revalidate();
+            TaskBarFrame.this.repaint();
         });
 
         EventRouter.registerHandler(ChangeFrameVisibleEvent.class, new SCEventHandler<ChangeFrameVisibleEvent>() {
@@ -121,15 +142,15 @@ public class WindowFrame extends OverlaidFrame {
             public void handle(ChangeFrameVisibleEvent event) {
                 switch (event.getStates()){
                     case SHOW:{
-                        if(!WindowFrame.this.isShowing()) {
-                            WindowFrame.this.setVisible(true);
+                        if(!TaskBarFrame.this.isShowing()) {
+                            TaskBarFrame.this.setVisible(true);
                             messageFrame.setVisible(true);
                         }
                     }
                     break;
                     case HIDE:{
-                        if(WindowFrame.this.isShowing()) {
-                            WindowFrame.this.setVisible(false);
+                        if(TaskBarFrame.this.isShowing()) {
+                            TaskBarFrame.this.setVisible(false);
                             messageFrame.setVisible(false);
                         }
                     }

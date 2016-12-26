@@ -3,6 +3,7 @@ package com.mercury.platform.ui;
 
 import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.ui.components.ComponentsFactory;
+import com.mercury.platform.ui.misc.AppThemeColor;
 import org.pushingpixels.trident.Timeline;
 
 import javax.swing.*;
@@ -29,6 +30,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         setUndecorated(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBackground(AppThemeColor.FRAME);
         setOpacity(0.2f);
         setAlwaysOnTop(true);
         setFocusableWindowState(false);
@@ -40,7 +42,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                System.out.println("in");
+                OverlaidFrame.this.repaint();
                 if(OverlaidFrame.this.getOpacity() < 0.9f) {
                     hideAnimation.abort();
                     showAnimation.play();
@@ -49,16 +51,15 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                System.out.println("out");
-                if(!isMouseWithInFrame(e.getLocationOnScreen())){
+                if(!isMouseWithInFrame()){
                     showAnimation.abort();
                     hideAnimation.play();
                 }
             }
         });
     }
-    private boolean isMouseWithInFrame(Point locationOnScreen){
-        return this.getBounds().contains(locationOnScreen);
+    private boolean isMouseWithInFrame(){
+        return this.getBounds().contains(MouseInfo.getPointerInfo().getLocation());
     }
     private void initAnimationTimers(){
         showAnimation = new Timeline(this);
