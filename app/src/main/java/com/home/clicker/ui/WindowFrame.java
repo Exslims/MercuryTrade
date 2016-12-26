@@ -16,7 +16,7 @@ import java.awt.event.*;
 public class WindowFrame extends OverlaidFrame {
     private JPopupMenu settingsMenu;
     private HistoryContainerPanel history;
-    private MessageFrame frame;
+    private MessageFrame messageFrame;
 
     private int x;
     private int y;
@@ -37,7 +37,7 @@ public class WindowFrame extends OverlaidFrame {
         initSettingsContextMenu();
         initAppButton();
         initHistoryContainer();
-        frame = new MessageFrame();
+        messageFrame = new MessageFrame();
     }
 
     private void initHistoryContainer() {
@@ -120,12 +120,14 @@ public class WindowFrame extends OverlaidFrame {
                     case SHOW:{
                         if(!WindowFrame.this.isShowing()) {
                             WindowFrame.this.setVisible(true);
+                            messageFrame.setVisible(true);
                         }
                     }
                     break;
                     case HIDE:{
                         if(WindowFrame.this.isShowing()) {
                             WindowFrame.this.setVisible(false);
+                            messageFrame.setVisible(false);
                         }
                     }
                     break;

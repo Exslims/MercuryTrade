@@ -27,7 +27,7 @@ public class MessageFrame extends OverlaidFrame {
         super.init();
         setLayout(new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS));
         setBackground(new Color(42, 44, 43,230));
-        setSize(new Dimension(500,500));
+//        setSize(new Dimension(500,500));
 
         this.addMouseListener(new MouseAdapter() {
             @Override
