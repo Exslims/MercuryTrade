@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 public class CachedFilesUtils {
     private static String gamePath = "";
     private static final String CONFIG_PATH = System.getenv("USERPROFILE") + File.separator +
-            "AppData" + File.separator + "Local" + File.separator + "PoeShortCast";
+            "AppData" + File.separator + "Local" + File.separator + "MercuryTrader";
     public static final String CONFIG_FILE_NAME = CONFIG_PATH +  File.separator + "config.txt";
     public static String getGamePath() {
         File file = new File(CONFIG_FILE_NAME);
@@ -34,6 +34,11 @@ public class CachedFilesUtils {
             }
         }
         return gamePath;
+    }
+    public static boolean isValidPath(String gamePath){
+        System.out.println(gamePath);
+        File logsFile = new File(gamePath + File.separator + "logs" + File.separator +"Client.txt");
+        return logsFile.exists();
     }
 
     public static void setGamePath(String path){

@@ -7,6 +7,7 @@ import com.mercury.platform.shared.events.custom.ChangeFrameVisibleEvent;
 import com.mercury.platform.shared.events.custom.NewPatchSCEvent;
 import com.mercury.platform.shared.events.custom.RepaintEvent;
 import com.mercury.platform.ui.components.panel.HistoryContainerPanel;
+import com.mercury.platform.ui.components.test.TestCasesFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -21,6 +22,7 @@ public class TaskBarFrame extends OverlaidFrame {
     private JPopupMenu settingsMenu;
     private HistoryContainerPanel history;
     private MessageFrame messageFrame;
+    private TestCasesFrame testCasesFrame;
 
     private int x;
     private int y;
@@ -33,6 +35,7 @@ public class TaskBarFrame extends OverlaidFrame {
     @Override
     protected void init() {
         messageFrame = new MessageFrame();
+        testCasesFrame = new TestCasesFrame();
         super.init();
 //        setLayout(new BoxLayout(this.getContentPane(),BoxLayout.X_AXIS));
         getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
@@ -145,6 +148,7 @@ public class TaskBarFrame extends OverlaidFrame {
                         if(!TaskBarFrame.this.isShowing()) {
                             TaskBarFrame.this.setVisible(true);
                             messageFrame.setVisible(true);
+                            testCasesFrame.setVisible(true);
                         }
                     }
                     break;
@@ -152,6 +156,7 @@ public class TaskBarFrame extends OverlaidFrame {
                         if(TaskBarFrame.this.isShowing()) {
                             TaskBarFrame.this.setVisible(false);
                             messageFrame.setVisible(false);
+                            testCasesFrame.setVisible(false);
                         }
                     }
                     break;

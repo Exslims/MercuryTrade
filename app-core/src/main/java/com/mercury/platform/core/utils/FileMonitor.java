@@ -15,12 +15,12 @@ import java.io.File;
  * 08.12.2016
  */
 public class FileMonitor {
-    private static final long pollingInterval = 100;
+    private static final long POLLING_INTERVAL = 100;
     public FileMonitor() {
         File folder = new File(CachedFilesUtils.getGamePath() + File.separator + "logs");
 
         FileAlterationObserver observer = new FileAlterationObserver(folder);
-        FileAlterationMonitor monitor = new FileAlterationMonitor(pollingInterval);
+        FileAlterationMonitor monitor = new FileAlterationMonitor(POLLING_INTERVAL);
         FileAlterationListener listener = new FileAlterationListenerAdaptor(){
             @Override
             public void onFileChange(File file) {

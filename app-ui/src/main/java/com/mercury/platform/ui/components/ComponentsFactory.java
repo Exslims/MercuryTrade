@@ -1,6 +1,5 @@
 package com.mercury.platform.ui.components;
 
-import com.google.common.base.CharMatcher;
 import com.mercury.platform.ui.components.fields.label.FontStyle;
 import com.mercury.platform.ui.components.fields.label.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -13,8 +12,6 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -78,7 +75,7 @@ public class ComponentsFactory {
         button.setBackground(background);
         button.setForeground(AppThemeColor.TEXT_DEFAULT);
         button.setFocusPainted(false);
-        if(CharMatcher.ascii().matchesAllOf(text)){
+        if(isAscii(text)){
             button.setFont(getSelectedFont(fontStyle).deriveFont(fontSize));
         }else {
             button.setFont(DEFAULT_FONT.deriveFont(fontSize));
@@ -223,7 +220,7 @@ public class ComponentsFactory {
      */
     public JLabel getTextLabel(FontStyle fontStyle, Color frColor, TextAlignment alignment, float size, String text){
         JLabel label = new JLabel(text);
-        if(CharMatcher.ascii().matchesAllOf(text)){
+        if(isAscii(text)){
             label.setFont(getSelectedFont(fontStyle).deriveFont(size));
         }else {
             label.setFont(DEFAULT_FONT.deriveFont(size));
@@ -280,6 +277,18 @@ public class ComponentsFactory {
         return iconLabel;
     }
 
+    public JTextField getTextField(String text){
+        JTextField textField = new JTextField(text);
+        textField.setFont(DEFAULT_FONT);
+        textField.setForeground(AppThemeColor.TEXT_DEFAULT);
+        textField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.TEXT_DEFAULT,1),
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,3)
+        ));
+        textField.setBackground(AppThemeColor.TRANSPARENT);
+        return textField;
+    }
+
     private Font getSelectedFont(FontStyle fontStyle){
         switch (fontStyle) {
             case BOLD:
@@ -292,5 +301,16 @@ public class ComponentsFactory {
                 return SMALLCAPS_FONT;
         }
         return DEFAULT_FONT;
+    }
+    private boolean isAscii(CharSequence sequence){
+        for (int i = sequence.length() - 1; i >= 0; i--) {
+            if (!matches(sequence.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean matches(char c) {
+        return c <= '\u007f';
     }
 }

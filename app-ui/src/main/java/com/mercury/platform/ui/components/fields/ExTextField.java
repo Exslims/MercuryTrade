@@ -17,7 +17,7 @@ public class ExTextField extends JTextField {
     }
 
     private void init() {
-        this.setFont(new Font("Tahoma", Font.BOLD, 14));
+        this.setFont(new Font("Tahoma", Font.BOLD, 16));
         this.setForeground(AppThemeColor.TEXT_DEFAULT);
         this.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TEXT_DEFAULT,1),

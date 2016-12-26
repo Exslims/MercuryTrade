@@ -9,9 +9,6 @@ import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 
 /**
@@ -27,6 +24,7 @@ public class MessageFrame extends OverlaidFrame {
         super.init();
         setLayout(new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS));
         setVisible(false);
+        disableHideEffect(); // todo
     }
 
     @Override

@@ -131,34 +131,28 @@ public class MessagePanel extends JPanel {
 
         JPanel interactionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         interactionPanel.setBackground(AppThemeColor.TRANSPARENT);
-        JButton inviteButton = componentsFactory.getIconButton("app/invite.png", 12);
+        JButton inviteButton = componentsFactory.getIconButton("app/invite.png", 14);
         inviteButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 EventRouter.fireEvent(new ChatCommandEvent("/invite " + whisper));
-//                Timer timer = new Timer(500,null);
-//                timer.addActionListener(event -> {
-//                    EventRouter.fireEvent(new CopyToClipboardEvent(itemLabel.getText()));
-//                    timer.stop();
-//                });
-//                timer.start();
             }
         });
-        JButton kickButton = componentsFactory.getIconButton("app/kick.png", 12);
+        JButton kickButton = componentsFactory.getIconButton("app/kick.png", 14);
         kickButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 EventRouter.fireEvent(new ChatCommandEvent("/kick " + whisper));
             }
         });
-        JButton tradeButton = componentsFactory.getIconButton("app/trade.png",12);
+        JButton tradeButton = componentsFactory.getIconButton("app/trade.png",14);
         tradeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 EventRouter.fireEvent(new ChatCommandEvent("/tradewith " + whisper));
             }
         });
-        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png",12);
+        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png",14);
         openChatButton.setToolTipText("Open chat");
         openChatButton.addMouseListener(new MouseAdapter() {
             @Override

@@ -20,6 +20,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
 
     private Timeline hideAnimation;
     private Timeline showAnimation;
+    private HideEffectListener hideEffectListener = new HideEffectListener();
     protected ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
     protected OverlaidFrame(String title){
         super(title);
@@ -38,25 +39,15 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
 
         initHandlers();
         initAnimationTimers();
+        this.addMouseListener(hideEffectListener);
 
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                OverlaidFrame.this.repaint();
-                if(OverlaidFrame.this.getOpacity() < 0.9f) {
-                    hideAnimation.abort();
-                    showAnimation.play();
-                }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                if(!isMouseWithInFrame()){
-                    showAnimation.abort();
-                    hideAnimation.play();
-                }
-            }
-        });
+    }
+    protected void disableHideEffect(){
+        this.setOpacity(0.9f);
+        this.removeMouseListener(hideEffectListener);
+    }
+    protected void enableHideEffect(){
+        this.addMouseListener(hideEffectListener);
     }
     private boolean isMouseWithInFrame(){
         return this.getBounds().contains(MouseInfo.getPointerInfo().getLocation());
@@ -69,5 +60,23 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         hideAnimation = new Timeline(this);
         hideAnimation.setDuration(HIDE_TIME);
         hideAnimation.addPropertyToInterpolate("opacity",0.9f,0.2f);
+    }
+    private class HideEffectListener extends MouseAdapter {
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            OverlaidFrame.this.repaint();
+            if(OverlaidFrame.this.getOpacity() < 0.9f) {
+                hideAnimation.abort();
+                showAnimation.play();
+            }
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            if(!isMouseWithInFrame()){
+                showAnimation.abort();
+                hideAnimation.play();
+            }
+        }
     }
 }
