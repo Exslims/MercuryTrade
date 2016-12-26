@@ -3,39 +3,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>PoeShortCast</artifactId>
     <parent>
         <groupId>com.home.mercury</groupId>
         <artifactId>MercuryTrader</artifactId>
         <version>${project.version}</version>
     </parent>
     <packaging>jar</packaging>
+    <artifactId>app-ui</artifactId>
 
     <dependencies>
         <!--internal-->
-        <dependency>
-            <groupId>com.home.mercury</groupId>
-            <artifactId>app-ui</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <dependency>
             <groupId>com.home.mercury</groupId>
             <artifactId>app-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <!--external-->
-        <dependency>
-            <groupId>lc.kra.system</groupId>
-            <artifactId>system-hook</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.jna</groupId>
-            <artifactId>jna</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>platform</artifactId>
-        </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
@@ -44,10 +27,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -60,10 +39,6 @@
         <dependency>
             <groupId>org.pushingpixels</groupId>
             <artifactId>trident</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.arnabk</groupId>
-            <artifactId>pgslookandfeel</artifactId>
         </dependency>
         <dependency>
             <groupId>org.imgscalr</groupId>

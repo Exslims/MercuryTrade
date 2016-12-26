@@ -4,12 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.home.clicker</groupId>
-    <artifactId>Clicker</artifactId>
+    <groupId>com.home.mercury</groupId>
+    <artifactId>MercuryTrader</artifactId>
     <version>${project.version}</version>
 
     <modules>
         <module>app</module>
+        <module>app-ui</module>
+        <module>app-core</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -103,7 +105,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.home.clicker.AppMain</mainClass>
+                            <mainClass>com.mercury.platform.AppMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
