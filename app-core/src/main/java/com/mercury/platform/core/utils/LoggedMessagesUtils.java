@@ -1,6 +1,6 @@
 package com.mercury.platform.core.utils;
 
-import com.mercury.platform.shared.CachedFilesUtils;
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.FileChangeEvent;
 import com.mercury.platform.shared.events.custom.NewWhispersEvent;
@@ -24,7 +24,7 @@ import java.util.List;
 //TODO Cleanup Client.txt
 public class LoggedMessagesUtils {
     private final Logger logger = Logger.getLogger(LoggedMessagesUtils.class);
-    private final String logFilePath = CachedFilesUtils.getGamePath() + File.separator + "logs" + File.separator + "Client.txt";
+    private final String logFilePath = ConfigManager.INSTANCE.getProperty("gamePath") + File.separator + "logs" + File.separator + "Client.txt";
     private Date lastMessageDate = new Date();
 
     public LoggedMessagesUtils() {

@@ -1,6 +1,6 @@
 package com.mercury.platform.core.utils;
 
-import com.mercury.platform.shared.CachedFilesUtils;
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.FileChangeEvent;
 import org.apache.commons.io.monitor.FileAlterationListener;
@@ -17,7 +17,7 @@ import java.io.File;
 public class FileMonitor {
     private static final long POLLING_INTERVAL = 100;
     public FileMonitor() {
-        File folder = new File(CachedFilesUtils.getGamePath() + File.separator + "logs");
+        File folder = new File(ConfigManager.INSTANCE.getProperty("gamePath") + File.separator + "logs");
 
         FileAlterationObserver observer = new FileAlterationObserver(folder);
         FileAlterationMonitor monitor = new FileAlterationMonitor(POLLING_INTERVAL);

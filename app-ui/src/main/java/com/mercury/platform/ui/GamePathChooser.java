@@ -1,7 +1,7 @@
 package com.mercury.platform.ui;
 import com.mercury.platform.core.PrivateMessageManager;
 import com.mercury.platform.core.misc.PatchNotifier;
-import com.mercury.platform.shared.CachedFilesUtils;
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -12,12 +12,12 @@ import java.util.concurrent.Executors;
 /**
  * Created by Константин on 09.12.2016.
  */
-public class FileChooser extends OverlaidFrame {
+public class GamePathChooser extends OverlaidFrame {
     private String gamePath = "";
     private JFileChooser fileChooser;
     private JTextField textField;
     private JLabel errorLabel;
-    public FileChooser() {
+    public GamePathChooser() {
         super("Choose game path");
     }
 
@@ -39,20 +39,20 @@ public class FileChooser extends OverlaidFrame {
 
         JButton openButton = componentsFactory.getBorderedButton("Select");
         openButton.addActionListener(e -> {
-            int returnVal = fileChooser.showOpenDialog(FileChooser.this);
+            int returnVal = fileChooser.showOpenDialog(GamePathChooser.this);
             if(returnVal == JFileChooser.APPROVE_OPTION){
                 gamePath = fileChooser.getSelectedFile().getPath();
                 textField.setText(gamePath);
-                FileChooser.this.repaint();
+                GamePathChooser.this.repaint();
                 pack();
             }
         });
         JButton saveButton = componentsFactory.getBorderedButton("Save");
         saveButton.addActionListener(e -> {
-            if(CachedFilesUtils.isValidPath(gamePath)) {
-                CachedFilesUtils.setGamePath(gamePath);
-                FileChooser.this.setVisible(false);
-                ExecutorService executor = Executors.newFixedThreadPool(4);
+            if(ConfigManager.INSTANCE.isValidPath(gamePath)) {
+                ConfigManager.INSTANCE.saveGamePath(gamePath);
+                GamePathChooser.this.setVisible(false);
+                ExecutorService executor = Executors.newFixedThreadPool(3);
                 executor.execute(() -> SwingUtilities.invokeLater(TaskBarFrame::new));
                 executor.execute(PrivateMessageManager::new);
                 executor.execute(PatchNotifier::new);

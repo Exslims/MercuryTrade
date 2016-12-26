@@ -2,6 +2,7 @@ package com.mercury.platform.ui.components.panel;
 
 
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.PoeShortCastSettings;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.CloseFrameEvent;
@@ -110,7 +111,7 @@ public class SettingsPanel extends JPanel {
                 inputs.forEach((k,v)->{
                     buttonsConfig.put(k.getText(),v.getText());
                 });
-                CustomButtonFactory.saveNewButtonsConfig(buttonsConfig);
+                ConfigManager.INSTANCE.saveButtonsConfig(buttonsConfig);
 
                 switch (statusBox.getSelectedIndex()){
                     case 0:
@@ -144,7 +145,7 @@ public class SettingsPanel extends JPanel {
         return wnSettingPanel;
     }
     private JPanel getButtonsSettingsPanel(){
-        Map<String, String> buttonsConfig = CustomButtonFactory.getButtonsConfig();
+        Map<String, String> buttonsConfig = (Map<String, String>) ConfigManager.INSTANCE.getProperty("buttons");
         JPanel rootPanel = new JPanel(){
             @Override
             protected void paintComponent(Graphics g) {
