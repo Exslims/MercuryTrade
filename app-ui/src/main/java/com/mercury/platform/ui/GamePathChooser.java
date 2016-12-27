@@ -60,6 +60,7 @@ public class GamePathChooser extends OverlaidFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 GamePathChooser.this.setVisible(false);
+                System.exit(0);
             }
         });
         miscPanel.add(hideButton);

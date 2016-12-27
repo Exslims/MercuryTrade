@@ -80,15 +80,15 @@ public class ConfigManager {
                 Point messagePoint = new Point(
                         Integer.valueOf(String.valueOf(messageLocation.get("x"))),
                         Integer.valueOf(String.valueOf(messageLocation.get("y"))));
-                JSONObject gamePathLocation = (JSONObject) jsonObject.get("TaskBarFrame");
+                JSONObject gamePathLocation = (JSONObject) jsonObject.get("GamePathChooser");
                 Point gamePathPoint = new Point(
                         Integer.valueOf(String.valueOf(gamePathLocation.get("x"))),
                         Integer.valueOf(String.valueOf(gamePathLocation.get("y"))));
-                JSONObject settingsLocation = (JSONObject) jsonObject.get("TaskBarFrame");
+                JSONObject settingsLocation = (JSONObject) jsonObject.get("SettingsFrame");
                 Point settingsPoint = new Point(
                         Integer.valueOf(String.valueOf(settingsLocation.get("x"))),
                         Integer.valueOf(String.valueOf(settingsLocation.get("y"))));
-                JSONObject historyLocation = (JSONObject) jsonObject.get("TaskBarFrame");
+                JSONObject historyLocation = (JSONObject) jsonObject.get("HistoryFrame");
                 Point historyPoint = new Point(
                         Integer.valueOf(String.valueOf(historyLocation.get("x"))),
                         Integer.valueOf(String.valueOf(historyLocation.get("y"))));
