@@ -36,7 +36,7 @@ public class PrivateMessageManager implements HasEventHandlers {
 
     public PrivateMessageManager() {
         GlobalKeyAdapter adapter = getAdapter();
-        this.adapter = adapter;
+//        this.adapter = adapter;
         initHandlers();
 
         keyboardHook.addKeyListener(adapter);
@@ -58,8 +58,7 @@ public class PrivateMessageManager implements HasEventHandlers {
                 byte[] windowText = new byte[512];
                 PointerType hwnd = user32.GetForegroundWindow();
                 User32.INSTANCE.GetWindowTextA(hwnd, windowText, 512);
-                if(!Native.toString(windowText).equals("Path of Exile") &&
-                        !Native.toString(windowText).equals("PoeShortCast")){
+                if(!Native.toString(windowText).equals("Path of Exile")){
                     EventRouter.fireEvent(new ChangeFrameVisibleEvent(FrameStates.HIDE));
                     PoeShortCastSettings.APP_STATUS = FrameStates.HIDE;
                 }else{
@@ -148,7 +147,7 @@ public class PrivateMessageManager implements HasEventHandlers {
                     }
                     break;
                     case GlobalKeyEvent.VK_2:{
-//                        useAllFlasks();
+                        useAllFlasks();
                     }
                     break;
                 }

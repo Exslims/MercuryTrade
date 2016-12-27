@@ -26,10 +26,6 @@ public class TaskBarFrame extends OverlaidFrame {
     private TestCasesFrame testCasesFrame;
     private HistoryFrame historyFrame;
 
-    private int x;
-    private int y;
-
-
     public TaskBarFrame() {
         super("PoeShortCast");
     }
@@ -80,11 +76,6 @@ public class TaskBarFrame extends OverlaidFrame {
                 e.translatePoint(TaskBarFrame.this.getLocation().x - x,TaskBarFrame.this.getLocation().y - y);
                 TaskBarFrame.this.setLocation(e.getX(),e.getY());
                 configManager.saveComponentLocation(TaskBarFrame.this.getClass().getSimpleName(),TaskBarFrame.this.getLocation());
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                System.out.println("released");
             }
         });
         JButton settingsButton = componentsFactory.getIconButton("app/settings.png", 26);

@@ -6,7 +6,6 @@ import com.mercury.platform.shared.events.custom.RepaintEvent;
 import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
-import com.mercury.platform.ui.components.test.TestCasesFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -20,8 +19,6 @@ import java.util.List;
  */
 public class HistoryFrame extends OverlaidFrame {
     private JPanel messagesContainer;
-    private int x;
-    private int y;
 
     public HistoryFrame() {
         super("History");
@@ -96,7 +93,6 @@ public class HistoryFrame extends OverlaidFrame {
             for (Message message : messages) {
                 MessagePanel messagePanel = new MessagePanel(message.getWhisperNickname(), message.getMessage(), MessagePanelStyle.HISTORY);
                 messagesContainer.add(messagePanel);
-                System.out.println("in history");
             }
             this.repaint();
             this.pack();

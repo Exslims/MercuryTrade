@@ -19,6 +19,8 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     private final int HIDE_TIME = 200;
     private final int SHOW_TIME = 150;
 
+    protected int x;
+    protected int y;
     private Timeline hideAnimation;
     private Timeline showAnimation;
     private HideEffectListener hideEffectListener = new HideEffectListener();

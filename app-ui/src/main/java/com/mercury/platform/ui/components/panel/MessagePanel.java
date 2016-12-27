@@ -71,7 +71,7 @@ public class MessagePanel extends JPanel {
                 this.add(getWhisperPanel(),BorderLayout.PAGE_START);
                 this.add(getFormattedMessagePanel(),BorderLayout.CENTER);
                 JPanel buttonsPanel = CustomButtonFactory.getButtonsPanel(whisper);
-                JButton stillIntButton = componentsFactory.getBorderedButton("still interested?");
+                JButton stillIntButton = componentsFactory.getBorderedButton("interested?");
                 stillIntButton.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mousePressed(MouseEvent e) {
@@ -198,24 +198,6 @@ public class MessagePanel extends JPanel {
 
         topPanel.add(interactionPanel,BorderLayout.LINE_END);
         return topPanel;
-    }
-
-    private JPanel getHistoryPanel(){
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(AppThemeColor.TRANSPARENT);
-
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setBackground(AppThemeColor.TRANSPARENT);
-        JButton stillIntButton = componentsFactory.getBorderedButton("still interesting?");
-        stillIntButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                EventRouter.fireEvent(new ChatCommandEvent("@" + whisper + " " + "Hey, are u still interested " + parsedMessage.get("itemName") + "?"));
-            }
-        });
-        buttonsPanel.add(stillIntButton);
-        panel.add(buttonsPanel,BorderLayout.CENTER);
-        return panel;
     }
     private JPanel getTimePanel(){
         JPanel panel = new JPanel();

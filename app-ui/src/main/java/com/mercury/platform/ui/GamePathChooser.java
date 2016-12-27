@@ -6,6 +6,10 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -14,8 +18,6 @@ import java.util.concurrent.Executors;
  */
 public class GamePathChooser extends OverlaidFrame {
     private String gamePath = "";
-    private JFileChooser fileChooser;
-    private JTextField textField;
     private JLabel errorLabel;
     public GamePathChooser() {
         super("Choose game path");
@@ -26,19 +28,77 @@ public class GamePathChooser extends OverlaidFrame {
         super.init();
         setLayout(new BorderLayout());
         this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
-        errorLabel = componentsFactory.getTextLabel("");
-        errorLabel.setForeground(AppThemeColor.TEXT_IMPORTANT);
+
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setBackground(AppThemeColor.TRANSPARENT);
+        topPanel.setBorder(BorderFactory.createEmptyBorder(-6,0,-6,0));
 
         JLabel title = componentsFactory.getTextLabel("Choose game path");
         title.setHorizontalAlignment(SwingConstants.CENTER);
-        this.add(title,BorderLayout.PAGE_START);
+        title.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                x = e.getX();
+                y = e.getY();
+            }
+        });
+        title.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                e.translatePoint(GamePathChooser.this.getLocation().x - x,GamePathChooser.this.getLocation().y - y);
+                GamePathChooser.this.setLocation(e.getX(),e.getY());
+                configManager.saveComponentLocation(GamePathChooser.this.getClass().getSimpleName(),GamePathChooser.this.getLocation());
+            }
+        });
+        topPanel.add(title,BorderLayout.CENTER);
 
-        fileChooser = new JFileChooser();
-        fileChooser.setBackground(AppThemeColor.FRAME);
-        textField = componentsFactory.getTextField("For example: C:/POE");
+        JPanel miscPanel = new JPanel();
+        miscPanel.setBackground(AppThemeColor.TRANSPARENT);
 
-        JButton openButton = componentsFactory.getBorderedButton("Select");
-        openButton.addActionListener(e -> {
+        JButton hideButton = componentsFactory.getIconButton("app/close.png",12);
+        hideButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                GamePathChooser.this.setVisible(false);
+            }
+        });
+        miscPanel.add(hideButton);
+        topPanel.add(miscPanel,BorderLayout.LINE_END);
+        this.add(topPanel,BorderLayout.PAGE_START);
+        this.add(getChooserPanel(),BorderLayout.CENTER);
+        this.add(getMiscPanel(),BorderLayout.PAGE_END);
+
+        disableHideEffect();
+        pack();
+    }
+
+    private JPanel getChooserPanel(){
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(AppThemeColor.TRANSPARENT);
+
+        errorLabel = componentsFactory.getTextLabel("");
+        errorLabel.setForeground(AppThemeColor.TEXT_IMPORTANT);
+        errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        panel.add(errorLabel,BorderLayout.CENTER);
+
+        JPanel chooserPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        chooserPanel.setBackground(AppThemeColor.TRANSPARENT);
+
+        JTextField textField = componentsFactory.getTextField("For example: C:/POE");
+        textField.setPreferredSize(new Dimension(500,26));
+        textField.setMinimumSize(new Dimension(500,26));
+        textField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                GamePathChooser.this.repaint();
+            }
+        });
+        chooserPanel.add(textField);
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        JButton selectButton = componentsFactory.getBorderedButton("Select");
+        selectButton.addActionListener(e -> {
             int returnVal = fileChooser.showOpenDialog(GamePathChooser.this);
             if(returnVal == JFileChooser.APPROVE_OPTION){
                 gamePath = fileChooser.getSelectedFile().getPath();
@@ -47,36 +107,52 @@ public class GamePathChooser extends OverlaidFrame {
                 pack();
             }
         });
-        JButton saveButton = componentsFactory.getBorderedButton("Save");
-        saveButton.addActionListener(e -> {
-            if(ConfigManager.INSTANCE.isValidPath(gamePath)) {
-                ConfigManager.INSTANCE.saveGamePath(gamePath);
-                GamePathChooser.this.setVisible(false);
-                ExecutorService executor = Executors.newFixedThreadPool(3);
-                executor.execute(() -> SwingUtilities.invokeLater(TaskBarFrame::new));
-                executor.execute(PrivateMessageManager::new);
-                executor.execute(PatchNotifier::new);
-            }else {
-                errorLabel.setText("Wrong game path!");
-                pack();
-            }
-        });
-        JPanel selectPanel = new JPanel();
-        selectPanel.setBackground(AppThemeColor.TRANSPARENT);
-
-        selectPanel.add(textField);
-        selectPanel.add(openButton);
-        selectPanel.add(saveButton);
-
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        disableHideEffect();
-        this.add(selectPanel,BorderLayout.CENTER);
-        this.add(errorLabel,BorderLayout.PAGE_END);
-        pack();
+        chooserPanel.add(selectButton);
+        panel.add(chooserPanel,BorderLayout.PAGE_START);
+        return panel;
     }
 
+    private JPanel getMiscPanel() {
+        JPanel miscPanel = new JPanel();
+        miscPanel.setBackground(AppThemeColor.TRANSPARENT);
+
+        JButton saveButton = componentsFactory.getBorderedButton("Save");
+        saveButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(ConfigManager.INSTANCE.isValidPath(gamePath)) {
+                    errorLabel.setText("Success!");
+                    errorLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
+                    GamePathChooser.this.repaint();
+                    Timer timer = new Timer(1000, null);
+                    timer.addActionListener(actionEvent -> {
+                        ConfigManager.INSTANCE.saveGamePath(gamePath);
+                        GamePathChooser.this.setVisible(false);
+                        ExecutorService executor = Executors.newFixedThreadPool(3);
+                        executor.execute(() -> SwingUtilities.invokeLater(TaskBarFrame::new));
+                        executor.execute(PrivateMessageManager::new);
+                        executor.execute(PatchNotifier::new);
+                        timer.stop();
+                    });
+                    timer.start();
+                }else {
+                    errorLabel.setText("Wrong game path...");
+                    pack();
+                }
+            }
+        });
+        JButton closeButton = componentsFactory.getBorderedButton("Close");
+        closeButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.exit(0);
+            }
+        });
+        miscPanel.add(saveButton);
+        miscPanel.add(closeButton);
+        return miscPanel;
+    }
     @Override
     public void initHandlers() {
-
     }
 }
