@@ -21,8 +21,8 @@ public class EventRouter {
         List<SCEventHandler> scEventHandlers = eventHandlerMap.get(eventClass);
         if(scEventHandlers == null){
             scEventHandlers = new ArrayList<>();
-            scEventHandlers.add(handler);
         }
+        scEventHandlers.add(handler);
         eventHandlerMap.put(eventClass,scEventHandlers);
     }
     public static void clear(Class eventClass){

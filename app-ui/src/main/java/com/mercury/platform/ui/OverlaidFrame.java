@@ -44,6 +44,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         this.addMouseListener(hideEffectListener);
 
         this.setLocation((Point) configManager.getProperty(this.getClass().getSimpleName()));
+        this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
 
     }
     protected void disableHideEffect(){

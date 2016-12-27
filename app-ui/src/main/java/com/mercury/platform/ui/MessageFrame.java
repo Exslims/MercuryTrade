@@ -35,7 +35,7 @@ public class MessageFrame extends OverlaidFrame {
         EventRouter.registerHandler(NewWhispersEvent.class, event -> {
             List<Message> messages = ((NewWhispersEvent) event).getMessages();
             for (Message message : messages) {
-                MessagePanel messagePanel = new MessagePanel(message.getWhisperNickname(), message.getMessage(), MessagePanelStyle.HISTORY);
+                MessagePanel messagePanel = new MessagePanel(message.getWhisperNickname(), message.getMessage(), MessagePanelStyle.BIGGEST);
                 this.add(messagePanel);
             }
             this.pack();
@@ -43,10 +43,6 @@ public class MessageFrame extends OverlaidFrame {
         EventRouter.registerHandler(CloseMessagePanelEvent.class, event -> {
             this.remove(((CloseMessagePanelEvent) event).getComponent());
             this.pack();
-        });
-        EventRouter.registerHandler(RepaintEvent.class, event -> {
-            this.revalidate();
-            this.repaint();
         });
         EventRouter.registerHandler(DraggedMessageFrameEvent.class, event -> {
             int x = ((DraggedMessageFrameEvent) event).getX();

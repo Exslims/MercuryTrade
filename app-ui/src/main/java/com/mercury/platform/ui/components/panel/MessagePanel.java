@@ -51,7 +51,6 @@ public class MessagePanel extends JPanel {
     private void init(){
         this.removeAll();
         this.setBackground(AppThemeColor.TRANSPARENT);
-        this.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
         switch (style){
             case SMALL:{
                 this.add(getWhisperPanel(),BorderLayout.PAGE_START);
@@ -71,7 +70,16 @@ public class MessagePanel extends JPanel {
             case HISTORY:{
                 this.add(getWhisperPanel(),BorderLayout.PAGE_START);
                 this.add(getFormattedMessagePanel(),BorderLayout.CENTER);
-                this.add(getHistoryPanel(),BorderLayout.PAGE_END);
+                JPanel buttonsPanel = CustomButtonFactory.getButtonsPanel(whisper);
+                JButton stillIntButton = componentsFactory.getBorderedButton("still interested?");
+                stillIntButton.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        EventRouter.fireEvent(new ChatCommandEvent("@" + whisper + " " + "Hey, are u still interested in " + parsedMessage.get("itemName") + "?"));
+                    }
+                });
+                buttonsPanel.add(stillIntButton,0);
+                this.add(buttonsPanel,BorderLayout.PAGE_END);
                 break;
             }
         }
@@ -165,7 +173,7 @@ public class MessagePanel extends JPanel {
                 EventRouter.fireEvent(new ChatCommandEvent("/tradewith " + whisper));
             }
         });
-        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png",14);
+        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png",15);
         openChatButton.setToolTipText("Open chat");
         openChatButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -173,7 +181,7 @@ public class MessagePanel extends JPanel {
                 EventRouter.fireEvent(new OpenChatEvent(whisper));
             }
         });
-        JButton hideButton = componentsFactory.getIconButton("app/close.png",12);
+        JButton hideButton = componentsFactory.getIconButton("app/close.png", 14);
         hideButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -184,7 +192,9 @@ public class MessagePanel extends JPanel {
         interactionPanel.add(kickButton);
         interactionPanel.add(tradeButton);
         interactionPanel.add(openChatButton);
-        interactionPanel.add(hideButton);
+        if(!style.equals(MessagePanelStyle.HISTORY)) {
+            interactionPanel.add(hideButton);
+        }
 
         topPanel.add(interactionPanel,BorderLayout.LINE_END);
         return topPanel;
@@ -200,7 +210,7 @@ public class MessagePanel extends JPanel {
         stillIntButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.fireEvent(new ChatCommandEvent("@" + whisper + " " + "Hey, are u still interesting " + parsedMessage.get("itemName") + "?"));
+                EventRouter.fireEvent(new ChatCommandEvent("@" + whisper + " " + "Hey, are u still interested " + parsedMessage.get("itemName") + "?"));
             }
         });
         buttonsPanel.add(stillIntButton);

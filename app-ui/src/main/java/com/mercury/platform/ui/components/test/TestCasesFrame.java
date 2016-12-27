@@ -30,7 +30,6 @@ public class TestCasesFrame extends OverlaidFrame {
     protected void init() {
         super.init();
         setLayout(new BorderLayout());
-        getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
         JPanel topPanel = new JPanel();
         topPanel.setBackground(AppThemeColor.TRANSPARENT);
         JLabel title = componentsFactory.getTextLabel("Test cases");

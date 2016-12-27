@@ -24,6 +24,7 @@ public class TaskBarFrame extends OverlaidFrame {
     private HistoryContainerPanel history;
     private MessageFrame messageFrame;
     private TestCasesFrame testCasesFrame;
+    private HistoryFrame historyFrame;
 
     private int x;
     private int y;
@@ -37,9 +38,10 @@ public class TaskBarFrame extends OverlaidFrame {
     protected void init() {
         messageFrame = new MessageFrame();
         testCasesFrame = new TestCasesFrame();
+        historyFrame = new HistoryFrame();
         super.init();
-        getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
         add(getTaskBarPanel());
+        disableHideEffect();
         pack();
 
     }
@@ -57,6 +59,15 @@ public class TaskBarFrame extends OverlaidFrame {
 
         JButton historyButton = componentsFactory.getIconButton("app/history.png",24);
         historyButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(!historyFrame.isVisible()) {
+                    historyFrame.setVisible(true);
+                }else {
+                    historyFrame.setVisible(false);
+                }
+            }
+
             @Override
             public void mousePressed(MouseEvent e) {
                 x = e.getX();
@@ -132,6 +143,7 @@ public class TaskBarFrame extends OverlaidFrame {
                             TaskBarFrame.this.setVisible(true);
                             messageFrame.setVisible(true);
                             testCasesFrame.setVisible(true);
+                            historyFrame.setVisible(true);
                         }
                     }
                     break;
@@ -140,6 +152,7 @@ public class TaskBarFrame extends OverlaidFrame {
                             TaskBarFrame.this.setVisible(false);
                             messageFrame.setVisible(false);
                             testCasesFrame.setVisible(false);
+                            historyFrame.setVisible(false);
                         }
                     }
                     break;

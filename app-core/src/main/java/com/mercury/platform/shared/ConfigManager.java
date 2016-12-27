@@ -23,7 +23,8 @@ public class ConfigManager {
     }
     public static ConfigManager INSTANCE = ConfigManagerHolder.HOLDER_INSTANCE;
 
-    private final String CONFIG_FILE_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrader\\app-config.json";
+    private final String CONFIG_FILE_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrader";
+    private final String CONFIG_FILE = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrader\\app-config.json";
     private Map<String,Object> properties = new HashMap<>();
     private Map<String, Timer> componentsTimers = new HashMap<>();
     private Map<String, PointListener> componentsPointListeners = new HashMap<>();
@@ -35,10 +36,11 @@ public class ConfigManager {
      * Loading application data from app-config.json file. If file does not exist, created and filled by default.
      */
     private void load(){
-        File configFile = new File(CONFIG_FILE_PATH);
+        File configFile = new File(CONFIG_FILE);
         if(!configFile.exists()){
             try {
-                FileWriter fileWriter = new FileWriter(CONFIG_FILE_PATH);
+                new File(CONFIG_FILE_PATH).mkdir();
+                FileWriter fileWriter = new FileWriter(CONFIG_FILE);
                 fileWriter.write(new JSONObject().toJSONString());
                 fileWriter.flush();
                 fileWriter.close();
@@ -49,6 +51,7 @@ public class ConfigManager {
                 saveComponentLocation("GamePathChooser",new Point(600,500));
                 saveComponentLocation("TestCasesFrame",new Point(900,500));
                 saveComponentLocation("SettingsFrame",new Point(600,600));
+                saveComponentLocation("HistoryFrame",new Point(600,600));
             } catch (IOException e) {
                 logger.error(e);
             }
@@ -85,6 +88,10 @@ public class ConfigManager {
                 Point settingsPoint = new Point(
                         Integer.valueOf(String.valueOf(settingsLocation.get("x"))),
                         Integer.valueOf(String.valueOf(settingsLocation.get("y"))));
+                JSONObject historyLocation = (JSONObject) jsonObject.get("TaskBarFrame");
+                Point historyPoint = new Point(
+                        Integer.valueOf(String.valueOf(historyLocation.get("x"))),
+                        Integer.valueOf(String.valueOf(historyLocation.get("y"))));
 
                 //removing
                 JSONObject testLocation = (JSONObject) jsonObject.get("TestCasesFrame");
@@ -98,6 +105,7 @@ public class ConfigManager {
                 properties.put("MessageFrame",messagePoint);
                 properties.put("GamePathChooser",gamePathPoint);
                 properties.put("SettingsFrame",settingsPoint);
+                properties.put("HistoryFrame",historyPoint);
                 //removing
                 properties.put("TestCasesFrame",testPoint);
             } catch (Exception e) {
@@ -189,14 +197,14 @@ public class ConfigManager {
     private void saveProperty(String token, Object jsonObject){
         JSONParser parser = new JSONParser();
         try {
-            JSONObject root = (JSONObject) parser.parse(new FileReader(CONFIG_FILE_PATH));
+            JSONObject root = (JSONObject) parser.parse(new FileReader(CONFIG_FILE));
             Object obj = root.get(token);
             if(obj != null){
                 root.replace(token,jsonObject);
             }else {
                 root.put(token,jsonObject);
             }
-            FileWriter fileWriter = new FileWriter(CONFIG_FILE_PATH);
+            FileWriter fileWriter = new FileWriter(CONFIG_FILE);
             fileWriter.write(root.toJSONString());
             fileWriter.flush();
             fileWriter.close();
