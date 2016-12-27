@@ -10,8 +10,7 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.List;
 
 /**
@@ -19,6 +18,7 @@ import java.util.List;
  */
 public class HistoryFrame extends OverlaidFrame {
     private JPanel messagesContainer;
+    private JScrollPane scrollPane;
 
     public HistoryFrame() {
         super("History");
@@ -27,8 +27,6 @@ public class HistoryFrame extends OverlaidFrame {
     @Override
     protected void init() {
         super.init();
-
-        this.setVisible(false);
         disableHideEffect(); // todo
         this.setLayout(new BorderLayout());
         this.setSize(new Dimension(400,22));
@@ -37,7 +35,24 @@ public class HistoryFrame extends OverlaidFrame {
         messagesContainer.setBackground(AppThemeColor.TRANSPARENT);
         messagesContainer.setLayout(new BoxLayout(messagesContainer,BoxLayout.Y_AXIS));
         add(getTopPanel(),BorderLayout.PAGE_START);
-        add(messagesContainer,BorderLayout.CENTER);
+
+        scrollPane = new JScrollPane(messagesContainer);
+        scrollPane.setBorder(null);
+        scrollPane.setBackground(AppThemeColor.FRAME);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.addMouseWheelListener(new MouseAdapter() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                HistoryFrame.this.repaint();
+            }
+        });
+        JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+        verticalScrollBar.setBackground(AppThemeColor.FRAME);
+        verticalScrollBar.setUnitIncrement(2);
+        verticalScrollBar.setBorder(null);
+        verticalScrollBar.addAdjustmentListener(e -> HistoryFrame.this.repaint());
+
+        add(scrollPane,BorderLayout.CENTER);
         pack();
     }
     private JPanel getTopPanel(){
@@ -72,6 +87,8 @@ public class HistoryFrame extends OverlaidFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 messagesContainer.removeAll();
+                HistoryFrame.this.setSize(new Dimension(400,22));
+                scrollPane.setSize(new Dimension(HistoryFrame.this.getSize().width, HistoryFrame.this.getSize().height));
                 HistoryFrame.this.pack();
             }
         });
@@ -95,9 +112,15 @@ public class HistoryFrame extends OverlaidFrame {
             for (Message message : messages) {
                 MessagePanel messagePanel = new MessagePanel(message.getWhisperNickname(), message.getMessage(), MessagePanelStyle.HISTORY);
                 messagesContainer.add(messagePanel);
+                if(this.getSize().height > 600) {
+                    scrollPane.setPreferredSize(new Dimension(this.getSize().width, 600));
+                    scrollPane.setSize(new Dimension(this.getSize().width, 600));
+                }else {
+                    scrollPane.setSize(new Dimension(this.getSize().width, this.getSize().height));
+                }
+                this.repaint();
+                this.pack();
             }
-            this.repaint();
-            this.pack();
         });
         EventRouter.registerHandler(RepaintEvent.class, event -> {
             this.revalidate();
