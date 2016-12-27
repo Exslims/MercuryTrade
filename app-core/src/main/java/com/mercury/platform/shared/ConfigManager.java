@@ -58,7 +58,7 @@ public class ConfigManager {
         }else {
             JSONParser parser = new JSONParser();
             try {
-                Object obj = parser.parse(new FileReader(CONFIG_FILE_PATH));
+                Object obj = parser.parse(new FileReader(CONFIG_FILE));
                 JSONObject jsonObject = (JSONObject) obj;
                 String gamePath = (String) jsonObject.get("gamePath");
 
