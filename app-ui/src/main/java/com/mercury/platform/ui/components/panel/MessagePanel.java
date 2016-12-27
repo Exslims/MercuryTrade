@@ -200,7 +200,7 @@ public class MessagePanel extends JPanel {
         stillIntButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.fireEvent(new ChatCommandEvent("@" + whisper + " " + "Hey, are u still interesting " + parsedMessage.get("itemName")));
+                EventRouter.fireEvent(new ChatCommandEvent("@" + whisper + " " + "Hey, are u still interesting " + parsedMessage.get("itemName") + "?"));
             }
         });
         buttonsPanel.add(stillIntButton);

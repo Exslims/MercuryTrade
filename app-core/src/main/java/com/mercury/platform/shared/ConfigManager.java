@@ -48,6 +48,7 @@ public class ConfigManager {
                 saveComponentLocation("MessageFrame",new Point(700,500));
                 saveComponentLocation("GamePathChooser",new Point(600,500));
                 saveComponentLocation("TestCasesFrame",new Point(900,500));
+                saveComponentLocation("SettingsFrame",new Point(600,600));
             } catch (IOException e) {
                 logger.error(e);
             }
@@ -80,6 +81,10 @@ public class ConfigManager {
                 Point gamePathPoint = new Point(
                         Integer.valueOf(String.valueOf(gamePathLocation.get("x"))),
                         Integer.valueOf(String.valueOf(gamePathLocation.get("y"))));
+                JSONObject settingsLocation = (JSONObject) jsonObject.get("TaskBarFrame");
+                Point settingsPoint = new Point(
+                        Integer.valueOf(String.valueOf(settingsLocation.get("x"))),
+                        Integer.valueOf(String.valueOf(settingsLocation.get("y"))));
 
                 //removing
                 JSONObject testLocation = (JSONObject) jsonObject.get("TestCasesFrame");
@@ -92,6 +97,7 @@ public class ConfigManager {
                 properties.put("TaskBarFrame",taskBarPoint);
                 properties.put("MessageFrame",messagePoint);
                 properties.put("GamePathChooser",gamePathPoint);
+                properties.put("SettingsFrame",settingsPoint);
                 //removing
                 properties.put("TestCasesFrame",testPoint);
             } catch (Exception e) {

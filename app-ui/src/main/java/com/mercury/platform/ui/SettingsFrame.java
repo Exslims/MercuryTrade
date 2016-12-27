@@ -1,12 +1,12 @@
 package com.mercury.platform.ui;
 
 
-import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.CloseFrameEvent;
 import com.mercury.platform.shared.events.custom.DraggedWindowEvent;
 import com.mercury.platform.shared.events.custom.RepaintEvent;
 import com.mercury.platform.ui.components.panel.SettingsPanel;
+import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,27 +14,17 @@ import java.awt.*;
 /**
  * Created by Константин on 16.12.2016.
  */
-public class SettingsFrame extends JFrame implements HasEventHandlers {
+public class SettingsFrame extends OverlaidFrame {
     public SettingsFrame(){
         super("Settings");
         setLayout(new FlowLayout());
-        getRootPane().setOpaque(false);
-        setUndecorated(true);
-        setSize(800, 500);
-
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setBackground(new Color(0, 0, 0, 0));
-        setOpacity(0.9f);
-        setAlwaysOnTop(true);
         setFocusableWindowState(true);
         setFocusable(true);
 
         SettingsPanel settingsPanel = new SettingsPanel();
-        settingsPanel.setLocation(500,500);
         this.add(settingsPanel);
-
-        initHandlers();
+        this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
+        pack();
     }
 
     @Override
@@ -53,6 +43,7 @@ public class SettingsFrame extends JFrame implements HasEventHandlers {
             int x = ((DraggedWindowEvent) event).getX();
             int y = ((DraggedWindowEvent) event).getY();
             SettingsFrame.this.setLocation(x,y);
+            configManager.saveComponentLocation(this.getClass().getSimpleName(),SettingsFrame.this.getLocation());
         });
     }
 }
