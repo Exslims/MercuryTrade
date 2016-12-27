@@ -1,6 +1,7 @@
 package com.mercury.platform.ui;
 
 
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.SCEventHandler;
 import com.mercury.platform.shared.events.custom.ChangeFrameVisibleEvent;
@@ -37,10 +38,10 @@ public class TaskBarFrame extends OverlaidFrame {
         messageFrame = new MessageFrame();
         testCasesFrame = new TestCasesFrame();
         super.init();
-//        setLayout(new BoxLayout(this.getContentPane(),BoxLayout.X_AXIS));
         getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
         add(getTaskBarPanel());
         pack();
+
     }
 
     private void initHistoryContainer() {
@@ -67,6 +68,12 @@ public class TaskBarFrame extends OverlaidFrame {
             public void mouseDragged(MouseEvent e) {
                 e.translatePoint(TaskBarFrame.this.getLocation().x - x,TaskBarFrame.this.getLocation().y - y);
                 TaskBarFrame.this.setLocation(e.getX(),e.getY());
+                configManager.saveComponentLocation(TaskBarFrame.this.getClass().getSimpleName(),TaskBarFrame.this.getLocation());
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                System.out.println("released");
             }
         });
         JButton settingsButton = componentsFactory.getIconButton("app/settings.png", 26);

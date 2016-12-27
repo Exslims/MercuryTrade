@@ -1,5 +1,6 @@
 package com.mercury.platform.ui;
 
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.CloseMessagePanelEvent;
 import com.mercury.platform.shared.events.custom.DraggedMessageFrameEvent;
@@ -9,6 +10,7 @@ import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -45,6 +47,7 @@ public class MessageFrame extends OverlaidFrame {
             int x = ((DraggedMessageFrameEvent) event).getX();
             int y = ((DraggedMessageFrameEvent) event).getY();
             MessageFrame.this.setLocation(x,y);
+            configManager.saveComponentLocation(this.getClass().getSimpleName(),this.getLocation());
         });
     }
 }

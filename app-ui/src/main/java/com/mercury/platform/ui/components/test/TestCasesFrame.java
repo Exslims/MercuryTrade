@@ -50,6 +50,7 @@ public class TestCasesFrame extends OverlaidFrame {
             public void mouseDragged(MouseEvent e) {
                 e.translatePoint(TestCasesFrame.this.getLocation().x - x,TestCasesFrame.this.getLocation().y - y);
                 TestCasesFrame.this.setLocation(e.getX(),e.getY());
+                configManager.saveComponentLocation(TestCasesFrame.this.getClass().getSimpleName(),TestCasesFrame.this.getLocation());
             }
         });
         add(getTestCasesPanel(), BorderLayout.CENTER);

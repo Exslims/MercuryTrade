@@ -1,6 +1,7 @@
 package com.mercury.platform.ui;
 
 
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -22,6 +23,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     private Timeline showAnimation;
     private HideEffectListener hideEffectListener = new HideEffectListener();
     protected ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
+    protected ConfigManager configManager = ConfigManager.INSTANCE;
     protected OverlaidFrame(String title){
         super(title);
         init();
@@ -40,6 +42,9 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         initHandlers();
         initAnimationTimers();
         this.addMouseListener(hideEffectListener);
+
+        System.out.println(this.getClass().getSimpleName());
+        this.setLocation((Point) configManager.getProperty(this.getClass().getSimpleName()));
 
     }
     protected void disableHideEffect(){
