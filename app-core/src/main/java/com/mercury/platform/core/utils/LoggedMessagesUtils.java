@@ -76,16 +76,14 @@ public class LoggedMessagesUtils {
                 if(wNickname.contains(">")){
                     wNickname = StringUtils.substringAfterLast(wNickname, ">");
                 }
-                Message message = new Message(wNickname,content);
+                Message message = new Message(wNickname,StringUtils.substring(fullMessage, 0, 20) + " " + content);
                 messages.add(message);
             }
         }
         Date date = new Date(StringUtils.substring(stubMessages.get(0), 0, 20));
-        if(date.after(lastMessageDate)){
+        if(date.after(lastMessageDate) && messages.size() != 0){
             EventRouter.fireEvent(new WhisperNotificationEvent());
             lastMessageDate = date;
-        }
-        if(messages.size() != 0) {
             EventRouter.fireEvent(new NewWhispersEvent(messages));
         }
     }

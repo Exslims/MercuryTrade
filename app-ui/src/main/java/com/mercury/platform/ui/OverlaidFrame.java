@@ -43,7 +43,6 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         initAnimationTimers();
         this.addMouseListener(hideEffectListener);
 
-        System.out.println(this.getClass().getSimpleName());
         this.setLocation((Point) configManager.getProperty(this.getClass().getSimpleName()));
 
     }

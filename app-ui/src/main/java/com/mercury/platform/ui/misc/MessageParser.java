@@ -2,6 +2,8 @@ package com.mercury.platform.ui.misc;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -13,6 +15,8 @@ public class MessageParser {
     public static Map<String,String> parse(String message){
         Map<String,String> parts = new HashMap<>();
 
+        Date msgDate = new Date(StringUtils.substring(message, 0, 20));
+        parts.put("messageDate", new SimpleDateFormat().format(msgDate));
         String itemName = StringUtils.substringBetween(message, "to buy your ", " listed for");
         if(itemName == null){
             itemName = StringUtils.substringBetween(message, "to buy your ", " for my");

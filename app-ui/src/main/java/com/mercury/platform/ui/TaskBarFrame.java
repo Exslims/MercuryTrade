@@ -91,6 +91,8 @@ public class TaskBarFrame extends OverlaidFrame {
         exitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                messageFrame.dispose();
+                testCasesFrame.dispose();
                 System.exit(0);
             }
         });
@@ -103,32 +105,6 @@ public class TaskBarFrame extends OverlaidFrame {
         taskBarPanel.add(exitButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
         return taskBarPanel;
-    }
-    private void initSettingsContextMenu(){
-        settingsMenu = new JPopupMenu("Popup");
-        JMenuItem item = new JMenu("settings");
-        item.setHorizontalTextPosition(JMenuItem.CENTER);
-        item.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)){
-                        SettingsFrame settingsFrame = new SettingsFrame();
-                        settingsFrame.setVisible(true);
-                }
-            }
-        });
-
-        JMenuItem exit = new JMenu("Exit program");
-        exit.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                System.exit(0);
-            }
-        });
-        exit.setHorizontalTextPosition(JMenuItem.CENTER);
-        exit.setArmed(false);
-        settingsMenu.add(item);
-        settingsMenu.add(exit);
     }
 
     @Override

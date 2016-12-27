@@ -16,6 +16,8 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
@@ -64,6 +66,13 @@ public class MessagePanel extends JPanel {
                 this.add(getWhisperPanel(),BorderLayout.PAGE_START);
                 this.add(getFormattedMessagePanel(),BorderLayout.CENTER);
                 this.add(CustomButtonFactory.getButtonsPanel(whisper),BorderLayout.PAGE_END);
+                break;
+            }
+            case HISTORY:{
+                this.add(getWhisperPanel(),BorderLayout.PAGE_START);
+                this.add(getFormattedMessagePanel(),BorderLayout.CENTER);
+                this.add(getHistoryPanel(),BorderLayout.PAGE_END);
+                break;
             }
         }
     }
@@ -127,7 +136,11 @@ public class MessagePanel extends JPanel {
             }
         });
 
-        topPanel.add(whisperLabel,BorderLayout.CENTER);
+        topPanel.add(whisperLabel,BorderLayout.LINE_START);
+
+        if(style.equals(MessagePanelStyle.HISTORY)){
+            topPanel.add(getTimePanel(),BorderLayout.CENTER);
+        }
 
         JPanel interactionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         interactionPanel.setBackground(AppThemeColor.TRANSPARENT);
@@ -163,7 +176,7 @@ public class MessagePanel extends JPanel {
         JButton hideButton = componentsFactory.getIconButton("app/close.png",12);
         hideButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 EventRouter.fireEvent(new CloseMessagePanelEvent(MessagePanel.this));
             }
         });
@@ -175,6 +188,59 @@ public class MessagePanel extends JPanel {
 
         topPanel.add(interactionPanel,BorderLayout.LINE_END);
         return topPanel;
+    }
+
+    private JPanel getHistoryPanel(){
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(AppThemeColor.TRANSPARENT);
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setBackground(AppThemeColor.TRANSPARENT);
+        JButton stillIntButton = componentsFactory.getBorderedButton("still interesting?");
+        stillIntButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                EventRouter.fireEvent(new ChatCommandEvent("@" + whisper + " " + "Hey, are u still interesting " + parsedMessage.get("itemName")));
+            }
+        });
+        buttonsPanel.add(stillIntButton);
+        panel.add(buttonsPanel,BorderLayout.CENTER);
+        return panel;
+    }
+    private JPanel getTimePanel(){
+        JPanel panel = new JPanel();
+        panel.setBackground(AppThemeColor.TRANSPARENT);
+        JLabel timeLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MISC, TextAlignment.CENTER, 14, "0m ago");
+        Timer timeAgo = new Timer(60000, new ActionListener() {
+            private int minute = 0;
+            private int hours = 0;
+            private int day = 0;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String labelText = "";
+                minute++;
+                if(minute > 60){
+                    hours++;
+                    minute = 0;
+                    if(hours > 24){
+                        day++;
+                        hours = 0;
+                    }
+                }
+                if(hours == 0 && day == 0){
+                    labelText = minute + "m ago";
+                }else if(hours > 0){
+                    labelText = hours + "h " + minute + "m ago";
+                }else if(day > 0){
+                    labelText = day + "d " + hours + "h " + minute + "m ago";
+                }
+                timeLabel.setText(labelText);
+                EventRouter.fireEvent(new RepaintEvent());
+            }
+        });
+        timeAgo.start();
+        panel.add(timeLabel);
+        return panel;
     }
 
     public void setStyle(MessagePanelStyle style) {
