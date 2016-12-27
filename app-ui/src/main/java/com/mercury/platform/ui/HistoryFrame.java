@@ -31,6 +31,8 @@ public class HistoryFrame extends OverlaidFrame {
         this.setVisible(false);
         disableHideEffect(); // todo
         this.setLayout(new BorderLayout());
+        this.setSize(new Dimension(400,22));
+        this.setMinimumSize(new Dimension(400,22));
         messagesContainer = new JPanel();
         messagesContainer.setBackground(AppThemeColor.TRANSPARENT);
         messagesContainer.setLayout(new BoxLayout(messagesContainer,BoxLayout.Y_AXIS));

@@ -1,7 +1,5 @@
 package com.mercury.platform.ui;
 
-
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.SCEventHandler;
 import com.mercury.platform.shared.events.custom.ChangeFrameVisibleEvent;
@@ -20,14 +18,12 @@ import java.awt.event.*;
  * 07.12.2016
  */
 public class TaskBarFrame extends OverlaidFrame {
-    private JPopupMenu settingsMenu;
-    private HistoryContainerPanel history;
     private MessageFrame messageFrame;
     private TestCasesFrame testCasesFrame;
     private HistoryFrame historyFrame;
 
     public TaskBarFrame() {
-        super("PoeShortCast");
+        super("MercuryTrader");
     }
 
     @Override
@@ -40,12 +36,6 @@ public class TaskBarFrame extends OverlaidFrame {
         disableHideEffect();
         pack();
 
-    }
-
-    private void initHistoryContainer() {
-        history = new HistoryContainerPanel();
-        history.setLocation(800,300);
-        add(history);
     }
 
     private JPanel getTaskBarPanel(){

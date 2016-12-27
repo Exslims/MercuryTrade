@@ -44,6 +44,12 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         initHandlers();
         initAnimationTimers();
         this.addMouseListener(hideEffectListener);
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                OverlaidFrame.this.repaint();
+            }
+        });
 
         this.setLocation((Point) configManager.getProperty(this.getClass().getSimpleName()));
         this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
