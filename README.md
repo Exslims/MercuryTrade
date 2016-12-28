@@ -62,10 +62,8 @@ Afterwards you should see 2 new overlay panels.
 
   * (c) Debug Mode: send template messages to test out stuff.
   
-  * (d) Notification flow direction: downwards or upwards. If you've put your notification panel down below the experience bar, you probably want to choose "upwards". This is relevant for SuperTrade Mmode.
+  * (d) Notification fade time: notifications close themselves after X seconds. "0" to never fade and stay until manually dismissed.
   
-  * (e) Notification fade time: notifications close themselves after X seconds. "0" to never fade and stay until manually dismissed.
-
 * (5) **Exit**
 
 <br/>
