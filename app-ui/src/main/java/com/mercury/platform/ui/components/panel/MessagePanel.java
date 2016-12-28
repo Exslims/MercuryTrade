@@ -146,10 +146,6 @@ public class MessagePanel extends JPanel {
 
         topPanel.add(whisperLabel,BorderLayout.LINE_START);
 
-        if(style.equals(MessagePanelStyle.HISTORY)){
-            topPanel.add(getTimePanel(),BorderLayout.CENTER);
-        }
-
         JPanel interactionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         interactionPanel.setBackground(AppThemeColor.TRANSPARENT);
         JButton inviteButton = componentsFactory.getIconButton("app/invite.png", 14);
@@ -188,6 +184,9 @@ public class MessagePanel extends JPanel {
                 EventRouter.fireEvent(new CloseMessagePanelEvent(MessagePanel.this));
             }
         });
+        if(style.equals(MessagePanelStyle.HISTORY)){
+            interactionPanel.add(getTimePanel());
+        }
         interactionPanel.add(inviteButton);
         interactionPanel.add(kickButton);
         interactionPanel.add(tradeButton);

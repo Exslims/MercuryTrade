@@ -4,6 +4,7 @@ import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.NewWhispersEvent;
 import com.mercury.platform.shared.events.custom.RepaintEvent;
 import com.mercury.platform.shared.pojo.Message;
+import com.mercury.platform.ui.components.fields.ExScrolBarUI;
 import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -19,6 +20,7 @@ import java.util.List;
 public class HistoryFrame extends OverlaidFrame {
     private JPanel messagesContainer;
     private JScrollPane scrollPane;
+    private final int SCROLL_HEIGHT = 600;
 
     public HistoryFrame() {
         super("History");
@@ -29,7 +31,6 @@ public class HistoryFrame extends OverlaidFrame {
         super.init();
         disableHideEffect(); // todo
         this.setLayout(new BorderLayout());
-        this.setSize(new Dimension(400,22));
         this.setMinimumSize(new Dimension(400,22));
         messagesContainer = new JPanel();
         messagesContainer.setBackground(AppThemeColor.TRANSPARENT);
@@ -39,18 +40,21 @@ public class HistoryFrame extends OverlaidFrame {
         scrollPane = new JScrollPane(messagesContainer);
         scrollPane.setBorder(null);
         scrollPane.setBackground(AppThemeColor.FRAME);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.addMouseWheelListener(new MouseAdapter() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 HistoryFrame.this.repaint();
             }
         });
-        JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
-        verticalScrollBar.setBackground(AppThemeColor.FRAME);
-        verticalScrollBar.setUnitIncrement(2);
-        verticalScrollBar.setBorder(null);
-        verticalScrollBar.addAdjustmentListener(e -> HistoryFrame.this.repaint());
+        JScrollBar vBar = scrollPane.getVerticalScrollBar();
+        vBar.setBackground(AppThemeColor.FRAME);
+        vBar.setUI(new ExScrolBarUI());
+        vBar.setPreferredSize(new Dimension(10, Integer.MAX_VALUE));
+        vBar.setUnitIncrement(3);
+        vBar.setBorder(BorderFactory.createLineBorder(AppThemeColor.FRAME,1));
+        vBar.addAdjustmentListener(e -> HistoryFrame.this.repaint());
 
         add(scrollPane,BorderLayout.CENTER);
         pack();
@@ -88,7 +92,8 @@ public class HistoryFrame extends OverlaidFrame {
             public void mousePressed(MouseEvent e) {
                 messagesContainer.removeAll();
                 HistoryFrame.this.setSize(new Dimension(400,22));
-                scrollPane.setSize(new Dimension(HistoryFrame.this.getSize().width, HistoryFrame.this.getSize().height));
+                scrollPane.setSize(new Dimension(messagesContainer.getSize().width, messagesContainer.getSize().height));
+                scrollPane.setPreferredSize(null);
                 HistoryFrame.this.pack();
             }
         });
@@ -112,15 +117,16 @@ public class HistoryFrame extends OverlaidFrame {
             for (Message message : messages) {
                 MessagePanel messagePanel = new MessagePanel(message.getWhisperNickname(), message.getMessage(), MessagePanelStyle.HISTORY);
                 messagesContainer.add(messagePanel);
-                if(this.getSize().height > 600) {
-                    scrollPane.setPreferredSize(new Dimension(this.getSize().width, 600));
-                    scrollPane.setSize(new Dimension(this.getSize().width, 600));
-                }else {
-                    scrollPane.setSize(new Dimension(this.getSize().width, this.getSize().height));
-                }
-                this.repaint();
-                this.pack();
             }
+            if(this.getSize().height > SCROLL_HEIGHT) {
+                this.pack();
+                scrollPane.setPreferredSize(new Dimension(messagesContainer.getWidth(), SCROLL_HEIGHT));
+                scrollPane.setSize(new Dimension(messagesContainer.getWidth(), SCROLL_HEIGHT));
+            }else {
+                scrollPane.setSize(new Dimension(messagesContainer.getWidth(), this.getSize().height));
+            }
+            this.pack();
+            this.repaint();
         });
         EventRouter.registerHandler(RepaintEvent.class, event -> {
             this.revalidate();

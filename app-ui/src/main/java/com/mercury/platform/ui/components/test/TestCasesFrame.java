@@ -129,7 +129,7 @@ public class TestCasesFrame extends OverlaidFrame {
             public void mousePressed(MouseEvent e) {
                 EventRouter.fireEvent(new WhisperNotificationEvent());
                 List<Message> messages = new ArrayList<>();
-                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) #########################################"));
+                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) #############################"));
                 EventRouter.fireEvent(new NewWhispersEvent(messages));
             }
         });
@@ -145,10 +145,10 @@ public class TestCasesFrame extends OverlaidFrame {
             public void mousePressed(MouseEvent e) {
                 EventRouter.fireEvent(new WhisperNotificationEvent());
                 List<Message> messages = new ArrayList<>();
-                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) #########################################"));
-                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) #########################################"));
-                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) #########################################"));
-                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) #########################################"));
+                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) ##############################"));
+                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) ##############################"));
+                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) ###############################"));
+                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) ##############################"));
                 EventRouter.fireEvent(new NewWhispersEvent(messages));
             }
         });
