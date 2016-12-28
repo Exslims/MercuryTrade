@@ -7,6 +7,7 @@ import com.mercury.platform.shared.events.custom.NewWhispersEvent;
 import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
+import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.util.List;
@@ -33,6 +34,9 @@ public class MessageFrame extends OverlaidFrame {
             List<Message> messages = ((NewWhispersEvent) event).getMessages();
             for (Message message : messages) {
                 MessagePanel messagePanel = new MessagePanel(message.getWhisperNickname(), message.getMessage(), MessagePanelStyle.BIGGEST);
+                if(this.getComponentCount() > 0){
+                    messagePanel.setBorder(BorderFactory.createMatteBorder(1,0,0,0, AppThemeColor.BORDER));
+                }
                 this.add(messagePanel);
             }
             this.pack();

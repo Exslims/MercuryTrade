@@ -93,7 +93,7 @@ public class MessagePanel extends JPanel {
         JPanel tradePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         tradePanel.setBackground(AppThemeColor.TRANSPARENT);
         tradePanel.setBorder(BorderFactory.createEmptyBorder(-11,0,-11,0));
-        itemLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT, TextAlignment.CENTER,15f,parsedMessage.get("itemName"));
+        itemLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT, TextAlignment.CENTER,16f,parsedMessage.get("itemName"));
         tradePanel.add(itemLabel);
         tradePanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE,TextAlignment.CENTER,17f,"=>"));
         String curCount = parsedMessage.get("curCount");

@@ -35,7 +35,6 @@ public class HistoryFrame extends OverlaidFrame {
         messagesContainer = new JPanel();
         messagesContainer.setBackground(AppThemeColor.TRANSPARENT);
         messagesContainer.setLayout(new BoxLayout(messagesContainer,BoxLayout.Y_AXIS));
-        messagesContainer.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
         add(getTopPanel(),BorderLayout.PAGE_START);
 
         scrollPane = new JScrollPane(messagesContainer);
@@ -117,12 +116,16 @@ public class HistoryFrame extends OverlaidFrame {
             List<Message> messages = ((NewWhispersEvent) event).getMessages();
             for (Message message : messages) {
                 MessagePanel messagePanel = new MessagePanel(message.getWhisperNickname(), message.getMessage(), MessagePanelStyle.HISTORY);
+                if(messagesContainer.getComponentCount() > 0){
+                    messagePanel.setBorder(BorderFactory.createMatteBorder(1,0,0,0, AppThemeColor.BORDER));
+                }
                 messagesContainer.add(messagePanel);
             }
             if(this.getSize().height > SCROLL_HEIGHT) {
                 this.pack();
                 scrollPane.setPreferredSize(new Dimension(messagesContainer.getWidth(), SCROLL_HEIGHT));
                 scrollPane.setSize(new Dimension(messagesContainer.getWidth(), SCROLL_HEIGHT));
+                messagesContainer.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
             }else {
                 scrollPane.setSize(new Dimension(messagesContainer.getWidth(), this.getSize().height));
             }
