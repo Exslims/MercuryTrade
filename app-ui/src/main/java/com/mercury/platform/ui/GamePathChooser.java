@@ -26,9 +26,14 @@ public class GamePathChooser extends OverlaidFrame {
     @Override
     protected void init() {
         super.init();
-        setLayout(new BorderLayout());
-        this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
+        this.add(getTopPanel(),BorderLayout.PAGE_START);
+        this.add(getChooserPanel(),BorderLayout.CENTER);
+        this.add(getMiscPanel(),BorderLayout.PAGE_END);
 
+        disableHideEffect();
+        pack();
+    }
+    private JPanel getTopPanel(){
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(AppThemeColor.TRANSPARENT);
         topPanel.setBorder(BorderFactory.createEmptyBorder(-6,0,-6,0));
@@ -65,12 +70,12 @@ public class GamePathChooser extends OverlaidFrame {
         });
         miscPanel.add(hideButton);
         topPanel.add(miscPanel,BorderLayout.LINE_END);
-        this.add(topPanel,BorderLayout.PAGE_START);
-        this.add(getChooserPanel(),BorderLayout.CENTER);
-        this.add(getMiscPanel(),BorderLayout.PAGE_END);
+        return topPanel;
+    }
 
-        disableHideEffect();
-        pack();
+    @Override
+    protected LayoutManager getFrameLayout() {
+        return new BorderLayout();
     }
 
     private JPanel getChooserPanel(){

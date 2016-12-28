@@ -34,7 +34,11 @@ public class TaskBarFrame extends OverlaidFrame {
         add(getTaskBarPanel());
         disableHideEffect();
         pack();
+    }
 
+    @Override
+    protected LayoutManager getFrameLayout() {
+        return new FlowLayout();
     }
 
     private JPanel getTaskBarPanel(){

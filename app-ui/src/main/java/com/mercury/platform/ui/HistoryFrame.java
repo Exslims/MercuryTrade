@@ -30,7 +30,6 @@ public class HistoryFrame extends OverlaidFrame {
     protected void init() {
         super.init();
         disableHideEffect(); // todo
-        this.setLayout(new BorderLayout());
         this.setMinimumSize(new Dimension(400,100));
         messagesContainer = new JPanel();
         messagesContainer.setBackground(AppThemeColor.TRANSPARENT);
@@ -59,6 +58,12 @@ public class HistoryFrame extends OverlaidFrame {
         add(scrollPane,BorderLayout.CENTER);
         pack();
     }
+
+    @Override
+    protected LayoutManager getFrameLayout() {
+        return new BorderLayout();
+    }
+
     private JPanel getTopPanel(){
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(AppThemeColor.TRANSPARENT);

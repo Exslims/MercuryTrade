@@ -40,6 +40,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         setAlwaysOnTop(true);
         setFocusableWindowState(false);
         setFocusable(false);
+        setLayout(getFrameLayout());
 
         initHandlers();
         initAnimationTimers();
@@ -62,6 +63,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     protected void enableHideEffect(){
         this.addMouseListener(hideEffectListener);
     }
+    protected abstract LayoutManager getFrameLayout();
     private boolean isMouseWithInFrame(){
         return this.getBounds().contains(MouseInfo.getPointerInfo().getLocation());
     }

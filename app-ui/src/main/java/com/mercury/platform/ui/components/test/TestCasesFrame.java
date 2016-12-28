@@ -32,13 +32,17 @@ public class TestCasesFrame extends OverlaidFrame {
     @Override
     protected void init() {
         super.init();
-        setLayout(new BorderLayout());
+        add(getTopPanel(), BorderLayout.PAGE_START);
+        add(getTestCasesPanel(), BorderLayout.CENTER);
+        disableHideEffect();
+        pack();
+    }
+    private JPanel getTopPanel(){
         JPanel topPanel = new JPanel();
         topPanel.setBackground(AppThemeColor.TRANSPARENT);
         JLabel title = componentsFactory.getTextLabel("Test cases");
         title.setHorizontalAlignment(SwingConstants.CENTER);
         topPanel.add(title);
-        add(topPanel, BorderLayout.PAGE_START);
 
         title.addMouseListener(new MouseAdapter() {
             @Override
@@ -55,9 +59,11 @@ public class TestCasesFrame extends OverlaidFrame {
                 configManager.saveComponentLocation(TestCasesFrame.this.getClass().getSimpleName(),TestCasesFrame.this.getLocation());
             }
         });
-        add(getTestCasesPanel(), BorderLayout.CENTER);
-        disableHideEffect();
-        pack();
+        return topPanel;
+    }
+    @Override
+    protected LayoutManager getFrameLayout() {
+        return new BorderLayout();
     }
 
     private JPanel getTestCasesPanel(){

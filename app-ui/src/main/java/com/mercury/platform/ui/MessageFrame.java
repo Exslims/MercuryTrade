@@ -11,6 +11,7 @@ import com.mercury.platform.ui.components.panel.MessagePanelStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -24,9 +25,13 @@ public class MessageFrame extends OverlaidFrame {
     @Override
     protected void init() {
         super.init();
-        setLayout(new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS));
         setVisible(false);
         disableHideEffect(); // todo
+    }
+
+    @Override
+    protected LayoutManager getFrameLayout() {
+        return new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS);
     }
 
     @Override

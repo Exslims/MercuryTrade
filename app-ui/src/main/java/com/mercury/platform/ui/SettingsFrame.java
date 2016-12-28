@@ -17,7 +17,6 @@ import java.awt.*;
 public class SettingsFrame extends OverlaidFrame {
     public SettingsFrame(){
         super("Settings");
-        setLayout(new FlowLayout());
         setFocusableWindowState(true);
         setFocusable(true);
 
@@ -45,5 +44,10 @@ public class SettingsFrame extends OverlaidFrame {
             SettingsFrame.this.setLocation(x,y);
             configManager.saveComponentLocation(this.getClass().getSimpleName(),SettingsFrame.this.getLocation());
         });
+    }
+
+    @Override
+    protected LayoutManager getFrameLayout() {
+        return new FlowLayout();
     }
 }
