@@ -46,12 +46,16 @@ public class ConfigManager {
                 fileWriter.close();
 
                 saveButtonsConfig(getDefaultButtons());
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                double width = screenSize.getWidth();
+                double height = screenSize.getHeight();
                 saveComponentLocation("TaskBarFrame",new Point(500,500));
                 saveComponentLocation("MessageFrame",new Point(700,500));
                 saveComponentLocation("GamePathChooser",new Point(600,500));
                 saveComponentLocation("TestCasesFrame",new Point(900,500));
                 saveComponentLocation("SettingsFrame",new Point(600,600));
                 saveComponentLocation("HistoryFrame",new Point(600,600));
+                saveComponentLocation("NotificationFrame",new Point((int)width/2,(int)height/2));
             } catch (IOException e) {
                 logger.error(e);
             }
@@ -92,6 +96,10 @@ public class ConfigManager {
                 Point historyPoint = new Point(
                         Integer.valueOf(String.valueOf(historyLocation.get("x"))),
                         Integer.valueOf(String.valueOf(historyLocation.get("y"))));
+                JSONObject notificationLocation = (JSONObject) jsonObject.get("NotificationFrame");
+                Point notificationPoint = new Point(
+                        Integer.valueOf(String.valueOf(notificationLocation.get("x"))),
+                        Integer.valueOf(String.valueOf(notificationLocation.get("y"))));
 
                 //removing
                 JSONObject testLocation = (JSONObject) jsonObject.get("TestCasesFrame");
@@ -106,6 +114,7 @@ public class ConfigManager {
                 properties.put("GamePathChooser",gamePathPoint);
                 properties.put("SettingsFrame",settingsPoint);
                 properties.put("HistoryFrame",historyPoint);
+                properties.put("NotificationFrame",notificationPoint);
                 //removing
                 properties.put("TestCasesFrame",testPoint);
             } catch (Exception e) {
@@ -140,32 +149,35 @@ public class ConfigManager {
      * @param point frame.getLocation().
      */
     public void saveComponentLocation(String componentName, Point point){
-        properties.put(componentName,point);
-        //each frame has its timer
-        Timer timer = componentsTimers.get(componentName);
-        if(timer == null){
-            timer = new Timer(4000, null);
-            Timer finalTimer = timer;
-            PointListener pointListener = new PointListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    JSONObject object = new JSONObject();
-                    object.put("x", x);
-                    object.put("y", y);
-                    saveProperty(componentName, object);
-                    finalTimer.stop();
-                }
-            };
-            componentsPointListeners.put(componentName,pointListener);
-            componentsTimers.put(componentName,timer);
-            timer.addActionListener(pointListener);
-        } else {
-            PointListener pointListener = componentsPointListeners.get(componentName);
-            pointListener.x = point.x;
-            pointListener.y = point.y;
+        System.out.println("component: " + componentName);
+        if(point.x != 0 && point.y != 0) {
+            properties.put(componentName, point);
+            //each frame has its timer
+            Timer timer = componentsTimers.get(componentName);
+            if (timer == null) {
+                timer = new Timer(4000, null);
+                Timer finalTimer = timer;
+                PointListener pointListener = new PointListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JSONObject object = new JSONObject();
+                        object.put("x", point.x);
+                        object.put("y", point.y);
+                        saveProperty(componentName, object);
+                        finalTimer.stop();
+                    }
+                };
+                componentsPointListeners.put(componentName, pointListener);
+                componentsTimers.put(componentName, timer);
+                timer.addActionListener(pointListener);
+            } else {
+                PointListener pointListener = componentsPointListeners.get(componentName);
+                pointListener.x = point.x;
+                pointListener.y = point.y;
+            }
+            timer.stop();
+            timer.start();
         }
-        timer.stop();
-        timer.start();
     }
 
     /**

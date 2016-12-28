@@ -52,7 +52,9 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
             }
         });
 
-        this.setLocation((Point) configManager.getProperty(this.getClass().getSimpleName()));
+        if(!this.getClass().getSimpleName().equals("NotificationFrame")) {
+            this.setLocation((Point) configManager.getProperty(this.getClass().getSimpleName()));
+        }
         this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
 
     }

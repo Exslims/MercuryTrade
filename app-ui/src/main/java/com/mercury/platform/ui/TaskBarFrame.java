@@ -4,6 +4,7 @@ import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.SCEventHandler;
 import com.mercury.platform.shared.events.custom.ChangeFrameVisibleEvent;
 import com.mercury.platform.shared.events.custom.NewPatchSCEvent;
+import com.mercury.platform.shared.events.custom.NotificationEvent;
 import com.mercury.platform.shared.events.custom.RepaintEvent;
 import com.mercury.platform.ui.components.test.TestCasesFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -20,6 +21,7 @@ public class TaskBarFrame extends OverlaidFrame {
     private MessageFrame messageFrame;
     private TestCasesFrame testCasesFrame;
     private HistoryFrame historyFrame;
+    private NotificationFrame notificationFrame;
 
     public TaskBarFrame() {
         super("MercuryTrader");
@@ -30,6 +32,7 @@ public class TaskBarFrame extends OverlaidFrame {
         messageFrame = new MessageFrame();
         testCasesFrame = new TestCasesFrame();
         historyFrame = new HistoryFrame();
+        notificationFrame = new NotificationFrame();
         super.init();
         add(getTaskBarPanel());
         disableHideEffect();
@@ -55,10 +58,12 @@ public class TaskBarFrame extends OverlaidFrame {
                     visibleMode.setIcon(componentsFactory.getIcon("app/visible-dnd-mode.png",24));
                     currentMode = "dnd";
                     TaskBarFrame.this.repaint();
+                    EventRouter.fireEvent(new NotificationEvent("DND on"));
                 }else {
                     currentMode = "always";
                     visibleMode.setIcon(componentsFactory.getIcon("app/visible-always-mode.png",24));
                     TaskBarFrame.this.repaint();
+                    EventRouter.fireEvent(new NotificationEvent("DND off"));
                 }
             }
         });
@@ -70,12 +75,14 @@ public class TaskBarFrame extends OverlaidFrame {
             public void mouseClicked(MouseEvent e) {
                 if(currentMode.equals("standard")){
                     chatMode.setIcon(componentsFactory.getIcon("app/supertrade-mode.png",24));
-                    currentMode = "supertrader";
+                    currentMode = "supertrade";
                     TaskBarFrame.this.repaint();
+                    EventRouter.fireEvent(new NotificationEvent("SuperTrade mode ON"));
                 }else {
                     currentMode = "standard";
                     chatMode.setIcon(componentsFactory.getIcon("app/standard-mode.png",24));
                     TaskBarFrame.this.repaint();
+                    EventRouter.fireEvent(new NotificationEvent("SuperTrade mode OFF"));
                 }
             }
         });
