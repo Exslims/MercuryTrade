@@ -4,6 +4,7 @@ import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.CloseMessagePanelEvent;
 import com.mercury.platform.shared.events.custom.DraggedMessageFrameEvent;
 import com.mercury.platform.shared.events.custom.NewWhispersEvent;
+import com.mercury.platform.shared.events.custom.RepaintEvent;
 import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
@@ -50,6 +51,10 @@ public class MessageFrame extends OverlaidFrame {
             int y = ((DraggedMessageFrameEvent) event).getY();
             MessageFrame.this.setLocation(x,y);
             configManager.saveComponentLocation(this.getClass().getSimpleName(),this.getLocation());
+        });
+        EventRouter.registerHandler(RepaintEvent.class, event -> {
+            MessageFrame.this.revalidate();
+            MessageFrame.this.repaint();
         });
     }
 }

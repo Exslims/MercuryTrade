@@ -36,7 +36,7 @@ public class PrivateMessageManager implements HasEventHandlers {
 
     public PrivateMessageManager() {
         GlobalKeyAdapter adapter = getAdapter();
-//        this.adapter = adapter;
+        this.adapter = adapter;
         initHandlers();
 
         keyboardHook.addKeyListener(adapter);

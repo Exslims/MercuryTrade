@@ -124,6 +124,7 @@ public class GamePathChooser extends OverlaidFrame {
                 if(ConfigManager.INSTANCE.isValidPath(gamePath)) {
                     errorLabel.setText("Success!");
                     errorLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
+                    pack();
                     GamePathChooser.this.repaint();
                     Timer timer = new Timer(1000, null);
                     timer.addActionListener(actionEvent -> {

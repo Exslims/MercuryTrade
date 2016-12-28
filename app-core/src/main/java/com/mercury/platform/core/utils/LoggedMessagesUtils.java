@@ -2,9 +2,7 @@ package com.mercury.platform.core.utils;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.FileChangeEvent;
-import com.mercury.platform.shared.events.custom.NewWhispersEvent;
-import com.mercury.platform.shared.events.custom.WhisperNotificationEvent;
+import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.pojo.Message;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -47,7 +45,7 @@ public class LoggedMessagesUtils {
                 if(c == '\n'){
                     builder = builder.reverse();
                     String stroke = builder.toString();
-                    if(stroke.contains("@From")) {
+                    if(stroke.contains("@From") || stroke.contains("has joined the area.") || stroke.contains("has left the area.")) {
                         String utf8 = new String(stroke.getBytes("ISO-8859-1"),"UTF-8");
                         stubMessages.add(utf8);
                         lines++;
@@ -68,16 +66,25 @@ public class LoggedMessagesUtils {
         List<Message> messages = new ArrayList<>();
         for (String fullMessage : stubMessages) {
             Date msgDate = new Date(StringUtils.substring(fullMessage, 0, 20));
-            if(msgDate.after(lastMessageDate) && (fullMessage.contains("Hi, I would like") || fullMessage.contains("Hi, I'd like"))){
-                String wNickname = StringUtils.substringBetween(fullMessage, "@From", ":");
-                String content = StringUtils.substringAfter(fullMessage, wNickname + ":");
-                wNickname = StringUtils.deleteWhitespace(wNickname);
-                //todo regexp
-                if(wNickname.contains(">")){
-                    wNickname = StringUtils.substringAfterLast(wNickname, ">");
+            if(msgDate.after(lastMessageDate)){
+                if(fullMessage.contains("Hi, I would like") || fullMessage.contains("Hi, I'd like")){
+                    String wNickname = StringUtils.substringBetween(fullMessage, "@From", ":");
+                    String content = StringUtils.substringAfter(fullMessage, wNickname + ":");
+                    wNickname = StringUtils.deleteWhitespace(wNickname);
+                    //todo regexp
+                    if(wNickname.contains(">")){
+                        wNickname = StringUtils.substringAfterLast(wNickname, ">");
+                    }
+                    Message message = new Message(wNickname,StringUtils.substring(fullMessage, 0, 20) + " " + content);
+                    messages.add(message);
                 }
-                Message message = new Message(wNickname,StringUtils.substring(fullMessage, 0, 20) + " " + content);
-                messages.add(message);
+
+                if(fullMessage.contains("has joined the area.")){
+                    EventRouter.fireEvent(new PlayerJoinEvent(StringUtils.substringBetween(fullMessage," : ", " has joined the area.")));
+                }
+                if(fullMessage.contains("has left the area.")){
+                    EventRouter.fireEvent(new PlayerLeftEvent(StringUtils.substringBetween(fullMessage," : ", " has left the area.")));
+                }
             }
         }
         Date date = new Date(StringUtils.substring(stubMessages.get(0), 0, 20));

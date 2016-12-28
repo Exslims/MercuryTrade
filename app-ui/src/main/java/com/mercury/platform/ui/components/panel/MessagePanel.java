@@ -1,7 +1,10 @@
 package com.mercury.platform.ui.components.panel;
 
 
+import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.events.SCEvent;
+import com.mercury.platform.shared.events.SCEventHandler;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.label.FontStyle;
@@ -26,7 +29,7 @@ import java.util.List;
 /**
  * Created by Константин on 15.12.2016.
  */
-public class MessagePanel extends JPanel {
+public class MessagePanel extends JPanel implements HasEventHandlers{
     private ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
     private List<String> supportedIcons;
     private MessagePanelStyle style;
@@ -35,6 +38,7 @@ public class MessagePanel extends JPanel {
     private int y;
 
     private String whisper;
+    private JLabel whisperLabel;
     private Map<String,String> parsedMessage;
 
     private JLabel itemLabel;
@@ -47,6 +51,7 @@ public class MessagePanel extends JPanel {
         this.whisper = whisper;
         this.parsedMessage = MessageParser.parse(message);
         init();
+        initHandlers();
     }
     private void init(){
         this.removeAll();
@@ -126,7 +131,7 @@ public class MessagePanel extends JPanel {
         topPanel.setBorder(BorderFactory.createEmptyBorder(0,0,-5,0));
         topPanel.setBackground(AppThemeColor.TRANSPARENT);
 
-        JLabel whisperLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,15f,whisper + ":");
+        whisperLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,15f,whisper + ":");
         Border border = whisperLabel.getBorder();
         whisperLabel.setBorder(new CompoundBorder(border,new EmptyBorder(0,5,0,5)));
         whisperLabel.setVerticalAlignment(SwingConstants.CENTER);
@@ -184,9 +189,8 @@ public class MessagePanel extends JPanel {
                 EventRouter.fireEvent(new CloseMessagePanelEvent(MessagePanel.this));
             }
         });
-        if(style.equals(MessagePanelStyle.HISTORY)){
-            interactionPanel.add(getTimePanel());
-        }
+
+        interactionPanel.add(getTimePanel());
         interactionPanel.add(inviteButton);
         interactionPanel.add(kickButton);
         interactionPanel.add(tradeButton);
@@ -237,5 +241,23 @@ public class MessagePanel extends JPanel {
     public void setStyle(MessagePanelStyle style) {
         this.style = style;
         init();
+    }
+
+    @Override
+    public void initHandlers() {
+        EventRouter.registerHandler(PlayerJoinEvent.class, event -> {
+            String nickName = ((PlayerJoinEvent) event).getNickName();
+            if(nickName.equals(whisper)){
+                whisperLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
+                EventRouter.fireEvent(new RepaintEvent());
+            }
+        });
+        EventRouter.registerHandler(PlayerLeftEvent.class, event -> {
+            String nickName = ((PlayerLeftEvent) event).getNickName();
+            if(nickName.equals(whisper)){
+                whisperLabel.setForeground(AppThemeColor.TEXT_DENIED);
+                EventRouter.fireEvent(new RepaintEvent());
+            }
+        });
     }
 }
