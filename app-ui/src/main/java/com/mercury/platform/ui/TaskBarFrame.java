@@ -5,7 +5,6 @@ import com.mercury.platform.shared.events.SCEventHandler;
 import com.mercury.platform.shared.events.custom.ChangeFrameVisibleEvent;
 import com.mercury.platform.shared.events.custom.NewPatchSCEvent;
 import com.mercury.platform.shared.events.custom.RepaintEvent;
-import com.mercury.platform.ui.components.panel.HistoryContainerPanel;
 import com.mercury.platform.ui.components.test.TestCasesFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -42,6 +41,40 @@ public class TaskBarFrame extends OverlaidFrame {
         JPanel taskBarPanel = new JPanel();
         taskBarPanel.setBackground(AppThemeColor.TRANSPARENT);
         taskBarPanel.setLayout(new BoxLayout(taskBarPanel,BoxLayout.X_AXIS));
+
+        JButton visibleMode = componentsFactory.getIconButton("app/visible-always-mode.png",24);
+        visibleMode.addMouseListener(new MouseAdapter() {
+            private String currentMode = "always";
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(currentMode.equals("always")){
+                    visibleMode.setIcon(componentsFactory.getIcon("app/visible-dnd-mode.png",24));
+                    currentMode = "dnd";
+                    TaskBarFrame.this.repaint();
+                }else {
+                    currentMode = "always";
+                    visibleMode.setIcon(componentsFactory.getIcon("app/visible-always-mode.png",24));
+                    TaskBarFrame.this.repaint();
+                }
+            }
+        });
+
+        JButton chatMode = componentsFactory.getIconButton("app/standard-mode.png",24);
+        chatMode.addMouseListener(new MouseAdapter() {
+            private String currentMode = "standard";
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(currentMode.equals("standard")){
+                    chatMode.setIcon(componentsFactory.getIcon("app/supertrade-mode.png",24));
+                    currentMode = "supertrader";
+                    TaskBarFrame.this.repaint();
+                }else {
+                    currentMode = "standard";
+                    chatMode.setIcon(componentsFactory.getIcon("app/standard-mode.png",24));
+                    TaskBarFrame.this.repaint();
+                }
+            }
+        });
 
         JButton historyButton = componentsFactory.getIconButton("app/history.png",24);
         historyButton.addMouseListener(new MouseAdapter() {
@@ -89,6 +122,10 @@ public class TaskBarFrame extends OverlaidFrame {
             }
         });
 
+        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        taskBarPanel.add(visibleMode);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        taskBarPanel.add(chatMode);
         taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
         taskBarPanel.add(historyButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));

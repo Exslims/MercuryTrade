@@ -289,6 +289,17 @@ public class ComponentsFactory {
         return textField;
     }
 
+    public ImageIcon getIcon(String iconPath, int size){
+        BufferedImage icon = null;
+        try {
+            BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
+            icon = Scalr.resize(buttonIcon, size);
+        } catch (IOException e) {
+            log.error(e);
+        }
+        return new ImageIcon(icon);
+    }
+
     private Font getSelectedFont(FontStyle fontStyle){
         switch (fontStyle) {
             case BOLD:

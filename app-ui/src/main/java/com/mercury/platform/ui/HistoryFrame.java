@@ -31,7 +31,7 @@ public class HistoryFrame extends OverlaidFrame {
         super.init();
         disableHideEffect(); // todo
         this.setLayout(new BorderLayout());
-        this.setMinimumSize(new Dimension(400,22));
+        this.setMinimumSize(new Dimension(400,100));
         messagesContainer = new JPanel();
         messagesContainer.setBackground(AppThemeColor.TRANSPARENT);
         messagesContainer.setLayout(new BoxLayout(messagesContainer,BoxLayout.Y_AXIS));
@@ -91,7 +91,7 @@ public class HistoryFrame extends OverlaidFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 messagesContainer.removeAll();
-                HistoryFrame.this.setSize(new Dimension(400,22));
+                HistoryFrame.this.setSize(new Dimension(400,100));
                 scrollPane.setSize(new Dimension(messagesContainer.getSize().width, messagesContainer.getSize().height));
                 scrollPane.setPreferredSize(null);
                 HistoryFrame.this.pack();
