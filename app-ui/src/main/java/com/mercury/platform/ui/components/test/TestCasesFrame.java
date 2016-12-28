@@ -2,12 +2,15 @@ package com.mercury.platform.ui.components.test;
 
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.NewWhispersEvent;
+import com.mercury.platform.shared.events.custom.PlayerJoinEvent;
+import com.mercury.platform.shared.events.custom.PlayerLeftEvent;
 import com.mercury.platform.shared.events.custom.WhisperNotificationEvent;
 import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.OverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -172,6 +175,37 @@ public class TestCasesFrame extends OverlaidFrame {
         buttonColumn.gridy++;
         JLabel textLabel15 = componentsFactory.getTextLabel("Test font for non-eng letters");
         testPanel.add(textLabel15,titleColumn);
+        titleColumn.gridy++;
+
+
+        JButton button6 = componentsFactory.getBorderedButton("Click");
+        button6.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                EventRouter.fireEvent(new WhisperNotificationEvent());
+                List<Message> messages = new ArrayList<>();
+                messages.add(new Message("WhisperColorTest","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) блабалблабалабала"));
+                EventRouter.fireEvent(new NewWhispersEvent(messages));
+
+                Timer joinedTimer = new Timer(1000,null);
+                joinedTimer.addActionListener(e1 -> {
+                    EventRouter.fireEvent(new PlayerJoinEvent("WhisperColorTest"));
+                    joinedTimer.stop();
+                });
+                joinedTimer.start();
+
+                Timer leftTimer = new Timer(2000,null);
+                leftTimer.addActionListener(e1 -> {
+                    EventRouter.fireEvent(new PlayerLeftEvent("WhisperColorTest"));
+                    leftTimer.stop();
+                });
+                leftTimer.start();
+            }
+        });
+        testPanel.add(button6,buttonColumn);
+        buttonColumn.gridy++;
+        JLabel textLabel16 = componentsFactory.getTextLabel("Test whisper label color after join/left area");
+        testPanel.add(textLabel16,titleColumn);
         titleColumn.gridy++;
 
         testPanel.setBackground(AppThemeColor.TRANSPARENT);

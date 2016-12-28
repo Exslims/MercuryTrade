@@ -39,6 +39,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
 
     private String whisper;
     private JLabel whisperLabel;
+    private JButton tradeButton;
     private Map<String,String> parsedMessage;
 
     private JLabel itemLabel;
@@ -167,13 +168,14 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 EventRouter.fireEvent(new ChatCommandEvent("/kick " + whisper));
             }
         });
-        JButton tradeButton = componentsFactory.getIconButton("app/trade.png",14);
+        tradeButton = componentsFactory.getIconButton("app/trade.png",14);
         tradeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 EventRouter.fireEvent(new ChatCommandEvent("/tradewith " + whisper));
             }
         });
+        tradeButton.setEnabled(false);
         JButton openChatButton = componentsFactory.getIconButton("app/openChat.png",15);
         openChatButton.setToolTipText("Open chat");
         openChatButton.addMouseListener(new MouseAdapter() {
@@ -249,6 +251,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             String nickName = ((PlayerJoinEvent) event).getNickName();
             if(nickName.equals(whisper)){
                 whisperLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
+                tradeButton.setEnabled(true);
                 EventRouter.fireEvent(new RepaintEvent());
             }
         });
@@ -256,6 +259,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             String nickName = ((PlayerLeftEvent) event).getNickName();
             if(nickName.equals(whisper)){
                 whisperLabel.setForeground(AppThemeColor.TEXT_DENIED);
+                tradeButton.setEnabled(false);
                 EventRouter.fireEvent(new RepaintEvent());
             }
         });
