@@ -158,6 +158,21 @@ public class TestCasesFrame extends OverlaidFrame {
         testPanel.add(textLabel14,titleColumn);
         titleColumn.gridy++;
 
+        JButton button5 = componentsFactory.getBorderedButton("Click");
+        button5.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                EventRouter.fireEvent(new WhisperNotificationEvent());
+                List<Message> messages = new ArrayList<>();
+                messages.add(new Message("ДолбоебСРусскимНиком","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) блабалблабалабала"));
+                EventRouter.fireEvent(new NewWhispersEvent(messages));
+            }
+        });
+        testPanel.add(button5,buttonColumn);
+        buttonColumn.gridy++;
+        JLabel textLabel15 = componentsFactory.getTextLabel("Test font for non-eng letters");
+        testPanel.add(textLabel15,titleColumn);
+        titleColumn.gridy++;
 
         testPanel.setBackground(AppThemeColor.TRANSPARENT);
 

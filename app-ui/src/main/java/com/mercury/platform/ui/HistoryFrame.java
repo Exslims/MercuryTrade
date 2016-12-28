@@ -35,6 +35,7 @@ public class HistoryFrame extends OverlaidFrame {
         messagesContainer = new JPanel();
         messagesContainer.setBackground(AppThemeColor.TRANSPARENT);
         messagesContainer.setLayout(new BoxLayout(messagesContainer,BoxLayout.Y_AXIS));
+        messagesContainer.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
         add(getTopPanel(),BorderLayout.PAGE_START);
 
         scrollPane = new JScrollPane(messagesContainer);
