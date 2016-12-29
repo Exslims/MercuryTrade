@@ -44,6 +44,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     private Timer timeAgo;
     private String cachedTime = "0m ago";
     private JLabel timeLabel;
+    private Color cachedWhisperColor = AppThemeColor.TEXT_NICKNAME;
 
     private Map<String,String> parsedMessage;
 
@@ -137,23 +138,10 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         topPanel.setBorder(BorderFactory.createEmptyBorder(0,0,-5,0));
         topPanel.setBackground(AppThemeColor.TRANSPARENT);
 
-        whisperLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,15f,whisper + ":");
+        whisperLabel = componentsFactory.getTextLabel(FontStyle.BOLD,cachedWhisperColor, TextAlignment.LEFTOP,15f,whisper + ":");
         Border border = whisperLabel.getBorder();
         whisperLabel.setBorder(new CompoundBorder(border,new EmptyBorder(0,5,0,5)));
         whisperLabel.setVerticalAlignment(SwingConstants.CENTER);
-        whisperLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                x = e.getX();
-                y = e.getY();
-            }
-        });
-        whisperLabel.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                EventRouter.fireEvent(new DraggedMessageFrameEvent(e.getLocationOnScreen().x -x,e.getLocationOnScreen().y - y));
-            }
-        });
 
         topPanel.add(whisperLabel,BorderLayout.LINE_START);
 
@@ -233,13 +221,10 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                     }
                     if (hours == 0 && day == 0) {
                         labelText = minute + "m ago";
-                        cachedTime = minute + "m ago";
                     } else if (hours > 0) {
                         labelText = hours + "h " + minute + "m ago";
-                        cachedTime = hours + "h " + minute + "m ago";
                     } else if (day > 0) {
                         labelText = day + "d " + hours + "h " + minute + "m ago";
-                        cachedTime = day + "d " + hours + "h " + minute + "m ago";
                     }
                     timeLabel.setText(labelText);
                     EventRouter.fireEvent(new RepaintEvent.RepaintMessagePanel());
@@ -253,11 +238,27 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
 
     public void setStyle(MessagePanelStyle style) {
         this.style = style;
+        this.cachedTime = timeLabel.getText();
         init();
     }
 
     public MessagePanelStyle getStyle() {
         return style;
+    }
+    public void setAsTopMessage(){
+        whisperLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                x = e.getX();
+                y = e.getY();
+            }
+        });
+        whisperLabel.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                EventRouter.fireEvent(new DraggedMessageFrameEvent(e.getLocationOnScreen().x -x,e.getLocationOnScreen().y - y));
+            }
+        });
     }
 
     @Override
@@ -266,6 +267,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             String nickName = ((PlayerJoinEvent) event).getNickName();
             if(nickName.equals(whisper)){
                 whisperLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
+                cachedWhisperColor = AppThemeColor.TEXT_SUCCESS;
                 tradeButton.setEnabled(true);
                 EventRouter.fireEvent(new RepaintEvent.RepaintMessagePanel());
             }
@@ -274,6 +276,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             String nickName = ((PlayerLeftEvent) event).getNickName();
             if(nickName.equals(whisper)){
                 whisperLabel.setForeground(AppThemeColor.TEXT_DENIED);
+                cachedWhisperColor = AppThemeColor.TEXT_DENIED;
                 tradeButton.setEnabled(false);
                 EventRouter.fireEvent(new RepaintEvent.RepaintMessagePanel());
             }

@@ -62,6 +62,8 @@ public class MessageFrame extends OverlaidFrame {
                         messagePanel = new MessagePanel(message.getWhisperNickname(), message.getMessage(), MessagePanelStyle.BIGGEST);
                         if(this.getContentPane().getComponentCount() > 0){
                             messagePanel.setStyle(MessagePanelStyle.SMALL);
+                        }else {
+                            messagePanel.setAsTopMessage();
                         }
                         messagePanel.addMouseListener(new MouseAdapter() {
                             @Override
@@ -77,12 +79,17 @@ public class MessageFrame extends OverlaidFrame {
                                         break;
                                     }
                                 }
+                                if(MessageFrame.this.getContentPane().getComponent(0).equals(source)){
+                                    source.setAsTopMessage();
+                                    source.setBorder(null);
+                                    MessageFrame.this.repaint();
+                                }
                                 MessageFrame.this.pack();
                             }
                         });
                     }
                 }
-                if(this.getComponentCount() > 0){
+                if(this.getContentPane().getComponentCount() > 0){
                     messagePanel.setBorder(BorderFactory.createMatteBorder(1,0,0,0, AppThemeColor.BORDER));
                 }
                 this.add(messagePanel);
