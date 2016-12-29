@@ -2,10 +2,7 @@ package com.mercury.platform.ui;
 
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.SCEventHandler;
-import com.mercury.platform.shared.events.custom.ChangeFrameVisibleEvent;
-import com.mercury.platform.shared.events.custom.NewPatchSCEvent;
-import com.mercury.platform.shared.events.custom.NotificationEvent;
-import com.mercury.platform.shared.events.custom.RepaintEvent;
+import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.ui.components.test.TestCasesFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.pushingpixels.trident.Timeline;
@@ -107,11 +104,13 @@ public class TaskBarFrame extends OverlaidFrame {
                     currentMode = "supertrade";
                     TaskBarFrame.this.repaint();
                     EventRouter.fireEvent(new NotificationEvent("SuperTrade mode ON"));
+                    EventRouter.fireEvent(new ChangedTradeModeEvent.ToSuperTradeModeEvent());
                 }else {
                     currentMode = "standard";
                     chatMode.setIcon(componentsFactory.getIcon("app/standard-mode.png",24));
                     TaskBarFrame.this.repaint();
                     EventRouter.fireEvent(new NotificationEvent("SuperTrade mode OFF"));
+                    EventRouter.fireEvent(new ChangedTradeModeEvent.ToDefaultTradeModeEvent());
                 }
             }
         });

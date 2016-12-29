@@ -102,7 +102,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         public void mouseDragged(MouseEvent e) {
             e.translatePoint(OverlaidFrame.this.getLocation().x - x,OverlaidFrame.this.getLocation().y - y);
             OverlaidFrame.this.setLocation(e.getX(),e.getY());
-            configManager.saveComponentLocation(OverlaidFrame.this.getClass().getSimpleName(),OverlaidFrame.this.getLocation());
+            configManager.saveComponentLocation(OverlaidFrame.this.getClass().getSimpleName(),OverlaidFrame.this.getLocationOnScreen());
         }
     }
     protected class DraggedFrameMouseListener extends MouseAdapter{

@@ -40,6 +40,11 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     private String whisper;
     private JLabel whisperLabel;
     private JButton tradeButton;
+
+    private Timer timeAgo;
+    private String cachedTime = "0m ago";
+    private JLabel timeLabel;
+
     private Map<String,String> parsedMessage;
 
     private JLabel itemLabel;
@@ -207,35 +212,41 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     private JPanel getTimePanel(){
         JPanel panel = new JPanel();
         panel.setBackground(AppThemeColor.TRANSPARENT);
-        JLabel timeLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MISC, TextAlignment.CENTER, 14, "0m ago");
-        Timer timeAgo = new Timer(60000, new ActionListener() {
-            private int minute = 0;
-            private int hours = 0;
-            private int day = 0;
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String labelText = "";
-                minute++;
-                if(minute > 60){
-                    hours++;
-                    minute = 0;
-                    if(hours > 24){
-                        day++;
-                        hours = 0;
+        timeLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MISC, TextAlignment.CENTER, 14, cachedTime);
+        if(timeAgo == null) {
+            timeAgo = new Timer(60000, new ActionListener() {
+                private int minute = 0;
+                private int hours = 0;
+                private int day = 0;
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String labelText = "";
+                    minute++;
+                    if (minute > 60) {
+                        hours++;
+                        minute = 0;
+                        if (hours > 24) {
+                            day++;
+                            hours = 0;
+                        }
                     }
+                    if (hours == 0 && day == 0) {
+                        labelText = minute + "m ago";
+                        cachedTime = minute + "m ago";
+                    } else if (hours > 0) {
+                        labelText = hours + "h " + minute + "m ago";
+                        cachedTime = hours + "h " + minute + "m ago";
+                    } else if (day > 0) {
+                        labelText = day + "d " + hours + "h " + minute + "m ago";
+                        cachedTime = day + "d " + hours + "h " + minute + "m ago";
+                    }
+                    timeLabel.setText(labelText);
+                    EventRouter.fireEvent(new RepaintEvent.RepaintMessagePanel());
                 }
-                if(hours == 0 && day == 0){
-                    labelText = minute + "m ago";
-                }else if(hours > 0){
-                    labelText = hours + "h " + minute + "m ago";
-                }else if(day > 0){
-                    labelText = day + "d " + hours + "h " + minute + "m ago";
-                }
-                timeLabel.setText(labelText);
-                EventRouter.fireEvent(new RepaintEvent.RepaintMessagePanel());
-            }
-        });
-        timeAgo.start();
+            });
+            timeAgo.start();
+        }
         panel.add(timeLabel);
         return panel;
     }
@@ -243,6 +254,10 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     public void setStyle(MessagePanelStyle style) {
         this.style = style;
         init();
+    }
+
+    public MessagePanelStyle getStyle() {
+        return style;
     }
 
     @Override
