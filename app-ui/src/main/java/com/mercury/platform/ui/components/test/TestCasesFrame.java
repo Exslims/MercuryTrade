@@ -21,9 +21,8 @@ import java.util.List;
  * Created by Константин on 26.12.2016.
  */
 public class TestCasesFrame extends OverlaidFrame {
-
-    private int x;
-    private int y;
+    private List<String> randomMessages;
+    private List<String> nickNames;
 
     public TestCasesFrame() {
         super("Test cases");
@@ -36,6 +35,25 @@ public class TestCasesFrame extends OverlaidFrame {
         add(getTestCasesPanel(), BorderLayout.CENTER);
         disableHideEffect();
         pack();
+        randomMessages = new ArrayList<>();
+        nickNames = new ArrayList<>();
+        randomMessages.add("2016/12/26 05:20:19 Hi, I would like to buy your Corpse Ring listed for 90 chaos in Breach (stash tab \"Gear\"; position: left 11, top 2) offer");
+        randomMessages.add("2016/12/26 05:20:19 Hi, I would like to buy your Corpse Ring Corpse Ring Corpse Ring listed for 1 chaos in Breach (stash tab \"Gear\"; position: left 11, top 2) offerofferofferofferoffer");
+        randomMessages.add("2016/12/26 05:20:19 Hi, I would like to buy your Corpse Ring Corpse Ring listed for 150 fusing in Breach (stash tab \"Gear\"; position: left 11, top 2) offerqqqweeeee");
+        randomMessages.add("2016/12/26 05:20:19 Hi, I would like to buy your Corpse Ring Corpse Ring listed for 10 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2)");
+        randomMessages.add("2016/12/26 05:20:19 Hi, I would like to buy your Corpse Ring Corpse Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) offffffe");
+        randomMessages.add("2016/12/26 05:20:19 Hi, I would like to buy your Corpse Ring listed for 1 chaos in Breach (stash tab \"Gear\"; position: left 11, top 2)");
+        randomMessages.add("2016/12/26 05:20:19 Hi, I would like to buy your Corpse Ring listed for 45 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) блабалблабалабала");
+
+        nickNames.add("Kanarid");
+        nickNames.add("Vin");
+        nickNames.add("Rrra");
+        nickNames.add("Pabeesari");
+        nickNames.add("Joll");
+        nickNames.add("Jashicore");
+        nickNames.add("Xach");
+        nickNames.add("Yaitaly");
+        nickNames.add("xXxДолбоебxXx");
     }
     private JPanel getTopPanel(){
         JPanel topPanel = new JPanel();
@@ -44,21 +62,8 @@ public class TestCasesFrame extends OverlaidFrame {
         title.setHorizontalAlignment(SwingConstants.CENTER);
         topPanel.add(title);
 
-        title.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                x = e.getX();
-                y = e.getY();
-            }
-        });
-        title.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                e.translatePoint(TestCasesFrame.this.getLocation().x - x,TestCasesFrame.this.getLocation().y - y);
-                TestCasesFrame.this.setLocation(e.getX(),e.getY());
-                configManager.saveComponentLocation(TestCasesFrame.this.getClass().getSimpleName(),TestCasesFrame.this.getLocation());
-            }
-        });
+        title.addMouseListener(new DraggedFrameMouseListener());
+        title.addMouseMotionListener(new DraggedFrameMotionListener());
         return topPanel;
     }
     @Override
@@ -88,83 +93,15 @@ public class TestCasesFrame extends OverlaidFrame {
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.fireEvent(new WhisperNotificationEvent());
                 List<Message> messages = new ArrayList<>();
-                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2)"));
+                messages.add(new Message(nickNames.get(new Random().nextInt(9)),randomMessages.get(new Random().nextInt(7))));
                 EventRouter.fireEvent(new NewWhispersEvent(messages));
             }
         });
         testPanel.add(button,buttonColumn);
         buttonColumn.gridy++;
-        JLabel textLabel = componentsFactory.getTextLabel("Short message");
+        JLabel textLabel = componentsFactory.getTextLabel("Random message");
         testPanel.add(textLabel,titleColumn);
-        titleColumn.gridy++;
-
-        JButton button1 = componentsFactory.getBorderedButton("Click");
-        button1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                EventRouter.fireEvent(new WhisperNotificationEvent());
-                List<Message> messages = new ArrayList<>();
-                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2)"));
-                EventRouter.fireEvent(new NewWhispersEvent(messages));
-            }
-        });
-        testPanel.add(button1,buttonColumn);
-        buttonColumn.gridy++;
-        JLabel textLabel1 = componentsFactory.getTextLabel("Medium message");
-        testPanel.add(textLabel1,titleColumn);
-        titleColumn.gridy++;
-
-        JButton button2 = componentsFactory.getBorderedButton("Click");
-        button2.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                EventRouter.fireEvent(new WhisperNotificationEvent());
-                List<Message> messages = new ArrayList<>();
-                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2)"));
-                EventRouter.fireEvent(new NewWhispersEvent(messages));
-            }
-        });
-        testPanel.add(button2,buttonColumn);
-        buttonColumn.gridy++;
-        JLabel textLabel12 = componentsFactory.getTextLabel("Biggest message");
-        testPanel.add(textLabel12,titleColumn);
-        titleColumn.gridy++;
-
-        JButton button3 = componentsFactory.getBorderedButton("Click");
-        button3.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                EventRouter.fireEvent(new WhisperNotificationEvent());
-                List<Message> messages = new ArrayList<>();
-                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) #############################"));
-                EventRouter.fireEvent(new NewWhispersEvent(messages));
-            }
-        });
-        testPanel.add(button3,buttonColumn);
-        buttonColumn.gridy++;
-        JLabel textLabel13 = componentsFactory.getTextLabel("Biggest message + offer");
-        testPanel.add(textLabel13,titleColumn);
-        titleColumn.gridy++;
-
-        JButton button4 = componentsFactory.getBorderedButton("Click");
-        button4.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                EventRouter.fireEvent(new WhisperNotificationEvent());
-                List<Message> messages = new ArrayList<>();
-                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) ##############################"));
-                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) ##############################"));
-                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) ###############################"));
-                messages.add(new Message("Test############","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) ##############################"));
-                EventRouter.fireEvent(new NewWhispersEvent(messages));
-            }
-        });
-        testPanel.add(button4,buttonColumn);
-        buttonColumn.gridy++;
-        JLabel textLabel14 = componentsFactory.getTextLabel("Multiple biggest messages + offer");
-        testPanel.add(textLabel14,titleColumn);
         titleColumn.gridy++;
 
         JButton button5 = componentsFactory.getBorderedButton("Click");

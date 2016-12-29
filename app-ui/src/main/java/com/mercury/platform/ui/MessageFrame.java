@@ -32,8 +32,33 @@ public class MessageFrame extends OverlaidFrame {
         disableHideEffect(); // todo
     }
 
-    public void convertFrameTo(TradeMode mode){
+    private void convertFrameTo(TradeMode mode){
+        switch (mode){
+            case DEFAULT:{
+                if(tradeMode == TradeMode.SUPER){
+                    Component[] components = this.getContentPane().getComponents();
+                    for (Component messagePanel : components) {
+                        ((MessagePanel)messagePanel).setStyle(MessagePanelStyle.SMALL);
+                    }
+                    ((MessagePanel)this.getContentPane().getComponent(0)).setStyle(MessagePanelStyle.BIGGEST);
+                    ((MessagePanel)this.getContentPane().getComponent(0)).setAsTopMessage();
+                }
+                this.repaint();
+                break;
+            }
+            case SUPER:{
+                if(tradeMode == TradeMode.DEFAULT){
+                    Component[] components = this.getContentPane().getComponents();
+                    for (Component messagePanel : components) {
+                        ((MessagePanel)messagePanel).setStyle(MessagePanelStyle.BIGGEST);
+                    }
+                    ((MessagePanel)this.getContentPane().getComponent(0)).setAsTopMessage();
+                }
+                break;
+            }
+        }
         this.tradeMode = mode;
+        this.pack();
     }
 
     @Override
