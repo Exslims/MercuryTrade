@@ -57,7 +57,7 @@ public class MessageFrame extends OverlaidFrame {
             MessageFrame.this.setLocation(x,y);
             configManager.saveComponentLocation(this.getClass().getSimpleName(),this.getLocation());
         });
-        EventRouter.registerHandler(RepaintEvent.class, event -> {
+        EventRouter.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {
             MessageFrame.this.revalidate();
             MessageFrame.this.repaint();
         });

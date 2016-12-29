@@ -31,6 +31,7 @@ public class HistoryFrame extends OverlaidFrame {
         super.init();
         disableHideEffect(); // todo
         this.setMinimumSize(new Dimension(400,100));
+        this.setVisible(false);
         messagesContainer = new JPanel();
         messagesContainer.setBackground(AppThemeColor.TRANSPARENT);
         messagesContainer.setLayout(new BoxLayout(messagesContainer,BoxLayout.Y_AXIS));
@@ -137,7 +138,7 @@ public class HistoryFrame extends OverlaidFrame {
             this.pack();
             this.repaint();
         });
-        EventRouter.registerHandler(RepaintEvent.class, event -> {
+        EventRouter.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {
             this.revalidate();
             this.repaint();
         });

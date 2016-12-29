@@ -149,7 +149,6 @@ public class ConfigManager {
      * @param point frame.getLocation().
      */
     public void saveComponentLocation(String componentName, Point point){
-        System.out.println("component: " + componentName);
         if(point.x != 0 && point.y != 0) {
             properties.put(componentName, point);
             //each frame has its timer

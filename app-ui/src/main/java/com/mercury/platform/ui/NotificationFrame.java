@@ -17,7 +17,7 @@ import java.awt.*;
 public class NotificationFrame extends OverlaidFrame {
     private JLabel strokeLabel;
     private Timeline showAnimation;
-    protected NotificationFrame() {
+    public NotificationFrame() {
         super("Notification frame");
     }
 
@@ -46,6 +46,7 @@ public class NotificationFrame extends OverlaidFrame {
             public void onTimelinePulse(float durationFraction, float timelinePosition) {
             }
         });
+        disableHideEffect();
         this.add(strokeLabel);
     }
 

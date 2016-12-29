@@ -8,6 +8,9 @@ import com.mercury.platform.shared.events.custom.NotificationEvent;
 import com.mercury.platform.shared.events.custom.RepaintEvent;
 import com.mercury.platform.ui.components.test.TestCasesFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import org.pushingpixels.trident.Timeline;
+import org.pushingpixels.trident.ease.Spline;
+import org.pushingpixels.trident.ease.TimelineEase;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,10 +21,13 @@ import java.awt.event.*;
  * 07.12.2016
  */
 public class TaskBarFrame extends OverlaidFrame {
+    private final int MINIMUM_WIDTH = 114;
     private MessageFrame messageFrame;
     private TestCasesFrame testCasesFrame;
     private HistoryFrame historyFrame;
     private NotificationFrame notificationFrame;
+
+    private Timeline collapseAnim;
 
     public TaskBarFrame() {
         super("MercuryTrader");
@@ -37,11 +43,34 @@ public class TaskBarFrame extends OverlaidFrame {
         add(getTaskBarPanel());
         disableHideEffect();
         pack();
+        this.setSize(new Dimension(MINIMUM_WIDTH,this.getHeight()));
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if(collapseAnim != null){
+                    collapseAnim.abort();
+                }
+                initCollapseAnimations("expand");
+                collapseAnim.play();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if(!isMouseWithInFrame()) {
+                    if (collapseAnim != null) {
+                        collapseAnim.abort();
+                    }
+                    initCollapseAnimations("collapse");
+                    collapseAnim.play();
+                }
+            }
+        });
     }
 
     @Override
     protected LayoutManager getFrameLayout() {
-        return new FlowLayout();
+        return new FlowLayout(FlowLayout.LEFT);
     }
 
     private JPanel getTaskBarPanel(){
@@ -54,14 +83,14 @@ public class TaskBarFrame extends OverlaidFrame {
             private String currentMode = "always";
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(currentMode.equals("always")){
-                    visibleMode.setIcon(componentsFactory.getIcon("app/visible-dnd-mode.png",24));
+                if (currentMode.equals("always")) {
+                    visibleMode.setIcon(componentsFactory.getIcon("app/visible-dnd-mode.png", 24));
                     currentMode = "dnd";
                     TaskBarFrame.this.repaint();
                     EventRouter.fireEvent(new NotificationEvent("DND on"));
-                }else {
+                } else {
                     currentMode = "always";
-                    visibleMode.setIcon(componentsFactory.getIcon("app/visible-always-mode.png",24));
+                    visibleMode.setIcon(componentsFactory.getIcon("app/visible-always-mode.png", 24));
                     TaskBarFrame.this.repaint();
                     EventRouter.fireEvent(new NotificationEvent("DND off"));
                 }
@@ -97,21 +126,16 @@ public class TaskBarFrame extends OverlaidFrame {
                     historyFrame.setVisible(false);
                 }
             }
+        });
 
+        JButton moveButton = componentsFactory.getIconButton("app/drag_and_drop.png", 24);
+        moveButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
-                x = e.getX();
-                y = e.getY();
+            public void mouseClicked(MouseEvent e) {
+
             }
         });
-        historyButton.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                e.translatePoint(TaskBarFrame.this.getLocation().x - x,TaskBarFrame.this.getLocation().y - y);
-                TaskBarFrame.this.setLocation(e.getX(),e.getY());
-                configManager.saveComponentLocation(TaskBarFrame.this.getClass().getSimpleName(),TaskBarFrame.this.getLocation());
-            }
-        });
+
         JButton settingsButton = componentsFactory.getIconButton("app/settings.png", 26);
         settingsButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -123,6 +147,7 @@ public class TaskBarFrame extends OverlaidFrame {
             }
         });
         settingsButton.setToolTipText("Settings");
+
         JButton exitButton = componentsFactory.getIconButton("app/exit.png", 24);
         exitButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -140,25 +165,39 @@ public class TaskBarFrame extends OverlaidFrame {
         taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
         taskBarPanel.add(historyButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        taskBarPanel.add(moveButton);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
         taskBarPanel.add(settingsButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
         taskBarPanel.add(exitButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+
+        // adding drag frame listeners
+        visibleMode.addMouseListener(new DraggedFrameMouseListener());
+        visibleMode.addMouseMotionListener(new DraggedFrameMotionListener());
+        chatMode.addMouseListener(new DraggedFrameMouseListener());
+        chatMode.addMouseMotionListener(new DraggedFrameMotionListener());
+        historyButton.addMouseListener(new DraggedFrameMouseListener());
+        historyButton.addMouseMotionListener(new DraggedFrameMotionListener());
+        moveButton.addMouseListener(new DraggedFrameMouseListener());
+        moveButton.addMouseMotionListener(new DraggedFrameMotionListener());
+        settingsButton.addMouseListener(new DraggedFrameMouseListener());
+        settingsButton.addMouseMotionListener(new DraggedFrameMotionListener());
         return taskBarPanel;
     }
 
     @Override
     public void initHandlers() {
-        EventRouter.registerHandler(NewPatchSCEvent.class, event -> {
-            JFrame frame = new JFrame("New patch");
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            JLabel label = new JLabel(((NewPatchSCEvent)event).getPatchTitle());
-            frame.getContentPane().add(label);
-            frame.pack();
-            frame.setVisible(true);
-        });
+//        EventRouter.registerHandler(NewPatchSCEvent.class, event -> {
+//            JFrame frame = new JFrame("New patch");
+//            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//            JLabel label = new JLabel(((NewPatchSCEvent)event).getPatchTitle());
+//            frame.getContentPane().add(label);
+//            frame.pack();
+//            frame.setVisible(true);
+//        });
 
-        EventRouter.registerHandler(RepaintEvent.class, event -> {
+        EventRouter.registerHandler(RepaintEvent.RepaintTaskBar.class, event -> {
             TaskBarFrame.this.revalidate();
             TaskBarFrame.this.repaint();
         });
@@ -188,5 +227,27 @@ public class TaskBarFrame extends OverlaidFrame {
                 }
             }
         });
+    }
+    private void initCollapseAnimations(String state){
+        collapseAnim = new Timeline(this);
+        switch (state){
+            case "expand":{
+                collapseAnim.addPropertyToInterpolate("width",this.getWidth(),this.getPreferredSize().width);
+                break;
+            }
+            case "collapse":{
+                collapseAnim.addPropertyToInterpolate("width",this.getWidth(),MINIMUM_WIDTH);
+            }
+        }
+        collapseAnim.setEase(new Spline(1f));
+        collapseAnim.setDuration(300);
+    }
+
+    /**
+     * For 'trident' property animations
+     * @param width next width
+     */
+    public void setWidth(int width){
+        this.setSize(new Dimension(width,this.getHeight()));
     }
 }

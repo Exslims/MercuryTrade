@@ -232,7 +232,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                     labelText = day + "d " + hours + "h " + minute + "m ago";
                 }
                 timeLabel.setText(labelText);
-                EventRouter.fireEvent(new RepaintEvent());
+                EventRouter.fireEvent(new RepaintEvent.RepaintMessagePanel());
             }
         });
         timeAgo.start();
@@ -252,7 +252,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             if(nickName.equals(whisper)){
                 whisperLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
                 tradeButton.setEnabled(true);
-                EventRouter.fireEvent(new RepaintEvent());
+                EventRouter.fireEvent(new RepaintEvent.RepaintMessagePanel());
             }
         });
         EventRouter.registerHandler(PlayerLeftEvent.class, event -> {
@@ -260,7 +260,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             if(nickName.equals(whisper)){
                 whisperLabel.setForeground(AppThemeColor.TEXT_DENIED);
                 tradeButton.setEnabled(false);
-                EventRouter.fireEvent(new RepaintEvent());
+                EventRouter.fireEvent(new RepaintEvent.RepaintMessagePanel());
             }
         });
     }

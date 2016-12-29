@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 /**
  * Created by Константин on 26.12.2016.
@@ -66,7 +67,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         this.addMouseListener(hideEffectListener);
     }
     protected abstract LayoutManager getFrameLayout();
-    private boolean isMouseWithInFrame(){
+    protected boolean isMouseWithInFrame(){
         return this.getBounds().contains(MouseInfo.getPointerInfo().getLocation());
     }
     private void initAnimationTimers(){
@@ -94,6 +95,21 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
                 showAnimation.abort();
                 hideAnimation.play();
             }
+        }
+    }
+    protected class DraggedFrameMotionListener extends MouseAdapter {
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            e.translatePoint(OverlaidFrame.this.getLocation().x - x,OverlaidFrame.this.getLocation().y - y);
+            OverlaidFrame.this.setLocation(e.getX(),e.getY());
+            configManager.saveComponentLocation(OverlaidFrame.this.getClass().getSimpleName(),OverlaidFrame.this.getLocation());
+        }
+    }
+    protected class DraggedFrameMouseListener extends MouseAdapter{
+        @Override
+        public void mousePressed(MouseEvent e) {
+            x = e.getX();
+            y = e.getY();
         }
     }
 }
