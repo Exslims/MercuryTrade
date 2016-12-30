@@ -40,8 +40,10 @@ public class MessageFrame extends OverlaidFrame {
                     for (Component messagePanel : components) {
                         ((MessagePanel)messagePanel).setStyle(MessagePanelStyle.SMALL);
                     }
-                    ((MessagePanel)this.getContentPane().getComponent(0)).setStyle(MessagePanelStyle.BIGGEST);
-                    ((MessagePanel)this.getContentPane().getComponent(0)).setAsTopMessage();
+                    if(this.getContentPane().getComponentCount() != 0) {
+                        ((MessagePanel) this.getContentPane().getComponent(0)).setStyle(MessagePanelStyle.BIGGEST);
+                        ((MessagePanel) this.getContentPane().getComponent(0)).setAsTopMessage();
+                    }
                 }
                 this.repaint();
                 break;
@@ -52,7 +54,9 @@ public class MessageFrame extends OverlaidFrame {
                     for (Component messagePanel : components) {
                         ((MessagePanel)messagePanel).setStyle(MessagePanelStyle.BIGGEST);
                     }
-                    ((MessagePanel)this.getContentPane().getComponent(0)).setAsTopMessage();
+                    if(this.getContentPane().getComponentCount() != 0) {
+                        ((MessagePanel) this.getContentPane().getComponent(0)).setAsTopMessage();
+                    }
                 }
                 break;
             }

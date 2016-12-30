@@ -11,7 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseMotionAdapter;
 
 /**
  * Created by Константин on 26.12.2016.
@@ -19,12 +19,19 @@ import java.awt.event.MouseMotionListener;
 public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     private final int HIDE_TIME = 200;
     private final int SHOW_TIME = 150;
+    private final int BORDER_THICKNESS = 1;
+    private final int HIDE_DELAY = 1000;
 
     protected int x;
     protected int y;
+    private boolean withinResizeSpace = false;
+
     private Timeline hideAnimation;
     private Timeline showAnimation;
+    private Timer hideTimer;
     private HideEffectListener hideEffectListener = new HideEffectListener();
+    private boolean hideAnimationEnable = true;
+
     protected ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
     protected ConfigManager configManager = ConfigManager.INSTANCE;
     protected OverlaidFrame(String title){
@@ -52,19 +59,25 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
                 OverlaidFrame.this.repaint();
             }
         });
+        this.addMouseListener(new ResizeMouseListener());
+        this.addMouseMotionListener(new ResizeMouseMotionListener());
 
         if(!this.getClass().getSimpleName().equals("NotificationFrame")) {
             this.setLocation((Point) configManager.getProperty(this.getClass().getSimpleName()));
         }
-        this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
+        this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
+                BorderFactory.createLineBorder(AppThemeColor.BORDER, BORDER_THICKNESS)));
 
     }
     protected void disableHideEffect(){
         this.setOpacity(0.9f);
+        this.hideAnimationEnable = false;
         this.removeMouseListener(hideEffectListener);
     }
     protected void enableHideEffect(){
         this.addMouseListener(hideEffectListener);
+        this.hideAnimationEnable = true;
     }
     protected abstract LayoutManager getFrameLayout();
     protected boolean isMouseWithInFrame(){
@@ -79,24 +92,78 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         hideAnimation.setDuration(HIDE_TIME);
         hideAnimation.addPropertyToInterpolate("opacity",0.9f,0.2f);
     }
+    private class ResizeMouseMotionListener extends MouseMotionAdapter{
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            Point frameLocation = OverlaidFrame.this.getLocation();
+            OverlaidFrame.this.setSize(new Dimension(e.getLocationOnScreen().x - frameLocation.x,OverlaidFrame.this.getHeight()));
+        }
+    }
+    private class ResizeMouseListener extends MouseAdapter{
+        private Rectangle rightResizeRect = new Rectangle();
+        @Override
+        public void mousePressed(MouseEvent e) {
+            withinResizeSpace = true;
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            withinResizeSpace = false;
+            if(hideAnimationEnable && !isMouseWithInFrame()) {
+                hideTimer.start();
+            }
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            int frameWidth = OverlaidFrame.this.getWidth();
+            int frameHeight = OverlaidFrame.this.getHeight();
+            Point frameLocation = OverlaidFrame.this.getLocation();
+            rightResizeRect = new Rectangle(
+                    frameLocation.x + frameWidth - (BORDER_THICKNESS + 2),
+                    frameLocation.y,BORDER_THICKNESS+2,frameHeight);
+            if(rightResizeRect.getBounds().contains(e.getLocationOnScreen())) {
+                OverlaidFrame.this.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
+            }
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            OverlaidFrame.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        }
+    }
+
+    /**
+     * Listeners for hide&show animation on frame.
+     */
     private class HideEffectListener extends MouseAdapter {
+        public HideEffectListener(){
+            hideTimer = new Timer(HIDE_DELAY,listener ->{
+                showAnimation.abort();
+                hideAnimation.play();
+            });
+            hideTimer.setRepeats(false);
+        }
         @Override
         public void mouseEntered(MouseEvent e) {
             OverlaidFrame.this.repaint();
+            hideTimer.stop();
             if(OverlaidFrame.this.getOpacity() < 0.9f) {
-                hideAnimation.abort();
                 showAnimation.play();
             }
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-            if(!isMouseWithInFrame()){
-                showAnimation.abort();
-                hideAnimation.play();
+            if(!isMouseWithInFrame() && !withinResizeSpace){
+                hideTimer.start();
             }
         }
     }
+
+    /**
+     * Frame Listeners to change the position on the screen.
+     */
     public class DraggedFrameMotionListener extends MouseAdapter {
         @Override
         public void mouseDragged(MouseEvent e) {
