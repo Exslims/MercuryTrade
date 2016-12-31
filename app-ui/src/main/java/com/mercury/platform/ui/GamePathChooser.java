@@ -6,8 +6,6 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.ExecutorService;
@@ -30,8 +28,8 @@ public class GamePathChooser extends OverlaidFrame {
         this.add(getChooserPanel(),BorderLayout.CENTER);
         this.add(getMiscPanel(),BorderLayout.PAGE_END);
 
-        disableHideEffect();
         pack();
+        disableHideEffect();
     }
     private JPanel getTopPanel(){
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -52,7 +50,7 @@ public class GamePathChooser extends OverlaidFrame {
             public void mouseDragged(MouseEvent e) {
                 e.translatePoint(GamePathChooser.this.getLocation().x - x,GamePathChooser.this.getLocation().y - y);
                 GamePathChooser.this.setLocation(e.getX(),e.getY());
-                configManager.saveComponentLocation(GamePathChooser.this.getClass().getSimpleName(),GamePathChooser.this.getLocation());
+                configManager.saveFrameLocation(GamePathChooser.this.getClass().getSimpleName(),GamePathChooser.this.getLocation());
             }
         });
         topPanel.add(title,BorderLayout.CENTER);

@@ -145,7 +145,7 @@ public class SettingsPanel extends JPanel {
         return wnSettingPanel;
     }
     private JPanel getButtonsSettingsPanel(){
-        Map<String, String> buttonsConfig = (Map<String, String>) ConfigManager.INSTANCE.getProperty("buttons");
+        Map<String, String> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();
         JPanel rootPanel = new JPanel(){
             @Override
             protected void paintComponent(Graphics g) {

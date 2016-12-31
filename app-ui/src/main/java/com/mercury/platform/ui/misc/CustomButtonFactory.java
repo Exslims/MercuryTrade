@@ -22,7 +22,7 @@ import java.util.*;
 public class CustomButtonFactory {
     private static ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
     public static JPanel getButtonsPanel(String whisper){
-        Map<String, String> buttonsConfig = (Map<String, String>) ConfigManager.INSTANCE.getProperty("buttons");
+        Map<String, String> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();
         JPanel panel = new JPanel(new FlowLayout());
         panel.setBackground(AppThemeColor.TRANSPARENT);
 

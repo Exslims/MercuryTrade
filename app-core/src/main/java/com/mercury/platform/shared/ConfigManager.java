@@ -1,9 +1,11 @@
 package com.mercury.platform.shared;
 
+import com.mercury.platform.shared.pojo.FrameSettings;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,9 +29,12 @@ public class ConfigManager {
 
     private final String CONFIG_FILE_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrader";
     private final String CONFIG_FILE = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrader\\app-config.json";
-    private Map<String, Object> properties = new HashMap<>();
     private Map<String, Timer> componentsTimers = new HashMap<>();
     private Map<String, PointListener> componentsPointListeners = new HashMap<>();
+
+    private Map<String, String> cachedButtonsConfig;
+    private Map<String, FrameSettings> cachedFramesSettings;
+    private String gamePath = null;
 
     private ConfigManager() {
         load();
@@ -49,80 +54,40 @@ public class ConfigManager {
                 fileWriter.close();
 
                 saveButtonsConfig(getDefaultButtons());
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                double width = screenSize.getWidth();
-                double height = screenSize.getHeight();
-                saveComponentLocation("TaskBarFrame", new Point(500, 500));
-                saveComponentLocation("MessageFrame", new Point(700, 500));
-                saveComponentLocation("GamePathChooser", new Point(600, 500));
-                saveComponentLocation("TestCasesFrame", new Point(900, 500));
-                saveComponentLocation("SettingsFrame", new Point(600, 600));
-                saveComponentLocation("HistoryFrame", new Point(600, 600));
-                saveComponentLocation("NotificationFrame", new Point((int) width / 2, (int) height / 2));
+                cachedFramesSettings = getDefaultFramesSettings();
+                getDefaultFramesSettings().forEach(this::saveFrameSettings);
             } catch (IOException e) {
                 logger.error(e);
             }
         } else {
-            JSONParser parser = new JSONParser();
-            try {
-                Object obj = parser.parse(new FileReader(CONFIG_FILE));
-                JSONObject jsonObject = (JSONObject) obj;
-                String gamePath = (String) jsonObject.get("gamePath");
+            loadConfigFile();
+        }
+    }
+    private void loadConfigFile(){
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject root = (JSONObject) parser.parse(new FileReader(CONFIG_FILE));
+            gamePath = (String) root.get("gamePath");
 
-                JSONArray buttons = (JSONArray) jsonObject.get("buttons");
-                Map<String, String> buttonsConfig = new HashMap<>();
-                if (buttons != null) {
-                    for (JSONObject next : (Iterable<JSONObject>) buttons) {
-                        buttonsConfig.put((String) next.get("title"), (String) next.get("value"));
-                    }
-                } else {
-                    buttonsConfig = getDefaultButtons();
-                }
-                JSONObject taskBarLocation = (JSONObject) jsonObject.get("TaskBarFrame");
-                Point taskBarPoint = new Point(
-                        Integer.valueOf(String.valueOf(taskBarLocation.get("x"))),
-                        Integer.valueOf(String.valueOf(taskBarLocation.get("y"))));
-
-                JSONObject messageLocation = (JSONObject) jsonObject.get("MessageFrame");
-                Point messagePoint = new Point(
-                        Integer.valueOf(String.valueOf(messageLocation.get("x"))),
-                        Integer.valueOf(String.valueOf(messageLocation.get("y"))));
-                JSONObject gamePathLocation = (JSONObject) jsonObject.get("GamePathChooser");
-                Point gamePathPoint = new Point(
-                        Integer.valueOf(String.valueOf(gamePathLocation.get("x"))),
-                        Integer.valueOf(String.valueOf(gamePathLocation.get("y"))));
-                JSONObject settingsLocation = (JSONObject) jsonObject.get("SettingsFrame");
-                Point settingsPoint = new Point(
-                        Integer.valueOf(String.valueOf(settingsLocation.get("x"))),
-                        Integer.valueOf(String.valueOf(settingsLocation.get("y"))));
-                JSONObject historyLocation = (JSONObject) jsonObject.get("HistoryFrame");
-                Point historyPoint = new Point(
-                        Integer.valueOf(String.valueOf(historyLocation.get("x"))),
-                        Integer.valueOf(String.valueOf(historyLocation.get("y"))));
-                JSONObject notificationLocation = (JSONObject) jsonObject.get("NotificationFrame");
-                Point notificationPoint = new Point(
-                        Integer.valueOf(String.valueOf(notificationLocation.get("x"))),
-                        Integer.valueOf(String.valueOf(notificationLocation.get("y"))));
-
-                //removing
-                JSONObject testLocation = (JSONObject) jsonObject.get("TestCasesFrame");
-                Point testPoint = new Point(
-                        Integer.valueOf(String.valueOf(testLocation.get("x"))),
-                        Integer.valueOf(String.valueOf(testLocation.get("y"))));
-
-                properties.put("gamePath", gamePath);
-                properties.put("buttons", buttonsConfig);
-                properties.put("TaskBarFrame", taskBarPoint);
-                properties.put("MessageFrame", messagePoint);
-                properties.put("GamePathChooser", gamePathPoint);
-                properties.put("SettingsFrame", settingsPoint);
-                properties.put("HistoryFrame", historyPoint);
-                properties.put("NotificationFrame", notificationPoint);
-                //removing
-                properties.put("TestCasesFrame", testPoint);
-            } catch (Exception e) {
-                logger.error("Error in ConfigManager.load", e);
+            JSONArray buttons = (JSONArray) root.get("buttons");
+            cachedButtonsConfig = new HashMap<>();
+            for (JSONObject next : (Iterable<JSONObject>) buttons) {
+                cachedButtonsConfig.put((String) next.get("title"), (String) next.get("value"));
             }
+
+            JSONArray framesSetting = (JSONArray) root.get("framesSettings");
+            cachedFramesSettings = new HashMap<>();
+            for (JSONObject next : (Iterable<JSONObject>) framesSetting) {
+                JSONObject location = (JSONObject) next.get("location");
+                JSONObject size = (JSONObject) next.get("size");
+                FrameSettings settings = new FrameSettings(
+                        new Point(Integer.valueOf(String.valueOf(location.get("frameX"))), Integer.valueOf(String.valueOf(location.get("frameY")))),
+                        new Dimension(Integer.valueOf(String.valueOf(size.get("width"))), Integer.valueOf(String.valueOf(size.get("height"))))
+                );
+                cachedFramesSettings.put((String) next.get("frameClassName"), settings);
+            }
+        } catch (Exception e) {
+            logger.error("Error in loadConfigFile: ",e);
         }
     }
 
@@ -137,51 +102,52 @@ public class ConfigManager {
         return logsFile.exists();
     }
 
-    /**
-     * Get property from loaded data.
-     *
-     * @param token property name
-     * @return property value
-     */
-    public Object getProperty(String token) {
-        return properties.get(token);
+    public Map<String, String> getButtonsConfig(){
+        return cachedButtonsConfig;
     }
 
+    public FrameSettings getFrameSettings(String frameClass){
+        return cachedFramesSettings.get(
+                frameClass) == null ?
+                getDefaultFramesSettings().get(frameClass) :  cachedFramesSettings.get(frameClass);
+    }
     /**
      * Save frame location to app-config after 4 sec when frame was moved.
      *
-     * @param componentName frame name, always insert frame.getClass().getSimpleName()
+     * @param frameClassName frame name, always insert frame.getClass().getSimpleName()
      *                      and don't forget to add in load() method default value.
      * @param point         frame.getLocation().
      */
-    public void saveComponentLocation(String componentName, Point point) {
-        properties.put(componentName, point);
+    public void saveFrameLocation(String frameClassName, Point point) {
         //each frame has its timer
-        Timer timer = componentsTimers.get(componentName);
+        Timer timer = componentsTimers.get(frameClassName);
         if (timer == null) {
             timer = new Timer(4000, null);
             Timer finalTimer = timer;
             PointListener pointListener = new PointListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    JSONObject object = new JSONObject();
-                    //x and y from PointListener
-                    object.put("x", x);
-                    object.put("y", y);
-                    saveProperty(componentName, object);
+                    FrameSettings settings = cachedFramesSettings.get(frameClassName);
+                    //x,y from PointListener
+                    settings.setFrameLocation(new Point(x,y));
+                    saveFrameSettings(frameClassName,settings);
                     finalTimer.stop();
                 }
             };
-            componentsPointListeners.put(componentName, pointListener);
-            componentsTimers.put(componentName, timer);
+            componentsPointListeners.put(frameClassName, pointListener);
+            componentsTimers.put(frameClassName, timer);
             timer.addActionListener(pointListener);
         } else {
-            PointListener pointListener = componentsPointListeners.get(componentName);
+            PointListener pointListener = componentsPointListeners.get(frameClassName);
             pointListener.x = point.x;
             pointListener.y = point.y;
         }
         timer.stop();
         timer.start();
+    }
+
+    public void saveFrameSize(String frameClassName, Dimension size){
+
     }
 
     /**
@@ -190,9 +156,12 @@ public class ConfigManager {
      */
     public void saveGamePath(String gamePath){
         if(isValidPath(gamePath)) {
-            properties.put("gamePath", gamePath);
             saveProperty("gamePath", gamePath);
         }
+    }
+
+    public String getGamePath() {
+        return gamePath;
     }
 
     /**
@@ -200,7 +169,7 @@ public class ConfigManager {
      * @param buttons map of buttons data.(title,text to send)
      */
     public void saveButtonsConfig(Map<String, String> buttons){
-        properties.put("buttons",buttons);
+        cachedButtonsConfig = buttons;
         JSONArray list = new JSONArray();
         buttons.forEach((k,v)->{
             JSONObject buttonsConfig = new JSONObject();
@@ -209,6 +178,29 @@ public class ConfigManager {
             list.add(buttonsConfig);
         });
         saveProperty("buttons", list);
+    }
+
+    private void saveFrameSettings(String frameClassName,FrameSettings settings){
+        cachedFramesSettings.put(frameClassName, settings);
+        JSONArray frames = new JSONArray();
+        cachedFramesSettings.forEach((frameName,frameSettings)->{
+            JSONObject object = new JSONObject();
+            JSONObject location = new JSONObject();
+            location.put("frameX",frameSettings.getFrameLocation().x);
+            location.put("frameY",frameSettings.getFrameLocation().y);
+
+            JSONObject size = new JSONObject();
+            size.put("width",frameSettings.getFrameSize().width);
+            size.put("height",frameSettings.getFrameSize().height);
+
+            object.put("location",location);
+            object.put("size",size);
+            object.put("frameClassName", frameName);
+
+            frames.add(object);
+        });
+
+        saveProperty("framesSettings",frames);
     }
     private void saveProperty(String token, Object jsonObject){
         JSONParser parser = new JSONParser();
@@ -236,6 +228,21 @@ public class ConfigManager {
         defaultButtons.put("no thx", "no thanks");
         defaultButtons.put("sold", "sold");
         return defaultButtons;
+    }
+    private Map<String,FrameSettings> getDefaultFramesSettings(){
+        Map<String,FrameSettings> dFramesSettings = new HashMap<>();
+        dFramesSettings.put("TaskBarFrame",new FrameSettings(new Point(500, 500),new Dimension(114,50)));
+        dFramesSettings.put("MessageFrame",new FrameSettings(new Point(700, 500),new Dimension(370,115)));
+        dFramesSettings.put("GamePathChooser",new FrameSettings(new Point(600, 500),new Dimension(570,100)));
+        dFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(900, 500),new Dimension(400,100)));
+        dFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(114,50)));
+        dFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 600),new Dimension(400,100)));
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        double height = screenSize.getHeight();
+        dFramesSettings.put("NotificationFrame",new FrameSettings(new Point((int) width / 2, (int) height / 2),new Dimension(114,50)));
+        return dFramesSettings;
     }
 
 

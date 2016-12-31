@@ -1,8 +1,6 @@
 package com.mercury.platform.ui;
 
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.SCEvent;
-import com.mercury.platform.shared.events.SCEventHandler;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.panel.MessagePanel;
@@ -29,7 +27,7 @@ public class MessageFrame extends OverlaidFrame {
     protected void init() {
         super.init();
         setVisible(false);
-        disableHideEffect(); // todo
+        disableHideEffect();
     }
 
     private void convertFrameTo(TradeMode mode){
@@ -81,6 +79,9 @@ public class MessageFrame extends OverlaidFrame {
         EventRouter.registerHandler(NewWhispersEvent.class, event -> {
             List<Message> messages = ((NewWhispersEvent) event).getMessages();
             for (Message message : messages) {
+                if(!this.isVisible()){
+                    this.setVisible(true);
+                }
                 MessagePanel messagePanel = null;
                 switch (tradeMode){
                     case SUPER:{
@@ -98,20 +99,15 @@ public class MessageFrame extends OverlaidFrame {
                             @Override
                             public void mousePressed(MouseEvent e) {
                                 MessagePanel source = (MessagePanel) e.getSource();
-                                switch (source.getStyle()){
-                                    case SMALL:{
+                                switch (source.getStyle()) {
+                                    case SMALL: {
                                         source.setStyle(MessagePanelStyle.BIGGEST);
                                         break;
                                     }
-                                    case BIGGEST:{
+                                    case BIGGEST: {
                                         source.setStyle(MessagePanelStyle.SMALL);
                                         break;
                                     }
-                                }
-                                if(MessageFrame.this.getContentPane().getComponent(0).equals(source)){
-                                    source.setAsTopMessage();
-                                    source.setBorder(null);
-                                    MessageFrame.this.repaint();
                                 }
                                 MessageFrame.this.pack();
                             }
@@ -127,13 +123,21 @@ public class MessageFrame extends OverlaidFrame {
         });
         EventRouter.registerHandler(CloseMessagePanelEvent.class, event -> {
             this.remove(((CloseMessagePanelEvent) event).getComponent());
+            if (this.getContentPane().getComponentCount() > 0) {
+                MessagePanel component = (MessagePanel) this.getContentPane().getComponent(0);
+                component.setBorder(null);
+                component.setAsTopMessage();
+            }
+            if(this.getContentPane().getComponentCount() == 0){
+                this.setVisible(false);
+            }
             this.pack();
         });
         EventRouter.registerHandler(DraggedMessageFrameEvent.class, event -> {
             int x = ((DraggedMessageFrameEvent) event).getX();
             int y = ((DraggedMessageFrameEvent) event).getY();
             MessageFrame.this.setLocation(x,y);
-            configManager.saveComponentLocation(this.getClass().getSimpleName(),this.getLocation());
+            configManager.saveFrameLocation(this.getClass().getSimpleName(),this.getLocation());
         });
         EventRouter.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {
             MessageFrame.this.revalidate();

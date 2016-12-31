@@ -22,7 +22,7 @@ import java.util.List;
 //TODO Cleanup Client.txt
 public class LoggedMessagesUtils {
     private final Logger logger = Logger.getLogger(LoggedMessagesUtils.class);
-    private final String logFilePath = ConfigManager.INSTANCE.getProperty("gamePath") + File.separator + "logs" + File.separator + "Client.txt";
+    private final String logFilePath = ConfigManager.INSTANCE.getGamePath() + File.separator + "logs" + File.separator + "Client.txt";
     private Date lastMessageDate = new Date();
 
     public LoggedMessagesUtils() {
@@ -83,6 +83,8 @@ public class LoggedMessagesUtils {
                     EventRouter.fireEvent(new PlayerJoinEvent(StringUtils.substringBetween(fullMessage," : ", " has joined the area.")));
                 }
                 if(fullMessage.contains("has left the area.")){
+                    System.out.println("left area");
+                    System.out.println("<" + StringUtils.substringBetween(fullMessage," : ", " has left the area.") + ">");
                     EventRouter.fireEvent(new PlayerLeftEvent(StringUtils.substringBetween(fullMessage," : ", " has left the area.")));
                 }
             }

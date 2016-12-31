@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 
 public class AppMain {
     public static void main(String[] args) {
-        String gamePath = (String) ConfigManager.INSTANCE.getProperty("gamePath");
+        String gamePath = ConfigManager.INSTANCE.getGamePath();
         if(gamePath == null || !ConfigManager.INSTANCE.isValidPath(gamePath)) {
             GamePathChooser gamePathChooser = new GamePathChooser();
             gamePathChooser.setVisible(true);

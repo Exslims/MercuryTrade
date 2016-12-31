@@ -24,6 +24,7 @@ public class SettingsFrame extends OverlaidFrame {
         this.add(settingsPanel);
         this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
         pack();
+        disableHideEffect();
     }
 
     @Override
@@ -42,7 +43,7 @@ public class SettingsFrame extends OverlaidFrame {
             int x = ((DraggedWindowEvent) event).getX();
             int y = ((DraggedWindowEvent) event).getY();
             SettingsFrame.this.setLocation(x,y);
-            configManager.saveComponentLocation(this.getClass().getSimpleName(),SettingsFrame.this.getLocation());
+            configManager.saveFrameLocation(this.getClass().getSimpleName(),SettingsFrame.this.getLocation());
         });
     }
 

@@ -48,6 +48,10 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
 
     private Map<String,String> parsedMessage;
 
+    private JPanel whisperPanel;
+    private JPanel messagePanel;
+    private JPanel customButtonsPanel;
+
     private JLabel itemLabel;
     public MessagePanel(String whisper, String message, MessagePanelStyle style) {
         super(new BorderLayout());
@@ -57,6 +61,13 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         this.style = style;
         this.whisper = whisper;
         this.parsedMessage = MessageParser.parse(message);
+
+        this.removeAll();
+        this.setBackground(AppThemeColor.TRANSPARENT);
+        this.whisperPanel = getWhisperPanel();
+        this.messagePanel = getFormattedMessagePanel();
+        this.customButtonsPanel = CustomButtonFactory.getButtonsPanel(whisper);
+
         init();
         initHandlers();
     }
@@ -65,24 +76,23 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         this.setBackground(AppThemeColor.TRANSPARENT);
         switch (style){
             case SMALL:{
-                this.add(getWhisperPanel(),BorderLayout.PAGE_START);
+                this.add(whisperPanel,BorderLayout.PAGE_START);
                 break;
             }
             case MEDIUM:{
-                this.add(getWhisperPanel(),BorderLayout.PAGE_START);
-                this.add(getFormattedMessagePanel(),BorderLayout.CENTER);
+                this.add(whisperPanel,BorderLayout.PAGE_START);
+                this.add(messagePanel,BorderLayout.CENTER);
                 break;
             }
             case BIGGEST:{
-                this.add(getWhisperPanel(),BorderLayout.PAGE_START);
-                this.add(getFormattedMessagePanel(),BorderLayout.CENTER);
-                this.add(CustomButtonFactory.getButtonsPanel(whisper),BorderLayout.PAGE_END);
+                this.add(whisperPanel,BorderLayout.PAGE_START);
+                this.add(messagePanel,BorderLayout.CENTER);
+                this.add(customButtonsPanel,BorderLayout.PAGE_END);
                 break;
             }
             case HISTORY:{
-                this.add(getWhisperPanel(),BorderLayout.PAGE_START);
-                this.add(getFormattedMessagePanel(),BorderLayout.CENTER);
-                JPanel buttonsPanel = CustomButtonFactory.getButtonsPanel(whisper);
+                this.add(whisperPanel,BorderLayout.PAGE_START);
+                this.add(messagePanel,BorderLayout.CENTER);
                 JButton stillIntButton = componentsFactory.getBorderedButton("interested?");
                 stillIntButton.addMouseListener(new MouseAdapter() {
                     @Override
@@ -90,8 +100,8 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                         EventRouter.fireEvent(new ChatCommandEvent("@" + whisper + " " + "Hey, are u still interested in " + parsedMessage.get("itemName") + "?"));
                     }
                 });
-                buttonsPanel.add(stillIntButton,0);
-                this.add(buttonsPanel,BorderLayout.PAGE_END);
+                customButtonsPanel.add(stillIntButton,0);
+                this.add(customButtonsPanel,BorderLayout.PAGE_END);
                 break;
             }
         }

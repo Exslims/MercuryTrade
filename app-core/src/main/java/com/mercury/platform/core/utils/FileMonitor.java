@@ -17,7 +17,7 @@ import java.io.File;
 public class FileMonitor {
     private static final long POLLING_INTERVAL = 100;
     public FileMonitor() {
-        File folder = new File(ConfigManager.INSTANCE.getProperty("gamePath") + File.separator + "logs");
+        File folder = new File(ConfigManager.INSTANCE.getGamePath()+ File.separator + "logs");
 
         FileAlterationObserver observer = new FileAlterationObserver(folder);
         FileAlterationMonitor monitor = new FileAlterationMonitor(POLLING_INTERVAL);

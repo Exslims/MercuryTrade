@@ -29,7 +29,6 @@ public class HistoryFrame extends OverlaidFrame {
     @Override
     protected void init() {
         super.init();
-        disableHideEffect(); // todo
         this.setMinimumSize(new Dimension(400,100));
         this.setVisible(false);
         messagesContainer = new JPanel();
@@ -58,6 +57,7 @@ public class HistoryFrame extends OverlaidFrame {
 
         add(scrollPane,BorderLayout.CENTER);
         pack();
+        disableHideEffect();
     }
 
     @Override
@@ -84,7 +84,7 @@ public class HistoryFrame extends OverlaidFrame {
             public void mouseDragged(MouseEvent e) {
                 e.translatePoint(HistoryFrame.this.getLocation().x - x,HistoryFrame.this.getLocation().y - y);
                 HistoryFrame.this.setLocation(e.getX(),e.getY());
-                configManager.saveComponentLocation(HistoryFrame.this.getClass().getSimpleName(),HistoryFrame.this.getLocation());
+                configManager.saveFrameLocation(HistoryFrame.this.getClass().getSimpleName(),HistoryFrame.this.getLocation());
             }
         });
         topPanel.add(history,BorderLayout.CENTER);

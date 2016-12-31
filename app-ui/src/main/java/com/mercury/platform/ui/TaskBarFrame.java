@@ -38,9 +38,9 @@ public class TaskBarFrame extends OverlaidFrame {
         notificationFrame = new NotificationFrame();
         super.init();
         add(getTaskBarPanel());
-        disableHideEffect();
         pack();
         this.setSize(new Dimension(MINIMUM_WIDTH,this.getHeight()));
+        disableHideEffect();
 
         this.addMouseListener(new MouseAdapter() {
             @Override

@@ -3,6 +3,7 @@ package com.mercury.platform.ui;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HasEventHandlers;
+import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.pushingpixels.trident.Timeline;
@@ -63,7 +64,9 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         this.addMouseMotionListener(new ResizeMouseMotionListener());
 
         if(!this.getClass().getSimpleName().equals("NotificationFrame")) {
-            this.setLocation((Point) configManager.getProperty(this.getClass().getSimpleName()));
+            FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
+            this.setLocation(frameSettings.getFrameLocation());
+            this.setMinimumSize(new Dimension(frameSettings.getFrameSize().width,0));
         }
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
@@ -71,6 +74,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
 
     }
     protected void disableHideEffect(){
+//        System.out.println(this.getClass().getSimpleName() + ": " + this.getSize());
         this.setOpacity(0.9f);
         this.hideAnimationEnable = false;
         this.removeMouseListener(hideEffectListener);
@@ -169,7 +173,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         public void mouseDragged(MouseEvent e) {
             e.translatePoint(OverlaidFrame.this.getLocation().x - x,OverlaidFrame.this.getLocation().y - y);
             OverlaidFrame.this.setLocation(e.getX(),e.getY());
-            configManager.saveComponentLocation(OverlaidFrame.this.getClass().getSimpleName(),OverlaidFrame.this.getLocationOnScreen());
+            configManager.saveFrameLocation(OverlaidFrame.this.getClass().getSimpleName(),OverlaidFrame.this.getLocationOnScreen());
         }
     }
     public class DraggedFrameMouseListener extends MouseAdapter{
