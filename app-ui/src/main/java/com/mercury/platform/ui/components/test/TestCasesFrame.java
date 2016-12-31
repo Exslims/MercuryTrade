@@ -6,7 +6,7 @@ import com.mercury.platform.shared.events.custom.PlayerJoinEvent;
 import com.mercury.platform.shared.events.custom.PlayerLeftEvent;
 import com.mercury.platform.shared.events.custom.WhisperNotificationEvent;
 import com.mercury.platform.shared.pojo.Message;
-import com.mercury.platform.ui.OverlaidFrame;
+import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;

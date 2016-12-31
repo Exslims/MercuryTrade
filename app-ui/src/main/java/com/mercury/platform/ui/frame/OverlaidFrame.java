@@ -1,8 +1,12 @@
-package com.mercury.platform.ui;
+package com.mercury.platform.ui.frame;
 
 
 import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.HasEventHandlers;
+import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.events.SCEventHandler;
+import com.mercury.platform.shared.events.custom.ChangeFrameVisibleEvent;
 import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -32,6 +36,8 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     private Timer hideTimer;
     private HideEffectListener hideEffectListener = new HideEffectListener();
     private boolean hideAnimationEnable = true;
+
+    private FrameStates prevState;
 
     protected ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
     protected ConfigManager configManager = ConfigManager.INSTANCE;
@@ -71,6 +77,30 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, BORDER_THICKNESS)));
+
+        EventRouter.registerHandler(ChangeFrameVisibleEvent.class, new SCEventHandler<ChangeFrameVisibleEvent>() {
+            @Override
+            public void handle(ChangeFrameVisibleEvent event) {
+                switch (event.getStates()){
+                    case SHOW:{
+                        if(prevState == null){
+                            prevState = FrameStates.SHOW;
+                        }
+                        if(prevState.equals(FrameStates.SHOW)){
+                            OverlaidFrame.this.setVisible(true);
+                        }
+                    }
+                    break;
+                    case HIDE:{
+                        if(!OverlaidFrame.this.isShowing()){
+                            prevState = FrameStates.HIDE;
+                        }
+                        OverlaidFrame.this.setVisible(false);
+                    }
+                    break;
+                }
+            }
+        });
 
     }
     protected void disableHideEffect(){

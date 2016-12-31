@@ -19,16 +19,12 @@ import java.util.List;
  * Exslims
  * 07.12.2016
  */
-//TODO Cleanup Client.txt
-public class LoggedMessagesUtils {
-    private final Logger logger = Logger.getLogger(LoggedMessagesUtils.class);
+public class MessageFileHandler {
+    private final Logger logger = Logger.getLogger(MessageFileHandler.class);
     private final String logFilePath = ConfigManager.INSTANCE.getGamePath() + File.separator + "logs" + File.separator + "Client.txt";
     private Date lastMessageDate = new Date();
 
-    public LoggedMessagesUtils() {
-        EventRouter.registerHandler(FileChangeEvent.class, event -> parse());
-    }
-    private void parse(){
+    public void parse(){
         List<String> stubMessages = new ArrayList<>();
         File logFile = new File(logFilePath);
         try {
@@ -56,11 +52,8 @@ public class LoggedMessagesUtils {
                     }
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            logger.error("Error in MessageFileHandler: ", e);
         }
 
         List<Message> messages = new ArrayList<>();

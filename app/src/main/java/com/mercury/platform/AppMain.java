@@ -1,10 +1,9 @@
 package com.mercury.platform;
 
-import com.mercury.platform.core.PrivateMessageManager;
-import com.mercury.platform.core.misc.PatchNotifier;
+import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.ui.GamePathChooser;
-import com.mercury.platform.ui.TaskBarFrame;
+import com.mercury.platform.ui.frame.impl.GamePathChooser;
+import com.mercury.platform.ui.frame.impl.TaskBarFrame;
 
 import javax.swing.*;
 import java.util.concurrent.ExecutorService;
@@ -18,10 +17,9 @@ public class AppMain {
             GamePathChooser gamePathChooser = new GamePathChooser();
             gamePathChooser.setVisible(true);
         }else {
-            ExecutorService executor = Executors.newFixedThreadPool(3);
+            ExecutorService executor = Executors.newFixedThreadPool(2);
             executor.execute(() -> SwingUtilities.invokeLater(TaskBarFrame::new));
-            executor.execute(PrivateMessageManager::new);
-            executor.execute(PatchNotifier::new);
+            executor.execute(() -> new AppStarter().startApplication());
         }
     }
 }

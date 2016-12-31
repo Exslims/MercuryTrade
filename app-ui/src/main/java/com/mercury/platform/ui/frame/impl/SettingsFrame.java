@@ -1,4 +1,4 @@
-package com.mercury.platform.ui;
+package com.mercury.platform.ui.frame.impl;
 
 
 import com.mercury.platform.shared.events.EventRouter;
@@ -6,6 +6,7 @@ import com.mercury.platform.shared.events.custom.CloseFrameEvent;
 import com.mercury.platform.shared.events.custom.DraggedWindowEvent;
 import com.mercury.platform.shared.events.custom.RepaintEvent;
 import com.mercury.platform.ui.components.panel.SettingsPanel;
+import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -16,7 +17,7 @@ import java.awt.*;
  */
 public class SettingsFrame extends OverlaidFrame {
     public SettingsFrame(){
-        super("Settings");
+        super("MT-Settings");
         setFocusableWindowState(true);
         setFocusable(true);
 

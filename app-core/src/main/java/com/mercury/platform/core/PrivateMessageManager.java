@@ -2,17 +2,13 @@ package com.mercury.platform.core;
 
 import com.mercury.platform.core.misc.WhisperNotifier;
 import com.mercury.platform.core.utils.FileMonitor;
-import com.mercury.platform.core.utils.LoggedMessagesUtils;
-import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.core.utils.MessageFileHandler;
 import com.mercury.platform.shared.HasEventHandlers;
-import com.mercury.platform.shared.PoeShortCastSettings;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.ChangeFrameVisibleEvent;
 import com.mercury.platform.shared.events.custom.ChatCommandEvent;
 import com.mercury.platform.shared.events.custom.CopyToClipboardEvent;
 import com.mercury.platform.shared.events.custom.OpenChatEvent;
 import com.sun.jna.Native;
-import com.sun.jna.PointerType;
 import lc.kra.system.keyboard.GlobalKeyboardHook;
 import lc.kra.system.keyboard.event.GlobalKeyAdapter;
 import lc.kra.system.keyboard.event.GlobalKeyEvent;
@@ -21,8 +17,6 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Exslims
@@ -38,35 +32,12 @@ public class PrivateMessageManager implements HasEventHandlers {
         GlobalKeyAdapter adapter = getAdapter();
         this.adapter = adapter;
         initHandlers();
-
         keyboardHook.addKeyListener(adapter);
-        new WhisperNotifier();
-        new LoggedMessagesUtils();
-        new FileMonitor();
-
         try {
             robot = new Robot();
         } catch (AWTException e) {
             e.printStackTrace();
         }
-
-        //TODO UBERI NAHUI ETO
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                byte[] windowText = new byte[512];
-                PointerType hwnd = user32.GetForegroundWindow();
-                User32.INSTANCE.GetWindowTextA(hwnd, windowText, 512);
-                if(!Native.toString(windowText).equals("Path of Exile")){
-                    EventRouter.fireEvent(new ChangeFrameVisibleEvent(FrameStates.HIDE));
-                    PoeShortCastSettings.APP_STATUS = FrameStates.HIDE;
-                }else{
-                    EventRouter.fireEvent(new ChangeFrameVisibleEvent(FrameStates.SHOW));
-                    PoeShortCastSettings.APP_STATUS = FrameStates.SHOW;
-                }
-            }
-        },0,700);
     }
 
     private void executeMessage(String message) {

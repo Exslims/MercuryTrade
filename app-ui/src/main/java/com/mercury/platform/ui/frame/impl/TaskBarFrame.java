@@ -1,13 +1,12 @@
-package com.mercury.platform.ui;
+package com.mercury.platform.ui.frame.impl;
 
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.SCEventHandler;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.ui.components.test.TestCasesFrame;
+import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.ease.Spline;
-import org.pushingpixels.trident.ease.TimelineEase;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,6 +35,7 @@ public class TaskBarFrame extends OverlaidFrame {
         testCasesFrame = new TestCasesFrame();
         historyFrame = new HistoryFrame();
         notificationFrame = new NotificationFrame();
+        EventRouter.fireEvent(new UILoadedEvent());
         super.init();
         add(getTaskBarPanel());
         pack();
@@ -201,31 +201,31 @@ public class TaskBarFrame extends OverlaidFrame {
             TaskBarFrame.this.repaint();
         });
 
-        EventRouter.registerHandler(ChangeFrameVisibleEvent.class, new SCEventHandler<ChangeFrameVisibleEvent>() {
-            @Override
-            public void handle(ChangeFrameVisibleEvent event) {
-                switch (event.getStates()){
-                    case SHOW:{
-                        if(!TaskBarFrame.this.isShowing()) {
-                            TaskBarFrame.this.setVisible(true);
-                            messageFrame.setVisible(true);
-                            testCasesFrame.setVisible(true);
-                            historyFrame.setVisible(true);
-                        }
-                    }
-                    break;
-                    case HIDE:{
-                        if(TaskBarFrame.this.isShowing()) {
-                            TaskBarFrame.this.setVisible(false);
-                            messageFrame.setVisible(false);
-                            testCasesFrame.setVisible(false);
-                            historyFrame.setVisible(false);
-                        }
-                    }
-                    break;
-                }
-            }
-        });
+//        EventRouter.registerHandler(ChangeFrameVisibleEvent.class, new SCEventHandler<ChangeFrameVisibleEvent>() {
+//            @Override
+//            public void handle(ChangeFrameVisibleEvent event) {
+//                switch (event.getStates()){
+//                    case SHOW:{
+//                        if(!TaskBarFrame.this.isShowing()) {
+//                            TaskBarFrame.this.setVisible(true);
+//                            messageFrame.setVisible(true);
+//                            testCasesFrame.setVisible(true);
+//                            historyFrame.setVisible(true);
+//                        }
+//                    }
+//                    break;
+//                    case HIDE:{
+//                        if(TaskBarFrame.this.isShowing()) {
+//                            TaskBarFrame.this.setVisible(false);
+//                            messageFrame.setVisible(false);
+//                            testCasesFrame.setVisible(false);
+//                            historyFrame.setVisible(false);
+//                        }
+//                    }
+//                    break;
+//                }
+//            }
+//        });
     }
     private void initCollapseAnimations(String state){
         collapseAnim = new Timeline(this);

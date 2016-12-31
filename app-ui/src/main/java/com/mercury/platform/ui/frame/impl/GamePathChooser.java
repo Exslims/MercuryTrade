@@ -1,7 +1,9 @@
-package com.mercury.platform.ui;
+package com.mercury.platform.ui.frame.impl;
+import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.core.PrivateMessageManager;
 import com.mercury.platform.core.misc.PatchNotifier;
 import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -133,10 +135,9 @@ public class GamePathChooser extends OverlaidFrame {
                     timer.addActionListener(actionEvent -> {
                         ConfigManager.INSTANCE.saveGamePath(gamePath);
                         GamePathChooser.this.setVisible(false);
-                        ExecutorService executor = Executors.newFixedThreadPool(3);
+                        ExecutorService executor = Executors.newFixedThreadPool(2);
                         executor.execute(() -> SwingUtilities.invokeLater(TaskBarFrame::new));
-                        executor.execute(PrivateMessageManager::new);
-                        executor.execute(PatchNotifier::new);
+                        executor.execute(() -> new AppStarter().startApplication());
                         timer.stop();
                     });
                     timer.start();

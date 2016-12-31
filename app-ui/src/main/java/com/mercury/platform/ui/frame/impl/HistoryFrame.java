@@ -1,4 +1,4 @@
-package com.mercury.platform.ui;
+package com.mercury.platform.ui.frame.impl;
 
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.NewWhispersEvent;
@@ -7,6 +7,7 @@ import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.fields.ExScrolBarUI;
 import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
+import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;

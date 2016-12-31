@@ -1,9 +1,10 @@
-package com.mercury.platform.ui;
+package com.mercury.platform.ui.frame.impl;
 
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.NotificationEvent;
 import com.mercury.platform.ui.components.fields.label.FontStyle;
 import com.mercury.platform.ui.components.fields.label.TextAlignment;
+import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.callback.TimelineCallback;

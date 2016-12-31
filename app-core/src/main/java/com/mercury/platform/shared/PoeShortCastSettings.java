@@ -9,5 +9,5 @@ import com.mercury.platform.core.misc.WhisperNotifierStatus;
 public class PoeShortCastSettings {
     public static final String APP_VERSION = "PSCv1.0.2";
     public static WhisperNotifierStatus WHISPER_NOTIFIER_STATUS = WhisperNotifierStatus.ALWAYS; // todo
-    public static FrameStates APP_STATUS = FrameStates.SHOW;
+    public static FrameStates APP_STATUS = FrameStates.HIDE;
 }

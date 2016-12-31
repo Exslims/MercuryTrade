@@ -153,15 +153,6 @@ public class ComponentsFactory {
                 button.setBackground(AppThemeColor.TRANSPARENT);
             }
         });
-//        button.addActionListener(e -> {
-//            button.setEnabled(false);
-//            Timer timer = new Timer(1000,null);
-//            timer.addActionListener(event -> {
-//                button.setEnabled(true);
-//                timer.stop();
-//            });
-//            timer.start();
-//        });
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {

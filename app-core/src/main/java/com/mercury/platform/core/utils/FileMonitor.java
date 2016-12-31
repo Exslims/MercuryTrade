@@ -16,6 +16,7 @@ import java.io.File;
  */
 public class FileMonitor {
     private static final long POLLING_INTERVAL = 100;
+    private MessageFileHandler fileHandler = new MessageFileHandler();
     public FileMonitor() {
         File folder = new File(ConfigManager.INSTANCE.getGamePath()+ File.separator + "logs");
 
@@ -25,7 +26,7 @@ public class FileMonitor {
             @Override
             public void onFileChange(File file) {
                 if (file.getAbsolutePath().contains("Client.txt")) {
-                    EventRouter.fireEvent(new FileChangeEvent());
+                    fileHandler.parse();
                 }
             }
         };
