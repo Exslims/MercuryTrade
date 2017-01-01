@@ -55,7 +55,10 @@ public class MessageFileHandler {
         } catch (Exception e) {
             logger.error("Error in MessageFileHandler: ", e);
         }
-
+        buildMessages(stubMessages);
+        //TODO @From <REKTEM> ThreeBlindIce: Hi, I would like to buy your level 1 20% Raise Zombie in Breach (stash tab "trade"; position: left 12, top 2) BUG NPE IN ASCII()
+    }
+    public void buildMessages(List<String> stubMessages){
         List<Message> messages = new ArrayList<>();
         for (String fullMessage : stubMessages) {
             Date msgDate = new Date(StringUtils.substring(fullMessage, 0, 20));

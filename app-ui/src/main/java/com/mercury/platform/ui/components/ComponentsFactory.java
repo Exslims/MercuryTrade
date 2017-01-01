@@ -316,9 +316,11 @@ public class ComponentsFactory {
         return DEFAULT_FONT;
     }
     private boolean isAscii(CharSequence sequence){
-        for (int i = sequence.length() - 1; i >= 0; i--) {
-            if (!matches(sequence.charAt(i))) {
-                return false;
+        if(sequence != null) {
+            for (int i = sequence.length() - 1; i >= 0; i--) {
+                if (!matches(sequence.charAt(i))) {
+                    return false;
+                }
             }
         }
         return true;

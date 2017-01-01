@@ -2,6 +2,7 @@ package com.mercury.platform.ui.frame.impl;
 
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
+import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
@@ -61,7 +62,7 @@ public class MessageFrame extends OverlaidFrame {
             }
         }
         this.tradeMode = mode;
-        this.pack();
+        packFrame();
     }
 
     @Override
@@ -110,7 +111,7 @@ public class MessageFrame extends OverlaidFrame {
                                         break;
                                     }
                                 }
-                                MessageFrame.this.pack();
+                                packFrame();
                             }
                         });
                     }
@@ -120,7 +121,7 @@ public class MessageFrame extends OverlaidFrame {
                 }
                 this.add(messagePanel);
             }
-            this.pack();
+            packFrame();
         });
         EventRouter.registerHandler(CloseMessagePanelEvent.class, event -> {
             this.remove(((CloseMessagePanelEvent) event).getComponent());
@@ -132,7 +133,7 @@ public class MessageFrame extends OverlaidFrame {
             if(this.getContentPane().getComponentCount() == 0){
                 this.setVisible(false);
             }
-            this.pack();
+            packFrame();
         });
         EventRouter.registerHandler(DraggedMessageFrameEvent.class, event -> {
             int x = ((DraggedMessageFrameEvent) event).getX();

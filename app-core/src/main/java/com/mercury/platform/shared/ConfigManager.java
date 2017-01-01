@@ -27,8 +27,8 @@ public class ConfigManager {
 
     public static ConfigManager INSTANCE = ConfigManagerHolder.HOLDER_INSTANCE;
 
-    private final String CONFIG_FILE_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrader";
-    private final String CONFIG_FILE = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrader\\app-config.json";
+    private final String CONFIG_FILE_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade";
+    private final String CONFIG_FILE = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\app-config.json";
     private Map<String, Timer> componentsTimers = new HashMap<>();
     private Map<String, PointListener> componentsPointListeners = new HashMap<>();
 
@@ -55,7 +55,7 @@ public class ConfigManager {
 
                 saveButtonsConfig(getDefaultButtons());
                 cachedFramesSettings = getDefaultFramesSettings();
-                getDefaultFramesSettings().forEach(this::saveFrameSettings);
+                saveFrameSettings();
             } catch (IOException e) {
                 logger.error(e);
             }
@@ -130,7 +130,7 @@ public class ConfigManager {
                     FrameSettings settings = cachedFramesSettings.get(frameClassName);
                     //x,y from PointListener
                     settings.setFrameLocation(new Point(x,y));
-                    saveFrameSettings(frameClassName,settings);
+                    saveFrameSettings();
                     finalTimer.stop();
                 }
             };
@@ -147,7 +147,9 @@ public class ConfigManager {
     }
 
     public void saveFrameSize(String frameClassName, Dimension size){
-
+        FrameSettings settings = cachedFramesSettings.get(frameClassName);
+        settings.setFrameSize(size);
+        saveFrameSettings();
     }
 
     /**
@@ -180,8 +182,7 @@ public class ConfigManager {
         saveProperty("buttons", list);
     }
 
-    private void saveFrameSettings(String frameClassName,FrameSettings settings){
-        cachedFramesSettings.put(frameClassName, settings);
+    private void saveFrameSettings(){
         JSONArray frames = new JSONArray();
         cachedFramesSettings.forEach((frameName,frameSettings)->{
             JSONObject object = new JSONObject();
@@ -229,7 +230,7 @@ public class ConfigManager {
         defaultButtons.put("sold", "sold");
         return defaultButtons;
     }
-    private Map<String,FrameSettings> getDefaultFramesSettings(){
+    public Map<String,FrameSettings> getDefaultFramesSettings(){
         Map<String,FrameSettings> dFramesSettings = new HashMap<>();
         dFramesSettings.put("TaskBarFrame",new FrameSettings(new Point(500, 500),new Dimension(114,50)));
         dFramesSettings.put("MessageFrame",new FrameSettings(new Point(700, 500),new Dimension(370,115)));

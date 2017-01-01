@@ -32,6 +32,7 @@ public class GamePathChooser extends OverlaidFrame {
 
         pack();
         disableHideEffect();
+        processingHideEvent = false;
     }
     private JPanel getTopPanel(){
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -135,9 +136,8 @@ public class GamePathChooser extends OverlaidFrame {
                     timer.addActionListener(actionEvent -> {
                         ConfigManager.INSTANCE.saveGamePath(gamePath);
                         GamePathChooser.this.setVisible(false);
-                        ExecutorService executor = Executors.newFixedThreadPool(2);
-                        executor.execute(() -> SwingUtilities.invokeLater(TaskBarFrame::new));
-                        executor.execute(() -> new AppStarter().startApplication());
+                        new AppStarter().startApplication();
+                        SwingUtilities.invokeLater(TaskBarFrame::new);
                         timer.stop();
                     });
                     timer.start();

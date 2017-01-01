@@ -38,6 +38,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     private boolean hideAnimationEnable = true;
 
     protected FrameStates prevState;
+    protected boolean processingHideEvent = true;
 
     protected ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
     protected ConfigManager configManager = ConfigManager.INSTANCE;
@@ -81,34 +82,36 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         EventRouter.registerHandler(ChangeFrameVisibleEvent.class, new SCEventHandler<ChangeFrameVisibleEvent>() {
             @Override
             public void handle(ChangeFrameVisibleEvent event) {
-                if(OverlaidFrame.this.getClass().getSimpleName().equals("MessageFrame")){
-                    if(prevState != null) {
-                        System.out.println("PREV: " + prevState.toString());
+                if (processingHideEvent){
+//                if(OverlaidFrame.this.getClass().getSimpleName().equals("MessageFrame")){
+//                    if(prevState != null) {
+//                        System.out.println("PREV: " + prevState.toString());
+//                    }
+//                    System.out.println("INVOKE: " + event.getStates().toString());
+//                }
+                    switch (event.getStates()) {
+                        case SHOW: {
+                            if (prevState == null) {
+                                prevState = FrameStates.SHOW;
+                            }
+                            if (prevState.equals(FrameStates.SHOW)) {
+                                OverlaidFrame.this.setVisible(true);
+                            }
+                        }
+                        break;
+                        case HIDE: {
+//                        if(OverlaidFrame.this.getClass().getSimpleName().equals("MessageFrame")){
+//                            System.out.println(OverlaidFrame.this.isShowing());
+//                        }
+                            if (!OverlaidFrame.this.isShowing()) {
+                                prevState = FrameStates.HIDE;
+                            } else {
+                                prevState = FrameStates.SHOW;
+                            }
+                            OverlaidFrame.this.setVisible(false);
+                        }
+                        break;
                     }
-                    System.out.println("INVOKE: " + event.getStates().toString());
-                }
-                switch (event.getStates()){
-                    case SHOW:{
-                        if(prevState == null){
-                            prevState = FrameStates.SHOW;
-                        }
-                        if(prevState.equals(FrameStates.SHOW)){
-                            OverlaidFrame.this.setVisible(true);
-                        }
-                    }
-                    break;
-                    case HIDE:{
-                        if(OverlaidFrame.this.getClass().getSimpleName().equals("MessageFrame")){
-                            System.out.println(OverlaidFrame.this.isShowing());
-                        }
-                        if(!OverlaidFrame.this.isShowing()){
-                            prevState = FrameStates.HIDE;
-                        }else {
-                            prevState = FrameStates.SHOW;
-                        }
-                        OverlaidFrame.this.setVisible(false);
-                    }
-                    break;
                 }
             }
         });
@@ -127,6 +130,15 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     protected boolean isMouseWithInFrame(){
         return this.getBounds().contains(MouseInfo.getPointerInfo().getLocation());
     }
+
+    /**
+     * Standard pack() method does not take into account the maximum size of frame.
+     */
+    protected void packFrame(){
+        this.pack();
+        FrameSettings frameSettings = configManager.getDefaultFramesSettings().get(this.getClass().getSimpleName());
+        this.setSize(new Dimension(frameSettings.getFrameSize().width,this.getHeight()));
+    }
     private void initAnimationTimers(){
         showAnimation = new Timeline(this);
         showAnimation.setDuration(SHOW_TIME);
@@ -136,6 +148,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         hideAnimation.setDuration(HIDE_TIME);
         hideAnimation.addPropertyToInterpolate("opacity",0.9f,0.2f);
     }
+
     private class ResizeMouseMotionListener extends MouseMotionAdapter{
         @Override
         public void mouseDragged(MouseEvent e) {
@@ -148,6 +161,8 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         @Override
         public void mousePressed(MouseEvent e) {
             withinResizeSpace = true;
+            FrameSettings frameSettings = configManager.getDefaultFramesSettings().get(OverlaidFrame.this.getClass().getSimpleName());
+            OverlaidFrame.this.setMinimumSize(new Dimension(frameSettings.getFrameSize().width,0));
         }
 
         @Override
@@ -156,6 +171,9 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
             if(hideAnimationEnable && !isMouseWithInFrame()) {
                 hideTimer.start();
             }
+            Dimension size = OverlaidFrame.this.getSize();
+            OverlaidFrame.this.setMinimumSize(new Dimension(size.width,0));
+            configManager.saveFrameSize(OverlaidFrame.this.getClass().getSimpleName(),OverlaidFrame.this.getSize());
         }
 
         @Override

@@ -30,7 +30,6 @@ public class HistoryFrame extends OverlaidFrame {
     @Override
     protected void init() {
         super.init();
-        this.setMinimumSize(new Dimension(400,100));
         this.setVisible(false);
         messagesContainer = new JPanel();
         messagesContainer.setBackground(AppThemeColor.TRANSPARENT);
@@ -57,7 +56,7 @@ public class HistoryFrame extends OverlaidFrame {
         vBar.addAdjustmentListener(e -> HistoryFrame.this.repaint());
 
         add(scrollPane,BorderLayout.CENTER);
-        pack();
+        packFrame();
         disableHideEffect();
     }
 
@@ -101,7 +100,7 @@ public class HistoryFrame extends OverlaidFrame {
                 HistoryFrame.this.setSize(new Dimension(400,100));
                 scrollPane.setSize(new Dimension(messagesContainer.getSize().width, messagesContainer.getSize().height));
                 scrollPane.setPreferredSize(null);
-                HistoryFrame.this.pack();
+                HistoryFrame.this.packFrame();
             }
         });
         JButton hideButton = componentsFactory.getIconButton("app/close.png",12);
@@ -129,14 +128,14 @@ public class HistoryFrame extends OverlaidFrame {
                 messagesContainer.add(messagePanel);
             }
             if(this.getSize().height > SCROLL_HEIGHT) {
-                this.pack();
+                this.packFrame();
                 scrollPane.setPreferredSize(new Dimension(messagesContainer.getWidth(), SCROLL_HEIGHT));
                 scrollPane.setSize(new Dimension(messagesContainer.getWidth(), SCROLL_HEIGHT));
                 messagesContainer.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
             }else {
                 scrollPane.setSize(new Dimension(messagesContainer.getWidth(), this.getSize().height));
             }
-            this.pack();
+            this.packFrame();
             this.repaint();
         });
         EventRouter.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {
