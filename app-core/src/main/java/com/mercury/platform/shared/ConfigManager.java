@@ -233,7 +233,7 @@ public class ConfigManager {
     public Map<String,FrameSettings> getDefaultFramesSettings(){
         Map<String,FrameSettings> dFramesSettings = new HashMap<>();
         dFramesSettings.put("TaskBarFrame",new FrameSettings(new Point(500, 500),new Dimension(114,50)));
-        dFramesSettings.put("MessageFrame",new FrameSettings(new Point(700, 500),new Dimension(370,115)));
+        dFramesSettings.put("MessageFrame",new FrameSettings(new Point(700, 500),new Dimension(280,115)));
         dFramesSettings.put("GamePathChooser",new FrameSettings(new Point(600, 500),new Dimension(570,100)));
         dFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(900, 500),new Dimension(400,100)));
         dFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(114,50)));

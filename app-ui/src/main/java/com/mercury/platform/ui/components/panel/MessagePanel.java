@@ -110,16 +110,27 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         labelsPanel.setLayout(new BoxLayout(labelsPanel,BoxLayout.Y_AXIS));
         labelsPanel.setBackground(AppThemeColor.TRANSPARENT);
 
-        JPanel tradePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel tradePanel = new JPanel(new BorderLayout());
         tradePanel.setBackground(AppThemeColor.TRANSPARENT);
         tradePanel.setBorder(BorderFactory.createEmptyBorder(-11,0,-11,0));
         itemLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT, TextAlignment.CENTER,16f,parsedMessage.get("itemName"));
-        tradePanel.add(itemLabel);
-        tradePanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE,TextAlignment.CENTER,17f,"=>"));
+        tradePanel.add(itemLabel,BorderLayout.CENTER);
+
+        JPanel forPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        forPanel.setBackground(AppThemeColor.TRANSPARENT);
+
+        JLabel separator = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, "=>");
+        separator.setHorizontalAlignment(SwingConstants.CENTER);
+        forPanel.add(separator);
         String curCount = parsedMessage.get("curCount");
         String currency = parsedMessage.get("currency");
         if(curCount != null && currency != null) {
+            JPanel curCountPanel = new JPanel();
+            curCountPanel.setPreferredSize(new Dimension(30,30));
+            curCountPanel.setBackground(AppThemeColor.TRANSPARENT);
+
             JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, curCount);
+            curCountPanel.add(priceLabel);
             JLabel currencyLabel;
             if (supportedIcons.contains(currency)){
                 currencyLabel = componentsFactory.getIconLabel("currency/" + currency + ".png", 26);
@@ -128,10 +139,11 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             }
             JPanel curPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
             curPanel.setBackground(AppThemeColor.TRANSPARENT);
-            curPanel.add(priceLabel);
+            curPanel.add(curCountPanel);
             curPanel.add(currencyLabel);
-            tradePanel.add(curPanel);
+            forPanel.add(curPanel);
         }
+        tradePanel.add(forPanel,BorderLayout.LINE_END);
         labelsPanel.add(tradePanel);
         String offer = parsedMessage.get("offer");
         if(offer != null && offer.length() > 2) {
@@ -151,7 +163,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         whisperLabel.setBorder(new CompoundBorder(border,new EmptyBorder(0,5,0,5)));
         whisperLabel.setVerticalAlignment(SwingConstants.CENTER);
 
-        topPanel.add(whisperLabel,BorderLayout.LINE_START);
+        topPanel.add(whisperLabel,BorderLayout.CENTER);
 
         JPanel interactionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         interactionPanel.setBackground(AppThemeColor.TRANSPARENT);
