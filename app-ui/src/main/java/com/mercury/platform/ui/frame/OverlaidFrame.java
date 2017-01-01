@@ -37,7 +37,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     private HideEffectListener hideEffectListener = new HideEffectListener();
     private boolean hideAnimationEnable = true;
 
-    private FrameStates prevState;
+    protected FrameStates prevState;
 
     protected ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
     protected ConfigManager configManager = ConfigManager.INSTANCE;
@@ -81,6 +81,12 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         EventRouter.registerHandler(ChangeFrameVisibleEvent.class, new SCEventHandler<ChangeFrameVisibleEvent>() {
             @Override
             public void handle(ChangeFrameVisibleEvent event) {
+                if(OverlaidFrame.this.getClass().getSimpleName().equals("MessageFrame")){
+                    if(prevState != null) {
+                        System.out.println("PREV: " + prevState.toString());
+                    }
+                    System.out.println("INVOKE: " + event.getStates().toString());
+                }
                 switch (event.getStates()){
                     case SHOW:{
                         if(prevState == null){
@@ -92,8 +98,13 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
                     }
                     break;
                     case HIDE:{
+                        if(OverlaidFrame.this.getClass().getSimpleName().equals("MessageFrame")){
+                            System.out.println(OverlaidFrame.this.isShowing());
+                        }
                         if(!OverlaidFrame.this.isShowing()){
                             prevState = FrameStates.HIDE;
+                        }else {
+                            prevState = FrameStates.SHOW;
                         }
                         OverlaidFrame.this.setVisible(false);
                     }
@@ -104,7 +115,6 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
 
     }
     protected void disableHideEffect(){
-//        System.out.println(this.getClass().getSimpleName() + ": " + this.getSize());
         this.setOpacity(0.9f);
         this.hideAnimationEnable = false;
         this.removeMouseListener(hideEffectListener);

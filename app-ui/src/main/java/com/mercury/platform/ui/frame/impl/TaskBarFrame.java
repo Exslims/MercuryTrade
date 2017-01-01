@@ -35,7 +35,6 @@ public class TaskBarFrame extends OverlaidFrame {
         testCasesFrame = new TestCasesFrame();
         historyFrame = new HistoryFrame();
         notificationFrame = new NotificationFrame();
-        EventRouter.fireEvent(new UILoadedEvent());
         super.init();
         add(getTaskBarPanel());
         pack();
@@ -63,6 +62,7 @@ public class TaskBarFrame extends OverlaidFrame {
                 }
             }
         });
+        EventRouter.fireEvent(new UILoadedEvent());
     }
 
     @Override
@@ -187,45 +187,10 @@ public class TaskBarFrame extends OverlaidFrame {
 
     @Override
     public void initHandlers() {
-//        EventRouter.registerHandler(NewPatchSCEvent.class, event -> {
-//            JFrame frame = new JFrame("New patch");
-//            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//            JLabel label = new JLabel(((NewPatchSCEvent)event).getPatchTitle());
-//            frame.getContentPane().add(label);
-//            frame.pack();
-//            frame.setVisible(true);
-//        });
-
         EventRouter.registerHandler(RepaintEvent.RepaintTaskBar.class, event -> {
             TaskBarFrame.this.revalidate();
             TaskBarFrame.this.repaint();
         });
-
-//        EventRouter.registerHandler(ChangeFrameVisibleEvent.class, new SCEventHandler<ChangeFrameVisibleEvent>() {
-//            @Override
-//            public void handle(ChangeFrameVisibleEvent event) {
-//                switch (event.getStates()){
-//                    case SHOW:{
-//                        if(!TaskBarFrame.this.isShowing()) {
-//                            TaskBarFrame.this.setVisible(true);
-//                            messageFrame.setVisible(true);
-//                            testCasesFrame.setVisible(true);
-//                            historyFrame.setVisible(true);
-//                        }
-//                    }
-//                    break;
-//                    case HIDE:{
-//                        if(TaskBarFrame.this.isShowing()) {
-//                            TaskBarFrame.this.setVisible(false);
-//                            messageFrame.setVisible(false);
-//                            testCasesFrame.setVisible(false);
-//                            historyFrame.setVisible(false);
-//                        }
-//                    }
-//                    break;
-//                }
-//            }
-//        });
     }
     private void initCollapseAnimations(String state){
         collapseAnim = new Timeline(this);
