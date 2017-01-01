@@ -3,8 +3,6 @@ package com.mercury.platform.ui.components.panel;
 
 import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.SCEvent;
-import com.mercury.platform.shared.events.SCEventHandler;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.label.FontStyle;
@@ -146,7 +144,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     private JPanel getWhisperPanel(){
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBorder(BorderFactory.createEmptyBorder(-5,0,-5,0));
-        topPanel.setBackground(AppThemeColor.TRANSPARENT);
+        topPanel.setBackground(AppThemeColor.WHISPER_PANEL);
 
         whisperLabel = componentsFactory.getTextLabel(FontStyle.BOLD,cachedWhisperColor, TextAlignment.LEFTOP,15f,whisper + ":");
         Border border = whisperLabel.getBorder();
