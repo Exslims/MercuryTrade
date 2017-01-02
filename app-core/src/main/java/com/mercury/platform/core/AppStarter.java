@@ -16,7 +16,7 @@ import java.util.TimerTask;
  * Created by Константин on 31.12.2016.
  */
 public class AppStarter {
-    private FrameStates APP_STATUS = FrameStates.HIDE;
+    public static FrameStates APP_STATUS = FrameStates.HIDE;
     private User32 user32 = User32.INSTANCE;
     public void startApplication(){
         new WhisperNotifier();

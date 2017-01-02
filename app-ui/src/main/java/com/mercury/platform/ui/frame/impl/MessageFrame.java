@@ -1,5 +1,7 @@
 package com.mercury.platform.ui.frame.impl;
 
+import com.mercury.platform.core.AppStarter;
+import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.pojo.FrameSettings;
@@ -81,7 +83,7 @@ public class MessageFrame extends OverlaidFrame {
         EventRouter.registerHandler(NewWhispersEvent.class, event -> {
             List<Message> messages = ((NewWhispersEvent) event).getMessages();
             for (Message message : messages) {
-                if(!this.isVisible()){
+                if(!this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW){
                     this.setVisible(true);
                 }
                 MessagePanel messagePanel = null;
