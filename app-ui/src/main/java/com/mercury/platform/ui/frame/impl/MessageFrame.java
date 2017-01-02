@@ -97,43 +97,33 @@ public class MessageFrame extends OverlaidFrame {
                         }else {
                             messagePanel.setAsTopMessage();
                         }
-                        messagePanel.addMouseListener(new MouseAdapter() {
-                            @Override
-                            public void mousePressed(MouseEvent e) {
-                                MessagePanel source = (MessagePanel) e.getSource();
-                                switch (source.getStyle()) {
-                                    case SMALL: {
-                                        source.setStyle(MessagePanelStyle.BIGGEST);
-                                        break;
-                                    }
-                                    case BIGGEST: {
-                                        source.setStyle(MessagePanelStyle.SMALL);
-                                        break;
-                                    }
-                                }
-                                packFrame();
-                            }
-                        });
                     }
                 }
+                messagePanel.addMouseListener(new ExpandMouseListener());
                 if(this.getContentPane().getComponentCount() > 0){
                     messagePanel.setBorder(BorderFactory.createMatteBorder(1,0,0,0, AppThemeColor.BORDER));
                 }
                 this.add(messagePanel);
+                if(this.getContentPane().getComponentCount() == 1) {
+                    this.setSize(new Dimension(this.getWidth(), 6 + messagePanel.getPreferredSize().height));
+                }else {
+                    this.setSize(new Dimension(this.getWidth(), this.getHeight() + messagePanel.getPreferredSize().height));
+                }
             }
-            packFrame();
+//            packFrame();
         });
         EventRouter.registerHandler(CloseMessagePanelEvent.class, event -> {
-            this.remove(((CloseMessagePanelEvent) event).getComponent());
+            Component panel = ((CloseMessagePanelEvent) event).getComponent();
+            this.remove(panel);
             if (this.getContentPane().getComponentCount() > 0) {
                 MessagePanel component = (MessagePanel) this.getContentPane().getComponent(0);
                 component.setBorder(null);
                 component.setAsTopMessage();
             }
+            this.setSize(new Dimension(this.getWidth(), this.getHeight() - panel.getPreferredSize().height));
             if(this.getContentPane().getComponentCount() == 0){
                 this.setVisible(false);
             }
-            packFrame();
         });
         EventRouter.registerHandler(DraggedMessageFrameEvent.class, event -> {
             int x = ((DraggedMessageFrameEvent) event).getX();
@@ -148,5 +138,35 @@ public class MessageFrame extends OverlaidFrame {
     }
     private enum TradeMode{
         DEFAULT,SUPER
+    }
+    private class ExpandMouseListener extends MouseAdapter{
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            MessagePanel source = (MessagePanel) e.getSource();
+            switch (source.getStyle()) {
+                case SMALL: {
+                    int was = source.getPreferredSize().height;
+                    source.setStyle(MessagePanelStyle.BIGGEST);
+                    int will = source.getPreferredSize().height;
+                    if(MessageFrame.this.getContentPane().getComponentCount() == 0) {
+                        MessageFrame.this.setSize(new Dimension(MessageFrame.this.getWidth(), 6 + (will - was)));
+                    }else {
+                        MessageFrame.this.setSize(new Dimension(MessageFrame.this.getWidth(), MessageFrame.this.getHeight() + (will - was)));
+                    }
+                    break;
+                }
+                case BIGGEST: {
+                    int was = source.getPreferredSize().height;
+                    source.setStyle(MessagePanelStyle.SMALL);
+                    int will = source.getPreferredSize().height;
+                    if(MessageFrame.this.getContentPane().getComponentCount() == 0) {
+                        MessageFrame.this.setSize(new Dimension(MessageFrame.this.getWidth(), 6 - (was - will)));
+                    }else {
+                        MessageFrame.this.setSize(new Dimension(MessageFrame.this.getWidth(), MessageFrame.this.getHeight() - (was - will)));
+                    }
+                    break;
+                }
+            }
+        }
     }
 }
