@@ -12,6 +12,7 @@
         <module>app</module>
         <module>app-ui</module>
         <module>app-core</module>
+        <module>app-socket-server</module>
     </modules>
     <packaging>pom</packaging>
 

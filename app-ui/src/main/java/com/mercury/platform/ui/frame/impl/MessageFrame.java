@@ -85,6 +85,8 @@ public class MessageFrame extends OverlaidFrame {
             for (Message message : messages) {
                 if(!this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW){
                     this.setVisible(true);
+                }else {
+                    prevState = FrameStates.SHOW;
                 }
                 MessagePanel messagePanel = null;
                 switch (tradeMode){

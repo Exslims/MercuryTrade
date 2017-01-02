@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/netty-client-updater/pom.xml" />
         <option value="$PROJECT_DIR$/app-core/pom.xml" />
         <option value="$PROJECT_DIR$/app-ui/pom.xml" />
+        <option value="$PROJECT_DIR$/app-socket-server/pom.xml" />
       </list>
     </option>
   </component>
