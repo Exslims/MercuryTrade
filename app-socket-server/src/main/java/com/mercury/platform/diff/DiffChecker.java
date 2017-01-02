@@ -14,7 +14,6 @@ import java.util.zip.ZipEntry;
 public class DiffChecker {
     public List<String> calculateDifference(JarFile first, JarFile second) {
 
-
         List<JarEntry> firstEntries = Collections.list(first.entries());
         List<JarEntry> secondEntries = Collections.list(second.entries());
         firstEntries.sort(new JarEntryComparator());
