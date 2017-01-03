@@ -1,4 +1,4 @@
-package com.mercury.platform.server;
+package com.mercury.platform.server.main;
 
 /**
  * Created by Константин on 02.01.2017.
