@@ -1,4 +1,4 @@
-package com.mercury.platform.diff;
+package com.mercury.platform.diff.entry;
 
 import java.util.Comparator;
 import java.util.jar.JarEntry;

@@ -1,6 +1,8 @@
 package com.mercury.platform.diff;
 
-import java.util.ArrayList;
+import com.mercury.platform.diff.entry.JarEntryComparator;
+import com.mercury.platform.diff.entry.JarEntryWrapper;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.jar.JarEntry;
@@ -14,8 +16,10 @@ import java.util.zip.ZipEntry;
 public class DiffChecker {
     public List<String> calculateDifference(JarFile first, JarFile second) {
 
-        List<JarEntry> firstEntries = Collections.list(first.entries());
-        List<JarEntry> secondEntries = Collections.list(second.entries());
+        List<JarEntry> firstEntries = wrapEntries(first);
+        List<JarEntry> secondEntries = wrapEntries(second);
+
+
         firstEntries.sort(new JarEntryComparator());
         secondEntries.sort(new JarEntryComparator());
 
@@ -33,5 +37,12 @@ public class DiffChecker {
         }
 
         return difference;
+    }
+
+    private List<JarEntry> wrapEntries(JarFile first) {
+        return Collections.list(first.entries()).
+                stream().
+                map(JarEntryWrapper::new).
+                collect(Collectors.toList());
     }
 }
