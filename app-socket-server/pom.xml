@@ -31,6 +31,7 @@
         <commons-lang3.version>3.0</commons-lang3.version>
         <junit.version>4.12</junit.version>
         <mockito.version>1.9.5</mockito.version>
+        <netty.version>3.10.5.Final</netty.version>
     </properties>
 
     <dependencies>
@@ -39,6 +40,12 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>${commons-io.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty</artifactId>
+            <version>${netty.version}</version>
         </dependency>
 
         <dependency>

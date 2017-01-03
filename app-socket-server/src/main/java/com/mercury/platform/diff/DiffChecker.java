@@ -22,8 +22,6 @@ public class DiffChecker {
         firstEntries.sort(new JarEntryComparator());
         secondEntries.sort(new JarEntryComparator());
 
-        JarEntryComparator comparator = new JarEntryComparator();
-
         List<String> difference;
         if (firstEntries.size() > secondEntries.size()) {
             firstEntries.removeAll(secondEntries);
