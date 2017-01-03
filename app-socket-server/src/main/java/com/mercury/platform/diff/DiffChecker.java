@@ -16,9 +16,8 @@ import java.util.zip.ZipEntry;
 public class DiffChecker {
     public List<String> calculateDifference(JarFile first, JarFile second) {
 
-        List<JarEntry> firstEntries = wrapEntries(first);
-        List<JarEntry> secondEntries = wrapEntries(second);
-
+        List<JarEntry> firstEntries = wrapEntries(Collections.list(first.entries()));
+        List<JarEntry> secondEntries = wrapEntries(Collections.list(second.entries()));
 
         firstEntries.sort(new JarEntryComparator());
         secondEntries.sort(new JarEntryComparator());
@@ -39,10 +38,7 @@ public class DiffChecker {
         return difference;
     }
 
-    private List<JarEntry> wrapEntries(JarFile first) {
-        return Collections.list(first.entries()).
-                stream().
-                map(JarEntryWrapper::new).
-                collect(Collectors.toList());
+    private List<JarEntry> wrapEntries(List<JarEntry> entries) {
+        return entries.stream().map(JarEntryWrapper::new).collect(Collectors.toList());
     }
 }
