@@ -77,4 +77,8 @@ public class DiffCheckerTest {
         assertTrue(format, difference.size() == 1 && difference.contains(updatedEntryName));
     }
 
+    @Test
+    public void test_diff_by_file_hash() {
+
+    }
 }
