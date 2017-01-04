@@ -9,6 +9,7 @@ import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -300,7 +301,18 @@ public class ComponentsFactory {
         slider.setBackground(AppThemeColor.TRANSPARENT);
         return slider;
     }
+    public JPanel getTransparentPanel(LayoutManager layout){
+        JPanel panel = new JPanel(layout);
+        panel.setBackground(AppThemeColor.TRANSPARENT);
+        return panel;
+    }
 
+    public JPanel getBorderedTransparentPanel(Border border, LayoutManager layout){
+        JPanel panel = new JPanel(layout);
+        panel.setBackground(AppThemeColor.TRANSPARENT);
+        panel.setBorder(border);
+        return panel;
+    }
     public ImageIcon getIcon(String iconPath, int size){
         BufferedImage icon = null;
         try {

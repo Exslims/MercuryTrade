@@ -144,12 +144,10 @@ public class TaskBarFrame extends OverlaidFrame {
         settingsButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)){
-                    SwingUtilities.invokeLater(()->{
-                        SettingsFrame settingsFrame = new SettingsFrame();
-                        settingsFrame.setVisible(true);
-                    });
-                }
+                SwingUtilities.invokeLater(() -> {
+                    SettingsFrame settingsFrame = new SettingsFrame();
+                    settingsFrame.setVisible(true);
+                });
             }
         });
         settingsButton.setToolTipText("Settings");
