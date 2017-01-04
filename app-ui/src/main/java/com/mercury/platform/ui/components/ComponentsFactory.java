@@ -153,20 +153,8 @@ public class ComponentsFactory {
                 button.setBackground(AppThemeColor.TRANSPARENT);
             }
         });
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                button.setEnabled(false);
-                Timer timer = new Timer(1000,null);
-                timer.addActionListener(event -> {
-                    button.setEnabled(true);
-                    timer.stop();
-                });
-                timer.start();
-            }
-        });
         button.setContentAreaFilled(false);
-        button.setBorder(BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,4));
+        button.setBorder(BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,3));
         button.setVerticalAlignment(SwingConstants.CENTER);
         BufferedImage icon = null;
         try {

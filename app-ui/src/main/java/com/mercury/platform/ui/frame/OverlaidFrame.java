@@ -116,7 +116,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     private void initHeaderPanel(){
         if(getFrameTitle() != null && layout instanceof BorderLayout) {
             JPanel headerPanel = new JPanel(new BorderLayout());
-            headerPanel.setBackground(AppThemeColor.TRANSPARENT);
+            headerPanel.setBackground(AppThemeColor.WHISPER_PANEL);
             headerPanel.setBorder(BorderFactory.createEmptyBorder(-6, 0, -6, 0));
 
             JLabel frameTitleLabel = componentsFactory.getTextLabel(getFrameTitle());
