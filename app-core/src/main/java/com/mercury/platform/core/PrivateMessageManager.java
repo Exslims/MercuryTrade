@@ -5,6 +5,7 @@ import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.ChatCommandEvent;
 import com.mercury.platform.shared.events.custom.CopyToClipboardEvent;
 import com.mercury.platform.shared.events.custom.OpenChatEvent;
+import com.mercury.platform.shared.events.custom.SetForegroundGameEvent;
 import com.sun.jna.Native;
 import lc.kra.system.keyboard.GlobalKeyboardHook;
 import lc.kra.system.keyboard.event.GlobalKeyAdapter;
@@ -166,6 +167,10 @@ public class PrivateMessageManager implements HasEventHandlers {
             StringSelection selection = new StringSelection(content);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, null);
+        });
+        EventRouter.registerHandler(SetForegroundGameEvent.class, event -> {
+            System.out.println("test");
+            setForegroundWindow("Path of Exile");
         });
     }
 }

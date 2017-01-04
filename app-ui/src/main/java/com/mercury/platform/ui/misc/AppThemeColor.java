@@ -17,5 +17,5 @@ public class AppThemeColor {
     public static final Color BORDER = new Color(22,126,138);
     public static final Color FRAME = new Color(42, 44, 43,230);
     public static final Color TRANSPARENT = new Color(0,0,0,0);
-    public static final Color WHISPER_PANEL = new Color(55,65,64);
+    public static final Color HEADER = new Color(55,65,64);
 }

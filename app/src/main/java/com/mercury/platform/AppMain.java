@@ -3,6 +3,7 @@ package com.mercury.platform;
 import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.ui.frame.impl.GamePathChooser;
+import com.mercury.platform.ui.frame.impl.SettingsFrame;
 import com.mercury.platform.ui.frame.impl.TaskBarFrame;
 
 import javax.swing.*;
@@ -14,8 +15,10 @@ public class AppMain {
     public static void main(String[] args) {
         String gamePath = ConfigManager.INSTANCE.getGamePath();
         if (gamePath == null || !ConfigManager.INSTANCE.isValidPath(gamePath)) {
-            GamePathChooser gamePathChooser = new GamePathChooser();
-            gamePathChooser.setVisible(true);
+            SwingUtilities.invokeLater(()->{
+                GamePathChooser gamePathChooser = new GamePathChooser();
+                gamePathChooser.setVisible(true);
+            });
         } else {
             new AppStarter().startApplication();
             SwingUtilities.invokeLater(TaskBarFrame::new);

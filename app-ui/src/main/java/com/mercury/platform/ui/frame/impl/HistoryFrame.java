@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.frame.impl;
 
+import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.NewWhispersEvent;
 import com.mercury.platform.shared.events.custom.RepaintEvent;
@@ -31,6 +32,7 @@ public class HistoryFrame extends OverlaidFrame {
     protected void init() {
         super.init();
         this.setVisible(false);
+        prevState = FrameStates.HIDE;
         messagesContainer = new JPanel();
         messagesContainer.setBackground(AppThemeColor.TRANSPARENT);
         messagesContainer.setLayout(new BoxLayout(messagesContainer,BoxLayout.Y_AXIS));

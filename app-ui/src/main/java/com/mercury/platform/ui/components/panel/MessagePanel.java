@@ -156,7 +156,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     private JPanel getWhisperPanel(){
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBorder(BorderFactory.createEmptyBorder(-5,0,-5,0));
-        topPanel.setBackground(AppThemeColor.WHISPER_PANEL);
+        topPanel.setBackground(AppThemeColor.HEADER);
 
         whisperLabel = componentsFactory.getTextLabel(FontStyle.BOLD,cachedWhisperColor, TextAlignment.LEFTOP,15f,whisper + ":");
         Border border = whisperLabel.getBorder();

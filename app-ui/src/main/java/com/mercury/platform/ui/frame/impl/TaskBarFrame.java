@@ -145,8 +145,10 @@ public class TaskBarFrame extends OverlaidFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)){
-                    SettingsFrame settingsFrame = new SettingsFrame();
-                    settingsFrame.setVisible(true);
+                    SwingUtilities.invokeLater(()->{
+                        SettingsFrame settingsFrame = new SettingsFrame();
+                        settingsFrame.setVisible(true);
+                    });
                 }
             }
         });

@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.components;
 
+import com.mercury.platform.ui.components.fields.ExComboBoxUI;
 import com.mercury.platform.ui.components.fields.label.FontStyle;
 import com.mercury.platform.ui.components.fields.label.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -12,8 +13,6 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -154,7 +153,7 @@ public class ComponentsFactory {
             }
         });
         button.setContentAreaFilled(false);
-        button.setBorder(BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,3));
+        button.setBorder(BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,4));
         button.setVerticalAlignment(SwingConstants.CENTER);
         BufferedImage icon = null;
         try {
@@ -268,15 +267,38 @@ public class ComponentsFactory {
     }
 
     public JTextField getTextField(String text){
-        JTextField textField = new JTextField(text);
+        JTextField textField = getTextField(text,null,16);
         textField.setFont(DEFAULT_FONT);
+        return textField;
+    }
+    public JTextField getTextField(String text, FontStyle style, float fontSize){
+        JTextField textField = new JTextField(text);
+        if(style != null) {
+            textField.setFont(getSelectedFont(style).deriveFont(fontSize));
+        }
         textField.setForeground(AppThemeColor.TEXT_DEFAULT);
         textField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TEXT_DEFAULT,1),
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,3)
         ));
-        textField.setBackground(AppThemeColor.TRANSPARENT);
+        textField.setBackground(AppThemeColor.HEADER);
         return textField;
+    }
+    public JComboBox getComboBox(String[] childs){
+        JComboBox comboBox = new JComboBox(childs);
+        comboBox.setBackground(AppThemeColor.HEADER);
+        comboBox.setForeground(AppThemeColor.TEXT_DEFAULT);
+        comboBox.setFont(BOLD_FONT.deriveFont(16f));
+        comboBox.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
+        comboBox.setUI(ExComboBoxUI.createUI(comboBox));
+        return comboBox;
+    }
+    public JSlider getSlider(int min, int max, int value){
+        JSlider slider = new JSlider(JSlider.HORIZONTAL,min,max,value);
+        slider.setMajorTickSpacing(10);
+        slider.setMinorTickSpacing(1);
+        slider.setBackground(AppThemeColor.TRANSPARENT);
+        return slider;
     }
 
     public ImageIcon getIcon(String iconPath, int size){
