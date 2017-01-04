@@ -71,6 +71,10 @@ public class MessageFrame extends OverlaidFrame {
     protected LayoutManager getFrameLayout() {
         return new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS);
     }
+    @Override
+    protected String getFrameTitle() {
+        return null;
+    }
 
     @Override
     public void initHandlers() {

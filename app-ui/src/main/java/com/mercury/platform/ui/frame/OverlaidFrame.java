@@ -27,6 +27,8 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     private final int BORDER_THICKNESS = 1;
     private final int HIDE_DELAY = 1000;
 
+    private LayoutManager layout;
+    protected JPanel miscPanel;
     protected int x;
     protected int y;
     private boolean withinResizeSpace = false;
@@ -56,10 +58,13 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         setAlwaysOnTop(true);
         setFocusableWindowState(false);
         setFocusable(false);
-        setLayout(getFrameLayout());
+        this.layout = getFrameLayout();
+        setLayout(layout);
 
         initHandlers();
         initAnimationTimers();
+        initHeaderPanel();
+
         this.addMouseListener(hideEffectListener);
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -83,12 +88,6 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
             @Override
             public void handle(ChangeFrameVisibleEvent event) {
                 if (processingHideEvent){
-//                if(OverlaidFrame.this.getClass().getSimpleName().equals("MessageFrame")){
-//                    if(prevState != null) {
-//                        System.out.println("PREV: " + prevState.toString());
-//                    }
-//                    System.out.println("INVOKE: " + event.getStates().toString());
-//                }
                     switch (event.getStates()) {
                         case SHOW: {
                             if (prevState == null) {
@@ -100,9 +99,6 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
                         }
                         break;
                         case HIDE: {
-//                        if(OverlaidFrame.this.getClass().getSimpleName().equals("MessageFrame")){
-//                            System.out.println(OverlaidFrame.this.isShowing());
-//                        }
                             if (!OverlaidFrame.this.isShowing()) {
                                 prevState = FrameStates.HIDE;
                             } else {
@@ -117,6 +113,36 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         });
 
     }
+    private void initHeaderPanel(){
+        if(getFrameTitle() != null && layout instanceof BorderLayout) {
+            JPanel headerPanel = new JPanel(new BorderLayout());
+            headerPanel.setBackground(AppThemeColor.TRANSPARENT);
+            headerPanel.setBorder(BorderFactory.createEmptyBorder(-6, 0, -6, 0));
+
+            JLabel frameTitleLabel = componentsFactory.getTextLabel(getFrameTitle());
+            frameTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            frameTitleLabel.addMouseListener(new DraggedFrameMouseListener());
+            frameTitleLabel.addMouseMotionListener(new DraggedFrameMotionListener());
+
+            headerPanel.add(frameTitleLabel, BorderLayout.CENTER);
+
+            miscPanel = new JPanel();
+            miscPanel.setBackground(AppThemeColor.TRANSPARENT);
+            JButton hideButton = componentsFactory.getIconButton("app/close.png", 12);
+            hideButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    OverlaidFrame.this.setVisible(false);
+                }
+            });
+            miscPanel.add(hideButton);
+            headerPanel.add(miscPanel, BorderLayout.LINE_END);
+            this.add(headerPanel, BorderLayout.PAGE_START);
+        }
+    }
+    protected abstract String getFrameTitle();
+    protected abstract LayoutManager getFrameLayout();
+
     protected void disableHideEffect(){
         this.setOpacity(0.9f);
         this.hideAnimationEnable = false;
@@ -126,7 +152,6 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         this.addMouseListener(hideEffectListener);
         this.hideAnimationEnable = true;
     }
-    protected abstract LayoutManager getFrameLayout();
     protected boolean isMouseWithInFrame(){
         return this.getBounds().contains(MouseInfo.getPointerInfo().getLocation());
     }

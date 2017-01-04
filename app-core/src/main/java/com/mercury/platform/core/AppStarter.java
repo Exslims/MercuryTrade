@@ -44,7 +44,7 @@ public class AppStarter {
                         }
                     }
                 }
-            },0,700);
+            },0,300);
         });
     }
 }

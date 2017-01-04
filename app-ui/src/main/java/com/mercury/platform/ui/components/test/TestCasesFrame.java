@@ -31,7 +31,6 @@ public class TestCasesFrame extends OverlaidFrame {
     @Override
     protected void init() {
         super.init();
-        add(getTopPanel(), BorderLayout.PAGE_START);
         add(getTestCasesPanel(), BorderLayout.CENTER);
         disableHideEffect();
         pack();
@@ -55,16 +54,10 @@ public class TestCasesFrame extends OverlaidFrame {
         nickNames.add("Yaitaly");
         nickNames.add("xXxДолбоебxXx");
     }
-    private JPanel getTopPanel(){
-        JPanel topPanel = new JPanel();
-        topPanel.setBackground(AppThemeColor.TRANSPARENT);
-        JLabel title = componentsFactory.getTextLabel("Test cases");
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-        topPanel.add(title);
 
-        title.addMouseListener(new DraggedFrameMouseListener());
-        title.addMouseMotionListener(new DraggedFrameMotionListener());
-        return topPanel;
+    @Override
+    protected String getFrameTitle() {
+        return "Test cases";
     }
     @Override
     protected LayoutManager getFrameLayout() {
@@ -150,7 +143,6 @@ public class TestCasesFrame extends OverlaidFrame {
         JLabel textLabel16 = componentsFactory.getTextLabel("Test whisper label color after join/left area");
         testPanel.add(textLabel16,titleColumn);
         titleColumn.gridy++;
-
         testPanel.setBackground(AppThemeColor.TRANSPARENT);
 
         return testPanel;

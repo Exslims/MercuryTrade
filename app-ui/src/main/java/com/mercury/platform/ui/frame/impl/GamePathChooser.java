@@ -1,7 +1,5 @@
 package com.mercury.platform.ui.frame.impl;
 import com.mercury.platform.core.AppStarter;
-import com.mercury.platform.core.PrivateMessageManager;
-import com.mercury.platform.core.misc.PatchNotifier;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -10,8 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Created by Константин on 09.12.2016.
@@ -26,7 +22,6 @@ public class GamePathChooser extends OverlaidFrame {
     @Override
     protected void init() {
         super.init();
-        this.add(getTopPanel(),BorderLayout.PAGE_START);
         this.add(getChooserPanel(),BorderLayout.CENTER);
         this.add(getMiscPanel(),BorderLayout.PAGE_END);
 
@@ -34,44 +29,10 @@ public class GamePathChooser extends OverlaidFrame {
         disableHideEffect();
         processingHideEvent = false;
     }
-    private JPanel getTopPanel(){
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(AppThemeColor.TRANSPARENT);
-        topPanel.setBorder(BorderFactory.createEmptyBorder(-6,0,-6,0));
 
-        JLabel title = componentsFactory.getTextLabel("Choose game path");
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-        title.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                x = e.getX();
-                y = e.getY();
-            }
-        });
-        title.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                e.translatePoint(GamePathChooser.this.getLocation().x - x,GamePathChooser.this.getLocation().y - y);
-                GamePathChooser.this.setLocation(e.getX(),e.getY());
-                configManager.saveFrameLocation(GamePathChooser.this.getClass().getSimpleName(),GamePathChooser.this.getLocation());
-            }
-        });
-        topPanel.add(title,BorderLayout.CENTER);
-
-        JPanel miscPanel = new JPanel();
-        miscPanel.setBackground(AppThemeColor.TRANSPARENT);
-
-        JButton hideButton = componentsFactory.getIconButton("app/close.png",12);
-        hideButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                GamePathChooser.this.setVisible(false);
-                System.exit(0);
-            }
-        });
-        miscPanel.add(hideButton);
-        topPanel.add(miscPanel,BorderLayout.LINE_END);
-        return topPanel;
+    @Override
+    protected String getFrameTitle() {
+        return "Choose game path";
     }
 
     @Override

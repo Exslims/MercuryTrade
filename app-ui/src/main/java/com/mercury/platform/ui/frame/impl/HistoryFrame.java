@@ -34,7 +34,7 @@ public class HistoryFrame extends OverlaidFrame {
         messagesContainer = new JPanel();
         messagesContainer.setBackground(AppThemeColor.TRANSPARENT);
         messagesContainer.setLayout(new BoxLayout(messagesContainer,BoxLayout.Y_AXIS));
-        add(getTopPanel(),BorderLayout.PAGE_START);
+        addInteractionsButtons();
 
         scrollPane = new JScrollPane(messagesContainer);
         scrollPane.setBorder(null);
@@ -61,37 +61,16 @@ public class HistoryFrame extends OverlaidFrame {
     }
 
     @Override
+    protected String getFrameTitle() {
+        return "History";
+    }
+
+    @Override
     protected LayoutManager getFrameLayout() {
         return new BorderLayout();
     }
 
-    private JPanel getTopPanel(){
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(AppThemeColor.TRANSPARENT);
-        topPanel.setBorder(BorderFactory.createEmptyBorder(-6,0,-6,0));
-
-        JLabel history = componentsFactory.getTextLabel("History");
-        history.setHorizontalAlignment(SwingConstants.CENTER);
-        history.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                x = e.getX();
-                y = e.getY();
-            }
-        });
-        history.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                e.translatePoint(HistoryFrame.this.getLocation().x - x,HistoryFrame.this.getLocation().y - y);
-                HistoryFrame.this.setLocation(e.getX(),e.getY());
-                configManager.saveFrameLocation(HistoryFrame.this.getClass().getSimpleName(),HistoryFrame.this.getLocation());
-            }
-        });
-        topPanel.add(history,BorderLayout.CENTER);
-
-        JPanel miscPanel = new JPanel();
-        miscPanel.setBackground(AppThemeColor.TRANSPARENT);
-
+    private void addInteractionsButtons(){
         JButton clearButton = componentsFactory.getIconButton("app/clear-icon.png", 12);
         clearButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -103,17 +82,7 @@ public class HistoryFrame extends OverlaidFrame {
                 HistoryFrame.this.packFrame();
             }
         });
-        JButton hideButton = componentsFactory.getIconButton("app/close.png",12);
-        hideButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                HistoryFrame.this.setVisible(false);
-            }
-        });
-        miscPanel.add(clearButton);
-        miscPanel.add(hideButton);
-        topPanel.add(miscPanel,BorderLayout.LINE_END);
-        return topPanel;
+        miscPanel.add(clearButton,0);
     }
 
     @Override

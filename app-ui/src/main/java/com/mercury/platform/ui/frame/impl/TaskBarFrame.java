@@ -66,6 +66,11 @@ public class TaskBarFrame extends OverlaidFrame {
     }
 
     @Override
+    protected String getFrameTitle() {
+        return null;
+    }
+
+    @Override
     protected LayoutManager getFrameLayout() {
         return new FlowLayout(FlowLayout.LEFT);
     }

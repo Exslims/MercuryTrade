@@ -23,7 +23,7 @@
     <bytecodeTargetLevel>
       <module name="app" target="1.8" />
       <module name="app-core" target="1.8" />
-      <module name="app-socket-server" target="1.5" />
+      <module name="app-socket-server" target="1.8" />
       <module name="app-ui" target="1.8" />
       <module name="Clicker" target="1.5" />
       <module name="updater-server" target="1.8" />
