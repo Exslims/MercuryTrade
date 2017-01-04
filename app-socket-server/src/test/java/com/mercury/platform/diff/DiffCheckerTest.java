@@ -4,6 +4,7 @@ import com.mercury.platform.diff.utils.JarEntryBuilder;
 import com.mercury.platform.diff.utils.JarFileMocker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +31,7 @@ public class DiffCheckerTest {
     private DiffChecker diffChecker;
 
     @Before
-    public void init() {
+    public void setUp() {
         this.diffChecker = new DiffChecker();
     }
 
@@ -79,6 +80,12 @@ public class DiffCheckerTest {
 
     @Test
     public void test_diff_by_file_hash() {
+
+    }
+
+    @After
+    public void tearDown() {
+
 
     }
 }
