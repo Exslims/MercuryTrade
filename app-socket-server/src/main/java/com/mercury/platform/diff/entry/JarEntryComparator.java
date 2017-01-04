@@ -1,5 +1,7 @@
 package com.mercury.platform.diff.entry;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import java.util.Comparator;
 import java.util.jar.JarEntry;
 
@@ -8,6 +10,6 @@ import java.util.jar.JarEntry;
  */
 public class JarEntryComparator implements Comparator<JarEntry> {
     public int compare(JarEntry first, JarEntry second) {
-        return 0;
+        return ObjectUtils.compare(first.getName() , second.getName());
     }
 }
