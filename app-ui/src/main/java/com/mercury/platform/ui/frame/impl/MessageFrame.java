@@ -64,7 +64,9 @@ public class MessageFrame extends OverlaidFrame {
             }
         }
         this.tradeMode = mode;
-        packFrame();
+        if(this.getContentPane().getComponentCount() > 0){
+            packFrame();
+        }
     }
 
     @Override
