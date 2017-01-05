@@ -199,7 +199,7 @@ public class ComponentsFactory {
     }
 
     /**
-     * Get font with custom params
+     * Get label with custom params
      * @param fontStyle path of exile font type
      * @param frColor foreground color
      * @param alignment font alignment
@@ -240,7 +240,7 @@ public class ComponentsFactory {
     }
 
     /**
-     * Get default font
+     * Get default label
      * @param text font text
      * @return JLabel object
      */
@@ -249,7 +249,7 @@ public class ComponentsFactory {
     }
 
     /**
-     * Get font with icon
+     * Get label with icon
      * @param iconPath icon path from maven resources
      * @param size icon size
      * @return JLabel object with icon
