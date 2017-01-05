@@ -15,7 +15,7 @@ public class AppThemeColor {
     public static final Color TEXT_SUCCESS = new Color(167,197,32);
     public static final Color TEXT_DENIED = new Color(126,130,122);
     public static final Color BORDER = new Color(22,126,138);
-    public static final Color FRAME = new Color(42, 44, 43,230);
+    public static final Color FRAME = new Color(42, 44, 43,240);
     public static final Color TRANSPARENT = new Color(0,0,0,0);
     public static final Color HEADER = new Color(55,65,64);
 }

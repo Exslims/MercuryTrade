@@ -120,6 +120,11 @@ public class TaskBarFrame extends OverlaidFrame {
             }
         });
 
+        JButton chatFilter = componentsFactory.getIconButton("app/chat-filter.png",24);
+        chatFilter.addMouseListener(new MouseAdapter() {
+
+        });
+
         JButton historyButton = componentsFactory.getIconButton("app/history.png",24);
         historyButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -166,6 +171,8 @@ public class TaskBarFrame extends OverlaidFrame {
         taskBarPanel.add(visibleMode);
         taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
         taskBarPanel.add(chatMode);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        taskBarPanel.add(chatFilter);
         taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
         taskBarPanel.add(historyButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));

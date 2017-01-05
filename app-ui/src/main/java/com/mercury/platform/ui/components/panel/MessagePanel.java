@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.components.panel;
 
 
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
@@ -8,7 +9,6 @@ import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.label.FontStyle;
 import com.mercury.platform.ui.components.fields.label.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.CustomButtonFactory;
 import com.mercury.platform.ui.misc.MessageParser;
 
 import javax.swing.*;
@@ -64,7 +64,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.whisperPanel = getWhisperPanel();
         this.messagePanel = getFormattedMessagePanel();
-        this.customButtonsPanel = CustomButtonFactory.getButtonsPanel(whisper);
+        this.customButtonsPanel = getButtonsPanel(whisper);
 
         init();
         initHandlers();
@@ -188,7 +188,6 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 EventRouter.fireEvent(new ChatCommandEvent("/tradewith " + whisper));
             }
         });
-        tradeButton.setEnabled(false);
         JButton openChatButton = componentsFactory.getIconButton("app/openChat.png",15);
         openChatButton.setToolTipText("Open chat");
         openChatButton.addMouseListener(new MouseAdapter() {
@@ -280,7 +279,26 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             }
         });
     }
+    private JPanel getButtonsPanel(String whisper){
+        Map<String, String> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();
+        JPanel panel = new JPanel(new FlowLayout());
+        panel.setBackground(AppThemeColor.TRANSPARENT);
 
+        buttonsConfig.forEach((title,value)->{
+            JButton button = componentsFactory.getBorderedButton(title);
+            button.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if(button.isEnabled()) {
+                        EventRouter.fireEvent(new ChatCommandEvent("@" + whisper + " " + value));
+                    }
+                }
+
+            });
+            panel.add(button,0);
+        });
+        return panel;
+    }
     @Override
     public void initHandlers() {
         EventRouter.registerHandler(PlayerJoinEvent.class, event -> {
