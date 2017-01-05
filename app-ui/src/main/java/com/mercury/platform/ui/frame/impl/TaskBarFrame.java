@@ -17,7 +17,7 @@ import java.awt.event.*;
  * 07.12.2016
  */
 public class TaskBarFrame extends OverlaidFrame {
-    private final int MINIMUM_WIDTH = 114;
+    private final int MINIMUM_WIDTH = 118;
     private MessageFrame messageFrame;
     private TestCasesFrame testCasesFrame;
     private HistoryFrame historyFrame;
@@ -40,28 +40,6 @@ public class TaskBarFrame extends OverlaidFrame {
         pack();
         this.setSize(new Dimension(MINIMUM_WIDTH,this.getHeight()));
         disableHideEffect();
-
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                if(collapseAnim != null){
-                    collapseAnim.abort();
-                }
-                initCollapseAnimations("expand");
-                collapseAnim.play();
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                if(!isMouseWithInFrame()) {
-                    if (collapseAnim != null) {
-                        collapseAnim.abort();
-                    }
-                    initCollapseAnimations("collapse");
-                    collapseAnim.play();
-                }
-            }
-        });
         EventRouter.fireEvent(new UILoadedEvent());
     }
 
@@ -79,6 +57,29 @@ public class TaskBarFrame extends OverlaidFrame {
         JPanel taskBarPanel = new JPanel();
         taskBarPanel.setBackground(AppThemeColor.TRANSPARENT);
         taskBarPanel.setLayout(new BoxLayout(taskBarPanel,BoxLayout.X_AXIS));
+        taskBarPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if(!withinResizeSpace) {
+                    if (collapseAnim != null) {
+                        collapseAnim.abort();
+                    }
+                    initCollapseAnimations("expand");
+                    collapseAnim.play();
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if(!withInPanel(taskBarPanel) && !withinResizeSpace) {
+                    if (collapseAnim != null) {
+                        collapseAnim.abort();
+                    }
+                    initCollapseAnimations("collapse");
+                    collapseAnim.play();
+                }
+            }
+        });
 
         JButton visibleMode = componentsFactory.getIconButton("app/visible-always-mode.png",24);
         visibleMode.addMouseListener(new MouseAdapter() {
@@ -122,6 +123,10 @@ public class TaskBarFrame extends OverlaidFrame {
 
         JButton chatFilter = componentsFactory.getIconButton("app/chat-filter.png",24);
         chatFilter.addMouseListener(new MouseAdapter() {
+
+        });
+        JButton timer = componentsFactory.getIconButton("app/timer.png",24);
+        timer.addMouseListener(new MouseAdapter() {
 
         });
 
@@ -174,6 +179,8 @@ public class TaskBarFrame extends OverlaidFrame {
         taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
         taskBarPanel.add(chatFilter);
         taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        taskBarPanel.add(timer);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
         taskBarPanel.add(historyButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
         taskBarPanel.add(moveButton);
@@ -217,6 +224,9 @@ public class TaskBarFrame extends OverlaidFrame {
         }
         collapseAnim.setEase(new Spline(1f));
         collapseAnim.setDuration(300);
+    }
+    private boolean withInPanel(JPanel panel){
+        return new Rectangle(panel.getLocationOnScreen(),panel.getSize()).contains(MouseInfo.getPointerInfo().getLocation());
     }
 
     /**

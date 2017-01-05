@@ -31,7 +31,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     protected JPanel miscPanel;
     protected int x;
     protected int y;
-    private boolean withinResizeSpace = false;
+    protected boolean withinResizeSpace = false;
 
     private Timeline hideAnimation;
     private Timeline showAnimation;
