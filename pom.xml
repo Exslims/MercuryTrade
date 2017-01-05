@@ -13,6 +13,7 @@
         <module>app-ui</module>
         <module>app-core</module>
         <module>app-socket-server</module>
+        <module>app-shared</module>
     </modules>
     <packaging>pom</packaging>
 
