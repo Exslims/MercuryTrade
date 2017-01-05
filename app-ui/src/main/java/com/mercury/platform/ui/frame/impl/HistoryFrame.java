@@ -5,7 +5,7 @@ import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.NewWhispersEvent;
 import com.mercury.platform.shared.events.custom.RepaintEvent;
 import com.mercury.platform.shared.pojo.Message;
-import com.mercury.platform.ui.components.fields.ExScrolBarUI;
+import com.mercury.platform.ui.components.fields.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
 import com.mercury.platform.ui.frame.OverlaidFrame;
@@ -51,7 +51,7 @@ public class HistoryFrame extends OverlaidFrame {
         });
         JScrollBar vBar = scrollPane.getVerticalScrollBar();
         vBar.setBackground(AppThemeColor.FRAME);
-        vBar.setUI(new ExScrolBarUI());
+        vBar.setUI(new MercuryScrollBarUI());
         vBar.setPreferredSize(new Dimension(10, Integer.MAX_VALUE));
         vBar.setUnitIncrement(3);
         vBar.setBorder(BorderFactory.createLineBorder(AppThemeColor.FRAME,1));

@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.components.fields.label;
+package com.mercury.platform.ui.components.fields.font;
 
 /**
  * Created by Константин on 23.12.2016.

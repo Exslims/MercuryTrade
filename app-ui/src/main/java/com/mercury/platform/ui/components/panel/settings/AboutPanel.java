@@ -1,8 +1,7 @@
 package com.mercury.platform.ui.components.panel.settings;
 
-import com.mercury.platform.ui.components.fields.label.FontStyle;
+import com.mercury.platform.ui.components.fields.font.FontStyle;
 
-import javax.swing.*;
 import java.awt.*;
 
 /**

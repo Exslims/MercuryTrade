@@ -1,13 +1,9 @@
 package com.mercury.platform.ui.frame.impl;
 
 
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.RepaintEvent;
-import com.mercury.platform.ui.components.fields.label.FontStyle;
 import com.mercury.platform.ui.components.panel.CollapsiblePanel;
-import com.mercury.platform.ui.components.panel.MessagePanel;
-import com.mercury.platform.ui.components.panel.MessagePanelStyle;
 import com.mercury.platform.ui.components.panel.settings.AboutPanel;
 import com.mercury.platform.ui.components.panel.settings.ConfigurationPanel;
 import com.mercury.platform.ui.components.panel.settings.CustomButtonSettings;
@@ -17,8 +13,6 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;

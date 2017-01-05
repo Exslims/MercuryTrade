@@ -140,7 +140,7 @@ public class TestCasesFrame extends OverlaidFrame {
         });
         testPanel.add(button6,buttonColumn);
         buttonColumn.gridy++;
-        JLabel textLabel16 = componentsFactory.getTextLabel("Test whisper label color after join/left area");
+        JLabel textLabel16 = componentsFactory.getTextLabel("Test whisper font color after join/left area");
         testPanel.add(textLabel16,titleColumn);
         titleColumn.gridy++;
         testPanel.setBackground(AppThemeColor.TRANSPARENT);

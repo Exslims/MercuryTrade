@@ -6,8 +6,8 @@ import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.ui.components.ComponentsFactory;
-import com.mercury.platform.ui.components.fields.label.FontStyle;
-import com.mercury.platform.ui.components.fields.label.TextAlignment;
+import com.mercury.platform.ui.components.fields.font.FontStyle;
+import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MessageParser;
 

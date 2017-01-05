@@ -1,15 +1,14 @@
 package com.mercury.platform.ui.components;
 
-import com.mercury.platform.ui.components.fields.ExComboBoxUI;
-import com.mercury.platform.ui.components.fields.label.FontStyle;
-import com.mercury.platform.ui.components.fields.label.TextAlignment;
+import com.mercury.platform.ui.components.fields.MercuryComboBoxUI;
+import com.mercury.platform.ui.components.fields.font.FontStyle;
+import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.apache.log4j.Logger;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -200,12 +199,12 @@ public class ComponentsFactory {
     }
 
     /**
-     * Get label with custom params
+     * Get font with custom params
      * @param fontStyle path of exile font type
      * @param frColor foreground color
      * @param alignment font alignment
      * @param size font size
-     * @param text initial text on label
+     * @param text initial text on font
      * @return JLabel object
      */
     public JLabel getTextLabel(FontStyle fontStyle, Color frColor, TextAlignment alignment, float size, String text){
@@ -241,8 +240,8 @@ public class ComponentsFactory {
     }
 
     /**
-     * Get default label
-     * @param text label text
+     * Get default font
+     * @param text font text
      * @return JLabel object
      */
     public JLabel getTextLabel(String text){
@@ -250,7 +249,7 @@ public class ComponentsFactory {
     }
 
     /**
-     * Get label with icon
+     * Get font with icon
      * @param iconPath icon path from maven resources
      * @param size icon size
      * @return JLabel object with icon
@@ -291,7 +290,7 @@ public class ComponentsFactory {
         comboBox.setForeground(AppThemeColor.TEXT_DEFAULT);
         comboBox.setFont(BOLD_FONT.deriveFont(16f));
         comboBox.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
-        comboBox.setUI(ExComboBoxUI.createUI(comboBox));
+        comboBox.setUI(MercuryComboBoxUI.createUI(comboBox));
         return comboBox;
     }
     public JSlider getSlider(int min, int max, int value){

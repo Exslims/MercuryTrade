@@ -8,7 +8,6 @@ import java.awt.*;
  * Created by Константин on 05.01.2017.
  */
 public class ChatFilterFrame extends OverlaidFrame {
-
     protected ChatFilterFrame() {
         super("MT-ChatFilter");
     }

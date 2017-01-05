@@ -18,7 +18,7 @@ public class PackTesting {
         final JFrame frame = new JFrame("HelloWorldSwing");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Add the ubiquitous "Hello World" label.
+        //Add the ubiquitous "Hello World" font.
         JLabel label = new JLabel("Hello World123123213213");
         frame.getContentPane().add(label);
         frame.setSize(new Dimension(400,400));
