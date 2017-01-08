@@ -7,10 +7,7 @@ import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -24,25 +21,25 @@ public class TimerFrame extends OverlaidFrame {
     private int minutes = 0;
     private int hours = 0;
     private int mapCount = 0;
+    private int chaosSpend = 0;
     protected TimerFrame() {
         super("MT-Timer");
         createUI();
         this.setVisible(false);
         prevState = FrameStates.HIDE;
-        disableHideEffect();
         this.pack();
     }
 
     private void createUI() {
         JPanel root = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton play = componentsFactory.getIconButton("app/timer-play.png", 18);
+        JButton play = componentsFactory.getIconButton("app/timer-play.png", 16);
         play.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 getNewTimer().start();
             }
         });
-        JButton pause = componentsFactory.getIconButton("app/timer-pause.png", 18);
+        JButton pause = componentsFactory.getIconButton("app/timer-pause.png", 16);
         pause.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -51,7 +48,7 @@ public class TimerFrame extends OverlaidFrame {
                 }
             }
         });
-        JButton stop = componentsFactory.getIconButton("app/timer-stop.png", 18);
+        JButton stop = componentsFactory.getIconButton("app/timer-stop.png", 16);
         stop.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -63,7 +60,9 @@ public class TimerFrame extends OverlaidFrame {
                 }
             }
         });
-        JButton reset = componentsFactory.getIconButton("app/timer-reset.png", 18);
+        JLabel mapCountLabel = componentsFactory.getTextLabel("Map count: 0");
+        JLabel chaosSpendLabel = componentsFactory.getTextLabel("Chaos spend: 0");
+        JButton reset = componentsFactory.getIconButton("app/timer-reset.png", 16);
         reset.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -74,6 +73,10 @@ public class TimerFrame extends OverlaidFrame {
                 seconds = 0;
                 minutes = 0;
                 hours = 0;
+                mapCount = 0;
+                chaosSpend = 0;
+                mapCountLabel.setText("Map count: 0");
+                chaosSpendLabel.setText("Chaos spend: 0");
                 TimerFrame.this.repaint();
             }
         });
@@ -84,19 +87,17 @@ public class TimerFrame extends OverlaidFrame {
         root.add(reset);
         this.add(root,BorderLayout.CENTER);
 
-        JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel mapCountLabel = componentsFactory.getTextLabel("Map count: 0");
-        JButton plus = componentsFactory.getIconButton("app/invite.png", 14);
-        plus.addMouseListener(new MouseAdapter() {
+        JPanel miscPanel = componentsFactory.getTransparentPanel(null);
+        miscPanel.setLayout(new BoxLayout(miscPanel,BoxLayout.Y_AXIS));
+
+        JPanel mapCountPanel = getIncrementRow(mapCountLabel, new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 mapCount++;
                 mapCountLabel.setText("Map count: " + mapCount);
                 TimerFrame.this.repaint();
             }
-        });
-        JButton minus = componentsFactory.getIconButton("app/kick.png", 14);
-        minus.addMouseListener(new MouseAdapter() {
+        }, new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(mapCount > 0) {
@@ -106,9 +107,26 @@ public class TimerFrame extends OverlaidFrame {
                 }
             }
         });
-        miscPanel.add(mapCountLabel);
-        miscPanel.add(plus);
-        miscPanel.add(minus);
+        JPanel chaosSpendPanel = getIncrementRow(chaosSpendLabel, new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                chaosSpend++;
+                chaosSpendLabel.setText("Chaos spend: " + chaosSpend);
+                TimerFrame.this.repaint();
+            }
+        }, new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (chaosSpend > 0) {
+                    chaosSpend--;
+                    chaosSpendLabel.setText("Chaos spend: " + chaosSpend);
+                    TimerFrame.this.repaint();
+                }
+            }
+        });
+
+        miscPanel.add(mapCountPanel);
+        miscPanel.add(chaosSpendPanel);
         this.add(miscPanel,BorderLayout.PAGE_END);
     }
     private Timer getNewTimer(){
@@ -138,6 +156,17 @@ public class TimerFrame extends OverlaidFrame {
         });
         return timeAgo;
     }
+    private JPanel getIncrementRow(JLabel label, MouseAdapter plusListener, MouseAdapter minusListener){
+        JPanel panel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
+        JButton plus = componentsFactory.getIconButton("app/invite.png", 14);
+        plus.addMouseListener(plusListener);
+        JButton minus = componentsFactory.getIconButton("app/kick.png", 14);
+        minus.addMouseListener(minusListener);
+        panel.add(label);
+        panel.add(plus);
+        panel.add(minus);
+        return panel;
+    }
 
     private JPanel getTimePanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -145,13 +174,9 @@ public class TimerFrame extends OverlaidFrame {
         timeLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MISC, TextAlignment.CENTER, 18, "00:00:00");
         timeLabel.setVerticalAlignment(SwingConstants.CENTER);
         timeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(0,-2,0,0),
-                BorderFactory.createLineBorder(AppThemeColor.BUTTON, 1)
-        );
         panel.setBorder(BorderFactory.createLineBorder(AppThemeColor.BUTTON, 1));
-        panel.setMinimumSize(new Dimension(100,34));
-        panel.setPreferredSize(new Dimension(100,34));
+        panel.setMinimumSize(new Dimension(100,30));
+        panel.setPreferredSize(new Dimension(100,30));
         panel.add(timeLabel);
         return panel;
     }
