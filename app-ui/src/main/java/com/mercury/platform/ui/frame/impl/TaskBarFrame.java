@@ -22,6 +22,7 @@ public class TaskBarFrame extends OverlaidFrame {
     private TestCasesFrame testCasesFrame;
     private HistoryFrame historyFrame;
     private NotificationFrame notificationFrame;
+    private TimerFrame timerFrame;
 
     private Timeline collapseAnim;
 
@@ -35,6 +36,7 @@ public class TaskBarFrame extends OverlaidFrame {
         testCasesFrame = new TestCasesFrame();
         historyFrame = new HistoryFrame();
         notificationFrame = new NotificationFrame();
+        timerFrame = new TimerFrame();
         super.init();
         add(getTaskBarPanel());
         pack();
@@ -60,6 +62,7 @@ public class TaskBarFrame extends OverlaidFrame {
         taskBarPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
+                TaskBarFrame.this.repaint();
                 if(!withinResizeSpace) {
                     if (collapseAnim != null) {
                         collapseAnim.abort();
@@ -71,6 +74,7 @@ public class TaskBarFrame extends OverlaidFrame {
 
             @Override
             public void mouseExited(MouseEvent e) {
+                TaskBarFrame.this.repaint();
                 if(!withInPanel(taskBarPanel) && !withinResizeSpace) {
                     if (collapseAnim != null) {
                         collapseAnim.abort();
@@ -127,7 +131,14 @@ public class TaskBarFrame extends OverlaidFrame {
         });
         JButton timer = componentsFactory.getIconButton("app/timer.png",24);
         timer.addMouseListener(new MouseAdapter() {
-
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(!timerFrame.isVisible()) {
+                    timerFrame.setVisible(true);
+                }else {
+                    timerFrame.setVisible(false);
+                }
+            }
         });
 
         JButton historyButton = componentsFactory.getIconButton("app/history.png",24);

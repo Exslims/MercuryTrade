@@ -149,10 +149,10 @@ public class ComponentsFactory {
         button.setFocusPainted(false);
         button.addChangeListener(e->{
             if(!button.getModel().isPressed()){
-                button.setBackground(AppThemeColor.TRANSPARENT);
+                button.setBackground(AppThemeColor.FRAME);
             }
         });
-        button.setContentAreaFilled(false);
+//        button.setContentAreaFilled(false);
         button.setBorder(BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,4));
         button.setVerticalAlignment(SwingConstants.CENTER);
         BufferedImage icon = null;
@@ -180,7 +180,7 @@ public class ComponentsFactory {
                 BorderFactory.createLineBorder(AppThemeColor.BUTTON, 2)
         );
         JButton iconButton = getIconButton(iconPath, iconSize);
-        iconButton.setBorder(compoundBorder);
+        iconButton.setBorder(BorderFactory.createLineBorder(AppThemeColor.BUTTON, 2));
         return iconButton;
     }
 
