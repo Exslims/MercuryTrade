@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Clicker.iml" filepath="$PROJECT_DIR$/Clicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app-core/app-core.iml" filepath="$PROJECT_DIR$/app-core/app-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app-local-updater/app-local-updater.iml" filepath="$PROJECT_DIR$/app-local-updater/app-local-updater.iml" />
       <module fileurl="file://$PROJECT_DIR$/app-shared/app-shared.iml" filepath="$PROJECT_DIR$/app-shared/app-shared.iml" />
       <module fileurl="file://$PROJECT_DIR$/app-socket-server/app-socket-server.iml" filepath="$PROJECT_DIR$/app-socket-server/app-socket-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/app-ui/app-ui.iml" filepath="$PROJECT_DIR$/app-ui/app-ui.iml" />

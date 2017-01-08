@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="app" />
         <module name="app-core" />
+        <module name="app-local-updater" />
         <module name="app-shared" />
         <module name="app-socket-server" />
         <module name="app-ui" />
@@ -24,6 +25,7 @@
     <bytecodeTargetLevel>
       <module name="app" target="1.8" />
       <module name="app-core" target="1.8" />
+      <module name="app-local-updater" target="1.5" />
       <module name="app-shared" target="1.8" />
       <module name="app-socket-server" target="1.8" />
       <module name="app-ui" target="1.8" />

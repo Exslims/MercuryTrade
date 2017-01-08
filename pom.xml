@@ -14,6 +14,7 @@
         <module>app-core</module>
         <module>app-socket-server</module>
         <module>app-shared</module>
+        <module>app-local-updater</module>
     </modules>
     <packaging>pom</packaging>
 

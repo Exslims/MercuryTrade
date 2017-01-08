@@ -10,6 +10,7 @@
         <option value="$PROJECT_DIR$/app-ui/pom.xml" />
         <option value="$PROJECT_DIR$/app-socket-server/pom.xml" />
         <option value="$PROJECT_DIR$/app-shared/pom.xml" />
+        <option value="$PROJECT_DIR$/app-local-updater/pom.xml" />
       </list>
     </option>
   </component>
