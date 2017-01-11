@@ -40,7 +40,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     private Timeline showAnimation;
     private Timer hideTimer;
     private HideEffectListener hideEffectListener;
-    private boolean hideAnimationEnable = true;
+    private boolean hideAnimationEnable = false;
 
 
     protected FrameStates prevState;
@@ -59,7 +59,6 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(AppThemeColor.FRAME);
         setOpacity(minOpacity);
-        setAlwaysOnTop(true);
         setFocusableWindowState(false);
         setFocusable(false);
         this.layout = getFrameLayout();
@@ -98,6 +97,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
                                 prevState = FrameStates.SHOW;
                             }
                             if (prevState.equals(FrameStates.SHOW)) {
+                                OverlaidFrame.this.setAlwaysOnTop(true);
                                 OverlaidFrame.this.setVisible(true);
                             }
                         }
@@ -108,6 +108,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
                             } else {
                                 prevState = FrameStates.SHOW;
                             }
+                            OverlaidFrame.this.setAlwaysOnTop(false);
                             OverlaidFrame.this.setVisible(false);
                         }
                         break;

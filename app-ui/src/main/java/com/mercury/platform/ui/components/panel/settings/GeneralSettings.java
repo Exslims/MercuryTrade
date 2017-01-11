@@ -43,7 +43,7 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         minOpacitySettingsPanel.add(componentsFactory.getTextLabel("Minimum opacity: "));
 
         JPanel minValuePanel = componentsFactory.getTransparentPanel(new FlowLayout());
-        JLabel minValueField = componentsFactory.getTextLabel(String.valueOf((int)owner.getMinOpacity()*100) + "%"); //todo
+        JLabel minValueField = componentsFactory.getTextLabel(hideManager.getMinOpacity() + "%"); //todo
         minValuePanel.add(minValueField);
         minValuePanel.setPreferredSize(new Dimension(35,30));
         minOpacitySettingsPanel.add(minValuePanel);
@@ -59,7 +59,7 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         maxOpacitySettingsPanel.add(componentsFactory.getTextLabel("Maximum opacity: "));
 
         JPanel maxValuePanel = componentsFactory.getTransparentPanel(new FlowLayout());
-        JLabel maxValueField = componentsFactory.getTextLabel(String.valueOf((int)owner.getMaxOpacity()*100) + "%"); //todo
+        JLabel maxValueField = componentsFactory.getTextLabel(hideManager.getMaxOpacity() + "%"); //todo
         maxValuePanel.add(maxValueField);
         maxValuePanel.setPreferredSize(new Dimension(35,30));
         maxOpacitySettingsPanel.add(maxValuePanel);
