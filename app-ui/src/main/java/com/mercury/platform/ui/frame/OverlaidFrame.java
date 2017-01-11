@@ -128,7 +128,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
 
             miscPanel = new JPanel();
             miscPanel.setBackground(AppThemeColor.TRANSPARENT);
-            JButton hideButton = componentsFactory.getIconButton("app/close.png", 12);
+            JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_1);
             hideButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {

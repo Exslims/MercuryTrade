@@ -32,14 +32,14 @@ public class TimerFrame extends OverlaidFrame {
 
     private void createUI() {
         JPanel root = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton play = componentsFactory.getIconButton("app/timer-play.png", 16);
+        JButton play = componentsFactory.getIconButton("app/timer-play.png", 16,AppThemeColor.FRAME_1);
         play.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 getNewTimer().start();
             }
         });
-        JButton pause = componentsFactory.getIconButton("app/timer-pause.png", 16);
+        JButton pause = componentsFactory.getIconButton("app/timer-pause.png", 16,AppThemeColor.FRAME_1);
         pause.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -48,7 +48,7 @@ public class TimerFrame extends OverlaidFrame {
                 }
             }
         });
-        JButton stop = componentsFactory.getIconButton("app/timer-stop.png", 16);
+        JButton stop = componentsFactory.getIconButton("app/timer-stop.png", 16,AppThemeColor.FRAME_1);
         stop.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -62,7 +62,7 @@ public class TimerFrame extends OverlaidFrame {
         });
         JLabel mapCountLabel = componentsFactory.getTextLabel("Map count: 0");
         JLabel chaosSpendLabel = componentsFactory.getTextLabel("Chaos spend: 0");
-        JButton reset = componentsFactory.getIconButton("app/timer-reset.png", 16);
+        JButton reset = componentsFactory.getIconButton("app/timer-reset.png", 16,AppThemeColor.FRAME_1);
         reset.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -158,9 +158,9 @@ public class TimerFrame extends OverlaidFrame {
     }
     private JPanel getIncrementRow(JLabel label, MouseAdapter plusListener, MouseAdapter minusListener){
         JPanel panel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton plus = componentsFactory.getIconButton("app/invite.png", 14);
+        JButton plus = componentsFactory.getIconButton("app/invite.png", 14,AppThemeColor.FRAME_1);
         plus.addMouseListener(plusListener);
-        JButton minus = componentsFactory.getIconButton("app/kick.png", 14);
+        JButton minus = componentsFactory.getIconButton("app/kick.png", 14,AppThemeColor.FRAME_1);
         minus.addMouseListener(minusListener);
         panel.add(label);
         panel.add(plus);

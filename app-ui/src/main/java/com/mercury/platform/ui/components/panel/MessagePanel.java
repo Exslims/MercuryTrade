@@ -167,28 +167,28 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
 
         JPanel interactionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         interactionPanel.setBackground(AppThemeColor.TRANSPARENT);
-        JButton inviteButton = componentsFactory.getIconButton("app/invite.png", 14);
+        JButton inviteButton = componentsFactory.getIconButton("app/invite.png", 14, AppThemeColor.HEADER);
         inviteButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 EventRouter.fireEvent(new ChatCommandEvent("/invite " + whisper));
             }
         });
-        JButton kickButton = componentsFactory.getIconButton("app/kick.png", 14);
+        JButton kickButton = componentsFactory.getIconButton("app/kick.png", 14, AppThemeColor.HEADER);
         kickButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 EventRouter.fireEvent(new ChatCommandEvent("/kick " + whisper));
             }
         });
-        tradeButton = componentsFactory.getIconButton("app/trade.png",14);
+        tradeButton = componentsFactory.getIconButton("app/trade.png",14, AppThemeColor.HEADER);
         tradeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 EventRouter.fireEvent(new ChatCommandEvent("/tradewith " + whisper));
             }
         });
-        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png",15);
+        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png",15, AppThemeColor.HEADER);
         openChatButton.setToolTipText("Open chat");
         openChatButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -196,7 +196,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 EventRouter.fireEvent(new OpenChatEvent(whisper));
             }
         });
-        JButton hideButton = componentsFactory.getIconButton("app/close.png", 14);
+        JButton hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.HEADER);
         hideButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

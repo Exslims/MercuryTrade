@@ -136,7 +136,7 @@ public class ComponentsFactory {
      * @param iconSize icon size
      * @return JButton object with icon
      */
-    public JButton getIconButton(String iconPath, int iconSize){
+    public JButton getIconButton(String iconPath, int iconSize, Color background){
         JButton button = new JButton(""){
             @Override
             protected void paintBorder(Graphics g) {
@@ -145,11 +145,11 @@ public class ComponentsFactory {
                 }
             }
         };
-        button.setBackground(AppThemeColor.TRANSPARENT);
+        button.setBackground(background);
         button.setFocusPainted(false);
         button.addChangeListener(e->{
             if(!button.getModel().isPressed()){
-                button.setBackground(AppThemeColor.FRAME);
+                button.setBackground(background);
             }
         });
 //        button.setContentAreaFilled(false);
@@ -179,7 +179,7 @@ public class ComponentsFactory {
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
                 BorderFactory.createLineBorder(AppThemeColor.BUTTON, 2)
         );
-        JButton iconButton = getIconButton(iconPath, iconSize);
+        JButton iconButton = getIconButton(iconPath, iconSize, AppThemeColor.FRAME_1);
         iconButton.setBorder(BorderFactory.createLineBorder(AppThemeColor.BUTTON, 2));
         return iconButton;
     }
@@ -192,7 +192,7 @@ public class ComponentsFactory {
      * @return JButton with icon
      */
     public JButton getIconButton(String iconPath, int iconSize, Dimension buttonSize){
-        JButton iconButton = getIconButton(iconPath, iconSize);
+        JButton iconButton = getIconButton(iconPath, iconSize, AppThemeColor.FRAME_1);
         iconButton.setPreferredSize(buttonSize);
         iconButton.setSize(buttonSize);
         return iconButton;

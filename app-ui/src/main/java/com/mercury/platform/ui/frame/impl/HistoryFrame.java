@@ -73,7 +73,7 @@ public class HistoryFrame extends OverlaidFrame {
     }
 
     private void addInteractionsButtons(){
-        JButton clearButton = componentsFactory.getIconButton("app/clear-icon.png", 12);
+        JButton clearButton = componentsFactory.getIconButton("app/clear-icon.png", 12,AppThemeColor.FRAME_1);
         clearButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
