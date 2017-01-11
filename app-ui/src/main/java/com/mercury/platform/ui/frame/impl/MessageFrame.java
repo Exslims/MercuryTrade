@@ -86,39 +86,37 @@ public class MessageFrame extends OverlaidFrame {
             convertFrameTo(TradeMode.DEFAULT);
         });
         EventRouter.registerHandler(NewWhispersEvent.class, event -> {
-            List<Message> messages = ((NewWhispersEvent) event).getMessages();
-            for (Message message : messages) {
-                if(!this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW){
-                    this.setAlwaysOnTop(true);
-                    this.setVisible(true);
-                }else {
-                    prevState = FrameStates.SHOW;
+            Message message = ((NewWhispersEvent) event).getMessage();
+            if (!this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
+                this.setAlwaysOnTop(true);
+                this.setVisible(true);
+            } else {
+                prevState = FrameStates.SHOW;
+            }
+            MessagePanel messagePanel = null;
+            switch (tradeMode) {
+                case SUPER: {
+                    messagePanel = new MessagePanel(message.getWhisperNickname(), message, MessagePanelStyle.BIGGEST);
+                    break;
                 }
-                MessagePanel messagePanel = null;
-                switch (tradeMode){
-                    case SUPER:{
-                        messagePanel = new MessagePanel(message.getWhisperNickname(), message, MessagePanelStyle.BIGGEST);
-                        break;
-                    }
-                    case DEFAULT:{
-                        messagePanel = new MessagePanel(message.getWhisperNickname(), message, MessagePanelStyle.BIGGEST);
-                        if(this.getContentPane().getComponentCount() > 0){
-                            messagePanel.setStyle(MessagePanelStyle.SMALL);
-                        }else {
-                            messagePanel.setAsTopMessage();
-                        }
+                case DEFAULT: {
+                    messagePanel = new MessagePanel(message.getWhisperNickname(), message, MessagePanelStyle.BIGGEST);
+                    if (this.getContentPane().getComponentCount() > 0) {
+                        messagePanel.setStyle(MessagePanelStyle.SMALL);
+                    } else {
+                        messagePanel.setAsTopMessage();
                     }
                 }
-                messagePanel.addMouseListener(new ExpandMouseListener());
-                if(this.getContentPane().getComponentCount() > 0){
-                    messagePanel.setBorder(BorderFactory.createMatteBorder(1,0,0,0, AppThemeColor.BORDER));
-                }
-                this.add(messagePanel);
-                if(this.getContentPane().getComponentCount() == 1) {
-                    this.setSize(new Dimension(this.getWidth(), 6 + messagePanel.getPreferredSize().height));
-                }else {
-                    this.setSize(new Dimension(this.getWidth(), this.getHeight() + messagePanel.getPreferredSize().height));
-                }
+            }
+            messagePanel.addMouseListener(new ExpandMouseListener());
+            if (this.getContentPane().getComponentCount() > 0) {
+                messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
+            }
+            this.add(messagePanel);
+            if (this.getContentPane().getComponentCount() == 1) {
+                this.setSize(new Dimension(this.getWidth(), 6 + messagePanel.getPreferredSize().height));
+            } else {
+                this.setSize(new Dimension(this.getWidth(), this.getHeight() + messagePanel.getPreferredSize().height));
             }
 //            packFrame();
         });

@@ -10,17 +10,13 @@ import java.util.List;
  * 08.12.2016
  */
 public class NewWhispersEvent implements SCEvent {
-    private List<Message> messages;
+    private Message message;
 
-    public NewWhispersEvent(List<Message> messages) {
-        this.messages = messages;
+    public NewWhispersEvent(Message message) {
+        this.message = message;
     }
 
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message> writers) {
-        this.messages = writers;
+    public Message getMessage() {
+        return message;
     }
 }

@@ -48,7 +48,7 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         minValuePanel.setPreferredSize(new Dimension(35,30));
         minOpacitySettingsPanel.add(minValuePanel);
 
-        minSlider = componentsFactory.getSlider(20,100,hideManager.getMinOpacity());
+        minSlider = componentsFactory.getSlider(10,100,hideManager.getMinOpacity());
         minSlider.addChangeListener(e -> {
             minValueField.setText(String.valueOf(minSlider.getValue()) + "%");
             owner.repaint();

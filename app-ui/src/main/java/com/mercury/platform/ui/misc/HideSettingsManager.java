@@ -33,6 +33,7 @@ public class HideSettingsManager {
                 frame.enableHideEffect(timeToHide,minOpacity,maxOpacity);
             }else {
                 frame.disableHideEffect();
+                frame.setOpacity(maxOpacity/100f);
             }
         });
     }

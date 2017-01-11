@@ -1,10 +1,13 @@
 package com.mercury.platform.core.utils;
 
+import com.mercury.platform.core.utils.interceptor.IncTradeMessagesInterceptor;
+import com.mercury.platform.core.utils.interceptor.MessageInterceptor;
+import com.mercury.platform.core.utils.interceptor.PlayerJoinInterceptor;
+import com.mercury.platform.core.utils.interceptor.PlayerLeftInterceptor;
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.MessageParser;
+import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
-import com.mercury.platform.shared.pojo.Message;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -13,16 +16,21 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
-/**
- * Exslims
- * 07.12.2016
- */
-public class MessageFileHandler {
+public class MessageFileHandler implements HasEventHandlers {
     private final Logger logger = Logger.getLogger(MessageFileHandler.class);
     private final String logFilePath = ConfigManager.INSTANCE.getGamePath() + File.separator + "logs" + File.separator + "Client.txt";
     private Date lastMessageDate = new Date();
-    private MessageParser messageParser = new MessageParser();
+
+    private List<MessageInterceptor> interceptors;
+
+    public MessageFileHandler() {
+        interceptors = new ArrayList<>();
+        interceptors.add(new IncTradeMessagesInterceptor());
+        interceptors.add(new PlayerJoinInterceptor());
+        interceptors.add(new PlayerLeftInterceptor());
+    }
 
     public void parse(){
         List<String> stubMessages = new ArrayList<>();
@@ -41,11 +49,9 @@ public class MessageFileHandler {
                 if(c == '\n'){
                     builder = builder.reverse();
                     String stroke = builder.toString();
-                    if(stroke.contains("@From") || stroke.contains("has joined the area.") || stroke.contains("has left the area.")) {
-                        String utf8 = new String(stroke.getBytes("ISO-8859-1"),"UTF-8");
-                        stubMessages.add(utf8);
-                        lines++;
-                    }
+                    String utf8 = new String(stroke.getBytes("ISO-8859-1"),"UTF-8");
+                    stubMessages.add(utf8);
+                    lines++;
                     builder = new StringBuilder();
                     if (lines == 30){
                         break;
@@ -55,33 +61,27 @@ public class MessageFileHandler {
         } catch (Exception e) {
             logger.error("Error in MessageFileHandler: ", e);
         }
-        buildMessages(stubMessages);
-        //TODO @From <REKTEM> ThreeBlindIce: Hi, I would like to buy your level 1 20% Raise Zombie in Breach (stash tab "trade"; position: left 12, top 2) BUG NPE IN ASCII()
-    }
-    public void buildMessages(List<String> stubMessages){
-        List<Message> messages = new ArrayList<>();
-        for (String fullMessage : stubMessages) {
-            Date msgDate = new Date(StringUtils.substring(fullMessage, 0, 20));
-            if(msgDate.after(lastMessageDate)){
-                if(fullMessage.contains("Hi, I would like") || fullMessage.contains("Hi, I'd like")){
-                    messages.add(messageParser.parse(fullMessage));
-                }
-
-                if(fullMessage.contains("has joined the area.")){
-                    EventRouter.fireEvent(new PlayerJoinEvent(StringUtils.substringBetween(fullMessage," : ", " has joined the area.")));
-                }
-                if(fullMessage.contains("has left the area.")){
-                    System.out.println("left area");
-                    System.out.println("<" + StringUtils.substringBetween(fullMessage," : ", " has left the area.") + ">");
-                    EventRouter.fireEvent(new PlayerLeftEvent(StringUtils.substringBetween(fullMessage," : ", " has left the area.")));
-                }
+        List<String> filteredMessages = stubMessages.stream().filter(message -> {
+            if(message != null && !message.equals("\n")) {
+                Date msgDate = new Date(StringUtils.substring(message, 0, 20));
+                return msgDate.after(lastMessageDate);
             }
-        }
-        Date date = new Date(StringUtils.substring(stubMessages.get(0), 0, 20));
-        if(date.after(lastMessageDate) && messages.size() != 0){
-            EventRouter.fireEvent(new WhisperNotificationEvent());
-            lastMessageDate = date;
-            EventRouter.fireEvent(new NewWhispersEvent(messages));
-        }
+            return false;
+
+        }).collect(Collectors.toList());
+        lastMessageDate = new Date(StringUtils.substring(filteredMessages.get(0), 0, 20));
+
+        interceptors.forEach(interceptor -> {
+            filteredMessages.forEach(interceptor::match);
+        });
+    }
+    public void addInterceptor(MessageInterceptor interceptor){
+        interceptors.add(interceptor);
+    }
+
+    @Override
+    public void initHandlers() {
+        EventRouter.registerHandler(AddInterceptorEvent.class, event ->
+                addInterceptor(((AddInterceptorEvent) event).getInterceptor()));
     }
 }

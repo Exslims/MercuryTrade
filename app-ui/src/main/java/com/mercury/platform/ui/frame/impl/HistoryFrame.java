@@ -89,14 +89,12 @@ public class HistoryFrame extends OverlaidFrame {
     @Override
     public void initHandlers() {
         EventRouter.registerHandler(NewWhispersEvent.class, event -> {
-            List<Message> messages = ((NewWhispersEvent) event).getMessages();
-            for (Message message : messages) {
-                MessagePanel messagePanel = new MessagePanel(message.getWhisperNickname(), message, MessagePanelStyle.HISTORY);
-                if(messagesContainer.getComponentCount() > 0){
-                    messagePanel.setBorder(BorderFactory.createMatteBorder(1,0,0,0, AppThemeColor.BORDER));
-                }
-                messagesContainer.add(messagePanel);
+            Message message = ((NewWhispersEvent) event).getMessage();
+            MessagePanel messagePanel = new MessagePanel(message.getWhisperNickname(), message, MessagePanelStyle.HISTORY);
+            if(messagesContainer.getComponentCount() > 0){
+                messagePanel.setBorder(BorderFactory.createMatteBorder(1,0,0,0, AppThemeColor.BORDER));
             }
+            messagesContainer.add(messagePanel);
             if(this.getSize().height > SCROLL_HEIGHT) {
                 this.packFrame();
                 scrollPane.setPreferredSize(new Dimension(messagesContainer.getWidth(), SCROLL_HEIGHT));

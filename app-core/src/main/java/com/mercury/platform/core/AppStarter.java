@@ -43,7 +43,7 @@ public class AppStarter {
                         }
                     }
                 }
-            },0,1000);
+            },0,500);
         });
     }
 }

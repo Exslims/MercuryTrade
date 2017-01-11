@@ -180,23 +180,24 @@ public class TaskBarFrame extends OverlaidFrame {
             }
         });
 
-        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        Component margin = Box.createRigidArea(new Dimension(4, 4));
+        taskBarPanel.add(margin);
         taskBarPanel.add(visibleMode);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        taskBarPanel.add(margin);
         taskBarPanel.add(chatMode);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        taskBarPanel.add(margin);
         taskBarPanel.add(chatFilter);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        taskBarPanel.add(margin);
         taskBarPanel.add(timer);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        taskBarPanel.add(margin);
         taskBarPanel.add(historyButton);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        taskBarPanel.add(margin);
         taskBarPanel.add(moveButton);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        taskBarPanel.add(margin);
         taskBarPanel.add(settingsButton);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        taskBarPanel.add(margin);
         taskBarPanel.add(exitButton);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(2,2)));
+        taskBarPanel.add(margin);
 
         // adding drag frame listeners
         visibleMode.addMouseListener(new DraggedFrameMouseListener());
