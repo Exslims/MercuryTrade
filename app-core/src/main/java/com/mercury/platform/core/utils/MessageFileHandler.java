@@ -1,6 +1,7 @@
 package com.mercury.platform.core.utils;
 
 import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.pojo.Message;
@@ -8,8 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,6 +22,7 @@ public class MessageFileHandler {
     private final Logger logger = Logger.getLogger(MessageFileHandler.class);
     private final String logFilePath = ConfigManager.INSTANCE.getGamePath() + File.separator + "logs" + File.separator + "Client.txt";
     private Date lastMessageDate = new Date();
+    private MessageParser messageParser = new MessageParser();
 
     public void parse(){
         List<String> stubMessages = new ArrayList<>();
@@ -64,15 +64,7 @@ public class MessageFileHandler {
             Date msgDate = new Date(StringUtils.substring(fullMessage, 0, 20));
             if(msgDate.after(lastMessageDate)){
                 if(fullMessage.contains("Hi, I would like") || fullMessage.contains("Hi, I'd like")){
-                    String wNickname = StringUtils.substringBetween(fullMessage, "@From", ":");
-                    String content = StringUtils.substringAfter(fullMessage, wNickname + ":");
-                    wNickname = StringUtils.deleteWhitespace(wNickname);
-                    //todo regexp
-                    if(wNickname.contains(">")){
-                        wNickname = StringUtils.substringAfterLast(wNickname, ">");
-                    }
-                    Message message = new Message(wNickname,StringUtils.substring(fullMessage, 0, 20) + " " + content);
-                    messages.add(message);
+                    messages.add(messageParser.parse(fullMessage));
                 }
 
                 if(fullMessage.contains("has joined the area.")){

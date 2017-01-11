@@ -89,6 +89,7 @@ public class MessageFrame extends OverlaidFrame {
             List<Message> messages = ((NewWhispersEvent) event).getMessages();
             for (Message message : messages) {
                 if(!this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW){
+                    this.setAlwaysOnTop(true);
                     this.setVisible(true);
                 }else {
                     prevState = FrameStates.SHOW;
@@ -96,11 +97,11 @@ public class MessageFrame extends OverlaidFrame {
                 MessagePanel messagePanel = null;
                 switch (tradeMode){
                     case SUPER:{
-                        messagePanel = new MessagePanel(message.getWhisperNickname(), message.getMessage(), MessagePanelStyle.BIGGEST);
+                        messagePanel = new MessagePanel(message.getWhisperNickname(), message, MessagePanelStyle.BIGGEST);
                         break;
                     }
                     case DEFAULT:{
-                        messagePanel = new MessagePanel(message.getWhisperNickname(), message.getMessage(), MessagePanelStyle.BIGGEST);
+                        messagePanel = new MessagePanel(message.getWhisperNickname(), message, MessagePanelStyle.BIGGEST);
                         if(this.getContentPane().getComponentCount() > 0){
                             messagePanel.setStyle(MessagePanelStyle.SMALL);
                         }else {

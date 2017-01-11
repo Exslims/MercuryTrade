@@ -5,11 +5,14 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
+import com.mercury.platform.shared.pojo.CurrencyMessage;
+import com.mercury.platform.shared.pojo.ItemMessage;
+import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.MessageParser;
+import com.mercury.platform.shared.MessageParser;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -39,26 +42,24 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     private JLabel whisperLabel;
     private JButton tradeButton;
 
+    private Message message;
+
     private Timer timeAgo;
     private String cachedTime = "0m ago";
     private JLabel timeLabel;
     private Color cachedWhisperColor = AppThemeColor.TEXT_NICKNAME;
-
-    private Map<String,String> parsedMessage;
-
     private JPanel whisperPanel;
     private JPanel messagePanel;
     private JPanel customButtonsPanel;
 
-    private JLabel itemLabel;
-    public MessagePanel(String whisper, String message, MessagePanelStyle style) {
+    public MessagePanel(String whisper, Message message, MessagePanelStyle style) {
         super(new BorderLayout());
         supportedIcons = new ArrayList<>();
         supportedIcons.addAll(Arrays.asList("chaos","exalted","fusing","vaal"));
 
+        this.message = message;
         this.style = style;
         this.whisper = whisper;
-        this.parsedMessage = MessageParser.parse(message);
 
         this.removeAll();
         this.setBackground(AppThemeColor.TRANSPARENT);
@@ -95,7 +96,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 stillIntButton.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mousePressed(MouseEvent e) {
-                        EventRouter.fireEvent(new ChatCommandEvent("@" + whisper + " " + "Hey, are u still interested in " + parsedMessage.get("itemName") + "?"));
+                        EventRouter.fireEvent(new ChatCommandEvent("@" + whisper + " " + "Hey, are u still interested in " + ((ItemMessage)message).getItemName() + "?"));
                     }
                 });
                 customButtonsPanel.add(stillIntButton,0);
@@ -113,8 +114,30 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         JPanel tradePanel = new JPanel(new BorderLayout());
         tradePanel.setBackground(AppThemeColor.TRANSPARENT);
         tradePanel.setBorder(BorderFactory.createEmptyBorder(-11,0,-11,0));
-        itemLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT, TextAlignment.CENTER,16f,parsedMessage.get("itemName"));
-        tradePanel.add(itemLabel,BorderLayout.CENTER);
+        if(message instanceof ItemMessage) {
+            JLabel itemLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_IMPORTANT, TextAlignment.CENTER, 16f, ((ItemMessage)message).getItemName());
+            tradePanel.add(itemLabel,BorderLayout.CENTER);
+        }else if(message instanceof CurrencyMessage){
+            CurrencyMessage message = (CurrencyMessage) this.message;
+            JPanel curCountPanel = new JPanel();
+            curCountPanel.setPreferredSize(new Dimension(30,30));
+            curCountPanel.setBackground(AppThemeColor.TRANSPARENT);
+
+            JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, String.valueOf(message.getCurrForSaleCount()));
+            curCountPanel.add(priceLabel);
+            JLabel currencyLabel;
+            if (supportedIcons.contains(message.getCurrForSaleTitle())){
+                currencyLabel = componentsFactory.getIconLabel("currency/" + message.getCurrForSaleTitle() + ".png", 26);
+            } else {
+                currencyLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, message.getCurrForSaleTitle());
+            }
+            JPanel curPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            curPanel.setBackground(AppThemeColor.TRANSPARENT);
+            curPanel.add(curCountPanel);
+            curPanel.add(currencyLabel);
+            curPanel.setBorder(BorderFactory.createMatteBorder(4,0,0,0,AppThemeColor.TRANSPARENT));
+            tradePanel.add(curPanel,BorderLayout.CENTER);
+        }
 
         JPanel forPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         forPanel.setBackground(AppThemeColor.TRANSPARENT);
@@ -122,8 +145,8 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         JLabel separator = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, "=>");
         separator.setHorizontalAlignment(SwingConstants.CENTER);
         forPanel.add(separator);
-        String curCount = parsedMessage.get("curCount");
-        String currency = parsedMessage.get("currency");
+        String curCount = String.valueOf(message.getCurCount());
+        String currency = message.getCurrency();
         if(curCount != null && currency != null) {
             JPanel curCountPanel = new JPanel();
             curCountPanel.setPreferredSize(new Dimension(30,30));
@@ -145,7 +168,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         }
         tradePanel.add(forPanel,BorderLayout.LINE_END);
         labelsPanel.add(tradePanel);
-        String offer = parsedMessage.get("offer");
+        String offer = message.getOffer();
         if(offer != null && offer.length() > 2) {
             JLabel offerLabel = componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 16f, offer);
             offerLabel.setAlignmentY(Component.TOP_ALIGNMENT);

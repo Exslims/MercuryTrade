@@ -165,13 +165,13 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         this.addMouseListener(hideEffectListener);
         this.hideAnimationEnable = true;
     }
-
-    public float getMinOpacity() {
-        return minOpacity;
+    public void showComponent(){
+        this.setAlwaysOnTop(true);
+        this.setVisible(true);
     }
-
-    public float getMaxOpacity() {
-        return maxOpacity;
+    public void hideComponent(){
+        this.setVisible(false);
+        this.setAlwaysOnTop(false);
     }
 
     protected boolean isMouseWithInFrame(){

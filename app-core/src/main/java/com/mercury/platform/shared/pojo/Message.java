@@ -1,15 +1,26 @@
 package com.mercury.platform.shared.pojo;
 
+import java.util.Date;
+
 /**
  * Created by Константин on 10.12.2016.
  */
 public class Message {
+    private Date messageDate;
     private String whisperNickname;
-    private String message;
+    private String offer;
+    private int curCount;
+    private String currency;
 
-    public Message(String whisperNickname, String message) {
+    public Message() {
+    }
+
+    public Message(String whisperNickname, String offer, Date msgDate, int curCount, String currency) {
+        this.offer = offer;
+        this.messageDate = msgDate;
         this.whisperNickname = whisperNickname;
-        this.message = message;
+        this.curCount = curCount;
+        this.currency = currency;
     }
 
     public String getWhisperNickname() {
@@ -20,11 +31,35 @@ public class Message {
         this.whisperNickname = whisperNickname;
     }
 
-    public String getMessage() {
-        return message;
+    public String getOffer() {
+        return offer;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setOffer(String offer) {
+        this.offer = offer;
+    }
+
+    public Date getMessageDate() {
+        return messageDate;
+    }
+
+    public void setMessageDate(Date messageDate) {
+        this.messageDate = messageDate;
+    }
+
+    public int getCurCount() {
+        return curCount;
+    }
+
+    public void setCurCount(int curCount) {
+        this.curCount = curCount;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

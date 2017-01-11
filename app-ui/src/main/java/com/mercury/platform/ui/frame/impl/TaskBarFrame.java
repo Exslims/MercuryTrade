@@ -133,9 +133,9 @@ public class TaskBarFrame extends OverlaidFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(!timerFrame.isVisible()) {
-                    timerFrame.setVisible(true);
+                    timerFrame.showComponent();
                 }else {
-                    timerFrame.setVisible(false);
+                    timerFrame.hideComponent();
                 }
             }
         });
@@ -145,9 +145,9 @@ public class TaskBarFrame extends OverlaidFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(!historyFrame.isVisible()) {
-                    historyFrame.setVisible(true);
+                    historyFrame.showComponent();
                 }else {
-                    historyFrame.setVisible(false);
+                    historyFrame.hideComponent();
                 }
             }
         });
@@ -176,8 +176,6 @@ public class TaskBarFrame extends OverlaidFrame {
         exitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                messageFrame.dispose();
-                testCasesFrame.dispose();
                 System.exit(0);
             }
         });
