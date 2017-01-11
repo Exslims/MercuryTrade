@@ -10,6 +10,7 @@ import com.mercury.platform.shared.events.custom.ChangeFrameVisibleEvent;
 import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.HideSettingsManager;
 import org.pushingpixels.trident.Timeline;
 
 import javax.swing.*;
@@ -25,7 +26,9 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     private final int HIDE_TIME = 200;
     private final int SHOW_TIME = 150;
     private final int BORDER_THICKNESS = 1;
-    private final int HIDE_DELAY = 1000;
+    private int HIDE_DELAY = 1000;
+    private float minOpacity = 1f;
+    private float maxOpacity = 1f;
 
     private LayoutManager layout;
     protected JPanel miscPanel;
@@ -36,8 +39,9 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     private Timeline hideAnimation;
     private Timeline showAnimation;
     private Timer hideTimer;
-    private HideEffectListener hideEffectListener = new HideEffectListener();
+    private HideEffectListener hideEffectListener;
     private boolean hideAnimationEnable = true;
+
 
     protected FrameStates prevState;
     protected boolean processingHideEvent = true;
@@ -54,7 +58,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(AppThemeColor.FRAME);
-        setOpacity(0.2f);
+        setOpacity(minOpacity);
         setAlwaysOnTop(true);
         setFocusableWindowState(false);
         setFocusable(false);
@@ -65,7 +69,6 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         initAnimationTimers();
         initHeaderPanel();
 
-        this.addMouseListener(hideEffectListener);
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -74,6 +77,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         });
         this.addMouseListener(new ResizeMouseListener());
         this.addMouseMotionListener(new ResizeMouseMotionListener());
+        HideSettingsManager.INSTANCE.registerFrame(this);
 
         if(!this.getClass().getSimpleName().equals("NotificationFrame")) {
             FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
@@ -143,15 +147,32 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     protected abstract String getFrameTitle();
     protected abstract LayoutManager getFrameLayout();
 
-    protected void disableHideEffect(){
-        this.setOpacity(0.9f);
+    public void disableHideEffect(){
+        this.setOpacity(maxOpacity);
         this.hideAnimationEnable = false;
-        this.removeMouseListener(hideEffectListener);
+        if(hideEffectListener != null) {
+            this.removeMouseListener(hideEffectListener);
+        }
     }
-    protected void enableHideEffect(){
+    public void enableHideEffect(int delay, int minOpacity, int maxOpacity){
+        this.HIDE_DELAY = delay*1000;
+        this.minOpacity = minOpacity/100f;
+        this.maxOpacity = maxOpacity/100f;
+        this.setOpacity(minOpacity/100f);
+        hideEffectListener = new HideEffectListener();
+        initAnimationTimers();
         this.addMouseListener(hideEffectListener);
         this.hideAnimationEnable = true;
     }
+
+    public float getMinOpacity() {
+        return minOpacity;
+    }
+
+    public float getMaxOpacity() {
+        return maxOpacity;
+    }
+
     protected boolean isMouseWithInFrame(){
         return this.getBounds().contains(MouseInfo.getPointerInfo().getLocation());
     }
@@ -167,11 +188,11 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     private void initAnimationTimers(){
         showAnimation = new Timeline(this);
         showAnimation.setDuration(SHOW_TIME);
-        showAnimation.addPropertyToInterpolate("opacity", 0.2f, 0.9f);
+        showAnimation.addPropertyToInterpolate("opacity", minOpacity, maxOpacity);
 
         hideAnimation = new Timeline(this);
         hideAnimation.setDuration(HIDE_TIME);
-        hideAnimation.addPropertyToInterpolate("opacity",0.9f,0.2f);
+        hideAnimation.addPropertyToInterpolate("opacity",maxOpacity,minOpacity);
     }
 
     private class ResizeMouseMotionListener extends MouseMotionAdapter{
@@ -235,7 +256,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         public void mouseEntered(MouseEvent e) {
             OverlaidFrame.this.repaint();
             hideTimer.stop();
-            if(OverlaidFrame.this.getOpacity() < 0.9f) {
+            if(OverlaidFrame.this.getOpacity() < maxOpacity) {
                 showAnimation.play();
             }
         }

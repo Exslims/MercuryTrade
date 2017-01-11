@@ -31,7 +31,6 @@ public class MessageFrame extends OverlaidFrame {
     protected void init() {
         super.init();
         setVisible(false);
-        disableHideEffect();
     }
 
     private void convertFrameTo(TradeMode mode){

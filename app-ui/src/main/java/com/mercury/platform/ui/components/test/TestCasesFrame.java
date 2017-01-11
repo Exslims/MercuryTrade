@@ -32,7 +32,6 @@ public class TestCasesFrame extends OverlaidFrame {
     protected void init() {
         super.init();
         add(getTestCasesPanel(), BorderLayout.CENTER);
-        disableHideEffect();
         pack();
         randomMessages = new ArrayList<>();
         nickNames = new ArrayList<>();

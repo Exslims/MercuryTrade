@@ -1,6 +1,9 @@
 package com.mercury.platform.ui.components.panel.settings;
 
+import com.mercury.platform.ui.components.panel.HasUI;
+import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.HideSettingsManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,12 +11,18 @@ import java.awt.*;
 /**
  * Created by Константин on 05.01.2017.
  */
-public class GeneralSettings extends ConfigurationPanel{
-    private JFrame owner;
+public class GeneralSettings extends ConfigurationPanel implements HasUI {
+    private JSlider minSlider;
+    private JSlider maxSlider;
+    private JComboBox secondsPicker;
+    private OverlaidFrame owner;
 
-    public GeneralSettings(JFrame owner) {
+    private HideSettingsManager hideManager = HideSettingsManager.INSTANCE;
+
+    public GeneralSettings(OverlaidFrame owner) {
         super();
         this.owner = owner;
+        createUI();
     }
 
     @Override
@@ -22,11 +31,11 @@ public class GeneralSettings extends ConfigurationPanel{
     }
 
     @Override
-    protected void createUI() {
-        JComboBox secondsPicker = componentsFactory.getComboBox(new String[]{"0","1","2","3","4","5"});
+    public void createUI() {
+        secondsPicker = componentsFactory.getComboBox(new String[]{"0","1","2","3","4","5"});
 
         JPanel hideSettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        hideSettingsPanel.add(componentsFactory.getTextLabel("Hide to minimum opacity after:"));
+        hideSettingsPanel.add(componentsFactory.getTextLabel("Hide panels after:"));
         hideSettingsPanel.add(secondsPicker);
         hideSettingsPanel.add(componentsFactory.getTextLabel("seconds. 0 - always show"));
 
@@ -34,12 +43,12 @@ public class GeneralSettings extends ConfigurationPanel{
         minOpacitySettingsPanel.add(componentsFactory.getTextLabel("Minimum opacity: "));
 
         JPanel minValuePanel = componentsFactory.getTransparentPanel(new FlowLayout());
-        JLabel minValueField = componentsFactory.getTextLabel("60%"); //todo
+        JLabel minValueField = componentsFactory.getTextLabel(String.valueOf((int)owner.getMinOpacity()*100) + "%"); //todo
         minValuePanel.add(minValueField);
         minValuePanel.setPreferredSize(new Dimension(35,30));
         minOpacitySettingsPanel.add(minValuePanel);
 
-        JSlider minSlider = componentsFactory.getSlider(0,100,60);
+        minSlider = componentsFactory.getSlider(20,100,hideManager.getMinOpacity());
         minSlider.addChangeListener(e -> {
             minValueField.setText(String.valueOf(minSlider.getValue()) + "%");
             owner.repaint();
@@ -50,12 +59,12 @@ public class GeneralSettings extends ConfigurationPanel{
         maxOpacitySettingsPanel.add(componentsFactory.getTextLabel("Maximum opacity: "));
 
         JPanel maxValuePanel = componentsFactory.getTransparentPanel(new FlowLayout());
-        JLabel maxValueField = componentsFactory.getTextLabel("60%"); //todo
+        JLabel maxValueField = componentsFactory.getTextLabel(String.valueOf((int)owner.getMaxOpacity()*100) + "%"); //todo
         maxValuePanel.add(maxValueField);
         maxValuePanel.setPreferredSize(new Dimension(35,30));
         maxOpacitySettingsPanel.add(maxValuePanel);
 
-        JSlider maxSlider = componentsFactory.getSlider(20,100,60);
+        maxSlider = componentsFactory.getSlider(20,100,hideManager.getMaxOpacity());
         maxSlider.addChangeListener(e -> {
             maxValueField.setText(String.valueOf(maxSlider.getValue()) + "%");
             owner.setOpacity(maxSlider.getValue()/100.0f);
@@ -74,6 +83,9 @@ public class GeneralSettings extends ConfigurationPanel{
     }
     @Override
     public void processAndSave() {
-
+        int timeToDelay = Integer.parseInt((String) secondsPicker.getSelectedItem());
+        int minOpacity = minSlider.getValue();
+        int maxOpacity = maxSlider.getValue();
+        HideSettingsManager.INSTANCE.apply(timeToDelay,minOpacity,maxOpacity);
     }
 }

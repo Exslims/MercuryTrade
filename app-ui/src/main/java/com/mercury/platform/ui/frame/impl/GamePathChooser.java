@@ -26,7 +26,6 @@ public class GamePathChooser extends OverlaidFrame {
         this.add(getMiscPanel(),BorderLayout.PAGE_END);
 
         pack();
-        disableHideEffect();
         processingHideEvent = false;
     }
 

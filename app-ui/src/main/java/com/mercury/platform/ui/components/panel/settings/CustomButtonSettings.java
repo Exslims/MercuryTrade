@@ -2,6 +2,7 @@ package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
+import com.mercury.platform.ui.components.panel.HasUI;
 import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -18,13 +19,14 @@ import java.util.Map;
 /**
  * Created by Константин on 05.01.2017.
  */
-public class CustomButtonSettings extends ConfigurationPanel {
+public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
     private Map<JTextField,JTextField> inputs;
     private JFrame owner;
 
     public CustomButtonSettings(JFrame owner) {
         super();
         this.owner = owner;
+        createUI();
     }
 
     @Override
@@ -40,7 +42,7 @@ public class CustomButtonSettings extends ConfigurationPanel {
     }
 
     @Override
-    protected void createUI() {
+    public void createUI() {
         inputs = new HashMap<>();
         Map<String, String> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();
 

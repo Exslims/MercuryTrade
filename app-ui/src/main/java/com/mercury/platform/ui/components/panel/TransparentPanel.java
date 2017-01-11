@@ -14,8 +14,6 @@ public abstract class TransparentPanel extends JPanel {
     public TransparentPanel() {
         this.setLayout(getPanelLayout());
         this.setBackground(AppThemeColor.TRANSPARENT);
-        createUI();
     }
     protected abstract LayoutManager getPanelLayout();
-    protected abstract void createUI();
 }

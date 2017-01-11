@@ -59,7 +59,6 @@ public class HistoryFrame extends OverlaidFrame {
 
         add(scrollPane,BorderLayout.CENTER);
         packFrame();
-        disableHideEffect();
     }
 
     @Override

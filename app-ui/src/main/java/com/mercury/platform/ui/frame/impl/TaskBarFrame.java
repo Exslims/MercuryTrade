@@ -41,7 +41,6 @@ public class TaskBarFrame extends OverlaidFrame {
         add(getTaskBarPanel());
         pack();
         this.setSize(new Dimension(MINIMUM_WIDTH,this.getHeight()));
-        disableHideEffect();
         EventRouter.fireEvent(new UILoadedEvent());
     }
 

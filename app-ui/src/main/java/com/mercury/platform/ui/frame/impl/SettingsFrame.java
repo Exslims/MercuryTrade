@@ -25,7 +25,6 @@ public class SettingsFrame extends OverlaidFrame {
     private List<ConfigurationPanel> innerPanels = new ArrayList<>();
     public SettingsFrame(){
         super("MT-Settings");
-        disableHideEffect();
         initContainer();
         setFocusable(true);
         setFocusableWindowState(true);

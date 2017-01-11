@@ -47,7 +47,6 @@ public class NotificationFrame extends OverlaidFrame {
             public void onTimelinePulse(float durationFraction, float timelinePosition) {
             }
         });
-        disableHideEffect();
         this.add(strokeLabel);
     }
 
