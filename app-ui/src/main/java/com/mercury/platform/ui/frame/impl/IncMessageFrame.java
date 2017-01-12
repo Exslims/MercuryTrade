@@ -4,7 +4,6 @@ import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
-import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
@@ -15,15 +14,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 
 /**
  * Created by Константин on 24.12.2016.
  */
-public class MessageFrame extends OverlaidFrame {
+public class IncMessageFrame extends OverlaidFrame {
     private TradeMode tradeMode = TradeMode.DEFAULT;
 
-    public MessageFrame(){
+    public IncMessageFrame(){
         super("Messages");
     }
 
@@ -136,12 +134,12 @@ public class MessageFrame extends OverlaidFrame {
         EventRouter.registerHandler(DraggedMessageFrameEvent.class, event -> {
             int x = ((DraggedMessageFrameEvent) event).getX();
             int y = ((DraggedMessageFrameEvent) event).getY();
-            MessageFrame.this.setLocation(x,y);
+            IncMessageFrame.this.setLocation(x,y);
             configManager.saveFrameLocation(this.getClass().getSimpleName(),this.getLocation());
         });
         EventRouter.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {
-            MessageFrame.this.revalidate();
-            MessageFrame.this.repaint();
+            IncMessageFrame.this.revalidate();
+            IncMessageFrame.this.repaint();
         });
     }
     private enum TradeMode{
@@ -156,10 +154,10 @@ public class MessageFrame extends OverlaidFrame {
                     int was = source.getPreferredSize().height;
                     source.setStyle(MessagePanelStyle.BIGGEST);
                     int will = source.getPreferredSize().height;
-                    if(MessageFrame.this.getContentPane().getComponentCount() == 0) {
-                        MessageFrame.this.setSize(new Dimension(MessageFrame.this.getWidth(), 6 + (will - was)));
+                    if(IncMessageFrame.this.getContentPane().getComponentCount() == 0) {
+                        IncMessageFrame.this.setSize(new Dimension(IncMessageFrame.this.getWidth(), 6 + (will - was)));
                     }else {
-                        MessageFrame.this.setSize(new Dimension(MessageFrame.this.getWidth(), MessageFrame.this.getHeight() + (will - was)));
+                        IncMessageFrame.this.setSize(new Dimension(IncMessageFrame.this.getWidth(), IncMessageFrame.this.getHeight() + (will - was)));
                     }
                     break;
                 }
@@ -167,10 +165,10 @@ public class MessageFrame extends OverlaidFrame {
                     int was = source.getPreferredSize().height;
                     source.setStyle(MessagePanelStyle.SMALL);
                     int will = source.getPreferredSize().height;
-                    if(MessageFrame.this.getContentPane().getComponentCount() == 0) {
-                        MessageFrame.this.setSize(new Dimension(MessageFrame.this.getWidth(), 6 - (was - will)));
+                    if(IncMessageFrame.this.getContentPane().getComponentCount() == 0) {
+                        IncMessageFrame.this.setSize(new Dimension(IncMessageFrame.this.getWidth(), 6 - (was - will)));
                     }else {
-                        MessageFrame.this.setSize(new Dimension(MessageFrame.this.getWidth(), MessageFrame.this.getHeight() - (was - will)));
+                        IncMessageFrame.this.setSize(new Dimension(IncMessageFrame.this.getWidth(), IncMessageFrame.this.getHeight() - (was - will)));
                     }
                     break;
                 }

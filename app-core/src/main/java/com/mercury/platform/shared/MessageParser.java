@@ -18,6 +18,9 @@ public class MessageParser {
     public Message parse(String fullMessage){
         Message parsedMessage;
         String wNickname = StringUtils.substringBetween(fullMessage, "@From", ":");
+        if(wNickname == null){
+            wNickname = StringUtils.substringBetween(fullMessage, "@To", ":");
+        }
         String message = StringUtils.substringAfter(fullMessage, wNickname + ":");
         wNickname = StringUtils.deleteWhitespace(wNickname);
         //todo regexp

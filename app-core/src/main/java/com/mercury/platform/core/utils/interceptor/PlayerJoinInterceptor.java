@@ -10,10 +10,8 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class PlayerJoinInterceptor extends MessageInterceptor {
     @Override
-    public void match(String message) {
-        if(filter.isMatching(message)){
-            EventRouter.fireEvent(new PlayerJoinEvent(StringUtils.substringBetween(message," : ", " has joined the area.")));
-        }
+    protected void process(String message) {
+        EventRouter.fireEvent(new PlayerJoinEvent(StringUtils.substringBetween(message," : ", " has joined the area.")));
     }
 
     @Override

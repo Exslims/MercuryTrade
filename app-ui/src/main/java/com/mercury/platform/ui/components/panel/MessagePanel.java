@@ -32,7 +32,6 @@ import java.util.List;
  */
 public class MessagePanel extends JPanel implements HasEventHandlers{
     private ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
-    private List<String> supportedIcons;
     private MessagePanelStyle style;
 
     private int x;
@@ -54,8 +53,6 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
 
     public MessagePanel(String whisper, Message message, MessagePanelStyle style) {
         super(new BorderLayout());
-        supportedIcons = new ArrayList<>();
-        supportedIcons.addAll(Arrays.asList("chaos","exalted","fusing","vaal"));
 
         this.message = message;
         this.style = style;
@@ -126,11 +123,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, String.valueOf(message.getCurrForSaleCount()));
             curCountPanel.add(priceLabel);
             JLabel currencyLabel;
-            if (supportedIcons.contains(message.getCurrForSaleTitle())){
-                currencyLabel = componentsFactory.getIconLabel("currency/" + message.getCurrForSaleTitle() + ".png", 26);
-            } else {
-                currencyLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, message.getCurrForSaleTitle());
-            }
+            currencyLabel = componentsFactory.getIconLabel("currency/" + message.getCurrForSaleTitle() + ".png", 26);
             JPanel curPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             curPanel.setBackground(AppThemeColor.TRANSPARENT);
             curPanel.add(curCountPanel);
@@ -147,19 +140,14 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         forPanel.add(separator);
         String curCount = String.valueOf(message.getCurCount());
         String currency = message.getCurrency();
-        if(curCount != null && currency != null) {
+        if(!Objects.equals(curCount, "") && currency != null) {
             JPanel curCountPanel = new JPanel();
             curCountPanel.setPreferredSize(new Dimension(30,30));
             curCountPanel.setBackground(AppThemeColor.TRANSPARENT);
 
             JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, curCount);
             curCountPanel.add(priceLabel);
-            JLabel currencyLabel;
-            if (supportedIcons.contains(currency)){
-                currencyLabel = componentsFactory.getIconLabel("currency/" + currency + ".png", 26);
-            } else {
-                currencyLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, currency);
-            }
+            JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + currency + ".png", 26);
             JPanel curPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
             curPanel.setBackground(AppThemeColor.TRANSPARENT);
             curPanel.add(curCountPanel);
@@ -335,8 +323,6 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         });
         EventRouter.registerHandler(PlayerLeftEvent.class, event -> {
             String nickName = ((PlayerLeftEvent) event).getNickName();
-            System.out.println("old: " + whisper);
-            System.out.println("new: " + nickName);
             if(nickName.equals(whisper)){
                 whisperLabel.setForeground(AppThemeColor.TEXT_DENIED);
                 cachedWhisperColor = AppThemeColor.TEXT_DENIED;

@@ -4,6 +4,7 @@ import com.mercury.platform.ui.components.fields.MercuryComboBoxUI;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.imgscalr.Scalr;
 
@@ -261,7 +262,7 @@ public class ComponentsFactory {
             BufferedImage icon = Scalr.resize(buttonIcon, size);
             iconLabel.setIcon(new ImageIcon(icon));
         } catch (IOException e) {
-            log.error(e);
+            return getTextLabel(StringUtils.substringBetween(iconPath,"/","."));
         }
         return iconLabel;
     }

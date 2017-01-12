@@ -10,10 +10,8 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class PlayerLeftInterceptor extends MessageInterceptor {
     @Override
-    public void match(String message) {
-        if(filter.isMatching(message)){
-            EventRouter.fireEvent(new PlayerLeftEvent(StringUtils.substringBetween(message," : ", " has left the area.")));
-        }
+    protected void process(String message) {
+        EventRouter.fireEvent(new PlayerLeftEvent(StringUtils.substringBetween(message," : ", " has left the area.")));
     }
 
     @Override

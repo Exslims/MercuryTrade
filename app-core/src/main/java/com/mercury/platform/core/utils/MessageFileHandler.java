@@ -1,9 +1,6 @@
 package com.mercury.platform.core.utils;
 
-import com.mercury.platform.core.utils.interceptor.IncTradeMessagesInterceptor;
-import com.mercury.platform.core.utils.interceptor.MessageInterceptor;
-import com.mercury.platform.core.utils.interceptor.PlayerJoinInterceptor;
-import com.mercury.platform.core.utils.interceptor.PlayerLeftInterceptor;
+import com.mercury.platform.core.utils.interceptor.*;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.events.EventRouter;
@@ -28,6 +25,7 @@ public class MessageFileHandler implements HasEventHandlers {
     public MessageFileHandler() {
         interceptors = new ArrayList<>();
         interceptors.add(new IncTradeMessagesInterceptor());
+        interceptors.add(new OutTradeMessagesInterceptor());
         interceptors.add(new PlayerJoinInterceptor());
         interceptors.add(new PlayerLeftInterceptor());
     }
@@ -69,7 +67,9 @@ public class MessageFileHandler implements HasEventHandlers {
             return false;
 
         }).collect(Collectors.toList());
-        lastMessageDate = new Date(StringUtils.substring(filteredMessages.get(0), 0, 20));
+        if(filteredMessages.size() != 0) {
+            lastMessageDate = new Date(StringUtils.substring(filteredMessages.get(0), 0, 20));
+        }
 
         interceptors.forEach(interceptor -> {
             filteredMessages.forEach(interceptor::match);

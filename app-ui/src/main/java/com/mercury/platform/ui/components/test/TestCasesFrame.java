@@ -1,10 +1,7 @@
 package com.mercury.platform.ui.components.test;
 
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.NewWhispersEvent;
-import com.mercury.platform.shared.events.custom.PlayerJoinEvent;
-import com.mercury.platform.shared.events.custom.PlayerLeftEvent;
-import com.mercury.platform.shared.events.custom.WhisperNotificationEvent;
+import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.pojo.CurrencyMessage;
 import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.shared.pojo.Message;
@@ -112,6 +109,22 @@ public class TestCasesFrame extends OverlaidFrame {
         buttonColumn.gridy++;
         JLabel textLabel16 = componentsFactory.getTextLabel("Test message from currency.poe.trade");
         testPanel.add(textLabel16,titleColumn);
+        titleColumn.gridy++;
+
+        JButton button8 = componentsFactory.getBorderedButton("Click");
+        button8.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                CurrencyMessage message = new CurrencyMessage(nickNames.get(new Random().nextInt(9)),
+                        "qweqweqwwerwerwerwerwerweredsfsdfsdfsdfsdfsdfsd", null,
+                        10, "exalted", 540, "chaos");
+                EventRouter.fireEvent(new OutTradeMessageEvent(message));
+            }
+        });
+        testPanel.add(button8,buttonColumn);
+        buttonColumn.gridy++;
+        JLabel textLabel18 = componentsFactory.getTextLabel("Test outgoing trade message");
+        testPanel.add(textLabel18,titleColumn);
         titleColumn.gridy++;
 
         JButton button5 = componentsFactory.getBorderedButton("Click");

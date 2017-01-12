@@ -11,7 +11,11 @@ public abstract class MessageInterceptor {
     public MessageInterceptor() {
         filter = getFilter();
     }
-
-    public abstract void match(String message);
+    public void match(String message){
+        if(filter.isMatching(message)){
+            process(message);
+        }
+    }
+    protected abstract void process(String message);
     protected abstract MessageFilter getFilter();
 }

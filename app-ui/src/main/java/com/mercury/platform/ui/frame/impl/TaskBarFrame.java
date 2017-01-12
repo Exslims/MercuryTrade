@@ -18,11 +18,12 @@ import java.awt.event.*;
  */
 public class TaskBarFrame extends OverlaidFrame {
     private final int MINIMUM_WIDTH = 118;
-    private MessageFrame messageFrame;
+    private IncMessageFrame incMessageFrame;
     private TestCasesFrame testCasesFrame;
     private HistoryFrame historyFrame;
     private NotificationFrame notificationFrame;
     private TimerFrame timerFrame;
+    private OutMessageFrame outMessageFrame;
 
     private Timeline collapseAnim;
 
@@ -32,11 +33,12 @@ public class TaskBarFrame extends OverlaidFrame {
 
     @Override
     protected void init() {
-        messageFrame = new MessageFrame();
+        incMessageFrame = new IncMessageFrame();
         testCasesFrame = new TestCasesFrame();
         historyFrame = new HistoryFrame();
         notificationFrame = new NotificationFrame();
         timerFrame = new TimerFrame();
+        outMessageFrame = new OutMessageFrame();
         super.init();
         add(getTaskBarPanel());
         pack();
@@ -180,24 +182,23 @@ public class TaskBarFrame extends OverlaidFrame {
             }
         });
 
-        Component margin = Box.createRigidArea(new Dimension(4, 4));
-        taskBarPanel.add(margin);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
         taskBarPanel.add(visibleMode);
-        taskBarPanel.add(margin);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
         taskBarPanel.add(chatMode);
-        taskBarPanel.add(margin);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
         taskBarPanel.add(chatFilter);
-        taskBarPanel.add(margin);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
         taskBarPanel.add(timer);
-        taskBarPanel.add(margin);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
         taskBarPanel.add(historyButton);
-        taskBarPanel.add(margin);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
         taskBarPanel.add(moveButton);
-        taskBarPanel.add(margin);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
         taskBarPanel.add(settingsButton);
-        taskBarPanel.add(margin);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
         taskBarPanel.add(exitButton);
-        taskBarPanel.add(margin);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
 
         // adding drag frame listeners
         visibleMode.addMouseListener(new DraggedFrameMouseListener());
