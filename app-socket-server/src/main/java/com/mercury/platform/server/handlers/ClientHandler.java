@@ -22,8 +22,11 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void channelActive(ChannelHandlerContext context) throws Exception {
+        LOGGER.debug("Sending echo message to server");
         context.channel().writeAndFlush("echo");
+        LOGGER.debug("Message was sent. Disconnecting...");
         context.disconnect();
+        LOGGER.debug("Client was disconnected");
     }
 
 
