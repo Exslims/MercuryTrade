@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.eclipse.swt.gtk.linux:x86:3.3.0-v3346">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/swt/gtk/linux/x86/3.3.0-v3346/x86-3.3.0-v3346.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/swt/gtk/linux/x86/3.3.0-v3346/x86-3.3.0-v3346-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/swt/gtk/linux/x86/3.3.0-v3346/x86-3.3.0-v3346-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
