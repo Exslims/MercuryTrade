@@ -243,7 +243,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     }
 
     /**
-     * Listeners for hide&show animation on frame.
+     * Listeners for hide&show animation on frame
      */
     private class HideEffectListener extends MouseAdapter {
         public HideEffectListener(){
