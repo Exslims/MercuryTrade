@@ -1,60 +1,52 @@
 package com.mercury.platform.server.core;
 
+import com.mercury.platform.server.init.ServerChannelInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
- * Created by Admin on 05.01.2017.
+ * Created by Frost on 05.01.2017.
  */
 public class UpdaterServer {
+
+    private static final Logger LOGGER = LogManager.getLogger(UpdaterServer.class);
+    private static final int DEFAULT_THREADS_COUNT = 50;
+
+
     private int port;
+    private int nThreads;
 
     public UpdaterServer(int port) {
-        this.port = port;
+        this(port, DEFAULT_THREADS_COUNT);
     }
 
-    public void run() throws Exception {
+    public UpdaterServer(int port, int nThreads) {
+        this.port = port;
+        this.nThreads = nThreads;
+    }
+
+    public void run() throws InterruptedException {
+        LOGGER.info("Starting server on {} port", port);
         EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup(1000);
+        EventLoopGroup workerGroup = new NioEventLoopGroup(nThreads);
         try {
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        public void initChannel(SocketChannel childHandler) throws Exception {
-                            childHandler.pipeline().addLast(new ChannelHandler() {
-                                @Override
-                                public void handlerAdded(ChannelHandlerContext channelHandlerContext) throws Exception {
-                                    System.out.println("fff");
-                                }
-
-                                @Override
-                                public void handlerRemoved(ChannelHandlerContext channelHandlerContext) throws Exception {
-
-                                }
-
-                                @Override
-                                public void exceptionCaught(ChannelHandlerContext channelHandlerContext, Throwable throwable) throws Exception {
-
-                                }
-                            });
-                        }
-                    })
+                    .childHandler(new ServerChannelInitializer())
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
-
+            LOGGER.info("Server started");
             ChannelFuture sync = serverBootstrap.bind(port).sync();
             sync.channel().closeFuture().sync();
+
         } finally {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
