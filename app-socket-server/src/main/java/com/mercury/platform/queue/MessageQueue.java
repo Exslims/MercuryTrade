@@ -10,6 +10,13 @@ import java.util.concurrent.PriorityBlockingQueue;
  */
 public class MessageQueue {
 
+    private static final MessageQueue INSTANCE = new MessageQueue();
+
+    public static MessageQueue getInstance() {
+        return INSTANCE;
+    }
+
+
     private BlockingQueue<Message> queue;
 
     public MessageQueue() {
