@@ -15,8 +15,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
 
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object o) throws Exception {
-
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object object) throws Exception {
+        LOGGER.debug("Server says \"{}\"", object);
     }
 
 
@@ -24,9 +24,6 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
     public void channelActive(ChannelHandlerContext context) throws Exception {
         LOGGER.debug("Sending echo message to server");
         context.channel().writeAndFlush("echo");
-        LOGGER.debug("Message was sent. Disconnecting...");
-        context.disconnect();
-        LOGGER.debug("Client was disconnected");
     }
 
 

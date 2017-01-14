@@ -20,6 +20,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext context, Object msg) throws Exception {
         LOGGER.info("Message = {}" , msg);
+        context.channel().writeAndFlush(msg);
     }
 
     @Override
