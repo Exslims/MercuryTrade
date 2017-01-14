@@ -20,7 +20,6 @@ public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> 
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         LOGGER.info("Initializing client channel");
-
         socketChannel.pipeline().addLast(new ObjectEncoder());
         ClassLoader classLoader = this.getClass().getClassLoader();
         ClassResolver classResolver = ClassResolvers.weakCachingResolver(classLoader);

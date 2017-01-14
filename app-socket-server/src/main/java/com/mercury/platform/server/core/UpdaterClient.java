@@ -29,10 +29,12 @@ public class UpdaterClient {
     public void start() throws Exception {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
+            LOGGER.info("Starting updater client");
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(group).channel(NioSocketChannel.class)
                     .remoteAddress(new InetSocketAddress(host, port))
                     .handler(new ClientChannelInitializer());
+            LOGGER.info("Updater client was started");
             ChannelFuture channelFuture = bootstrap.connect().sync();
             channelFuture.channel().closeFuture().sync();
         } finally {
