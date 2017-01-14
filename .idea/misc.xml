@@ -4,14 +4,13 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/app/pom.xml" />
         <option value="$PROJECT_DIR$/netty-client-updater/pom.xml" />
-        <option value="$PROJECT_DIR$/app-core/pom.xml" />
-        <option value="$PROJECT_DIR$/app-ui/pom.xml" />
-        <option value="$PROJECT_DIR$/app-socket-server/pom.xml" />
-        <option value="$PROJECT_DIR$/app-shared/pom.xml" />
-        <option value="$PROJECT_DIR$/app-local-updater/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
