@@ -49,7 +49,7 @@ public class MessageParser {
         String currencyTitle = "";
         if(price != null) {
             String[] split = price.split(" ");
-            curCount = Integer.parseInt(split[0]);
+            curCount = Integer.parseInt(split[0]); // todo number format 3.5 etc
             currencyTitle = split[1];
         }
 
