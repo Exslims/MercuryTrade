@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class DiffCheckerTest {
 
-    public static final Logger LOGGER = LogManager.getLogger(DiffCheckerTest.class);
+    private static final Logger LOGGER = LogManager.getLogger(DiffCheckerTest.class);
 
     private DiffChecker diffChecker;
 
