@@ -261,7 +261,7 @@ public class ComponentsFactory {
             BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
             BufferedImage icon = Scalr.resize(buttonIcon, size);
             iconLabel.setIcon(new ImageIcon(icon));
-        } catch (IOException e) {
+        } catch (Exception e) {
             return getTextLabel(StringUtils.substringBetween(iconPath,"/","."));
         }
         return iconLabel;
