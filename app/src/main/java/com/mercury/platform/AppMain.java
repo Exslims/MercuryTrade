@@ -10,7 +10,10 @@ import javax.swing.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
+/**
+ * Start application class, checking game path from config file.
+ * if game path isn't set, cause Choose game path frame, else starting main frame.
+ */
 public class AppMain {
     public static void main(String[] args) {
         String gamePath = ConfigManager.INSTANCE.getGamePath();
