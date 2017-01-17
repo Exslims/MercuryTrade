@@ -12,7 +12,7 @@ public class ItemMessage extends Message {
     public ItemMessage() {
     }
 
-    public ItemMessage(String whisperNickname, Date messageDate, String itemName, int curCount, String currency, String tabName, String offer) {
+    public ItemMessage(String whisperNickname, Date messageDate, String itemName, Double curCount, String currency, String tabName, String offer) {
         super(whisperNickname,offer,messageDate,curCount,currency);
         this.itemName = itemName;
         this.tabName = tabName;
@@ -32,27 +32,5 @@ public class ItemMessage extends Message {
 
     public void setTabName(String tabName) {
         this.tabName = tabName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ItemMessage)) return false;
-
-        ItemMessage that = (ItemMessage) o;
-
-        if (getCurCount() != that.getCurCount()) return false;
-        if (!getItemName().equals(that.getItemName())) return false;
-        if (!getCurrency().equals(that.getCurrency())) return false;
-        return getTabName().equals(that.getTabName());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getItemName().hashCode();
-        result = 31 * result + getCurCount();
-        result = 31 * result + getCurrency().hashCode();
-        result = 31 * result + getTabName().hashCode();
-        return result;
     }
 }

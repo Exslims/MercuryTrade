@@ -117,10 +117,11 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         }else if(message instanceof CurrencyMessage){
             CurrencyMessage message = (CurrencyMessage) this.message;
             JPanel curCountPanel = new JPanel();
-            curCountPanel.setPreferredSize(new Dimension(30,30));
+            curCountPanel.setPreferredSize(new Dimension(40,30));
             curCountPanel.setBackground(AppThemeColor.TRANSPARENT);
 
-            JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, String.valueOf(message.getCurrForSaleCount()));
+            String curCount = message.getCurrForSaleCount() % 1 == 0 ? String.valueOf(message.getCurrForSaleCount().intValue()) : String.valueOf(message.getCurrForSaleCount());
+            JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, curCount);
             curCountPanel.add(priceLabel);
             JLabel currencyLabel;
             currencyLabel = componentsFactory.getIconLabel("currency/" + message.getCurrForSaleTitle() + ".png", 26);
@@ -138,11 +139,11 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         JLabel separator = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, "=>");
         separator.setHorizontalAlignment(SwingConstants.CENTER);
         forPanel.add(separator);
-        String curCount = String.valueOf(message.getCurCount());
+        String curCount = message.getCurCount() % 1 == 0 ? String.valueOf(message.getCurCount().intValue()) : String.valueOf(message.getCurCount());
         String currency = message.getCurrency();
         if(!Objects.equals(curCount, "") && currency != null) {
             JPanel curCountPanel = new JPanel();
-            curCountPanel.setPreferredSize(new Dimension(30,30));
+            curCountPanel.setPreferredSize(new Dimension(40,30));
             curCountPanel.setBackground(AppThemeColor.TRANSPARENT);
 
             JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, curCount);

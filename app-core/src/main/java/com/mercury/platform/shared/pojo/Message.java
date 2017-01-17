@@ -9,13 +9,13 @@ public class Message {
     private Date messageDate;
     private String whisperNickname;
     private String offer;
-    private int curCount;
+    private Double curCount;
     private String currency;
 
     public Message() {
     }
 
-    public Message(String whisperNickname, String offer, Date msgDate, int curCount, String currency) {
+    public Message(String whisperNickname, String offer, Date msgDate, Double curCount, String currency) {
         this.offer = offer;
         this.messageDate = msgDate;
         this.whisperNickname = whisperNickname;
@@ -47,11 +47,11 @@ public class Message {
         this.messageDate = messageDate;
     }
 
-    public int getCurCount() {
+    public Double getCurCount() {
         return curCount;
     }
 
-    public void setCurCount(int curCount) {
+    public void setCurCount(Double curCount) {
         this.curCount = curCount;
     }
 

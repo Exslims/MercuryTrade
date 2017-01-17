@@ -23,6 +23,10 @@ public class AppStarter {
         new PrivateMessageManager();
         new FileMonitor();
 
+        /*
+        [DllImport("user32.dll&quot]
+            private static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
+         */
         EventRouter.registerHandler(UILoadedEvent.class, event -> {
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {

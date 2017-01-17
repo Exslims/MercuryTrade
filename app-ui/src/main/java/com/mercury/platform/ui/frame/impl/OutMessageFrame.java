@@ -101,7 +101,7 @@ public class OutMessageFrame extends OverlaidFrame{
         pack();
     }
 
-    private JPanel getCurCountPanel(int curCount, String currency){
+    private JPanel getCurCountPanel(Double curCount, String currency){
         JPanel curCountPanel = new JPanel();
         curCountPanel.setPreferredSize(new Dimension(30,20));
         curCountPanel.setBackground(AppThemeColor.TRANSPARENT);

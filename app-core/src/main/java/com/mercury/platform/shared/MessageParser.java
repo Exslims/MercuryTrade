@@ -45,11 +45,11 @@ public class MessageParser {
         if(price == null){
             price = StringUtils.substringBetween(message, "for my ", " in ");
         }
-        int curCount = 0;
+        Double curCount = null;
         String currencyTitle = "";
         if(price != null) {
             String[] split = price.split(" ");
-            curCount = Integer.parseInt(split[0]); // todo number format 3.5 etc
+            curCount = Double.parseDouble(split[0]); // todo number format 3.5 etc
             currencyTitle = split[1];
         }
 
@@ -68,19 +68,19 @@ public class MessageParser {
     private CurrencyMessage getCurrencyMessage(String message){
         CurrencyMessage currencyMessage = new CurrencyMessage();
         String currencyForSale = StringUtils.substringBetween(message, "to buy your ", " for my");
-        int currForSaleCount = 0;
+        Double currForSaleCount = null;
         String currForSaleTitle = "";
         if(currencyForSale != null) {
             String[] split = currencyForSale.split(" ");
-            currForSaleCount = Integer.parseInt(split[0]);
+            currForSaleCount = Double.parseDouble(split[0]);
             currForSaleTitle = split[1];
         }
         String price = StringUtils.substringBetween(message, "for my ", " in ");
-        int priceCount = 0;
+        Double priceCount = null;
         String priceTitle = "";
         if(price != null) {
             String[] split = price.split(" ");
-            priceCount = Integer.parseInt(split[0]);
+            priceCount = Double.parseDouble(split[0]);
             priceTitle = split[1];
         }
         String offer = StringUtils.substringAfterLast(message, "in Breach."); //todo

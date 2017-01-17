@@ -84,7 +84,7 @@ public class TestCasesFrame extends OverlaidFrame {
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                ItemMessage message = new ItemMessage(nickNames.get(new Random().nextInt(9)),null,"TEST",12,"exalted","tab","");
+                ItemMessage message = new ItemMessage(nickNames.get(new Random().nextInt(9)),null,"TEST", 3d,"exalted","tab","");
 //                messages.add(new Message("2017/01/11 13:41:25 1457739437 951 [INFO Client 6836] @From <(ROA)> " + nickNames.get(new Random().nextInt(9)) + ": " + randomMessages.get(new Random().nextInt(7))));
                 EventRouter.fireEvent(new NewWhispersEvent(message));
             }
@@ -101,7 +101,7 @@ public class TestCasesFrame extends OverlaidFrame {
             public void mousePressed(MouseEvent e) {
                 CurrencyMessage message = new CurrencyMessage(nickNames.get(new Random().nextInt(9)),
                         "qweqweqwwerwerwerwerwerweredsfsdfsdfsdfsdfsdfsd", null,
-                        10, "exalted", 540, "chaos");
+                        3d, "exalted", 540d, "chaos");
                 EventRouter.fireEvent(new NewWhispersEvent(message));
             }
         });
@@ -117,7 +117,7 @@ public class TestCasesFrame extends OverlaidFrame {
             public void mousePressed(MouseEvent e) {
                 CurrencyMessage message = new CurrencyMessage(nickNames.get(new Random().nextInt(9)),
                         "qweqweqwwerwerwerwerwerweredsfsdfsdfsdfsdfsdfsd", null,
-                        10, "exalted", 540, "chaos");
+                        10d, "exalted", 540d, "chaos");
                 EventRouter.fireEvent(new OutTradeMessageEvent(message));
             }
         });
