@@ -3,7 +3,7 @@ package com.mercury.platform.ui.frame.impl;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -14,7 +14,7 @@ import java.awt.event.MouseEvent;
 /**
  * Created by Константин on 06.01.2017.
  */
-public class TimerFrame extends OverlaidFrame {
+public class TimerFrame extends ComponentFrame {
     private Timer timeAgo;
     private JLabel timeLabel;
     private int seconds = 0;

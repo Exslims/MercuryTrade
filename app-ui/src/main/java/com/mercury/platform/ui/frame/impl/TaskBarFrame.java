@@ -3,7 +3,7 @@ package com.mercury.platform.ui.frame.impl;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.ui.components.test.TestCasesFrame;
-import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.ease.Spline;
@@ -16,7 +16,7 @@ import java.awt.event.*;
  * Exslims
  * 07.12.2016
  */
-public class TaskBarFrame extends OverlaidFrame {
+public class TaskBarFrame extends ComponentFrame {
     private final int MINIMUM_WIDTH = 118;
     private IncMessageFrame incMessageFrame;
     private TestCasesFrame testCasesFrame;

@@ -5,7 +5,7 @@ import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.pojo.CurrencyMessage;
 import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.shared.pojo.Message;
-import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by Константин on 26.12.2016.
  */
-public class TestCasesFrame extends OverlaidFrame {
+public class TestCasesFrame extends ComponentFrame {
     private List<String> randomMessages;
     private List<String> nickNames;
 

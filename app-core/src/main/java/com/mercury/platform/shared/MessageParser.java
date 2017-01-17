@@ -49,7 +49,7 @@ public class MessageParser {
         String currencyTitle = "";
         if(price != null) {
             String[] split = price.split(" ");
-            curCount = Double.parseDouble(split[0]); // todo number format 3.5 etc
+            curCount = Double.parseDouble(split[0]);
             currencyTitle = split[1];
         }
 
@@ -73,7 +73,7 @@ public class MessageParser {
         if(currencyForSale != null) {
             String[] split = currencyForSale.split(" ");
             currForSaleCount = Double.parseDouble(split[0]);
-            currForSaleTitle = split[1];
+            currForSaleTitle = split[1]; // todo multiple word
         }
         String price = StringUtils.substringBetween(message, "for my ", " in ");
         Double priceCount = null;

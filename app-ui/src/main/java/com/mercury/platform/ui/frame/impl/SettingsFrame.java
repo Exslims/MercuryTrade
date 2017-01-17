@@ -8,7 +8,7 @@ import com.mercury.platform.ui.components.panel.settings.AboutPanel;
 import com.mercury.platform.ui.components.panel.settings.ConfigurationPanel;
 import com.mercury.platform.ui.components.panel.settings.CustomButtonSettings;
 import com.mercury.platform.ui.components.panel.settings.GeneralSettings;
-import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by Константин on 16.12.2016.
  */
-public class SettingsFrame extends OverlaidFrame {
+public class SettingsFrame extends ComponentFrame {
     private List<ConfigurationPanel> innerPanels = new ArrayList<>();
     public SettingsFrame(){
         super("MT-Settings");

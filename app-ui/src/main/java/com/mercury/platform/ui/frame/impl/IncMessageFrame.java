@@ -7,19 +7,17 @@ import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
-import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.frame.Packable;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 /**
  * Created by Константин on 24.12.2016.
  */
-public class IncMessageFrame extends OverlaidFrame implements Packable{
+public class IncMessageFrame extends ComponentFrame implements Packable{
     private TradeMode tradeMode = TradeMode.DEFAULT;
 
     public IncMessageFrame(){

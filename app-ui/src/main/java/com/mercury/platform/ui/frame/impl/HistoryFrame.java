@@ -8,18 +8,17 @@ import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.fields.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
-import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.List;
 
 /**
  * Created by Константин on 27.12.2016.
  */
-public class HistoryFrame extends OverlaidFrame {
+public class HistoryFrame extends ComponentFrame {
     private JPanel messagesContainer;
     private JScrollPane scrollPane;
     private final int SCROLL_HEIGHT = 600;

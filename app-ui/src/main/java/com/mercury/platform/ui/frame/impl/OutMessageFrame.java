@@ -4,14 +4,13 @@ import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.ChatCommandEvent;
-import com.mercury.platform.shared.events.custom.DraggedMessageFrameEvent;
 import com.mercury.platform.shared.events.custom.OutTradeMessageEvent;
 import com.mercury.platform.shared.pojo.CurrencyMessage;
 import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -22,7 +21,7 @@ import java.awt.event.MouseEvent;
 /**
  * Created by Константин on 12.01.2017.
  */
-public class OutMessageFrame extends OverlaidFrame{
+public class OutMessageFrame extends ComponentFrame {
     protected OutMessageFrame() {
         super("OutMessageFrame");
         setVisible(false);

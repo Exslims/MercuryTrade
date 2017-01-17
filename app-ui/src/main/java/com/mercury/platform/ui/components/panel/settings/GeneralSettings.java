@@ -1,8 +1,7 @@
 package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.ui.components.panel.HasUI;
-import com.mercury.platform.ui.frame.OverlaidFrame;
-import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.misc.HideSettingsManager;
 
 import javax.swing.*;
@@ -15,11 +14,11 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
     private JSlider minSlider;
     private JSlider maxSlider;
     private JComboBox secondsPicker;
-    private OverlaidFrame owner;
+    private ComponentFrame owner;
 
     private HideSettingsManager hideManager = HideSettingsManager.INSTANCE;
 
-    public GeneralSettings(OverlaidFrame owner) {
+    public GeneralSettings(ComponentFrame owner) {
         super();
         this.owner = owner;
         createUI();

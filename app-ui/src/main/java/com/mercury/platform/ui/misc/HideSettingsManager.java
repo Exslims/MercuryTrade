@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.misc;
 
-import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.ComponentFrame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +17,12 @@ public class HideSettingsManager {
     }
     public static HideSettingsManager INSTANCE = HideSettingsManagerHolder.HOLDER_INSTANCE;
 
-    private List<OverlaidFrame> frames;
+    private List<ComponentFrame> frames;
 
     private HideSettingsManager() {
         frames = new ArrayList<>();
     }
-    public void registerFrame(OverlaidFrame frame){
+    public void registerFrame(ComponentFrame frame){
         frames.add(frame);
     }
     public void apply(int timeToHide, int minOpacity, int maxOpacity){

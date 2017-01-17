@@ -16,7 +16,7 @@ import java.awt.*;
  * Created by Константин on 29.12.2016.
  */
 public class NotificationFrame extends OverlaidFrame {
-    private JLabel strokeLabel;
+    private JLabel messageLabel;
     private Timeline showAnimation;
     public NotificationFrame() {
         super("Notification frame");
@@ -24,12 +24,9 @@ public class NotificationFrame extends OverlaidFrame {
 
     @Override
     protected void init() {
-        super.init();
         this.setOpacity(0.9f);
         this.setBackground(AppThemeColor.TRANSPARENT);
-        this.getRootPane().setBorder(null);
-
-        strokeLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER,38,"");
+        messageLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER,38,"");
 
         showAnimation = new Timeline(this);
         showAnimation.setDuration(1400);
@@ -40,25 +37,20 @@ public class NotificationFrame extends OverlaidFrame {
                 if(newState.equals(Timeline.TimelineState.DONE)){
                     NotificationFrame.this.setVisible(false);
                     NotificationFrame.this.setOpacity(0.9f);
-                    strokeLabel.setText("");
+                    messageLabel.setText("");
                 }
             }
             @Override
             public void onTimelinePulse(float durationFraction, float timelinePosition) {
             }
         });
-        this.add(strokeLabel);
-    }
-
-    @Override
-    protected String getFrameTitle() {
-        return null;
+        this.add(messageLabel);
     }
 
     @Override
     public void initHandlers() {
         EventRouter.INSTANCE.registerHandler(NotificationEvent.class, event -> {
-            strokeLabel.setText(((NotificationEvent) event).getNotification());
+            messageLabel.setText(((NotificationEvent) event).getNotification());
             NotificationFrame.this.pack();
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
             this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
