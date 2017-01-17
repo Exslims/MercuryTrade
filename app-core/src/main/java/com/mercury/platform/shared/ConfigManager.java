@@ -241,10 +241,10 @@ public class ConfigManager {
         dFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 600),new Dimension(280,100)));
         dFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth();
-        double height = screenSize.getHeight();
-        dFramesSettings.put("NotificationFrame",new FrameSettings(new Point((int) width / 2, (int) height / 2),new Dimension(114,50)));
+//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//        double width = screenSize.getWidth();
+//        double height = screenSize.getHeight();
+//        dFramesSettings.put("NotificationFrame",new FrameSettings(new Point((int) width / 2, (int) height / 2),new Dimension(114,50)));
         return dFramesSettings;
     }
 

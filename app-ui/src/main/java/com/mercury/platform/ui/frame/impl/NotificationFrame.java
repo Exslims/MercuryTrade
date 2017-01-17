@@ -58,8 +58,10 @@ public class NotificationFrame extends OverlaidFrame {
     @Override
     public void initHandlers() {
         EventRouter.INSTANCE.registerHandler(NotificationEvent.class, event -> {
-            strokeLabel.setText(((NotificationEvent) event).getStroke());
+            strokeLabel.setText(((NotificationEvent) event).getNotification());
             NotificationFrame.this.pack();
+            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+            this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
             NotificationFrame.this.setVisible(true);
             showAnimation.abort();
             showAnimation.play();

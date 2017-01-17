@@ -12,7 +12,7 @@ public class NotificationEvent implements MercuryEvent {
         this.stroke = stroke;
     }
 
-    public String getStroke() {
+    public String getNotification() {
         return stroke;
     }
 
