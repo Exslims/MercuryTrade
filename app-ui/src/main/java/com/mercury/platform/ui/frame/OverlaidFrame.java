@@ -22,7 +22,7 @@ import java.awt.event.MouseMotionAdapter;
 /**
  * Created by Константин on 26.12.2016.
  */
-public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
+public abstract class OverlaidFrame extends JFrame implements HasEventHandlers, Packable {
     private final int HIDE_TIME = 200;
     private final int SHOW_TIME = 150;
     private final int BORDER_THICKNESS = 1;
@@ -181,7 +181,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     /**
      * Standard pack() method does not take into account the maximum size of frame.
      */
-    protected void packFrame(){
+    public void packFrame(){
         this.pack();
         FrameSettings frameSettings = configManager.getDefaultFramesSettings().get(this.getClass().getSimpleName());
         this.setSize(new Dimension(frameSettings.getFrameSize().width,this.getHeight()));

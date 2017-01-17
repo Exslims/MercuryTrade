@@ -90,7 +90,7 @@ public class HistoryFrame extends OverlaidFrame {
     public void initHandlers() {
         EventRouter.INSTANCE.registerHandler(NewWhispersEvent.class, event -> {
             Message message = ((NewWhispersEvent) event).getMessage();
-            MessagePanel messagePanel = new MessagePanel(message.getWhisperNickname(), message, MessagePanelStyle.HISTORY);
+            MessagePanel messagePanel = new MessagePanel(message,this, MessagePanelStyle.HISTORY);
             if(messagesContainer.getComponentCount() > 0){
                 messagePanel.setBorder(BorderFactory.createMatteBorder(1,0,0,0, AppThemeColor.BORDER));
             }

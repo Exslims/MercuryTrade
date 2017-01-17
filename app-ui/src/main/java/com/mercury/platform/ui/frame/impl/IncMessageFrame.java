@@ -8,6 +8,7 @@ import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
 import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.Packable;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -18,7 +19,7 @@ import java.awt.event.MouseEvent;
 /**
  * Created by Константин on 24.12.2016.
  */
-public class IncMessageFrame extends OverlaidFrame {
+public class IncMessageFrame extends OverlaidFrame implements Packable{
     private TradeMode tradeMode = TradeMode.DEFAULT;
 
     public IncMessageFrame(){
@@ -94,11 +95,11 @@ public class IncMessageFrame extends OverlaidFrame {
             MessagePanel messagePanel = null;
             switch (tradeMode) {
                 case SUPER: {
-                    messagePanel = new MessagePanel(message.getWhisperNickname(), message, MessagePanelStyle.BIGGEST);
+                    messagePanel = new MessagePanel(message,this, MessagePanelStyle.BIGGEST);
                     break;
                 }
                 case DEFAULT: {
-                    messagePanel = new MessagePanel(message.getWhisperNickname(), message, MessagePanelStyle.BIGGEST);
+                    messagePanel = new MessagePanel(message,this, MessagePanelStyle.BIGGEST);
                     if (this.getContentPane().getComponentCount() > 0) {
                         messagePanel.setStyle(MessagePanelStyle.SMALL);
                     } else {
@@ -106,17 +107,11 @@ public class IncMessageFrame extends OverlaidFrame {
                     }
                 }
             }
-            messagePanel.addMouseListener(new ExpandMouseListener());
             if (this.getContentPane().getComponentCount() > 0) {
                 messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
             }
             this.add(messagePanel);
-            if (this.getContentPane().getComponentCount() == 1) {
-                this.setSize(new Dimension(this.getWidth(), 6 + messagePanel.getPreferredSize().height));
-            } else {
-                this.setSize(new Dimension(this.getWidth(), this.getHeight() + messagePanel.getPreferredSize().height));
-            }
-//            packFrame();
+            packFrame();
         });
         EventRouter.INSTANCE.registerHandler(CloseMessagePanelEvent.class, event -> {
             Component panel = ((CloseMessagePanelEvent) event).getComponent();
@@ -126,7 +121,7 @@ public class IncMessageFrame extends OverlaidFrame {
                 component.setBorder(null);
                 component.setAsTopMessage();
             }
-            this.setSize(new Dimension(this.getWidth(), this.getHeight() - panel.getPreferredSize().height));
+            packFrame();
             if(this.getContentPane().getComponentCount() == 0){
                 this.setVisible(false);
             }
@@ -144,35 +139,5 @@ public class IncMessageFrame extends OverlaidFrame {
     }
     private enum TradeMode{
         DEFAULT,SUPER
-    }
-    private class ExpandMouseListener extends MouseAdapter{
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            MessagePanel source = (MessagePanel) e.getSource();
-            switch (source.getStyle()) {
-                case SMALL: {
-                    int was = source.getPreferredSize().height;
-                    source.setStyle(MessagePanelStyle.BIGGEST);
-                    int will = source.getPreferredSize().height;
-                    if(IncMessageFrame.this.getContentPane().getComponentCount() == 0) {
-                        IncMessageFrame.this.setSize(new Dimension(IncMessageFrame.this.getWidth(), 6 + (will - was)));
-                    }else {
-                        IncMessageFrame.this.setSize(new Dimension(IncMessageFrame.this.getWidth(), IncMessageFrame.this.getHeight() + (will - was)));
-                    }
-                    break;
-                }
-                case BIGGEST: {
-                    int was = source.getPreferredSize().height;
-                    source.setStyle(MessagePanelStyle.SMALL);
-                    int will = source.getPreferredSize().height;
-                    if(IncMessageFrame.this.getContentPane().getComponentCount() == 0) {
-                        IncMessageFrame.this.setSize(new Dimension(IncMessageFrame.this.getWidth(), 6 - (was - will)));
-                    }else {
-                        IncMessageFrame.this.setSize(new Dimension(IncMessageFrame.this.getWidth(), IncMessageFrame.this.getHeight() - (was - will)));
-                    }
-                    break;
-                }
-            }
-        }
     }
 }

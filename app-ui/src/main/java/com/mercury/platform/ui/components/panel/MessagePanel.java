@@ -11,6 +11,7 @@ import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
+import com.mercury.platform.ui.frame.Packable;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.shared.MessageParser;
 
@@ -32,6 +33,7 @@ import java.util.List;
  */
 public class MessagePanel extends JPanel implements HasEventHandlers{
     private ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
+    private Packable owner;
     private MessagePanelStyle style;
 
     private int x;
@@ -40,25 +42,25 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     private String whisper;
     private JLabel whisperLabel;
     private JButton tradeButton;
+    private JButton expandButton;
 
     private Message message;
 
     private Timer timeAgo;
-    private String cachedTime = "0m ago";
+    private String cachedTime = "0m";
     private JLabel timeLabel;
     private Color cachedWhisperColor = AppThemeColor.TEXT_NICKNAME;
     private JPanel whisperPanel;
     private JPanel messagePanel;
     private JPanel customButtonsPanel;
 
-    public MessagePanel(String whisper, Message message, MessagePanelStyle style) {
+    public MessagePanel(Message message, Packable owner, MessagePanelStyle style) {
         super(new BorderLayout());
 
         this.message = message;
+        this.owner = owner;
         this.style = style;
-        this.whisper = whisper;
-
-        this.removeAll();
+        this.whisper = message.getWhisperNickname();
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.whisperPanel = getWhisperPanel();
         this.messagePanel = getFormattedMessagePanel();
@@ -70,34 +72,37 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     private void init(){
         this.removeAll();
         this.setBackground(AppThemeColor.TRANSPARENT);
+        this.add(whisperPanel,BorderLayout.PAGE_START);
+        this.add(messagePanel,BorderLayout.CENTER);
+        this.add(customButtonsPanel,BorderLayout.PAGE_END);
         switch (style){
             case SMALL:{
-                this.add(whisperPanel,BorderLayout.PAGE_START);
+                messagePanel.setVisible(false);
+                customButtonsPanel.setVisible(false);
                 break;
             }
             case MEDIUM:{
-                this.add(whisperPanel,BorderLayout.PAGE_START);
-                this.add(messagePanel,BorderLayout.CENTER);
+//                this.add(whisperPanel,BorderLayout.PAGE_START);
+//                this.add(messagePanel,BorderLayout.CENTER);
                 break;
             }
             case BIGGEST:{
-                this.add(whisperPanel,BorderLayout.PAGE_START);
-                this.add(messagePanel,BorderLayout.CENTER);
-                this.add(customButtonsPanel,BorderLayout.PAGE_END);
+                messagePanel.setVisible(true);
+                customButtonsPanel.setVisible(true);
                 break;
             }
             case HISTORY:{
-                this.add(whisperPanel,BorderLayout.PAGE_START);
-                this.add(messagePanel,BorderLayout.CENTER);
-                JButton stillIntButton = componentsFactory.getBorderedButton("interested?");
-                stillIntButton.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("@" + whisper + " " + "Hey, are u still interested in " + ((ItemMessage)message).getItemName() + "?"));
-                    }
-                });
-                customButtonsPanel.add(stillIntButton,0);
-                this.add(customButtonsPanel,BorderLayout.PAGE_END);
+                //todo
+//                JButton stillIntButton = componentsFactory.getBorderedButton("interested?");
+//                stillIntButton.addMouseListener(new MouseAdapter() {
+//                    @Override
+//                    public void mousePressed(MouseEvent e) {
+//                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("@" + whisper + " " + "Hey, are u still interested in " + ((ItemMessage)message).getItemName() + "?"));
+//                    }
+//                });
+//                customButtonsPanel.add(stillIntButton,0);
+                messagePanel.setVisible(true);
+                customButtonsPanel.setVisible(true);
                 break;
             }
         }
@@ -170,12 +175,16 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         topPanel.setBorder(BorderFactory.createEmptyBorder(-5,0,-5,0));
         topPanel.setBackground(AppThemeColor.HEADER);
 
+
         whisperLabel = componentsFactory.getTextLabel(FontStyle.BOLD,cachedWhisperColor, TextAlignment.LEFTOP,15f,whisper + ":");
         Border border = whisperLabel.getBorder();
-        whisperLabel.setBorder(new CompoundBorder(border,new EmptyBorder(0,5,0,5)));
+        whisperLabel.setBorder(new CompoundBorder(border,new EmptyBorder(0,0,0,5)));
         whisperLabel.setVerticalAlignment(SwingConstants.CENTER);
 
-        topPanel.add(whisperLabel,BorderLayout.CENTER);
+        JPanel nickNamePanel = componentsFactory.getTransparentPanel(new BorderLayout());
+        nickNamePanel.add(getExpandButton(),BorderLayout.LINE_START);
+        nickNamePanel.add(whisperLabel,BorderLayout.CENTER);
+        topPanel.add(nickNamePanel,BorderLayout.CENTER);
 
         JPanel interactionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         interactionPanel.setBackground(AppThemeColor.TRANSPARENT);
@@ -251,11 +260,11 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                         }
                     }
                     if (hours == 0 && day == 0) {
-                        labelText = minute + "m ago";
+                        labelText = minute + "m";
                     } else if (hours > 0) {
-                        labelText = hours + "h " + minute + "m ago";
+                        labelText = hours + "h " + minute + "m";
                     } else if (day > 0) {
-                        labelText = day + "d " + hours + "h " + minute + "m ago";
+                        labelText = day + "d " + hours + "h " + minute + "m";
                     }
                     timeLabel.setText(labelText);
                     EventRouter.INSTANCE.fireEvent(new RepaintEvent.RepaintMessagePanel());
@@ -266,10 +275,40 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         panel.add(timeLabel);
         return panel;
     }
+    private JButton getExpandButton(){
+        String iconPath = (style == MessagePanelStyle.SMALL) ? "app/expand-mp.png":"app/collapse-mp.png";
+        expandButton = componentsFactory.getIconButton(iconPath, 16, AppThemeColor.HEADER);
+        expandButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(!messagePanel.isVisible() && !customButtonsPanel.isVisible()) {
+                    expandButton.setIcon(componentsFactory.getIcon("app/collapse-mp.png", 16));
+                    messagePanel.setVisible(true);
+                    customButtonsPanel.setVisible(true);
+                }else {
+                    expandButton.setIcon(componentsFactory.getIcon("app/expand-mp.png", 16));
+                    messagePanel.setVisible(false);
+                    customButtonsPanel.setVisible(false);
+                }
+                owner.packFrame();
+            }
+        });
+        return expandButton;
+    }
 
     public void setStyle(MessagePanelStyle style) {
         this.style = style;
         this.cachedTime = timeLabel.getText();
+        switch (style){
+            case SMALL:{
+                expandButton.setIcon(componentsFactory.getIcon("app/expand-mp.png",16));
+                break;
+            }
+            default:{
+                expandButton.setIcon(componentsFactory.getIcon("app/collapse-mp.png",16));
+                break;
+            }
+        }
         init();
     }
 
