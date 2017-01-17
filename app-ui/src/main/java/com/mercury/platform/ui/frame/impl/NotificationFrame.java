@@ -57,7 +57,7 @@ public class NotificationFrame extends OverlaidFrame {
 
     @Override
     public void initHandlers() {
-        EventRouter.registerHandler(NotificationEvent.class, event -> {
+        EventRouter.INSTANCE.registerHandler(NotificationEvent.class, event -> {
             strokeLabel.setText(((NotificationEvent) event).getStroke());
             NotificationFrame.this.pack();
             NotificationFrame.this.setVisible(true);

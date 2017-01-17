@@ -1,15 +1,13 @@
 package com.mercury.platform.shared.events.custom;
 
-import com.mercury.platform.shared.events.SCEvent;
+import com.mercury.platform.shared.events.MercuryEvent;
 import com.mercury.platform.shared.pojo.Message;
-
-import java.util.List;
 
 /**
  * Exslims
  * 08.12.2016
  */
-public class NewWhispersEvent implements SCEvent {
+public class NewWhispersEvent implements MercuryEvent {
     private Message message;
 
     public NewWhispersEvent(Message message) {

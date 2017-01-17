@@ -77,7 +77,7 @@ public class SettingsFrame extends OverlaidFrame {
 
     @Override
     public void initHandlers() {
-        EventRouter.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {
+        EventRouter.INSTANCE.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {
             SettingsFrame.this.revalidate();
             SettingsFrame.this.repaint();
         });

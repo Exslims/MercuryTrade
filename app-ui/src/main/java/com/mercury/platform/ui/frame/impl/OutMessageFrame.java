@@ -67,7 +67,7 @@ public class OutMessageFrame extends OverlaidFrame{
         hoIn.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.fireEvent(new ChatCommandEvent("/hideout " + message.getWhisperNickname()));
+                EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/hideout " + message.getWhisperNickname()));
             }
         });
         miscPanel.add(hoIn);
@@ -75,7 +75,7 @@ public class OutMessageFrame extends OverlaidFrame{
         hoOut.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.fireEvent(new ChatCommandEvent("/hideout"));
+                EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/hideout"));
             }
         });
         miscPanel.add(hoOut);
@@ -121,7 +121,7 @@ public class OutMessageFrame extends OverlaidFrame{
     }
     @Override
     public void initHandlers() {
-        EventRouter.registerHandler(OutTradeMessageEvent.class, event -> {
+        EventRouter.INSTANCE.registerHandler(OutTradeMessageEvent.class, event -> {
             if (!this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
                 this.setAlwaysOnTop(true);
                 this.setVisible(true);

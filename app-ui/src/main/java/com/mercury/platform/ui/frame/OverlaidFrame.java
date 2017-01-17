@@ -5,7 +5,7 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.SCEventHandler;
+import com.mercury.platform.shared.events.MercuryEventHandler;
 import com.mercury.platform.shared.events.custom.ChangeFrameVisibleEvent;
 import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.ui.components.ComponentsFactory;
@@ -87,7 +87,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, BORDER_THICKNESS)));
 
-        EventRouter.registerHandler(ChangeFrameVisibleEvent.class, new SCEventHandler<ChangeFrameVisibleEvent>() {
+        EventRouter.INSTANCE.registerHandler(ChangeFrameVisibleEvent.class, new MercuryEventHandler<ChangeFrameVisibleEvent>() {
             @Override
             public void handle(ChangeFrameVisibleEvent event) {
                 if (processingHideEvent){

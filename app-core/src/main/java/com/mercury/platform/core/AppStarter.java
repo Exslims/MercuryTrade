@@ -27,7 +27,7 @@ public class AppStarter {
         [DllImport("user32.dll&quot]
             private static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
          */
-        EventRouter.registerHandler(UILoadedEvent.class, event -> {
+        EventRouter.INSTANCE.registerHandler(UILoadedEvent.class, event -> {
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
@@ -37,12 +37,12 @@ public class AppStarter {
                     User32.INSTANCE.GetWindowTextA(hwnd, windowText, 512);
                     if(!Native.toString(windowText).equals("Path of Exile")){
                         if(APP_STATUS == FrameStates.SHOW) {
-                            EventRouter.fireEvent(new ChangeFrameVisibleEvent(FrameStates.HIDE));
+                            EventRouter.INSTANCE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.HIDE));
                             APP_STATUS = FrameStates.HIDE;
                         }
                     }else{
                         if(APP_STATUS == FrameStates.HIDE) {
-                            EventRouter.fireEvent(new ChangeFrameVisibleEvent(FrameStates.SHOW));
+                            EventRouter.INSTANCE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.SHOW));
                             APP_STATUS = FrameStates.SHOW;
                         }
                     }

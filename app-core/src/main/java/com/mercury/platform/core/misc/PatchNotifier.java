@@ -1,7 +1,7 @@
 package com.mercury.platform.core.misc;
 
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.NewPatchSCEvent;
+import com.mercury.platform.shared.events.custom.NewPatchMercuryEvent;
 import org.apache.log4j.Logger;
 
 import java.io.FileNotFoundException;
@@ -34,7 +34,7 @@ public class PatchNotifier {
         try {
             String appPath =URLDecoder.decode(
                     PatchNotifier.class.getProtectionDomain().getCodeSource().getLocation().getPath(),"UTF-8");
-            EventRouter.fireEvent(new NewPatchSCEvent(appPath));
+            EventRouter.INSTANCE.fireEvent(new NewPatchMercuryEvent(appPath));
             socketChannel.close();
 //            RandomAccessFile raf = new RandomAccessFile(appPath,"rw");
         } catch (UnsupportedEncodingException e) {

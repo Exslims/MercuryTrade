@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 public class PlayerLeftInterceptor extends MessageInterceptor {
     @Override
     protected void process(String message) {
-        EventRouter.fireEvent(new PlayerLeftEvent(StringUtils.substringBetween(message," : ", " has left the area.")));
+        EventRouter.INSTANCE.fireEvent(new PlayerLeftEvent(StringUtils.substringBetween(message," : ", " has left the area.")));
     }
 
     @Override

@@ -21,9 +21,7 @@ public class TaskBarFrame extends OverlaidFrame {
     private IncMessageFrame incMessageFrame;
     private TestCasesFrame testCasesFrame;
     private HistoryFrame historyFrame;
-    private NotificationFrame notificationFrame;
     private TimerFrame timerFrame;
-    private OutMessageFrame outMessageFrame;
 
     private Timeline collapseAnim;
 
@@ -36,14 +34,14 @@ public class TaskBarFrame extends OverlaidFrame {
         incMessageFrame = new IncMessageFrame();
         testCasesFrame = new TestCasesFrame();
         historyFrame = new HistoryFrame();
-        notificationFrame = new NotificationFrame();
+        new NotificationFrame();
         timerFrame = new TimerFrame();
-        outMessageFrame = new OutMessageFrame();
+//        outMessageFrame = new OutMessageFrame();
         super.init();
         add(getTaskBarPanel());
         pack();
         this.setSize(new Dimension(MINIMUM_WIDTH,this.getHeight()));
-        EventRouter.fireEvent(new UILoadedEvent());
+        EventRouter.INSTANCE.fireEvent(new UILoadedEvent());
     }
 
     @Override
@@ -95,12 +93,12 @@ public class TaskBarFrame extends OverlaidFrame {
                     visibleMode.setIcon(componentsFactory.getIcon("app/visible-dnd-mode.png", 24));
                     currentMode = "dnd";
                     TaskBarFrame.this.repaint();
-                    EventRouter.fireEvent(new NotificationEvent("DND on"));
+                    EventRouter.INSTANCE.fireEvent(new NotificationEvent("DND on"));
                 } else {
                     currentMode = "always";
                     visibleMode.setIcon(componentsFactory.getIcon("app/visible-always-mode.png", 24));
                     TaskBarFrame.this.repaint();
-                    EventRouter.fireEvent(new NotificationEvent("DND off"));
+                    EventRouter.INSTANCE.fireEvent(new NotificationEvent("DND off"));
                 }
             }
         });
@@ -114,14 +112,14 @@ public class TaskBarFrame extends OverlaidFrame {
                     chatMode.setIcon(componentsFactory.getIcon("app/supertrade-mode.png",24));
                     currentMode = "supertrade";
                     TaskBarFrame.this.repaint();
-                    EventRouter.fireEvent(new NotificationEvent("SuperTrade mode ON"));
-                    EventRouter.fireEvent(new ChangedTradeModeEvent.ToSuperTradeModeEvent());
+                    EventRouter.INSTANCE.fireEvent(new NotificationEvent("SuperTrade mode ON"));
+                    EventRouter.INSTANCE.fireEvent(new ChangedTradeModeEvent.ToSuperTradeModeEvent());
                 }else {
                     currentMode = "standard";
                     chatMode.setIcon(componentsFactory.getIcon("app/standard-mode.png",24));
                     TaskBarFrame.this.repaint();
-                    EventRouter.fireEvent(new NotificationEvent("SuperTrade mode OFF"));
-                    EventRouter.fireEvent(new ChangedTradeModeEvent.ToDefaultTradeModeEvent());
+                    EventRouter.INSTANCE.fireEvent(new NotificationEvent("SuperTrade mode OFF"));
+                    EventRouter.INSTANCE.fireEvent(new ChangedTradeModeEvent.ToDefaultTradeModeEvent());
                 }
             }
         });
@@ -216,7 +214,7 @@ public class TaskBarFrame extends OverlaidFrame {
 
     @Override
     public void initHandlers() {
-        EventRouter.registerHandler(RepaintEvent.RepaintTaskBar.class, event -> {
+        EventRouter.INSTANCE.registerHandler(RepaintEvent.RepaintTaskBar.class, event -> {
             TaskBarFrame.this.revalidate();
             TaskBarFrame.this.repaint();
         });

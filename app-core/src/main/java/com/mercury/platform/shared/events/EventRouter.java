@@ -10,22 +10,24 @@ import java.util.Map;
  * 08.12.2016
  */
 public class EventRouter {
-    private static final Map<Class, List<SCEventHandler>> eventHandlerMap = new HashMap<>();
-    public static void fireEvent(SCEvent event){
-        List<SCEventHandler> handlers = eventHandlerMap.get(event.getClass());
+    private static class EventRouterHolder {
+        static final EventRouter HOLDER_INSTANCE = new EventRouter();
+    }
+    public static EventRouter INSTANCE = EventRouterHolder.HOLDER_INSTANCE;
+
+    private Map<Class, List<MercuryEventHandler>> eventHandlerMap = new HashMap<>();
+    public void fireEvent(MercuryEvent event){
+        List<MercuryEventHandler> handlers = eventHandlerMap.get(event.getClass());
         if(handlers != null) {
             handlers.forEach(handler -> handler.handle(event));
         }
     }
-    public static void registerHandler(Class eventClass, SCEventHandler handler){
-        List<SCEventHandler> scEventHandlers = eventHandlerMap.get(eventClass);
-        if(scEventHandlers == null){
-            scEventHandlers = new ArrayList<>();
+    public void registerHandler(Class eventClass, MercuryEventHandler handler){
+        List<MercuryEventHandler> mercuryEventHandlers = eventHandlerMap.get(eventClass);
+        if(mercuryEventHandlers == null){
+            mercuryEventHandlers = new ArrayList<>();
         }
-        scEventHandlers.add(handler);
-        eventHandlerMap.put(eventClass,scEventHandlers);
-    }
-    public static void clear(Class eventClass){
-        eventHandlerMap.remove(eventClass);
+        mercuryEventHandlers.add(handler);
+        eventHandlerMap.put(eventClass, mercuryEventHandlers);
     }
 }

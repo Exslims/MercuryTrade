@@ -16,7 +16,7 @@ public class OutTradeMessagesInterceptor extends MessageInterceptor {
     @Override
     protected void process(String message) {
         Message parsedMessage = messageParser.parse(message);
-        EventRouter.fireEvent(new OutTradeMessageEvent(parsedMessage));
+        EventRouter.INSTANCE.fireEvent(new OutTradeMessageEvent(parsedMessage));
     }
 
     @Override

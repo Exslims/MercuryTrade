@@ -77,13 +77,13 @@ public class IncMessageFrame extends OverlaidFrame {
 
     @Override
     public void initHandlers() {
-        EventRouter.registerHandler(ChangedTradeModeEvent.ToSuperTradeModeEvent.class, event -> {
+        EventRouter.INSTANCE.registerHandler(ChangedTradeModeEvent.ToSuperTradeModeEvent.class, event -> {
             convertFrameTo(TradeMode.SUPER);
         });
-        EventRouter.registerHandler(ChangedTradeModeEvent.ToDefaultTradeModeEvent.class, event -> {
+        EventRouter.INSTANCE.registerHandler(ChangedTradeModeEvent.ToDefaultTradeModeEvent.class, event -> {
             convertFrameTo(TradeMode.DEFAULT);
         });
-        EventRouter.registerHandler(NewWhispersEvent.class, event -> {
+        EventRouter.INSTANCE.registerHandler(NewWhispersEvent.class, event -> {
             Message message = ((NewWhispersEvent) event).getMessage();
             if (!this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
                 this.setAlwaysOnTop(true);
@@ -118,7 +118,7 @@ public class IncMessageFrame extends OverlaidFrame {
             }
 //            packFrame();
         });
-        EventRouter.registerHandler(CloseMessagePanelEvent.class, event -> {
+        EventRouter.INSTANCE.registerHandler(CloseMessagePanelEvent.class, event -> {
             Component panel = ((CloseMessagePanelEvent) event).getComponent();
             this.remove(panel);
             if (this.getContentPane().getComponentCount() > 0) {
@@ -131,13 +131,13 @@ public class IncMessageFrame extends OverlaidFrame {
                 this.setVisible(false);
             }
         });
-        EventRouter.registerHandler(DraggedMessageFrameEvent.class, event -> {
+        EventRouter.INSTANCE.registerHandler(DraggedMessageFrameEvent.class, event -> {
             int x = ((DraggedMessageFrameEvent) event).getX();
             int y = ((DraggedMessageFrameEvent) event).getY();
             IncMessageFrame.this.setLocation(x,y);
             configManager.saveFrameLocation(this.getClass().getSimpleName(),this.getLocation());
         });
-        EventRouter.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {
+        EventRouter.INSTANCE.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {
             IncMessageFrame.this.revalidate();
             IncMessageFrame.this.repaint();
         });

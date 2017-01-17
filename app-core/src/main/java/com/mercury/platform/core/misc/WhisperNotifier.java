@@ -3,7 +3,7 @@ package com.mercury.platform.core.misc;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.PoeShortCastSettings;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.SCEventHandler;
+import com.mercury.platform.shared.events.MercuryEventHandler;
 import com.mercury.platform.shared.events.custom.WhisperNotificationEvent;
 import org.apache.log4j.Logger;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 public class WhisperNotifier {
     private final Logger logger = Logger.getLogger(WhisperNotifier.class);
     public WhisperNotifier() {
-        EventRouter.registerHandler(WhisperNotificationEvent.class,new SCEventHandler<WhisperNotificationEvent>(){
+        EventRouter.INSTANCE.registerHandler(WhisperNotificationEvent.class,new MercuryEventHandler<WhisperNotificationEvent>(){
             public void handle(WhisperNotificationEvent event) {
                 if (PoeShortCastSettings.WHISPER_NOTIFIER_STATUS == WhisperNotifierStatus.ALWAYS ||
                         ((PoeShortCastSettings.WHISPER_NOTIFIER_STATUS == WhisperNotifierStatus.ALTAB) &&

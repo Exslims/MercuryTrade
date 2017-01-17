@@ -16,8 +16,8 @@ public class IncTradeMessagesInterceptor extends MessageInterceptor {
     @Override
     protected void process(String message) {
         Message parsedMessage = messageParser.parse(message);
-        EventRouter.fireEvent(new WhisperNotificationEvent());
-        EventRouter.fireEvent(new NewWhispersEvent(parsedMessage));
+        EventRouter.INSTANCE.fireEvent(new WhisperNotificationEvent());
+        EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(parsedMessage));
     }
 
     @Override

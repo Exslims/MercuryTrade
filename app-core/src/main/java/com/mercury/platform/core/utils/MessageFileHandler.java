@@ -81,7 +81,7 @@ public class MessageFileHandler implements HasEventHandlers {
 
     @Override
     public void initHandlers() {
-        EventRouter.registerHandler(AddInterceptorEvent.class, event ->
+        EventRouter.INSTANCE.registerHandler(AddInterceptorEvent.class, event ->
                 addInterceptor(((AddInterceptorEvent) event).getInterceptor()));
     }
 }

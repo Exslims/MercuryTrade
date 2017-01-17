@@ -86,7 +86,7 @@ public class TestCasesFrame extends OverlaidFrame {
             public void mousePressed(MouseEvent e) {
                 ItemMessage message = new ItemMessage(nickNames.get(new Random().nextInt(9)),null,"TEST", 3d,"exalted","tab","");
 //                messages.add(new Message("2017/01/11 13:41:25 1457739437 951 [INFO Client 6836] @From <(ROA)> " + nickNames.get(new Random().nextInt(9)) + ": " + randomMessages.get(new Random().nextInt(7))));
-                EventRouter.fireEvent(new NewWhispersEvent(message));
+                EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(message));
             }
         });
         testPanel.add(button,buttonColumn);
@@ -102,7 +102,7 @@ public class TestCasesFrame extends OverlaidFrame {
                 CurrencyMessage message = new CurrencyMessage(nickNames.get(new Random().nextInt(9)),
                         "qweqweqwwerwerwerwerwerweredsfsdfsdfsdfsdfsdfsd", null,
                         3d, "exalted", 540d, "chaos");
-                EventRouter.fireEvent(new NewWhispersEvent(message));
+                EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(message));
             }
         });
         testPanel.add(button6,buttonColumn);
@@ -118,7 +118,7 @@ public class TestCasesFrame extends OverlaidFrame {
                 CurrencyMessage message = new CurrencyMessage(nickNames.get(new Random().nextInt(9)),
                         "qweqweqwwerwerwerwerwerweredsfsdfsdfsdfsdfsdfsd", null,
                         10d, "exalted", 540d, "chaos");
-                EventRouter.fireEvent(new OutTradeMessageEvent(message));
+                EventRouter.INSTANCE.fireEvent(new OutTradeMessageEvent(message));
             }
         });
         testPanel.add(button8,buttonColumn);
@@ -131,7 +131,7 @@ public class TestCasesFrame extends OverlaidFrame {
         button5.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.fireEvent(new WhisperNotificationEvent());
+                EventRouter.INSTANCE.fireEvent(new WhisperNotificationEvent());
 
 //                messages.add(new Message("ДолбоебСРусскимНиком","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) блабалблабалабала"));
 //                EventRouter.fireEvent(new NewWhispersEvent(messages));
@@ -148,21 +148,21 @@ public class TestCasesFrame extends OverlaidFrame {
         button7.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.fireEvent(new WhisperNotificationEvent());
+                EventRouter.INSTANCE.fireEvent(new WhisperNotificationEvent());
                 List<Message> messages = new ArrayList<>();
 //                messages.add(new Message("WhisperColorTest","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2)"));
 //                EventRouter.fireEvent(new NewWhispersEvent(messages));
 
                 Timer joinedTimer = new Timer(1000,null);
                 joinedTimer.addActionListener(e1 -> {
-                    EventRouter.fireEvent(new PlayerJoinEvent("WhisperColorTest"));
+                    EventRouter.INSTANCE.fireEvent(new PlayerJoinEvent("WhisperColorTest"));
                     joinedTimer.stop();
                 });
                 joinedTimer.start();
 
                 Timer leftTimer = new Timer(2000,null);
                 leftTimer.addActionListener(e1 -> {
-                    EventRouter.fireEvent(new PlayerLeftEvent("WhisperColorTest"));
+                    EventRouter.INSTANCE.fireEvent(new PlayerLeftEvent("WhisperColorTest"));
                     leftTimer.stop();
                 });
                 leftTimer.start();

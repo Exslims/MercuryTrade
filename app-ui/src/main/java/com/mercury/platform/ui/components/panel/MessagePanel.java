@@ -93,7 +93,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 stillIntButton.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mousePressed(MouseEvent e) {
-                        EventRouter.fireEvent(new ChatCommandEvent("@" + whisper + " " + "Hey, are u still interested in " + ((ItemMessage)message).getItemName() + "?"));
+                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("@" + whisper + " " + "Hey, are u still interested in " + ((ItemMessage)message).getItemName() + "?"));
                     }
                 });
                 customButtonsPanel.add(stillIntButton,0);
@@ -183,21 +183,21 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         inviteButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.fireEvent(new ChatCommandEvent("/invite " + whisper));
+                EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/invite " + whisper));
             }
         });
         JButton kickButton = componentsFactory.getIconButton("app/kick.png", 14, AppThemeColor.HEADER);
         kickButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.fireEvent(new ChatCommandEvent("/kick " + whisper));
+                EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/kick " + whisper));
             }
         });
         tradeButton = componentsFactory.getIconButton("app/trade.png",14, AppThemeColor.HEADER);
         tradeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.fireEvent(new ChatCommandEvent("/tradewith " + whisper));
+                EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/tradewith " + whisper));
             }
         });
         JButton openChatButton = componentsFactory.getIconButton("app/openChat.png",15, AppThemeColor.HEADER);
@@ -205,14 +205,14 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         openChatButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.fireEvent(new OpenChatEvent(whisper));
+                EventRouter.INSTANCE.fireEvent(new OpenChatEvent(whisper));
             }
         });
         JButton hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.HEADER);
         hideButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.fireEvent(new CloseMessagePanelEvent(MessagePanel.this));
+                EventRouter.INSTANCE.fireEvent(new CloseMessagePanelEvent(MessagePanel.this));
             }
         });
 
@@ -258,7 +258,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                         labelText = day + "d " + hours + "h " + minute + "m ago";
                     }
                     timeLabel.setText(labelText);
-                    EventRouter.fireEvent(new RepaintEvent.RepaintMessagePanel());
+                    EventRouter.INSTANCE.fireEvent(new RepaintEvent.RepaintMessagePanel());
                 }
             });
             timeAgo.start();
@@ -287,7 +287,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         whisperLabel.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                EventRouter.fireEvent(new DraggedMessageFrameEvent(e.getLocationOnScreen().x -x,e.getLocationOnScreen().y - y));
+                EventRouter.INSTANCE.fireEvent(new DraggedMessageFrameEvent(e.getLocationOnScreen().x -x,e.getLocationOnScreen().y - y));
             }
         });
     }
@@ -302,7 +302,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if(button.isEnabled()) {
-                        EventRouter.fireEvent(new ChatCommandEvent("@" + whisper + " " + value));
+                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("@" + whisper + " " + value));
                     }
                 }
 
@@ -313,22 +313,22 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     }
     @Override
     public void initHandlers() {
-        EventRouter.registerHandler(PlayerJoinEvent.class, event -> {
+        EventRouter.INSTANCE.registerHandler(PlayerJoinEvent.class, event -> {
             String nickName = ((PlayerJoinEvent) event).getNickName();
             if(nickName.equals(whisper)){
                 whisperLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
                 cachedWhisperColor = AppThemeColor.TEXT_SUCCESS;
                 tradeButton.setEnabled(true);
-                EventRouter.fireEvent(new RepaintEvent.RepaintMessagePanel());
+                EventRouter.INSTANCE.fireEvent(new RepaintEvent.RepaintMessagePanel());
             }
         });
-        EventRouter.registerHandler(PlayerLeftEvent.class, event -> {
+        EventRouter.INSTANCE.registerHandler(PlayerLeftEvent.class, event -> {
             String nickName = ((PlayerLeftEvent) event).getNickName();
             if(nickName.equals(whisper)){
                 whisperLabel.setForeground(AppThemeColor.TEXT_DENIED);
                 cachedWhisperColor = AppThemeColor.TEXT_DENIED;
                 tradeButton.setEnabled(false);
-                EventRouter.fireEvent(new RepaintEvent.RepaintMessagePanel());
+                EventRouter.INSTANCE.fireEvent(new RepaintEvent.RepaintMessagePanel());
             }
         });
     }

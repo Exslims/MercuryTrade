@@ -88,7 +88,7 @@ public class HistoryFrame extends OverlaidFrame {
 
     @Override
     public void initHandlers() {
-        EventRouter.registerHandler(NewWhispersEvent.class, event -> {
+        EventRouter.INSTANCE.registerHandler(NewWhispersEvent.class, event -> {
             Message message = ((NewWhispersEvent) event).getMessage();
             MessagePanel messagePanel = new MessagePanel(message.getWhisperNickname(), message, MessagePanelStyle.HISTORY);
             if(messagesContainer.getComponentCount() > 0){
@@ -106,7 +106,7 @@ public class HistoryFrame extends OverlaidFrame {
             this.packFrame();
             this.repaint();
         });
-        EventRouter.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {
+        EventRouter.INSTANCE.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {
             this.revalidate();
             this.repaint();
         });

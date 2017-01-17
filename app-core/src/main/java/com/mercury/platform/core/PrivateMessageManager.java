@@ -156,19 +156,19 @@ public class PrivateMessageManager implements HasEventHandlers {
 
     @Override
     public void initHandlers() {
-        EventRouter.registerHandler(ChatCommandEvent.class, event
+        EventRouter.INSTANCE.registerHandler(ChatCommandEvent.class, event
                 -> executeMessage(((ChatCommandEvent)event).getMessage()));
 
-        EventRouter.registerHandler(OpenChatEvent.class, event -> {
+        EventRouter.INSTANCE.registerHandler(OpenChatEvent.class, event -> {
             openChat(((OpenChatEvent) event).getWhisper());
         });
-        EventRouter.registerHandler(CopyToClipboardEvent.class, event -> {
+        EventRouter.INSTANCE.registerHandler(CopyToClipboardEvent.class, event -> {
             String content = ((CopyToClipboardEvent) event).getContent();
             StringSelection selection = new StringSelection(content);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, null);
         });
-        EventRouter.registerHandler(SetForegroundGameEvent.class, event -> {
+        EventRouter.INSTANCE.registerHandler(SetForegroundGameEvent.class, event -> {
             System.out.println("test");
             setForegroundWindow("Path of Exile");
         });
