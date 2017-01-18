@@ -159,25 +159,14 @@ public class ComponentsFactory {
             }
         });
         button.addMouseListener(new MouseAdapter() {
-            private Timer tooltipTimer;
             @Override
             public void mouseEntered(MouseEvent e) {
-                System.out.println("in button");
-//                tooltipTimer = new Timer(0, e1 -> {
-//                    System.out.println("sent tooltip");
-                    EventRouter.INSTANCE.fireEvent(new ShowTooltipEvent(tooltip, MouseInfo.getPointerInfo().getLocation()));
-//                });
-//                tooltipTimer.setRepeats(false);
-//                tooltipTimer.setInitialDelay(1000);
-//                tooltipTimer.start();
+                EventRouter.INSTANCE.fireEvent(new ShowTooltipEvent(tooltip, MouseInfo.getPointerInfo().getLocation()));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                System.out.println("out button");
                 EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
-//                tooltipTimer.stop();
-//                System.out.println("stopping timer");
             }
         });
 //        button.setContentAreaFilled(false);
