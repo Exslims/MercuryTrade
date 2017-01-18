@@ -20,7 +20,7 @@ public class AppStarter {
     private User32 user32 = User32.INSTANCE;
     public void startApplication(){
         new WhisperNotifier();
-        new PrivateMessageManager();
+        new ChatHelper();
         new FileMonitor();
 
         /*
@@ -37,13 +37,13 @@ public class AppStarter {
                     User32.INSTANCE.GetWindowTextA(hwnd, windowText, 512);
                     if(!Native.toString(windowText).equals("Path of Exile")){
                         if(APP_STATUS == FrameStates.SHOW) {
-                            EventRouter.INSTANCE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.HIDE));
                             APP_STATUS = FrameStates.HIDE;
+                            EventRouter.INSTANCE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.HIDE));
                         }
                     }else{
                         if(APP_STATUS == FrameStates.HIDE) {
-                            EventRouter.INSTANCE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.SHOW));
                             APP_STATUS = FrameStates.SHOW;
+                            EventRouter.INSTANCE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.SHOW));
                         }
                     }
                 }

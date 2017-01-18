@@ -22,7 +22,7 @@ import java.awt.event.MouseEvent;
  * Created by Константин on 12.01.2017.
  */
 public class OutMessageFrame extends ComponentFrame {
-    protected OutMessageFrame() {
+    public OutMessageFrame() {
         super("OutMessageFrame");
         setVisible(false);
     }
@@ -133,12 +133,9 @@ public class OutMessageFrame extends ComponentFrame {
     }
 
     @Override
-    protected String getFrameTitle() {
-        return null;
-    }
-
-    @Override
     protected LayoutManager getFrameLayout() {
         return new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS);
     }
+
+
 }

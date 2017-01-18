@@ -20,12 +20,12 @@ public class NotificationFrame extends OverlaidFrame {
     private Timeline showAnimation;
     public NotificationFrame() {
         super("Notification frame");
+        this.setOpacity(0.9f);
+        this.setBackground(AppThemeColor.TRANSPARENT);
     }
 
     @Override
-    protected void init() {
-        this.setOpacity(0.9f);
-        this.setBackground(AppThemeColor.TRANSPARENT);
+    protected void initialize() {
         messageLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER,38,"");
 
         showAnimation = new Timeline(this);

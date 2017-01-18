@@ -20,13 +20,13 @@ import java.awt.event.KeyEvent;
  * Exslims
  * 07.12.2016
  */
-public class PrivateMessageManager implements HasEventHandlers {
+public class ChatHelper implements HasEventHandlers {
     private GlobalKeyboardHook keyboardHook = new GlobalKeyboardHook();
     private GlobalKeyAdapter adapter;
     private User32 user32 = User32.INSTANCE;
     private Robot robot;
 
-    public PrivateMessageManager() {
+    public ChatHelper() {
         GlobalKeyAdapter adapter = getAdapter();
         this.adapter = adapter;
         initHandlers();

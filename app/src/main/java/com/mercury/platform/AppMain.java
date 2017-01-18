@@ -2,6 +2,7 @@ package com.mercury.platform;
 
 import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.ui.FramesManager;
 import com.mercury.platform.ui.frame.impl.GamePathChooser;
 import com.mercury.platform.ui.frame.impl.SettingsFrame;
 import com.mercury.platform.ui.frame.impl.TaskBarFrame;
@@ -24,7 +25,7 @@ public class AppMain {
             });
         } else {
             new AppStarter().startApplication();
-            SwingUtilities.invokeLater(TaskBarFrame::new);
+            FramesManager.INSTANCE.start();
         }
     }
 }

@@ -2,7 +2,7 @@ package com.mercury.platform.ui.frame.impl;
 
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
-import com.mercury.platform.ui.components.test.TestCasesFrame;
+import com.mercury.platform.ui.FramesManager;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.pushingpixels.trident.Timeline;
@@ -18,11 +18,6 @@ import java.awt.event.*;
  */
 public class TaskBarFrame extends ComponentFrame {
     private final int MINIMUM_WIDTH = 118;
-    private IncMessageFrame incMessageFrame;
-    private TestCasesFrame testCasesFrame;
-    private HistoryFrame historyFrame;
-    private TimerFrame timerFrame;
-
     private Timeline collapseAnim;
 
     public TaskBarFrame() {
@@ -30,23 +25,12 @@ public class TaskBarFrame extends ComponentFrame {
     }
 
     @Override
-    protected void init() {
-        incMessageFrame = new IncMessageFrame();
-        testCasesFrame = new TestCasesFrame();
-        historyFrame = new HistoryFrame();
-        new NotificationFrame();
-        timerFrame = new TimerFrame();
-//        outMessageFrame = new OutMessageFrame();
-        super.init();
+    protected void initialize() {
+        super.initialize();
         add(getTaskBarPanel());
         pack();
         this.setSize(new Dimension(MINIMUM_WIDTH,this.getHeight()));
         EventRouter.INSTANCE.fireEvent(new UILoadedEvent());
-    }
-
-    @Override
-    protected String getFrameTitle() {
-        return null;
     }
 
     @Override
@@ -132,11 +116,7 @@ public class TaskBarFrame extends ComponentFrame {
         timer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(!timerFrame.isVisible()) {
-                    timerFrame.showComponent();
-                }else {
-                    timerFrame.hideComponent();
-                }
+                FramesManager.INSTANCE.hideOrShowFrame(TimerFrame.class);
             }
         });
 
@@ -144,11 +124,7 @@ public class TaskBarFrame extends ComponentFrame {
         historyButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(!historyFrame.isVisible()) {
-                    historyFrame.showComponent();
-                }else {
-                    historyFrame.hideComponent();
-                }
+                FramesManager.INSTANCE.hideOrShowFrame(HistoryFrame.class);
             }
         });
 
@@ -164,13 +140,9 @@ public class TaskBarFrame extends ComponentFrame {
         settingsButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                SwingUtilities.invokeLater(() -> {
-                    SettingsFrame settingsFrame = new SettingsFrame();
-                    settingsFrame.setVisible(true);
-                });
+                FramesManager.INSTANCE.hideOrShowFrame(SettingsFrame.class);
             }
         });
-        settingsButton.setToolTipText("Settings");
 
         JButton exitButton = componentsFactory.getIconButton("app/exit.png", 24,AppThemeColor.FRAME_1);
         exitButton.addMouseListener(new MouseAdapter() {
@@ -180,23 +152,22 @@ public class TaskBarFrame extends ComponentFrame {
             }
         });
 
-        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
         taskBarPanel.add(visibleMode);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
+        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(chatMode);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
+        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(chatFilter);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
+        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(timer);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
+        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(historyButton);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
+        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(moveButton);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
+        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(settingsButton);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
+        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(exitButton);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(4, 4)));
+        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
 
         // adding drag frame listeners
         visibleMode.addMouseListener(new DraggedFrameMouseListener());

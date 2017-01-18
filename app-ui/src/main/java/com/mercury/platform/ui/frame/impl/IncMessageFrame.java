@@ -17,16 +17,11 @@ import java.awt.*;
 /**
  * Created by Константин on 24.12.2016.
  */
-public class IncMessageFrame extends ComponentFrame implements Packable{
+public class IncMessageFrame extends ComponentFrame{
     private TradeMode tradeMode = TradeMode.DEFAULT;
 
     public IncMessageFrame(){
         super("Messages");
-    }
-
-    @Override
-    protected void init() {
-        super.init();
         setVisible(false);
     }
 
@@ -68,10 +63,6 @@ public class IncMessageFrame extends ComponentFrame implements Packable{
     @Override
     protected LayoutManager getFrameLayout() {
         return new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS);
-    }
-    @Override
-    protected String getFrameTitle() {
-        return null;
     }
 
     @Override

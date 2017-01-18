@@ -9,6 +9,7 @@ import com.mercury.platform.ui.components.fields.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
 import com.mercury.platform.ui.frame.ComponentFrame;
+import com.mercury.platform.ui.frame.TitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -18,20 +19,20 @@ import java.awt.event.*;
 /**
  * Created by Константин on 27.12.2016.
  */
-public class HistoryFrame extends ComponentFrame {
+public class HistoryFrame extends TitledComponentFrame {
     private JPanel messagesContainer;
     private JScrollPane scrollPane;
     private final int SCROLL_HEIGHT = 600;
 
     public HistoryFrame() {
         super("History");
+        this.setVisible(false);
+        prevState = FrameStates.HIDE;
     }
 
     @Override
-    protected void init() {
-        super.init();
-        this.setVisible(false);
-        prevState = FrameStates.HIDE;
+    protected void initialize() {
+        super.initialize();
         messagesContainer = new JPanel();
         messagesContainer.setBackground(AppThemeColor.TRANSPARENT);
         messagesContainer.setLayout(new BoxLayout(messagesContainer,BoxLayout.Y_AXIS));

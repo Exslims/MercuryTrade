@@ -22,7 +22,6 @@ public abstract class ComponentFrame extends OverlaidFrame implements Packable {
     private float minOpacity = 1f;
     private float maxOpacity = 1f;
 
-    protected JPanel miscPanel;
     protected int x;
     protected int y;
     protected boolean withinResizeSpace = false;
@@ -38,9 +37,9 @@ public abstract class ComponentFrame extends OverlaidFrame implements Packable {
         super(title);
     }
 
-    protected void init(){
+    @Override
+    protected void initialize(){
         initAnimationTimers();
-        initHeaderPanel();
 
         this.addMouseListener(new ResizeMouseListener());
         this.addMouseMotionListener(new ResizeMouseMotionListener());
@@ -55,34 +54,6 @@ public abstract class ComponentFrame extends OverlaidFrame implements Packable {
 
 
     }
-    private void initHeaderPanel(){
-        if(getFrameTitle() != null && layout instanceof BorderLayout) {
-            JPanel headerPanel = new JPanel(new BorderLayout());
-            headerPanel.setBackground(AppThemeColor.TRANSPARENT);
-            headerPanel.setBorder(BorderFactory.createEmptyBorder(-6, 0, -6, 0));
-
-            JLabel frameTitleLabel = componentsFactory.getTextLabel(getFrameTitle());
-            frameTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            frameTitleLabel.addMouseListener(new DraggedFrameMouseListener());
-            frameTitleLabel.addMouseMotionListener(new DraggedFrameMotionListener());
-
-            headerPanel.add(frameTitleLabel, BorderLayout.CENTER);
-
-            miscPanel = new JPanel();
-            miscPanel.setBackground(AppThemeColor.TRANSPARENT);
-            JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_1);
-            hideButton.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    ComponentFrame.this.setVisible(false);
-                }
-            });
-            miscPanel.add(hideButton);
-            headerPanel.add(miscPanel, BorderLayout.LINE_END);
-            this.add(headerPanel, BorderLayout.PAGE_START);
-        }
-    }
-    protected abstract String getFrameTitle();
 
     public void disableHideEffect(){
         this.setOpacity(maxOpacity);

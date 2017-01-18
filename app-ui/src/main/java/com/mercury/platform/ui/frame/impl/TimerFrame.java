@@ -4,6 +4,7 @@ import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.ComponentFrame;
+import com.mercury.platform.ui.frame.TitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -14,7 +15,7 @@ import java.awt.event.MouseEvent;
 /**
  * Created by Константин on 06.01.2017.
  */
-public class TimerFrame extends ComponentFrame {
+public class TimerFrame extends TitledComponentFrame {
     private Timer timeAgo;
     private JLabel timeLabel;
     private int seconds = 0;
@@ -22,15 +23,15 @@ public class TimerFrame extends ComponentFrame {
     private int hours = 0;
     private int mapCount = 0;
     private int chaosSpend = 0;
-    protected TimerFrame() {
+    public TimerFrame() {
         super("MT-Timer");
-        createUI();
         this.setVisible(false);
         prevState = FrameStates.HIDE;
-        this.pack();
     }
 
-    private void createUI() {
+    @Override
+    protected void initialize() {
+        super.initialize();
         JPanel root = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         JButton play = componentsFactory.getIconButton("app/timer-play.png", 16,AppThemeColor.FRAME_1);
         play.addMouseListener(new MouseAdapter() {
@@ -128,6 +129,7 @@ public class TimerFrame extends ComponentFrame {
         miscPanel.add(mapCountPanel);
         miscPanel.add(chaosSpendPanel);
         this.add(miscPanel,BorderLayout.PAGE_END);
+        this.pack();
     }
     private Timer getNewTimer(){
         timeAgo = new Timer(1000, e -> {
@@ -183,7 +185,6 @@ public class TimerFrame extends ComponentFrame {
 
     @Override
     public void initHandlers() {
-
     }
 
     @Override
@@ -195,4 +196,7 @@ public class TimerFrame extends ComponentFrame {
     protected LayoutManager getFrameLayout() {
         return new BorderLayout();
     }
+
+
+
 }

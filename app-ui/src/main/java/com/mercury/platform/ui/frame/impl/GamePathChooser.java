@@ -2,6 +2,7 @@ package com.mercury.platform.ui.frame.impl;
 import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.ui.frame.ComponentFrame;
+import com.mercury.platform.ui.frame.TitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -12,21 +13,21 @@ import java.awt.event.MouseEvent;
 /**
  * Created by Константин on 09.12.2016.
  */
-public class GamePathChooser extends ComponentFrame {
+public class GamePathChooser extends TitledComponentFrame {
     private String gamePath = "";
     private JLabel errorLabel;
     public GamePathChooser() {
         super("Choose game path");
+        processingHideEvent = false;
     }
 
     @Override
-    protected void init() {
-        super.init();
+    protected void initialize() {
+        super.initialize();
         this.add(getChooserPanel(),BorderLayout.CENTER);
         this.add(getMiscPanel(),BorderLayout.PAGE_END);
 
         pack();
-        processingHideEvent = false;
     }
 
     @Override

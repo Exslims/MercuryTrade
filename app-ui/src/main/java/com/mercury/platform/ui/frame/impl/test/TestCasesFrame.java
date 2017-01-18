@@ -1,11 +1,11 @@
-package com.mercury.platform.ui.components.test;
+package com.mercury.platform.ui.frame.impl.test;
 
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.pojo.CurrencyMessage;
 import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.shared.pojo.Message;
-import com.mercury.platform.ui.frame.ComponentFrame;
+import com.mercury.platform.ui.frame.TitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -19,19 +19,12 @@ import java.util.List;
 /**
  * Created by Константин on 26.12.2016.
  */
-public class TestCasesFrame extends ComponentFrame {
+public class TestCasesFrame extends TitledComponentFrame {
     private List<String> randomMessages;
     private List<String> nickNames;
 
     public TestCasesFrame() {
         super("Test cases");
-    }
-
-    @Override
-    protected void init() {
-        super.init();
-        add(getTestCasesPanel(), BorderLayout.CENTER);
-        pack();
         randomMessages = new ArrayList<>();
         nickNames = new ArrayList<>();
         randomMessages.add("2016/12/26 05:20:19 Hi, I would like to buy your Corpse Ring listed for 90 chaos in Breach (stash tab \"Gear\"; position: left 11, top 2) offer");
@@ -51,6 +44,13 @@ public class TestCasesFrame extends ComponentFrame {
         nickNames.add("Xach");
         nickNames.add("Yaitaly");
         nickNames.add("xXxДолбоебxXx");
+    }
+
+    @Override
+    protected void initialize() {
+        super.initialize();
+        add(getTestCasesPanel(), BorderLayout.CENTER);
+        pack();
     }
 
     @Override

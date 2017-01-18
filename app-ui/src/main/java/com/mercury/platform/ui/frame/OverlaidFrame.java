@@ -34,10 +34,6 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         setBackground(AppThemeColor.FRAME);
         setFocusableWindowState(false);
         setFocusable(false);
-        this.layout = getFrameLayout();
-        setLayout(layout);
-        init();
-        initHandlers();
 
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -56,19 +52,17 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
                                 prevState = FrameStates.SHOW;
                             }
                             if (prevState.equals(FrameStates.SHOW)) {
-                                OverlaidFrame.this.setAlwaysOnTop(true);
-                                OverlaidFrame.this.setVisible(true);
+                                showComponent();
                             }
                         }
                         break;
                         case HIDE: {
-                            if (!OverlaidFrame.this.isShowing()) {
+                            if (!OverlaidFrame.this.isVisible()) {
                                 prevState = FrameStates.HIDE;
                             } else {
                                 prevState = FrameStates.SHOW;
                             }
-                            OverlaidFrame.this.setAlwaysOnTop(false);
-                            OverlaidFrame.this.setVisible(false);
+                            hideComponent();
                         }
                         break;
                     }
@@ -76,9 +70,14 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
             }
         });
     }
-
+    public void init(){
+        this.layout = getFrameLayout();
+        setLayout(layout);
+        initialize();
+        initHandlers();
+    }
     protected abstract LayoutManager getFrameLayout();
-    protected abstract void init();
+    protected abstract void initialize();
 
     protected boolean isMouseWithInFrame(){
         return this.getBounds().contains(MouseInfo.getPointerInfo().getLocation());
