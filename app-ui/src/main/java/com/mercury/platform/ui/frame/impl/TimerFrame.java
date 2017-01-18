@@ -6,6 +6,7 @@ import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,14 +34,14 @@ public class TimerFrame extends TitledComponentFrame {
     protected void initialize() {
         super.initialize();
         JPanel root = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton play = componentsFactory.getIconButton("app/timer-play.png", 16,AppThemeColor.FRAME_1);
+        JButton play = componentsFactory.getIconButton("app/timer-play.png", 16,AppThemeColor.FRAME_1, TooltipConstants.PLAY);
         play.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 getNewTimer().start();
             }
         });
-        JButton pause = componentsFactory.getIconButton("app/timer-pause.png", 16,AppThemeColor.FRAME_1);
+        JButton pause = componentsFactory.getIconButton("app/timer-pause.png", 16,AppThemeColor.FRAME_1,TooltipConstants.PAUSE);
         pause.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -49,7 +50,7 @@ public class TimerFrame extends TitledComponentFrame {
                 }
             }
         });
-        JButton stop = componentsFactory.getIconButton("app/timer-stop.png", 16,AppThemeColor.FRAME_1);
+        JButton stop = componentsFactory.getIconButton("app/timer-stop.png", 16,AppThemeColor.FRAME_1,TooltipConstants.STOP);
         stop.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -63,7 +64,7 @@ public class TimerFrame extends TitledComponentFrame {
         });
         JLabel mapCountLabel = componentsFactory.getTextLabel("Map count: 0");
         JLabel chaosSpendLabel = componentsFactory.getTextLabel("Chaos spend: 0");
-        JButton reset = componentsFactory.getIconButton("app/timer-reset.png", 16,AppThemeColor.FRAME_1);
+        JButton reset = componentsFactory.getIconButton("app/timer-reset.png", 16,AppThemeColor.FRAME_1, TooltipConstants.RESET);
         reset.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -160,9 +161,9 @@ public class TimerFrame extends TitledComponentFrame {
     }
     private JPanel getIncrementRow(JLabel label, MouseAdapter plusListener, MouseAdapter minusListener){
         JPanel panel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton plus = componentsFactory.getIconButton("app/invite.png", 14,AppThemeColor.FRAME_1);
+        JButton plus = componentsFactory.getIconButton("app/invite.png", 14,AppThemeColor.FRAME_1,"");
         plus.addMouseListener(plusListener);
-        JButton minus = componentsFactory.getIconButton("app/kick.png", 14,AppThemeColor.FRAME_1);
+        JButton minus = componentsFactory.getIconButton("app/kick.png", 14,AppThemeColor.FRAME_1,"");
         minus.addMouseListener(minusListener);
         panel.add(label);
         panel.add(plus);

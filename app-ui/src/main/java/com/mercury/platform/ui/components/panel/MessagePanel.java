@@ -14,6 +14,7 @@ import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.Packable;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.shared.MessageParser;
+import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -188,28 +189,28 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
 
         JPanel interactionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         interactionPanel.setBackground(AppThemeColor.TRANSPARENT);
-        JButton inviteButton = componentsFactory.getIconButton("app/invite.png", 14, AppThemeColor.HEADER);
+        JButton inviteButton = componentsFactory.getIconButton("app/invite.png", 14, AppThemeColor.HEADER, TooltipConstants.INVITE);
         inviteButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/invite " + whisper));
             }
         });
-        JButton kickButton = componentsFactory.getIconButton("app/kick.png", 14, AppThemeColor.HEADER);
+        JButton kickButton = componentsFactory.getIconButton("app/kick.png", 14, AppThemeColor.HEADER, TooltipConstants.KICK);
         kickButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/kick " + whisper));
             }
         });
-        tradeButton = componentsFactory.getIconButton("app/trade.png",14, AppThemeColor.HEADER);
+        tradeButton = componentsFactory.getIconButton("app/trade.png",14, AppThemeColor.HEADER, TooltipConstants.TRADE);
         tradeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/tradewith " + whisper));
             }
         });
-        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png",15, AppThemeColor.HEADER);
+        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png",15, AppThemeColor.HEADER, TooltipConstants.OPEN_CHAT);
         openChatButton.setToolTipText("Open chat");
         openChatButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -217,7 +218,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 EventRouter.INSTANCE.fireEvent(new OpenChatEvent(whisper));
             }
         });
-        JButton hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.HEADER);
+        JButton hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.HEADER,TooltipConstants.HIDE_PANEL);
         hideButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -277,7 +278,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     }
     private JButton getExpandButton(){
         String iconPath = (style == MessagePanelStyle.SMALL) ? "app/expand-mp.png":"app/collapse-mp.png";
-        expandButton = componentsFactory.getIconButton(iconPath, 16, AppThemeColor.HEADER);
+        expandButton = componentsFactory.getIconButton(iconPath, 16, AppThemeColor.HEADER,TooltipConstants.EXPAND_COLLAPSE);
         expandButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

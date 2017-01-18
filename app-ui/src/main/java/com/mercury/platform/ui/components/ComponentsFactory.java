@@ -1,5 +1,8 @@
 package com.mercury.platform.ui.components;
 
+import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.events.custom.HideTooltipEvent;
+import com.mercury.platform.shared.events.custom.ShowTooltipEvent;
 import com.mercury.platform.ui.components.fields.MercuryComboBoxUI;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -14,6 +17,8 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -137,7 +142,7 @@ public class ComponentsFactory {
      * @param iconSize icon size
      * @return JButton object with icon
      */
-    public JButton getIconButton(String iconPath, int iconSize, Color background){
+    public JButton getIconButton(String iconPath, int iconSize, Color background, String tooltip){
         JButton button = new JButton(""){
             @Override
             protected void paintBorder(Graphics g) {
@@ -151,6 +156,28 @@ public class ComponentsFactory {
         button.addChangeListener(e->{
             if(!button.getModel().isPressed()){
                 button.setBackground(background);
+            }
+        });
+        button.addMouseListener(new MouseAdapter() {
+            private Timer tooltipTimer;
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                System.out.println("in button");
+//                tooltipTimer = new Timer(0, e1 -> {
+//                    System.out.println("sent tooltip");
+                    EventRouter.INSTANCE.fireEvent(new ShowTooltipEvent(tooltip, MouseInfo.getPointerInfo().getLocation()));
+//                });
+//                tooltipTimer.setRepeats(false);
+//                tooltipTimer.setInitialDelay(1000);
+//                tooltipTimer.start();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                System.out.println("out button");
+                EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+//                tooltipTimer.stop();
+//                System.out.println("stopping timer");
             }
         });
 //        button.setContentAreaFilled(false);
@@ -175,12 +202,12 @@ public class ComponentsFactory {
      * @param iconSize icon size
      * @return bordered JButton with icon
      */
-    public JButton getBorderedIconButton(String iconPath, int iconSize){
+    public JButton getBorderedIconButton(String iconPath, int iconSize, String tooltip){
         CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
                 BorderFactory.createLineBorder(AppThemeColor.BUTTON, 2)
         );
-        JButton iconButton = getIconButton(iconPath, iconSize, AppThemeColor.FRAME_1);
+        JButton iconButton = getIconButton(iconPath, iconSize, AppThemeColor.FRAME_1,tooltip);
         iconButton.setBorder(BorderFactory.createLineBorder(AppThemeColor.BUTTON, 2));
         return iconButton;
     }
@@ -192,8 +219,8 @@ public class ComponentsFactory {
      * @param buttonSize button size (its only preferred)
      * @return JButton with icon
      */
-    public JButton getIconButton(String iconPath, int iconSize, Dimension buttonSize){
-        JButton iconButton = getIconButton(iconPath, iconSize, AppThemeColor.FRAME_1);
+    public JButton getIconButton(String iconPath, int iconSize, Dimension buttonSize, String tooltip){
+        JButton iconButton = getIconButton(iconPath, iconSize, AppThemeColor.FRAME_1, tooltip);
         iconButton.setPreferredSize(buttonSize);
         iconButton.setSize(buttonSize);
         return iconButton;

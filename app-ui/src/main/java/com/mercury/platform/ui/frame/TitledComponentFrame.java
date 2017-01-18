@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.frame;
 
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +38,7 @@ public abstract class TitledComponentFrame extends ComponentFrame {
             headerPanel.add(frameTitleLabel, BorderLayout.CENTER);
 
             miscPanel.setBackground(AppThemeColor.TRANSPARENT);
-            JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_1);
+            JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_1, TooltipConstants.CLOSE_BUTTON);
             hideButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {

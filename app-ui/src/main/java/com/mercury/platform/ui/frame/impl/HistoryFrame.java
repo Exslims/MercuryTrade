@@ -11,6 +11,7 @@ import com.mercury.platform.ui.components.panel.MessagePanelStyle;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,7 +73,7 @@ public class HistoryFrame extends TitledComponentFrame {
     }
 
     private void addInteractionsButtons(){
-        JButton clearButton = componentsFactory.getIconButton("app/clear-icon.png", 12,AppThemeColor.FRAME_1);
+        JButton clearButton = componentsFactory.getIconButton("app/clear-icon.png", 12,AppThemeColor.FRAME_1, TooltipConstants.HISTORY_CLEAR);
         clearButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

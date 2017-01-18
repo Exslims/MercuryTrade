@@ -12,6 +12,7 @@ import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,7 +63,7 @@ public class OutMessageFrame extends ComponentFrame {
             JLabel itemLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_IMPORTANT, TextAlignment.CENTER, 16f, ((ItemMessage)message).getItemName());
             interactionPanel.add(itemLabel,BorderLayout.CENTER);
         }
-        JButton hoIn = componentsFactory.getIconButton("app/hideout-in.png", 16, AppThemeColor.HEADER);
+        JButton hoIn = componentsFactory.getIconButton("app/hideout-in.png", 16, AppThemeColor.HEADER, TooltipConstants.HO_IN);
         hoIn.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -70,7 +71,7 @@ public class OutMessageFrame extends ComponentFrame {
             }
         });
         miscPanel.add(hoIn);
-        JButton hoOut = componentsFactory.getIconButton("app/hideout-out.png", 16, AppThemeColor.HEADER);
+        JButton hoOut = componentsFactory.getIconButton("app/hideout-out.png", 16, AppThemeColor.HEADER, TooltipConstants.HO_OUT);
         hoOut.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -78,7 +79,7 @@ public class OutMessageFrame extends ComponentFrame {
             }
         });
         miscPanel.add(hoOut);
-        JButton hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.HEADER);
+        JButton hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.HEADER,TooltipConstants.HIDE_PANEL);
         hideButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

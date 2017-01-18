@@ -2,6 +2,7 @@ package com.mercury.platform.ui.components.panel;
 
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,7 +43,7 @@ public class CollapsiblePanel<InnerPanel extends JPanel> extends JPanel {
     }
     private JButton getExpandButton(){
         String iconPath = expand ? "app/collapse.png":"app/expand.png";
-        JButton expandButton = componentsFactory.getIconButton(iconPath, 16,AppThemeColor.FRAME_1);
+        JButton expandButton = componentsFactory.getIconButton(iconPath, 16,AppThemeColor.FRAME_1, TooltipConstants.EXPAND_COLLAPSE);
         expandButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

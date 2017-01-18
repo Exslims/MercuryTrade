@@ -34,7 +34,7 @@ public class FramesManager {
         framesMap.put(TaskBarFrame.class,new TaskBarFrame());
         framesMap.put(TimerFrame.class,new TimerFrame());
         framesMap.put(TestCasesFrame.class,new TestCasesFrame());
-//        framesMap.put(TooltipFrame.class,new TooltipFrame());
+        framesMap.put(TooltipFrame.class,new TooltipFrame());
 
         framesMap.forEach((k,v)->{
             v.init();

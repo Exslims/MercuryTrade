@@ -5,6 +5,7 @@ import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.ui.FramesManager;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.TooltipConstants;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.ease.Spline;
 
@@ -68,7 +69,7 @@ public class TaskBarFrame extends ComponentFrame {
             }
         });
 
-        JButton visibleMode = componentsFactory.getIconButton("app/visible-always-mode.png",24,AppThemeColor.FRAME_1);
+        JButton visibleMode = componentsFactory.getIconButton("app/visible-always-mode.png",24,AppThemeColor.FRAME_1, TooltipConstants.VISIBLE_MODE);
         visibleMode.addMouseListener(new MouseAdapter() {
             private String currentMode = "always";
             @Override
@@ -87,7 +88,7 @@ public class TaskBarFrame extends ComponentFrame {
             }
         });
 
-        JButton chatMode = componentsFactory.getIconButton("app/standard-mode.png",24,AppThemeColor.FRAME_1);
+        JButton chatMode = componentsFactory.getIconButton("app/standard-mode.png",24,AppThemeColor.FRAME_1,TooltipConstants.TRADE_MODE);
         chatMode.addMouseListener(new MouseAdapter() {
             private String currentMode = "standard";
             @Override
@@ -108,11 +109,11 @@ public class TaskBarFrame extends ComponentFrame {
             }
         });
 
-        JButton chatFilter = componentsFactory.getIconButton("app/chat-filter.png",24,AppThemeColor.FRAME_1);
+        JButton chatFilter = componentsFactory.getIconButton("app/chat-filter.png",24,AppThemeColor.FRAME_1,TooltipConstants.CHAT_FILTER);
         chatFilter.addMouseListener(new MouseAdapter() {
 
         });
-        JButton timer = componentsFactory.getIconButton("app/timer.png",24,AppThemeColor.FRAME_1);
+        JButton timer = componentsFactory.getIconButton("app/timer.png",24,AppThemeColor.FRAME_1,TooltipConstants.TIMER);
         timer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -120,7 +121,7 @@ public class TaskBarFrame extends ComponentFrame {
             }
         });
 
-        JButton historyButton = componentsFactory.getIconButton("app/history.png",24,AppThemeColor.FRAME_1);
+        JButton historyButton = componentsFactory.getIconButton("app/history.png",24,AppThemeColor.FRAME_1,TooltipConstants.HISTORY);
         historyButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -128,7 +129,7 @@ public class TaskBarFrame extends ComponentFrame {
             }
         });
 
-        JButton moveButton = componentsFactory.getIconButton("app/drag_and_drop.png", 24,AppThemeColor.FRAME_1);
+        JButton moveButton = componentsFactory.getIconButton("app/drag_and_drop.png", 24,AppThemeColor.FRAME_1,TooltipConstants.SETUP_FRAMES_LOCATION);
         moveButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -136,7 +137,7 @@ public class TaskBarFrame extends ComponentFrame {
             }
         });
 
-        JButton settingsButton = componentsFactory.getIconButton("app/settings.png", 26,AppThemeColor.FRAME_1);
+        JButton settingsButton = componentsFactory.getIconButton("app/settings.png", 26,AppThemeColor.FRAME_1,TooltipConstants.SETTINGS);
         settingsButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -144,7 +145,7 @@ public class TaskBarFrame extends ComponentFrame {
             }
         });
 
-        JButton exitButton = componentsFactory.getIconButton("app/exit.png", 24,AppThemeColor.FRAME_1);
+        JButton exitButton = componentsFactory.getIconButton("app/exit.png", 24,AppThemeColor.FRAME_1,TooltipConstants.EXIT);
         exitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
