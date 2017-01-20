@@ -8,7 +8,7 @@ public class TooltipConstants {
     public static final String CLOSE_BUTTON = "Close window.";
     //TaskBar tooltips
     public static final String VISIBLE_MODE = "1111111";
-    public static final String TRADE_MODE = "TEST";
+    public static final String TRADE_MODE = "33333";
     public static final String CHAT_FILTER = "TEST";
     public static final String TIMER = "TEST";
     public static final String HISTORY = "TEST";
