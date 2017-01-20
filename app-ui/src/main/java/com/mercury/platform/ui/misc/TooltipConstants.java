@@ -14,7 +14,7 @@ public class TooltipConstants {
     public static final String HISTORY = "TEST";
     public static final String SETUP_FRAMES_LOCATION = "TEST";
     public static final String SETTINGS = "TEST";
-    public static final String EXIT = "TEST";
+    public static final String EXIT = "TEST1";
 
     //Timer tooltips
     public static final String PLAY = "";
