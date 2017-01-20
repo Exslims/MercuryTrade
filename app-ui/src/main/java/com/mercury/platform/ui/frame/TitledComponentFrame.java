@@ -28,13 +28,17 @@ public abstract class TitledComponentFrame extends ComponentFrame {
         if(layout instanceof BorderLayout) {
             JPanel headerPanel = new JPanel(new BorderLayout());
             headerPanel.setBackground(AppThemeColor.TRANSPARENT);
-            headerPanel.setBorder(BorderFactory.createEmptyBorder(-6, 0, -6, 0));
+            headerPanel.setBorder(BorderFactory.createEmptyBorder(-4, 0, 0, 0));
 
+            JLabel appIcon = componentsFactory.getIconLabel("app/app-icon.png", 15);
             JLabel frameTitleLabel = componentsFactory.getTextLabel(getFrameTitle());
-            frameTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            frameTitleLabel.setHorizontalAlignment(SwingConstants.LEFT);
+            frameTitleLabel.setVerticalAlignment(SwingConstants.CENTER);
             frameTitleLabel.addMouseListener(new DraggedFrameMouseListener());
             frameTitleLabel.addMouseMotionListener(new DraggedFrameMotionListener());
 
+            appIcon.setBorder(BorderFactory.createEmptyBorder(0,3,0,0));
+            headerPanel.add(appIcon,BorderLayout.LINE_START);
             headerPanel.add(frameTitleLabel, BorderLayout.CENTER);
 
             miscPanel.setBackground(AppThemeColor.TRANSPARENT);
@@ -51,4 +55,9 @@ public abstract class TitledComponentFrame extends ComponentFrame {
         }
     }
     protected abstract String getFrameTitle();
+
+    @Override
+    protected LayoutManager getFrameLayout() {
+        return new BorderLayout();
+    }
 }

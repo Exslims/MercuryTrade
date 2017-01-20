@@ -35,11 +35,6 @@ public class GamePathChooser extends TitledComponentFrame {
         return "Choose game path";
     }
 
-    @Override
-    protected LayoutManager getFrameLayout() {
-        return new BorderLayout();
-    }
-
     private JPanel getChooserPanel(){
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(AppThemeColor.TRANSPARENT);

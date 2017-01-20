@@ -94,9 +94,4 @@ public class SettingsFrame extends TitledComponentFrame {
     protected String getFrameTitle() {
         return "Settings";
     }
-
-    @Override
-    protected LayoutManager getFrameLayout() {
-        return new BorderLayout();
-    }
 }

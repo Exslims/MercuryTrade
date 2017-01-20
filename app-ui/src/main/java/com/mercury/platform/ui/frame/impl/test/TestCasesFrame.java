@@ -57,10 +57,6 @@ public class TestCasesFrame extends TitledComponentFrame {
     protected String getFrameTitle() {
         return "Test cases";
     }
-    @Override
-    protected LayoutManager getFrameLayout() {
-        return new BorderLayout();
-    }
 
     private JPanel getTestCasesPanel(){
         JPanel testPanel = new JPanel(new GridBagLayout());

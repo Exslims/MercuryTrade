@@ -192,12 +192,4 @@ public class TimerFrame extends TitledComponentFrame {
     protected String getFrameTitle() {
         return "Timer";
     }
-
-    @Override
-    protected LayoutManager getFrameLayout() {
-        return new BorderLayout();
-    }
-
-
-
 }

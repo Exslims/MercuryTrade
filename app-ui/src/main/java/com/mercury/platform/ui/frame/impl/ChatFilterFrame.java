@@ -22,9 +22,4 @@ public class ChatFilterFrame extends TitledComponentFrame {
     protected String getFrameTitle() {
         return "Chat filter";
     }
-
-    @Override
-    protected LayoutManager getFrameLayout() {
-        return new BorderLayout();
-    }
 }

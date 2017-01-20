@@ -67,11 +67,6 @@ public class HistoryFrame extends TitledComponentFrame {
         return "History";
     }
 
-    @Override
-    protected LayoutManager getFrameLayout() {
-        return new BorderLayout();
-    }
-
     private void addInteractionsButtons(){
         JButton clearButton = componentsFactory.getIconButton("app/clear-icon.png", 12,AppThemeColor.FRAME_1, TooltipConstants.HISTORY_CLEAR);
         clearButton.addMouseListener(new MouseAdapter() {
