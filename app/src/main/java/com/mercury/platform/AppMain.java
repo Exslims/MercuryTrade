@@ -17,6 +17,7 @@ public class AppMain {
         if (gamePath == null || !ConfigManager.INSTANCE.isValidPath(gamePath)) {
             SwingUtilities.invokeLater(()->{
                 GamePathChooser gamePathChooser = new GamePathChooser();
+                gamePathChooser.init();
                 gamePathChooser.setVisible(true);
             });
         } else {

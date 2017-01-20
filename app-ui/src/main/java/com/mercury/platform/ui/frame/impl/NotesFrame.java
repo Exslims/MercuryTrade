@@ -22,6 +22,7 @@ public class NotesFrame extends TitledComponentFrame {
         super("MT-NotesFrame");
         this.setVisible(true); //todo from config manager
         processingSaveLocAndSize = false;
+        this.setMinimumSize(new Dimension(240,102));
     }
 
     @Override
@@ -37,6 +38,8 @@ public class NotesFrame extends TitledComponentFrame {
         rootPanel.add(getNavBar(),BorderLayout.PAGE_END);
         this.add(rootPanel,BorderLayout.CENTER);
         this.pack();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
     }
     private JPanel getNavBar(){
         JPanel navBar = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.RIGHT));

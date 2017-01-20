@@ -25,7 +25,6 @@ public class FramesManager {
     }
     public void start(){
 //        framesMap.put(ChatFilterFrame.class,new ChatFilterFrame());
-        framesMap.put(GamePathChooser.class,new GamePathChooser());
         framesMap.put(HistoryFrame.class,new HistoryFrame());
         framesMap.put(IncMessageFrame.class,new IncMessageFrame());
         framesMap.put(NotificationFrame.class,new NotificationFrame());
