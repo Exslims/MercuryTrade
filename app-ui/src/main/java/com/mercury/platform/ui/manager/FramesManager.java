@@ -1,4 +1,4 @@
-package com.mercury.platform.ui;
+package com.mercury.platform.ui.manager;
 
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.UILoadedEvent;
@@ -35,6 +35,7 @@ public class FramesManager {
         framesMap.put(TimerFrame.class,new TimerFrame());
         framesMap.put(TestCasesFrame.class,new TestCasesFrame());
         framesMap.put(TooltipFrame.class,new TooltipFrame());
+        framesMap.put(NotesFrame.class,new NotesFrame());
 
         framesMap.forEach((k,v)->{
             v.init();

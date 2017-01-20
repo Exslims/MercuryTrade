@@ -2,7 +2,7 @@ package com.mercury.platform.ui.frame.impl;
 
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
-import com.mercury.platform.ui.FramesManager;
+import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
@@ -22,7 +22,7 @@ public class TaskBarFrame extends ComponentFrame {
     private Timeline collapseAnim;
 
     public TaskBarFrame() {
-        super("MercuryTrader");
+        super("MT-TaskBar");
     }
 
     @Override

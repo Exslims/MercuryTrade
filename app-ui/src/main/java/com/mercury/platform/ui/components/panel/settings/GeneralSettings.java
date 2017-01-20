@@ -2,7 +2,7 @@ package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.ui.components.panel.HasUI;
 import com.mercury.platform.ui.frame.ComponentFrame;
-import com.mercury.platform.ui.misc.HideSettingsManager;
+import com.mercury.platform.ui.manager.HideSettingsManager;
 
 import javax.swing.*;
 import java.awt.*;

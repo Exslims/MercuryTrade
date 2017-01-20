@@ -26,7 +26,7 @@ public class HistoryFrame extends TitledComponentFrame {
     private final int SCROLL_HEIGHT = 600;
 
     public HistoryFrame() {
-        super("History");
+        super("MT-History");
         this.setVisible(false);
         prevState = FrameStates.HIDE;
     }

@@ -7,14 +7,14 @@ public class TooltipConstants {
     //Shared
     public static final String CLOSE_BUTTON = "Close window.";
     //TaskBar tooltips
-    public static final String VISIBLE_MODE = "";
-    public static final String TRADE_MODE = "";
-    public static final String CHAT_FILTER = "";
-    public static final String TIMER = "";
-    public static final String HISTORY = "";
-    public static final String SETUP_FRAMES_LOCATION = "";
-    public static final String SETTINGS = "";
-    public static final String EXIT = "";
+    public static final String VISIBLE_MODE = "TEST";
+    public static final String TRADE_MODE = "TEST";
+    public static final String CHAT_FILTER = "TEST";
+    public static final String TIMER = "TEST";
+    public static final String HISTORY = "TEST";
+    public static final String SETUP_FRAMES_LOCATION = "TEST";
+    public static final String SETTINGS = "TEST";
+    public static final String EXIT = "TEST";
 
     //Timer tooltips
     public static final String PLAY = "";

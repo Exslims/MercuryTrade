@@ -27,8 +27,8 @@ public abstract class TitledComponentFrame extends ComponentFrame {
     private void initHeaderPanel(){
         if(layout instanceof BorderLayout) {
             JPanel headerPanel = new JPanel(new BorderLayout());
-            headerPanel.setBackground(AppThemeColor.TRANSPARENT);
-            headerPanel.setBorder(BorderFactory.createEmptyBorder(-4, 0, 0, 0));
+            headerPanel.setBackground(AppThemeColor.HEADER);
+            headerPanel.setBorder(BorderFactory.createEmptyBorder(-2, 0, -2, 0));
 
             JLabel appIcon = componentsFactory.getIconLabel("app/app-icon.png", 15);
             JLabel frameTitleLabel = componentsFactory.getTextLabel(getFrameTitle());
@@ -37,7 +37,7 @@ public abstract class TitledComponentFrame extends ComponentFrame {
             frameTitleLabel.addMouseListener(new DraggedFrameMouseListener());
             frameTitleLabel.addMouseMotionListener(new DraggedFrameMotionListener());
 
-            appIcon.setBorder(BorderFactory.createEmptyBorder(0,3,0,0));
+            appIcon.setBorder(BorderFactory.createEmptyBorder(0,5,0,0));
             headerPanel.add(appIcon,BorderLayout.LINE_START);
             headerPanel.add(frameTitleLabel, BorderLayout.CENTER);
 

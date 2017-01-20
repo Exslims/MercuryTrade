@@ -339,6 +339,15 @@ public class ComponentsFactory {
         }
         return new ImageIcon(icon);
     }
+    public ImageIcon getImage(String iconPath){
+        BufferedImage icon = null;
+        try {
+            BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
+        } catch (IOException e) {
+            log.error(e);
+        }
+        return new ImageIcon(icon);
+    }
 
     private Font getSelectedFont(FontStyle fontStyle){
         switch (fontStyle) {

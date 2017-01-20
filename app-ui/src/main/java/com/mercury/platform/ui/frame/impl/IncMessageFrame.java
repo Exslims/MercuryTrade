@@ -21,7 +21,7 @@ public class IncMessageFrame extends ComponentFrame{
     private TradeMode tradeMode = TradeMode.DEFAULT;
 
     public IncMessageFrame(){
-        super("Messages");
+        super("MT-IncMessagesFrame");
         setVisible(false);
     }
 

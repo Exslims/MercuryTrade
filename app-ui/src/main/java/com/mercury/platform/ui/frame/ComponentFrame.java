@@ -2,7 +2,7 @@ package com.mercury.platform.ui.frame;
 
 import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.HideSettingsManager;
+import com.mercury.platform.ui.manager.HideSettingsManager;
 import org.pushingpixels.trident.Timeline;
 
 import javax.swing.*;
@@ -32,6 +32,7 @@ public abstract class ComponentFrame extends OverlaidFrame implements Packable {
     private HideEffectListener hideEffectListener;
     private boolean hideAnimationEnable = false;
 
+    protected boolean processingSaveLocAndSize = true;
 
     protected ComponentFrame(String title) {
         super(title);
@@ -45,9 +46,11 @@ public abstract class ComponentFrame extends OverlaidFrame implements Packable {
         this.addMouseMotionListener(new ResizeMouseMotionListener());
         HideSettingsManager.INSTANCE.registerFrame(this);
 
-        FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
-        this.setLocation(frameSettings.getFrameLocation());
-        this.setMinimumSize(new Dimension(frameSettings.getFrameSize().width,0));
+        if(processingSaveLocAndSize) {
+            FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
+            this.setLocation(frameSettings.getFrameLocation());
+            this.setMinimumSize(new Dimension(frameSettings.getFrameSize().width, 0));
+        }
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, BORDER_THICKNESS)));

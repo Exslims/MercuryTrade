@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.misc;
+package com.mercury.platform.ui.manager;
 
 import com.mercury.platform.ui.frame.ComponentFrame;
 

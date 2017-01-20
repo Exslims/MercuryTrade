@@ -17,7 +17,7 @@ public class GamePathChooser extends TitledComponentFrame {
     private String gamePath = "";
     private JLabel errorLabel;
     public GamePathChooser() {
-        super("Choose game path");
+        super("MT-ChooseGamePath");
         processingHideEvent = false;
     }
 

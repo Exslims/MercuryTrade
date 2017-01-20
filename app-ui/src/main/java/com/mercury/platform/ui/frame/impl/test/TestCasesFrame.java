@@ -24,7 +24,7 @@ public class TestCasesFrame extends TitledComponentFrame {
     private List<String> nickNames;
 
     public TestCasesFrame() {
-        super("Test cases");
+        super("MT-TestCases");
         randomMessages = new ArrayList<>();
         nickNames = new ArrayList<>();
         randomMessages.add("2016/12/26 05:20:19 Hi, I would like to buy your Corpse Ring listed for 90 chaos in Breach (stash tab \"Gear\"; position: left 11, top 2) offer");

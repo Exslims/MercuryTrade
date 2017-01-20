@@ -2,14 +2,10 @@ package com.mercury.platform;
 
 import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.ui.FramesManager;
+import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.frame.impl.GamePathChooser;
-import com.mercury.platform.ui.frame.impl.SettingsFrame;
-import com.mercury.platform.ui.frame.impl.TaskBarFrame;
 
 import javax.swing.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Start application class, checking game path from config file.
