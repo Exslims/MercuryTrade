@@ -3,6 +3,7 @@ import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
+import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -93,7 +94,7 @@ public class GamePathChooser extends TitledComponentFrame {
                         ConfigManager.INSTANCE.saveGamePath(gamePath);
                         GamePathChooser.this.setVisible(false);
                         new AppStarter().startApplication();
-                        SwingUtilities.invokeLater(TaskBarFrame::new);
+                        FramesManager.INSTANCE.start();
                         timer.stop();
                     });
                     timer.start();
