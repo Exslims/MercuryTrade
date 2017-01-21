@@ -30,7 +30,7 @@ Forces notification panels to NOT stack like cards - all notification you receiv
 
 &nbsp; *Accessibility status*
 
-MercuryTrade's notifications have an indication for when a person comes in or leaves your hideout - that way you can trade with him as soon as possible. Especially useful for SuperTradeMode.
+MercuryTrade's notifications have an indication for when a person comes in or leaves your hideout - that way you can trade players him as soon as possible. Especially useful for SuperTradeMode.
 
 An important mention: in Path of Exile when you use your stash you can't click on party frames, because they're hidden behind the stash window. MercuryTrader solves this inconvenience as you can interact with the person via a related notification panel.
 
