@@ -131,7 +131,7 @@ public class NotesFrame extends TitledComponentFrame {
             JPanel innerContent = new JPanel(new BorderLayout());
             innerContent.setBackground(AppThemeColor.SLIDE_BG);
             innerContent.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
-            innerContent.setPreferredSize(new Dimension(480,230));
+            innerContent.setPreferredSize(new Dimension(480,250));
 
             JLabel image = componentsFactory.getIconLabel(note.getImagePath());
             JTextArea textArea = componentsFactory.getSimpleTextAre(note.getText());
