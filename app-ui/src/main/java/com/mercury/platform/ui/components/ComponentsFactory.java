@@ -274,9 +274,17 @@ public class ComponentsFactory {
     public JLabel getIconLabel(String iconPath, int size){
         JLabel iconLabel = new JLabel();
         try {
+            iconLabel.setIcon(getIcon(iconPath,size));
+        } catch (Exception e) {
+            return getTextLabel(StringUtils.substringBetween(iconPath,"/","."));
+        }
+        return iconLabel;
+    }
+    public JLabel getIconLabel(String iconPath){
+        JLabel iconLabel = new JLabel();
+        try {
             BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
-            BufferedImage icon = Scalr.resize(buttonIcon, size);
-            iconLabel.setIcon(new ImageIcon(icon));
+            iconLabel.setIcon(new ImageIcon(buttonIcon));
         } catch (Exception e) {
             return getTextLabel(StringUtils.substringBetween(iconPath,"/","."));
         }
@@ -347,6 +355,17 @@ public class ComponentsFactory {
             log.error(e);
         }
         return new ImageIcon(icon);
+    }
+    public JTextArea getSimpleTextAre(String text){
+        JTextArea area = new JTextArea(text);
+        area.setEditable(false);
+        area.setWrapStyleWord(true);
+        area.setLineWrap(true);
+        area.setBackground(AppThemeColor.TRANSPARENT);
+        area.setBorder(null);
+        area.setFont(REGULAR_FONT.deriveFont(16f));
+        area.setForeground(AppThemeColor.TEXT_DEFAULT);
+        return area;
     }
 
     private Font getSelectedFont(FontStyle fontStyle){

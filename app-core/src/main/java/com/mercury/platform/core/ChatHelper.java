@@ -169,7 +169,6 @@ public class ChatHelper implements HasEventHandlers {
             clipboard.setContents(selection, null);
         });
         EventRouter.INSTANCE.registerHandler(SetForegroundGameEvent.class, event -> {
-            System.out.println("test");
             setForegroundWindow("Path of Exile");
         });
     }

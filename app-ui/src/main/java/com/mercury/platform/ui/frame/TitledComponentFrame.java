@@ -30,7 +30,7 @@ public abstract class TitledComponentFrame extends ComponentFrame {
             headerPanel.setBackground(AppThemeColor.HEADER);
             headerPanel.setBorder(BorderFactory.createEmptyBorder(-2, 0, -2, 0));
 
-            JLabel appIcon = componentsFactory.getIconLabel("app/app-icon.png", 15);
+            JLabel appIcon = componentsFactory.getIconLabel("app/app-icon.png", 16);
             JLabel frameTitleLabel = componentsFactory.getTextLabel(getFrameTitle());
             frameTitleLabel.setHorizontalAlignment(SwingConstants.LEFT);
             frameTitleLabel.setVerticalAlignment(SwingConstants.CENTER);

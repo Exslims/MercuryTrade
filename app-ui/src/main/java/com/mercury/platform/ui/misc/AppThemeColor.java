@@ -19,4 +19,6 @@ public class AppThemeColor {
     public static final Color FRAME_1 = new Color(42, 44, 43,1);
     public static final Color TRANSPARENT = new Color(0,0,0,0);
     public static final Color HEADER = new Color(55,65,64);
+    public static final Color SLIDE_BG = new Color(45, 55, 54);
+    public static final Color MSG_HEADER = new Color(52, 62, 61);
 }

@@ -20,7 +20,7 @@ public class FramesManager {
 
     private Map<Class,OverlaidFrame> framesMap;
 
-    public FramesManager() {
+    private FramesManager() {
         framesMap = new HashMap<>();
     }
     public void start(){
