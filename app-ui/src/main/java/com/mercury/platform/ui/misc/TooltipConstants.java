@@ -5,37 +5,37 @@ package com.mercury.platform.ui.misc;
  */
 public class TooltipConstants {
     //Shared
-    public static final String CLOSE_BUTTON = "Close window.";
+    public static final String CLOSE_BUTTON = "Close";
     //TaskBar tooltips
-    public static final String VISIBLE_MODE = "1111111";
-    public static final String TRADE_MODE = "TEST";
-    public static final String CHAT_FILTER = "TEST";
-    public static final String TIMER = "TEST";
-    public static final String HISTORY = "TEST";
-    public static final String SETUP_FRAMES_LOCATION = "TEST";
-    public static final String SETTINGS = "TEST";
-    public static final String EXIT = "TEST";
+    public static final String VISIBLE_MODE = "Do not Disturb \nActivate this mode if you don't want to receive notification pop-ups. \nThe messages still get stored in your history.";
+    public static final String TRADE_MODE = "SuperTradeMode \nAll notification you receive will be displayed unfolded.";
+    public static final String CHAT_FILTER = "Chat filter \nSearch for a specific word combination in chat."; //
+    public static final String TIMER = "Timer \nJust a simple timer with a few counters.";
+    public static final String HISTORY = "History \nBrowse through all notifications you received.";
+    public static final String SETUP_FRAMES_LOCATION = ""; //mb move to settings?
+    public static final String SETTINGS = "Settings";
+    public static final String EXIT = "Exit";
 
     //Timer tooltips
-    public static final String PLAY = "";
-    public static final String PAUSE = "";
-    public static final String STOP = "";
-    public static final String RESET = "";
+    public static final String PLAY = "Play";
+    public static final String PAUSE = "Pause";
+    public static final String STOP = "Stop";
+    public static final String RESET = "Reset";
 
     //MessagePanel tooltips
-    public static final String INVITE = "Invite player to the party.";
-    public static final String KICK = "Kick player from the party.";
-    public static final String TRADE = "Trade with player.";
-    public static final String EXPAND_COLLAPSE = "Expand or collapse panel.";
-    public static final String OPEN_CHAT = "Open chat with player.";
-    public static final String HIDE_PANEL = "Close the panel.";
+    public static final String INVITE = "Invite player to party";
+    public static final String KICK = "Kick player from party";
+    public static final String TRADE = "Offer Trade";
+    public static final String EXPAND_COLLAPSE = "Expand / collapse";
+    public static final String OPEN_CHAT = "Message this player";
+    public static final String HIDE_PANEL = "Close";
 
     //OutMessage tooltips
-    public static final String HO_IN = "Teleport to player hideout.";
-    public static final String HO_OUT = "Teleport to my hideout";
+    public static final String HO_IN = "Travel to this player's hideout";
+    public static final String HO_OUT = "Travel to your hideout";
 
     //History tooltips
-    public static final String HISTORY_CLEAR = "Clear history.";
+    public static final String HISTORY_CLEAR = "Clear history";
 
 
 }
