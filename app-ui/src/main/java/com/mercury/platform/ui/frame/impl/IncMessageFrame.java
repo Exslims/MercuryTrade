@@ -141,11 +141,11 @@ public class IncMessageFrame extends MovableComponentFrame implements ContainsMe
         JPanel panel = componentsFactory.getTransparentPanel();
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
         JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,20f,"Notifications"));
+        labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER,20f,"Notification panel"));
 
         JPanel growPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        growPanel.add(componentsFactory.getTextLabel("Grow "));
-        JComboBox growPicker = componentsFactory.getComboBox(new String[]{"Up", "Down"});
+        growPanel.add(componentsFactory.getTextLabel("Flow direction"));
+        JComboBox growPicker = componentsFactory.getComboBox(new String[]{"Upwards", "Downwards"});
         growPicker.setSelectedIndex(GrowSettings.valueOf(growSettings.toString()).ordinal());
         growPicker.addActionListener(e -> {
             switch ((String)growPicker.getSelectedItem()){

@@ -20,7 +20,7 @@ public class SetUpLocationFrame extends ComponentFrame {
         this.setVisible(false);
         prevState = FrameStates.HIDE;
         processingSaveLocAndSize = false;
-        this.setMinimumSize(new Dimension(470,40));
+        this.setMinimumSize(new Dimension(220,30));
     }
 
     @Override
@@ -30,13 +30,13 @@ public class SetUpLocationFrame extends ComponentFrame {
         rootPanel.setBorder(BorderFactory.createEmptyBorder(6,6,0,6));
 
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
-        root.setPreferredSize(new Dimension(450,40));
+        root.setPreferredSize(new Dimension(225,30));
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
         root.setBackground(AppThemeColor.SLIDE_BG);
-        root.add(componentsFactory.getSimpleTextAre("Movers unlocked. Move them now and click Lock when you are done."),BorderLayout.CENTER);
+        root.add(componentsFactory.getSimpleTextAre(" Panels are currently unlocked"),BorderLayout.CENTER);
 
-        JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton lock = componentsFactory.getBorderedButton("Lock");
+        JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton lock = componentsFactory.getBorderedButton("Lock!");
         lock.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -44,8 +44,9 @@ public class SetUpLocationFrame extends ComponentFrame {
                 SetUpLocationFrame.this.setVisible(false);
             }
         });
-        lock.setPreferredSize(new Dimension(80, 26));
+        lock.setPreferredSize(new Dimension(100, 26));
 
+        /*
         JButton test = componentsFactory.getButton(
                 FontStyle.BOLD,
                 AppThemeColor.FRAME,
@@ -63,6 +64,9 @@ public class SetUpLocationFrame extends ComponentFrame {
         test.setPreferredSize(new Dimension(80, 26));
 
         miscPanel.add(test);
+
+        */
+
         miscPanel.add(lock);
         rootPanel.add(root,BorderLayout.CENTER);
         this.add(rootPanel,BorderLayout.CENTER);
