@@ -16,10 +16,6 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +23,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Константин on 24.12.2016.
  */
-public class IncMessageFrame extends MovableComponentFrame{
+public class IncMessageFrame extends MovableComponentFrame implements ContainsMessages{
     private TradeMode tradeMode = TradeMode.DEFAULT;
     private GrowSettings growSettings = GrowSettings.DOWN;
 

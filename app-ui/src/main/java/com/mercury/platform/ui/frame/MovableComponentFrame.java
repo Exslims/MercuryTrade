@@ -24,16 +24,18 @@ public abstract class MovableComponentFrame extends ComponentFrame {
         switch (state){
             case MOVING:{
                 if(undecoratedFrameState.equals(UndecoratedFrameState.DEFAULT)) {
-                    this.setContentPane(setUpMoveListeners(panelWhenMove()));
-                    if(mainContainer.getHeight() < 10) {
-                        this.setPreferredSize(new Dimension(200, 100));
+                    JPanel panel = setUpMoveListeners(panelWhenMove());
+                    if(mainContainer.getHeight() < 40) {
+                        panel.setPreferredSize(new Dimension(200, 100));
                     }else {
-                        this.setPreferredSize(mainContainer.getSize());
+                        panel.setPreferredSize(mainContainer.getSize());
                     }
+                    this.setContentPane(panel);
                     this.setVisible(true);
                     this.setAlwaysOnTop(true);
                     this.pack();
                     this.repaint();
+                    undecoratedFrameState = UndecoratedFrameState.MOVING;
                 }
                 break;
             }
@@ -45,6 +47,7 @@ public abstract class MovableComponentFrame extends ComponentFrame {
                 this.setPreferredSize(null);
                 this.packFrame();
                 this.repaint();
+                undecoratedFrameState = UndecoratedFrameState.DEFAULT;
                 break;
             }
         }

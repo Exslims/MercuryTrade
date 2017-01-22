@@ -73,6 +73,12 @@ public class SetUpLocationFrame extends ComponentFrame {
     }
 
     @Override
+    public void showComponent() {
+        disableHideEffect();
+        super.showComponent();
+    }
+
+    @Override
     public void initHandlers() {
 
     }
