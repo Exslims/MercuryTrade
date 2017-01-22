@@ -37,7 +37,6 @@ public class IncMessageFrame extends MovableComponentFrame{
                     }
                     if(mainContainer.getComponentCount() != 0) {
                         ((MessagePanel) mainContainer.getComponent(0)).setStyle(MessagePanelStyle.BIGGEST);
-                        ((MessagePanel) mainContainer.getComponent(0)).setAsTopMessage();
                     }
                 }
                 mainContainer.repaint();
@@ -48,9 +47,6 @@ public class IncMessageFrame extends MovableComponentFrame{
                     Component[] components = mainContainer.getComponents();
                     for (Component messagePanel : components) {
                         ((MessagePanel)messagePanel).setStyle(MessagePanelStyle.BIGGEST);
-                    }
-                    if(mainContainer.getComponentCount() != 0) {
-                        ((MessagePanel) mainContainer.getComponent(0)).setAsTopMessage();
                     }
                 }
                 break;
@@ -93,8 +89,6 @@ public class IncMessageFrame extends MovableComponentFrame{
                     messagePanel = new MessagePanel(message,this, MessagePanelStyle.BIGGEST);
                     if (mainContainer.getComponentCount() > 0) {
                         messagePanel.setStyle(MessagePanelStyle.SMALL);
-                    } else {
-                        messagePanel.setAsTopMessage();
                     }
                 }
             }
@@ -110,18 +104,11 @@ public class IncMessageFrame extends MovableComponentFrame{
             if (mainContainer.getComponentCount() > 0) {
                 MessagePanel component = (MessagePanel) mainContainer.getComponent(0);
                 component.setBorder(null);
-                component.setAsTopMessage();
             }
             packFrame();
             if(mainContainer.getComponentCount() == 0){
                 this.setVisible(false);
             }
-        });
-        EventRouter.INSTANCE.registerHandler(DraggedMessageFrameEvent.class, event -> {
-            int x = ((DraggedMessageFrameEvent) event).getX();
-            int y = ((DraggedMessageFrameEvent) event).getY();
-            IncMessageFrame.this.setLocation(x,y);
-            configManager.saveFrameLocation(this.getClass().getSimpleName(),this.getLocation());
         });
         EventRouter.INSTANCE.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {
             IncMessageFrame.this.revalidate();

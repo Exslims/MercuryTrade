@@ -172,18 +172,6 @@ public class TaskBarFrame extends MovableComponentFrame{
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(exitButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
-
-        // adding drag frame listeners
-        visibleMode.addMouseListener(new DraggedFrameMouseListener());
-        visibleMode.addMouseMotionListener(new DraggedFrameMotionListener());
-        chatMode.addMouseListener(new DraggedFrameMouseListener());
-        chatMode.addMouseMotionListener(new DraggedFrameMotionListener());
-        historyButton.addMouseListener(new DraggedFrameMouseListener());
-        historyButton.addMouseMotionListener(new DraggedFrameMotionListener());
-        moveButton.addMouseListener(new DraggedFrameMouseListener());
-        moveButton.addMouseMotionListener(new DraggedFrameMotionListener());
-        settingsButton.addMouseListener(new DraggedFrameMouseListener());
-        settingsButton.addMouseMotionListener(new DraggedFrameMotionListener());
         return taskBarPanel;
     }
 
