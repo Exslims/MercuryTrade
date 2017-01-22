@@ -2,9 +2,12 @@ package com.mercury.platform.ui.manager;
 
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.UILoadedEvent;
+import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.frame.impl.test.TestCasesFrame;
 import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.frame.impl.*;
+import com.mercury.platform.ui.frame.location.SetUpLocationCommander;
+import com.mercury.platform.ui.frame.location.SetUpLocationFrame;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,22 +22,32 @@ public class FramesManager {
     public static FramesManager INSTANCE = FramesManagerHolder.HOLDER_INSTANCE;
 
     private Map<Class,OverlaidFrame> framesMap;
+    private SetUpLocationCommander locationCommander;
 
     private FramesManager() {
         framesMap = new HashMap<>();
+        locationCommander = new SetUpLocationCommander();
     }
     public void start(){
 //        framesMap.put(ChatFilterFrame.class,new ChatFilterFrame());
         framesMap.put(HistoryFrame.class,new HistoryFrame());
-        framesMap.put(IncMessageFrame.class,new IncMessageFrame());
-        framesMap.put(NotificationFrame.class,new NotificationFrame());
+
+        OverlaidFrame incMessageFrame = new IncMessageFrame();
+        framesMap.put(IncMessageFrame.class,incMessageFrame);
+        OverlaidFrame taskBarFrame = new TaskBarFrame();
+        framesMap.put(TaskBarFrame.class,taskBarFrame);
+
+        locationCommander.addFrame((MovableComponentFrame) incMessageFrame);
+        locationCommander.addFrame((MovableComponentFrame) taskBarFrame);
+
         framesMap.put(OutMessageFrame.class,new OutMessageFrame());
         framesMap.put(SettingsFrame.class,new SettingsFrame());
-        framesMap.put(TaskBarFrame.class,new TaskBarFrame());
         framesMap.put(TimerFrame.class,new TimerFrame());
         framesMap.put(TestCasesFrame.class,new TestCasesFrame());
-        framesMap.put(TooltipFrame.class,new TooltipFrame());
         framesMap.put(NotesFrame.class,new NotesFrame());
+        framesMap.put(TooltipFrame.class,new TooltipFrame());
+        framesMap.put(NotificationFrame.class,new NotificationFrame());
+        framesMap.put(SetUpLocationFrame.class,new SetUpLocationFrame());
 
         framesMap.forEach((k,v)->{
             v.init();
@@ -55,5 +68,7 @@ public class FramesManager {
             showFrame(frameClass);
         }
     }
-
+    public void enableMovement(){
+        locationCommander.callSetupLocation();
+    }
 }

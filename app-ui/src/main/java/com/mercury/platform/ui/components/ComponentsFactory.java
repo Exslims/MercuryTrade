@@ -330,6 +330,11 @@ public class ComponentsFactory {
         panel.setBackground(AppThemeColor.TRANSPARENT);
         return panel;
     }
+    public JPanel getTransparentPanel(){
+        JPanel panel = new JPanel();
+        panel.setBackground(AppThemeColor.TRANSPARENT);
+        return panel;
+    }
 
     public JPanel getBorderedTransparentPanel(Border border, LayoutManager layout){
         JPanel panel = new JPanel(layout);

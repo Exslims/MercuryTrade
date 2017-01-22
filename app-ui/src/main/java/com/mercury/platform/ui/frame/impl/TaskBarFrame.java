@@ -2,6 +2,9 @@ package com.mercury.platform.ui.frame.impl;
 
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
+import com.mercury.platform.ui.components.fields.font.FontStyle;
+import com.mercury.platform.ui.components.fields.font.TextAlignment;
+import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -17,7 +20,7 @@ import java.awt.event.*;
  * Exslims
  * 07.12.2016
  */
-public class TaskBarFrame extends ComponentFrame {
+public class TaskBarFrame extends MovableComponentFrame{
     private final int MINIMUM_WIDTH = 118;
     private Timeline collapseAnim;
 
@@ -133,7 +136,7 @@ public class TaskBarFrame extends ComponentFrame {
         moveButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
+                FramesManager.INSTANCE.enableMovement();
             }
         });
 
@@ -169,18 +172,6 @@ public class TaskBarFrame extends ComponentFrame {
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(exitButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
-
-        // adding drag frame listeners
-        visibleMode.addMouseListener(new DraggedFrameMouseListener());
-        visibleMode.addMouseMotionListener(new DraggedFrameMotionListener());
-        chatMode.addMouseListener(new DraggedFrameMouseListener());
-        chatMode.addMouseMotionListener(new DraggedFrameMotionListener());
-        historyButton.addMouseListener(new DraggedFrameMouseListener());
-        historyButton.addMouseMotionListener(new DraggedFrameMotionListener());
-        moveButton.addMouseListener(new DraggedFrameMouseListener());
-        moveButton.addMouseMotionListener(new DraggedFrameMotionListener());
-        settingsButton.addMouseListener(new DraggedFrameMouseListener());
-        settingsButton.addMouseMotionListener(new DraggedFrameMotionListener());
         return taskBarPanel;
     }
 
@@ -215,5 +206,15 @@ public class TaskBarFrame extends ComponentFrame {
      */
     public void setWidth(int width){
         this.setSize(new Dimension(width,this.getHeight()));
+    }
+
+    @Override
+    protected JPanel panelWhenMove() {
+        JPanel panel = componentsFactory.getTransparentPanel();
+        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+        JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,20f,"Task Bar"));
+        panel.add(labelPanel);
+        return panel;
     }
 }

@@ -4,6 +4,7 @@ import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
+import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.note.Note;
 import com.mercury.platform.ui.misc.note.NotesLoader;
@@ -50,7 +51,7 @@ public class NotesFrame extends TitledComponentFrame {
         rootPanel.add(miscPanel,BorderLayout.PAGE_END);
         this.add(rootPanel,BorderLayout.CENTER);
         this.pack();
-        this.setMinimumSize(new Dimension(490,102));
+        this.setMinimumSize(new Dimension(520,102));
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
     }
@@ -91,6 +92,7 @@ public class NotesFrame extends TitledComponentFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 NotesFrame.this.setVisible(false);
+                FramesManager.INSTANCE.enableMovement();
             }
         });
         close.setBackground(AppThemeColor.FRAME);
@@ -131,7 +133,7 @@ public class NotesFrame extends TitledComponentFrame {
             JPanel innerContent = new JPanel(new BorderLayout());
             innerContent.setBackground(AppThemeColor.SLIDE_BG);
             innerContent.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
-            innerContent.setPreferredSize(new Dimension(480,250));
+            innerContent.setPreferredSize(new Dimension(510,250));
 
             JLabel image = componentsFactory.getIconLabel(note.getImagePath());
             JTextArea textArea = componentsFactory.getSimpleTextAre(note.getText());
