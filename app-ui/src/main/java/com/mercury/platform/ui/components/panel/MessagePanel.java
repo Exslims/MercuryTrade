@@ -12,6 +12,7 @@ import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.Packable;
+import com.mercury.platform.ui.frame.impl.IncMessageFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.ui.misc.TooltipConstants;
@@ -34,11 +35,8 @@ import java.util.List;
  */
 public class MessagePanel extends JPanel implements HasEventHandlers{
     private ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
-    private Packable owner;
+    private IncMessageFrame owner;
     private MessagePanelStyle style;
-
-    private int x;
-    private int y;
 
     private String whisper;
     private JLabel whisperLabel;
@@ -55,7 +53,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     private JPanel messagePanel;
     private JPanel customButtonsPanel;
 
-    public MessagePanel(Message message, Packable owner, MessagePanelStyle style) {
+    public MessagePanel(Message message, IncMessageFrame owner, MessagePanelStyle style) {
         super(new BorderLayout());
 
         this.message = message;
@@ -286,12 +284,13 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                     expandButton.setIcon(componentsFactory.getIcon("app/collapse-mp.png", 16));
                     messagePanel.setVisible(true);
                     customButtonsPanel.setVisible(true);
+                    owner.changeSizeOfComponent(MessagePanel.this,(message.getOffer().length()>1)?114:94);
                 }else {
                     expandButton.setIcon(componentsFactory.getIcon("app/expand-mp.png", 16));
                     messagePanel.setVisible(false);
                     customButtonsPanel.setVisible(false);
+                    owner.changeSizeOfComponent(MessagePanel.this,30);
                 }
-                owner.packFrame();
             }
         });
         return expandButton;
@@ -315,21 +314,6 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
 
     public MessagePanelStyle getStyle() {
         return style;
-    }
-    public void setAsTopMessage(){
-        whisperLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                x = e.getX();
-                y = e.getY();
-            }
-        });
-        whisperLabel.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new DraggedMessageFrameEvent(e.getLocationOnScreen().x -x,e.getLocationOnScreen().y - y));
-            }
-        });
     }
     private JPanel getButtonsPanel(String whisper){
         Map<String, String> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();

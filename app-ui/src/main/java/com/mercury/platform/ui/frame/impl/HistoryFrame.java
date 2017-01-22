@@ -84,27 +84,27 @@ public class HistoryFrame extends TitledComponentFrame {
 
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(NewWhispersEvent.class, event -> {
-            Message message = ((NewWhispersEvent) event).getMessage();
-            MessagePanel messagePanel = new MessagePanel(message,this, MessagePanelStyle.HISTORY);
-            if(messagesContainer.getComponentCount() > 0){
-                messagePanel.setBorder(BorderFactory.createMatteBorder(1,0,0,0, AppThemeColor.BORDER));
-            }
-            messagesContainer.add(messagePanel);
-            if(this.getSize().height > SCROLL_HEIGHT) {
-                this.packFrame();
-                scrollPane.setPreferredSize(new Dimension(messagesContainer.getWidth(), SCROLL_HEIGHT));
-                scrollPane.setSize(new Dimension(messagesContainer.getWidth(), SCROLL_HEIGHT));
-                messagesContainer.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
-            }else {
-                scrollPane.setSize(new Dimension(messagesContainer.getWidth(), this.getSize().height));
-            }
-            this.packFrame();
-            this.repaint();
-        });
-        EventRouter.INSTANCE.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {
-            this.revalidate();
-            this.repaint();
-        });
+//        EventRouter.INSTANCE.registerHandler(NewWhispersEvent.class, event -> {
+//            Message message = ((NewWhispersEvent) event).getMessage();
+//            MessagePanel messagePanel = new MessagePanel(message,this, MessagePanelStyle.HISTORY);
+//            if(messagesContainer.getComponentCount() > 0){
+//                messagePanel.setBorder(BorderFactory.createMatteBorder(1,0,0,0, AppThemeColor.BORDER));
+//            }
+//            messagesContainer.add(messagePanel);
+//            if(this.getSize().height > SCROLL_HEIGHT) {
+//                this.packFrame();
+//                scrollPane.setPreferredSize(new Dimension(messagesContainer.getWidth(), SCROLL_HEIGHT));
+//                scrollPane.setSize(new Dimension(messagesContainer.getWidth(), SCROLL_HEIGHT));
+//                messagesContainer.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
+//            }else {
+//                scrollPane.setSize(new Dimension(messagesContainer.getWidth(), this.getSize().height));
+//            }
+//            this.packFrame();
+//            this.repaint();
+//        });
+//        EventRouter.INSTANCE.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {
+//            this.revalidate();
+//            this.repaint();
+//        });
     }
 }

@@ -27,10 +27,11 @@ public abstract class MovableComponentFrame extends ComponentFrame {
                     this.setContentPane(setUpMoveListeners(panelWhenMove()));
                     if(mainContainer.getHeight() < 10) {
                         this.setPreferredSize(new Dimension(200, 100));
-                        this.setVisible(true);
                     }else {
                         this.setPreferredSize(mainContainer.getSize());
                     }
+                    this.setVisible(true);
+                    this.setAlwaysOnTop(true);
                     this.pack();
                     this.repaint();
                 }

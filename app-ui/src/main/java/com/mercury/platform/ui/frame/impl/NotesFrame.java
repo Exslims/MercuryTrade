@@ -4,6 +4,7 @@ import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
+import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.note.Note;
 import com.mercury.platform.ui.misc.note.NotesLoader;
@@ -91,6 +92,7 @@ public class NotesFrame extends TitledComponentFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 NotesFrame.this.setVisible(false);
+                FramesManager.INSTANCE.enableMovement();
             }
         });
         close.setBackground(AppThemeColor.FRAME);
