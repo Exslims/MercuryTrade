@@ -50,7 +50,7 @@ public class NotesFrame extends TitledComponentFrame {
         rootPanel.add(miscPanel,BorderLayout.PAGE_END);
         this.add(rootPanel,BorderLayout.CENTER);
         this.pack();
-        this.setMinimumSize(new Dimension(490,102));
+        this.setMinimumSize(new Dimension(520,102));
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
     }
@@ -131,7 +131,7 @@ public class NotesFrame extends TitledComponentFrame {
             JPanel innerContent = new JPanel(new BorderLayout());
             innerContent.setBackground(AppThemeColor.SLIDE_BG);
             innerContent.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
-            innerContent.setPreferredSize(new Dimension(480,250));
+            innerContent.setPreferredSize(new Dimension(510,250));
 
             JLabel image = componentsFactory.getIconLabel(note.getImagePath());
             JTextArea textArea = componentsFactory.getSimpleTextAre(note.getText());
