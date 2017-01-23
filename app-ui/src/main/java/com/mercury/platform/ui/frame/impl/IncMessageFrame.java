@@ -11,7 +11,7 @@ import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
 import com.mercury.platform.ui.frame.MovableComponentFrame;
-import com.mercury.platform.ui.frame.impl.util.GrowSettings;
+import com.mercury.platform.ui.frame.impl.util.FlowDirections;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  */
 public class IncMessageFrame extends MovableComponentFrame implements ContainsMessages{
     private TradeMode tradeMode = TradeMode.DEFAULT;
-    private GrowSettings growSettings = GrowSettings.DOWNWARDS;
+    private FlowDirections flowDirections = FlowDirections.DOWNWARDS;
 
     public IncMessageFrame(){
         super("MT-IncMessagesFrame");
@@ -44,7 +44,7 @@ public class IncMessageFrame extends MovableComponentFrame implements ContainsMe
                         ((MessagePanel) mainContainer.getComponent(0)).setStyle(MessagePanelStyle.BIGGEST);
                     }
                 }
-                mainContainer.repaint();
+                this.pack();
                 break;
             }
             case SUPER:{
@@ -97,13 +97,10 @@ public class IncMessageFrame extends MovableComponentFrame implements ContainsMe
                     }
                 }
             }
-            if(mainContainer.getComponentCount() > 0){
-                messagePanel.setPreferredSize(new Dimension(mainContainer.getWidth(),30));
-            }else {
-                FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
-                messagePanel.setPreferredSize(new Dimension(frameSettings.getFrameSize().width -6,messagePanel.getPreferredSize().height));
-            }
-            if(growSettings.equals(GrowSettings.UPWARDS)){
+
+            messagePanel.setMaximumSize(new Dimension(this.getWidth()-8,Integer.MAX_VALUE));
+
+            if(flowDirections.equals(FlowDirections.UPWARDS)){
                 if(mainContainer.getComponentCount() > 0) {
                     this.setLocation(new Point(this.getLocation().x, this.getLocation().y - messagePanel.getPreferredSize().height));
                 }
@@ -145,15 +142,15 @@ public class IncMessageFrame extends MovableComponentFrame implements ContainsMe
         JPanel growPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         growPanel.add(componentsFactory.getTextLabel("Flow direction"));
         JComboBox growPicker = componentsFactory.getComboBox(new String[]{"Upwards", "Downwards"});
-        growPicker.setSelectedIndex(GrowSettings.valueOf(growSettings.toString()).ordinal());
+        growPicker.setSelectedIndex(FlowDirections.valueOf(flowDirections.toString()).ordinal());
         growPicker.addActionListener(e -> {
             switch ((String)growPicker.getSelectedItem()){
                 case "UPWARDS":{
-                    growSettings = GrowSettings.UPWARDS;
+                    flowDirections = FlowDirections.UPWARDS;
                     break;
                 }
                 case "Downwards":{
-                    growSettings = GrowSettings.DOWNWARDS;
+                    flowDirections = FlowDirections.DOWNWARDS;
                     break;
                 }
             }
@@ -166,13 +163,13 @@ public class IncMessageFrame extends MovableComponentFrame implements ContainsMe
 
     //some bullshit
     public void changeSizeOfComponent(JPanel component, int height){
-        List<Component> components = Arrays.asList(mainContainer.getComponents());
-        Component live = components
-                .stream()
-                .filter(exist -> exist.equals(component))
-                .collect(Collectors.toList())
-                .get(0);
-        live.setPreferredSize(new Dimension(mainContainer.getWidth(),height));
+//        List<Component> components = Arrays.asList(mainContainer.getComponents());
+//        Component live = components
+//                .stream()
+//                .filter(exist -> exist.equals(component))
+//                .collect(Collectors.toList())
+//                .get(0);
+//        live.setPreferredSize(new Dimension(mainContainer.getWidth(),height));
         this.pack();
     }
 

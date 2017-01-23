@@ -11,9 +11,11 @@ import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
+import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.frame.Packable;
 import com.mercury.platform.ui.frame.impl.ContainsMessages;
 import com.mercury.platform.ui.frame.impl.IncMessageFrame;
+import com.mercury.platform.ui.frame.impl.util.ResizeCallback;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.ui.misc.TooltipConstants;
@@ -54,6 +56,8 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     private JPanel messagePanel;
     private JPanel customButtonsPanel;
 
+    private ResizeCallback resizeCallback;
+
     public MessagePanel(Message message, ContainsMessages owner, MessagePanelStyle style) {
         super(new BorderLayout());
 
@@ -68,6 +72,9 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
 
         init();
         initHandlers();
+        resizeCallback = dimension -> this.setMaximumSize(new Dimension(dimension.width-8,Integer.MAX_VALUE));
+
+        ((ComponentFrame)owner).addResizeCallback(resizeCallback);
     }
 
     public MessagePanel(Message message, MessagePanelStyle style) {
@@ -220,6 +227,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         hideButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                ((ComponentFrame)owner).removeResizeCallback(resizeCallback);
                 EventRouter.INSTANCE.fireEvent(new CloseMessagePanelEvent(MessagePanel.this));
             }
         });
@@ -284,6 +292,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                     expandButton.setIcon(componentsFactory.getIcon("app/collapse-mp.png", 16));
                     messagePanel.setVisible(true);
                     customButtonsPanel.setVisible(true);
+                    style = MessagePanelStyle.BIGGEST;
                     if(owner != null) {
                         owner.changeSizeOfComponent(MessagePanel.this, (message.getOffer().length() > 1) ? 114 : 94);
                     }
@@ -291,6 +300,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                     expandButton.setIcon(componentsFactory.getIcon("app/expand-mp.png", 16));
                     messagePanel.setVisible(false);
                     customButtonsPanel.setVisible(false);
+                    style = MessagePanelStyle.SMALL;
                     if(owner != null) {
                         owner.changeSizeOfComponent(MessagePanel.this, 30);
                     }
@@ -359,5 +369,11 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 EventRouter.INSTANCE.fireEvent(new RepaintEvent.RepaintMessagePanel());
             }
         });
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        Dimension preferredSize = super.getPreferredSize();
+        return new Dimension(this.getMaximumSize().width,preferredSize.height);
     }
 }

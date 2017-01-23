@@ -1,15 +1,19 @@
 package com.mercury.platform.ui.frame;
 
 import com.mercury.platform.shared.pojo.FrameSettings;
+import com.mercury.platform.ui.frame.impl.util.ResizeCallback;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.manager.HideSettingsManager;
 import org.pushingpixels.trident.Timeline;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by Константин on 26.12.2016.
@@ -24,6 +28,8 @@ public abstract class ComponentFrame extends OverlaidFrame implements Packable {
 
     protected int x;
     protected int y;
+
+    protected List<ResizeCallback> resizeCallbacks;
     protected boolean withinResizeSpace = false;
 
     private Timeline hideAnimation;
@@ -36,6 +42,7 @@ public abstract class ComponentFrame extends OverlaidFrame implements Packable {
 
     protected ComponentFrame(String title) {
         super(title);
+        resizeCallbacks = new ArrayList<>();
     }
 
     @Override
@@ -84,6 +91,13 @@ public abstract class ComponentFrame extends OverlaidFrame implements Packable {
         FrameSettings frameSettings = configManager.getDefaultFramesSettings().get(this.getClass().getSimpleName());
         this.setSize(new Dimension(frameSettings.getFrameSize().width,this.getHeight()));
     }
+
+    public void addResizeCallback(ResizeCallback callback){
+        this.resizeCallbacks.add(callback);
+    }
+    public void removeResizeCallback(ResizeCallback callback){
+        this.resizeCallbacks.remove(callback);
+    }
     private void initAnimationTimers(){
         showAnimation = new Timeline(this);
         showAnimation.setDuration(SHOW_TIME);
@@ -99,9 +113,13 @@ public abstract class ComponentFrame extends OverlaidFrame implements Packable {
         public void mouseDragged(MouseEvent e) {
             Point frameLocation = ComponentFrame.this.getLocation();
             ComponentFrame.this.setSize(new Dimension(e.getLocationOnScreen().x - frameLocation.x,ComponentFrame.this.getHeight()));
+            resizeCallbacks.forEach(resizeCallback -> {
+                resizeCallback.onResize(new Dimension(ComponentFrame.this.getSize().width,Integer.MAX_VALUE));
+            });
         }
     }
     private class ResizeMouseListener extends MouseAdapter{
+
         private Rectangle rightResizeRect = new Rectangle();
         @Override
         public void mousePressed(MouseEvent e) {
