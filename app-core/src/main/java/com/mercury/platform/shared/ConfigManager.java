@@ -147,8 +147,12 @@ public class ConfigManager {
     }
 
     public void saveFrameSize(String frameClassName, Dimension size){
-        FrameSettings settings = cachedFramesSettings.get(frameClassName);
-        settings.setFrameSize(size);
+        try {
+            FrameSettings settings = cachedFramesSettings.get(frameClassName);
+            settings.setFrameSize(size);
+        }catch (NullPointerException e){
+            cachedFramesSettings.put(frameClassName,getDefaultFramesSettings().get(frameClassName));
+        }
         saveFrameSettings();
     }
 
@@ -238,14 +242,10 @@ public class ConfigManager {
         dFramesSettings.put("GamePathChooser",new FrameSettings(new Point(600, 500),new Dimension(570,100)));
         dFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(900, 500),new Dimension(400,100)));
         dFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(114,50)));
-        dFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 600),new Dimension(280,100)));
+        dFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 600),new Dimension(280,500)));
         dFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
-        dFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(450,102)));
-
-//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//        double width = screenSize.getWidth();
-//        double height = screenSize.getHeight();
-//        dFramesSettings.put("NotificationFrame",new FrameSettings(new Point((int) width / 2, (int) height / 2),new Dimension(114,50)));
+        dFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,102)));
+        dFramesSettings.put("SetUpLocationFrame",new FrameSettings(new Point(400, 600),new Dimension(230,30)));
         return dFramesSettings;
     }
 

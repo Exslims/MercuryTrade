@@ -19,8 +19,6 @@ public class SetUpLocationFrame extends ComponentFrame {
         super("MT-SetUpLocationFrame");
         this.setVisible(false);
         prevState = FrameStates.HIDE;
-        processingSaveLocAndSize = false;
-        this.setMinimumSize(new Dimension(220,30));
     }
 
     @Override

@@ -21,7 +21,7 @@ import java.awt.event.*;
  * 07.12.2016
  */
 public class TaskBarFrame extends MovableComponentFrame{
-    private final int MINIMUM_WIDTH = 118;
+    private int MINIMUM_WIDTH = 118;
     private Timeline collapseAnim;
 
     public TaskBarFrame() {
@@ -186,11 +186,11 @@ public class TaskBarFrame extends MovableComponentFrame{
         collapseAnim = new Timeline(this);
         switch (state){
             case "expand":{
-                collapseAnim.addPropertyToInterpolate("width",this.getWidth(),this.getPreferredSize().width);
+                collapseAnim.addPropertyToInterpolate("width",this.getWidth(),this.getPreferredSize().width + 200);
                 break;
             }
             case "collapse":{
-                collapseAnim.addPropertyToInterpolate("width",this.getWidth(),MINIMUM_WIDTH);
+                collapseAnim.addPropertyToInterpolate("width",this.getWidth(),configManager.getFrameSettings(this.getClass().getSimpleName()).getFrameSize().width);
             }
         }
         collapseAnim.setEase(new Spline(1f));

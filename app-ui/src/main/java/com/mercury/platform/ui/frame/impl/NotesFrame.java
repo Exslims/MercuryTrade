@@ -25,7 +25,6 @@ public class NotesFrame extends TitledComponentFrame {
     public NotesFrame() {
         super("MT-NotesFrame");
         this.setVisible(false); //todo from config manager
-        processingSaveLocAndSize = false;
     }
 
     @Override
@@ -51,7 +50,6 @@ public class NotesFrame extends TitledComponentFrame {
         rootPanel.add(miscPanel,BorderLayout.PAGE_END);
         this.add(rootPanel,BorderLayout.CENTER);
         this.pack();
-        this.setMinimumSize(new Dimension(530,102));
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
     }

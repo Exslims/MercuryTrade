@@ -59,11 +59,17 @@ public class HistoryFrame extends TitledComponentFrame{
         vBar.setUI(new MercuryScrollBarUI());
         vBar.setPreferredSize(new Dimension(10, Integer.MAX_VALUE));
         vBar.setUnitIncrement(3);
-        vBar.setBorder(BorderFactory.createLineBorder(AppThemeColor.FRAME,1));
+//        vBar.setBorder(
+//                BorderFactory.createCompoundBorder(
+//                        BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.BORDER),
+//                        BorderFactory.createMatteBorder(0,1,1,1,AppThemeColor.FRAME)));
+        vBar.setBorder(BorderFactory.createLineBorder(AppThemeColor.FRAME));
         vBar.addAdjustmentListener(e -> HistoryFrame.this.repaint());
 
-        add(scrollPane,BorderLayout.CENTER);
-        packFrame();
+//        scrollPane.setPreferredSize(new Dimension(this.getWidth(), 600));
+
+        this.add(scrollPane,BorderLayout.CENTER);
+        this.pack();
     }
 
     @Override
@@ -77,10 +83,7 @@ public class HistoryFrame extends TitledComponentFrame{
             @Override
             public void mousePressed(MouseEvent e) {
                 mainContainer.removeAll();
-                HistoryFrame.this.setSize(new Dimension(400,100));
-                scrollPane.setSize(new Dimension(mainContainer.getSize().width, mainContainer.getSize().height));
-                scrollPane.setPreferredSize(null);
-                HistoryFrame.this.packFrame();
+                HistoryFrame.this.pack();
             }
         });
         miscPanel.add(clearButton,0);
@@ -89,40 +92,17 @@ public class HistoryFrame extends TitledComponentFrame{
     @Override
     public void initHandlers() {
         EventRouter.INSTANCE.registerHandler(NewWhispersEvent.class, (MercuryEvent event) -> {
-//            Message message = ((NewWhispersEvent) event).getMessage();
-////            MessagePanel messagePanel = new MessagePanel(message,this, MessagePanelStyle.HISTORY);
-////            if(mainContainer.getComponentCount() > 0){
-////                messagePanel.setBorder(BorderFactory.createMatteBorder(1,0,0,0, AppThemeColor.BORDER));
-////            }
-////            mainContainer.add(messagePanel);
-////            if(this.getSize().height > SCROLL_HEIGHT) {
-////                this.pack();
-////                scrollPane.setPreferredSize(new Dimension(mainContainer.getWidth(), SCROLL_HEIGHT));
-////                scrollPane.setSize(new Dimension(mainContainer.getWidth(), SCROLL_HEIGHT));
-////                mainContainer.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
-////            }else {
-////                scrollPane.setSize(new Dimension(mainContainer.getWidth(), this.getSize().height));
-////            }
-////            this.pack();
-////            this.repaint();
-//
-//            MessagePanel messagePanel = new MessagePanel(message,MessagePanelStyle.HISTORY);
-//            FrameSettings frameSettings = configManager.getDefaultFramesSettings().get(this.getClass().getSimpleName());
-//            messagePanel.setPreferredSize(new Dimension(frameSettings.getFrameSize().width-6,messagePanel.getPreferredSize().height));
-//            mainContainer.add(messagePanel);
-//            if(mainContainer.getComponentCount() > 0) {
-//                messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 1, AppThemeColor.BORDER));
-//            }
-//            if(this.getSize().height > SCROLL_HEIGHT) {
-//                this.pack();
-//                scrollPane.setPreferredSize(new Dimension(mainContainer.getWidth(), SCROLL_HEIGHT));
-//                scrollPane.setSize(new Dimension(mainContainer.getWidth(), SCROLL_HEIGHT));
-//                mainContainer.setBorder(BorderFactory.createEmptyBorder(0,0,0,5));
-//            }else {
-//                scrollPane.setSize(new Dimension(mainContainer.getWidth(), this.getSize().height));
-//            }
-//            this.pack();
-//            this.repaint();
+            Message message = ((NewWhispersEvent) event).getMessage();
+            MessagePanel messagePanel = new MessagePanel(message,this,MessagePanelStyle.HISTORY);
+            messagePanel.setPreferredSize(new Dimension(this.getWidth()-10,messagePanel.getPreferredSize().height));
+            if(mainContainer.getComponentCount() > 0) {
+                messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
+            }
+            if(this.getHeight() > SCROLL_HEIGHT){
+                scrollPane.setPreferredSize(new Dimension(this.getWidth(),SCROLL_HEIGHT));
+            }
+            mainContainer.add(messagePanel);
+            this.pack();
 
         });
         EventRouter.INSTANCE.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {

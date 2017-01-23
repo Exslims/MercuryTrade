@@ -16,6 +16,8 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,13 +25,30 @@ import java.util.stream.Collectors;
 /**
  * Created by Константин on 24.12.2016.
  */
-public class IncMessageFrame extends MovableComponentFrame implements ContainsMessages{
+public class IncMessageFrame extends MovableComponentFrame{
     private TradeMode tradeMode = TradeMode.DEFAULT;
     private FlowDirections flowDirections = FlowDirections.DOWNWARDS;
 
     public IncMessageFrame(){
         super("MT-IncMessagesFrame");
         setVisible(false);
+    }
+
+    @Override
+    protected void initialize() {
+        super.initialize();
+        this.addMouseListener(new MouseAdapter() { //todo
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if(flowDirections.equals(FlowDirections.UPWARDS) && !isMouseWithInFrame()){
+                    IncMessageFrame.this.setLocation(configManager
+                            .getFrameSettings(IncMessageFrame
+                                    .this.getClass()
+                                    .getSimpleName())
+                            .getFrameLocation());
+                }
+            }
+        });
     }
 
     private void convertFrameTo(TradeMode mode){
@@ -44,7 +63,6 @@ public class IncMessageFrame extends MovableComponentFrame implements ContainsMe
                         ((MessagePanel) mainContainer.getComponent(0)).setStyle(MessagePanelStyle.BIGGEST);
                     }
                 }
-                this.pack();
                 break;
             }
             case SUPER:{
@@ -60,6 +78,7 @@ public class IncMessageFrame extends MovableComponentFrame implements ContainsMe
         this.tradeMode = mode;
         if(mainContainer.getComponentCount() > 0){
             this.pack();
+            this.repaint();
         }
     }
 
@@ -97,9 +116,6 @@ public class IncMessageFrame extends MovableComponentFrame implements ContainsMe
                     }
                 }
             }
-
-            messagePanel.setMaximumSize(new Dimension(this.getWidth()-8,Integer.MAX_VALUE));
-
             if(flowDirections.equals(FlowDirections.UPWARDS)){
                 if(mainContainer.getComponentCount() > 0) {
                     this.setLocation(new Point(this.getLocation().x, this.getLocation().y - messagePanel.getPreferredSize().height));
@@ -145,7 +161,7 @@ public class IncMessageFrame extends MovableComponentFrame implements ContainsMe
         growPicker.setSelectedIndex(FlowDirections.valueOf(flowDirections.toString()).ordinal());
         growPicker.addActionListener(e -> {
             switch ((String)growPicker.getSelectedItem()){
-                case "UPWARDS":{
+                case "Upwards":{
                     flowDirections = FlowDirections.UPWARDS;
                     break;
                 }
@@ -159,18 +175,6 @@ public class IncMessageFrame extends MovableComponentFrame implements ContainsMe
         panel.add(labelPanel);
         panel.add(growPanel);
         return panel;
-    }
-
-    //some bullshit
-    public void changeSizeOfComponent(JPanel component, int height){
-//        List<Component> components = Arrays.asList(mainContainer.getComponents());
-//        Component live = components
-//                .stream()
-//                .filter(exist -> exist.equals(component))
-//                .collect(Collectors.toList())
-//                .get(0);
-//        live.setPreferredSize(new Dimension(mainContainer.getWidth(),height));
-        this.pack();
     }
 
     private enum TradeMode{
