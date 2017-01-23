@@ -100,7 +100,6 @@ public abstract class ComponentFrame extends OverlaidFrame{
         private Rectangle rightResizeRect = new Rectangle();
         @Override
         public void mousePressed(MouseEvent e) {
-            withinResizeSpace = true;
             FrameSettings frameSettings = configManager.getDefaultFramesSettings().get(ComponentFrame.this.getClass().getSimpleName());
             ComponentFrame.this.setMinimumSize(new Dimension(frameSettings.getFrameSize().width,0));
         }
@@ -125,6 +124,8 @@ public abstract class ComponentFrame extends OverlaidFrame{
                     frameLocation.x + frameWidth - (BORDER_THICKNESS + 2),
                     frameLocation.y,BORDER_THICKNESS+2,frameHeight);
             if(rightResizeRect.getBounds().contains(e.getLocationOnScreen())) {
+                //todo huy znaet
+                withinResizeSpace = true;
                 ComponentFrame.this.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
             }
         }
