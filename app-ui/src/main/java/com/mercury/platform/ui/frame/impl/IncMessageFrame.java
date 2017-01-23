@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  */
 public class IncMessageFrame extends MovableComponentFrame implements ContainsMessages{
     private TradeMode tradeMode = TradeMode.DEFAULT;
-    private GrowSettings growSettings = GrowSettings.DOWN;
+    private GrowSettings growSettings = GrowSettings.DOWNWARDS;
 
     public IncMessageFrame(){
         super("MT-IncMessagesFrame");
@@ -59,7 +59,7 @@ public class IncMessageFrame extends MovableComponentFrame implements ContainsMe
         }
         this.tradeMode = mode;
         if(mainContainer.getComponentCount() > 0){
-            packFrame();
+            this.pack();
         }
     }
 
@@ -103,20 +103,19 @@ public class IncMessageFrame extends MovableComponentFrame implements ContainsMe
                 FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
                 messagePanel.setPreferredSize(new Dimension(frameSettings.getFrameSize().width -6,messagePanel.getPreferredSize().height));
             }
-            if(growSettings.equals(GrowSettings.UP)){
+            if(growSettings.equals(GrowSettings.UPWARDS)){
                 if(mainContainer.getComponentCount() > 0) {
                     this.setLocation(new Point(this.getLocation().x, this.getLocation().y - messagePanel.getPreferredSize().height));
                 }
                 messagePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, AppThemeColor.BORDER));
                 mainContainer.add(messagePanel,0);
-                packFrame();
             }else {
                 if(mainContainer.getComponentCount() > 0) {
                     messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
                 }
                 mainContainer.add(messagePanel);
-                this.pack();
             }
+            this.pack();
         });
         EventRouter.INSTANCE.registerHandler(CloseMessagePanelEvent.class, event -> {
             Component panel = ((CloseMessagePanelEvent) event).getComponent();
@@ -125,7 +124,7 @@ public class IncMessageFrame extends MovableComponentFrame implements ContainsMe
                 MessagePanel component = (MessagePanel) mainContainer.getComponent(0);
                 component.setBorder(null);
             }
-            packFrame();
+            this.pack();
             if(mainContainer.getComponentCount() == 0){
                 this.setVisible(false);
             }
@@ -149,12 +148,12 @@ public class IncMessageFrame extends MovableComponentFrame implements ContainsMe
         growPicker.setSelectedIndex(GrowSettings.valueOf(growSettings.toString()).ordinal());
         growPicker.addActionListener(e -> {
             switch ((String)growPicker.getSelectedItem()){
-                case "Up":{
-                    growSettings = GrowSettings.UP;
+                case "UPWARDS":{
+                    growSettings = GrowSettings.UPWARDS;
                     break;
                 }
-                case "Down":{
-                    growSettings = GrowSettings.DOWN;
+                case "Downwards":{
+                    growSettings = GrowSettings.DOWNWARDS;
                     break;
                 }
             }

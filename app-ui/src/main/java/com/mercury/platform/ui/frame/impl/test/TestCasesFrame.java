@@ -145,20 +145,19 @@ public class TestCasesFrame extends TitledComponentFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 EventRouter.INSTANCE.fireEvent(new WhisperNotificationEvent());
-                List<Message> messages = new ArrayList<>();
-//                messages.add(new Message("WhisperColorTest","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2)"));
-//                EventRouter.fireEvent(new NewWhispersEvent(messages));
+                ItemMessage message = new ItemMessage("Exslimsbf",null,"Demon Shelter Golden Mask", 3d,"exalted","tab","");
+                EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(message));
 
                 Timer joinedTimer = new Timer(1000,null);
                 joinedTimer.addActionListener(e1 -> {
-                    EventRouter.INSTANCE.fireEvent(new PlayerJoinEvent("WhisperColorTest"));
+                    EventRouter.INSTANCE.fireEvent(new PlayerJoinEvent("Exslimsbf"));
                     joinedTimer.stop();
                 });
                 joinedTimer.start();
 
                 Timer leftTimer = new Timer(2000,null);
                 leftTimer.addActionListener(e1 -> {
-                    EventRouter.INSTANCE.fireEvent(new PlayerLeftEvent("WhisperColorTest"));
+                    EventRouter.INSTANCE.fireEvent(new PlayerLeftEvent("Exslimsbf"));
                     leftTimer.stop();
                 });
                 leftTimer.start();

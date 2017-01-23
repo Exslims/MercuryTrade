@@ -45,7 +45,7 @@ public abstract class MovableComponentFrame extends ComponentFrame {
                     this.setVisible(false);
                 }
                 this.setPreferredSize(null);
-                this.packFrame();
+                this.pack();
                 this.repaint();
                 undecoratedFrameState = UndecoratedFrameState.DEFAULT;
                 break;

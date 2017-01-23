@@ -24,13 +24,13 @@ public class NotesLoader {
         Note note2 = new Note("Notification (1/2)","When you receive a trade related message this notification panel pops up. It has all the information you might need to make a decision. \n\nLet's take a look.","notes/first/1.png",NoteLayout.VERTICAL);
         notes.add(note2);
 
-        Note note3 = new Note("Notification (2/2)","[new img request]","notes/first/1.png",NoteLayout.VERTICAL);
+        Note note3 = new Note("Notification (2/2)","","notes/first/1_2.png",NoteLayout.VERTICAL);
         notes.add(note3);
 
         Note note4 = new Note("Response buttons","Response buttons are fully customizable in settings. \nSelect an already existing button (or create a new one) -> label it -> write in your message.","notes/first/5.png",NoteLayout.VERTICAL);
         notes.add(note4);
 
-        Note note5 = new Note("Accessibility status","MercuryTrade notifications have an indication for when a person comes in or leaves your hideout - that way you can trade with players as soon as possible (and keep track of them all!). \n\nEspecially useful because in-game stash UI takes priority over party frames.","",NoteLayout.VERTICAL);
+        Note note5 = new Note("Accessibility status","MercuryTrade notifications have an indication for when a person comes in or leaves your hideout - that way you can trade with players as soon as possible (and keep track of them all!). Especially useful because in-game stash UI takes priority over party frames.","notes/first/7.png",NoteLayout.VERTICAL);
         notes.add(note5);
 
         Note note6 = new Note("History","Each notification you receive is stored by MercuryTrade in a separate file. \nYou won't be losing trade offers due to client crashes or relogs anymore!","notes/first/3.png",NoteLayout.HORIZONTAL);
