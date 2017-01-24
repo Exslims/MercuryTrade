@@ -38,4 +38,5 @@ public class TooltipConstants {
     public static final String HISTORY_CLEAR = "Clear history";
 
 
+    public static final String DISMISS_FINISHED_TRADES = "";
 }

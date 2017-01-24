@@ -21,7 +21,7 @@ public class AppStarter {
     public void startApplication(){
         new WhisperNotifier();
         new ChatHelper();
-        new FileMonitor();
+        new GamePathSearcher(FileMonitor::new);
 
         /*
         [DllImport("user32.dll&quot]

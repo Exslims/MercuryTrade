@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.home.mercury</groupId>
-        <artifactId>MercuryTrader</artifactId>
+        <artifactId>MercuryTrade</artifactId>
         <version>${project.version}</version>
     </parent>
     <packaging>jar</packaging>

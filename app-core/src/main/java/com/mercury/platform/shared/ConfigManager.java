@@ -34,7 +34,6 @@ public class ConfigManager {
 
     private Map<String, String> cachedButtonsConfig;
     private Map<String, FrameSettings> cachedFramesSettings;
-    private String gamePath = null;
 
     private ConfigManager() {
         load();
@@ -67,7 +66,6 @@ public class ConfigManager {
         JSONParser parser = new JSONParser();
         try {
             JSONObject root = (JSONObject) parser.parse(new FileReader(CONFIG_FILE));
-            gamePath = (String) root.get("gamePath");
 
             JSONArray buttons = (JSONArray) root.get("buttons");
             cachedButtonsConfig = new HashMap<>();
@@ -89,17 +87,6 @@ public class ConfigManager {
         } catch (Exception e) {
             logger.error("Error in loadConfigFile: ",e);
         }
-    }
-
-    /**
-     * Checking valida path of game.
-     *
-     * @param gamePath the path to check
-     * @return true if path is valid
-     */
-    public boolean isValidPath(String gamePath) {
-        File logsFile = new File(gamePath + File.separator + "logs" + File.separator + "Client.txt");
-        return logsFile.exists();
     }
 
     public Map<String, String> getButtonsConfig(){
@@ -154,20 +141,6 @@ public class ConfigManager {
             cachedFramesSettings.put(frameClassName,getDefaultFramesSettings().get(frameClassName));
         }
         saveFrameSettings();
-    }
-
-    /**
-     * Save game path with checking validity.
-     * @param gamePath the path to save
-     */
-    public void saveGamePath(String gamePath){
-        if(isValidPath(gamePath)) {
-            saveProperty("gamePath", gamePath);
-        }
-    }
-
-    public String getGamePath() {
-        return gamePath;
     }
 
     /**
@@ -237,15 +210,14 @@ public class ConfigManager {
     public Map<String,FrameSettings> getDefaultFramesSettings(){
         Map<String,FrameSettings> dFramesSettings = new HashMap<>();
         dFramesSettings.put("TaskBarFrame",new FrameSettings(new Point(500, 500),new Dimension(114,50)));
-        dFramesSettings.put("IncMessageFrame",new FrameSettings(new Point(700, 500),new Dimension(280,115)));
+        dFramesSettings.put("IncMessageFrame",new FrameSettings(new Point(700, 500),new Dimension(280,10)));
         dFramesSettings.put("OutMessageFrame",new FrameSettings(new Point(200, 500),new Dimension(280,115)));
-        dFramesSettings.put("GamePathChooser",new FrameSettings(new Point(600, 500),new Dimension(570,100)));
-        dFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(900, 500),new Dimension(400,100)));
+        dFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(1400, 500),new Dimension(400,100)));
         dFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(114,50)));
         dFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 600),new Dimension(280,500)));
         dFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
         dFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,102)));
-        dFramesSettings.put("SetUpLocationFrame",new FrameSettings(new Point(400, 600),new Dimension(230,30)));
+        dFramesSettings.put("SetUpLocationFrame",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
         return dFramesSettings;
     }
 

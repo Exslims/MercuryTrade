@@ -185,6 +185,11 @@ public class ComponentsFactory {
         return button;
     }
 
+    public JButton getIconifiedTransparentButton(String iconPath, String tooltip){
+        JButton iconButton = getIconButton(iconPath, 10, AppThemeColor.FRAME_RGB, tooltip);
+        iconButton.setIcon(getImage(iconPath));
+        return iconButton;
+    }
     /**
      * Get bordered default button with icon
      * @param iconPath icon path from maven resources
@@ -355,7 +360,7 @@ public class ComponentsFactory {
     public ImageIcon getImage(String iconPath){
         BufferedImage icon = null;
         try {
-            BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
+            icon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
         } catch (IOException e) {
             log.error(e);
         }

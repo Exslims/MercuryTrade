@@ -17,12 +17,14 @@ import java.util.stream.Collectors;
 
 public class MessageFileHandler implements HasEventHandlers {
     private final Logger logger = Logger.getLogger(MessageFileHandler.class);
-    private final String logFilePath = ConfigManager.INSTANCE.getGamePath() + File.separator + "logs" + File.separator + "Client.txt";
+    private String logFilePath;
     private Date lastMessageDate = new Date();
 
     private List<MessageInterceptor> interceptors;
 
-    public MessageFileHandler() {
+    public MessageFileHandler(String logFilePath) {
+        this.logFilePath = logFilePath;
+
         interceptors = new ArrayList<>();
         interceptors.add(new IncTradeMessagesInterceptor());
         interceptors.add(new OutTradeMessagesInterceptor());
@@ -46,8 +48,8 @@ public class MessageFileHandler implements HasEventHandlers {
                 builder.append(c);
                 if(c == '\n'){
                     builder = builder.reverse();
-                    String stroke = builder.toString();
-                    String utf8 = new String(stroke.getBytes("ISO-8859-1"),"UTF-8");
+                    String str = builder.toString();
+                    String utf8 = new String(str.getBytes("ISO-8859-1"),"UTF-8");
                     stubMessages.add(utf8);
                     lines++;
                     builder = new StringBuilder();

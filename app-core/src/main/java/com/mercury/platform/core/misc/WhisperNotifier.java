@@ -1,7 +1,7 @@
 package com.mercury.platform.core.misc;
 
 import com.mercury.platform.shared.FrameStates;
-import com.mercury.platform.shared.PoeShortCastSettings;
+import com.mercury.platform.shared.MercuryTradeSettings;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.MercuryEventHandler;
 import com.mercury.platform.shared.events.custom.WhisperNotificationEvent;
@@ -21,9 +21,9 @@ public class WhisperNotifier {
     public WhisperNotifier() {
         EventRouter.INSTANCE.registerHandler(WhisperNotificationEvent.class,new MercuryEventHandler<WhisperNotificationEvent>(){
             public void handle(WhisperNotificationEvent event) {
-                if (PoeShortCastSettings.WHISPER_NOTIFIER_STATUS == WhisperNotifierStatus.ALWAYS ||
-                        ((PoeShortCastSettings.WHISPER_NOTIFIER_STATUS == WhisperNotifierStatus.ALTAB) &&
-                                (PoeShortCastSettings.APP_STATUS == FrameStates.HIDE))) {
+                if (MercuryTradeSettings.WHISPER_NOTIFIER_STATUS == WhisperNotifierStatus.ALWAYS ||
+                        ((MercuryTradeSettings.WHISPER_NOTIFIER_STATUS == WhisperNotifierStatus.ALTAB) &&
+                                (MercuryTradeSettings.APP_STATUS == FrameStates.HIDE))) {
                     ClassLoader classLoader = getClass().getClassLoader();
                     try (AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource("app/icq-message.wav"))) {
                         Clip clip = AudioSystem.getClip();

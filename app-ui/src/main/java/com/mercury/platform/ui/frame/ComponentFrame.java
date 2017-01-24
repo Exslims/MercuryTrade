@@ -130,6 +130,12 @@ public abstract class ComponentFrame extends OverlaidFrame{
         public void mouseExited(MouseEvent e) {
             ComponentFrame.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            FrameSettings settings = configManager.getDefaultFramesSettings().get(ComponentFrame.this.getClass().getSimpleName());
+            ComponentFrame.this.setMinimumSize(settings.getFrameSize());
+        }
     }
 
     /**

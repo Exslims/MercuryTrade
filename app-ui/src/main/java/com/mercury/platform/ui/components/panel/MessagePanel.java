@@ -58,7 +58,6 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         this.style = style;
         this.whisper = message.getWhisperNickname();
         this.setBackground(AppThemeColor.TRANSPARENT);
-        this.whisperPanel = getWhisperPanel();
         this.messagePanel = getFormattedMessagePanel();
         this.customButtonsPanel = getButtonsPanel(whisper);
 
@@ -68,26 +67,36 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     private void init(){
         this.removeAll();
         this.setBackground(AppThemeColor.TRANSPARENT);
-        this.add(whisperPanel,BorderLayout.PAGE_START);
         this.add(messagePanel,BorderLayout.CENTER);
         this.add(customButtonsPanel,BorderLayout.PAGE_END);
         switch (style){
             case SMALL:{
+                this.whisperPanel = getWhisperPanel();
+                this.add(whisperPanel,BorderLayout.PAGE_START);
                 messagePanel.setVisible(false);
                 customButtonsPanel.setVisible(false);
                 break;
             }
             case MEDIUM:{
-//                this.add(whisperPanel,BorderLayout.PAGE_START);
-//                this.add(messagePanel,BorderLayout.CENTER);
                 break;
             }
             case BIGGEST:{
+                this.whisperPanel = getWhisperPanel();
+                this.add(whisperPanel,BorderLayout.PAGE_START);
                 messagePanel.setVisible(true);
                 customButtonsPanel.setVisible(true);
                 break;
             }
             case HISTORY:{
+                this.whisperPanel = getWhisperPanel();
+                this.add(whisperPanel,BorderLayout.PAGE_START);
+                messagePanel.setVisible(true);
+                customButtonsPanel.setVisible(true);
+                break;
+            }
+            case SPMODE:{
+                this.whisperPanel = getWhisperPanel();
+                this.add(whisperPanel,BorderLayout.PAGE_START);
                 messagePanel.setVisible(true);
                 customButtonsPanel.setVisible(true);
                 break;
@@ -169,10 +178,10 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         whisperLabel.setVerticalAlignment(SwingConstants.CENTER);
 
         JPanel nickNamePanel = componentsFactory.getTransparentPanel(new BorderLayout());
-        if(!style.equals(MessagePanelStyle.HISTORY)){
-            nickNamePanel.add(getExpandButton(),BorderLayout.LINE_START);
+        if(style.equals(MessagePanelStyle.HISTORY) || style.equals(MessagePanelStyle.SPMODE)){
             nickNamePanel.add(whisperLabel,BorderLayout.CENTER);
         }else {
+            nickNamePanel.add(getExpandButton(),BorderLayout.LINE_START);
             nickNamePanel.add(whisperLabel,BorderLayout.CENTER);
         }
         topPanel.add(nickNamePanel,BorderLayout.CENTER);
@@ -290,16 +299,6 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     public void setStyle(MessagePanelStyle style) {
         this.style = style;
         this.cachedTime = timeLabel.getText();
-        switch (style){
-            case SMALL:{
-                expandButton.setIcon(componentsFactory.getIcon("app/expand-mp.png",16));
-                break;
-            }
-            default:{
-                expandButton.setIcon(componentsFactory.getIcon("app/collapse-mp.png",16));
-                break;
-            }
-        }
         init();
     }
 

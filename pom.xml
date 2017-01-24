@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.home.mercury</groupId>
-    <artifactId>MercuryTrader</artifactId>
+    <artifactId>MercuryTrade</artifactId>
     <version>${project.version}</version>
 
     <modules>
@@ -91,6 +91,11 @@
                 <artifactId>json-simple</artifactId>
                 <version>${json.simple.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.googlecode.juniversalchardet</groupId>
+                <artifactId>juniversalchardet</artifactId>
+                <version>1.0.3</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <repositories>
@@ -108,7 +113,6 @@
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <encoding>UTF-8</encoding>
                     <archive>
                         <manifest>
                             <mainClass>com.mercury.platform.AppMain</mainClass>
