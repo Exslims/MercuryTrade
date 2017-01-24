@@ -89,21 +89,32 @@ public abstract class ComponentFrame extends OverlaidFrame{
     }
 
     private class ResizeMouseMotionListener extends MouseMotionAdapter{
+        private Rectangle rightResizeRect = new Rectangle();
         @Override
         public void mouseDragged(MouseEvent e) {
+            if(withinResizeSpace) {
+                Point frameLocation = ComponentFrame.this.getLocation();
+                ComponentFrame.this.setSize(new Dimension(e.getLocationOnScreen().x - frameLocation.x, ComponentFrame.this.getHeight()));
+            }
+        }
+        @Override
+        public void mouseMoved(MouseEvent e) {
+            int frameWidth = ComponentFrame.this.getWidth();
+            int frameHeight = ComponentFrame.this.getHeight();
             Point frameLocation = ComponentFrame.this.getLocation();
-            ComponentFrame.this.setSize(new Dimension(e.getLocationOnScreen().x - frameLocation.x,ComponentFrame.this.getHeight()));
+            rightResizeRect = new Rectangle(
+                    frameLocation.x + frameWidth - (BORDER_THICKNESS + 2),
+                    frameLocation.y,BORDER_THICKNESS+2,frameHeight);
+            if(rightResizeRect.getBounds().contains(e.getLocationOnScreen())) {
+                withinResizeSpace = true;
+                ComponentFrame.this.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
+            }else {
+                withinResizeSpace = false;
+                ComponentFrame.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
         }
     }
     private class ResizeMouseListener extends MouseAdapter{
-
-        private Rectangle rightResizeRect = new Rectangle();
-        @Override
-        public void mousePressed(MouseEvent e) {
-            FrameSettings frameSettings = configManager.getDefaultFramesSettings().get(ComponentFrame.this.getClass().getSimpleName());
-            ComponentFrame.this.setMinimumSize(new Dimension(frameSettings.getFrameSize().width,0));
-        }
-
         @Override
         public void mouseReleased(MouseEvent e) {
             withinResizeSpace = false;
@@ -113,21 +124,6 @@ public abstract class ComponentFrame extends OverlaidFrame{
             Dimension size = ComponentFrame.this.getSize();
             ComponentFrame.this.setMaximumSize(new Dimension(size.width,0));
             configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(),ComponentFrame.this.getSize());
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            int frameWidth = ComponentFrame.this.getWidth();
-            int frameHeight = ComponentFrame.this.getHeight();
-            Point frameLocation = ComponentFrame.this.getLocation();
-            rightResizeRect = new Rectangle(
-                    frameLocation.x + frameWidth - (BORDER_THICKNESS + 2),
-                    frameLocation.y,BORDER_THICKNESS+2,frameHeight);
-            if(rightResizeRect.getBounds().contains(e.getLocationOnScreen())) {
-                //todo huy znaet
-                withinResizeSpace = true;
-                ComponentFrame.this.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
-            }
         }
 
         @Override
