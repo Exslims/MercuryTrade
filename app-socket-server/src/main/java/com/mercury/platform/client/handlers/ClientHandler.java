@@ -35,8 +35,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
 
 
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-
+    public void channelInactive(ChannelHandlerContext context) throws Exception {
+        LOGGER.info("Channel {} is inactive", context.channel().id());
     }
 
     @Override
