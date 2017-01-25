@@ -22,7 +22,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void channelActive(ChannelHandlerContext context) throws Exception {
-        LOGGER.debug("Sending echo events to server");
+        LOGGER.debug("Sending echo message to server");
         context.channel().writeAndFlush("echo");
     }
 
