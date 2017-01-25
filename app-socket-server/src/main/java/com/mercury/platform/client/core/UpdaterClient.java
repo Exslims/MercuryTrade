@@ -47,4 +47,8 @@ public class UpdaterClient {
     public void registerListener(UpdateEventHandler handler) {
         UpdaterClientEventBus.getInstance().register(handler);
     }
+
+    public void removeListener(UpdateEventHandler handler) {
+        UpdaterClientEventBus.getInstance().unregister(handler);
+    }
 }

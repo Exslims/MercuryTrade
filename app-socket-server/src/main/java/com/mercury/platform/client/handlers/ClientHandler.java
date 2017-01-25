@@ -22,7 +22,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object object) throws Exception {
         LOGGER.debug("Server says \"{}\"", object);
-        UpdaterClientEventBus.getInstance().post(new UpdateReceivedEvent(object.toString().getBytes()));
+        UpdateReceivedEvent event = new UpdateReceivedEvent(object.toString().getBytes());
+        UpdaterClientEventBus.getInstance().post(event);
     }
 
 
