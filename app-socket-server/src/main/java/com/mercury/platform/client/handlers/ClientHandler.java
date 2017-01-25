@@ -1,5 +1,7 @@
-package com.mercury.platform.server.handlers;
+package com.mercury.platform.client.handlers;
 
+import com.mercury.platform.client.bus.UpdaterClientEventBus;
+import com.mercury.platform.client.bus.event.UpdateReceivedEvent;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.apache.logging.log4j.LogManager;
@@ -13,10 +15,14 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
 
     private static final Logger LOGGER = LogManager.getLogger(ClientHandler.class);
 
+    public ClientHandler() {
+
+    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object object) throws Exception {
         LOGGER.debug("Server says \"{}\"", object);
+        UpdaterClientEventBus.getInstance().post(new UpdateReceivedEvent(object.toString().getBytes()));
     }
 
 

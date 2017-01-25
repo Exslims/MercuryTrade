@@ -1,6 +1,6 @@
-package com.mercury.platform.server.init;
+package com.mercury.platform.client.init;
 
-import com.mercury.platform.server.handlers.ClientHandler;
+import com.mercury.platform.client.handlers.ClientHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.serialization.ClassResolver;

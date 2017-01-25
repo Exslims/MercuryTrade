@@ -1,6 +1,8 @@
-package com.mercury.platform.server.core;
+package com.mercury.platform.client.core;
 
-import com.mercury.platform.server.init.ClientChannelInitializer;
+import com.mercury.platform.client.bus.UpdaterClientEventBus;
+import com.mercury.platform.client.bus.event.UpdateEventHandler;
+import com.mercury.platform.client.init.ClientChannelInitializer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
@@ -40,5 +42,9 @@ public class UpdaterClient {
         } finally {
             group.shutdownGracefully().sync();
         }
+    }
+
+    public void registerListener(UpdateEventHandler handler) {
+        UpdaterClientEventBus.getInstance().register(handler);
     }
 }
