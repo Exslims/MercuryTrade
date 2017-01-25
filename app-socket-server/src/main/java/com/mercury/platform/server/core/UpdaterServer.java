@@ -1,5 +1,6 @@
 package com.mercury.platform.server.core;
 
+import com.mercury.platform.config.MercuryServerConfig;
 import com.mercury.platform.server.init.ServerChannelInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -17,7 +18,7 @@ import org.apache.logging.log4j.Logger;
 public class UpdaterServer {
 
     private static final Logger LOGGER = LogManager.getLogger(UpdaterServer.class);
-    private static final int DEFAULT_THREADS_COUNT = 50;
+    private static final int DEFAULT_THREADS_COUNT = MercuryServerConfig.getInstance().getThreadsCount();
 
 
     private int port;
@@ -34,9 +35,11 @@ public class UpdaterServer {
 
     public void run() throws InterruptedException {
         LOGGER.info("Starting server on {} port", port);
+        LOGGER.info("Event loop group threads count = {}" , nThreads);
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup(nThreads);
         try {
+            LOGGER.info("Initializing server bootstrap");
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
