@@ -11,6 +11,7 @@ import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
 import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.frame.impl.util.FlowDirections;
+import com.mercury.platform.ui.frame.impl.util.TradeMode;
 import com.mercury.platform.ui.frame.location.UndecoratedFrameState;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
@@ -26,10 +27,11 @@ import java.awt.event.MouseEvent;
 public class IncMessageFrame extends MovableComponentFrame{
     private TradeMode tradeMode = TradeMode.DEFAULT;
     private FlowDirections flowDirections = FlowDirections.DOWNWARDS;
-    
+
+    private boolean dnd = false;
     private JPanel spPanel;
 
-    private JLabel inProgessMsgs;
+    private JLabel inProgressMsgs;
     private JLabel activeMsgs;
     private JLabel finishedMsgs;
 
@@ -50,12 +52,12 @@ public class IncMessageFrame extends MovableComponentFrame{
         dismissTradesButton.setPreferredSize(new Dimension(30,22));
         dFinishedTradePanel.add(dismissTradesButton);
 
-        inProgessMsgs = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME,TextAlignment.CENTER,18,"0");
+        inProgressMsgs = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME,TextAlignment.CENTER,18,"0");
         activeMsgs = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_SUCCESS,TextAlignment.CENTER,18,"0");
         finishedMsgs = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DENIED,TextAlignment.CENTER,18,"0");
 
         JPanel labelsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        labelsPanel.add(inProgessMsgs);
+        labelsPanel.add(inProgressMsgs);
         labelsPanel.add(activeMsgs);
         labelsPanel.add(finishedMsgs);
 
@@ -126,9 +128,17 @@ public class IncMessageFrame extends MovableComponentFrame{
         EventRouter.INSTANCE.registerHandler(ChangedTradeModeEvent.ToDefaultTradeModeEvent.class, event -> {
             convertFrameTo(TradeMode.DEFAULT);
         });
+        EventRouter.INSTANCE.registerHandler(DndModeEvent.class, event -> {
+            this.dnd = ((DndModeEvent)event).isDnd();
+            if(dnd){
+                this.setVisible(false);
+            }else if(mainContainer.getComponentCount() > 0){
+                this.setVisible(true);
+            }
+        });
         EventRouter.INSTANCE.registerHandler(NewWhispersEvent.class, event -> {
             Message message = ((NewWhispersEvent) event).getMessage();
-            if (!this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
+            if (!dnd && !this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
                 this.setAlwaysOnTop(true);
                 this.setVisible(true);
             } else {
@@ -206,9 +216,5 @@ public class IncMessageFrame extends MovableComponentFrame{
         panel.add(labelPanel);
         panel.add(growPanel);
         return panel;
-    }
-
-    private enum TradeMode{
-        DEFAULT,SUPER
     }
 }

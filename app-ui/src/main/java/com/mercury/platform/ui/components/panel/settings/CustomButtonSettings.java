@@ -46,10 +46,6 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
         inputs = new HashMap<>();
         Map<String, String> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();
 
-        JPanel otherSettings = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        otherSettings.add(componentsFactory.getTextLabel("Flip x:"));
-        otherSettings.add(new JCheckBox());
-
         JPanel tablePanel = componentsFactory.getTransparentPanel(new GridBagLayout());
 
         GridBagConstraints titleColumn = new GridBagConstraints();
@@ -95,10 +91,6 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
 
 
         JPanel msgPanelWrapper = componentsFactory.getTransparentPanel(new FlowLayout());
-//        MessagePanel msgPanel = new MessagePanel("Example","2016/12/26 05:20:19 Hi, I would like to buy your Example Example listed for 1 exalted in Breach. (offer example example)", MessagePanelStyle.BIGGEST);
-//        msgPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER));
-//        msgPanelWrapper.add(msgPanel);
-        this.add(otherSettings,BorderLayout.PAGE_START);
         this.add(tablePanel,BorderLayout.CENTER);
         this.add(msgPanelWrapper,BorderLayout.PAGE_END);
     }

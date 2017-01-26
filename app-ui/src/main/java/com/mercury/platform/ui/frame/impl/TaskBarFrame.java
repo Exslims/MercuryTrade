@@ -5,6 +5,7 @@ import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.MovableComponentFrame;
+import com.mercury.platform.ui.frame.impl.util.TradeMode;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -74,36 +75,38 @@ public class TaskBarFrame extends MovableComponentFrame{
 
         JButton visibleMode = componentsFactory.getIconButton("app/visible-always-mode.png",24,AppThemeColor.FRAME_1, TooltipConstants.VISIBLE_MODE);
         visibleMode.addMouseListener(new MouseAdapter() {
-            private String currentMode = "always";
+            private boolean dnd = false;
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (currentMode.equals("always")) {
+                if (!dnd) {
                     visibleMode.setIcon(componentsFactory.getIcon("app/visible-dnd-mode.png", 24));
-                    currentMode = "dnd";
+                    dnd = true;
                     TaskBarFrame.this.repaint();
                     EventRouter.INSTANCE.fireEvent(new NotificationEvent("DND on"));
+                    EventRouter.INSTANCE.fireEvent(new DndModeEvent(true));
                 } else {
-                    currentMode = "always";
+                    dnd = false;
                     visibleMode.setIcon(componentsFactory.getIcon("app/visible-always-mode.png", 24));
                     TaskBarFrame.this.repaint();
                     EventRouter.INSTANCE.fireEvent(new NotificationEvent("DND off"));
+                    EventRouter.INSTANCE.fireEvent(new DndModeEvent(false));
                 }
             }
         });
 
         JButton chatMode = componentsFactory.getIconButton("app/standard-mode.png",24,AppThemeColor.FRAME_1,TooltipConstants.TRADE_MODE);
         chatMode.addMouseListener(new MouseAdapter() {
-            private String currentMode = "standard";
+            private TradeMode currentMode = TradeMode.DEFAULT;
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(currentMode.equals("standard")){
+                if(currentMode.equals(TradeMode.DEFAULT)){
                     chatMode.setIcon(componentsFactory.getIcon("app/supertrade-mode.png",24));
-                    currentMode = "supertrade";
+                    currentMode = TradeMode.SUPER;
                     TaskBarFrame.this.repaint();
                     EventRouter.INSTANCE.fireEvent(new NotificationEvent("SuperTrade mode ON"));
                     EventRouter.INSTANCE.fireEvent(new ChangedTradeModeEvent.ToSuperTradeModeEvent());
                 }else {
-                    currentMode = "standard";
+                    currentMode = TradeMode.DEFAULT;
                     chatMode.setIcon(componentsFactory.getIcon("app/standard-mode.png",24));
                     TaskBarFrame.this.repaint();
                     EventRouter.INSTANCE.fireEvent(new NotificationEvent("SuperTrade mode OFF"));

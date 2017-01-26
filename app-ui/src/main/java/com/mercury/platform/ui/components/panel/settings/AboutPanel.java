@@ -2,6 +2,7 @@ package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.HasUI;
+import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,8 +28,9 @@ public class AboutPanel extends ConfigurationPanel implements HasUI {
 
     @Override
     public void createUI() {
-        JButton button1 = componentsFactory.getIconifiedTransparentButton("app/paypal.png","Donate");
-        button1.addMouseListener(new MouseAdapter() {
+        JButton donate = componentsFactory.getIconifiedTransparentButton("app/paypal.png","Donate");
+        donate.setBackground(AppThemeColor.SLIDE_BG);
+        donate.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 try {
@@ -40,7 +42,7 @@ public class AboutPanel extends ConfigurationPanel implements HasUI {
                 }
             }
         });
-        this.add(button1);
+        this.add(donate);
         this.add(componentsFactory.getTextLabel("About program and contacts here."));
         this.add(componentsFactory.getTextField("TYPE HERE", FontStyle.BOLD,16));
     }

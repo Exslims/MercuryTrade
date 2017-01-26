@@ -30,7 +30,7 @@ public class SettingsFrame extends TitledComponentFrame {
         super("MT-Settings");
         setFocusable(true);
         setFocusableWindowState(true);
-        setAlwaysOnTop(true);
+        setAlwaysOnTop(false);
         innerPanels = new ArrayList<>();
         processingHideEvent = false;
     }
