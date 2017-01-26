@@ -5,9 +5,8 @@ import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.MercuryEvent;
 import com.mercury.platform.shared.events.custom.NewWhispersEvent;
 import com.mercury.platform.shared.events.custom.RepaintEvent;
-import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.shared.pojo.Message;
-import com.mercury.platform.ui.components.fields.MercuryScrollBarUI;
+import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
@@ -17,9 +16,6 @@ import com.mercury.platform.ui.misc.TooltipConstants;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Константин on 27.12.2016.

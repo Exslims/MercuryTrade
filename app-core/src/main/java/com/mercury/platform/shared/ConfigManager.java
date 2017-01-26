@@ -213,7 +213,7 @@ public class ConfigManager {
         dFramesSettings.put("IncMessageFrame",new FrameSettings(new Point(700, 500),new Dimension(280,10)));
         dFramesSettings.put("OutMessageFrame",new FrameSettings(new Point(200, 500),new Dimension(280,115)));
         dFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(1400, 500),new Dimension(400,100)));
-        dFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(114,50)));
+        dFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(540,100)));
         dFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 600),new Dimension(280,500)));
         dFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
         dFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,102)));

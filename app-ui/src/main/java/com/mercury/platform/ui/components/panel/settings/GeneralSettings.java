@@ -34,12 +34,12 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         secondsPicker = componentsFactory.getComboBox(new String[]{"0","1","2","3","4","5"});
 
         JPanel hideSettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        hideSettingsPanel.add(componentsFactory.getTextLabel("Hide panels after:"));
+        hideSettingsPanel.add(componentsFactory.getTextLabel("Fade time:"));
         hideSettingsPanel.add(secondsPicker);
-        hideSettingsPanel.add(componentsFactory.getTextLabel("seconds. 0 - always show"));
+        hideSettingsPanel.add(componentsFactory.getTextLabel("sec. 0 - always show"));
 
         JPanel minOpacitySettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        minOpacitySettingsPanel.add(componentsFactory.getTextLabel("Minimum opacity: "));
+        minOpacitySettingsPanel.add(componentsFactory.getTextLabel("Min opacity: "));
 
         JPanel minValuePanel = componentsFactory.getTransparentPanel(new FlowLayout());
         JLabel minValueField = componentsFactory.getTextLabel(hideManager.getMinOpacity() + "%"); //todo
@@ -55,7 +55,7 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         minOpacitySettingsPanel.add(minSlider);
 
         JPanel maxOpacitySettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        maxOpacitySettingsPanel.add(componentsFactory.getTextLabel("Maximum opacity: "));
+        maxOpacitySettingsPanel.add(componentsFactory.getTextLabel("Max opacity: "));
 
         JPanel maxValuePanel = componentsFactory.getTransparentPanel(new FlowLayout());
         JLabel maxValueField = componentsFactory.getTextLabel(hideManager.getMaxOpacity() + "%"); //todo

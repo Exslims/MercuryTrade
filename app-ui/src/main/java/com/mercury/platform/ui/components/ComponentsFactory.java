@@ -3,7 +3,7 @@ package com.mercury.platform.ui.components;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.HideTooltipEvent;
 import com.mercury.platform.shared.events.custom.ShowTooltipEvent;
-import com.mercury.platform.ui.components.fields.MercuryComboBoxUI;
+import com.mercury.platform.ui.components.fields.style.MercuryComboBoxUI;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -17,8 +17,6 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -90,22 +88,9 @@ public class ComponentsFactory {
         button.setBorder(border);
         button.addChangeListener(e->{
             if(!button.getModel().isPressed()){
-                button.setBackground(background);
+                button.setBackground(button.getBackground());
             }
         });
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                button.setEnabled(false);
-                Timer timer = new Timer(1000,null);
-                timer.addActionListener(event -> {
-                    button.setEnabled(true);
-                    timer.stop();
-                });
-                timer.start();
-            }
-        });
-
         return button;
     }
 

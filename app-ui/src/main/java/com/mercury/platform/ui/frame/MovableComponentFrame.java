@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent;
  */
 public abstract class MovableComponentFrame extends ComponentFrame {
     protected Container mainContainer;
-    private UndecoratedFrameState undecoratedFrameState;
+    protected UndecoratedFrameState undecoratedFrameState;
     protected MovableComponentFrame(String title) {
         super(title);
         mainContainer = this.getContentPane();

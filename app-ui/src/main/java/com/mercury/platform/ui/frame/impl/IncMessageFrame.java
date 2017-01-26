@@ -11,6 +11,7 @@ import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.MessagePanelStyle;
 import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.frame.impl.util.FlowDirections;
+import com.mercury.platform.ui.frame.location.UndecoratedFrameState;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 
@@ -63,10 +64,11 @@ public class IncMessageFrame extends MovableComponentFrame{
         this.addMouseListener(new MouseAdapter() { //todo
             @Override
             public void mouseExited(MouseEvent e) {
-                if(flowDirections.equals(FlowDirections.UPWARDS) && !isMouseWithInFrame()){
+                if(!undecoratedFrameState.equals(UndecoratedFrameState.MOVING)
+                        && flowDirections.equals(FlowDirections.UPWARDS)
+                        && !isMouseWithInFrame()){
                     IncMessageFrame.this.setLocation(configManager
-                            .getFrameSettings(IncMessageFrame.this.getClass()
-                                    .getSimpleName())
+                            .getFrameSettings(IncMessageFrame.this.getClass().getSimpleName())
                             .getFrameLocation());
                 }
             }

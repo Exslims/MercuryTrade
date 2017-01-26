@@ -178,7 +178,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         whisperLabel.setVerticalAlignment(SwingConstants.CENTER);
 
         JPanel nickNamePanel = componentsFactory.getTransparentPanel(new BorderLayout());
-        if(style.equals(MessagePanelStyle.HISTORY) || style.equals(MessagePanelStyle.SPMODE)){
+        if(style.equals(MessagePanelStyle.HISTORY)){
             nickNamePanel.add(whisperLabel,BorderLayout.CENTER);
         }else {
             nickNamePanel.add(getExpandButton(),BorderLayout.LINE_START);

@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.components.fields;
+package com.mercury.platform.ui.components.fields.style;
 
 import com.mercury.platform.ui.misc.AppThemeColor;
 

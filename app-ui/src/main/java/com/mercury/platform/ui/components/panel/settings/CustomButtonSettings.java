@@ -52,27 +52,21 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
 
         JPanel tablePanel = componentsFactory.getTransparentPanel(new GridBagLayout());
 
-        GridBagConstraints buttonColumn = new GridBagConstraints();
         GridBagConstraints titleColumn = new GridBagConstraints();
         GridBagConstraints valueColumn = new GridBagConstraints();
         GridBagConstraints utilColumn = new GridBagConstraints();
 
-        setUpGBConstants(buttonColumn,titleColumn,valueColumn,utilColumn);
+        setUpGBConstants(titleColumn,valueColumn,utilColumn);
         inputs = new HashMap<>();
 
         tablePanel.setBackground(AppThemeColor.TRANSPARENT);
 
-        JLabel buttonLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, null,15f,"Example");
-        buttonLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JLabel titleLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, null,15f,"Highlight");
+        JLabel titleLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, null,15f,"Label");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JLabel valueLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, null,15f,"Text to send");
+        JLabel valueLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, null,15f,"Response text");
         valueLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        tablePanel.add(buttonLabel,buttonColumn);
-        buttonColumn.gridy++;
         tablePanel.add(titleLabel, titleColumn);
         titleColumn.gridy++;
         tablePanel.add(valueLabel,valueColumn);
@@ -81,7 +75,7 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
         utilColumn.gridy++;
 
         buttonsConfig.forEach((title,value) ->{
-            addNewRow(tablePanel,title,value,buttonColumn,titleColumn,valueColumn,utilColumn);
+            addNewRow(tablePanel,title,value,titleColumn,valueColumn,utilColumn);
         });
 
         JButton addNew = componentsFactory.getBorderedButton("Add");
@@ -90,7 +84,7 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
             public void mouseClicked(MouseEvent e) {
                 if(inputs.size() <= 8) {
                     tablePanel.remove(addNew);
-                    addNewRow(tablePanel, "expl", "example", buttonColumn, titleColumn, valueColumn, utilColumn);
+                    addNewRow(tablePanel, "expl", "example", titleColumn, valueColumn, utilColumn);
                     tablePanel.add(addNew, utilColumn);
 
                     owner.pack();
@@ -108,18 +102,9 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
         this.add(tablePanel,BorderLayout.CENTER);
         this.add(msgPanelWrapper,BorderLayout.PAGE_END);
     }
-    private void addNewRow(JPanel rootPanel, String title, String value, GridBagConstraints bC, GridBagConstraints tC, GridBagConstraints vC, GridBagConstraints uC){
-        JButton button = componentsFactory.getBorderedButton(title);
-        rootPanel.add(button,bC);
-        bC.gridy++;
-
+    private void addNewRow(JPanel rootPanel, String title, String value, GridBagConstraints tC, GridBagConstraints vC, GridBagConstraints uC){
         JTextField titleFiled = componentsFactory.getTextField(title,FontStyle.BOLD,14f);
         titleFiled.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                button.setText(titleFiled.getText());
-            }
-
             @Override
             public void keyTyped(KeyEvent e) {
                 if(titleFiled.getText().length() > 5){
@@ -140,7 +125,6 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
         remove.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                rootPanel.remove(button);
                 inputs.remove(titleFiled);
                 rootPanel.remove(titleFiled);
                 rootPanel.remove(valueField);
@@ -152,24 +136,19 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
         rootPanel.add(remove,uC);
         uC.gridy++;
     }
-    private void setUpGBConstants(GridBagConstraints buttonColumn, GridBagConstraints titleColumn, GridBagConstraints valueColumn, GridBagConstraints utilColumn){
-        buttonColumn.fill = GridBagConstraints.HORIZONTAL;
+    private void setUpGBConstants(GridBagConstraints titleColumn, GridBagConstraints valueColumn, GridBagConstraints utilColumn){
         titleColumn.fill = GridBagConstraints.HORIZONTAL;
         valueColumn.fill = GridBagConstraints.HORIZONTAL;
         utilColumn.fill = GridBagConstraints.HORIZONTAL;
 
-        buttonColumn.weightx = 0.01f;
         titleColumn.weightx = 0.01f;
         valueColumn.weightx = 0.97f;
         utilColumn.weightx = 0.002f;
 
-        buttonColumn.anchor = GridBagConstraints.NORTHWEST;
         titleColumn.anchor = GridBagConstraints.NORTHWEST;
         valueColumn.anchor = GridBagConstraints.NORTHWEST;
         utilColumn.anchor = GridBagConstraints.NORTHWEST;
 
-        buttonColumn.gridy = 0;
-        buttonColumn.gridx = 0;
         titleColumn.gridy = 0;
         titleColumn.gridx = 1;
         valueColumn.gridy = 0;
@@ -178,7 +157,6 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
         utilColumn.gridx = 3;
 
         utilColumn.insets = new Insets(3,2,3,0);
-        buttonColumn.insets = new Insets(3,0,3,0);
         titleColumn.insets = new Insets(3,2,3,0);
         valueColumn.insets = new Insets(3,2,3,0);
     }
