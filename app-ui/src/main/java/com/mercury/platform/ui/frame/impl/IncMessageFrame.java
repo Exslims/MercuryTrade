@@ -133,6 +133,7 @@ public class IncMessageFrame extends MovableComponentFrame{
             if(dnd){
                 this.setVisible(false);
             }else if(mainContainer.getComponentCount() > 0){
+                this.setAlwaysOnTop(true);
                 this.setVisible(true);
             }
         });
