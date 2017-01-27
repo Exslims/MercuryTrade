@@ -15,6 +15,7 @@ public class ServerMain {
     private static final Logger LOGGER = LogManager.getLogger(ServerMain.class);
 
     public static void main(String[] args) throws Exception {
+
         MercuryServerConfig serverConfig = MercuryServerConfig.getInstance();
 
         UpdaterServerAsyncEventBus asyncEventBus = UpdaterServerAsyncEventBus.getInstance();
