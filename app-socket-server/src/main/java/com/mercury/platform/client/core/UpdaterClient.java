@@ -1,7 +1,7 @@
 package com.mercury.platform.client.core;
 
 import com.mercury.platform.client.bus.UpdaterClientEventBus;
-import com.mercury.platform.client.bus.event.UpdateEventHandler;
+import com.mercury.platform.client.bus.handlers.UpdateEventHandler;
 import com.mercury.platform.client.init.ClientChannelInitializer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
