@@ -45,13 +45,13 @@ public class MercuryServerConfig {
     private void initConfigByDefault() {
         this.disruptorBufferSize = 1024;
         this.port = 10_000;
-        this.threadsCount = 50;
+        this.threadsCount = Runtime.getRuntime().availableProcessors() - 1;
     }
 
     private void initConfig() {
         this.disruptorBufferSize = Integer.valueOf(properties.getProperty("mercury.disruptor.buffer.size" , "1024"));
         this.port = Integer.valueOf(properties.getProperty("mercury.server.port" , "10000"));
-        this.threadsCount = Integer.valueOf(properties.getProperty("mercury.server.threads.count" , "50"));
+        this.threadsCount = Integer.valueOf(properties.getProperty("mercury.server.threads.count" , "3"));
     }
 
 
