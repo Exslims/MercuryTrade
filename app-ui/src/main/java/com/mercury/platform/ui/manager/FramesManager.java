@@ -8,7 +8,14 @@ import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.frame.impl.*;
 import com.mercury.platform.ui.frame.location.SetUpLocationCommander;
 import com.mercury.platform.ui.frame.location.SetUpLocationFrame;
+import org.imgscalr.Scalr;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +36,7 @@ public class FramesManager {
         locationCommander = new SetUpLocationCommander();
     }
     public void start(){
+        createTrayIcon();
 //        framesMap.put(ChatFilterFrame.class,new ChatFilterFrame());
         framesMap.put(HistoryFrame.class,new HistoryFrame());
 
@@ -70,5 +78,31 @@ public class FramesManager {
     }
     public void enableMovement(){
         locationCommander.callSetupLocation();
+    }
+
+    private void createTrayIcon(){
+        PopupMenu trayMenu = new PopupMenu();
+        MenuItem item = new MenuItem("Exit");
+        item.addActionListener(e -> {
+            System.exit(0);
+        });
+        trayMenu.add(item);
+
+        BufferedImage icon = null;
+        try {
+            icon = ImageIO.read(getClass().getClassLoader().getResource("app/app-icon.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        TrayIcon trayIcon = new TrayIcon(icon,"MercuryTrade",trayMenu);
+        trayIcon.setImageAutoSize(true);
+
+        SystemTray tray = SystemTray.getSystemTray();
+        try {
+            tray.add(trayIcon);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+        trayIcon.displayMessage("MercuryTrade","Application started", TrayIcon.MessageType.INFO);
     }
 }
