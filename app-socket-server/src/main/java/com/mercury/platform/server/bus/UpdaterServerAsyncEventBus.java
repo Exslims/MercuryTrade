@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 /**
  * Created by Frost on 25.01.2017.
  */
-public class UpdaterServerAsyncEventBus extends EventBus{
+public class UpdaterServerAsyncEventBus extends EventBus {
 
     private static final UpdaterServerAsyncEventBus instance = new UpdaterServerAsyncEventBus();
     private static final Logger LOGGER = LogManager.getLogger(UpdaterServerAsyncEventBus.class);

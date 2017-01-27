@@ -21,7 +21,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext context) throws Exception {
         LOGGER.info("{} channel is active" , this);
         InetSocketAddress address = (InetSocketAddress) context.channel().remoteAddress();
-        eventBus.post(new ClientConnectedEvent(address.getHostName()));
+        eventBus.post(new ClientConnectedEvent(address));
     }
 
     @Override
