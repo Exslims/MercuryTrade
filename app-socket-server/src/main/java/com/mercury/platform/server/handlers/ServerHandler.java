@@ -42,17 +42,16 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                 int chunkStart = 0;
                 int chunkEnd = 0;
 
-                while (chunkEnd < update.length) {
-                    System.out.println(update.length);
+                while (chunkStart < update.length) {
                     if (chunkStart + chunkSize > update.length) {
                         chunkSize = update.length - chunkStart;
                     }
-                    chunkStart += chunkSize;
 
                     chunkEnd = chunkStart + chunkSize;
-                    System.out.println(chunkStart + " " + chunkSize + " " + chunkEnd);
 
                     context.channel().writeAndFlush(Arrays.copyOfRange(update, chunkStart, chunkEnd));
+
+                    chunkStart += chunkSize;
                 }
             }
         }

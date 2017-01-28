@@ -35,20 +35,14 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
 
         if (object instanceof Integer)
             this.length = (int) object;
-        System.out.println(length);
 
         if (object instanceof byte[]) {
             byte[] bytes = (byte[]) object;
-            System.out.println(bytes.length);
             Byte[] received = ArrayUtils.toObject(bytes);
             chunks.addAll(Arrays.asList(received));
-
-            System.out.println(chunks.size() + " " + length);
-            System.out.println(chunks.size() >= length);
-
             if (chunks.size() == length) {
-                Byte[] objects = (Byte[]) chunks.toArray();
-                UpdateReceivedEvent event = new UpdateReceivedEvent(objects);
+                byte[] array = Bytes.toArray(chunks);
+                UpdateReceivedEvent event = new UpdateReceivedEvent(array);
                 UpdaterClientEventBus.getInstance().post(event);
             }
         }

@@ -5,14 +5,14 @@ package com.mercury.platform.client.bus.event;
  */
 public class UpdateReceivedEvent {
 
-    private Byte[] bytes;
+    private byte[] bytes;
 
 
-    public UpdateReceivedEvent(Byte[] bytes) {
+    public UpdateReceivedEvent(byte [] bytes) {
         this.bytes = bytes;
     }
 
-    public Byte[] getBytes() {
+    public byte[] getBytes() {
         return bytes;
     }
 }
