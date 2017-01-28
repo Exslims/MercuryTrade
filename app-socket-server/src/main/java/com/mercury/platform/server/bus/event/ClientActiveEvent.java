@@ -5,11 +5,11 @@ import java.net.InetSocketAddress;
 /**
  * Created by Frost on 25.01.2017.
  */
-public class ClientConnectedEvent {
+public class ClientActiveEvent {
 
     private String ipAddress;
 
-    public ClientConnectedEvent(InetSocketAddress address) {
+    public ClientActiveEvent(InetSocketAddress address) {
         this.ipAddress = address.getHostName();
     }
 
