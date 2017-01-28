@@ -20,12 +20,12 @@ public class UpdaterServer {
     private static final Logger LOGGER = LogManager.getLogger(UpdaterServer.class);
     private static final int DEFAULT_THREADS_COUNT = MercuryServerConfig.getInstance().getThreadsCount();
 
-
     private int port;
     private int nThreads;
     private ChannelFuture sync;
     private EventLoopGroup bossGroup;
     private EventLoopGroup workerGroup;
+    private volatile boolean started;
 
     public UpdaterServer(int port) {
         this(port, DEFAULT_THREADS_COUNT);
@@ -34,6 +34,7 @@ public class UpdaterServer {
     public UpdaterServer(int port, int nThreads) {
         this.port = port;
         this.nThreads = nThreads;
+        this.started = false;
     }
 
     public void run() {
@@ -52,6 +53,7 @@ public class UpdaterServer {
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             LOGGER.info("Server started");
             this.sync = serverBootstrap.bind(port).sync();
+            started = true;
             sync.channel().closeFuture().sync();
 
         } catch (InterruptedException e) {
@@ -78,6 +80,10 @@ public class UpdaterServer {
             LOGGER.info(e);
         }
         LOGGER.info("Server is stopped");
+        started = false;
     }
 
+    public boolean isStarted() {
+        return started;
+    }
 }

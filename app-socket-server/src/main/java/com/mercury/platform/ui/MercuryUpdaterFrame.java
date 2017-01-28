@@ -2,10 +2,12 @@ package com.mercury.platform.ui;
 
 import com.mercury.platform.config.MercuryServerConfig;
 import com.mercury.platform.server.bus.UpdaterServerAsyncEventBus;
-import com.mercury.platform.server.bus.handlers.ClientConnectedEventHandler;
+import com.mercury.platform.server.bus.handlers.ClientActiveEventHandler;
 import com.mercury.platform.server.core.UpdaterServer;
 import com.mercury.platform.server.main.listeners.ShutdownServerButtonListener;
 import com.mercury.platform.server.main.listeners.StartServerButtonListener;
+import com.mercury.platform.server.main.listeners.UIClientActiveListener;
+import com.mercury.platform.server.main.listeners.UIClientUnregisteredListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,32 +26,38 @@ public class MercuryUpdaterFrame extends JFrame {
 
     public static final Dimension DEFAULT_FRAME_SIZE = new Dimension(500, 170);
 
-    private JLabel onlineCount;
-    private JLabel updateCount;
+    private volatile JLabel onlineCountLabel;
+    private volatile JLabel updateCount;
     private UpdaterServer server;
 
     public MercuryUpdaterFrame(){
-        this.initServer();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
         this.setLocationRelativeTo(null);
         this.setPreferredSize(DEFAULT_FRAME_SIZE);
         this.add(getTopPanel(),BorderLayout.PAGE_START);
+        this.initServer();
         this.add(getLabelsPanel(),BorderLayout.CENTER);
         this.add(getBottomPanel(),BorderLayout.PAGE_END);
+        this.initEvents();
         this.pack();
+
     }
 
     private void initServer() {
         MercuryServerConfig serverConfig = MercuryServerConfig.getInstance();
+        this.server = new UpdaterServer(serverConfig.getPort());
+    }
 
+    private void initEvents() {
         UpdaterServerAsyncEventBus asyncEventBus = UpdaterServerAsyncEventBus.getInstance();
 
-        asyncEventBus.register((ClientConnectedEventHandler) event ->
+        asyncEventBus.register((ClientActiveEventHandler) event ->
                 LOGGER.info("Client connected, IP = {}" , event.getIpAddress())
         );
 
-        this.server = new UpdaterServer(serverConfig.getPort());
+        asyncEventBus.register(new UIClientActiveListener(onlineCountLabel));
+        asyncEventBus.register(new UIClientUnregisteredListener(onlineCountLabel));
     }
 
     private JPanel getTopPanel(){
@@ -90,10 +98,10 @@ public class MercuryUpdaterFrame extends JFrame {
         JPanel onlinePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel onlineLabel = new JLabel("Online: ");
         //
-        onlineCount = new JLabel("0");
+        onlineCountLabel = new JLabel("0");
 
         onlinePanel.add(onlineLabel);
-        onlinePanel.add(onlineCount);
+        onlinePanel.add(onlineCountLabel);
 
         JPanel updatePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel updateLabel = new JLabel("Update count: ");

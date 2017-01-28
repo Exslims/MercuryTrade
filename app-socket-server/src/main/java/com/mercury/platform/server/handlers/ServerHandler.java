@@ -1,7 +1,8 @@
 package com.mercury.platform.server.handlers;
 
 import com.mercury.platform.server.bus.UpdaterServerAsyncEventBus;
-import com.mercury.platform.server.bus.event.ClientConnectedEvent;
+import com.mercury.platform.server.bus.event.ClientActiveEvent;
+import com.mercury.platform.server.bus.event.ClientUnregisteredEvent;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.apache.logging.log4j.LogManager;
@@ -21,7 +22,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext context) throws Exception {
         LOGGER.info("{} channel is active" , this);
         InetSocketAddress address = (InetSocketAddress) context.channel().remoteAddress();
-        eventBus.post(new ClientConnectedEvent(address));
+        eventBus.post(new ClientActiveEvent(address));
     }
 
     @Override
@@ -33,5 +34,19 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext context, Throwable cause) throws Exception {
         LOGGER.error(cause);
+    }
+
+
+    @Override
+    public void channelInactive(ChannelHandlerContext context) throws Exception {
+
+    }
+
+
+    @Override
+    public void channelUnregistered(ChannelHandlerContext context) throws Exception {
+        LOGGER.info("{} channel is unregistered" , this);
+        InetSocketAddress address = (InetSocketAddress) context.channel().remoteAddress();
+        eventBus.post(new ClientUnregisteredEvent(address));
     }
 }

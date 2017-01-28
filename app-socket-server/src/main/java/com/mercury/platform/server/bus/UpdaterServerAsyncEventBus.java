@@ -21,7 +21,7 @@ public class UpdaterServerAsyncEventBus extends EventBus {
         return instance;
     }
 
-    private EventBus eventBus;
+    private volatile EventBus eventBus;
 
 
     private UpdaterServerAsyncEventBus() {
