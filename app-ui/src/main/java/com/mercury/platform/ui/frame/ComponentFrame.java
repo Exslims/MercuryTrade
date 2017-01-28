@@ -57,8 +57,6 @@ public abstract class ComponentFrame extends OverlaidFrame{
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, BORDER_THICKNESS)));
-
-
     }
 
     public void disableHideEffect(){
