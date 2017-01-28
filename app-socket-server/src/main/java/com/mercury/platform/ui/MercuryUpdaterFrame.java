@@ -22,7 +22,7 @@ public class MercuryUpdaterFrame extends JFrame {
 
     private static final Logger LOGGER = LogManager.getLogger(MercuryUpdaterFrame.class);
 
-    public static final Dimension DEFAULT_FRAME_SIZE = new Dimension(350, 200);
+    public static final Dimension DEFAULT_FRAME_SIZE = new Dimension(500, 170);
 
     private JLabel onlineCount;
     private JLabel updateCount;
@@ -73,8 +73,14 @@ public class MercuryUpdaterFrame extends JFrame {
             }
         });
 
+        JTextField versionField = new JTextField();
+        versionField.setPreferredSize(new Dimension(120,24));
+
+
         panel.add(jarPathField);
         panel.add(pickJarButton);
+        panel.add(new JLabel("Version: "));
+        panel.add(versionField);
         return panel;
     }
     private JPanel getLabelsPanel(){
