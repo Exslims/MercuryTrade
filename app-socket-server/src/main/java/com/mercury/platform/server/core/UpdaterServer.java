@@ -23,6 +23,9 @@ public class UpdaterServer {
 
     private int port;
     private int nThreads;
+    private ChannelFuture sync;
+    private EventLoopGroup bossGroup;
+    private EventLoopGroup workerGroup;
 
     public UpdaterServer(int port) {
         this(port, DEFAULT_THREADS_COUNT);
@@ -33,11 +36,11 @@ public class UpdaterServer {
         this.nThreads = nThreads;
     }
 
-    public void run() throws InterruptedException {
+    public void run() {
         LOGGER.info("Starting server on {} port", port);
-        LOGGER.info("Event loop group threads count = {}" , nThreads);
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup(nThreads);
+        LOGGER.info("Event loop group threads count = {}", nThreads);
+        this.bossGroup = new NioEventLoopGroup();
+        this.workerGroup = new NioEventLoopGroup(nThreads);
 
         try {
             LOGGER.info("Initializing server bootstrap");
@@ -48,13 +51,33 @@ public class UpdaterServer {
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             LOGGER.info("Server started");
-            ChannelFuture sync = serverBootstrap.bind(port).sync();
+            this.sync = serverBootstrap.bind(port).sync();
             sync.channel().closeFuture().sync();
 
+        } catch (InterruptedException e) {
+            LOGGER.error(e);
         } finally {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
         }
+    }
+
+
+    public void shutdown() {
+        LOGGER.info("Shutting down updater server...");
+
+        LOGGER.info("Shutting down worker group = {}", workerGroup.toString());
+        workerGroup.shutdownGracefully();
+
+        LOGGER.info("Shutting down boss group = {}", bossGroup);
+        bossGroup.shutdownGracefully();
+        try {
+            LOGGER.info("Shutting down channel");
+            this.sync.channel().close();
+        } catch (Exception e) {
+            LOGGER.info(e);
+        }
+        LOGGER.info("Server is stopped");
     }
 
 }
