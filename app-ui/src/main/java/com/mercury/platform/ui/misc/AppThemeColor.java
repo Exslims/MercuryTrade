@@ -7,6 +7,7 @@ import java.awt.*;
  */
 public class AppThemeColor {
     public static final Color BUTTON = new Color(16,91,99);
+    public static final Color SCROLL_BAR = new Color(44, 70, 80);
     public static final Color TEXT_DEFAULT = new Color(255,250,250);
     public static final Color TEXT_MESSAGE = new Color(255,250,213);
     public static final Color TEXT_MISC = new Color(219,158,54);

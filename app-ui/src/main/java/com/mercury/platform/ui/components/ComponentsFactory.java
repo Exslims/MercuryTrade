@@ -140,7 +140,7 @@ public class ComponentsFactory {
         button.setFocusPainted(false);
         button.addChangeListener(e->{
             if(!button.getModel().isPressed()){
-                button.setBackground(background);
+                button.setBackground(button.getBackground());
             }
         });
         button.addMouseListener(new MouseAdapter() {
@@ -298,6 +298,14 @@ public class ComponentsFactory {
         ));
         textField.setBackground(AppThemeColor.HEADER);
         return textField;
+    }
+    public Font getFontByLang(String text,FontStyle style){
+        if(style != null) {
+            if(isAscii(text)){
+                return getSelectedFont(style);
+            }
+        }
+        return DEFAULT_FONT;
     }
     public JComboBox getComboBox(String[] childs){
         JComboBox comboBox = new JComboBox(childs);

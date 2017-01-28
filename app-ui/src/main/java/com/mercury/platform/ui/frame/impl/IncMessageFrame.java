@@ -218,4 +218,9 @@ public class IncMessageFrame extends MovableComponentFrame{
         panel.add(growPanel);
         return panel;
     }
+
+    @Override
+    protected int getMinComponentCount() {
+        return 0;
+    }
 }

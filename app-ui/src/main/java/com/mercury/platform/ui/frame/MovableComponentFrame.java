@@ -20,6 +20,7 @@ public abstract class MovableComponentFrame extends ComponentFrame {
         undecoratedFrameState = UndecoratedFrameState.DEFAULT;
     }
     protected abstract JPanel panelWhenMove();
+    protected abstract int getMinComponentCount();
     public void setState(UndecoratedFrameState state){
         switch (state){
             case MOVING:{
@@ -41,7 +42,7 @@ public abstract class MovableComponentFrame extends ComponentFrame {
             }
             case DEFAULT: {
                 this.setContentPane(mainContainer);
-                if(mainContainer.getComponentCount() == 0){
+                if(mainContainer.getComponentCount() <= getMinComponentCount()){ //todo
                     this.setVisible(false);
                 }
                 this.setPreferredSize(null);

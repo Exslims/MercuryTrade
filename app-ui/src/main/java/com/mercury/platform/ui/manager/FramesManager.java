@@ -37,9 +37,10 @@ public class FramesManager {
     }
     public void start(){
         createTrayIcon();
-//        framesMap.put(ChatFilterFrame.class,new ChatFilterFrame());
         framesMap.put(HistoryFrame.class,new HistoryFrame());
 
+        OverlaidFrame chatFilter = new ChatFilterFrame();
+        framesMap.put(ChatFilterFrame.class,chatFilter);
         OverlaidFrame incMessageFrame = new IncMessageFrame();
         framesMap.put(IncMessageFrame.class,incMessageFrame);
         OverlaidFrame taskBarFrame = new TaskBarFrame();
@@ -47,6 +48,7 @@ public class FramesManager {
 
         locationCommander.addFrame((MovableComponentFrame) incMessageFrame);
         locationCommander.addFrame((MovableComponentFrame) taskBarFrame);
+        locationCommander.addFrame((MovableComponentFrame) chatFilter);
 
         framesMap.put(OutMessageFrame.class,new OutMessageFrame());
         framesMap.put(SettingsFrame.class,new SettingsFrame());
@@ -103,6 +105,5 @@ public class FramesManager {
         } catch (AWTException e) {
             e.printStackTrace();
         }
-        trayIcon.displayMessage("MercuryTrade","Application started", TrayIcon.MessageType.INFO);
     }
 }

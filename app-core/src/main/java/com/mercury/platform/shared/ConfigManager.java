@@ -216,8 +216,10 @@ public class ConfigManager {
         dFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(540,100)));
         dFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 600),new Dimension(280,500)));
         dFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
+        dFramesSettings.put("ChatFilterFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
         dFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,102)));
         dFramesSettings.put("SetUpLocationFrame",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
+        dFramesSettings.put("ChunkMessagesPicker",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
         return dFramesSettings;
     }
 

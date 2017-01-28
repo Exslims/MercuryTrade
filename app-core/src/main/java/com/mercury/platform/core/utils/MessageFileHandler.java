@@ -30,6 +30,8 @@ public class MessageFileHandler implements HasEventHandlers {
         interceptors.add(new OutTradeMessagesInterceptor());
         interceptors.add(new PlayerJoinInterceptor());
         interceptors.add(new PlayerLeftInterceptor());
+
+        initHandlers();
     }
 
     public void parse(){
@@ -77,13 +79,14 @@ public class MessageFileHandler implements HasEventHandlers {
             filteredMessages.forEach(interceptor::match);
         });
     }
-    public void addInterceptor(MessageInterceptor interceptor){
-        interceptors.add(interceptor);
-    }
 
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(AddInterceptorEvent.class, event ->
-                addInterceptor(((AddInterceptorEvent) event).getInterceptor()));
+        EventRouter.INSTANCE.registerHandler(AddInterceptorEvent.class, event -> {
+            interceptors.add(((AddInterceptorEvent) event).getInterceptor());
+        });
+        EventRouter.INSTANCE.registerHandler(RemoveInterceptorEvent.class, event -> {
+            interceptors.remove(((RemoveInterceptorEvent) event).getInterceptor());
+        });
     }
 }

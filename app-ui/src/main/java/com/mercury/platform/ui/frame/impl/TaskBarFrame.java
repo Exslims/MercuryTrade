@@ -7,7 +7,6 @@ import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.frame.impl.util.TradeMode;
 import com.mercury.platform.ui.manager.FramesManager;
-import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import org.pushingpixels.trident.Timeline;
@@ -51,7 +50,7 @@ public class TaskBarFrame extends MovableComponentFrame{
             @Override
             public void mouseEntered(MouseEvent e) {
                 TaskBarFrame.this.repaint();
-                if(!withinResizeSpace) {
+                if(!EResizeSpace) {
                     if (collapseAnim != null) {
                         collapseAnim.abort();
                     }
@@ -63,7 +62,7 @@ public class TaskBarFrame extends MovableComponentFrame{
             @Override
             public void mouseExited(MouseEvent e) {
                 TaskBarFrame.this.repaint();
-                if(!withInPanel(taskBarPanel) && !withinResizeSpace) {
+                if(!withInPanel(taskBarPanel) && !EResizeSpace) {
                     if (collapseAnim != null) {
                         collapseAnim.abort();
                     }
@@ -117,7 +116,10 @@ public class TaskBarFrame extends MovableComponentFrame{
 
         JButton chatFilter = componentsFactory.getIconButton("app/chat-filter.png",24,AppThemeColor.FRAME_1,TooltipConstants.CHAT_FILTER);
         chatFilter.addMouseListener(new MouseAdapter() {
-
+            @Override
+            public void mousePressed(MouseEvent e) {
+                FramesManager.INSTANCE.hideOrShowFrame(ChatFilterFrame.class);
+            }
         });
         JButton timer = componentsFactory.getIconButton("app/timer.png",24,AppThemeColor.FRAME_1,TooltipConstants.TIMER);
         timer.addMouseListener(new MouseAdapter() {
@@ -219,5 +221,10 @@ public class TaskBarFrame extends MovableComponentFrame{
         labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,20f,"Task Bar"));
         panel.add(labelPanel);
         return panel;
+    }
+
+    @Override
+    protected int getMinComponentCount() {
+        return 0;
     }
 }

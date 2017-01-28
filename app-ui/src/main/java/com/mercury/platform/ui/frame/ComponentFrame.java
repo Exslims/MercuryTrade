@@ -25,7 +25,8 @@ public abstract class ComponentFrame extends OverlaidFrame{
 
     protected int x;
     protected int y;
-    protected boolean withinResizeSpace = false;
+    protected boolean EResizeSpace = false;
+    protected boolean SEResizeSpace = false;
 
     private Timeline hideAnimation;
     private Timeline showAnimation;
@@ -43,8 +44,8 @@ public abstract class ComponentFrame extends OverlaidFrame{
     protected void initialize(){
         initAnimationTimers();
 
-        this.addMouseListener(new ResizeMouseListener());
-        this.addMouseMotionListener(new ResizeMouseMotionListener());
+        this.addMouseListener(new ResizeByWidthMouseListener());
+        this.addMouseMotionListener(new ResizeByWidthMouseMotionListener());
         HideSettingsManager.INSTANCE.registerFrame(this);
 
         if(processingSaveLocAndSize) {
@@ -88,13 +89,15 @@ public abstract class ComponentFrame extends OverlaidFrame{
         hideAnimation.addPropertyToInterpolate("opacity",maxOpacity,minOpacity);
     }
 
-    private class ResizeMouseMotionListener extends MouseMotionAdapter{
-        private Rectangle rightResizeRect = new Rectangle();
+    private class ResizeByWidthMouseMotionListener extends MouseMotionAdapter{
         @Override
         public void mouseDragged(MouseEvent e) {
-            if(withinResizeSpace) {
+            if(EResizeSpace) {
                 Point frameLocation = ComponentFrame.this.getLocation();
                 ComponentFrame.this.setSize(new Dimension(e.getLocationOnScreen().x - frameLocation.x, ComponentFrame.this.getHeight()));
+            }else if(SEResizeSpace){
+                Point frameLocation = ComponentFrame.this.getLocation();
+                ComponentFrame.this.setSize(new Dimension(e.getLocationOnScreen().x - frameLocation.x, e.getLocationOnScreen().y - frameLocation.y));
             }
         }
         @Override
@@ -102,27 +105,40 @@ public abstract class ComponentFrame extends OverlaidFrame{
             int frameWidth = ComponentFrame.this.getWidth();
             int frameHeight = ComponentFrame.this.getHeight();
             Point frameLocation = ComponentFrame.this.getLocation();
-            rightResizeRect = new Rectangle(
+            Rectangle ERect = new Rectangle(
                     frameLocation.x + frameWidth - (BORDER_THICKNESS + 2),
                     frameLocation.y,BORDER_THICKNESS+2,frameHeight);
-            if(rightResizeRect.getBounds().contains(e.getLocationOnScreen())) {
-                withinResizeSpace = true;
-                ComponentFrame.this.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
+            Rectangle SERect = new Rectangle(
+                    frameLocation.x + frameWidth - (BORDER_THICKNESS + 2),
+                    frameLocation.y + frameHeight - (BORDER_THICKNESS + 2),BORDER_THICKNESS+2,4);
+
+            if(ERect.getBounds().contains(e.getLocationOnScreen())) {
+                if(SERect.getBounds().contains(e.getLocationOnScreen())){
+                    ComponentFrame.this.setCursor(new Cursor(Cursor.SE_RESIZE_CURSOR));
+                    SEResizeSpace = true;
+                    EResizeSpace = false;
+                }else {
+                    ComponentFrame.this.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
+                    EResizeSpace = true;
+                    SEResizeSpace = false;
+                }
             }else {
-                withinResizeSpace = false;
+                EResizeSpace = false;
+                SEResizeSpace = false;
                 ComponentFrame.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         }
     }
-    private class ResizeMouseListener extends MouseAdapter{
+    private class ResizeByWidthMouseListener extends MouseAdapter{
         @Override
         public void mouseReleased(MouseEvent e) {
-            withinResizeSpace = false;
+            EResizeSpace = false;
+            SEResizeSpace = false;
             if(hideAnimationEnable && !isMouseWithInFrame()) {
                 hideTimer.start();
             }
             Dimension size = ComponentFrame.this.getSize();
-            ComponentFrame.this.setMaximumSize(new Dimension(size.width,0));
+            ComponentFrame.this.setMaximumSize(size);
             configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(),ComponentFrame.this.getSize());
         }
 
@@ -160,7 +176,7 @@ public abstract class ComponentFrame extends OverlaidFrame{
 
         @Override
         public void mouseExited(MouseEvent e) {
-            if(!isMouseWithInFrame() && !withinResizeSpace){
+            if(!isMouseWithInFrame() && !EResizeSpace){
                 hideTimer.start();
             }
         }
