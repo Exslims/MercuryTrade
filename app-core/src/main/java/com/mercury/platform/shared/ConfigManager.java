@@ -209,15 +209,15 @@ public class ConfigManager {
     }
     public Map<String,FrameSettings> getDefaultFramesSettings(){
         Map<String,FrameSettings> dFramesSettings = new HashMap<>();
-        dFramesSettings.put("TaskBarFrame",new FrameSettings(new Point(500, 500),new Dimension(114,50)));
-        dFramesSettings.put("IncMessageFrame",new FrameSettings(new Point(700, 500),new Dimension(280,10)));
+        dFramesSettings.put("TaskBarFrame",new FrameSettings(new Point(400, 500),new Dimension(114,50)));
+        dFramesSettings.put("IncMessageFrame",new FrameSettings(new Point(700, 600),new Dimension(280,10)));
         dFramesSettings.put("OutMessageFrame",new FrameSettings(new Point(200, 500),new Dimension(280,115)));
         dFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(1400, 500),new Dimension(400,100)));
         dFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(540,100)));
-        dFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 600),new Dimension(280,500)));
+        dFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 500),new Dimension(280,300)));
         dFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
-        dFramesSettings.put("ChatFilterFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
-        dFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,102)));
+        dFramesSettings.put("ChatFilterFrame",new FrameSettings(new Point(400, 600),new Dimension(240,150)));
+        dFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,100)));
         dFramesSettings.put("SetUpLocationFrame",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
         dFramesSettings.put("ChunkMessagesPicker",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
         return dFramesSettings;

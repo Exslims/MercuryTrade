@@ -31,6 +31,7 @@ public class TaskBarFrame extends MovableComponentFrame{
     @Override
     protected void initialize() {
         super.initialize();
+        processSEResize = false;
         add(getTaskBarPanel());
         pack();
         this.setSize(new Dimension(MINIMUM_WIDTH,this.getHeight()));

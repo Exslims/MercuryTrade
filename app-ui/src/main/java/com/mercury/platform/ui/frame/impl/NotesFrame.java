@@ -30,6 +30,9 @@ public class NotesFrame extends TitledComponentFrame {
     @Override
     protected void initialize() {
         super.initialize();
+        processEResize = false;
+        processSEResize = false;
+
         currentNotes = new NotesLoader().getNotes("test");
 
         JPanel rootPanel = componentsFactory.getTransparentPanel(new BorderLayout());

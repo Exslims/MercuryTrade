@@ -43,6 +43,8 @@ public class IncMessageFrame extends MovableComponentFrame{
     @Override
     protected void initialize() {
         super.initialize();
+        processSEResize = false;
+
         spPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         spPanel.setBackground(AppThemeColor.FRAME_RGB);
         spPanel.setBorder(BorderFactory.createEmptyBorder(-4,0,-4,0));

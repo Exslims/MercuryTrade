@@ -34,7 +34,8 @@ public abstract class ComponentFrame extends OverlaidFrame{
     private HideEffectListener hideEffectListener;
     private boolean hideAnimationEnable = false;
 
-    protected boolean processingSaveLocAndSize = true;
+    protected boolean processSEResize = true;
+    protected boolean processEResize = true;
 
     protected ComponentFrame(String title) {
         super(title);
@@ -48,12 +49,10 @@ public abstract class ComponentFrame extends OverlaidFrame{
         this.addMouseMotionListener(new ResizeByWidthMouseMotionListener());
         HideSettingsManager.INSTANCE.registerFrame(this);
 
-        if(processingSaveLocAndSize) {
-            FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
-            this.setLocation(frameSettings.getFrameLocation());
-            this.setMinimumSize(new Dimension(frameSettings.getFrameSize().width, 0));
-            this.setMaximumSize(new Dimension(frameSettings.getFrameSize().width, 0));
-        }
+        FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
+        this.setLocation(frameSettings.getFrameLocation());
+        this.setMinimumSize(new Dimension(frameSettings.getFrameSize().width, 0));
+        this.setMaximumSize(new Dimension(frameSettings.getFrameSize().width, 0));
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, BORDER_THICKNESS)));
@@ -110,8 +109,8 @@ public abstract class ComponentFrame extends OverlaidFrame{
                     frameLocation.x + frameWidth - (BORDER_THICKNESS + 2),
                     frameLocation.y + frameHeight - (BORDER_THICKNESS + 2),BORDER_THICKNESS+2,4);
 
-            if(ERect.getBounds().contains(e.getLocationOnScreen())) {
-                if(SERect.getBounds().contains(e.getLocationOnScreen())){
+            if(processEResize && ERect.getBounds().contains(e.getLocationOnScreen())) {
+                if(processSEResize && SERect.getBounds().contains(e.getLocationOnScreen())){
                     ComponentFrame.this.setCursor(new Cursor(Cursor.SE_RESIZE_CURSOR));
                     SEResizeSpace = true;
                     EResizeSpace = false;
@@ -130,14 +129,19 @@ public abstract class ComponentFrame extends OverlaidFrame{
     private class ResizeByWidthMouseListener extends MouseAdapter{
         @Override
         public void mouseReleased(MouseEvent e) {
-            EResizeSpace = false;
-            SEResizeSpace = false;
             if(hideAnimationEnable && !isMouseWithInFrame()) {
                 hideTimer.start();
             }
-            Dimension size = ComponentFrame.this.getSize();
-            ComponentFrame.this.setMaximumSize(size);
-            configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(),ComponentFrame.this.getSize());
+            if(EResizeSpace){
+                Dimension size = ComponentFrame.this.getSize();
+                ComponentFrame.this.setMaximumSize(size);
+                configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(),ComponentFrame.this.getSize());
+            }else if(SEResizeSpace){
+                ComponentFrame.this.setPreferredSize(ComponentFrame.this.getSize());
+                configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(),ComponentFrame.this.getSize());
+            }
+            EResizeSpace = false;
+            SEResizeSpace = false;
         }
 
         @Override

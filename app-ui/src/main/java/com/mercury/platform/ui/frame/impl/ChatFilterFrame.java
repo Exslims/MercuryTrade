@@ -6,6 +6,7 @@ import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.AddInterceptorEvent;
 import com.mercury.platform.shared.events.custom.RemoveInterceptorEvent;
+import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.chat.ChatFilterPanel;
@@ -31,6 +32,9 @@ public class ChatFilterFrame extends MovableComponentFrame {
         super("MT-ChatFilter");
         this.setVisible(false);
         prevState = FrameStates.HIDE;
+
+        FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
+        this.setPreferredSize(frameSettings.getFrameSize());
     }
 
     @Override
@@ -59,15 +63,10 @@ public class ChatFilterFrame extends MovableComponentFrame {
         textField.setPreferredSize(new Dimension(130,18));
         textField.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
         textField.setBackground(AppThemeColor.SLIDE_BG);
-        textField.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                msgPicker.showComponent();
-            }
-        });
 
         JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton edit = componentsFactory.getIconButton("app/edit.png", 18, AppThemeColor.TRANSPARENT, "Edit");
+        edit.setBorder(null);
         edit.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -75,10 +74,12 @@ public class ChatFilterFrame extends MovableComponentFrame {
             }
         });
         JButton clear = componentsFactory.getIconButton("app/clear.png", 18, AppThemeColor.TRANSPARENT, "Clear");
+        clear.setBorder(null);
         clear.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 msgContainer.clear();
+                pack();
                 repaint();
             }
         });
@@ -191,7 +192,7 @@ public class ChatFilterFrame extends MovableComponentFrame {
 
         @Override
         protected String getFrameTitle() {
-            return "Messages chunks";
+            return "Message chunks";
         }
     }
 }
