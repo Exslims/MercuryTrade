@@ -38,6 +38,7 @@ public class UpdaterServer {
         LOGGER.info("Event loop group threads count = {}" , nThreads);
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup(nThreads);
+
         try {
             LOGGER.info("Initializing server bootstrap");
             ServerBootstrap serverBootstrap = new ServerBootstrap();
