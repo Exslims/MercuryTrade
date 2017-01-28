@@ -4,7 +4,6 @@ import com.mercury.platform.server.bus.event.ClientActiveEvent;
 import com.mercury.platform.server.bus.handlers.ClientActiveEventHandler;
 
 import javax.swing.JLabel;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by Frost on 28.01.2017.

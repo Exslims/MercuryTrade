@@ -11,7 +11,10 @@ public class ClientMain {
     private static final Logger LOGGER = LogManager.getLogger(ClientMain.class);
 
     public static void main(String[] args) throws Exception {
-        UpdaterClient updaterClient = new UpdaterClient("localhost" , 10_000);
+        String host = "localhost";
+        String mercuryVersion = "1.0.1.3";
+        int port = 10_000;
+        UpdaterClient updaterClient = new UpdaterClient(host, mercuryVersion, port);
         updaterClient.registerListener(handler -> LOGGER.info("update received, size = {} bytes" , handler.getBytes().length));
         updaterClient.start();
     }

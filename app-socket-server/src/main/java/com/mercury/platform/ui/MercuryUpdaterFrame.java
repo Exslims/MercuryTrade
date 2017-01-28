@@ -1,6 +1,7 @@
 package com.mercury.platform.ui;
 
 import com.mercury.platform.config.MercuryServerConfig;
+import com.mercury.platform.holder.UpdateHolder;
 import com.mercury.platform.server.bus.UpdaterServerAsyncEventBus;
 import com.mercury.platform.server.bus.handlers.ClientActiveEventHandler;
 import com.mercury.platform.server.core.UpdaterServer;
@@ -15,7 +16,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Created by Frost on 25.01.2017.
@@ -28,6 +31,7 @@ public class MercuryUpdaterFrame extends JFrame {
 
     private volatile JLabel onlineCountLabel;
     private volatile JLabel updateCount;
+    private volatile JTextField versionField;
     private UpdaterServer server;
 
     public MercuryUpdaterFrame(){
@@ -75,13 +79,20 @@ public class MercuryUpdaterFrame extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 dialog.setVisible(true);
-
-                new File(dialog.getDirectory() + dialog.getFile());
+                try {
+                    byte[] bytes = Files.readAllBytes(Paths.get(dialog.getDirectory(), dialog.getFile()));
+                    UpdateHolder instance = UpdateHolder.getInstance();
+                    instance.setUpdate(bytes);
+                    String text = versionField.getText();
+                    instance.setVersion(Integer.valueOf(text.replace("." , "0")));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
                 jarPathField.setText(dialog.getDirectory() + dialog.getFile());
             }
         });
 
-        JTextField versionField = new JTextField();
+        versionField = new JTextField();
         versionField.setPreferredSize(new Dimension(120,24));
 
 

@@ -2,6 +2,7 @@ package com.mercury.platform.client.core;
 
 import com.mercury.platform.client.bus.UpdaterClientEventBus;
 import com.mercury.platform.client.bus.handlers.UpdateEventHandler;
+import com.mercury.platform.client.holder.VersionHolder;
 import com.mercury.platform.client.init.ClientChannelInitializer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -23,9 +24,11 @@ public class UpdaterClient {
     private final String host;
     private final int port;
 
-    public UpdaterClient(String host, int port) {
+    public UpdaterClient(String host, String mercuryVersion, int port) {
         this.host = host;
         this.port = port;
+        String version = mercuryVersion.replace(".", "0");
+        VersionHolder.getInstance().setVersion(Integer.valueOf(version));
     }
 
     public void start() throws Exception {
@@ -42,6 +45,10 @@ public class UpdaterClient {
         } finally {
             group.shutdownGracefully().sync();
         }
+    }
+
+    public int getMercuryVersion() {
+        return VersionHolder.getInstance().getVersion();
     }
 
     public void registerListener(UpdateEventHandler handler) {
