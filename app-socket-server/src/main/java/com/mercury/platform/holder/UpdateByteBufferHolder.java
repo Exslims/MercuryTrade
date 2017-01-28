@@ -6,13 +6,23 @@ import java.nio.ByteBuffer;
  * Created by Frost on 27.01.2017.
  */
 public class UpdateByteBufferHolder {
-    private static UpdateByteBufferHolder instance = new UpdateByteBufferHolder();
+
+    private static volatile UpdateByteBufferHolder instance;
 
     public static UpdateByteBufferHolder getInstance() {
-        return instance;
+        UpdateByteBufferHolder localInstance = instance;
+        if (localInstance == null) {
+            synchronized (UpdateByteBufferHolder.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new UpdateByteBufferHolder();
+                }
+            }
+        }
+        return localInstance;
     }
 
-    private ByteBuffer update;
+    private volatile ByteBuffer update;
 
     private UpdateByteBufferHolder() {
     }
