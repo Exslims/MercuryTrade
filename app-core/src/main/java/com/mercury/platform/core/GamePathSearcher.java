@@ -1,7 +1,8 @@
 package com.mercury.platform.core;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.util.TimerTask;
  * Created by Константин on 24.01.2017.
  */
 public class GamePathSearcher{
-    private final Logger log = Logger.getLogger(GamePathSearcher.class);
+    private final Logger log = LogManager.getLogger(GamePathSearcher.class);
 
     public GamePathSearcher(GameFoundCallback callback) {
         Timer timer = new Timer();

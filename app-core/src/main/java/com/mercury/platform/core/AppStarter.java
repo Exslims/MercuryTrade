@@ -1,6 +1,7 @@
 package com.mercury.platform.core;
 
-import com.mercury.platform.core.misc.WhisperNotifier;
+import com.mercury.platform.core.misc.SoundNotifier;
+import com.mercury.platform.core.update.UpdateClientStarter;
 import com.mercury.platform.core.utils.FileMonitor;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
@@ -11,6 +12,8 @@ import com.sun.jna.PointerType;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Константин on 31.12.2016.
@@ -19,9 +22,13 @@ public class AppStarter {
     public static FrameStates APP_STATUS = FrameStates.HIDE;
     private User32 user32 = User32.INSTANCE;
     public void startApplication(){
-        new WhisperNotifier();
+        new SoundNotifier();
         new ChatHelper();
         new GamePathSearcher(FileMonitor::new);
+
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new UpdateClientStarter());
+
 
         /*
         [DllImport("user32.dll&quot]

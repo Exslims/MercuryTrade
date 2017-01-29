@@ -1,7 +1,8 @@
 package com.mercury.platform.shared;
 
 import com.mercury.platform.shared.pojo.FrameSettings;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,7 +20,7 @@ import java.util.Map;
  * Application config manager, loads config files from %userprofile%/AppData/Local/MercuryTrader.
  */
 public class ConfigManager {
-    private Logger logger = Logger.getLogger(ConfigManager.class);
+    private Logger logger = LogManager.getLogger(ConfigManager.class);
 
     private static class ConfigManagerHolder {
         static final ConfigManager HOLDER_INSTANCE = new ConfigManager();
@@ -47,6 +48,8 @@ public class ConfigManager {
         if (!configFile.exists()) {
             try {
                 new File(CONFIG_FILE_PATH).mkdir();
+                new File(CONFIG_FILE_PATH + "\\temp").mkdir();
+
                 FileWriter fileWriter = new FileWriter(CONFIG_FILE);
                 fileWriter.write(new JSONObject().toJSONString());
                 fileWriter.flush();

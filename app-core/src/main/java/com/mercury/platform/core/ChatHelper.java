@@ -21,16 +21,16 @@ import java.awt.event.KeyEvent;
  * 07.12.2016
  */
 public class ChatHelper implements HasEventHandlers {
-    private GlobalKeyboardHook keyboardHook = new GlobalKeyboardHook();
-    private GlobalKeyAdapter adapter;
+//    private GlobalKeyboardHook keyboardHook = new GlobalKeyboardHook();
+//    private GlobalKeyAdapter adapter;
     private User32 user32 = User32.INSTANCE;
     private Robot robot;
 
     public ChatHelper() {
-        GlobalKeyAdapter adapter = getAdapter();
-        this.adapter = adapter;
+//        GlobalKeyAdapter adapter = getAdapter();
+//        this.adapter = adapter;
         initHandlers();
-        keyboardHook.addKeyListener(adapter);
+//        keyboardHook.addKeyListener(adapter);
         try {
             robot = new Robot();
         } catch (AWTException e) {
@@ -39,7 +39,7 @@ public class ChatHelper implements HasEventHandlers {
     }
 
     private void executeMessage(String message) {
-        keyboardHook.removeKeyListener(adapter);
+//        keyboardHook.removeKeyListener(adapter);
         StringSelection selection = new StringSelection(message);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(selection, null);
@@ -64,10 +64,10 @@ public class ChatHelper implements HasEventHandlers {
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.keyRelease(KeyEvent.VK_ENTER);
 
-        keyboardHook.addKeyListener(adapter);
+//        keyboardHook.addKeyListener(adapter);
     }
     private void openChat(String whisper){
-        keyboardHook.removeKeyListener(adapter);
+//        keyboardHook.removeKeyListener(adapter);
         setForegroundWindow("Path of Exile");
 
         StringSelection selection = new StringSelection("@" + whisper);
@@ -92,7 +92,7 @@ public class ChatHelper implements HasEventHandlers {
         robot.keyPress(KeyEvent.VK_SPACE);
         robot.keyRelease(KeyEvent.VK_SPACE);
 
-        keyboardHook.addKeyListener(adapter);
+//        keyboardHook.addKeyListener(adapter);
     }
 
 

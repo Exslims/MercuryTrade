@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Exslims
@@ -15,7 +16,7 @@ public class EventRouter {
     }
     public static EventRouter INSTANCE = EventRouterHolder.HOLDER_INSTANCE;
 
-    private Map<Class, List<MercuryEventHandler>> eventHandlerMap = new HashMap<>();
+    private Map<Class, List<MercuryEventHandler>> eventHandlerMap = new ConcurrentHashMap<>();
     public void fireEvent(MercuryEvent event){
         List<MercuryEventHandler> handlers = eventHandlerMap.get(event.getClass());
         if(handlers != null) {
