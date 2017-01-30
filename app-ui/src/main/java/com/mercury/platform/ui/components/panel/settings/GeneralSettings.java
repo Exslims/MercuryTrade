@@ -2,12 +2,11 @@ package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.ui.components.panel.HasUI;
+import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.manager.HideSettingsManager;
 
 import javax.swing.*;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 
 /**

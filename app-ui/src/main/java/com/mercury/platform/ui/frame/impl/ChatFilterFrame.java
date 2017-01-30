@@ -2,9 +2,11 @@ package com.mercury.platform.ui.frame.impl;
 
 import com.mercury.platform.core.utils.interceptor.MessageInterceptor;
 import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.AddInterceptorEvent;
+import com.mercury.platform.shared.events.custom.ChatFilterMessageEvent;
 import com.mercury.platform.shared.events.custom.RemoveInterceptorEvent;
 import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -26,6 +28,7 @@ import java.awt.event.MouseEvent;
 public class ChatFilterFrame extends MovableComponentFrame {
     private ChunkMessagesPicker msgPicker;
     private ChatFilterPanel msgContainer;
+    private boolean soundEnable = false;
 
     private JTextField textField;
     public ChatFilterFrame() {
@@ -73,7 +76,7 @@ public class ChatFilterFrame extends MovableComponentFrame {
                 msgPicker.showComponent();
             }
         });
-        JButton clear = componentsFactory.getIconButton("app/clear.png", 18, AppThemeColor.TRANSPARENT, "Clear");
+        JButton clear = componentsFactory.getIconButton("app/clear-icon.png", 18, AppThemeColor.TRANSPARENT, "Clear");
         clear.setBorder(null);
         clear.addMouseListener(new MouseAdapter() {
             @Override
@@ -83,9 +86,25 @@ public class ChatFilterFrame extends MovableComponentFrame {
                 repaint();
             }
         });
-
+        JButton sound = componentsFactory.getIconButton("app/sound-disable.png", 18, AppThemeColor.TRANSPARENT, "Clear");
+        sound.setBorder(null);
+        sound.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(soundEnable){
+                    sound.setIcon(componentsFactory.getIcon("app/sound-disable.png",18));
+                    soundEnable = false;
+                    ChatFilterFrame.this.repaint();
+                }else {
+                    sound.setIcon(componentsFactory.getIcon("app/sound-enable.png",18));
+                    soundEnable = true;
+                    ChatFilterFrame.this.repaint();
+                }
+            }
+        });
         miscPanel.add(edit);
         miscPanel.add(clear);
+        miscPanel.add(sound);
 
         root.add(miscPanel,BorderLayout.LINE_END);
         root.add(textField,BorderLayout.CENTER);
@@ -122,6 +141,8 @@ public class ChatFilterFrame extends MovableComponentFrame {
             this.setAlwaysOnTop(false);
             this.processingHideEvent = false;
 
+            FrameSettings settings = ConfigManager.INSTANCE.getDefaultFramesSettings().get(ChatFilterFrame.class.getSimpleName());
+            this.setMinimumSize(settings.getFrameSize());
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
             this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         }
@@ -133,13 +154,11 @@ public class ChatFilterFrame extends MovableComponentFrame {
             JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
             root.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
 
-            JPanel headerPanel = componentsFactory.getTransparentPanel(new BorderLayout());
-            JTextField chunks = componentsFactory.getTextField("example, example example, example");
-            chunks.setPreferredSize(new Dimension(130,10));
+            JTextField chunks = componentsFactory.getTextField("wtb, wts, exalt");
+            chunks.setPreferredSize(new Dimension(130,18));
             chunks.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
             chunks.setBackground(AppThemeColor.SLIDE_BG);
 
-            JPanel btnWrapper = componentsFactory.getTransparentPanel();
             JButton save = componentsFactory.getBorderedButton("Save");
             save.addMouseListener(new MouseAdapter() {
                 @Override
@@ -154,6 +173,9 @@ public class ChatFilterFrame extends MovableComponentFrame {
                         @Override
                         protected void process(String message) {
                             msgContainer.addMessage(message);
+                            if(soundEnable){
+                                EventRouter.INSTANCE.fireEvent(new ChatFilterMessageEvent());
+                            }
                             ChatFilterFrame.this.pack();
                         }
 
@@ -179,11 +201,8 @@ public class ChatFilterFrame extends MovableComponentFrame {
                     hideComponent();
                 }
             });
-            btnWrapper.add(save);
-            headerPanel.add(chunks,BorderLayout.CENTER);
-            headerPanel.add(btnWrapper,BorderLayout.LINE_END);
-
-            root.add(headerPanel,BorderLayout.PAGE_START);
+            root.add(chunks,BorderLayout.CENTER);
+            root.add(save,BorderLayout.LINE_END);
             this.add(root,BorderLayout.CENTER);
             this.pack();
         }

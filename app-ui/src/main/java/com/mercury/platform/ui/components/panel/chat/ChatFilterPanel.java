@@ -3,16 +3,16 @@ package com.mercury.platform.ui.components.panel.chat;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.ChatCommandEvent;
 import com.mercury.platform.shared.events.custom.OpenChatEvent;
-import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.ComponentsFactory;
-import com.mercury.platform.ui.components.fields.font.FontStyle;
-import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
+import com.mercury.platform.ui.components.panel.ScrollContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -23,16 +23,16 @@ import java.awt.event.MouseWheelEvent;
  */
 public class ChatFilterPanel extends JPanel {
     private ComponentsFactory componentsFactory;
+    private JScrollBar vBar;
 
     private JPanel container;
     private JFrame owner;
     public ChatFilterPanel(JFrame owner) {
         this.owner = owner;
         componentsFactory = new ComponentsFactory();
-        container = new ChatContainer();
+        container = new ScrollContainer();
         container.setBackground(AppThemeColor.SLIDE_BG);
         container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
-
 
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.setBorder(BorderFactory.createCompoundBorder(
@@ -51,9 +51,10 @@ public class ChatFilterPanel extends JPanel {
                 owner.repaint();
             }
         });
+        scrollPane.setPreferredSize(new Dimension(100,50));
 
         container.getParent().setBackground(AppThemeColor.SLIDE_BG);
-        JScrollBar vBar = scrollPane.getVerticalScrollBar();
+        vBar = scrollPane.getVerticalScrollBar();
         vBar.setBackground(AppThemeColor.SLIDE_BG);
         vBar.setUI(new MercuryScrollBarUI());
         vBar.setPreferredSize(new Dimension(10, Integer.MAX_VALUE));
@@ -102,6 +103,7 @@ public class ChatFilterPanel extends JPanel {
         messagePanel.add(componentsFactory.getSimpleTextAre(message), BorderLayout.CENTER);
         messagePanel.setMaximumSize(new Dimension(1000,500));
         container.add(messagePanel);
+        vBar.setValue(vBar.getMaximum());
     }
     public void clear(){
         container.removeAll();

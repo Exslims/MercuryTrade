@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.ui.components.fields.font.FontStyle;
-import com.mercury.platform.ui.components.panel.HasUI;
+import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;

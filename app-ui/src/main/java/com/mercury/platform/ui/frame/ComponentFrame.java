@@ -137,7 +137,8 @@ public abstract class ComponentFrame extends OverlaidFrame{
                 ComponentFrame.this.setMaximumSize(size);
                 configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(),ComponentFrame.this.getSize());
             }else if(SEResizeSpace){
-                ComponentFrame.this.setPreferredSize(ComponentFrame.this.getSize());
+                ComponentFrame.this.setMinimumSize(ComponentFrame.this.getSize());
+                ComponentFrame.this.setMaximumSize(ComponentFrame.this.getSize());
                 configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(),ComponentFrame.this.getSize());
             }
             EResizeSpace = false;

@@ -53,7 +53,7 @@ public class FramesManager {
         locationCommander.addFrame((MovableComponentFrame) chatFilter);
 
         framesMap.put(HistoryFrame.class,new HistoryFrame());
-        framesMap.put(OutMessageFrame.class,new OutMessageFrame());
+//        framesMap.put(OutMessageFrame.class,new OutMessageFrame());
         framesMap.put(SettingsFrame.class,new SettingsFrame());
 //        framesMap.put(TimerFrame.class,new TimerFrame());
         framesMap.put(TestCasesFrame.class,new TestCasesFrame());

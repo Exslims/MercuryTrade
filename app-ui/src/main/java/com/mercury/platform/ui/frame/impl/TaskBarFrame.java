@@ -38,7 +38,6 @@ public class TaskBarFrame extends MovableComponentFrame{
         add(getTaskBarPanel(), BorderLayout.CENTER);
         add(updatePanel, BorderLayout.PAGE_START);
         pack();
-//        this.setSize(new Dimension(MINIMUM_WIDTH,this.getHeight()));
 
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -107,7 +106,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         taskBarPanel.setBackground(AppThemeColor.TRANSPARENT);
         taskBarPanel.setLayout(new BoxLayout(taskBarPanel,BoxLayout.X_AXIS));
 
-        JButton visibleMode = componentsFactory.getIconButton("app/visible-always-mode2.png",24,AppThemeColor.FRAME_1, TooltipConstants.VISIBLE_MODE);
+        JButton visibleMode = componentsFactory.getIconButton("app/visible-always-mode.png",24,AppThemeColor.FRAME_1, TooltipConstants.VISIBLE_MODE);
         visibleMode.addMouseListener(new MouseAdapter() {
             private boolean dnd = false;
             @Override
@@ -120,7 +119,7 @@ public class TaskBarFrame extends MovableComponentFrame{
                     EventRouter.INSTANCE.fireEvent(new DndModeEvent(true));
                 } else {
                     dnd = false;
-                    visibleMode.setIcon(componentsFactory.getIcon("app/visible-always-mode2.png", 24));
+                    visibleMode.setIcon(componentsFactory.getIcon("app/visible-always-mode.png", 24));
                     TaskBarFrame.this.repaint();
                     EventRouter.INSTANCE.fireEvent(new NotificationEvent("DND off"));
                     EventRouter.INSTANCE.fireEvent(new DndModeEvent(false));

@@ -139,7 +139,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.mercury.platform.AppMain</mainClass>
+                            <mainClass>com.mercury.platform.server.main.ServerMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

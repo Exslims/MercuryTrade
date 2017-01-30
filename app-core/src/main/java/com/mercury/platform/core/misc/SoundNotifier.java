@@ -5,6 +5,7 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.MercuryEventHandler;
+import com.mercury.platform.shared.events.custom.ChatFilterMessageEvent;
 import com.mercury.platform.shared.events.custom.DndModeEvent;
 import com.mercury.platform.shared.events.custom.UpdateReadyEvent;
 import com.mercury.platform.shared.events.custom.WhisperNotificationEvent;
@@ -24,46 +25,37 @@ public class SoundNotifier {
     private final Logger logger = LogManager.getLogger(SoundNotifier.class);
     private boolean dnd = false;
     public SoundNotifier() {
-        EventRouter.INSTANCE.registerHandler(WhisperNotificationEvent.class,new MercuryEventHandler<WhisperNotificationEvent>(){
-            public void handle(WhisperNotificationEvent event) {
-                WhisperNotifierStatus status = ConfigManager.INSTANCE.getWhisperNotifier();
-                if (status == WhisperNotifierStatus.ALWAYS ||
-                        ((status == WhisperNotifierStatus.ALTAB) && (AppStarter.APP_STATUS == FrameStates.HIDE))) {
-                    if(!dnd) {
-                        ClassLoader classLoader = getClass().getClassLoader();
-                        try (AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource("app/icq-message.wav"))) {
-                            Clip clip = AudioSystem.getClip();
-                            clip.open(stream);
-                            double gain = .5D;
-                            float db = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
-                            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                            gainControl.setValue(db);
-                            clip.start();
-                        } catch (Exception e) {
-                            logger.debug("Cannot start playing music: " + Arrays.toString(e.getStackTrace()));
-                        }
-                    }
-                }
+        EventRouter.INSTANCE.registerHandler(WhisperNotificationEvent.class, event -> {
+            WhisperNotifierStatus status = ConfigManager.INSTANCE.getWhisperNotifier();
+            if (status == WhisperNotifierStatus.ALWAYS ||
+                    ((status == WhisperNotifierStatus.ALTAB) && (AppStarter.APP_STATUS == FrameStates.HIDE))) {
+                play("app/icq-message.wav");
             }
         });
         EventRouter.INSTANCE.registerHandler(UpdateReadyEvent.class, event -> {
-            if(!dnd) {
-                ClassLoader classLoader = getClass().getClassLoader();
-                try (AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource("app/patch_tone.wav"))) {
-                    Clip clip = AudioSystem.getClip();
-                    clip.open(stream);
-                    double gain = .5D;
-                    float db = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
-                    FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                    gainControl.setValue(db);
-                    clip.start();
-                } catch (Exception e) {
-                    logger.debug("Cannot start playing music: ",e);
-                }
-            }
+            play("app/patch_tone.wav");
+        });
+        EventRouter.INSTANCE.registerHandler(ChatFilterMessageEvent.class, event -> {
+            play("app/chat-filter.wav");
         });
         EventRouter.INSTANCE.registerHandler(DndModeEvent.class, event -> {
             this.dnd = ((DndModeEvent)event).isDnd();
         });
+    }
+    private void play(String wavPath){
+        if(!dnd) {
+            ClassLoader classLoader = getClass().getClassLoader();
+            try (AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource(wavPath))) {
+                Clip clip = AudioSystem.getClip();
+                clip.open(stream);
+                double gain = .5D;
+                float db = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
+                FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                gainControl.setValue(db);
+                clip.start();
+            } catch (Exception e) {
+                logger.debug("Cannot start playing music: ",e);
+            }
+        }
     }
 }

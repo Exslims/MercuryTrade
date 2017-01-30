@@ -231,9 +231,9 @@ public class ConfigManager {
         dFramesSettings.put("OutMessageFrame",new FrameSettings(new Point(200, 500),new Dimension(280,115)));
         dFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(1400, 500),new Dimension(400,100)));
         dFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(540,100)));
-        dFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 500),new Dimension(280,300)));
+        dFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 500),new Dimension(280,400)));
         dFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
-        dFramesSettings.put("ChatFilterFrame",new FrameSettings(new Point(400, 600),new Dimension(240,150)));
+        dFramesSettings.put("ChatFilterFrame",new FrameSettings(new Point(400, 600),new Dimension(200,100)));
         dFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,100)));
         dFramesSettings.put("SetUpLocationFrame",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
         dFramesSettings.put("ChunkMessagesPicker",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
