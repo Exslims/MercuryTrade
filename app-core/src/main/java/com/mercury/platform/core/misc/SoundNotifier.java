@@ -1,7 +1,8 @@
 package com.mercury.platform.core.misc;
 
+import com.mercury.platform.core.AppStarter;
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
-import com.mercury.platform.shared.MercuryTradeSettings;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.MercuryEventHandler;
 import com.mercury.platform.shared.events.custom.DndModeEvent;
@@ -25,9 +26,9 @@ public class SoundNotifier {
     public SoundNotifier() {
         EventRouter.INSTANCE.registerHandler(WhisperNotificationEvent.class,new MercuryEventHandler<WhisperNotificationEvent>(){
             public void handle(WhisperNotificationEvent event) {
-                if (MercuryTradeSettings.WHISPER_NOTIFIER_STATUS == WhisperNotifierStatus.ALWAYS ||
-                        ((MercuryTradeSettings.WHISPER_NOTIFIER_STATUS == WhisperNotifierStatus.ALTAB) &&
-                                (MercuryTradeSettings.APP_STATUS == FrameStates.HIDE))) {
+                WhisperNotifierStatus status = ConfigManager.INSTANCE.getWhisperNotifier();
+                if (status == WhisperNotifierStatus.ALWAYS ||
+                        ((status == WhisperNotifierStatus.ALTAB) && (AppStarter.APP_STATUS == FrameStates.HIDE))) {
                     if(!dnd) {
                         ClassLoader classLoader = getClass().getClassLoader();
                         try (AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource("app/icq-message.wav"))) {
