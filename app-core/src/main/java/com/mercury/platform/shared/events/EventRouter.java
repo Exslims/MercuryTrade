@@ -1,10 +1,10 @@
 package com.mercury.platform.shared.events;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Exslims
@@ -16,11 +16,15 @@ public class EventRouter {
     }
     public static EventRouter INSTANCE = EventRouterHolder.HOLDER_INSTANCE;
 
+    private ReentrantLock lock = new ReentrantLock();
+
     private Map<Class, List<MercuryEventHandler>> eventHandlerMap = new ConcurrentHashMap<>();
     public void fireEvent(MercuryEvent event){
         List<MercuryEventHandler> handlers = eventHandlerMap.get(event.getClass());
         if(handlers != null) {
+            lock.lock();
             handlers.forEach(handler -> handler.handle(event));
+            lock.unlock();
         }
     }
     public void registerHandler(Class eventClass, MercuryEventHandler handler){

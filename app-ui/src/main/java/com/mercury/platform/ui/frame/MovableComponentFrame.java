@@ -26,7 +26,7 @@ public abstract class MovableComponentFrame extends ComponentFrame {
             case MOVING:{
                 if(undecoratedFrameState.equals(UndecoratedFrameState.DEFAULT)) {
                     JPanel panel = setUpMoveListeners(panelWhenMove());
-                    if(mainContainer.getHeight() < 40) {
+                    if(mainContainer.getHeight() < 30) {
                         panel.setPreferredSize(new Dimension(200, 100));
                     }else {
                         panel.setPreferredSize(mainContainer.getSize());

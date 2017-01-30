@@ -13,7 +13,7 @@ public class UpdaterMain {
     private static final String JAR_FILE_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\versions";
 
     public static void main(String[] args) throws IOException {
-        if(args.length == 2) {
+        if(args.length == 1) {
             Files.copy(
                     Paths.get(JAR_FILE_PATH + File.separator + "MercuryTrade.jar"),
                     Paths.get(args[0]),

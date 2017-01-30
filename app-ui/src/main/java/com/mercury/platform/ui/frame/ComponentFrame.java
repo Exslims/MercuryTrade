@@ -192,7 +192,6 @@ public abstract class ComponentFrame extends OverlaidFrame{
         public void mouseDragged(MouseEvent e) {
             e.translatePoint(ComponentFrame.this.getLocation().x - x,ComponentFrame.this.getLocation().y - y);
             ComponentFrame.this.setLocation(e.getX(),e.getY());
-            configManager.saveFrameLocation(ComponentFrame.this.getClass().getSimpleName(),ComponentFrame.this.getLocationOnScreen());
         }
     }
     public class DraggedFrameMouseListener extends MouseAdapter{
@@ -200,6 +199,11 @@ public abstract class ComponentFrame extends OverlaidFrame{
         public void mousePressed(MouseEvent e) {
             x = e.getX();
             y = e.getY();
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            configManager.saveFrameLocation(ComponentFrame.this.getClass().getSimpleName(),ComponentFrame.this.getLocationOnScreen());
         }
     }
 

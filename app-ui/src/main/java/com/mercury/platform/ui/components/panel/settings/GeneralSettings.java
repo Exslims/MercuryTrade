@@ -1,5 +1,7 @@
 package com.mercury.platform.ui.components.panel.settings;
 
+import com.mercury.platform.core.misc.WhisperNotifierStatus;
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.ui.components.panel.HasUI;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.manager.HideSettingsManager;
@@ -14,10 +16,8 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
     private JSlider minSlider;
     private JSlider maxSlider;
     private JComboBox secondsPicker;
+    private JComboBox notifierStatusPicker;
     private ComponentFrame owner;
-
-    private HideSettingsManager hideManager = HideSettingsManager.INSTANCE;
-
     public GeneralSettings(ComponentFrame owner) {
         super();
         this.owner = owner;
@@ -32,9 +32,11 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
     @Override
     public void createUI() {
         secondsPicker = componentsFactory.getComboBox(new String[]{"0","1","2","3","4","5"});
+        int decayTime = ConfigManager.INSTANCE.getDecayTime();
+        secondsPicker.setSelectedIndex(decayTime);
 
         JPanel hideSettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        hideSettingsPanel.add(componentsFactory.getTextLabel("Fade time:"));
+        hideSettingsPanel.add(componentsFactory.getTextLabel("Decay time:"));
         hideSettingsPanel.add(secondsPicker);
         hideSettingsPanel.add(componentsFactory.getTextLabel("sec. 0 - always show"));
 
@@ -42,12 +44,12 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         minOpacitySettingsPanel.add(componentsFactory.getTextLabel("Min opacity: "));
 
         JPanel minValuePanel = componentsFactory.getTransparentPanel(new FlowLayout());
-        JLabel minValueField = componentsFactory.getTextLabel(hideManager.getMinOpacity() + "%"); //todo
+        JLabel minValueField = componentsFactory.getTextLabel(ConfigManager.INSTANCE.getMinOpacity() + "%"); //todo
         minValuePanel.add(minValueField);
         minValuePanel.setPreferredSize(new Dimension(35,30));
         minOpacitySettingsPanel.add(minValuePanel);
 
-        minSlider = componentsFactory.getSlider(10,100,hideManager.getMinOpacity());
+        minSlider = componentsFactory.getSlider(10,100,ConfigManager.INSTANCE.getMinOpacity());
         minSlider.addChangeListener(e -> {
             minValueField.setText(String.valueOf(minSlider.getValue()) + "%");
             owner.repaint();
@@ -58,12 +60,12 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         maxOpacitySettingsPanel.add(componentsFactory.getTextLabel("Max opacity: "));
 
         JPanel maxValuePanel = componentsFactory.getTransparentPanel(new FlowLayout());
-        JLabel maxValueField = componentsFactory.getTextLabel(hideManager.getMaxOpacity() + "%"); //todo
+        JLabel maxValueField = componentsFactory.getTextLabel(ConfigManager.INSTANCE.getMaxOpacity() + "%"); //todo
         maxValuePanel.add(maxValueField);
         maxValuePanel.setPreferredSize(new Dimension(35,30));
         maxOpacitySettingsPanel.add(maxValuePanel);
 
-        maxSlider = componentsFactory.getSlider(20,100,hideManager.getMaxOpacity());
+        maxSlider = componentsFactory.getSlider(20,100,ConfigManager.INSTANCE.getMaxOpacity());
         maxSlider.addChangeListener(e -> {
             maxValueField.setText(String.valueOf(maxSlider.getValue()) + "%");
             owner.setOpacity(maxSlider.getValue()/100.0f);
@@ -72,7 +74,10 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
 
         JPanel notifierPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         notifierPanel.add(componentsFactory.getTextLabel("Trade messages notifier: "));
-        JComboBox notifierStatusPicker = componentsFactory.getComboBox(new String[]{"Always", "While on al-tab","Never"});
+        notifierStatusPicker = componentsFactory.getComboBox(new String[]{"Always", "While on al-tab","Never"});
+        WhisperNotifierStatus whisperNotifier = ConfigManager.INSTANCE.getWhisperNotifier();
+        notifierStatusPicker.setSelectedIndex(whisperNotifier.getCode());
+
         notifierPanel.add(notifierStatusPicker);
 
         this.add(hideSettingsPanel);
@@ -86,5 +91,7 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         int minOpacity = minSlider.getValue();
         int maxOpacity = maxSlider.getValue();
         HideSettingsManager.INSTANCE.apply(timeToDelay,minOpacity,maxOpacity);
+
+        ConfigManager.INSTANCE.setWhisperNotifier(WhisperNotifierStatus.get(notifierStatusPicker.getSelectedIndex()));
     }
 }

@@ -178,7 +178,7 @@ public class IncMessageFrame extends MovableComponentFrame{
             Component panel = ((CloseMessagePanelEvent) event).getComponent();
             this.remove(panel);
             if (mainContainer.getComponentCount() > 0) {
-                MessagePanel component = (MessagePanel) mainContainer.getComponent(0);
+                MessagePanel component = (MessagePanel) mainContainer.getComponent(0); // JPanel cannot be cast to com.mercury.platform.ui.components.panel.MessagePanel
                 component.setBorder(null);
             }
             this.pack();

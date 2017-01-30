@@ -1,7 +1,9 @@
 package com.mercury.platform.ui.manager;
 
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.UILoadedEvent;
+import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.frame.impl.test.TestCasesFrame;
 import com.mercury.platform.ui.frame.OverlaidFrame;
@@ -37,7 +39,7 @@ public class FramesManager {
     }
     public void start(){
         createTrayIcon();
-        framesMap.put(HistoryFrame.class,new HistoryFrame());
+        ConfigManager.INSTANCE.load();
 
         OverlaidFrame chatFilter = new ChatFilterFrame();
         framesMap.put(ChatFilterFrame.class,chatFilter);
@@ -50,9 +52,10 @@ public class FramesManager {
         locationCommander.addFrame((MovableComponentFrame) taskBarFrame);
         locationCommander.addFrame((MovableComponentFrame) chatFilter);
 
+        framesMap.put(HistoryFrame.class,new HistoryFrame());
         framesMap.put(OutMessageFrame.class,new OutMessageFrame());
         framesMap.put(SettingsFrame.class,new SettingsFrame());
-        framesMap.put(TimerFrame.class,new TimerFrame());
+//        framesMap.put(TimerFrame.class,new TimerFrame());
         framesMap.put(TestCasesFrame.class,new TestCasesFrame());
         framesMap.put(NotesFrame.class,new NotesFrame());
         framesMap.put(TooltipFrame.class,new TooltipFrame());
@@ -62,6 +65,22 @@ public class FramesManager {
         framesMap.forEach((k,v)->{
             v.init();
         });
+
+        int decayTime = ConfigManager.INSTANCE.getDecayTime();
+        int maxOpacity = ConfigManager.INSTANCE.getMaxOpacity();
+        int minOpacity = ConfigManager.INSTANCE.getMinOpacity();
+        framesMap.forEach((k,frame) -> {
+            if(frame instanceof ComponentFrame) {
+                if (decayTime > 0) {
+                    ConfigManager.INSTANCE.saveProperty("decayTime", decayTime);
+                    ((ComponentFrame)frame).enableHideEffect(decayTime, minOpacity, maxOpacity);
+                } else {
+                    ((ComponentFrame)frame).disableHideEffect();
+                    frame.setOpacity(maxOpacity / 100f);
+                }
+            }
+        });
+
         EventRouter.INSTANCE.fireEvent(new UILoadedEvent());
     }
     public void showFrame(Class frameClass){

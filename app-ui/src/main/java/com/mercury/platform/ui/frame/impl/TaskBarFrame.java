@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.frame.impl;
 
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -21,8 +22,8 @@ import java.awt.event.*;
  * 07.12.2016
  */
 public class TaskBarFrame extends MovableComponentFrame{
-    private int MINIMUM_WIDTH = 118;
     private Timeline collapseAnim;
+    private JPanel updatePanel;
 
     public TaskBarFrame() {
         super("MT-TaskBar");
@@ -32,22 +33,14 @@ public class TaskBarFrame extends MovableComponentFrame{
     protected void initialize() {
         super.initialize();
         processSEResize = false;
-        add(getTaskBarPanel());
+        updatePanel = getUpdatePanel();
+        updatePanel.setVisible(false);
+        add(getTaskBarPanel(), BorderLayout.CENTER);
+        add(updatePanel, BorderLayout.PAGE_START);
         pack();
-        this.setSize(new Dimension(MINIMUM_WIDTH,this.getHeight()));
-        EventRouter.INSTANCE.fireEvent(new UILoadedEvent());
-    }
+//        this.setSize(new Dimension(MINIMUM_WIDTH,this.getHeight()));
 
-    @Override
-    protected LayoutManager getFrameLayout() {
-        return new FlowLayout(FlowLayout.LEFT);
-    }
-
-    private JPanel getTaskBarPanel(){
-        JPanel taskBarPanel = new JPanel();
-        taskBarPanel.setBackground(AppThemeColor.TRANSPARENT);
-        taskBarPanel.setLayout(new BoxLayout(taskBarPanel,BoxLayout.X_AXIS));
-        taskBarPanel.addMouseListener(new MouseAdapter() {
+        this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 TaskBarFrame.this.repaint();
@@ -63,7 +56,7 @@ public class TaskBarFrame extends MovableComponentFrame{
             @Override
             public void mouseExited(MouseEvent e) {
                 TaskBarFrame.this.repaint();
-                if(!withInPanel(taskBarPanel) && !EResizeSpace) {
+                if(!withInPanel((JPanel)TaskBarFrame.this.getContentPane()) && !EResizeSpace) {
                     if (collapseAnim != null) {
                         collapseAnim.abort();
                     }
@@ -72,6 +65,47 @@ public class TaskBarFrame extends MovableComponentFrame{
                 }
             }
         });
+
+        EventRouter.INSTANCE.fireEvent(new UILoadedEvent());
+    }
+
+    @Override
+    protected LayoutManager getFrameLayout() {
+        return new BorderLayout();
+    }
+
+    private JPanel getUpdatePanel(){
+        JPanel panel = componentsFactory.getTransparentPanel();
+        panel.setLayout(new BoxLayout(panel,BoxLayout.X_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(3,0,0,0));
+
+        JLabel label = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT,TextAlignment.LEFTOP,16f,"Update is ready, please ");
+        JLabel restartLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT,TextAlignment.LEFTOP,16f,"Restart");
+        restartLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+        });
+        restartLabel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.TEXT_IMPORTANT),
+                BorderFactory.createEmptyBorder(2,2,2,2)
+        ));
+        label.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        panel.add(label);
+        panel.add(restartLabel);
+        return panel;
+    }
+
+    private JPanel getTaskBarPanel(){
+        JPanel taskBarPanel = new JPanel();
+        taskBarPanel.setBackground(AppThemeColor.TRANSPARENT);
+        taskBarPanel.setLayout(new BoxLayout(taskBarPanel,BoxLayout.X_AXIS));
 
         JButton visibleMode = componentsFactory.getIconButton("app/visible-always-mode.png",24,AppThemeColor.FRAME_1, TooltipConstants.VISIBLE_MODE);
         visibleMode.addMouseListener(new MouseAdapter() {
@@ -122,13 +156,14 @@ public class TaskBarFrame extends MovableComponentFrame{
                 FramesManager.INSTANCE.hideOrShowFrame(ChatFilterFrame.class);
             }
         });
-        JButton timer = componentsFactory.getIconButton("app/timer.png",24,AppThemeColor.FRAME_1,TooltipConstants.TIMER);
-        timer.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                FramesManager.INSTANCE.hideOrShowFrame(TimerFrame.class);
-            }
-        });
+        //todo in feature
+//        JButton timer = componentsFactory.getIconButton("app/timer.png",24,AppThemeColor.FRAME_1,TooltipConstants.TIMER);
+//        timer.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                FramesManager.INSTANCE.hideOrShowFrame(TimerFrame.class);
+//            }
+//        });
 
         JButton historyButton = componentsFactory.getIconButton("app/history.png",24,AppThemeColor.FRAME_1,TooltipConstants.HISTORY);
         historyButton.addMouseListener(new MouseAdapter() {
@@ -168,8 +203,8 @@ public class TaskBarFrame extends MovableComponentFrame{
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(chatFilter);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
-        taskBarPanel.add(timer);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
+//        taskBarPanel.add(timer);
+//        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(historyButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(moveButton);
@@ -187,12 +222,16 @@ public class TaskBarFrame extends MovableComponentFrame{
             TaskBarFrame.this.revalidate();
             TaskBarFrame.this.repaint();
         });
+        EventRouter.INSTANCE.registerHandler(UpdateReadyEvent.class,event -> {
+            updatePanel.setVisible(true);
+            pack();
+        });
     }
     private void initCollapseAnimations(String state){
         collapseAnim = new Timeline(this);
         switch (state){
             case "expand":{
-                collapseAnim.addPropertyToInterpolate("width",this.getWidth(),this.getPreferredSize().width + 200);
+                collapseAnim.addPropertyToInterpolate("width",this.getWidth(),250);
                 break;
             }
             case "collapse":{

@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.frame.impl;
 
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.HideTooltipEvent;
@@ -23,7 +24,7 @@ public class TooltipFrame extends OverlaidFrame {
         this.setVisible(false);
         this.setAlwaysOnTop(true);
         prevState = FrameStates.HIDE;
-        this.setOpacity(HideSettingsManager.INSTANCE.getMaxOpacity()/100f);
+        this.setOpacity(ConfigManager.INSTANCE.getMaxOpacity()/100f);
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1)));

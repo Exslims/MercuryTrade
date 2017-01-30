@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.frame.impl;
 
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -22,6 +23,8 @@ import java.util.List;
 public class NotesFrame extends TitledComponentFrame {
     private List<Note> currentNotes;
     private ContentPanel contentPanel;
+
+    private JCheckBox showOnStartUp;
     public NotesFrame() {
         super("MT-NotesFrame");
         this.setVisible(false); //todo from config manager
@@ -42,9 +45,10 @@ public class NotesFrame extends TitledComponentFrame {
         rootPanel.add(contentPanel,BorderLayout.CENTER);
         JPanel miscPanel = componentsFactory.getTransparentPanel(new BorderLayout());
 
-        JCheckBox showOnStartUp = new JCheckBox();
+        showOnStartUp = new JCheckBox();
         showOnStartUp.setBackground(AppThemeColor.TRANSPARENT);
-        showOnStartUp.setSelected(true);
+        showOnStartUp.setSelected(ConfigManager.INSTANCE.isShowOnStartUp());
+
         JPanel showOnStartPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         showOnStartPanel.add(showOnStartUp);
         showOnStartPanel.add(componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT,TextAlignment.LEFTOP,15f,"Show on StartUp"));
@@ -55,6 +59,7 @@ public class NotesFrame extends TitledComponentFrame {
         this.pack();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        this.setVisible(ConfigManager.INSTANCE.isShowOnStartUp());
     }
     private JPanel getNavBar(){
         JPanel navBar = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -93,6 +98,7 @@ public class NotesFrame extends TitledComponentFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 NotesFrame.this.setVisible(false);
+                ConfigManager.INSTANCE.saveProperty("showOnStartUp", showOnStartUp.isSelected());
                 FramesManager.INSTANCE.enableMovement();
             }
         });
