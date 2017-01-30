@@ -26,6 +26,7 @@ public class HideSettingsManager {
     public void apply(int decayTime, int minOpacity, int maxOpacity){
         ConfigManager.INSTANCE.saveProperty("minOpacity",minOpacity);
         ConfigManager.INSTANCE.saveProperty("maxOpacity",maxOpacity);
+        ConfigManager.INSTANCE.saveProperty("decayTime",decayTime);
 
         frames.forEach(frame -> {
             if(decayTime > 0){

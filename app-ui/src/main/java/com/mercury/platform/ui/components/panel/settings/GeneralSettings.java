@@ -100,7 +100,6 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         int minOpacity = minSlider.getValue();
         int maxOpacity = maxSlider.getValue();
         HideSettingsManager.INSTANCE.apply(timeToDelay,minOpacity,maxOpacity);
-
         ConfigManager.INSTANCE.setWhisperNotifier(WhisperNotifierStatus.get(notifierStatusPicker.getSelectedIndex()));
     }
 }

@@ -60,6 +60,7 @@ public class MercuryTabbedPane extends JPanel{
                 tabPanel.removeAll();
                 tabPanel.add(component,BorderLayout.CENTER);
                 owner.pack();
+                owner.repaint();
             }
         });
         if(headerButtons.size() == 0){
