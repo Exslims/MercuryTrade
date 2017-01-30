@@ -27,7 +27,13 @@ public class NotesFrame extends TitledComponentFrame {
     private JCheckBox showOnStartUp;
     public NotesFrame() {
         super("MT-NotesFrame");
-        this.setVisible(false); //todo from config manager
+        boolean showOnStartUp = ConfigManager.INSTANCE.isShowOnStartUp();
+        if(showOnStartUp) {
+            this.setVisible(true);
+        }else {
+            this.setVisible(false);
+            prevState = FrameStates.HIDE;
+        }
     }
 
     @Override
@@ -59,7 +65,6 @@ public class NotesFrame extends TitledComponentFrame {
         this.pack();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
-        this.setVisible(ConfigManager.INSTANCE.isShowOnStartUp());
     }
     private JPanel getNavBar(){
         JPanel navBar = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.RIGHT));

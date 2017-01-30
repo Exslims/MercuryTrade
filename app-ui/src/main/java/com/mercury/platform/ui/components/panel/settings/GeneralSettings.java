@@ -7,6 +7,7 @@ import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.manager.HideSettingsManager;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 
 /**
@@ -51,8 +52,12 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
 
         minSlider = componentsFactory.getSlider(10,100,ConfigManager.INSTANCE.getMinOpacity());
         minSlider.addChangeListener(e -> {
-            minValueField.setText(String.valueOf(minSlider.getValue()) + "%");
-            owner.repaint();
+            if(!(minSlider.getValue() > maxSlider.getValue())) {
+                minValueField.setText(String.valueOf(minSlider.getValue()) + "%");
+                owner.repaint();
+            }else {
+                minSlider.setValue(minSlider.getValue()-1);
+            }
         });
         minOpacitySettingsPanel.add(minSlider);
 
@@ -67,6 +72,10 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
 
         maxSlider = componentsFactory.getSlider(20,100,ConfigManager.INSTANCE.getMaxOpacity());
         maxSlider.addChangeListener(e -> {
+            int minValue = minSlider.getValue();
+            if(minValue == maxSlider.getValue()+1){
+                minSlider.setValue(maxSlider.getValue());
+            }
             maxValueField.setText(String.valueOf(maxSlider.getValue()) + "%");
             owner.setOpacity(maxSlider.getValue()/100.0f);
         });

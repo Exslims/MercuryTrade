@@ -172,7 +172,6 @@ public class ConfigManager {
         saveProperty("framesSettings",frames);
     }
     public <T> void saveProperty(String token, T object){
-        System.out.println(token + " " + object);
         JSONParser parser = new JSONParser();
         try {
             JSONObject root = (JSONObject) parser.parse(new FileReader(CONFIG_FILE));
