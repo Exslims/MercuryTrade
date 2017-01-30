@@ -107,7 +107,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         taskBarPanel.setBackground(AppThemeColor.TRANSPARENT);
         taskBarPanel.setLayout(new BoxLayout(taskBarPanel,BoxLayout.X_AXIS));
 
-        JButton visibleMode = componentsFactory.getIconButton("app/visible-always-mode.png",24,AppThemeColor.FRAME_1, TooltipConstants.VISIBLE_MODE);
+        JButton visibleMode = componentsFactory.getIconButton("app/visible-always-mode2.png",24,AppThemeColor.FRAME_1, TooltipConstants.VISIBLE_MODE);
         visibleMode.addMouseListener(new MouseAdapter() {
             private boolean dnd = false;
             @Override
@@ -120,7 +120,7 @@ public class TaskBarFrame extends MovableComponentFrame{
                     EventRouter.INSTANCE.fireEvent(new DndModeEvent(true));
                 } else {
                     dnd = false;
-                    visibleMode.setIcon(componentsFactory.getIcon("app/visible-always-mode.png", 24));
+                    visibleMode.setIcon(componentsFactory.getIcon("app/visible-always-mode2.png", 24));
                     TaskBarFrame.this.repaint();
                     EventRouter.INSTANCE.fireEvent(new NotificationEvent("DND off"));
                     EventRouter.INSTANCE.fireEvent(new DndModeEvent(false));
@@ -198,7 +198,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         });
 
         taskBarPanel.add(visibleMode);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
+        taskBarPanel.add(Box.createRigidArea(new Dimension(2, 4)));
         taskBarPanel.add(chatMode);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(chatFilter);

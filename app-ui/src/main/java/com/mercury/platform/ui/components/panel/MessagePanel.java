@@ -339,8 +339,8 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         EventRouter.INSTANCE.registerHandler(PlayerLeftEvent.class, event -> {
             String nickName = ((PlayerLeftEvent) event).getNickName();
             if(nickName.equals(whisper)){
-                whisperLabel.setForeground(AppThemeColor.TEXT_DENIED);
-                cachedWhisperColor = AppThemeColor.TEXT_DENIED;
+                whisperLabel.setForeground(AppThemeColor.TEXT_DISABLE);
+                cachedWhisperColor = AppThemeColor.TEXT_DISABLE;
                 tradeButton.setEnabled(false);
                 EventRouter.INSTANCE.fireEvent(new RepaintEvent.RepaintMessagePanel());
             }

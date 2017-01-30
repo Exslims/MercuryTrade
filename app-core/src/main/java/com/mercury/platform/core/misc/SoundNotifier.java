@@ -58,7 +58,7 @@ public class SoundNotifier {
                     gainControl.setValue(db);
                     clip.start();
                 } catch (Exception e) {
-                    logger.debug("Cannot start playing music: " + Arrays.toString(e.getStackTrace()));
+                    logger.debug("Cannot start playing music: ",e);
                 }
             }
         });

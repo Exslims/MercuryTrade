@@ -35,6 +35,7 @@ public class NotificationFrame extends OverlaidFrame {
             @Override
             public void onTimelineStateChanged(Timeline.TimelineState oldState, Timeline.TimelineState newState, float durationFraction, float timelinePosition) {
                 if(newState.equals(Timeline.TimelineState.DONE)){
+                    NotificationFrame.this.setAlwaysOnTop(false);
                     NotificationFrame.this.setVisible(false);
                     NotificationFrame.this.setOpacity(0.9f);
                     messageLabel.setText("");
@@ -54,6 +55,7 @@ public class NotificationFrame extends OverlaidFrame {
             NotificationFrame.this.pack();
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
             this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+            NotificationFrame.this.setAlwaysOnTop(true);
             NotificationFrame.this.setVisible(true);
             showAnimation.abort();
             showAnimation.play();

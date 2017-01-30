@@ -48,7 +48,7 @@ public class IncMessageFrame extends MovableComponentFrame{
         spPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         spPanel.setBackground(AppThemeColor.FRAME_RGB);
         spPanel.setBorder(BorderFactory.createEmptyBorder(-4,0,-4,0));
-        
+
         JPanel dFinishedTradePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton dismissTradesButton = componentsFactory.getIconifiedTransparentButton("app/clear-trades.png", TooltipConstants.DISMISS_FINISHED_TRADES);
         dismissTradesButton.setPreferredSize(new Dimension(30,22));
@@ -56,7 +56,7 @@ public class IncMessageFrame extends MovableComponentFrame{
 
         inProgressMsgs = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME,TextAlignment.CENTER,18,"0");
         activeMsgs = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_SUCCESS,TextAlignment.CENTER,18,"0");
-        finishedMsgs = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DENIED,TextAlignment.CENTER,18,"0");
+        finishedMsgs = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DISABLE,TextAlignment.CENTER,18,"0");
 
         JPanel labelsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         labelsPanel.add(inProgressMsgs);
