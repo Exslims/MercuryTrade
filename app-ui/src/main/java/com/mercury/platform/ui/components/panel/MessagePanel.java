@@ -119,7 +119,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         }else if(message instanceof CurrencyMessage){
             CurrencyMessage message = (CurrencyMessage) this.message;
             JPanel curCountPanel = new JPanel();
-            curCountPanel.setPreferredSize(new Dimension(40,30));
+            curCountPanel.setPreferredSize(new Dimension(40,26));
             curCountPanel.setBackground(AppThemeColor.TRANSPARENT);
 
             String curCount = message.getCurrForSaleCount() % 1 == 0 ? String.valueOf(message.getCurrForSaleCount().intValue()) : String.valueOf(message.getCurrForSaleCount());
@@ -145,7 +145,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         String currency = message.getCurrency();
         if(!Objects.equals(curCount, "") && currency != null) {
             JPanel curCountPanel = new JPanel();
-            curCountPanel.setPreferredSize(new Dimension(40,30));
+            curCountPanel.setPreferredSize(new Dimension(40,34));
             curCountPanel.setBackground(AppThemeColor.TRANSPARENT);
 
             JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, curCount);

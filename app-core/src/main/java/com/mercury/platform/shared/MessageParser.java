@@ -71,17 +71,15 @@ public class MessageParser {
         Double currForSaleCount = null;
         String currForSaleTitle = "";
         if(currencyForSale != null) {
-            String[] split = currencyForSale.split(" ");
-            currForSaleCount = Double.parseDouble(split[0]);
-            currForSaleTitle = split[1]; // todo multiple word
+            currForSaleCount = Double.parseDouble(StringUtils.substringBefore(currencyForSale," "));
+            currForSaleTitle = StringUtils.substringAfter(currencyForSale," ");
         }
         String price = StringUtils.substringBetween(message, "for my ", " in ");
         Double priceCount = null;
         String priceTitle = "";
         if(price != null) {
-            String[] split = price.split(" ");
-            priceCount = Double.parseDouble(split[0]);
-            priceTitle = split[1];
+            priceCount = Double.parseDouble(StringUtils.substringBefore(price," "));
+            priceTitle = StringUtils.substringAfter(price," ");
         }
         String offer = StringUtils.substringAfterLast(message, "in Breach."); //todo
         currencyMessage.setCurrForSaleCount(currForSaleCount);

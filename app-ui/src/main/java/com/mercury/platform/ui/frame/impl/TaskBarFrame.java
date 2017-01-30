@@ -55,7 +55,7 @@ public class TaskBarFrame extends MovableComponentFrame{
             @Override
             public void mouseExited(MouseEvent e) {
                 TaskBarFrame.this.repaint();
-                if(!withInPanel((JPanel)TaskBarFrame.this.getContentPane()) && !EResizeSpace) {
+                if(isVisible() && !withInPanel((JPanel)TaskBarFrame.this.getContentPane()) && !EResizeSpace) {
                     if (collapseAnim != null) {
                         collapseAnim.abort();
                     }
