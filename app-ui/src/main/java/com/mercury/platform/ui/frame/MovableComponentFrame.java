@@ -42,7 +42,7 @@ public abstract class MovableComponentFrame extends ComponentFrame {
             }
             case DEFAULT: {
                 this.setContentPane(mainContainer);
-                if(mainContainer.getComponentCount() <= getMinComponentCount()){ //todo
+                if(mainContainer.getComponentCount() < getMinComponentCount()){ //todo
                     this.setVisible(false);
                 }
                 this.setPreferredSize(null);
