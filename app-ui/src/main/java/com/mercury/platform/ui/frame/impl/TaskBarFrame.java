@@ -202,8 +202,6 @@ public class TaskBarFrame extends MovableComponentFrame{
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(chatFilter);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
-//        taskBarPanel.add(timer);
-//        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(historyButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(moveButton);
