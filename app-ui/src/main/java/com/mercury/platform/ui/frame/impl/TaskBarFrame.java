@@ -259,6 +259,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,20f,"Task Bar"));
         panel.add(labelPanel);
+
         return panel;
     }
 
