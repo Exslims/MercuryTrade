@@ -43,8 +43,10 @@ public class AboutPanel extends ConfigurationPanel implements HasUI {
             }
         });
         this.add(donate);
-        this.add(componentsFactory.getTextLabel("About program and contacts here."));
-        this.add(componentsFactory.getTextField("TYPE HERE", FontStyle.BOLD,16));
+        // shit's not working PLZ FIX
+        //this.add(componentsFactory.getTextLabel("About"));
+        this.add(componentsFactory.getTextField("We aimed to create an easy-to-use application to provide a very specific convenience tool, primarily for trading. If MercuryTrader successfully managed to save your time or improve your experience, you can thank us by donating or just telling your friends!", FontStyle.BOLD,13));
+        this.add(componentsFactory.getTextField("If not, please leave your feedback and suggestions at MercuryTraderFeedback@gmail.com", FontStyle.BOLD,13));
     }
 
     @Override
