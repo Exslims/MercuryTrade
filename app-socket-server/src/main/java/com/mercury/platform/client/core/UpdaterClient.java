@@ -23,6 +23,7 @@ public class UpdaterClient {
 
     private final String host;
     private final int port;
+    private volatile boolean stopped;
 
     public UpdaterClient(String host, String mercuryVersion, int port) {
         this.host = host;
@@ -31,22 +32,32 @@ public class UpdaterClient {
         VersionHolder.getInstance().setVersion(Integer.valueOf(version));
     }
 
-    public void start() throws Exception {
-        EventLoopGroup group = new NioEventLoopGroup();
-        try {
-            LOGGER.info("Starting updater client");
-            Bootstrap bootstrap = new Bootstrap();
-            bootstrap.group(group).channel(NioSocketChannel.class)
-                    .remoteAddress(new InetSocketAddress(host, port))
-                    .handler(new ClientChannelInitializer());
-            LOGGER.info("Updater client was started");
-            ChannelFuture channelFuture = bootstrap.connect().sync();
-            channelFuture.channel().closeFuture().sync();
-        } finally {
-            group.shutdownGracefully().sync();
+    public void start() throws InterruptedException {
+        this.stopped = false;
+        while (!stopped) {
+            EventLoopGroup group = null;
+            try {
+                group = new NioEventLoopGroup();
+                LOGGER.info("Starting updater client");
+                Bootstrap bootstrap = new Bootstrap();
+                bootstrap.group(group).channel(NioSocketChannel.class)
+                        .remoteAddress(new InetSocketAddress(host, port))
+                        .handler(new ClientChannelInitializer());
+                LOGGER.info("Updater client was started");
+                ChannelFuture channelFuture = bootstrap.connect().sync();
+                channelFuture.channel().closeFuture().sync();
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage());
+            } finally {
+                if (group != null)
+                    group.shutdownGracefully().sync();
+            }
+            Thread.sleep(5000); //TIMEOUT 5 sec
         }
     }
-
+    public void shutdown() {
+        this.stopped = true;
+    }
     public int getMercuryVersion() {
         return VersionHolder.getInstance().getVersion();
     }

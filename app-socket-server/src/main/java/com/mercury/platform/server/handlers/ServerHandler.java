@@ -4,6 +4,7 @@ import com.mercury.platform.holder.UpdateHolder;
 import com.mercury.platform.server.bus.UpdaterServerAsyncEventBus;
 import com.mercury.platform.server.bus.event.ClientActiveEvent;
 import com.mercury.platform.server.bus.event.ClientUnregisteredEvent;
+import com.mercury.platform.server.bus.event.ClientUpdatedEvent;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.apache.logging.log4j.LogManager;
@@ -54,6 +55,9 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                     chunkStart += chunkSize;
                 }
             }
+            InetSocketAddress address = (InetSocketAddress) context.channel().remoteAddress();
+            eventBus.post(new ClientUpdatedEvent(address));
+
         }
     }
 

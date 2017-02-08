@@ -3,6 +3,7 @@ package com.mercury.platform.server.main.listeners;
 import com.mercury.platform.server.core.UpdaterServer;
 import com.mercury.platform.server.main.listeners.operations.OperationThread;
 
+import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.Executors;
@@ -20,7 +21,11 @@ public class StartServerButtonListener extends MouseAdapter {
 
         @Override
         public void run() {
-            this.server.run();
+            if (server.isStarted()) {
+                JOptionPane.showMessageDialog(null , "Server is already started");
+            }
+            else
+                this.server.run();
         }
     }
 

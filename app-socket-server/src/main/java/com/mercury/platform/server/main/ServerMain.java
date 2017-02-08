@@ -13,12 +13,11 @@ public class ServerMain {
 
     private static final Logger LOGGER = LogManager.getLogger(ServerMain.class);
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         SwingUtilities.invokeLater(() -> {
             MercuryUpdaterFrame frame = new MercuryUpdaterFrame();
             frame.setVisible(true);
         });
-
     }
 }

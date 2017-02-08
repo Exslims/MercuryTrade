@@ -5,10 +5,7 @@ import com.mercury.platform.holder.UpdateHolder;
 import com.mercury.platform.server.bus.UpdaterServerAsyncEventBus;
 import com.mercury.platform.server.bus.handlers.ClientActiveEventHandler;
 import com.mercury.platform.server.core.UpdaterServer;
-import com.mercury.platform.server.main.listeners.ShutdownServerButtonListener;
-import com.mercury.platform.server.main.listeners.StartServerButtonListener;
-import com.mercury.platform.server.main.listeners.UIClientActiveListener;
-import com.mercury.platform.server.main.listeners.UIClientUnregisteredListener;
+import com.mercury.platform.server.main.listeners.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -62,6 +59,7 @@ public class MercuryUpdaterFrame extends JFrame {
 
         asyncEventBus.register(new UIClientActiveListener(onlineCountLabel));
         asyncEventBus.register(new UIClientUnregisteredListener(onlineCountLabel));
+        asyncEventBus.register(new UIClientUpdatedHandler(updateCount));
     }
 
     private JPanel getTopPanel(){
@@ -99,6 +97,7 @@ public class MercuryUpdaterFrame extends JFrame {
         panel.add(jarPathField);
         panel.add(pickJarButton);
         panel.add(new JLabel("Version: "));
+        versionField.setText("1.0.1.1.3");
         panel.add(versionField);
         return panel;
     }
