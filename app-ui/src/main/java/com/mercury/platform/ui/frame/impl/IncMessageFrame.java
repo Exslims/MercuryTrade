@@ -111,7 +111,7 @@ public class IncMessageFrame extends MovableComponentFrame{
             }
         }
         this.tradeMode = mode;
-        if(mainContainer.getComponentCount() > 0){
+        if(mainContainer.getComponentCount() > 1){
             this.pack();
             this.repaint();
         }
@@ -165,7 +165,11 @@ public class IncMessageFrame extends MovableComponentFrame{
                     this.setLocation(new Point(this.getLocation().x, this.getLocation().y - messagePanel.getPreferredSize().height));
                 }
                 messagePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, AppThemeColor.BORDER));
-                mainContainer.add(messagePanel,0);
+                if(tradeMode.equals(TradeMode.SUPER)){
+                    mainContainer.add(messagePanel, 1);
+                }else {
+                    mainContainer.add(messagePanel, 0);
+                }
             }else {
                 if(mainContainer.getComponentCount() > 0) {
                     messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
@@ -177,12 +181,16 @@ public class IncMessageFrame extends MovableComponentFrame{
         EventRouter.INSTANCE.registerHandler(CloseMessagePanelEvent.class, event -> {
             Component panel = ((CloseMessagePanelEvent) event).getComponent();
             this.remove(panel);
-            if (mainContainer.getComponentCount() > 0) {
-                MessagePanel component = (MessagePanel) mainContainer.getComponent(0); // JPanel cannot be cast to com.mercury.platform.ui.components.panel.MessagePanel
-                component.setBorder(null);
+            if (mainContainer.getComponentCount() > 1) { //todo
+                MessagePanel component = (MessagePanel) mainContainer.getComponent(1);
+                if(tradeMode.equals(TradeMode.SUPER)) {
+                    component.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
+                }else {
+                    component.setBorder(null);
+                }
             }
             this.pack();
-            if(mainContainer.getComponentCount() == 0){
+            if((mainContainer.getComponentCount() == 1 && tradeMode.equals(TradeMode.SUPER)) || mainContainer.getComponentCount() == 0){
                 this.setVisible(false);
             }
         });

@@ -12,8 +12,8 @@ public class ItemMessage extends Message {
     public ItemMessage() {
     }
 
-    public ItemMessage(String whisperNickname, Date messageDate, String itemName, Double curCount, String currency, String tabName, String offer) {
-        super(whisperNickname,offer,messageDate,curCount,currency);
+    public ItemMessage(String sourceString,String whisperNickname, Date messageDate, String itemName, Double curCount, String currency, String tabName, String offer) {
+        super(sourceString,whisperNickname,offer,messageDate,curCount,currency);
         this.itemName = itemName;
         this.tabName = tabName;
     }

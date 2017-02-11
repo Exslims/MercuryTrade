@@ -12,8 +12,8 @@ public class CurrencyMessage extends Message {
     public CurrencyMessage() {
     }
 
-    public CurrencyMessage(String whisperNickname, String offer, Date msgDate, Double currForSaleCount, String currForSaleTitle, Double priceCount, String priceTitle) {
-        super(whisperNickname, offer, msgDate,priceCount,priceTitle);
+    public CurrencyMessage(String sourceString,String whisperNickname, String offer, Date msgDate, Double currForSaleCount, String currForSaleTitle, Double priceCount, String priceTitle) {
+        super(sourceString,whisperNickname, offer, msgDate,priceCount,priceTitle);
         this.currForSaleCount = currForSaleCount;
         this.currForSaleTitle = currForSaleTitle;
     }

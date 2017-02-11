@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
  */
 public abstract class MovableComponentFrame extends ComponentFrame {
     protected Container mainContainer;
+    private boolean wasVisible;
     protected UndecoratedFrameState undecoratedFrameState;
     protected MovableComponentFrame(String title) {
         super(title);
@@ -25,6 +26,8 @@ public abstract class MovableComponentFrame extends ComponentFrame {
         switch (state){
             case MOVING:{
                 if(undecoratedFrameState.equals(UndecoratedFrameState.DEFAULT)) {
+                    System.out.println(this.getClass().getSimpleName() + "visible: " + this.isVisible());
+                    wasVisible = this.isVisible();
                     JPanel panel = setUpMoveListeners(panelWhenMove());
                     if(mainContainer.getHeight() < 30) {
                         panel.setPreferredSize(new Dimension(200, 100));
@@ -42,9 +45,7 @@ public abstract class MovableComponentFrame extends ComponentFrame {
             }
             case DEFAULT: {
                 this.setContentPane(mainContainer);
-                if(mainContainer.getComponentCount() < getMinComponentCount()){ //todo
-                    this.setVisible(false);
-                }
+                this.setVisible(wasVisible);
                 this.setPreferredSize(null);
                 this.pack();
                 this.repaint();

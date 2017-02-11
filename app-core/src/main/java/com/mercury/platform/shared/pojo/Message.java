@@ -6,6 +6,7 @@ import java.util.Date;
  * Created by Константин on 10.12.2016.
  */
 public class Message {
+    private String sourceString;
     private Date messageDate;
     private String whisperNickname;
     private String offer;
@@ -15,7 +16,8 @@ public class Message {
     public Message() {
     }
 
-    public Message(String whisperNickname, String offer, Date msgDate, Double curCount, String currency) {
+    public Message(String sourceString, String whisperNickname, String offer, Date msgDate, Double curCount, String currency) {
+        this.sourceString = sourceString;
         this.offer = offer;
         this.messageDate = msgDate;
         this.whisperNickname = whisperNickname;
@@ -61,5 +63,13 @@ public class Message {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public String getSourceString() {
+        return sourceString;
+    }
+
+    public void setSourceString(String sourceString) {
+        this.sourceString = sourceString;
     }
 }

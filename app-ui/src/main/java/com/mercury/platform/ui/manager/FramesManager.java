@@ -39,7 +39,6 @@ public class FramesManager {
     }
     public void start(){
         createTrayIcon();
-        ConfigManager.INSTANCE.load();
 
         OverlaidFrame chatFilter = new ChatFilterFrame();
         framesMap.put(ChatFilterFrame.class,chatFilter);

@@ -1,6 +1,8 @@
 package com.mercury.platform.ui.frame.impl;
 
 import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.shared.HistoryManager;
+import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.MercuryEvent;
 import com.mercury.platform.shared.events.custom.NewWhispersEvent;
@@ -14,6 +16,7 @@ import com.mercury.platform.ui.components.panel.misc.MessagePanelStyle;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,7 +65,35 @@ public class HistoryFrame extends TitledComponentFrame{
 
         this.add(scrollPane,BorderLayout.CENTER);
         mainContainer.getParent().setBackground(AppThemeColor.TRANSPARENT);
+
+        String[] messages = HistoryManager.INSTANCE.fetchNext(10);
+        ArrayUtils.reverse(messages);
+        for (String message : messages) {
+            MessageParser parser = new MessageParser();
+            Message parsedMessage = parser.parse(message);
+            MessagePanel messagePanel = new MessagePanel(parsedMessage, this, MessagePanelStyle.HISTORY);
+            messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
+            messagePanel.disableTime();
+            mainContainer.add(messagePanel);
+        }
         this.pack();
+        vBar.setValue(vBar.getMaximum());
+        vBar.addAdjustmentListener((AdjustmentEvent e) -> {
+            if(vBar.getValue() < 100){
+                String[] nextMessages = HistoryManager.INSTANCE.fetchNext(5);
+                ArrayUtils.reverse(nextMessages);
+                for (String message : nextMessages) {
+                    MessageParser parser = new MessageParser();
+                    Message parsedMessage = parser.parse(message);
+                    MessagePanel messagePanel = new MessagePanel(parsedMessage, this, MessagePanelStyle.HISTORY);
+                    messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
+                    messagePanel.disableTime();
+                    mainContainer.add(messagePanel,0);
+                    vBar.setValue(vBar.getValue() + 100);
+                }
+                this.pack();
+            }
+        });
     }
 
     @Override
@@ -86,8 +117,8 @@ public class HistoryFrame extends TitledComponentFrame{
     public void initHandlers() {
         EventRouter.INSTANCE.registerHandler(NewWhispersEvent.class, (MercuryEvent event) -> {
             Message message = ((NewWhispersEvent) event).getMessage();
+            HistoryManager.INSTANCE.add(message);
             MessagePanel messagePanel = new MessagePanel(message,this,MessagePanelStyle.HISTORY);
-            messagePanel.setPreferredSize(new Dimension(this.getWidth()-10,messagePanel.getPreferredSize().height));
             if(mainContainer.getComponentCount() > 0) {
                 messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
             }

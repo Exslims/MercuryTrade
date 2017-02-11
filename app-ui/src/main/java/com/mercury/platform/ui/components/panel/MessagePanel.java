@@ -92,7 +92,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 this.whisperPanel = getWhisperPanel();
                 this.add(whisperPanel,BorderLayout.PAGE_START);
                 messagePanel.setVisible(true);
-                customButtonsPanel.setVisible(true);
+                customButtonsPanel.setVisible(false);
                 break;
             }
             case SPMODE:{
@@ -160,7 +160,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         tradePanel.add(forPanel,BorderLayout.LINE_END);
         labelsPanel.add(tradePanel);
         String offer = message.getOffer();
-        if(offer != null && offer.length() > 2) {
+        if(offer != null && offer.trim().length() > 0) {
             JLabel offerLabel = componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 16f, offer);
             offerLabel.setAlignmentY(Component.TOP_ALIGNMENT);
             labelsPanel.add(offerLabel);
@@ -275,6 +275,12 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         }
         panel.add(timeLabel);
         return panel;
+    }
+    public void disableTime(){
+        if(timeAgo != null) {
+            timeAgo.stop();
+            timeLabel.setText("");
+        }
     }
     private JButton getExpandButton(){
         String iconPath = (style == MessagePanelStyle.SMALL) ? "app/expand-mp.png":"app/collapse-mp.png";
