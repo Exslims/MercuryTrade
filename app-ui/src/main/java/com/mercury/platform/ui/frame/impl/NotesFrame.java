@@ -29,7 +29,7 @@ public class NotesFrame extends TitledComponentFrame {
         super("MT-NotesFrame");
         boolean showOnStartUp = ConfigManager.INSTANCE.isShowOnStartUp();
         if(showOnStartUp) {
-            this.setVisible(true);
+            prevState = FrameStates.SHOW;
         }else {
             this.setVisible(false);
             prevState = FrameStates.HIDE;

@@ -27,14 +27,9 @@ import java.awt.event.MouseEvent;
 public class IncMessageFrame extends MovableComponentFrame{
     private TradeMode tradeMode = TradeMode.DEFAULT;
     private FlowDirections flowDirections = FlowDirections.DOWNWARDS;
+    private int deltaYInUpwards = 0; //wtf
 
     private boolean dnd = false;
-    private JPanel spPanel;
-
-    private JLabel inProgressMsgs;
-    private JLabel activeMsgs;
-    private JLabel finishedMsgs;
-
     public IncMessageFrame(){
         super("MT-IncMessagesFrame");
         setVisible(false);
@@ -45,35 +40,14 @@ public class IncMessageFrame extends MovableComponentFrame{
         super.initialize();
         processSEResize = false;
 
-        spPanel = componentsFactory.getTransparentPanel(new BorderLayout());
-        spPanel.setBackground(AppThemeColor.FRAME_RGB);
-        spPanel.setBorder(BorderFactory.createEmptyBorder(-4,0,-4,0));
-
-        JPanel dFinishedTradePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton dismissTradesButton = componentsFactory.getIconifiedTransparentButton("app/clear-trades.png", TooltipConstants.DISMISS_FINISHED_TRADES);
-        dismissTradesButton.setPreferredSize(new Dimension(30,22));
-        dFinishedTradePanel.add(dismissTradesButton);
-
-        inProgressMsgs = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME,TextAlignment.CENTER,18,"0");
-        activeMsgs = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_SUCCESS,TextAlignment.CENTER,18,"0");
-        finishedMsgs = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DISABLE,TextAlignment.CENTER,18,"0");
-
-        JPanel labelsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        labelsPanel.add(inProgressMsgs);
-        labelsPanel.add(activeMsgs);
-        labelsPanel.add(finishedMsgs);
-
-        spPanel.add(labelsPanel,BorderLayout.CENTER);
-        spPanel.add(dFinishedTradePanel,BorderLayout.LINE_END);
         this.addMouseListener(new MouseAdapter() { //todo
             @Override
             public void mouseExited(MouseEvent e) {
                 if(!undecoratedFrameState.equals(UndecoratedFrameState.MOVING)
                         && flowDirections.equals(FlowDirections.UPWARDS)
                         && !isMouseWithInFrame()){
-                    IncMessageFrame.this.setLocation(configManager
-                            .getFrameSettings(IncMessageFrame.this.getClass().getSimpleName())
-                            .getFrameLocation());
+                    IncMessageFrame.this.setLocation(getLocation().x,getLocation().y+deltaYInUpwards);
+                    deltaYInUpwards = 0;
                 }
             }
         });
@@ -83,7 +57,6 @@ public class IncMessageFrame extends MovableComponentFrame{
         switch (mode){
             case DEFAULT:{
                 if(tradeMode == TradeMode.SUPER){
-                    mainContainer.remove(spPanel);
                     Component[] components = mainContainer.getComponents();
                     for (Component messagePanel : components) {
                         ((MessagePanel)messagePanel).setStyle(MessagePanelStyle.SMALL);
@@ -99,13 +72,9 @@ public class IncMessageFrame extends MovableComponentFrame{
             case SUPER:{
                 if(tradeMode == TradeMode.DEFAULT){
                     Component[] components = mainContainer.getComponents();
-                    if(components.length > 0) {
-                        ((MessagePanel) components[0]).setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
-                    }
                     for (Component messagePanel : components) {
                         ((MessagePanel)messagePanel).setStyle(MessagePanelStyle.SPMODE);
                     }
-                    mainContainer.add(spPanel,0);
                 }
                 break;
             }
@@ -165,11 +134,7 @@ public class IncMessageFrame extends MovableComponentFrame{
                     this.setLocation(new Point(this.getLocation().x, this.getLocation().y - messagePanel.getPreferredSize().height));
                 }
                 messagePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, AppThemeColor.BORDER));
-                if(tradeMode.equals(TradeMode.SUPER)){
-                    mainContainer.add(messagePanel, 1);
-                }else {
-                    mainContainer.add(messagePanel, 0);
-                }
+                mainContainer.add(messagePanel, 0);
             }else {
                 if(mainContainer.getComponentCount() > 0) {
                     messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
@@ -180,17 +145,20 @@ public class IncMessageFrame extends MovableComponentFrame{
         });
         EventRouter.INSTANCE.registerHandler(CloseMessagePanelEvent.class, event -> {
             Component panel = ((CloseMessagePanelEvent) event).getComponent();
+            deltaYInUpwards += panel.getHeight();
             this.remove(panel);
-            if (mainContainer.getComponentCount() > 1) { //todo
-                MessagePanel component = (MessagePanel) mainContainer.getComponent(1);
-                if(tradeMode.equals(TradeMode.SUPER)) {
-                    component.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
-                }else {
-                    component.setBorder(null);
-                }
+            if (mainContainer.getComponentCount() > 0) {
+                MessagePanel component = (MessagePanel) mainContainer.getComponent(0);
+                component.setBorder(null);
             }
             this.pack();
-            if((mainContainer.getComponentCount() == 1 && tradeMode.equals(TradeMode.SUPER)) || mainContainer.getComponentCount() == 0){
+            if(mainContainer.getComponentCount() == 0){
+                if(flowDirections.equals(FlowDirections.UPWARDS)){
+                    IncMessageFrame.this.setLocation(configManager
+                            .getFrameSettings(IncMessageFrame.this.getClass().getSimpleName())
+                            .getFrameLocation());
+                    deltaYInUpwards = 0;
+                }
                 this.setVisible(false);
             }
         });

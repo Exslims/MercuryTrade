@@ -54,7 +54,7 @@ public class SoundNotifier {
                 gainControl.setValue(db);
                 clip.start();
             } catch (Exception e) {
-                logger.debug("Cannot start playing music: ",e);
+                logger.error("Cannot start playing wav file: ",e);
             }
         }
     }

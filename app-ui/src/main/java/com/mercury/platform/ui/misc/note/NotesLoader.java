@@ -1,7 +1,5 @@
 package com.mercury.platform.ui.misc.note;
 
-import org.apache.tools.ant.taskdefs.condition.Not;
-
 import java.util.ArrayList;
 import java.util.List;
 
