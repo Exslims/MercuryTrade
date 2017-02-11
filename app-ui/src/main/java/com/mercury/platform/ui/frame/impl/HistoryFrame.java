@@ -42,7 +42,6 @@ public class HistoryFrame extends TitledComponentFrame{
         mainContainer = new ScrollContainer();
         mainContainer.setBackground(AppThemeColor.TRANSPARENT);
         mainContainer.setLayout(new BoxLayout(mainContainer,BoxLayout.Y_AXIS));
-        addInteractionsButtons();
 
         JScrollPane scrollPane = new JScrollPane(mainContainer);
         scrollPane.setBorder(null);
@@ -99,18 +98,6 @@ public class HistoryFrame extends TitledComponentFrame{
     @Override
     protected String getFrameTitle() {
         return "History";
-    }
-
-    private void addInteractionsButtons(){
-        JButton clearButton = componentsFactory.getIconButton("app/clear-icon-white.png", 14,AppThemeColor.FRAME_1, TooltipConstants.HISTORY_CLEAR);
-        clearButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                mainContainer.removeAll();
-                HistoryFrame.this.pack();
-            }
-        });
-        miscPanel.add(clearButton,0);
     }
 
     @Override

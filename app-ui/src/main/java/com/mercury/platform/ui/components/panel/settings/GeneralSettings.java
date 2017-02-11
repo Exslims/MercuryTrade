@@ -26,7 +26,7 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
 
     @Override
     protected LayoutManager getPanelLayout() {
-        return new BoxLayout(this,BoxLayout.Y_AXIS);
+        return new FlowLayout(FlowLayout.LEFT);
     }
 
     @Override
@@ -88,10 +88,14 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
 
         notifierPanel.add(notifierStatusPicker);
 
-        this.add(hideSettingsPanel);
-        this.add(minOpacitySettingsPanel);
-        this.add(maxOpacitySettingsPanel);
-        this.add(notifierPanel);
+        JPanel rootPanel = componentsFactory.getTransparentPanel();
+        rootPanel.setLayout(new BoxLayout(rootPanel,BoxLayout.Y_AXIS));
+
+        rootPanel.add(hideSettingsPanel);
+        rootPanel.add(minOpacitySettingsPanel);
+        rootPanel.add(maxOpacitySettingsPanel);
+        rootPanel.add(notifierPanel);
+        this.add(rootPanel);
     }
     @Override
     public void processAndSave() {

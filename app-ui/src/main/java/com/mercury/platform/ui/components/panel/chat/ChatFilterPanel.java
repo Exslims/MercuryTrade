@@ -103,7 +103,6 @@ public class ChatFilterPanel extends JPanel {
         messagePanel.add(componentsFactory.getSimpleTextAre(message), BorderLayout.CENTER);
         messagePanel.setMaximumSize(new Dimension(1000,500));
         container.add(messagePanel);
-        vBar.setValue(vBar.getMaximum());
     }
     public void clear(){
         container.removeAll();

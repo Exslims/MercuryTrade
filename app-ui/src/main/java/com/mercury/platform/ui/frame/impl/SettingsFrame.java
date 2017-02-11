@@ -5,10 +5,7 @@ import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.RepaintEvent;
 import com.mercury.platform.ui.components.fields.MercuryTabbedPane;
 import com.mercury.platform.ui.components.panel.CollapsiblePanel;
-import com.mercury.platform.ui.components.panel.settings.AboutPanel;
-import com.mercury.platform.ui.components.panel.settings.ConfigurationPanel;
-import com.mercury.platform.ui.components.panel.settings.CustomButtonSettings;
-import com.mercury.platform.ui.components.panel.settings.GeneralSettings;
+import com.mercury.platform.ui.components.panel.settings.*;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -53,6 +50,7 @@ public class SettingsFrame extends TitledComponentFrame {
 
         tabbedPane.addTab("General",generalSettings);
         tabbedPane.addTab("Response buttons",cbSettings);
+        tabbedPane.addTab("Support",new SupportPanel());
         tabbedPane.addTab("About",new AboutPanel());
         this.add(tabbedPane, BorderLayout.CENTER);
         this.add(getBottomPanel(), BorderLayout.PAGE_END);
