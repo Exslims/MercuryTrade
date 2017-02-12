@@ -2,17 +2,14 @@ package com.mercury.platform.shared;
 
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import com.mercury.platform.shared.pojo.FrameSettings;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +49,11 @@ public class ConfigManager {
                 new File(CONFIG_FILE_PATH).mkdir();
                 new File(CONFIG_FILE_PATH + "\\temp").mkdir();
 
+                ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+                InputStream resourceAsStream = classLoader.getResourceAsStream("app/local-updater.jar");
+                File dest = new File(CONFIG_FILE_PATH + File.separator + "local-updater.jar");
+                FileUtils.copyInputStreamToFile(resourceAsStream,dest);
+
                 FileWriter fileWriter = new FileWriter(CONFIG_FILE);
                 fileWriter.write(new JSONObject().toJSONString());
                 fileWriter.flush();
@@ -70,7 +72,7 @@ public class ConfigManager {
                 saveProperty("maxOpacity",maxOpacity);
                 saveProperty("showOnStartUp",showOnStartUp);
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 logger.error(e);
             }
         } else {

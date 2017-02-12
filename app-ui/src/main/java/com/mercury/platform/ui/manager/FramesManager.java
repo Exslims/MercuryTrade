@@ -10,12 +10,9 @@ import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.frame.impl.*;
 import com.mercury.platform.ui.frame.location.SetUpLocationCommander;
 import com.mercury.platform.ui.frame.location.SetUpLocationFrame;
-import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;

@@ -35,6 +35,7 @@ public class UpdateClientStarter implements Runnable{
         try {
             updaterClient.start();
         } catch (Exception e) {
+            LOGGER.error(e);
         }
     }
     public synchronized void setMercuryVersion(String mercuryVersion) {
