@@ -23,6 +23,7 @@ public class UpdaterMain {
                         Paths.get(JAR_FILE_PATH + File.separator + "MercuryTrade.jar"),
                         Paths.get(args[0]),
                         StandardCopyOption.REPLACE_EXISTING);
+                Runtime.getRuntime().exec("java -jar " + args[0]);
             } catch (Exception e) {
                 log.error("Error while replacing existing jar: ", e);
             }

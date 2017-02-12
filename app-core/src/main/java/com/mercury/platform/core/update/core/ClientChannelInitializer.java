@@ -19,12 +19,10 @@ public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> 
 
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
-        LOGGER.info("Initializing update channel");
         socketChannel.pipeline().addLast(new ObjectEncoder());
         ClassLoader classLoader = this.getClass().getClassLoader();
         ClassResolver classResolver = ClassResolvers.weakCachingResolver(classLoader);
         socketChannel.pipeline().addLast(new ObjectDecoder(classResolver));
         socketChannel.pipeline().addLast(new ClientHandler());
-        LOGGER.info("Client channel was initialized");
     }
 }

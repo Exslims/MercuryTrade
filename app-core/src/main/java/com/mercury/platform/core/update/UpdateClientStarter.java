@@ -29,7 +29,7 @@ public class UpdateClientStarter implements Runnable{
         updaterClient.registerListener(handler -> {
             LOGGER.info("update received, size = {} bytes" , handler.getBytes().length);
             Files.write(Paths.get(JARS_FILE_PATH + "\\MercuryTrade.jar") , handler.getBytes() , StandardOpenOption.CREATE);
-            updaterClient.shutdown();
+            setMercuryVersion(getIncrementedVersion(MercuryConstants.APP_VERSION));
             EventRouter.INSTANCE.fireEvent(new UpdateReadyEvent());
         });
         try {
@@ -42,5 +42,11 @@ public class UpdateClientStarter implements Runnable{
         String version = mercuryVersion.replace(".", "0");
         VersionHolder versionHolder = VersionHolder.getInstance();
         versionHolder.setVersion(Integer.valueOf(version));
+    }
+    private String getIncrementedVersion(String version){
+        String replace = version.replace(".", "0");
+        Integer intVersion = Integer.valueOf(replace);
+        intVersion++;
+        return String.valueOf(intVersion).replace("0",".");
     }
 }
