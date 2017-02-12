@@ -55,7 +55,7 @@ public class FramesManager {
             framesMap.put(NotesFrame.class,new NotesFrame(notesOnFirstStart, NotesFrame.NotesType.INFO));
         }
         List<Note> patchNotes = notesLoader.getPatchNotes();
-        if(patchNotes.size() != 0){
+        if(ConfigManager.INSTANCE.isShowPatchNotes() && patchNotes.size() != 0){
             NotesFrame patchNotesFrame = new NotesFrame(patchNotes,NotesFrame.NotesType.PATCH);
             patchNotesFrame.init();
         }

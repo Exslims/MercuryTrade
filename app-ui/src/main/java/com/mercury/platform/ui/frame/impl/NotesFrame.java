@@ -39,6 +39,7 @@ public class NotesFrame extends TitledComponentFrame {
                 prevState = FrameStates.HIDE;
             }
         }else {
+            ConfigManager.INSTANCE.saveProperty("showPatchNotes",false);
             prevState = FrameStates.SHOW;
         }
     }

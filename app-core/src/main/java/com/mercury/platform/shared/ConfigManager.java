@@ -37,6 +37,7 @@ public class ConfigManager {
     private int minOpacity;
     private int maxOpacity;
 
+    private boolean showPatchNotes;
     private boolean showOnStartUp;
 
     /**
@@ -67,10 +68,12 @@ public class ConfigManager {
                 minOpacity = 100;
                 maxOpacity = 100;
                 showOnStartUp = true;
+                showPatchNotes = false;
                 saveProperty("decayTime",decayTime);
                 saveProperty("minOpacity",minOpacity);
                 saveProperty("maxOpacity",maxOpacity);
                 saveProperty("showOnStartUp",showOnStartUp);
+                saveProperty("showPatchNotes",showPatchNotes);
 
             } catch (Exception e) {
                 logger.error(e);
@@ -106,6 +109,7 @@ public class ConfigManager {
             minOpacity = ((Long)root.get("minOpacity")).intValue();
             maxOpacity = ((Long)root.get("maxOpacity")).intValue();
             showOnStartUp = (boolean) root.get("showOnStartUp");
+            showPatchNotes = (boolean) root.get("showPatchNotes");
         } catch (Exception e) {
             logger.error("Error in loadConfigFile: ",e);
         }
@@ -216,6 +220,9 @@ public class ConfigManager {
 
     public boolean isShowOnStartUp() {
         return showOnStartUp;
+    }
+    public boolean isShowPatchNotes() {
+        return showPatchNotes;
     }
 
     private Map<String, String > getDefaultButtons(){

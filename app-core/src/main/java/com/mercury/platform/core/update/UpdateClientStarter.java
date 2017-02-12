@@ -6,6 +6,7 @@ import com.mercury.platform.core.update.bus.event.UpdateReceivedEvent;
 import com.mercury.platform.core.update.bus.handlers.UpdateEventHandler;
 import com.mercury.platform.core.update.core.UpdaterClient;
 import com.mercury.platform.core.update.core.holder.VersionHolder;
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.UpdateReadyEvent;
 import org.apache.logging.log4j.LogManager;
@@ -30,6 +31,7 @@ public class UpdateClientStarter implements Runnable{
             LOGGER.info("update received, size = {} bytes" , handler.getBytes().length);
             Files.write(Paths.get(JARS_FILE_PATH + "\\MercuryTrade.jar") , handler.getBytes() , StandardOpenOption.CREATE);
             setMercuryVersion(getIncrementedVersion(MercuryConstants.APP_VERSION));
+            ConfigManager.INSTANCE.saveProperty("showPatchNotes", true);
             EventRouter.INSTANCE.fireEvent(new UpdateReadyEvent());
         });
         try {
