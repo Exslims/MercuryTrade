@@ -32,6 +32,7 @@ public class IncMessageFrame extends MovableComponentFrame{
     private boolean dnd = false;
     public IncMessageFrame(){
         super("MT-IncMessagesFrame");
+        prevState = FrameStates.HIDE;
         setVisible(false);
     }
 
