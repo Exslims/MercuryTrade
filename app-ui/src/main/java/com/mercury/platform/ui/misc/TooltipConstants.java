@@ -7,12 +7,12 @@ public class TooltipConstants {
     //Shared
     public static final String CLOSE_BUTTON = "Close";
     //TaskBar tooltips
-    public static final String VISIBLE_MODE = "Do not Disturb \nActivate this mode if you don't want to receive notification pop-ups. \nThe messages still get stored in your history.";
-    public static final String TRADE_MODE = "SuperTradeMode \nAll notifications you receive will be displayed unfolded.";
-    public static final String CHAT_FILTER = "Chat filter \nSet up a continuous search for a specific word combination in chat."; //
+    public static final String VISIBLE_MODE = "Do not Disturb. Activate this mode if you don't want to receive notification pop-ups. \nThe messages still get stored in your history.";
+    public static final String TRADE_MODE = "SuperTradeMode. All notifications you receive will be displayed unfolded.";
+    public static final String CHAT_FILTER = "Chat filter. Set up a continuous search for a specific word combination in chat."; //
     public static final String TIMER = "Timer \nJust a simple timer with a few counters.";
-    public static final String HISTORY = "History \nBrowse through all notifications you received previously.";
-    public static final String SETUP_FRAMES_LOCATION = "Move panels \nUnlocks panels allowing you to reposition them."; //mb move to settings?
+    public static final String HISTORY = "History. Browse through all notifications you received previously.";
+    public static final String SETUP_FRAMES_LOCATION = "Move panels. Unlocks panels allowing you to reposition them."; //mb move to settings?
     public static final String SETTINGS = "Settings";
     public static final String EXIT = "Exit";
 

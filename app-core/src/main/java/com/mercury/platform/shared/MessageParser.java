@@ -79,7 +79,7 @@ public class MessageParser {
             priceCount = Double.parseDouble(StringUtils.substringBefore(price," "));
             priceTitle = StringUtils.substringAfter(price," ");
         }
-        String offer = StringUtils.substringAfter(message, "."); //todo
+        String offer = StringUtils.substringAfter(message, ".");
         currencyMessage.setCurrForSaleCount(currForSaleCount);
         currencyMessage.setCurrForSaleTitle(currForSaleTitle);
         currencyMessage.setCurCount(priceCount);

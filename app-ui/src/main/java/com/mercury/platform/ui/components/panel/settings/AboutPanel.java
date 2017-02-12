@@ -37,6 +37,20 @@ public class AboutPanel extends JPanel implements HasUI {
         JPanel aboutPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         aboutPanel.add(getInfoPanel());
 
+        this.add(aboutPanel);
+    }
+
+    private JPanel getInfoPanel(){
+        JPanel panel = componentsFactory.getTransparentPanel();
+        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+
+        JPanel titlePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
+        titlePanel.add(componentsFactory.getTextLabel("MercuryTrade", FontStyle.REGULAR));
+        panel.add(titlePanel);
+        JPanel versionPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
+        versionPanel.add(componentsFactory.getTextLabel("App version: " + MercuryConstants.APP_VERSION, FontStyle.REGULAR));
+        panel.add(versionPanel);
+
         JLabel redditButton = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,16f,"Reddit");
         redditButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -74,19 +88,8 @@ public class AboutPanel extends JPanel implements HasUI {
         feedbackPanel.add(componentsFactory.getTextLabel("Feedback&Suggestions: ", FontStyle.REGULAR));
         feedbackPanel.add(redditButton);
         feedbackPanel.add(githubButton);
-        aboutPanel.add(feedbackPanel);
-        this.add(aboutPanel);
-    }
 
-    private JPanel getInfoPanel(){
-        JPanel panel = componentsFactory.getTransparentPanel();
-        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
-
-        panel.add(componentsFactory.getTextLabel("MercuryTrade", FontStyle.REGULAR));
-        panel.add(componentsFactory.getTextLabel("App version: " + MercuryConstants.APP_VERSION, FontStyle.REGULAR));
-        panel.add(componentsFactory.getTextLabel("Developer/UX: " + "@Exslims", FontStyle.REGULAR));
-        panel.add(componentsFactory.getTextLabel("User support/UX: " + "@etofok", FontStyle.REGULAR));
-
+        panel.add(feedbackPanel);
         return panel;
     }
 }

@@ -15,6 +15,8 @@ import com.mercury.platform.ui.frame.impl.util.TradeMode;
 import com.mercury.platform.ui.frame.location.UndecoratedFrameState;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +27,7 @@ import java.awt.event.MouseEvent;
  * Created by Константин on 24.12.2016.
  */
 public class IncMessageFrame extends MovableComponentFrame{
+    private final Logger logger = LogManager.getLogger(IncMessageFrame.class.getSimpleName());
     private TradeMode tradeMode = TradeMode.DEFAULT;
     private FlowDirections flowDirections = FlowDirections.DOWNWARDS;
     private int deltaYInUpwards = 0; //wtf
@@ -111,24 +114,29 @@ public class IncMessageFrame extends MovableComponentFrame{
         });
         EventRouter.INSTANCE.registerHandler(NewWhispersEvent.class, event -> {
             Message message = ((NewWhispersEvent) event).getMessage();
+            MessagePanel messagePanel = null;
+            try {
+                switch (tradeMode) {
+                    case SUPER: {
+                        messagePanel = new MessagePanel(message, this, MessagePanelStyle.SPMODE);
+                        break;
+                    }
+                    case DEFAULT: {
+                        messagePanel = new MessagePanel(message, this, MessagePanelStyle.BIGGEST);
+                        if (mainContainer.getComponentCount() > 0) {
+                            messagePanel.setStyle(MessagePanelStyle.SMALL);
+                        }
+                    }
+                }
+            }catch (Exception e){
+                logger.error(e);
+                return;
+            }
             if (!dnd && !this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
                 this.setAlwaysOnTop(true);
                 this.setVisible(true);
             } else {
                 prevState = FrameStates.SHOW;
-            }
-            MessagePanel messagePanel = null;
-            switch (tradeMode) {
-                case SUPER: {
-                    messagePanel = new MessagePanel(message,this, MessagePanelStyle.SPMODE);
-                    break;
-                }
-                case DEFAULT: {
-                    messagePanel = new MessagePanel(message,this, MessagePanelStyle.BIGGEST);
-                    if (mainContainer.getComponentCount() > 0) {
-                        messagePanel.setStyle(MessagePanelStyle.SMALL);
-                    }
-                }
             }
             if(flowDirections.equals(FlowDirections.UPWARDS)){
                 if(mainContainer.getComponentCount() > 0) {

@@ -38,27 +38,26 @@ public class TooltipFrame extends OverlaidFrame {
     @Override
     public void initHandlers() {
         //todo
-//        EventRouter.INSTANCE.registerHandler(ShowTooltipEvent.class, event -> {
-//            String tooltip = ((ShowTooltipEvent) event).getTooltip();
-//            Point cursorPoint = ((ShowTooltipEvent) event).getCursorPoint();
-//            setLocation(cursorPoint);
-//            tooltipLabel.setText(tooltip);
-//            pack();
-//            repaint();
-//            setOpacity(HideSettingsManager.INSTANCE.getMaxOpacity()/100f);
-//            tooltipTimer = new Timer(0, e -> {
-//                setVisible(true);
-//                tooltipTimer.stop();
-//            });
-//            tooltipTimer.setInitialDelay(1200);
-//            tooltipTimer.start();
-//        });
-//        EventRouter.INSTANCE.registerHandler(HideTooltipEvent.class, event -> {
-//            if(tooltipTimer != null) {
-//                tooltipTimer.stop();
-//                setVisible(false);
-//            }
-//        });
+        EventRouter.INSTANCE.registerHandler(ShowTooltipEvent.class, event -> {
+            String tooltip = ((ShowTooltipEvent) event).getTooltip();
+            Point cursorPoint = ((ShowTooltipEvent) event).getCursorPoint();
+            setLocation(cursorPoint);
+            tooltipLabel.setText(tooltip);
+            pack();
+            repaint();
+            tooltipTimer = new Timer(500, e -> {
+                tooltipTimer.stop();
+                setVisible(true);
+            });
+            tooltipTimer.setInitialDelay(1200);
+            tooltipTimer.start();
+        });
+        EventRouter.INSTANCE.registerHandler(HideTooltipEvent.class, event -> {
+            if(tooltipTimer != null) {
+                tooltipTimer.stop();
+                setVisible(false);
+            }
+        });
     }
 
     @Override

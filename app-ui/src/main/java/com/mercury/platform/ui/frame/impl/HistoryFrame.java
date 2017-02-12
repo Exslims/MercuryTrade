@@ -70,7 +70,12 @@ public class HistoryFrame extends TitledComponentFrame{
         for (String message : messages) {
             MessageParser parser = new MessageParser();
             Message parsedMessage = parser.parse(message);
-            MessagePanel messagePanel = new MessagePanel(parsedMessage, this, MessagePanelStyle.HISTORY);
+            MessagePanel messagePanel;
+            try {
+                messagePanel = new MessagePanel(parsedMessage, this, MessagePanelStyle.HISTORY);
+            }catch (Exception e1){
+                continue;
+            }
             messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
             messagePanel.disableTime();
             mainContainer.add(messagePanel);
@@ -78,19 +83,23 @@ public class HistoryFrame extends TitledComponentFrame{
         this.pack();
         vBar.setValue(vBar.getMaximum());
         vBar.addAdjustmentListener((AdjustmentEvent e) -> {
-            if(vBar.getValue() < 100){
+            if (vBar.getValue() < 100) {
                 String[] nextMessages = HistoryManager.INSTANCE.fetchNext(5);
                 ArrayUtils.reverse(nextMessages);
                 for (String message : nextMessages) {
                     MessageParser parser = new MessageParser();
                     Message parsedMessage = parser.parse(message);
-                    MessagePanel messagePanel = new MessagePanel(parsedMessage, this, MessagePanelStyle.HISTORY);
+                    MessagePanel messagePanel;
+                    try {
+                        messagePanel = new MessagePanel(parsedMessage, this, MessagePanelStyle.HISTORY);
+                    }catch (Exception e1){
+                        continue;
+                    }
                     messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
                     messagePanel.disableTime();
-                    mainContainer.add(messagePanel,0);
+                    mainContainer.add(messagePanel, 0);
                     vBar.setValue(vBar.getValue() + 100);
                 }
-                this.pack();
             }
         });
     }
@@ -105,7 +114,13 @@ public class HistoryFrame extends TitledComponentFrame{
         EventRouter.INSTANCE.registerHandler(NewWhispersEvent.class, (MercuryEvent event) -> {
             Message message = ((NewWhispersEvent) event).getMessage();
             HistoryManager.INSTANCE.add(message);
-            MessagePanel messagePanel = new MessagePanel(message,this,MessagePanelStyle.HISTORY);
+            MessagePanel messagePanel = null;
+            try {
+                messagePanel = new MessagePanel(message, this, MessagePanelStyle.HISTORY);
+                messagePanel.setPreferredSize(new Dimension(this.getWidth()-10,messagePanel.getPreferredSize().height));
+            }catch (Exception e1){
+                return;
+            }
             if(mainContainer.getComponentCount() > 0) {
                 messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
             }

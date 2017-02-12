@@ -51,7 +51,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     private JPanel messagePanel;
     private JPanel customButtonsPanel;
 
-    public MessagePanel(Message message, ComponentFrame owner, MessagePanelStyle style) {
+    public MessagePanel(Message message, ComponentFrame owner, MessagePanelStyle style) throws Exception {
         super(new BorderLayout());
 
         this.message = message;
@@ -105,7 +105,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         }
     }
 
-    private JPanel getFormattedMessagePanel(){
+    private JPanel getFormattedMessagePanel() throws Exception{
         JPanel labelsPanel = new JPanel();
         labelsPanel.setLayout(new BoxLayout(labelsPanel,BoxLayout.Y_AXIS));
         labelsPanel.setBackground(AppThemeColor.TRANSPARENT);
@@ -119,7 +119,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         }else if(message instanceof CurrencyMessage){
             CurrencyMessage message = (CurrencyMessage) this.message;
             JPanel curCountPanel = new JPanel();
-            curCountPanel.setPreferredSize(new Dimension(40,26));
+            curCountPanel.setPreferredSize(new Dimension(40,34));
             curCountPanel.setBackground(AppThemeColor.TRANSPARENT);
 
             String curCount = message.getCurrForSaleCount() % 1 == 0 ? String.valueOf(message.getCurrForSaleCount().intValue()) : String.valueOf(message.getCurrForSaleCount());

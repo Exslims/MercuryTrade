@@ -76,7 +76,7 @@ public class ChatFilterFrame extends MovableComponentFrame {
                 msgPicker.showComponent();
             }
         });
-        JButton clear = componentsFactory.getIconButton("app/clear-icon.png", 18, AppThemeColor.TRANSPARENT, "Clear");
+        JButton clear = componentsFactory.getIconButton("app/clear-icon.png", 18, AppThemeColor.TRANSPARENT, "Clear window.");
         clear.setBorder(null);
         clear.addMouseListener(new MouseAdapter() {
             @Override
@@ -86,7 +86,7 @@ public class ChatFilterFrame extends MovableComponentFrame {
                 repaint();
             }
         });
-        JButton sound = componentsFactory.getIconButton("app/sound-disable.png", 18, AppThemeColor.TRANSPARENT, "Clear");
+        JButton sound = componentsFactory.getIconButton("app/sound-disable.png", 18, AppThemeColor.TRANSPARENT, "Enable sound notification.");
         sound.setBorder(null);
         sound.addMouseListener(new MouseAdapter() {
             @Override
