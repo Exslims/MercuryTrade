@@ -26,7 +26,6 @@ public abstract class MovableComponentFrame extends ComponentFrame {
         switch (state){
             case MOVING:{
                 if(undecoratedFrameState.equals(UndecoratedFrameState.DEFAULT)) {
-                    System.out.println(this.getClass().getSimpleName() + "visible: " + this.isVisible());
                     wasVisible = this.isVisible();
                     JPanel panel = setUpMoveListeners(panelWhenMove());
                     if(mainContainer.getHeight() < 30) {

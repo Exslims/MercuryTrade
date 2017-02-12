@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
  */
 public abstract class TitledComponentFrame extends ComponentFrame {
     protected JPanel miscPanel;
+    private JLabel frameTitleLabel;
     protected TitledComponentFrame(String title) {
         super(title);
         miscPanel = new JPanel();
@@ -31,7 +32,7 @@ public abstract class TitledComponentFrame extends ComponentFrame {
             headerPanel.setBorder(BorderFactory.createEmptyBorder(-2, 0, -2, 0));
 
             JLabel appIcon = componentsFactory.getIconLabel("app/app-icon.png", 16);
-            JLabel frameTitleLabel = componentsFactory.getTextLabel(getFrameTitle());
+            frameTitleLabel = componentsFactory.getTextLabel(getFrameTitle());
             frameTitleLabel.setHorizontalAlignment(SwingConstants.LEFT);
             frameTitleLabel.setVerticalAlignment(SwingConstants.CENTER);
             frameTitleLabel.addMouseListener(new DraggedFrameMouseListener());
@@ -55,6 +56,9 @@ public abstract class TitledComponentFrame extends ComponentFrame {
         }
     }
     protected abstract String getFrameTitle();
+    protected void setFrameTitle(String title) {
+        frameTitleLabel.setText(title);
+    }
 
     @Override
     protected LayoutManager getFrameLayout() {

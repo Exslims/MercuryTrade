@@ -23,16 +23,23 @@ import java.util.List;
 public class NotesFrame extends TitledComponentFrame {
     private List<Note> currentNotes;
     private ContentPanel contentPanel;
+    private NotesType type;
 
     private JCheckBox showOnStartUp;
-    public NotesFrame() {
+    public NotesFrame(List<Note> notes, NotesType type) {
         super("MT-NotesFrame");
-        boolean showOnStartUp = ConfigManager.INSTANCE.isShowOnStartUp();
-        if(showOnStartUp) {
-            prevState = FrameStates.SHOW;
+        this.currentNotes = notes;
+        this.type = type;
+        if(type.equals(NotesType.INFO)) {
+            boolean showOnStartUp = ConfigManager.INSTANCE.isShowOnStartUp();
+            if (showOnStartUp) {
+                prevState = FrameStates.SHOW;
+            } else {
+                this.setVisible(false);
+                prevState = FrameStates.HIDE;
+            }
         }else {
-            this.setVisible(false);
-            prevState = FrameStates.HIDE;
+            prevState = FrameStates.SHOW;
         }
     }
 
@@ -41,8 +48,6 @@ public class NotesFrame extends TitledComponentFrame {
         super.initialize();
         processEResize = false;
         processSEResize = false;
-
-        currentNotes = new NotesLoader().getNotes("test");
 
         JPanel rootPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         rootPanel.setBorder(BorderFactory.createEmptyBorder(6,6,6,6));
@@ -58,10 +63,15 @@ public class NotesFrame extends TitledComponentFrame {
         JPanel showOnStartPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         showOnStartPanel.add(showOnStartUp);
         showOnStartPanel.add(componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT,TextAlignment.LEFTOP,15f,"Show on StartUp"));
-        miscPanel.add(showOnStartPanel,BorderLayout.CENTER);
+        if(type.equals(NotesType.INFO)) {
+            miscPanel.add(showOnStartPanel, BorderLayout.CENTER);
+        }
         miscPanel.add(getNavBar(),BorderLayout.PAGE_END);
         rootPanel.add(miscPanel,BorderLayout.PAGE_END);
         this.add(rootPanel,BorderLayout.CENTER);
+        if(type.equals(NotesType.PATCH)) {
+            setFrameTitle("Patch notes");
+        }
         this.pack();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
@@ -103,8 +113,10 @@ public class NotesFrame extends TitledComponentFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 NotesFrame.this.setVisible(false);
-                ConfigManager.INSTANCE.saveProperty("showOnStartUp", showOnStartUp.isSelected());
-                FramesManager.INSTANCE.enableMovement();
+                if(type.equals(NotesType.INFO)) {
+                    ConfigManager.INSTANCE.saveProperty("showOnStartUp", showOnStartUp.isSelected());
+                    FramesManager.INSTANCE.enableMovement();
+                }
             }
         });
         close.setBackground(AppThemeColor.FRAME);
@@ -186,5 +198,9 @@ public class NotesFrame extends TitledComponentFrame {
             }
         }
 
+    }
+    public enum NotesType {
+        INFO,
+        PATCH
     }
 }

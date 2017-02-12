@@ -26,6 +26,9 @@ import java.awt.event.*;
 public class TaskBarFrame extends MovableComponentFrame{
     private final Logger logger = LogManager.getLogger(TaskBarFrame.class.getSimpleName());
     private final String LOCAL_UPDATER_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\local-updater.jar";
+
+    private boolean updateReady = false;
+
     private Timeline collapseAnim;
     private JPanel updatePanel;
 
@@ -97,14 +100,7 @@ public class TaskBarFrame extends MovableComponentFrame{
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                try {
-                    String path = StringUtils.substringAfter(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), "/");
-                    logger.debug("Execute local updater, source path: {}",path);
-                    Runtime.getRuntime().exec("java -jar " + LOCAL_UPDATER_PATH + " " + path);
-                    System.exit(0);
-                } catch (Exception e1) {
-                    logger.error("Error while execute local-updater: ", e1);
-                }
+                doUpdate();
             }
         });
         restartLabel.setBorder(BorderFactory.createCompoundBorder(
@@ -115,6 +111,16 @@ public class TaskBarFrame extends MovableComponentFrame{
         panel.add(label);
         panel.add(restartLabel);
         return panel;
+    }
+    private void doUpdate(){
+        try {
+            String path = StringUtils.substringAfter(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), "/");
+            logger.debug("Execute local updater, source path: {}",path);
+            Runtime.getRuntime().exec("java -jar " + LOCAL_UPDATER_PATH + " " + path);
+            System.exit(0);
+        } catch (Exception e1) {
+            logger.error("Error while execute local-updater: ", e1);
+        }
     }
 
     private JPanel getTaskBarPanel(){
@@ -208,7 +214,11 @@ public class TaskBarFrame extends MovableComponentFrame{
         exitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.exit(0);
+                if(updateReady){
+                    doUpdate();
+                }else {
+                    System.exit(0);
+                }
             }
         });
 
@@ -237,6 +247,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         });
         EventRouter.INSTANCE.registerHandler(UpdateReadyEvent.class,event -> {
             updatePanel.setVisible(true);
+            updateReady = true;
             pack();
         });
     }
