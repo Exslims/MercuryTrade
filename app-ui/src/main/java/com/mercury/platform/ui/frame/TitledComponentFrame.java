@@ -56,6 +56,7 @@ public abstract class TitledComponentFrame extends ComponentFrame {
         }
     }
     protected abstract String getFrameTitle();
+
     protected void setFrameTitle(String title) {
         frameTitleLabel.setText(title);
     }
