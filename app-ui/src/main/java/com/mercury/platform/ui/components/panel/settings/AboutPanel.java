@@ -85,7 +85,7 @@ public class AboutPanel extends JPanel implements HasUI {
         });
 
         JPanel feedbackPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        feedbackPanel.add(componentsFactory.getTextLabel("Feedback&Suggestions: ", FontStyle.REGULAR));
+        feedbackPanel.add(componentsFactory.getTextLabel("Feedback & Suggestions: ", FontStyle.REGULAR));
         feedbackPanel.add(redditButton);
         feedbackPanel.add(githubButton);
 

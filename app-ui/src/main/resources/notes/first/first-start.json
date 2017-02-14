@@ -1,67 +1,67 @@
 {"notes":[
   {
     "title" : "Overview",
-    "text" : "MercuryTrade is an overlay application for Path of Exile. It's designed to facilitate all possible trading interactions in the game providing a much better user experience for the players. This one minute overview will cover other features as well. \n\nAll future updates will be available for download from within the application!\n\nMercuryTrade is 100% legit: no macros, no injectors!",
+    "text" : "MercuryTrade is an overlay application for Path of Exile. It's designed to facilitate all possible trading interactions in the game providing a much better user experience for the players. This one minute overview will cover other features as well. \nAll the future updates will be available for download from within this application. \n\nMercuryTrade is 100% legit: no macros, no injectors!",
     "image" : "app/app-icon.png",
     "layout" : "VERTICAL"
   },
   {
-    "title" : "Notification (1/2)",
+    "title" : "Main feature: Notification (1/2)",
     "text" : "When you receive a trade related message this notification panel pops up. It has all the information you might need to make a decision. \n\nLet's take a look.",
     "image" : "notes/first/1.png",
     "layout" : "VERTICAL"
   },
   {
-    "title" : "Notification (2/2)",
+    "title" : "Main feature: Notification (2/2)",
     "text" : "",
     "image" : "notes/first/1_2.png",
     "layout" : "VERTICAL"
   },
   {
-    "title" : "Response buttons",
+    "title" : "Main feature: Response buttons",
     "text" : "Response buttons are fully customizable in settings. \nSelect an already existing button (or create a new one) -> label it -> write in your message.",
     "image" : "notes/first/5.png",
     "layout" : "VERTICAL"
   },
   {
-    "title" : "Accessibility status",
+    "title" : "Minor feature: Accessibility status",
     "text" : "MercuryTrade notifications have an indication for when a person comes in or leaves your hideout - that way you can trade with players as soon as possible (and keep track of them all!). Especially useful because in-game stash UI takes priority over party frames.",
     "image" : "notes/first/7.png",
     "layout" : "VERTICAL"
   },
   {
-    "title" : "History",
-    "text" : "Each notification you receive is stored by MercuryTrade in a separate file. \nYou won't be losing trade offers due to client crashes or relogs anymore!",
+    "title" : "Main feature: History",
+    "text" : "Each notification you receive is stored by MercuryTrade in a separate file. \n\nYou won't be losing potential trades due to client crashes or relogs anymore!",
     "image" : "notes/first/3.png",
     "layout" : "HORIZONTAL"
   },
   {
-    "title" : "Chat filter",
-    "text" : "todo",
+    "title" : "Minor feature: Chat Scanner",
+    "text" : "MercuryTrade features a real-time Chat Scanner. \nAll the messages with matching words will be displayed in a separate window - no need to strain your eyes looking for a Trial anymore!",
     "image" : "notes/first/8.png",
     "layout" : "HORIZONTAL"
   },
   {
-    "title" : "SuperTradeMode",
-    "text" : "By default (on the left) each consecutive notification you receive is folded to save screen space. SuperTradeMode is a switch that will force notification panels to be fully displayed. \nEasier to manage multiple trades at once if needed.",
+    "title" : "Minor feature: \"SuperTrade\" mode",
+    "text" : "By default (on the left) each consecutive notification you receive is folded to save screen space. SuperTrade mode is a switch that will force notification panels to be fully displayed. \nEasier to manage multiple trades at once if needed.",
     "image" : "notes/first/4.png",
     "layout" : "VERTICAL"
   },
   {
-    "title" : "Do not Disturb",
-    "text" : "Activate this mode if you don't want to receive notification pop-ups for a while. The messages still get stored in your history allowing you to access them later.",
+    "title" : "Minor feature: \"Do not Disturb\" mode",
+    "text" : "Activate this mode if you don't want to see (and hear!) anything from the application for a while. The messages will continue to be stored in your History for later access.",
     "image" : "",
     "layout" : "VERTICAL"
   },
   {
     "title" : "Settings",
-    "text" : "Tailor Automatic notification fading, Transparency levels and Sound alerts to your taste.",
+    "text" : "Tailor \"Automatic notification fading\", \"Transparency levels\" and \"Sound alerts\" to your taste.",
     "image" : "notes/first/6.png",
     "layout" : "VERTICAL"
   },
   {
-    "title" : "Feedback and suggestions",
-    "text" : "MercuryTrade(centered and bigger) \n\nThat's it! We expect you to enjoy the app as much as we do! \nMake sure to send us your feedback and suggestions. \n\nThanks!",
+    "title" : "Feedback and Suggestions",
+    "text" : "\t                   MercuryTrade \n\nThat's it! We expect you to enjoy the app as much as we do! \nMake sure to send us your feedback and suggestions if you have any - you won't be ignored! \n\n   > > Panels will be unlocked for you to reposition < <",
     "image" : "app/app-icon.png",
     "layout" : "VERTICAL"
   }
