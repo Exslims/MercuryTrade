@@ -7,7 +7,9 @@ Download MercuryTrader.jar:
 Feedback and suggestions: 
 
 ---
-  
+ <p align="center">
+  <img src="http://imgur.com/M6y0mmY"/>
+</p>
 **MercuryTrader** is an overlay application for Path of Exile written in Java. It's designed to facilitate all possible trading interactions in the game providing a much better user experience for the players. The program went through countless design interactions and made by active Path of Exile players who use this tool themselves on a regular basis.
 
 ---
