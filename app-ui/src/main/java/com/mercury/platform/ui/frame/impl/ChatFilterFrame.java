@@ -68,7 +68,7 @@ public class ChatFilterFrame extends MovableComponentFrame {
         textField.setBackground(AppThemeColor.SLIDE_BG);
 
         JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton edit = componentsFactory.getIconButton("app/edit.png", 18, AppThemeColor.TRANSPARENT, "Edit");
+        JButton edit = componentsFactory.getIconButton("app/edit.png", 18, AppThemeColor.TRANSPARENT, "");
         edit.setBorder(null);
         edit.addMouseListener(new MouseAdapter() {
             @Override

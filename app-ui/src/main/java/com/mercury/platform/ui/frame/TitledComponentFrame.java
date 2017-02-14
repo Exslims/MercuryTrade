@@ -43,7 +43,7 @@ public abstract class TitledComponentFrame extends ComponentFrame {
             headerPanel.add(frameTitleLabel, BorderLayout.CENTER);
 
             miscPanel.setBackground(AppThemeColor.TRANSPARENT);
-            JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_1, TooltipConstants.CLOSE_BUTTON);
+            JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_1, "");
             hideButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
@@ -56,6 +56,7 @@ public abstract class TitledComponentFrame extends ComponentFrame {
         }
     }
     protected abstract String getFrameTitle();
+
     protected void setFrameTitle(String title) {
         frameTitleLabel.setText(title);
     }
