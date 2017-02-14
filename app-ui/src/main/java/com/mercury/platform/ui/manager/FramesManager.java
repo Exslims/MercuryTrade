@@ -10,16 +10,15 @@ import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.frame.impl.*;
 import com.mercury.platform.ui.frame.location.SetUpLocationCommander;
 import com.mercury.platform.ui.frame.location.SetUpLocationFrame;
-import org.imgscalr.Scalr;
+import com.mercury.platform.ui.misc.note.Note;
+import com.mercury.platform.ui.misc.note.NotesLoader;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by Константин on 18.01.2017.
@@ -39,7 +38,6 @@ public class FramesManager {
     }
     public void start(){
         createTrayIcon();
-        ConfigManager.INSTANCE.load();
 
         OverlaidFrame chatFilter = new ChatFilterFrame();
         framesMap.put(ChatFilterFrame.class,chatFilter);
@@ -51,13 +49,19 @@ public class FramesManager {
         locationCommander.addFrame((MovableComponentFrame) incMessageFrame);
         locationCommander.addFrame((MovableComponentFrame) taskBarFrame);
         locationCommander.addFrame((MovableComponentFrame) chatFilter);
-
+        NotesLoader notesLoader = new NotesLoader();
+        List<Note> notesOnFirstStart = notesLoader.getNotesOnFirstStart();
+        if(notesOnFirstStart.size() != 0){
+            framesMap.put(NotesFrame.class,new NotesFrame(notesOnFirstStart, NotesFrame.NotesType.INFO));
+        }
+        List<Note> patchNotes = notesLoader.getPatchNotes();
+        if(ConfigManager.INSTANCE.isShowPatchNotes() && patchNotes.size() != 0){
+            NotesFrame patchNotesFrame = new NotesFrame(patchNotes,NotesFrame.NotesType.PATCH);
+            patchNotesFrame.init();
+        }
         framesMap.put(HistoryFrame.class,new HistoryFrame());
-//        framesMap.put(OutMessageFrame.class,new OutMessageFrame());
         framesMap.put(SettingsFrame.class,new SettingsFrame());
-//        framesMap.put(TimerFrame.class,new TimerFrame());
         framesMap.put(TestCasesFrame.class,new TestCasesFrame());
-        framesMap.put(NotesFrame.class,new NotesFrame());
         framesMap.put(TooltipFrame.class,new TooltipFrame());
         framesMap.put(NotificationFrame.class,new NotificationFrame());
         framesMap.put(SetUpLocationFrame.class,new SetUpLocationFrame());

@@ -22,27 +22,24 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
 
     private static final Logger LOGGER = LogManager.getLogger(ClientHandler.class.getSimpleName());
 
-    private volatile List<Byte> chunks;
+    private volatile byte[] chunks;
     private volatile int length;
 
     public ClientHandler() {
-        this.chunks = new ArrayList<>();
+        chunks = new byte[0];
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object object) throws Exception {
-//        LOGGER.debug("Server says \"{}\"", object);
-
-        if (object instanceof Integer)
+        if (object instanceof Integer) {
             this.length = (int) object;
+        }
 
         if (object instanceof byte[]) {
             byte[] bytes = (byte[]) object;
-            Byte[] received = ArrayUtils.toObject(bytes);
-            chunks.addAll(Arrays.asList(received));
-            if (chunks.size() == length) {
-                byte[] array = Bytes.toArray(chunks);
-                UpdateReceivedEvent event = new UpdateReceivedEvent(array);
+            chunks = Bytes.concat(chunks,bytes);
+            if (chunks.length == length) {
+                UpdateReceivedEvent event = new UpdateReceivedEvent(chunks);
                 UpdaterClientEventBus.getInstance().post(event);
             }
         }
@@ -60,12 +57,12 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void channelInactive(ChannelHandlerContext context) throws Exception {
-        LOGGER.info("Channel {} is inactive", context.channel().id());
+        LOGGER.info("Channel is inactive");
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext context, Throwable cause) throws Exception {
-        LOGGER.error(cause);
+        LOGGER.error(Arrays.toString(cause.getStackTrace()));
     }
 
 }

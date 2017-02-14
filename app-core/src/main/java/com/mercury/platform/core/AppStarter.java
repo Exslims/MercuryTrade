@@ -3,7 +3,9 @@ package com.mercury.platform.core;
 import com.mercury.platform.core.misc.SoundNotifier;
 import com.mercury.platform.core.update.UpdateClientStarter;
 import com.mercury.platform.core.utils.FileMonitor;
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.ChangeFrameVisibleEvent;
 import com.mercury.platform.shared.events.custom.UILoadedEvent;
@@ -28,6 +30,8 @@ public class AppStarter {
 
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(new UpdateClientStarter());
+        ConfigManager.INSTANCE.load();
+        HistoryManager.INSTANCE.load();
 
 
         /*

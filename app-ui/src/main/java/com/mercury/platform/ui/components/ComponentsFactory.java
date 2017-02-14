@@ -254,6 +254,9 @@ public class ComponentsFactory {
     public JLabel getTextLabel(String text){
         return getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT,TextAlignment.LEFTOP,15f,text);
     }
+    public JLabel getTextLabel(String text, FontStyle style){
+        return getTextLabel(style,AppThemeColor.TEXT_DEFAULT,TextAlignment.LEFTOP,15f,text);
+    }
 
     /**
      * Get label with icon

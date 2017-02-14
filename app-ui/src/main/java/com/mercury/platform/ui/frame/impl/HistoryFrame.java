@@ -1,6 +1,8 @@
 package com.mercury.platform.ui.frame.impl;
 
 import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.shared.HistoryManager;
+import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.MercuryEvent;
 import com.mercury.platform.shared.events.custom.NewWhispersEvent;
@@ -14,6 +16,7 @@ import com.mercury.platform.ui.components.panel.misc.MessagePanelStyle;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +42,6 @@ public class HistoryFrame extends TitledComponentFrame{
         mainContainer = new ScrollContainer();
         mainContainer.setBackground(AppThemeColor.TRANSPARENT);
         mainContainer.setLayout(new BoxLayout(mainContainer,BoxLayout.Y_AXIS));
-        addInteractionsButtons();
 
         JScrollPane scrollPane = new JScrollPane(mainContainer);
         scrollPane.setBorder(null);
@@ -62,7 +64,44 @@ public class HistoryFrame extends TitledComponentFrame{
 
         this.add(scrollPane,BorderLayout.CENTER);
         mainContainer.getParent().setBackground(AppThemeColor.TRANSPARENT);
+
+        String[] messages = HistoryManager.INSTANCE.fetchNext(10);
+        ArrayUtils.reverse(messages);
+        for (String message : messages) {
+            MessageParser parser = new MessageParser();
+            Message parsedMessage = parser.parse(message);
+            MessagePanel messagePanel;
+            try {
+                messagePanel = new MessagePanel(parsedMessage, this, MessagePanelStyle.HISTORY);
+            }catch (Exception e1){
+                continue;
+            }
+            messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
+            messagePanel.disableTime();
+            mainContainer.add(messagePanel);
+        }
         this.pack();
+        vBar.setValue(vBar.getMaximum());
+        vBar.addAdjustmentListener((AdjustmentEvent e) -> {
+            if (vBar.getValue() < 100) {
+                String[] nextMessages = HistoryManager.INSTANCE.fetchNext(5);
+                ArrayUtils.reverse(nextMessages);
+                for (String message : nextMessages) {
+                    MessageParser parser = new MessageParser();
+                    Message parsedMessage = parser.parse(message);
+                    MessagePanel messagePanel;
+                    try {
+                        messagePanel = new MessagePanel(parsedMessage, this, MessagePanelStyle.HISTORY);
+                    }catch (Exception e1){
+                        continue;
+                    }
+                    messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
+                    messagePanel.disableTime();
+                    mainContainer.add(messagePanel, 0);
+                    vBar.setValue(vBar.getValue() + 100);
+                }
+            }
+        });
     }
 
     @Override
@@ -70,24 +109,18 @@ public class HistoryFrame extends TitledComponentFrame{
         return "History";
     }
 
-    private void addInteractionsButtons(){
-        JButton clearButton = componentsFactory.getIconButton("app/clear-icon-white.png", 14,AppThemeColor.FRAME_1, TooltipConstants.HISTORY_CLEAR);
-        clearButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                mainContainer.removeAll();
-                HistoryFrame.this.pack();
-            }
-        });
-        miscPanel.add(clearButton,0);
-    }
-
     @Override
     public void initHandlers() {
         EventRouter.INSTANCE.registerHandler(NewWhispersEvent.class, (MercuryEvent event) -> {
             Message message = ((NewWhispersEvent) event).getMessage();
-            MessagePanel messagePanel = new MessagePanel(message,this,MessagePanelStyle.HISTORY);
-            messagePanel.setPreferredSize(new Dimension(this.getWidth()-10,messagePanel.getPreferredSize().height));
+            HistoryManager.INSTANCE.add(message);
+            MessagePanel messagePanel = null;
+            try {
+                messagePanel = new MessagePanel(message, this, MessagePanelStyle.HISTORY);
+                messagePanel.setPreferredSize(new Dimension(this.getWidth()-10,messagePanel.getPreferredSize().height));
+            }catch (Exception e1){
+                return;
+            }
             if(mainContainer.getComponentCount() > 0) {
                 messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
             }

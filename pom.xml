@@ -19,7 +19,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <project.version>1.0.2</project.version>
+        <project.version>1.0.0</project.version>
 
         <systemhook.version>2.5</systemhook.version>
         <jna.version>3.0.9</jna.version>
@@ -139,7 +139,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.mercury.platform.server.main.ServerMain</mainClass>
+                            <mainClass>com.mercury.platform.AppMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

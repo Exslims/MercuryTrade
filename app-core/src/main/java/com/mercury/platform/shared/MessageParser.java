@@ -6,10 +6,8 @@ import com.mercury.platform.shared.pojo.Message;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * need refactoring this shit
@@ -36,6 +34,7 @@ public class MessageParser {
         }
         parsedMessage.setWhisperNickname(wNickname);
         parsedMessage.setMessageDate(msgDate);
+        parsedMessage.setSourceString(fullMessage);
         return parsedMessage;
     }
     private ItemMessage getItemMessage(String message){
@@ -48,12 +47,11 @@ public class MessageParser {
         Double curCount = null;
         String currencyTitle = "";
         if(price != null) {
-            String[] split = price.split(" ");
-            curCount = Double.parseDouble(split[0]);
-            currencyTitle = split[1];
+            curCount = Double.parseDouble(StringUtils.substringBefore(price," "));
+            currencyTitle = StringUtils.substringAfter(price," ");
         }
 
-        String offer = StringUtils.substringAfterLast(message, "in Breach."); //todo
+        String offer = StringUtils.substringAfterLast(message, "in "); //todo
         String tabName = StringUtils.substringBetween(message, "(stash tab ", "; position:");
         if(tabName !=null ){
             offer = StringUtils.substringAfter(message, ")");
@@ -81,7 +79,7 @@ public class MessageParser {
             priceCount = Double.parseDouble(StringUtils.substringBefore(price," "));
             priceTitle = StringUtils.substringAfter(price," ");
         }
-        String offer = StringUtils.substringAfterLast(message, "in Breach."); //todo
+        String offer = StringUtils.substringAfter(message, ".");
         currencyMessage.setCurrForSaleCount(currForSaleCount);
         currencyMessage.setCurrForSaleTitle(currForSaleTitle);
         currencyMessage.setCurCount(priceCount);

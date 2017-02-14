@@ -5,6 +5,8 @@ import com.mercury.platform.core.MercuryConstants;
 import com.mercury.platform.core.update.bus.event.UpdateReceivedEvent;
 import com.mercury.platform.core.update.bus.handlers.UpdateEventHandler;
 import com.mercury.platform.core.update.core.UpdaterClient;
+import com.mercury.platform.core.update.core.holder.VersionHolder;
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.UpdateReadyEvent;
 import org.apache.logging.log4j.LogManager;
@@ -27,13 +29,26 @@ public class UpdateClientStarter implements Runnable{
         UpdaterClient updaterClient = new UpdaterClient(MercuryConstants.SERVER_HOST, MercuryConstants.APP_VERSION, MercuryConstants.PORT);
         updaterClient.registerListener(handler -> {
             LOGGER.info("update received, size = {} bytes" , handler.getBytes().length);
-            EventRouter.INSTANCE.fireEvent(new UpdateReadyEvent());
             Files.write(Paths.get(JARS_FILE_PATH + "\\MercuryTrade.jar") , handler.getBytes() , StandardOpenOption.CREATE);
+            setMercuryVersion(getIncrementedVersion(MercuryConstants.APP_VERSION));
+            ConfigManager.INSTANCE.saveProperty("showPatchNotes", true);
+            EventRouter.INSTANCE.fireEvent(new UpdateReadyEvent());
         });
         try {
             updaterClient.start();
         } catch (Exception e) {
             LOGGER.error(e);
         }
+    }
+    public synchronized void setMercuryVersion(String mercuryVersion) {
+        String version = mercuryVersion.replace(".", "0");
+        VersionHolder versionHolder = VersionHolder.getInstance();
+        versionHolder.setVersion(Integer.valueOf(version));
+    }
+    private String getIncrementedVersion(String version){
+        String replace = version.replace(".", "0");
+        Integer intVersion = Integer.valueOf(replace);
+        intVersion++;
+        return String.valueOf(intVersion).replace("0",".");
     }
 }

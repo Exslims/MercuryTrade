@@ -1,0 +1,95 @@
+package com.mercury.platform.shared;
+
+import com.mercury.platform.shared.pojo.Message;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * Created by Константин on 11.02.2017.
+ */
+public class HistoryManager {
+    private Logger logger = LogManager.getLogger(ConfigManager.class);
+
+    private static class HistoryManagerHolder {
+        static final HistoryManager HOLDER_INSTANCE = new HistoryManager();
+    }
+    public static HistoryManager INSTANCE = HistoryManager.HistoryManagerHolder.HOLDER_INSTANCE;
+
+    private final String HISTORY_FILE = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\history.json";
+
+    private String[] messages;
+    private int curIndex = 0;
+
+    public HistoryManager() {
+        messages = new String[0];
+    }
+
+    public void load(){
+        File configFile = new File(HISTORY_FILE);
+        if (configFile.exists()) {
+            JSONParser parser = new JSONParser();
+            try {
+                JSONObject root = (JSONObject)parser.parse(new FileReader(HISTORY_FILE));
+                JSONArray msgsArray = (JSONArray) root.get("messages");
+                messages = new String[msgsArray.size()];
+                for (int i = 0; i < msgsArray.size(); i++) {
+                    messages[i] = (String) msgsArray.get(i);
+                }
+            } catch (Exception e) {
+                logger.error("Error during loading history file: ", e);
+            }
+        }else {
+            try {
+                FileWriter fileWriter = new FileWriter(HISTORY_FILE);
+                JSONObject root = new JSONObject();
+                root.put("messages", new JSONArray());
+                fileWriter.write(root.toJSONString());
+                fileWriter.flush();
+                fileWriter.close();
+            } catch (IOException e) {
+                logger.error("Error during creating history file: ", e);
+            }
+        }
+    }
+    public void add(Message message){
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject root = (JSONObject)parser.parse(new FileReader(HISTORY_FILE));
+            JSONArray msgsArray = (JSONArray) root.get("messages");
+            msgsArray.add(0,message.getSourceString());
+            root.replace("messages",msgsArray);
+            FileWriter fileWriter = new FileWriter(HISTORY_FILE);
+            fileWriter.write(root.toJSONString());
+            fileWriter.flush();
+            fileWriter.close();
+
+        } catch (Exception e) {
+            logger.error("Error during adding message to history file: ", e);
+        }
+    }
+    public String[] fetchNext(int messagesCount){
+        String[] chunk = new String[0];
+        if((curIndex + messagesCount) < messages.length){
+            chunk = Arrays.copyOfRange(messages, curIndex, curIndex + messagesCount);
+            curIndex += messagesCount;
+        }else if((messages.length - curIndex) > 0){
+            int availableCount = messages.length - curIndex;
+            chunk = Arrays.copyOfRange(messages, curIndex, curIndex + availableCount);
+            curIndex += availableCount;
+        }
+        return chunk;
+    }
+}

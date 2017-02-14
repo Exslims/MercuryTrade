@@ -2,17 +2,14 @@ package com.mercury.platform.shared;
 
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import com.mercury.platform.shared.pojo.FrameSettings;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +37,7 @@ public class ConfigManager {
     private int minOpacity;
     private int maxOpacity;
 
+    private boolean showPatchNotes;
     private boolean showOnStartUp;
 
     /**
@@ -51,6 +49,11 @@ public class ConfigManager {
             try {
                 new File(CONFIG_FILE_PATH).mkdir();
                 new File(CONFIG_FILE_PATH + "\\temp").mkdir();
+
+                ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+                InputStream resourceAsStream = classLoader.getResourceAsStream("app/local-updater.jar");
+                File dest = new File(CONFIG_FILE_PATH + File.separator + "local-updater.jar");
+                FileUtils.copyInputStreamToFile(resourceAsStream,dest);
 
                 FileWriter fileWriter = new FileWriter(CONFIG_FILE);
                 fileWriter.write(new JSONObject().toJSONString());
@@ -65,12 +68,14 @@ public class ConfigManager {
                 minOpacity = 100;
                 maxOpacity = 100;
                 showOnStartUp = true;
+                showPatchNotes = false;
                 saveProperty("decayTime",decayTime);
                 saveProperty("minOpacity",minOpacity);
                 saveProperty("maxOpacity",maxOpacity);
                 saveProperty("showOnStartUp",showOnStartUp);
+                saveProperty("showPatchNotes",showPatchNotes);
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 logger.error(e);
             }
         } else {
@@ -104,6 +109,7 @@ public class ConfigManager {
             minOpacity = ((Long)root.get("minOpacity")).intValue();
             maxOpacity = ((Long)root.get("maxOpacity")).intValue();
             showOnStartUp = (boolean) root.get("showOnStartUp");
+            showPatchNotes = (boolean) root.get("showPatchNotes");
         } catch (Exception e) {
             logger.error("Error in loadConfigFile: ",e);
         }
@@ -214,6 +220,9 @@ public class ConfigManager {
 
     public boolean isShowOnStartUp() {
         return showOnStartUp;
+    }
+    public boolean isShowPatchNotes() {
+        return showPatchNotes;
     }
 
     private Map<String, String > getDefaultButtons(){

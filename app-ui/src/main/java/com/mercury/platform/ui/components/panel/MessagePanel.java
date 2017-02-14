@@ -51,7 +51,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     private JPanel messagePanel;
     private JPanel customButtonsPanel;
 
-    public MessagePanel(Message message, ComponentFrame owner, MessagePanelStyle style) {
+    public MessagePanel(Message message, ComponentFrame owner, MessagePanelStyle style) throws Exception {
         super(new BorderLayout());
 
         this.message = message;
@@ -92,7 +92,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 this.whisperPanel = getWhisperPanel();
                 this.add(whisperPanel,BorderLayout.PAGE_START);
                 messagePanel.setVisible(true);
-                customButtonsPanel.setVisible(true);
+                customButtonsPanel.setVisible(false);
                 break;
             }
             case SPMODE:{
@@ -105,7 +105,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         }
     }
 
-    private JPanel getFormattedMessagePanel(){
+    private JPanel getFormattedMessagePanel() throws Exception{
         JPanel labelsPanel = new JPanel();
         labelsPanel.setLayout(new BoxLayout(labelsPanel,BoxLayout.Y_AXIS));
         labelsPanel.setBackground(AppThemeColor.TRANSPARENT);
@@ -119,7 +119,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         }else if(message instanceof CurrencyMessage){
             CurrencyMessage message = (CurrencyMessage) this.message;
             JPanel curCountPanel = new JPanel();
-            curCountPanel.setPreferredSize(new Dimension(40,26));
+            curCountPanel.setPreferredSize(new Dimension(40,34));
             curCountPanel.setBackground(AppThemeColor.TRANSPARENT);
 
             String curCount = message.getCurrForSaleCount() % 1 == 0 ? String.valueOf(message.getCurrForSaleCount().intValue()) : String.valueOf(message.getCurrForSaleCount());
@@ -160,7 +160,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         tradePanel.add(forPanel,BorderLayout.LINE_END);
         labelsPanel.add(tradePanel);
         String offer = message.getOffer();
-        if(offer != null && offer.length() > 2) {
+        if(offer != null && offer.trim().length() > 0) {
             JLabel offerLabel = componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 16f, offer);
             offerLabel.setAlignmentY(Component.TOP_ALIGNMENT);
             labelsPanel.add(offerLabel);
@@ -275,6 +275,12 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         }
         panel.add(timeLabel);
         return panel;
+    }
+    public void disableTime(){
+        if(timeAgo != null) {
+            timeAgo.stop();
+            timeLabel.setText("");
+        }
     }
     private JButton getExpandButton(){
         String iconPath = (style == MessagePanelStyle.SMALL) ? "app/expand-mp.png":"app/collapse-mp.png";

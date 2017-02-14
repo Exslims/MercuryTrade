@@ -1,8 +1,8 @@
 package com.mercury.platform.ui.frame.impl.test;
 
+import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
-import com.mercury.platform.shared.pojo.CurrencyMessage;
 import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
@@ -20,30 +20,113 @@ import java.util.List;
  * Created by Константин on 26.12.2016.
  */
 public class TestCasesFrame extends TitledComponentFrame {
-    private List<String> randomMessages;
+    private List<String> items;
+    private List<String> currency;
     private List<String> nickNames;
+    private List<String> offer;
+    private String poeTradeTemplate = "2017/02/11 18:40:32 9029890 951 [INFO Client 8980] @From %s: Hi, I would like to buy your %s listed for %d %s in Breach (stash tab \"Unique/trade\"; position: left 5, top 1) %s";
+    private String currencyTemplate = "2017/02/11 18:56:15 9973390 951 [INFO Client 8980] @From %s: Hi, I'd like to buy your %d %s for my %d %s in Breach. %s";
 
     public TestCasesFrame() {
         super("MT-TestCases");
-        randomMessages = new ArrayList<>();
+        items = new ArrayList<>();
+        currency = new ArrayList<>();
         nickNames = new ArrayList<>();
-        randomMessages.add("2016/12/26 05:20:19 Hi, I would like to buy your Corpse Ring listed for 90 chaos in Breach (stash tab \"Gear\"; position: left 11, top 2) offer");
-        randomMessages.add("2016/12/26 05:20:19 Hi, I would like to buy your Corpse Ring Corpse Ring Corpse Ring listed for 1 chaos in Breach (stash tab \"Gear\"; position: left 11, top 2) offerofferofferofferoffer");
-        randomMessages.add("2016/12/26 05:20:19 Hi, I would like to buy your Corpse Ring Corpse Ring listed for 150 fusing in Breach (stash tab \"Gear\"; position: left 11, top 2) offerqqqweeeee");
-        randomMessages.add("2016/12/26 05:20:19 Hi, I would like to buy your Corpse Ring Corpse Ring listed for 10 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2)");
-        randomMessages.add("2016/12/26 05:20:19 Hi, I would like to buy your Corpse Ring Corpse Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) offffffe");
-        randomMessages.add("2016/12/26 05:20:19 Hi, I would like to buy your Corpse Ring listed for 1 chaos in Breach (stash tab \"Gear\"; position: left 11, top 2)");
-        randomMessages.add("2016/12/26 05:20:19 Hi, I would like to buy your Corpse Ring listed for 45 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) блабалблабалабала");
+        offer = new ArrayList<>();
+
+        items.add("Wondertrap Velvet Slippers");
+        items.add("Rain of Arrows");
+        items.add("Dreadarc Cleaver");
+        items.add("Three-step Assault Shagreen Boots");
+        items.add("Thunderous Skies");
+        items.add("Honourhome Soldier Helmet");
+        items.add("Pain Breaker Blood Sceptre");
+        items.add("Freeze Mine");
+        items.add("The Lunaris Priestess");
+
+        currency.add("alteration");
+        currency.add("alchemy");
+        currency.add("apprentice  sextant");
+        currency.add("divine");
+        currency.add("exalted");
+        currency.add("blessed");
+        currency.add("esh's breachstone");
+        currency.add("eber's");
+        currency.add("regal");
+        currency.add("armourer's");
+        currency.add("augmentation");
+        currency.add("bauble");
+        currency.add("blessing of chayula");
+        currency.add("blessing of esh");
+        currency.add("blessing of tul");
+        currency.add("blessing of uul-netol");
+        currency.add("blessing of xoph");
+        currency.add("chance");
+        currency.add("chaos");
+        currency.add("chayula's breachstone");
+        currency.add("chimera");
+        currency.add("chisel");
+        currency.add("chrome");
+        currency.add("coin");
+        currency.add("dawn");
+        currency.add("dusk");
+        currency.add("eternal");
+        currency.add("fusing");
+        currency.add("gcp");
+        currency.add("grief");
+        currency.add("hope");
+        currency.add("hydra");
+        currency.add("ignorance");
+        currency.add("inya's");
+        currency.add("jeweller's");
+        currency.add("journeyman sextant");
+        currency.add("master sextant");
+        currency.add("midnight");
+        currency.add("minotaur");
+        currency.add("mirror");
+        currency.add("mortal set");
+        currency.add("noon");
+        currency.add("offering");
+        currency.add("pale court");
+        currency.add("phoenix");
+        currency.add("portal");
+        currency.add("rage");
+        currency.add("regret");
+        currency.add("sacrifice set");
+        currency.add("scouring");
+        currency.add("shaper set");
+        currency.add("silver");
+        currency.add("splinter of chayula");
+        currency.add("splinter of esh");
+        currency.add("splinter of tul");
+        currency.add("splinter of uul-netol");
+        currency.add("splinter of xoph");
+        currency.add("transmutation");
+        currency.add("tul's breachstone");
+        currency.add("uul-netol's breachstone");
+        currency.add("vaal");
+        currency.add("volkuur's");
+        currency.add("wisdom");
+        currency.add("xoph's breachstone");
+        currency.add("yriel's");
 
         nickNames.add("Kanarid");
         nickNames.add("Vin");
-        nickNames.add("Rrra");
-        nickNames.add("Pabeesari");
+        nickNames.add("<(ROA)> Rrra_LOL");
+        nickNames.add("<(ROA)> Pabeesari");
         nickNames.add("Joll");
-        nickNames.add("Jashicore");
-        nickNames.add("Xach");
+        nickNames.add("Jashicore_QWEEEE");
+        nickNames.add("<(ROA)> Xach");
         nickNames.add("Yaitaly");
-        nickNames.add("xXxДолбоебxXx");
+        nickNames.add("<(ROA)> xXxДолбоебxXx");
+
+        offer.add("#############");
+        offer.add(" ");
+        offer.add("");
+        offer.add("  ");
+        offer.add("##########################");
+        offer.add("#######################################");
+        offer.add("######");
     }
 
     @Override
@@ -59,6 +142,8 @@ public class TestCasesFrame extends TitledComponentFrame {
     }
 
     private JPanel getTestCasesPanel(){
+        MessageParser parser = new MessageParser();
+        Random random = new Random();
         JPanel testPanel = new JPanel(new GridBagLayout());
 
         GridBagConstraints buttonColumn = new GridBagConstraints();
@@ -80,14 +165,19 @@ public class TestCasesFrame extends TitledComponentFrame {
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                ItemMessage message = new ItemMessage(nickNames.get(new Random().nextInt(9)),null,"TEST", 3d,"exalted","tab","");
-//                messages.add(new Message("2017/01/11 13:41:25 1457739437 951 [INFO Client 6836] @From <(ROA)> " + nickNames.get(new Random().nextInt(9)) + ": " + randomMessages.get(new Random().nextInt(7))));
+                Message message = parser.parse(String.format(poeTradeTemplate,
+                        nickNames.get(random.nextInt(nickNames.size())),
+                        items.get(random.nextInt(items.size())),
+                        random.nextInt(200),
+                        currency.get(random.nextInt(currency.size())),
+                        offer.get(random.nextInt(offer.size()))
+                ));
                 EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(message));
             }
         });
         testPanel.add(button,buttonColumn);
         buttonColumn.gridy++;
-        JLabel textLabel = componentsFactory.getTextLabel("Random message");
+        JLabel textLabel = componentsFactory.getTextLabel("Random item message");
         testPanel.add(textLabel,titleColumn);
         titleColumn.gridy++;
 
@@ -95,49 +185,23 @@ public class TestCasesFrame extends TitledComponentFrame {
         button6.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                CurrencyMessage message = new CurrencyMessage(nickNames.get(new Random().nextInt(9)),
-                        "qweqweqwwerwerwerwerwerweredsfsdfsdfsdfsdfsdfsd", null,
-                        3d, "exalted", 540d, "chaos");
+                Message message = parser.parse(String.format(currencyTemplate,
+                        nickNames.get(random.nextInt(nickNames.size())),
+                        random.nextInt(200),
+                        currency.get(random.nextInt(currency.size())),
+                        random.nextInt(200),
+                        currency.get(random.nextInt(currency.size())),
+                        offer.get(random.nextInt(offer.size()))
+                ));
                 EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(message));
             }
         });
         testPanel.add(button6,buttonColumn);
         buttonColumn.gridy++;
-        JLabel textLabel16 = componentsFactory.getTextLabel("Test message from currency.poe.trade");
+        JLabel textLabel16 = componentsFactory.getTextLabel("Random currency message");
         testPanel.add(textLabel16,titleColumn);
         titleColumn.gridy++;
 
-        JButton button8 = componentsFactory.getBorderedButton("Click");
-        button8.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                CurrencyMessage message = new CurrencyMessage(nickNames.get(new Random().nextInt(9)),
-                        "qweqweqwwerwerwerwerwerweredsfsdfsdfsdfsdfsdfsd", null,
-                        10d, "exalted", 540d, "chaos");
-                EventRouter.INSTANCE.fireEvent(new OutTradeMessageEvent(message));
-            }
-        });
-        testPanel.add(button8,buttonColumn);
-        buttonColumn.gridy++;
-        JLabel textLabel18 = componentsFactory.getTextLabel("Test outgoing trade message");
-        testPanel.add(textLabel18,titleColumn);
-        titleColumn.gridy++;
-
-        JButton button5 = componentsFactory.getBorderedButton("Click");
-        button5.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new WhisperNotificationEvent());
-
-//                messages.add(new Message("ДолбоебСРусскимНиком","2016/12/26 05:20:19 Hi, I would like to buy your Corpse Whorl Diamond Ring Ring Ring Ring listed for 1 exalted in Breach (stash tab \"Gear\"; position: left 11, top 2) блабалблабалабала"));
-//                EventRouter.fireEvent(new NewWhispersEvent(messages));
-            }
-        });
-        testPanel.add(button5,buttonColumn);
-        buttonColumn.gridy++;
-        JLabel textLabel15 = componentsFactory.getTextLabel("Test font for non-eng letters");
-        testPanel.add(textLabel15,titleColumn);
-        titleColumn.gridy++;
 
 
         JButton button7 = componentsFactory.getBorderedButton("Click");
@@ -145,7 +209,7 @@ public class TestCasesFrame extends TitledComponentFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 EventRouter.INSTANCE.fireEvent(new WhisperNotificationEvent());
-                ItemMessage message = new ItemMessage("Exslimsbf",null,"Demon Shelter Golden Mask", 3d,"exalted","tab","");
+                ItemMessage message = new ItemMessage("2017/02/11 02:15:33 23999937 951 [INFO Client 6548] @From <(ROA)> Exslimsbf: Hi, I would like to buy your level 9 0% Cleave listed for 1 alteration in Breach (stash tab \"S\"; position: left 2, top 9)","Exslimsbf",null,"Demon Shelter Golden Mask", 3d,"exalted","tab","");
                 EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(message));
 
                 Timer joinedTimer = new Timer(1000,null);

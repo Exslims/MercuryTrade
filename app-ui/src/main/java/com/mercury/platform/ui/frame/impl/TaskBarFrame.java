@@ -1,6 +1,5 @@
 package com.mercury.platform.ui.frame.impl;
 
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -10,6 +9,9 @@ import com.mercury.platform.ui.frame.impl.util.TradeMode;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.ease.Spline;
 
@@ -22,6 +24,11 @@ import java.awt.event.*;
  * 07.12.2016
  */
 public class TaskBarFrame extends MovableComponentFrame{
+    private final Logger logger = LogManager.getLogger(TaskBarFrame.class.getSimpleName());
+    private final String LOCAL_UPDATER_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\local-updater.jar";
+
+    private boolean updateReady = false;
+
     private Timeline collapseAnim;
     private JPanel updatePanel;
 
@@ -90,6 +97,11 @@ public class TaskBarFrame extends MovableComponentFrame{
             public void mouseExited(MouseEvent e) {
                 setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                doUpdate();
+            }
         });
         restartLabel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TEXT_IMPORTANT),
@@ -99,6 +111,16 @@ public class TaskBarFrame extends MovableComponentFrame{
         panel.add(label);
         panel.add(restartLabel);
         return panel;
+    }
+    private void doUpdate(){
+        try {
+            String path = StringUtils.substringAfter(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), "/");
+            logger.debug("Execute local updater, source path: {}",path);
+            Runtime.getRuntime().exec("java -jar " + LOCAL_UPDATER_PATH + " " + path);
+            System.exit(0);
+        } catch (Exception e1) {
+            logger.error("Error while execute local-updater: ", e1);
+        }
     }
 
     private JPanel getTaskBarPanel(){
@@ -192,7 +214,11 @@ public class TaskBarFrame extends MovableComponentFrame{
         exitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.exit(0);
+                if(updateReady){
+                    doUpdate();
+                }else {
+                    System.exit(0);
+                }
             }
         });
 
@@ -221,6 +247,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         });
         EventRouter.INSTANCE.registerHandler(UpdateReadyEvent.class,event -> {
             updatePanel.setVisible(true);
+            updateReady = true;
             pack();
         });
     }
