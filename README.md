@@ -31,7 +31,12 @@ When you receive a trade related message this notification panel pops up. It has
 </p>
 Each notification you receive is stored in a separate file by MercuryTrader. History allows you to access that file in a useful way to interact with the customers. Comes in handy if you've been afking for a while or you want to reach a person you traded with some time ago or in case your client has crashed - in-game chat will be cleared, your history will not.
 
+&nbsp; *Chat filter*
 
+ <p align="center">
+  <img src="http://i.imgur.com/sqmrD9a.png"/>
+</p>
+ TODO
 &nbsp; *SuperTrade mode*
 
  <p align="center">
