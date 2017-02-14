@@ -210,7 +210,7 @@ public class TaskBarFrame extends MovableComponentFrame{
             }
         });
 
-        JButton exitButton = componentsFactory.getIconButton("app/exit.png", 24,AppThemeColor.FRAME_1,TooltipConstants.EXIT);
+        JButton exitButton = componentsFactory.getIconButton("app/exit.png", 24,AppThemeColor.FRAME_1,"");
         exitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

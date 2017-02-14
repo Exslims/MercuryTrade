@@ -64,6 +64,7 @@ public class FramesManager {
         framesMap.put(TestCasesFrame.class,new TestCasesFrame());
         framesMap.put(TooltipFrame.class,new TooltipFrame());
         framesMap.put(NotificationFrame.class,new NotificationFrame());
+        framesMap.put(DonationAlertFrame.class,new DonationAlertFrame());
         framesMap.put(SetUpLocationFrame.class,new SetUpLocationFrame());
 
         framesMap.forEach((k,v)->{

@@ -41,7 +41,6 @@ public class UpdaterClient {
                 bootstrap.group(group).channel(NioSocketChannel.class)
                         .remoteAddress(new InetSocketAddress(host, port))
                         .handler(new ClientChannelInitializer());
-                LOGGER.info("Updater client was started");
                 ChannelFuture channelFuture = bootstrap.connect().sync();
                 channelFuture.channel().closeFuture().sync();
             } catch (Exception e) {
