@@ -18,20 +18,31 @@ Feedback and suggestions:
 
 &nbsp; *Notification*
 
+ <p align="center">
+  <img src="http://i.imgur.com/hYSC6NP.png"/>
+</p>
 When you receive a trade related message this notification panel pops up. It has all the information you might need to make a decision. It offers a set of fully customizable "quick response buttons" (such as "Sold" / "No" / "Wait 3m" etc, customizable) as well as buttons to invite, kick and tradewith the person who made an offer. If you've received multiple notifications before dismissing your current one, they will stack up like a deck of cards underneath each other and won't clutter the screen. Notification panels can be set up to fade out after X seconds (customizable).
 
 
 &nbsp; *History*
 
+ <p align="center">
+  <img src="http://i.imgur.com/oXh2Prp.png"/>
+</p>
 Each notification you receive is stored in a separate file by MercuryTrader. History allows you to access that file in a useful way to interact with the customers. Comes in handy if you've been afking for a while or you want to reach a person you traded with some time ago or in case your client has crashed - in-game chat will be cleared, your history will not.
 
 
 &nbsp; *SuperTrade mode*
 
+ <p align="center">
+  <img src="http://i.imgur.com/fvGWxkh.png"/>
+</p>
 Forces notification panels to NOT stack like cards - all notification you receive will be displayed unfolded. This is useful if you need to manage a lot of trades with multiple people at once, i.e. exchanging currency or other commodities, because people come and go in no specific order. This will clutter the screen with notifications, but all of them will be right in front of your eyes.
 
 &nbsp; *Accessibility status*
-
+ <p align="center">
+  <img src="http://i.imgur.com/dTUrF7v.png"/>
+</p>
 MercuryTrade's notifications have an indication for when a person comes in or leaves your hideout - that way you can trade players him as soon as possible. Especially useful for SuperTradeMode.
 
 An important mention: in Path of Exile when you use your stash you can't click on party frames, because they're hidden behind the stash window. MercuryTrader solves this inconvenience as you can interact with the person via a related notification panel.
