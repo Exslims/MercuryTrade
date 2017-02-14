@@ -39,7 +39,7 @@ public class MessageParser {
     }
     private ItemMessage getItemMessage(String message){
         ItemMessage itemMessage = new ItemMessage();
-        String itemName = StringUtils.substringBetween(message, "to buy your ", " listed for");
+        String itemName = StringUtils.substringBetween(message, "to buy your ", " listed for"); //todo without buyout
         String price = StringUtils.substringBetween(message, "listed for ", " in ");
         if(price == null){
             price = StringUtils.substringBetween(message, "for my ", " in ");

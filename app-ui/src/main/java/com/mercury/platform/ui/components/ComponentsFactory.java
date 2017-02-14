@@ -143,18 +143,24 @@ public class ComponentsFactory {
                 button.setBackground(button.getBackground());
             }
         });
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new ShowTooltipEvent(tooltip, MouseInfo.getPointerInfo().getLocation()));
-            }
+        if(tooltip.length() > 0) {
+            button.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    EventRouter.INSTANCE.fireEvent(new ShowTooltipEvent(tooltip, MouseInfo.getPointerInfo().getLocation()));
+                }
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
-            }
-        });
-//        button.setContentAreaFilled(false);
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+                }
+            });
+        }
         button.setBorder(BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,4));
         button.setVerticalAlignment(SwingConstants.CENTER);
         BufferedImage icon = null;
