@@ -7,7 +7,7 @@
   },
   {
     "title" : "Main feature: Notification (1/2)",
-    "text" : "When you receive a trade related message this notification panel pops up. It has all the information you might need to make a decision. \n\nLet's take a look.",
+    "text" : "When you receive a trade related message this notification panel pops up. It contains all the information you might need to make a decision. \n\nLet's take a look.",
     "image" : "notes/first/1.png",
     "layout" : "VERTICAL"
   },
@@ -25,7 +25,7 @@
   },
   {
     "title" : "Minor feature: Accessibility status",
-    "text" : "MercuryTrade notifications have an indication for when a person comes in or leaves your hideout - that way you can trade with players as soon as possible (and keep track of them all!). Especially useful because in-game stash UI takes priority over party frames.",
+    "text" : "MercuryTrade notifications have an indication for when a person comes in or leaves your hideout - that way you can offer a trade as soon as possible and keep track of all the people without even closing your stash. Especially useful for SuperTrade mode",
     "image" : "notes/first/7.png",
     "layout" : "VERTICAL"
   },
@@ -37,7 +37,7 @@
   },
   {
     "title" : "Minor feature: Chat Scanner",
-    "text" : "MercuryTrade features a real-time Chat Scanner. \nAll the messages with matching words will be displayed in a separate window - no need to strain your eyes looking for a Trial anymore!",
+    "text" : "MercuryTrade features a real-time Chat Scanner. \nAll chat messages with matching words will be displayed in a separate window - no need to strain your eyes looking for a Trial anymore!",
     "image" : "notes/first/8.png",
     "layout" : "HORIZONTAL"
   },
@@ -49,7 +49,7 @@
   },
   {
     "title" : "Minor feature: \"Do not Disturb\" mode",
-    "text" : "\n\nActivate this mode if you don't want to see (and hear!) anything from the application for a while. The messages will continue to be stored in your History for later access.",
+    "text" : "\n\nActivate this mode if you don't want to see (and hear!) anything from the application for a while. MercuryTrade will continue working in hidden mode.",
     "image" : "notes/first/9.png",
     "layout" : "VERTICAL"
   },

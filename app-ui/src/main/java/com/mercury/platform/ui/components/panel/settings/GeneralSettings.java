@@ -36,9 +36,9 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         secondsPicker.setSelectedIndex(decayTime);
 
         JPanel hideSettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        hideSettingsPanel.add(componentsFactory.getTextLabel("Decay time:"));
+        hideSettingsPanel.add(componentsFactory.getTextLabel("Notification fade time:"));
         hideSettingsPanel.add(secondsPicker);
-        hideSettingsPanel.add(componentsFactory.getTextLabel("sec. 0 - always show"));
+        hideSettingsPanel.add(componentsFactory.getTextLabel("seconds. (0 - Always show)"));
 
         JPanel minOpacitySettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         minOpacitySettingsPanel.add(componentsFactory.getTextLabel("Min opacity: "));
@@ -81,8 +81,8 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         maxOpacitySettingsPanel.add(maxSlider);
 
         JPanel notifierPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        notifierPanel.add(componentsFactory.getTextLabel("Trade messages notifier: "));
-        notifierStatusPicker = componentsFactory.getComboBox(new String[]{"Always", "While on al-tab","Never"});
+        notifierPanel.add(componentsFactory.getTextLabel("Notification sound alerts: "));
+        notifierStatusPicker = componentsFactory.getComboBox(new String[]{"Always play a sound", "Only when tabbed out","Never"});
         WhisperNotifierStatus whisperNotifier = ConfigManager.INSTANCE.getWhisperNotifier();
         notifierStatusPicker.setSelectedIndex(whisperNotifier.getCode());
 
