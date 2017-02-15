@@ -49,8 +49,8 @@
   },
   {
     "title" : "Minor feature: \"Do not Disturb\" mode",
-    "text" : "Activate this mode if you don't want to see (and hear!) anything from the application for a while. The messages will continue to be stored in your History for later access.",
-    "image" : "",
+    "text" : "\n\nActivate this mode if you don't want to see (and hear!) anything from the application for a while. The messages will continue to be stored in your History for later access.",
+    "image" : "notes/first/9.png",
     "layout" : "VERTICAL"
   },
   {
@@ -61,8 +61,8 @@
   },
   {
     "title" : "Feedback and Suggestions",
-    "text" : "\t                   MercuryTrade \n\nThat's it! We expect you to enjoy the app as much as we do! \nMake sure to send us your feedback and suggestions if you have any - you won't be ignored! \n\n   > > Panels will be unlocked for you to reposition < <",
-    "image" : "app/app-icon.png",
+    "text" : "\t                   MercuryTrade \n\nThat's it! We expect you to enjoy the app as much as we do! \nMake sure to send us your feedback and suggestions if you have any - you won't be ignored! \n\n              > > Panels will be unlocked for you to reposition < <",
+    "image" : "app/app-icon-medium.png",
     "layout" : "VERTICAL"
   }
 ]}

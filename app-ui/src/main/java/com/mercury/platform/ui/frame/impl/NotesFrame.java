@@ -24,6 +24,7 @@ public class NotesFrame extends TitledComponentFrame {
     private List<Note> currentNotes;
     private ContentPanel contentPanel;
     private NotesType type;
+    private boolean lastNote = false;
 
     private JCheckBox showOnStartUp;
     public NotesFrame(List<Note> notes, NotesType type) {
@@ -80,6 +81,24 @@ public class NotesFrame extends TitledComponentFrame {
     private JPanel getNavBar(){
         JPanel navBar = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.RIGHT));
         Dimension dimension = new Dimension(80, 26);
+        JButton close = componentsFactory.getButton(
+                FontStyle.BOLD,
+                AppThemeColor.FRAME,
+                BorderFactory.createLineBorder(AppThemeColor.BORDER),
+                "Close",
+                14f);
+        JButton next = componentsFactory.getBorderedButton("Next");
+        next.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                contentPanel.next();
+                if(!contentPanel.hasNext()){
+                    lastNote = true;
+                    navBar.add(close);
+                }
+                NotesFrame.this.pack();
+            }
+        });
         JButton previous = componentsFactory.getButton(
                 FontStyle.BOLD,
                 AppThemeColor.FRAME,
@@ -93,23 +112,15 @@ public class NotesFrame extends TitledComponentFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 contentPanel.prev();
+                if(lastNote){
+                    navBar.remove(close);
+                    lastNote = false;
+                }
+                NotesFrame.this.pack();
                 NotesFrame.this.repaint();
             }
         });
-        JButton next = componentsFactory.getBorderedButton("Next");
-        next.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                contentPanel.next();
-                NotesFrame.this.repaint();
-            }
-        });
-        JButton close = componentsFactory.getButton(
-                FontStyle.BOLD,
-                AppThemeColor.FRAME,
-                BorderFactory.createLineBorder(AppThemeColor.BORDER),
-                "Close",
-                14f);
+
         close.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -128,7 +139,6 @@ public class NotesFrame extends TitledComponentFrame {
 
         navBar.add(previous);
         navBar.add(next);
-        navBar.add(close);
         return navBar;
     }
     @Override
@@ -191,6 +201,9 @@ public class NotesFrame extends TitledComponentFrame {
                 noteIndex++;
                 renderCurrentNote();
             }
+        }
+        boolean hasNext(){
+            return noteIndex < currentNotes.size()-1;
         }
         void prev(){
             if(noteIndex > 0){
