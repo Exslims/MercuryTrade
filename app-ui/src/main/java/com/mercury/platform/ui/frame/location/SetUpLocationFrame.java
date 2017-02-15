@@ -44,27 +44,6 @@ public class SetUpLocationFrame extends ComponentFrame {
         });
         lock.setPreferredSize(new Dimension(100, 26));
 
-        /*
-        JButton test = componentsFactory.getButton(
-                FontStyle.BOLD,
-                AppThemeColor.FRAME,
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(AppThemeColor.BORDER),
-                        BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 3)
-                ),
-                "Test",
-                14f);
-        test.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-            }
-        });
-        test.setPreferredSize(new Dimension(80, 26));
-
-        miscPanel.add(test);
-
-        */
-
         miscPanel.add(lock);
         rootPanel.add(root,BorderLayout.CENTER);
         this.add(rootPanel,BorderLayout.CENTER);

@@ -12,7 +12,8 @@ import java.awt.event.MouseEvent;
  * Created by Константин on 18.01.2017.
  */
 public abstract class TitledComponentFrame extends ComponentFrame {
-    protected JPanel miscPanel;
+    private JPanel miscPanel;
+    private JButton hideButton;
     private JLabel frameTitleLabel;
     protected TitledComponentFrame(String title) {
         super(title);
@@ -29,7 +30,6 @@ public abstract class TitledComponentFrame extends ComponentFrame {
         if(layout instanceof BorderLayout) {
             JPanel headerPanel = new JPanel(new BorderLayout());
             headerPanel.setBackground(AppThemeColor.HEADER);
-            headerPanel.setBorder(BorderFactory.createEmptyBorder(-2, 0, -2, 0));
 
             JLabel appIcon = componentsFactory.getIconLabel("app/app-icon.png", 16);
             frameTitleLabel = componentsFactory.getTextLabel(getFrameTitle());
@@ -43,7 +43,7 @@ public abstract class TitledComponentFrame extends ComponentFrame {
             headerPanel.add(frameTitleLabel, BorderLayout.CENTER);
 
             miscPanel.setBackground(AppThemeColor.TRANSPARENT);
-            JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_1, "");
+            hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_1, "");
             hideButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
@@ -59,6 +59,9 @@ public abstract class TitledComponentFrame extends ComponentFrame {
 
     protected void setFrameTitle(String title) {
         frameTitleLabel.setText(title);
+    }
+    protected void removeHideButton() {
+        this.miscPanel.remove(hideButton);
     }
 
     @Override

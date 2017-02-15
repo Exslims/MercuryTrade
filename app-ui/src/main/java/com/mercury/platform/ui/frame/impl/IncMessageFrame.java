@@ -139,10 +139,10 @@ public class IncMessageFrame extends MovableComponentFrame{
                 prevState = FrameStates.SHOW;
             }
             if(flowDirections.equals(FlowDirections.UPWARDS)){
+                messagePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, AppThemeColor.BORDER));
                 if(mainContainer.getComponentCount() > 0) {
                     this.setLocation(new Point(this.getLocation().x, this.getLocation().y - messagePanel.getPreferredSize().height));
                 }
-                messagePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, AppThemeColor.BORDER));
                 mainContainer.add(messagePanel, 0);
             }else {
                 if(mainContainer.getComponentCount() > 0) {

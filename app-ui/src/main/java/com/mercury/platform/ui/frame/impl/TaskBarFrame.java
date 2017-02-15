@@ -116,7 +116,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         try {
             String path = StringUtils.substringAfter(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), "/");
             logger.debug("Execute local updater, source path: {}",path);
-            Runtime.getRuntime().exec("java -jar " + LOCAL_UPDATER_PATH + " " + path);
+            Runtime.getRuntime().exec("java -jar " + LOCAL_UPDATER_PATH + " " + "\"" + path + "\"");
             System.exit(0);
         } catch (Exception e1) {
             logger.error("Error while execute local-updater: ", e1);
