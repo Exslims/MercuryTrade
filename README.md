@@ -1,6 +1,6 @@
 # MercuryTrade
 
-Download Java Installer: [https://java.com/download](https://java.com/download)
+Download and Install Java: [https://java.com/download](https://java.com/download)
 
 Download MercuryTrade.jar: 
 
