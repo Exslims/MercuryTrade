@@ -6,6 +6,7 @@ import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.NewWhispersEvent;
 import com.mercury.platform.shared.events.custom.WhisperNotificationEvent;
 import com.mercury.platform.shared.pojo.Message;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by Константин on 11.01.2017.
@@ -15,7 +16,7 @@ public class IncTradeMessagesInterceptor extends MessageInterceptor {
 
     @Override
     protected void process(String message) {
-        Message parsedMessage = messageParser.parse(message);
+        Message parsedMessage = messageParser.parse(StringUtils.substringAfter(message,"@"));
         EventRouter.INSTANCE.fireEvent(new WhisperNotificationEvent());
         EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(parsedMessage));
     }

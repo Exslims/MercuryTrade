@@ -45,7 +45,9 @@ public class UpdaterClient {
                 channelFuture.channel().closeFuture().sync();
             } catch (Exception e) {
                 String[] split = e.getMessage().split(":");
-                LOGGER.error(split[0]);
+                if(!split[0].contains("Connection timed out")) {
+                    LOGGER.error(split[0]);
+                }
             } finally {
                 if (group != null)
                     group.shutdownGracefully().sync();

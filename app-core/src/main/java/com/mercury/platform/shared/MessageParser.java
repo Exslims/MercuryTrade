@@ -5,45 +5,45 @@ import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.shared.pojo.Message;
 import org.apache.commons.lang3.StringUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * need refactoring this shit
  */
 public class MessageParser {
-    public Message parse(String fullMessage){
-        Message parsedMessage;
-        String wNickname = StringUtils.substringBetween(fullMessage, "@From", ":");
-        if(wNickname == null){
-            wNickname = StringUtils.substringBetween(fullMessage, "@To", ":");
-        }
-        String message = StringUtils.substringAfter(fullMessage, wNickname + ":");
-        wNickname = StringUtils.deleteWhitespace(wNickname);
-        //todo regexp
-        if(wNickname.contains(">")){
-            wNickname = StringUtils.substringAfterLast(wNickname, ">");
-        }
-        Date msgDate = new Date(StringUtils.substring(fullMessage, 0, 20));
-        String itemName = StringUtils.substringBetween(message, "to buy your ", " listed for");
-        if(itemName == null){
-            parsedMessage = getCurrencyMessage(message);
-        }else {
-            parsedMessage = getItemMessage(message);
-        }
-        parsedMessage.setWhisperNickname(wNickname);
-        parsedMessage.setMessageDate(msgDate);
-        parsedMessage.setSourceString(fullMessage);
-        return parsedMessage;
+    private List<String> leagues; // todo
+
+    public MessageParser() {
+        this.leagues = new ArrayList<>();
+        this.leagues.add("breach");
+        this.leagues.add("standard");
+        this.leagues.add("hardcore");
+        this.leagues.add("hardcore breach");
     }
-    private ItemMessage getItemMessage(String message){
-        ItemMessage itemMessage = new ItemMessage();
-        String itemName = StringUtils.substringBetween(message, "to buy your ", " listed for"); //todo without buyout
-        String price = StringUtils.substringBetween(message, "listed for ", " in ");
-        if(price == null){
-            price = StringUtils.substringBetween(message, "for my ", " in ");
+
+    public Message parse(String fullMessage){
+        if(fullMessage.contains("Hi, I would like")){
+            if(!fullMessage.contains("listed for")){
+                if(fullMessage.contains(", offer is")){
+                    return parsePoeEyeNoBuyoutMessage(fullMessage);
+                }
+                return parsePoeTradeNoBuyoutMessage(fullMessage);
+            }
+            return parsePoeTradeMessage(fullMessage);
+        }else if(fullMessage.contains("wtb") && fullMessage.contains("])")){
+            return parsePoeAppMessage(fullMessage);
+        }else if(fullMessage.contains("Hi, I'd like")){
+            return parseCurrencyMessage(fullMessage);
         }
+        return null;
+    }
+
+
+    private Message parsePoeTradeMessage(String strMessage) {
+        ItemMessage message = new ItemMessage();
+        String nickname = getNickname(strMessage);
+        String itemName = StringUtils.substringBetween(strMessage, "to buy your ", " listed for");
+        String price = StringUtils.substringBetween(strMessage, "listed for ", " in ");
         Double curCount = null;
         String currencyTitle = "";
         if(price != null) {
@@ -51,40 +51,119 @@ public class MessageParser {
             currencyTitle = StringUtils.substringAfter(price," ");
         }
 
-        String offer = StringUtils.substringAfterLast(message, "in "); //todo
-        String tabName = StringUtils.substringBetween(message, "(stash tab ", "; position:");
-        if(tabName !=null ){
-            offer = StringUtils.substringAfter(message, ")");
+        String offer = StringUtils.substringAfter(strMessage, " in ");
+        if(offer.contains("(stash tab")){
+            offer = StringUtils.substringAfter(offer,")");
+        }else {
+            offer = findOffer(offer.toLowerCase());
         }
-        itemMessage.setItemName(itemName);
-        itemMessage.setCurCount(curCount);
-        itemMessage.setCurrency(currencyTitle);
-        itemMessage.setTabName(tabName);
-        itemMessage.setOffer(offer);
-        return itemMessage;
+
+        message.setWhisperNickname(nickname);
+        message.setItemName(itemName);
+        message.setCurrency(currencyTitle);
+        message.setCurCount(curCount);
+        message.setOffer(offer);
+        message.setSourceString(strMessage);
+
+        return message;
     }
-    private CurrencyMessage getCurrencyMessage(String message){
-        CurrencyMessage currencyMessage = new CurrencyMessage();
-        String currencyForSale = StringUtils.substringBetween(message, "to buy your ", " for my");
+    private String findOffer(String offer) {
+        String validOffer = "";
+        for (String league : leagues) {
+            if(StringUtils.contains(offer,league)){
+                validOffer = StringUtils.substringAfter(offer,league);
+            }
+        }
+        return validOffer;
+    }
+
+    private Message parsePoeTradeNoBuyoutMessage(String strMessage) {
+        ItemMessage message = new ItemMessage();
+        String nickname = getNickname(strMessage);
+        String itemName = StringUtils.substringBetween(strMessage, "to buy your ", " in ");
+
+        String offer = StringUtils.substringAfter(strMessage, " in ");
+        if(offer.contains("(stash tab")){
+            offer = StringUtils.substringAfter(offer,")");
+        }else {
+            offer = findOffer(offer.toLowerCase());
+        }
+        message.setWhisperNickname(nickname);
+        message.setItemName(itemName);
+        message.setOffer(offer);
+        message.setSourceString(strMessage);
+
+        return message;
+    }
+
+    private Message parsePoeEyeNoBuyoutMessage(String strMessage) {
+        ItemMessage message = new ItemMessage();
+        String nickname = getNickname(strMessage);
+        String itemName = StringUtils.substringBetween(strMessage, "to buy your ", " listed in ");
+        String offer = StringUtils.substringAfter(strMessage,"offer is ");
+
+        message.setWhisperNickname(nickname);
+        message.setItemName(itemName);
+        message.setOffer(offer);
+        message.setSourceString(strMessage);
+
+        return message;
+    }
+
+    private Message parsePoeAppMessage(String strMessage) {
+        ItemMessage message = new ItemMessage();
+        String nickname = getNickname(strMessage);
+        String itemName = StringUtils.substringBetween(strMessage,"wtb "," in ");
+
+        String price = StringUtils.substringBetween(strMessage, "listed for ", "Orb");
+        Double curCount = null;
+        String currencyTitle = "";
+        if(price != null) {
+            curCount = Double.parseDouble(StringUtils.substringBefore(price," "));
+            currencyTitle = StringUtils.substringAfter(price," ").trim().toLowerCase();
+        }
+        String offer = StringUtils.substringAfter(strMessage," Orb");
+        message.setWhisperNickname(nickname);
+        message.setItemName(itemName);
+        message.setCurrency(currencyTitle);
+        message.setCurCount(curCount);
+        message.setOffer(offer);
+        message.setSourceString(strMessage);
+        return message;
+    }
+    private Message parseCurrencyMessage(String strMessage) {
+        CurrencyMessage message = new CurrencyMessage();
+        String nickname = getNickname(strMessage);
+        String currencyForSale = StringUtils.substringBetween(strMessage, "to buy your ", " for my");
         Double currForSaleCount = null;
         String currForSaleTitle = "";
         if(currencyForSale != null) {
             currForSaleCount = Double.parseDouble(StringUtils.substringBefore(currencyForSale," "));
             currForSaleTitle = StringUtils.substringAfter(currencyForSale," ");
         }
-        String price = StringUtils.substringBetween(message, "for my ", " in ");
+        String price = StringUtils.substringBetween(strMessage, "for my ", " in ");
         Double priceCount = null;
         String priceTitle = "";
         if(price != null) {
             priceCount = Double.parseDouble(StringUtils.substringBefore(price," "));
             priceTitle = StringUtils.substringAfter(price," ");
         }
-        String offer = StringUtils.substringAfter(message, ".");
-        currencyMessage.setCurrForSaleCount(currForSaleCount);
-        currencyMessage.setCurrForSaleTitle(currForSaleTitle);
-        currencyMessage.setCurCount(priceCount);
-        currencyMessage.setCurrency(priceTitle);
-        currencyMessage.setOffer(offer);
-        return currencyMessage;
+        String offer = StringUtils.substringAfter(strMessage, ".");
+        message.setWhisperNickname(nickname);
+        message.setCurrForSaleCount(currForSaleCount);
+        message.setCurrForSaleTitle(currForSaleTitle);
+        message.setCurCount(priceCount);
+        message.setCurrency(priceTitle);
+        message.setOffer(offer);
+        message.setSourceString(strMessage);
+        return message;
+    }
+
+    private String getNickname(String message){
+        String nickname = StringUtils.substringBetween(message, "From ", ":");
+        if(nickname.contains(">")){
+            nickname = StringUtils.substringAfter(nickname,"> ");
+        }
+        return nickname;
     }
 }
