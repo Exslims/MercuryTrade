@@ -18,13 +18,13 @@ import java.util.Arrays;
  */
 public class ServerHandler extends ChannelInboundHandlerAdapter {
 
-    private static final Logger LOGGER = LogManager.getLogger(ServerHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger(ServerHandler.class.getSimpleName());
     private UpdaterServerAsyncEventBus eventBus = UpdaterServerAsyncEventBus.getInstance();
     private UpdateHolder updateHolder = UpdateHolder.getInstance();
 
     @Override
     public void channelActive(ChannelHandlerContext context) throws Exception {
-        LOGGER.info("{} channel is active" , this);
+//        LOGGER.info("{} channel is active" , this.getClass().getSimpleName());
         InetSocketAddress address = (InetSocketAddress) context.channel().remoteAddress();
         eventBus.post(new ClientActiveEvent(address));
     }
@@ -54,17 +54,16 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
                     chunkStart += chunkSize;
                 }
+                InetSocketAddress address = (InetSocketAddress) context.channel().remoteAddress();
+                eventBus.post(new ClientUpdatedEvent(address));
             }
-            InetSocketAddress address = (InetSocketAddress) context.channel().remoteAddress();
-            eventBus.post(new ClientUpdatedEvent(address));
-
         }
     }
 
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        LOGGER.info("Channel {} read complete" , ctx.channel().id());
+        LOGGER.info("Channel {} read complete" , ctx.channel().remoteAddress());
     }
 
     @Override

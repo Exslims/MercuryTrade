@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class UpdaterServer {
 
-    private static final Logger LOGGER = LogManager.getLogger(UpdaterServer.class);
+    private static final Logger LOGGER = LogManager.getLogger(UpdaterServer.class.getSimpleName());
     private static final int DEFAULT_THREADS_COUNT = MercuryServerConfig.getInstance().getThreadsCount();
 
     private int port;
@@ -38,13 +38,13 @@ public class UpdaterServer {
     }
 
     public void run() {
-        LOGGER.info("Starting server on {} port", port);
-        LOGGER.info("Event loop group threads count = {}", nThreads);
+//        LOGGER.info("Starting server on {} port", port);
+//        LOGGER.info("Event loop group threads count = {}", nThreads);
         this.bossGroup = new NioEventLoopGroup();
         this.workerGroup = new NioEventLoopGroup(nThreads);
 
         try {
-            LOGGER.info("Initializing server bootstrap");
+//            LOGGER.info("Initializing server bootstrap");
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)

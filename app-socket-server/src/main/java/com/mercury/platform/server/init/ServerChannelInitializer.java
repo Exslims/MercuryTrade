@@ -16,11 +16,11 @@ import org.apache.logging.log4j.Logger;
  */
 public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> {
 
-    private static final Logger LOGGER = LogManager.getLogger(ServerChannelInitializer.class);
+    private static final Logger LOGGER = LogManager.getLogger(ServerChannelInitializer.class.getSimpleName());
 
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
-        LOGGER.info("Initializing channel for {}" , socketChannel.remoteAddress().getHostName());
+//        LOGGER.info("Initializing channel for {}" , socketChannel.remoteAddress().getHostName());
         socketChannel.pipeline().addLast(new ObjectEncoder());
         ClassLoader classLoader = this.getClass().getClassLoader();
         ClassResolver classResolver = ClassResolvers.weakCachingResolver(classLoader);

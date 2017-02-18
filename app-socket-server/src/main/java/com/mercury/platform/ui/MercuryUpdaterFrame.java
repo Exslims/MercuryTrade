@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -22,14 +23,16 @@ import java.nio.file.Paths;
  */
 public class MercuryUpdaterFrame extends JFrame {
 
-    private static final Logger LOGGER = LogManager.getLogger(MercuryUpdaterFrame.class);
+    private static final Logger LOGGER = LogManager.getLogger(MercuryUpdaterFrame.class.getSimpleName());
 
     public static final Dimension DEFAULT_FRAME_SIZE = new Dimension(500, 170);
 
     private volatile JLabel onlineCountLabel;
     private volatile JLabel updateCount;
     private volatile JTextField versionField;
+    private volatile JButton startUpdate;
     private UpdaterServer server;
+    private Path path;
 
     public MercuryUpdaterFrame(){
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,16 +80,9 @@ public class MercuryUpdaterFrame extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 dialog.setVisible(true);
-                try {
-                    byte[] bytes = Files.readAllBytes(Paths.get(dialog.getDirectory(), dialog.getFile()));
-                    UpdateHolder instance = UpdateHolder.getInstance();
-                    instance.setUpdate(bytes);
-                    String text = versionField.getText();
-                    instance.setVersion(Integer.valueOf(text.replace("." , "0")));
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+                path = Paths.get(dialog.getDirectory(), dialog.getFile());
                 jarPathField.setText(dialog.getDirectory() + dialog.getFile());
+                startUpdate.setEnabled(true);
             }
         });
 
@@ -97,7 +93,7 @@ public class MercuryUpdaterFrame extends JFrame {
         panel.add(jarPathField);
         panel.add(pickJarButton);
         panel.add(new JLabel("Version: "));
-        versionField.setText("1.0.1.1.3");
+        versionField.setText("1.0.0");
         panel.add(versionField);
         return panel;
     }
@@ -128,8 +124,9 @@ public class MercuryUpdaterFrame extends JFrame {
     private JPanel getBottomPanel(){
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-        JButton startUpdate = new JButton("Start");
-        startUpdate.addMouseListener(new StartServerButtonListener(server));
+        startUpdate = new JButton("Start");
+        startUpdate.addMouseListener(new StartServerButtonListener(this,server));
+        startUpdate.setEnabled(false);
         JButton shutdownUpdate = new JButton("Shut down");
         shutdownUpdate.addMouseListener(new ShutdownServerButtonListener(server));
 
@@ -138,4 +135,10 @@ public class MercuryUpdaterFrame extends JFrame {
         return panel;
     }
 
+    public Path getPath() {
+        return path;
+    }
+    public String getVersion() {
+        return versionField.getText();
+    }
 }
