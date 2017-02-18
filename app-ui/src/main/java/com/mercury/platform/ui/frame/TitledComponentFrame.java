@@ -30,6 +30,7 @@ public abstract class TitledComponentFrame extends ComponentFrame {
         if(layout instanceof BorderLayout) {
             JPanel headerPanel = new JPanel(new BorderLayout());
             headerPanel.setBackground(AppThemeColor.HEADER);
+            headerPanel.setPreferredSize(new Dimension(100,26));
 
             JLabel appIcon = componentsFactory.getIconLabel("app/app-icon.png", 16);
             frameTitleLabel = componentsFactory.getTextLabel(getFrameTitle());
@@ -44,6 +45,7 @@ public abstract class TitledComponentFrame extends ComponentFrame {
 
             miscPanel.setBackground(AppThemeColor.TRANSPARENT);
             hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_1, "");
+            hideButton.setBorder(BorderFactory.createEmptyBorder(2,0,0,2));
             hideButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {

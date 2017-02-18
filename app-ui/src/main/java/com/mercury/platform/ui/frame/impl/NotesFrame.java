@@ -41,7 +41,6 @@ public class NotesFrame extends TitledComponentFrame {
                 prevState = FrameStates.HIDE;
             }
         }else {
-            this.setFrameTitle("MercuryTrade " + MercuryConstants.APP_VERSION);
             ConfigManager.INSTANCE.saveProperty("showPatchNotes",false);
             prevState = FrameStates.SHOW;
         }
@@ -74,7 +73,7 @@ public class NotesFrame extends TitledComponentFrame {
         rootPanel.add(miscPanel,BorderLayout.PAGE_END);
         this.add(rootPanel,BorderLayout.CENTER);
         if(type.equals(NotesType.PATCH)) {
-            setFrameTitle("Patch notes");
+            this.setFrameTitle("MercuryTrade " + MercuryConstants.APP_VERSION);
         }
         this.removeHideButton();
         this.pack();
@@ -130,6 +129,7 @@ public class NotesFrame extends TitledComponentFrame {
                 NotesFrame.this.setVisible(false);
                 if(type.equals(NotesType.INFO)) {
                     ConfigManager.INSTANCE.saveProperty("showOnStartUp", showOnStartUp.isSelected());
+                    FramesManager.INSTANCE.showFrame(TaskBarFrame.class);
                     FramesManager.INSTANCE.enableMovement();
                 }
             }

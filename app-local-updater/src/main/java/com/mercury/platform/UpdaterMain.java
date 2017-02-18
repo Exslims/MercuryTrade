@@ -24,10 +24,10 @@ public class UpdaterMain {
                         Paths.get(JAR_FILE_PATH + File.separator + "MercuryTrade.jar"),
                         Paths.get(args[0]),
                         StandardCopyOption.REPLACE_EXISTING);
-                new File(JAR_FILE_PATH + File.separator + "MercuryTrade.jar")
-                        .delete();
                 log.info("Update the local file has been successfully. Execute application: " + args[0]);
                 Runtime.getRuntime().exec("java -jar " + "\"" + args[0] + "\"");
+                new File(JAR_FILE_PATH + File.separator + "MercuryTrade.jar")
+                        .delete();
                 System.exit(0);
             } catch (Exception e) {
                 log.error("Error while replacing existing jar: ", e);
