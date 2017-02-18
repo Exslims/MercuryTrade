@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.frame.impl;
 
+import com.mercury.platform.core.MercuryConstants;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -40,6 +41,7 @@ public class NotesFrame extends TitledComponentFrame {
                 prevState = FrameStates.HIDE;
             }
         }else {
+            this.setFrameTitle("MercuryTrade " + MercuryConstants.APP_VERSION);
             ConfigManager.INSTANCE.saveProperty("showPatchNotes",false);
             prevState = FrameStates.SHOW;
         }
