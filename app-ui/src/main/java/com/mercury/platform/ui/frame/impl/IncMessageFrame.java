@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.frame.impl;
 
 import com.mercury.platform.core.AppStarter;
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
@@ -191,11 +192,11 @@ public class IncMessageFrame extends MovableComponentFrame{
         growPicker.addActionListener(e -> {
             switch ((String)growPicker.getSelectedItem()){
                 case "Upwards":{
-                    flowDirections = FlowDirections.UPWARDS;
+                    changeDirection(FlowDirections.UPWARDS);
                     break;
                 }
                 case "Downwards":{
-                    flowDirections = FlowDirections.DOWNWARDS;
+                    changeDirection(FlowDirections.DOWNWARDS);
                     break;
                 }
             }
@@ -205,9 +206,38 @@ public class IncMessageFrame extends MovableComponentFrame{
         panel.add(growPanel);
         return panel;
     }
-
-    @Override
-    protected int getMinComponentCount() {
-        return 0;
+    private void changeDirection(FlowDirections direction){
+        if(!this.flowDirections.equals(direction) && mainContainer.getComponentCount() > 1){
+            switch (direction) {
+                case DOWNWARDS:{
+                    Component[] components = mainContainer.getComponents();
+                    for (Component component : components) {
+                        mainContainer.remove(component);
+                        mainContainer.add(component, 0);
+                    }
+                    components = mainContainer.getComponents();
+                    ((JPanel)components[0]).setBorder(null);
+                    ((JPanel)components[components.length-1]).setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
+                    this.setLocation(ConfigManager.INSTANCE.getFrameSettings(this.getClass().getSimpleName()).getFrameLocation());
+                    break;
+                }
+                case UPWARDS: {
+                    int deltaY = 0;
+                    Component[] components = mainContainer.getComponents();
+                    for (int i = 1; i < components.length; i++) {
+                        deltaY += components[i].getHeight();
+                        mainContainer.remove(components[i]);
+                        mainContainer.add(components[i],0);
+                    }
+                    components = mainContainer.getComponents();
+                    ((JPanel)components[0]).setBorder(null);
+                    ((JPanel)components[components.length-1]).setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
+                    this.setLocation(this.getLocation().x, this.getLocation().y - deltaY);
+                    break;
+                }
+            }
+        }
+        this.deltaYInUpwards = 0;
+        this.flowDirections = direction;
     }
 }

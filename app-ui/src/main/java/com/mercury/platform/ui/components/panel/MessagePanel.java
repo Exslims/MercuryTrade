@@ -59,8 +59,16 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         this.style = style;
         this.whisper = message.getWhisperNickname();
         this.setBackground(AppThemeColor.TRANSPARENT);
-        this.messagePanel = getFormattedMessagePanel();
-        this.customButtonsPanel = getButtonsPanel(whisper);
+        switch (style) {
+            case HISTORY:{
+                this.whisperPanel = getWhisperPanel();
+                this.messagePanel = getFormattedMessagePanel();
+            }
+            default:{
+                this.messagePanel = getFormattedMessagePanel();
+                this.customButtonsPanel = getButtonsPanel(whisper);
+            }
+        }
 
         init();
         initHandlers();
@@ -141,7 +149,10 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         JLabel separator = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, "=>");
         separator.setHorizontalAlignment(SwingConstants.CENTER);
         forPanel.add(separator);
-        String curCount = message.getCurCount() % 1 == 0 ? String.valueOf(message.getCurCount().intValue()) : String.valueOf(message.getCurCount());
+        String curCount = " ";
+        if(message.getCurCount() > 0) {
+            curCount = message.getCurCount() % 1 == 0 ? String.valueOf(message.getCurCount().intValue()) : String.valueOf(message.getCurCount());
+        }
         String currency = message.getCurrency();
         if(!Objects.equals(curCount, "") && currency != null) {
             JPanel curCountPanel = new JPanel();
@@ -179,7 +190,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         whisperLabel.setVerticalAlignment(SwingConstants.CENTER);
 
         JPanel nickNamePanel = componentsFactory.getTransparentPanel(new BorderLayout());
-        if(style.equals(MessagePanelStyle.HISTORY)){
+        if(style.equals(MessagePanelStyle.HISTORY) || style.equals(MessagePanelStyle.SPMODE)){
             nickNamePanel.add(whisperLabel,BorderLayout.CENTER);
         }else {
             nickNamePanel.add(getExpandButton(),BorderLayout.LINE_START);
@@ -189,28 +200,34 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
 
         JPanel interactionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         interactionPanel.setBackground(AppThemeColor.TRANSPARENT);
-        JButton inviteButton = componentsFactory.getIconButton("app/invite.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.INVITE);
-        inviteButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/invite " + whisper));
-            }
-        });
-        JButton kickButton = componentsFactory.getIconButton("app/kick.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.KICK);
-        kickButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/kick " + whisper));
-            }
-        });
-        tradeButton = componentsFactory.getIconButton("app/trade.png",14, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
-        tradeButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/tradewith " + whisper));
-            }
-        });
-        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png",15, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
+        interactionPanel.add(getTimePanel());
+        if(!style.equals(MessagePanelStyle.HISTORY)) {
+            JButton inviteButton = componentsFactory.getIconButton("app/invite.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.INVITE);
+            inviteButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/invite " + whisper));
+                }
+            });
+            JButton kickButton = componentsFactory.getIconButton("app/kick.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.KICK);
+            kickButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/kick " + whisper));
+                }
+            });
+            tradeButton = componentsFactory.getIconButton("app/trade.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
+            tradeButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/tradewith " + whisper));
+                }
+            });
+            interactionPanel.add(inviteButton);
+            interactionPanel.add(kickButton);
+            interactionPanel.add(tradeButton);
+        }
+        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
         openChatButton.setToolTipText("Open chat");
         openChatButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -218,19 +235,15 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 EventRouter.INSTANCE.fireEvent(new OpenChatEvent(whisper));
             }
         });
-        JButton hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.MSG_HEADER,TooltipConstants.HIDE_PANEL);
+
+        interactionPanel.add(openChatButton);
+        JButton hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.HIDE_PANEL);
         hideButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 EventRouter.INSTANCE.fireEvent(new CloseMessagePanelEvent(MessagePanel.this));
             }
         });
-
-        interactionPanel.add(getTimePanel());
-        interactionPanel.add(inviteButton);
-        interactionPanel.add(kickButton);
-        interactionPanel.add(tradeButton);
-        interactionPanel.add(openChatButton);
         if(!style.equals(MessagePanelStyle.HISTORY)) {
             interactionPanel.add(hideButton);
         }
@@ -339,7 +352,9 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             if(nickName.equals(whisper)){
                 whisperLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
                 cachedWhisperColor = AppThemeColor.TEXT_SUCCESS;
-                tradeButton.setEnabled(true);
+                if(!style.equals(MessagePanelStyle.HISTORY)) {
+                    tradeButton.setEnabled(true);
+                }
                 EventRouter.INSTANCE.fireEvent(new RepaintEvent.RepaintMessagePanel());
             }
         });
@@ -348,7 +363,9 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             if(nickName.equals(whisper)){
                 whisperLabel.setForeground(AppThemeColor.TEXT_DISABLE);
                 cachedWhisperColor = AppThemeColor.TEXT_DISABLE;
-                tradeButton.setEnabled(false);
+                if(!style.equals(MessagePanelStyle.HISTORY)) {
+                    tradeButton.setEnabled(false);
+                }
                 EventRouter.INSTANCE.fireEvent(new RepaintEvent.RepaintMessagePanel());
             }
         });

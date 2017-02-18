@@ -19,6 +19,8 @@ public class MessageParser {
         this.leagues.add("standard");
         this.leagues.add("hardcore");
         this.leagues.add("hardcore breach");
+        this.leagues.add("legacy");
+        this.leagues.add("hardcore legacy");
     }
 
     public Message parse(String fullMessage){
@@ -90,6 +92,8 @@ public class MessageParser {
         }
         message.setWhisperNickname(nickname);
         message.setItemName(itemName);
+        message.setCurCount(0d);
+        message.setCurrency("???");
         message.setOffer(offer);
         message.setSourceString(strMessage);
 
@@ -105,6 +109,8 @@ public class MessageParser {
         message.setWhisperNickname(nickname);
         message.setItemName(itemName);
         message.setOffer(offer);
+        message.setCurCount(0d);
+        message.setCurrency("???");
         message.setSourceString(strMessage);
 
         return message;

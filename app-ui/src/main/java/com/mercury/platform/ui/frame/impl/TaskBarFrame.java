@@ -287,9 +287,4 @@ public class TaskBarFrame extends MovableComponentFrame{
 
         return panel;
     }
-
-    @Override
-    protected int getMinComponentCount() {
-        return 0;
-    }
 }

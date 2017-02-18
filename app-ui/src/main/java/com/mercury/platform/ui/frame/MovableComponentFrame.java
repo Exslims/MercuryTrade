@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.frame;
 
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.ui.frame.location.UndecoratedFrameState;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -21,7 +22,6 @@ public abstract class MovableComponentFrame extends ComponentFrame {
         undecoratedFrameState = UndecoratedFrameState.DEFAULT;
     }
     protected abstract JPanel panelWhenMove();
-    protected abstract int getMinComponentCount();
     public void setState(UndecoratedFrameState state){
         switch (state){
             case MOVING:{

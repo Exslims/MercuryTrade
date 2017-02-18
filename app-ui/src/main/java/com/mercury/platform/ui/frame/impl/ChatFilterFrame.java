@@ -122,11 +122,6 @@ public class ChatFilterFrame extends MovableComponentFrame {
     }
 
     @Override
-    protected int getMinComponentCount() {
-        return 2;
-    }
-
-    @Override
     protected LayoutManager getFrameLayout() {
         return new BorderLayout();
     }
