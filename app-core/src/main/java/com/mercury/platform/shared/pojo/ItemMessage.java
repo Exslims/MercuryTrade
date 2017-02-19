@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class ItemMessage extends Message {
     private String itemName;
-    private String tabName;
+    private String tabInfo;
 
     public ItemMessage() {
     }
@@ -15,7 +15,7 @@ public class ItemMessage extends Message {
     public ItemMessage(String sourceString,String whisperNickname, Date messageDate, String itemName, Double curCount, String currency, String tabName, String offer) {
         super(sourceString,whisperNickname,offer,messageDate,curCount,currency);
         this.itemName = itemName;
-        this.tabName = tabName;
+        this.tabInfo = tabName;
     }
 
     public String getItemName() {
@@ -26,11 +26,11 @@ public class ItemMessage extends Message {
         this.itemName = itemName;
     }
 
-    public String getTabName() {
-        return tabName;
+    public String getTabInfo() {
+        return tabInfo;
     }
 
-    public void setTabName(String tabName) {
-        this.tabName = tabName;
+    public void setTabInfo(String tabName) {
+        this.tabInfo = tabName;
     }
 }

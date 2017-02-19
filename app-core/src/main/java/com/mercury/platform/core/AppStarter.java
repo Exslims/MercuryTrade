@@ -58,7 +58,7 @@ public class AppStarter {
                         }
                     }
                 }
-            },0,500);
+            },0,50);
         });
     }
 }

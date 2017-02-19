@@ -120,9 +120,13 @@ public class ConfigManager {
     }
 
     public FrameSettings getFrameSettings(String frameClass){
-        return cachedFramesSettings.get(
-                frameClass) == null ?
-                getDefaultFramesSettings().get(frameClass) :  cachedFramesSettings.get(frameClass);
+        FrameSettings settings = cachedFramesSettings.get(frameClass);
+        if(settings == null) {
+            FrameSettings defaultSettings = getDefaultFramesSettings().get(frameClass);
+            cachedFramesSettings.put(frameClass,defaultSettings);
+            saveFrameSettings();
+        }
+        return cachedFramesSettings.get(frameClass);
     }
     public void saveFrameLocation(String frameClassName, Point point) {
         FrameSettings settings = cachedFramesSettings.get(frameClassName);
@@ -243,6 +247,7 @@ public class ConfigManager {
         dFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 500),new Dimension(280,400)));
         dFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
         dFramesSettings.put("ChatFilterFrame",new FrameSettings(new Point(400, 600),new Dimension(200,100)));
+        dFramesSettings.put("ItemsMeshFrame",new FrameSettings(new Point(100, 300),new Dimension(400,400)));
         dFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,100)));
         dFramesSettings.put("SetUpLocationFrame",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
         dFramesSettings.put("ChunkMessagesPicker",new FrameSettings(new Point(400, 600),new Dimension(240,30)));

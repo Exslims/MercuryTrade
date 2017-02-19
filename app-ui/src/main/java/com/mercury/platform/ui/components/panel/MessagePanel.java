@@ -51,7 +51,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     private JPanel messagePanel;
     private JPanel customButtonsPanel;
 
-    public MessagePanel(Message message, ComponentFrame owner, MessagePanelStyle style) throws Exception {
+    public MessagePanel(Message message, ComponentFrame owner, MessagePanelStyle style){
         super(new BorderLayout());
 
         this.message = message;
@@ -59,29 +59,22 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         this.style = style;
         this.whisper = message.getWhisperNickname();
         this.setBackground(AppThemeColor.TRANSPARENT);
-        switch (style) {
-            case HISTORY:{
-                this.whisperPanel = getWhisperPanel();
-                this.messagePanel = getFormattedMessagePanel();
-            }
-            default:{
-                this.messagePanel = getFormattedMessagePanel();
-                this.customButtonsPanel = getButtonsPanel(whisper);
-            }
-        }
+        this.messagePanel = getFormattedMessagePanel();
+        this.customButtonsPanel = getButtonsPanel(whisper);
+
+        this.setBackground(AppThemeColor.TRANSPARENT);
 
         init();
         initHandlers();
     }
     private void init(){
         this.removeAll();
-        this.setBackground(AppThemeColor.TRANSPARENT);
+        this.whisperPanel = getWhisperPanel();
+        this.add(whisperPanel,BorderLayout.PAGE_START);
         this.add(messagePanel,BorderLayout.CENTER);
         this.add(customButtonsPanel,BorderLayout.PAGE_END);
         switch (style){
             case SMALL:{
-                this.whisperPanel = getWhisperPanel();
-                this.add(whisperPanel,BorderLayout.PAGE_START);
                 messagePanel.setVisible(false);
                 customButtonsPanel.setVisible(false);
                 break;
@@ -90,22 +83,16 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 break;
             }
             case BIGGEST:{
-                this.whisperPanel = getWhisperPanel();
-                this.add(whisperPanel,BorderLayout.PAGE_START);
                 messagePanel.setVisible(true);
                 customButtonsPanel.setVisible(true);
                 break;
             }
             case HISTORY:{
-                this.whisperPanel = getWhisperPanel();
-                this.add(whisperPanel,BorderLayout.PAGE_START);
                 messagePanel.setVisible(true);
                 customButtonsPanel.setVisible(false);
                 break;
             }
             case SPMODE:{
-                this.whisperPanel = getWhisperPanel();
-                this.add(whisperPanel,BorderLayout.PAGE_START);
                 messagePanel.setVisible(true);
                 customButtonsPanel.setVisible(true);
                 break;
@@ -113,7 +100,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         }
     }
 
-    private JPanel getFormattedMessagePanel() throws Exception{
+    private JPanel getFormattedMessagePanel(){
         JPanel labelsPanel = new JPanel();
         labelsPanel.setLayout(new BoxLayout(labelsPanel,BoxLayout.Y_AXIS));
         labelsPanel.setBackground(AppThemeColor.TRANSPARENT);
@@ -122,6 +109,9 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         tradePanel.setBackground(AppThemeColor.TRANSPARENT);
         tradePanel.setBorder(BorderFactory.createEmptyBorder(-11,0,-11,0));
         if(message instanceof ItemMessage) {
+            if(((ItemMessage) message).getTabInfo() != null && !style.equals(MessagePanelStyle.HISTORY)){
+                EventRouter.INSTANCE.fireEvent(new ShowItemMeshEvent(message.getWhisperNickname(),((ItemMessage) message).getTabInfo()));
+            }
             JLabel itemLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_IMPORTANT, TextAlignment.CENTER, 16f, ((ItemMessage)message).getItemName());
             tradePanel.add(itemLabel,BorderLayout.CENTER);
         }else if(message instanceof CurrencyMessage){
@@ -241,7 +231,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         hideButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new CloseMessagePanelEvent(MessagePanel.this));
+                EventRouter.INSTANCE.fireEvent(new CloseMessagePanelEvent(MessagePanel.this,message));
             }
         });
         if(!style.equals(MessagePanelStyle.HISTORY)) {

@@ -1,5 +1,7 @@
 package com.mercury.platform.ui.frame.impl;
 
+import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -31,6 +33,7 @@ public class TaskBarFrame extends MovableComponentFrame{
 
     private Timeline collapseAnim;
     private JPanel updatePanel;
+    private static final int MAX_WIDTH = 250;
 
     public TaskBarFrame() {
         super("MT-TaskBar");
@@ -45,7 +48,6 @@ public class TaskBarFrame extends MovableComponentFrame{
         add(getTaskBarPanel(), BorderLayout.CENTER);
         add(updatePanel, BorderLayout.PAGE_START);
         pack();
-
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -71,7 +73,9 @@ public class TaskBarFrame extends MovableComponentFrame{
                 }
             }
         });
-
+        if(ConfigManager.INSTANCE.isShowOnStartUp()){
+            prevState = FrameStates.HIDE;
+        }
         EventRouter.INSTANCE.fireEvent(new UILoadedEvent());
     }
 
@@ -85,7 +89,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         panel.setLayout(new BoxLayout(panel,BoxLayout.X_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(3,0,0,0));
 
-        JLabel label = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT,TextAlignment.LEFTOP,16f,"Update is ready, please ");
+        JLabel label = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT,TextAlignment.LEFTOP,16f,"Ready for update: ");
         JLabel restartLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT,TextAlignment.LEFTOP,16f,"Restart");
         restartLabel.addMouseListener(new MouseAdapter() {
             @Override
@@ -255,7 +259,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         collapseAnim = new Timeline(this);
         switch (state){
             case "expand":{
-                collapseAnim.addPropertyToInterpolate("width",this.getWidth(),250);
+                collapseAnim.addPropertyToInterpolate("width",this.getWidth(),MAX_WIDTH);
                 break;
             }
             case "collapse":{

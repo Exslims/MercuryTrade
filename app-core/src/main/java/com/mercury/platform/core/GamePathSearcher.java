@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Timer;
@@ -23,16 +24,21 @@ public class GamePathSearcher{
             public void run() {
                 try {
                     String line;
-                    Process p = Runtime.getRuntime().exec("powershell -command Get-Process PathOfExile | Format-List path");
+                    String path;
+                    Process p = Runtime.getRuntime().exec("powershell -command Get-Process | Format-List path");
                     BufferedReader input = new BufferedReader
                             (new InputStreamReader(p.getInputStream(),"866"));
                     while ((line = input.readLine()) != null) {
                         if (line.contains("PathOfExile")) {
-                            String path = StringUtils.substringBetween(line, "Path : ", "PathOfExile.exe");
+                            String temp = StringUtils.substringAfter(line, "Path : ");
+                            path = StringUtils.substringBeforeLast(temp, File.separator);
+                            path += File.separator;
                             callback.onFound(path);
                             timer.cancel();
+                            return;
                         }
                     }
+                    timer.cancel();
                 }catch (IOException e){
                     log.error(e);
                 }

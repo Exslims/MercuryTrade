@@ -1,10 +1,10 @@
 package com.mercury.platform.ui.frame;
 
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.ui.frame.location.UndecoratedFrameState;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -15,6 +15,8 @@ import java.awt.event.MouseEvent;
 public abstract class MovableComponentFrame extends ComponentFrame {
     protected Container mainContainer;
     private boolean wasVisible;
+    private Color prevBGColor;
+    private Border prevBorder;
     protected UndecoratedFrameState undecoratedFrameState;
     protected MovableComponentFrame(String title) {
         super(title);
@@ -27,12 +29,16 @@ public abstract class MovableComponentFrame extends ComponentFrame {
             case MOVING:{
                 if(undecoratedFrameState.equals(UndecoratedFrameState.DEFAULT)) {
                     wasVisible = this.isVisible();
+                    prevBGColor = this.getBackground();
+                    prevBorder = this.getRootPane().getBorder();
                     JPanel panel = setUpMoveListeners(panelWhenMove());
                     if(mainContainer.getHeight() < 30) {
                         panel.setPreferredSize(new Dimension(200, 100));
                     }else {
                         panel.setPreferredSize(mainContainer.getSize());
                     }
+                    this.setBackground(AppThemeColor.FRAME);
+                    this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
                     this.setContentPane(panel);
                     this.setVisible(true);
                     this.setAlwaysOnTop(true);
@@ -44,6 +50,8 @@ public abstract class MovableComponentFrame extends ComponentFrame {
             }
             case DEFAULT: {
                 this.setContentPane(mainContainer);
+                this.setBackground(prevBGColor);
+                this.getRootPane().setBorder(prevBorder);
                 this.setVisible(wasVisible);
                 this.setPreferredSize(null);
                 this.pack();
@@ -60,13 +68,13 @@ public abstract class MovableComponentFrame extends ComponentFrame {
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                panel.setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_MESSAGE));
+                getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_MESSAGE, 1));
                 MovableComponentFrame.this.repaint();
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                panel.setBorder(null);
+                getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
                 MovableComponentFrame.this.repaint();
             }
         });

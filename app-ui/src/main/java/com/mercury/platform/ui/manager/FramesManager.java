@@ -45,10 +45,13 @@ public class FramesManager {
         framesMap.put(IncMessageFrame.class,incMessageFrame);
         OverlaidFrame taskBarFrame = new TaskBarFrame();
         framesMap.put(TaskBarFrame.class,taskBarFrame);
+        OverlaidFrame itemsMeshFrame = new ItemsMeshFrame();
+        framesMap.put(ItemsMeshFrame.class,itemsMeshFrame);
 
         locationCommander.addFrame((MovableComponentFrame) incMessageFrame);
         locationCommander.addFrame((MovableComponentFrame) taskBarFrame);
         locationCommander.addFrame((MovableComponentFrame) chatFilter);
+        locationCommander.addFrame((MovableComponentFrame) itemsMeshFrame);
         NotesLoader notesLoader = new NotesLoader();
         List<Note> notesOnFirstStart = notesLoader.getNotesOnFirstStart();
         if(notesOnFirstStart.size() != 0){

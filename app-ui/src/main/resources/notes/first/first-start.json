@@ -42,6 +42,12 @@
     "layout" : "HORIZONTAL"
   },
   {
+    "title" : "Minor feature: Items grid",
+    "text" : "TODO",
+    "image" : "",
+    "layout" : "HORIZONTAL"
+  },
+  {
     "title" : "Minor feature: \"SuperTrade\" mode",
     "text" : "By default (on the left) each consecutive notification you receive is folded to save screen space. SuperTrade mode is a switch that will force notification panels to be fully displayed. \nEasier to manage multiple trades at once if needed.",
     "image" : "notes/first/4.png",

@@ -85,7 +85,7 @@ public class IncMessageFrame extends MovableComponentFrame{
             }
         }
         this.tradeMode = mode;
-        if(mainContainer.getComponentCount() > 1){
+        if(mainContainer.getComponentCount() > 0){
             this.pack();
             this.repaint();
         }
@@ -116,22 +116,17 @@ public class IncMessageFrame extends MovableComponentFrame{
         EventRouter.INSTANCE.registerHandler(NewWhispersEvent.class, event -> {
             Message message = ((NewWhispersEvent) event).getMessage();
             MessagePanel messagePanel = null;
-            try {
-                switch (tradeMode) {
-                    case SUPER: {
-                        messagePanel = new MessagePanel(message, this, MessagePanelStyle.SPMODE);
-                        break;
-                    }
-                    case DEFAULT: {
-                        messagePanel = new MessagePanel(message, this, MessagePanelStyle.BIGGEST);
-                        if (mainContainer.getComponentCount() > 0) {
-                            messagePanel.setStyle(MessagePanelStyle.SMALL);
-                        }
+            switch (tradeMode) {
+                case SUPER: {
+                    messagePanel = new MessagePanel(message, this, MessagePanelStyle.SPMODE);
+                    break;
+                }
+                case DEFAULT: {
+                    messagePanel = new MessagePanel(message, this, MessagePanelStyle.BIGGEST);
+                    if (mainContainer.getComponentCount() > 0) {
+                        messagePanel.setStyle(MessagePanelStyle.SMALL);
                     }
                 }
-            }catch (Exception e){
-                logger.error(e);
-                return;
             }
             if (!dnd && !this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
                 this.setAlwaysOnTop(true);

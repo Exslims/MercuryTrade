@@ -1,2 +1,20 @@
 {"notes":[
+  {
+    "title" : "Chat Scanner",
+    "text" : "MercuryTrade features a real-time Chat Scanner. \nAll chat messages with matching words will be displayed in a separate window - no need to strain your eyes looking for a Trial anymore!",
+    "image" : "notes/first/8.png",
+    "layout" : "HORIZONTAL"
+  },
+  {
+    "title" : "Items grid",
+    "text" : "TODO",
+    "image" : "",
+    "layout" : "HORIZONTAL"
+  },
+  {
+    "title" : "Bug fixes",
+    "text" : "TEST TEST TEST TEST TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST",
+    "image" : "",
+    "layout" : "HORIZONTAL"
+  }
 ]}

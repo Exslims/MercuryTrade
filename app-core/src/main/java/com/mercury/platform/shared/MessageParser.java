@@ -59,11 +59,13 @@ public class MessageParser {
         }else {
             offer = findOffer(offer.toLowerCase());
         }
+        String tabInfo = StringUtils.substringBetween(strMessage, "(stash tab", ")");
 
         message.setWhisperNickname(nickname);
         message.setItemName(itemName);
         message.setCurrency(currencyTitle);
         message.setCurCount(curCount);
+        message.setTabInfo(tabInfo);
         message.setOffer(offer);
         message.setSourceString(strMessage);
 
@@ -90,10 +92,13 @@ public class MessageParser {
         }else {
             offer = findOffer(offer.toLowerCase());
         }
+        String tabInfo = StringUtils.substringBetween(strMessage, "(", ")");
+
         message.setWhisperNickname(nickname);
         message.setItemName(itemName);
         message.setCurCount(0d);
         message.setCurrency("???");
+        message.setTabInfo(tabInfo);
         message.setOffer(offer);
         message.setSourceString(strMessage);
 
