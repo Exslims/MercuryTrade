@@ -34,6 +34,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         setBackground(AppThemeColor.FRAME);
         setFocusableWindowState(false);
         setFocusable(false);
+        setAlwaysOnTop(true);
 
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -83,11 +84,9 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         return this.getBounds().contains(MouseInfo.getPointerInfo().getLocation());
     }
     public void showComponent(){
-        this.setAlwaysOnTop(true);
         this.setVisible(true);
     }
     public void hideComponent(){
         this.setVisible(false);
-        this.setAlwaysOnTop(false);
     }
 }

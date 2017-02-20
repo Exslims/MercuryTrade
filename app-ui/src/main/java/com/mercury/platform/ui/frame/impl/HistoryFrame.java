@@ -57,7 +57,7 @@ public class HistoryFrame extends TitledComponentFrame{
         JScrollBar vBar = scrollPane.getVerticalScrollBar();
         vBar.setBackground(AppThemeColor.SLIDE_BG);
         vBar.setUI(new MercuryScrollBarUI());
-        vBar.setPreferredSize(new Dimension(10, Integer.MAX_VALUE));
+        vBar.setPreferredSize(new Dimension(14, Integer.MAX_VALUE));
         vBar.setUnitIncrement(3);
         vBar.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
         vBar.addAdjustmentListener(e -> repaint());

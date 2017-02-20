@@ -112,13 +112,13 @@ public class TestCasesFrame extends TitledComponentFrame {
 
         nickNames.add("Kanarid");
         nickNames.add("Vin");
-        nickNames.add("<(ROA)> Rrra_LOL");
-        nickNames.add("<(ROA)> Pabeesari");
+        nickNames.add("Rrra_LOL");
+        nickNames.add("Pabeesari");
         nickNames.add("Joll");
         nickNames.add("Jashicore_QWEEEE");
-        nickNames.add("<(ROA)> Xach");
+        nickNames.add("Xach");
         nickNames.add("Yaitaly");
-        nickNames.add("<(ROA)> xXxДолбоебxXx");
+        nickNames.add("xXxДолбоебxXx");
 
         offer.add("#############");
         offer.add(" ");
@@ -211,19 +211,27 @@ public class TestCasesFrame extends TitledComponentFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 EventRouter.INSTANCE.fireEvent(new WhisperNotificationEvent());
-                ItemMessage message = new ItemMessage("2017/02/11 02:15:33 23999937 951 [INFO Client 6548] @From <(ROA)> Exslimsbf: Hi, I would like to buy your level 9 0% Cleave listed for 1 alteration in Breach (stash tab \"S\"; position: left 2, top 9)","Exslimsbf",null,"Demon Shelter Golden Mask", 3d,"exalted","tab","");
+                String nickname = nickNames.get(random.nextInt(nickNames.size()));
+                Message message = parser.parse(String.format(currencyTemplate,
+                        nickname,
+                        random.nextInt(200),
+                        currency.get(random.nextInt(currency.size())),
+                        random.nextInt(200),
+                        currency.get(random.nextInt(currency.size())),
+                        offer.get(random.nextInt(offer.size()))
+                ));
                 EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(message));
 
                 Timer joinedTimer = new Timer(1000,null);
                 joinedTimer.addActionListener(e1 -> {
-                    EventRouter.INSTANCE.fireEvent(new PlayerJoinEvent("Exslimsbf"));
+                    EventRouter.INSTANCE.fireEvent(new PlayerJoinEvent(nickname));
                     joinedTimer.stop();
                 });
                 joinedTimer.start();
 
                 Timer leftTimer = new Timer(2000,null);
                 leftTimer.addActionListener(e1 -> {
-                    EventRouter.INSTANCE.fireEvent(new PlayerLeftEvent("Exslimsbf"));
+                    EventRouter.INSTANCE.fireEvent(new PlayerLeftEvent(nickname));
                     leftTimer.stop();
                 });
                 leftTimer.start();
@@ -231,7 +239,7 @@ public class TestCasesFrame extends TitledComponentFrame {
         });
         testPanel.add(button7,buttonColumn);
         buttonColumn.gridy++;
-        JLabel textLabel17 = componentsFactory.getTextLabel("Test whisper font color after join/left area");
+        JLabel textLabel17 = componentsFactory.getTextLabel("Test accessibility status");
         testPanel.add(textLabel17,titleColumn);
         titleColumn.gridy++;
         testPanel.setBackground(AppThemeColor.TRANSPARENT);

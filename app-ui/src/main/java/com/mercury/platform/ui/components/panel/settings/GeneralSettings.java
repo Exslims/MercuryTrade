@@ -26,19 +26,25 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
 
     @Override
     protected LayoutManager getPanelLayout() {
-        return new FlowLayout(FlowLayout.LEFT);
+        return new GridBagLayout();
     }
 
     @Override
     public void createUI() {
+        GridBagConstraints constraint = new GridBagConstraints();
+        constraint.gridy = 0;
+        constraint.gridx = 0;
+        constraint.fill = GridBagConstraints.HORIZONTAL;
+        constraint.weightx = 0.5f;
+        constraint.insets = new Insets(0,0,0,30);
+
+
+        JPanel hideSettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
+        hideSettingsPanel.add(componentsFactory.getTextLabel("Fade time(seconds) 0 - Always show"));
+
         secondsPicker = componentsFactory.getComboBox(new String[]{"0","1","2","3","4","5"});
         int decayTime = ConfigManager.INSTANCE.getDecayTime();
         secondsPicker.setSelectedIndex(decayTime);
-
-        JPanel hideSettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        hideSettingsPanel.add(componentsFactory.getTextLabel("Notification fade time:"));
-        hideSettingsPanel.add(secondsPicker);
-        hideSettingsPanel.add(componentsFactory.getTextLabel("seconds. (0 - Always show)"));
 
         JPanel minOpacitySettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         minOpacitySettingsPanel.add(componentsFactory.getTextLabel("Min opacity: "));
@@ -58,7 +64,6 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
                 minSlider.setValue(minSlider.getValue()-1);
             }
         });
-        minOpacitySettingsPanel.add(minSlider);
 
         JPanel maxOpacitySettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         maxOpacitySettingsPanel.add(componentsFactory.getTextLabel("Max opacity: "));
@@ -78,7 +83,6 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
             maxValueField.setText(String.valueOf(maxSlider.getValue()) + "%");
             owner.setOpacity(maxSlider.getValue()/100.0f);
         });
-        maxOpacitySettingsPanel.add(maxSlider);
 
         JPanel notifierPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         notifierPanel.add(componentsFactory.getTextLabel("Notification sound alerts: "));
@@ -86,16 +90,23 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         WhisperNotifierStatus whisperNotifier = ConfigManager.INSTANCE.getWhisperNotifier();
         notifierStatusPicker.setSelectedIndex(whisperNotifier.getCode());
 
-        notifierPanel.add(notifierStatusPicker);
+        this.add(hideSettingsPanel,constraint);
+        constraint.gridy = 1;
+        this.add(minOpacitySettingsPanel,constraint);
+        constraint.gridy = 2;
+        this.add(maxOpacitySettingsPanel,constraint);
+        constraint.gridy = 3;
+        this.add(notifierPanel,constraint);
+        constraint.gridx = 1;
+        constraint.gridy = 0;
+        this.add(secondsPicker,constraint);
+        constraint.gridy = 1;
+        this.add(minSlider,constraint);
+        constraint.gridy = 2;
+        this.add(maxSlider,constraint);
+        constraint.gridy = 3;
+        this.add(notifierStatusPicker,constraint);
 
-        JPanel rootPanel = componentsFactory.getTransparentPanel();
-        rootPanel.setLayout(new BoxLayout(rootPanel,BoxLayout.Y_AXIS));
-
-        rootPanel.add(hideSettingsPanel);
-        rootPanel.add(minOpacitySettingsPanel);
-        rootPanel.add(maxOpacitySettingsPanel);
-        rootPanel.add(notifierPanel);
-        this.add(rootPanel);
     }
     @Override
     public void processAndSave() {

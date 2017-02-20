@@ -4,14 +4,11 @@ package com.mercury.platform.ui.frame.impl;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.RepaintEvent;
 import com.mercury.platform.ui.components.fields.MercuryTabbedPane;
-import com.mercury.platform.ui.components.panel.CollapsiblePanel;
 import com.mercury.platform.ui.components.panel.settings.*;
-import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
-import javax.swing.plaf.TabbedPaneUI;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

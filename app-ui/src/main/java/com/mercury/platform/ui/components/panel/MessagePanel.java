@@ -198,7 +198,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         if(style.equals(MessagePanelStyle.HISTORY) || style.equals(MessagePanelStyle.SP_MODE)){
             nickNamePanel.add(whisperLabel,BorderLayout.CENTER);
         }else {
-            JPanel buttonWrapper = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
+            JPanel buttonWrapper = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
             buttonWrapper.add(getExpandButton());
             nickNamePanel.add(buttonWrapper,BorderLayout.LINE_START);
             nickNamePanel.add(whisperLabel,BorderLayout.CENTER);
@@ -307,12 +307,12 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 (style.equals(MessagePanelStyle.DOWNWARDS_SMALL) ||
                         style.equals(MessagePanelStyle.UPWARDS_SMALL))
                         ? "app/expand-mp.png":"app/collapse-mp.png";
-        expandButton = componentsFactory.getIconButton(iconPath, 15, AppThemeColor.MSG_HEADER,"");
+        expandButton = componentsFactory.getIconButton(iconPath, 18, AppThemeColor.MSG_HEADER,"");
         expandButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(!messagePanel.isVisible() && !customButtonsPanel.isVisible()) {
-                    expandButton.setIcon(componentsFactory.getIcon("app/collapse-mp.png", 16));
+                    expandButton.setIcon(componentsFactory.getIcon("app/collapse-mp.png", 18));
                     messagePanel.setVisible(true);
                     customButtonsPanel.setVisible(true);
                     whisperPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -325,7 +325,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                         owner.addUpwardsSpace(currentHeight - panelHeight);
                     }
                 }else {
-                    expandButton.setIcon(componentsFactory.getIcon("app/expand-mp.png", 16));
+                    expandButton.setIcon(componentsFactory.getIcon("app/expand-mp.png", 18));
                     messagePanel.setVisible(false);
                     customButtonsPanel.setVisible(false);
                     whisperPanel.setBorder(BorderFactory.createCompoundBorder(
