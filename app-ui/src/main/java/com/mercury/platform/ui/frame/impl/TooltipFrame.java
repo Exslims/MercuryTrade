@@ -49,7 +49,7 @@ public class TooltipFrame extends OverlaidFrame {
                 tooltipTimer.stop();
                 setVisible(true);
             });
-            tooltipTimer.setInitialDelay(1200);
+//            tooltipTimer.setInitialDelay(1200);
             tooltipTimer.start();
         });
         EventRouter.INSTANCE.registerHandler(HideTooltipEvent.class, event -> {

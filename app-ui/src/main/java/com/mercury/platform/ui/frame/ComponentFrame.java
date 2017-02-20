@@ -51,8 +51,8 @@ public abstract class ComponentFrame extends OverlaidFrame{
 
         FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
         this.setLocation(frameSettings.getFrameLocation());
-        this.setMinimumSize(new Dimension(frameSettings.getFrameSize().width, 0));
-        this.setMaximumSize(new Dimension(frameSettings.getFrameSize().width, 0));
+        this.setMinimumSize(frameSettings.getFrameSize());
+        this.setMaximumSize(frameSettings.getFrameSize());
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, BORDER_THICKNESS)));
@@ -103,11 +103,11 @@ public abstract class ComponentFrame extends OverlaidFrame{
             int frameHeight = ComponentFrame.this.getHeight();
             Point frameLocation = ComponentFrame.this.getLocation();
             Rectangle ERect = new Rectangle(
-                    frameLocation.x + frameWidth - (BORDER_THICKNESS + 2),
-                    frameLocation.y,BORDER_THICKNESS+2,frameHeight);
+                    frameLocation.x + frameWidth - (BORDER_THICKNESS + 6),
+                    frameLocation.y,BORDER_THICKNESS+6,frameHeight-4);
             Rectangle SERect = new Rectangle(
-                    frameLocation.x + frameWidth - (BORDER_THICKNESS + 2),
-                    frameLocation.y + frameHeight - (BORDER_THICKNESS + 2),BORDER_THICKNESS+2,4);
+                    frameLocation.x + frameWidth - (BORDER_THICKNESS + 6),
+                    frameLocation.y + frameHeight - (BORDER_THICKNESS + 6),BORDER_THICKNESS+6,4);
 
             if(processEResize && ERect.getBounds().contains(e.getLocationOnScreen())) {
                 if(processSEResize && SERect.getBounds().contains(e.getLocationOnScreen())){
@@ -135,6 +135,7 @@ public abstract class ComponentFrame extends OverlaidFrame{
             if(EResizeSpace){
                 Dimension size = ComponentFrame.this.getSize();
                 ComponentFrame.this.setMaximumSize(size);
+                ComponentFrame.this.setMinimumSize(size);
                 configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(),ComponentFrame.this.getSize());
             }else if(SEResizeSpace){
                 ComponentFrame.this.setMinimumSize(ComponentFrame.this.getSize());
@@ -152,8 +153,8 @@ public abstract class ComponentFrame extends OverlaidFrame{
 
         @Override
         public void mousePressed(MouseEvent e) {
-            FrameSettings settings = configManager.getDefaultFramesSettings().get(ComponentFrame.this.getClass().getSimpleName());
-            ComponentFrame.this.setMinimumSize(settings.getFrameSize());
+            Dimension size = configManager.getMinimumFrameSize(ComponentFrame.this.getClass().getSimpleName());
+            ComponentFrame.this.setMinimumSize(size);
         }
     }
 

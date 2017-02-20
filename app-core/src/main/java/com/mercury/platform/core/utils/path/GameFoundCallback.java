@@ -1,4 +1,4 @@
-package com.mercury.platform.core;
+package com.mercury.platform.core.utils.path;
 
 /**
  * Created by Константин on 24.01.2017.

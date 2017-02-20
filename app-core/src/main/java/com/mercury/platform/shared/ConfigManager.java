@@ -31,6 +31,7 @@ public class ConfigManager {
 
     private Map<String, String> cachedButtonsConfig;
     private Map<String, FrameSettings> cachedFramesSettings;
+    private Map<String,Dimension> minimumFrameSize;
 
     private WhisperNotifierStatus whisperNotifier;
     private int decayTime;
@@ -39,6 +40,23 @@ public class ConfigManager {
 
     private boolean showPatchNotes;
     private boolean showOnStartUp;
+
+    public ConfigManager() {
+        minimumFrameSize = new HashMap<>();
+        minimumFrameSize.put("TaskBarFrame",new Dimension(109,20));
+        minimumFrameSize.put("IncMessageFrame",new Dimension(280,10));
+        minimumFrameSize.put("OutMessageFrame",new Dimension(280,115));
+        minimumFrameSize.put("TestCasesFrame",new Dimension(400,100));
+        minimumFrameSize.put("SettingsFrame",new Dimension(540,100));
+        minimumFrameSize.put("HistoryFrame",new Dimension(280,400));
+        minimumFrameSize.put("TimerFrame",new Dimension(240,102));
+        minimumFrameSize.put("ChatFilterFrame",new Dimension(200,100));
+        minimumFrameSize.put("ItemsGridFrame",new Dimension(400,400));
+        minimumFrameSize.put("NotesFrame",new Dimension(540,100));
+        minimumFrameSize.put("SetUpLocationFrame",new Dimension(240,30));
+        minimumFrameSize.put("ChunkMessagesPicker",new Dimension(240,30));
+        minimumFrameSize.put("GamePathChooser",new Dimension(150,30));
+    }
 
     /**
      * Loading application data from app-config.json file. If file does not exist, created and filled by default.
@@ -240,17 +258,21 @@ public class ConfigManager {
     public Map<String,FrameSettings> getDefaultFramesSettings(){
         Map<String,FrameSettings> dFramesSettings = new HashMap<>();
         dFramesSettings.put("TaskBarFrame",new FrameSettings(new Point(400, 500),new Dimension(109,20)));
-        dFramesSettings.put("IncMessageFrame",new FrameSettings(new Point(700, 600),new Dimension(280,10)));
+        dFramesSettings.put("IncMessageFrame",new FrameSettings(new Point(700, 600),new Dimension(280,0)));
         dFramesSettings.put("OutMessageFrame",new FrameSettings(new Point(200, 500),new Dimension(280,115)));
         dFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(1400, 500),new Dimension(400,100)));
         dFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(540,100)));
         dFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 500),new Dimension(280,400)));
         dFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
         dFramesSettings.put("ChatFilterFrame",new FrameSettings(new Point(400, 600),new Dimension(200,100)));
-        dFramesSettings.put("ItemsMeshFrame",new FrameSettings(new Point(100, 300),new Dimension(400,400)));
+        dFramesSettings.put("ItemsGridFrame",new FrameSettings(new Point(12, 79),new Dimension(641,718)));
         dFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,100)));
         dFramesSettings.put("SetUpLocationFrame",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
         dFramesSettings.put("ChunkMessagesPicker",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
+        dFramesSettings.put("GamePathChooser",new FrameSettings(new Point(400, 600),new Dimension(150,30)));
         return dFramesSettings;
+    }
+    public Dimension getMinimumFrameSize(String frameName){
+        return minimumFrameSize.get(frameName);
     }
 }

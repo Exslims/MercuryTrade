@@ -27,18 +27,16 @@ import java.util.Map;
 /**
  * Created by Константин on 18.02.2017.
  */
-public class ItemsMeshFrame extends MovableComponentFrame{
+public class ItemsGridFrame extends MovableComponentFrame{
     private List<ItemCell> cells;
     private Map<String,JButton> tabButtons;
     private JPanel navBar;
     private JLabel prevLabel;
 
-    public ItemsMeshFrame() {
+    public ItemsGridFrame() {
         super("MT-Mesh");
         cells = new ArrayList<>();
         tabButtons = new HashMap<>();
-        FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
-        this.setPreferredSize(frameSettings.getFrameSize());
     }
 
     @Override

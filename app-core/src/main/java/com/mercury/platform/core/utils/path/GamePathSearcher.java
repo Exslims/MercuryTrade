@@ -1,4 +1,4 @@
-package com.mercury.platform.core;
+package com.mercury.platform.core.utils.path;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;

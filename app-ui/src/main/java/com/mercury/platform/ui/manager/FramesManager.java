@@ -45,8 +45,8 @@ public class FramesManager {
         framesMap.put(IncMessageFrame.class,incMessageFrame);
         OverlaidFrame taskBarFrame = new TaskBarFrame();
         framesMap.put(TaskBarFrame.class,taskBarFrame);
-        OverlaidFrame itemsMeshFrame = new ItemsMeshFrame();
-        framesMap.put(ItemsMeshFrame.class,itemsMeshFrame);
+        OverlaidFrame itemsMeshFrame = new ItemsGridFrame();
+        framesMap.put(ItemsGridFrame.class,itemsMeshFrame);
 
         locationCommander.addFrame((MovableComponentFrame) incMessageFrame);
         locationCommander.addFrame((MovableComponentFrame) taskBarFrame);
@@ -69,6 +69,7 @@ public class FramesManager {
         framesMap.put(NotificationFrame.class,new NotificationFrame());
         framesMap.put(DonationAlertFrame.class,new DonationAlertFrame());
         framesMap.put(SetUpLocationFrame.class,new SetUpLocationFrame());
+//        framesMap.put(GamePathChooser.class,new GamePathChooser());
 
         framesMap.forEach((k,v)->{
             v.init();
