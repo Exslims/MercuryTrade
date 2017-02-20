@@ -15,7 +15,6 @@ import com.mercury.platform.ui.frame.impl.util.FlowDirections;
 import com.mercury.platform.ui.frame.impl.util.TradeMode;
 import com.mercury.platform.ui.frame.location.UndecoratedFrameState;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.TooltipConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,7 +30,7 @@ public class IncMessageFrame extends MovableComponentFrame{
     private final Logger logger = LogManager.getLogger(IncMessageFrame.class.getSimpleName());
     private TradeMode tradeMode = TradeMode.DEFAULT;
     private FlowDirections flowDirections = FlowDirections.DOWNWARDS;
-    private int deltaYInUpwards = 0; //wtf
+    private int deltaYInUpwards = 0;
 
     private boolean dnd = false;
     public IncMessageFrame(){
@@ -62,23 +61,38 @@ public class IncMessageFrame extends MovableComponentFrame{
         switch (mode){
             case DEFAULT:{
                 if(tradeMode == TradeMode.SUPER){
+                    int deltaY = 0;
                     Component[] components = mainContainer.getComponents();
                     for (Component messagePanel : components) {
-                        ((MessagePanel)messagePanel).setStyle(MessagePanelStyle.SMALL);
+                        int oldH = messagePanel.getPreferredSize().height;
+                        if(flowDirections.equals(FlowDirections.DOWNWARDS)) {
+                            ((MessagePanel) messagePanel).setStyle(MessagePanelStyle.DOWNWARDS_SMALL);
+                        }else {
+                            ((MessagePanel) messagePanel).setStyle(MessagePanelStyle.UPWARDS_SMALL);
+                            int newH = messagePanel.getPreferredSize().height;
+                            deltaY += oldH-newH;
+                        }
                     }
-                    if(mainContainer.getComponentCount() != 0) {
-                        MessagePanel first = (MessagePanel) mainContainer.getComponent(0);
-                        first.setStyle(MessagePanelStyle.BIGGEST);
-                        first.setBorder(null);
+                    if(deltaY > 0){
+                        this.setLocation(this.getLocation().x, this.getLocation().y + deltaY);
                     }
                 }
                 break;
             }
             case SUPER:{
                 if(tradeMode == TradeMode.DEFAULT){
+                    int deltaY = 0;
                     Component[] components = mainContainer.getComponents();
                     for (Component messagePanel : components) {
-                        ((MessagePanel)messagePanel).setStyle(MessagePanelStyle.SPMODE);
+                        int oldH = messagePanel.getPreferredSize().height;
+                        ((MessagePanel) messagePanel).setStyle(MessagePanelStyle.SP_MODE);
+                        if(flowDirections.equals(FlowDirections.UPWARDS)) {
+                            int newH = messagePanel.getPreferredSize().height;
+                            deltaY += newH-oldH;
+                        }
+                    }
+                    if(deltaY > 0){
+                        this.setLocation(this.getLocation().x, this.getLocation().y - deltaY);
                     }
                 }
                 break;
@@ -118,13 +132,14 @@ public class IncMessageFrame extends MovableComponentFrame{
             MessagePanel messagePanel = null;
             switch (tradeMode) {
                 case SUPER: {
-                    messagePanel = new MessagePanel(message, this, MessagePanelStyle.SPMODE);
+                    messagePanel = new MessagePanel(message, this, MessagePanelStyle.SP_MODE);
                     break;
                 }
                 case DEFAULT: {
-                    messagePanel = new MessagePanel(message, this, MessagePanelStyle.BIGGEST);
-                    if (mainContainer.getComponentCount() > 0) {
-                        messagePanel.setStyle(MessagePanelStyle.SMALL);
+                    if(flowDirections.equals(FlowDirections.DOWNWARDS)) {
+                        messagePanel = new MessagePanel(message, this, MessagePanelStyle.DOWNWARDS_SMALL);
+                    }else {
+                        messagePanel = new MessagePanel(message, this, MessagePanelStyle.UPWARDS_SMALL);
                     }
                 }
             }
@@ -135,26 +150,20 @@ public class IncMessageFrame extends MovableComponentFrame{
                 prevState = FrameStates.SHOW;
             }
             if(flowDirections.equals(FlowDirections.UPWARDS)){
-                messagePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, AppThemeColor.BORDER));
                 if(mainContainer.getComponentCount() > 0) {
                     this.setLocation(new Point(this.getLocation().x, this.getLocation().y - messagePanel.getPreferredSize().height));
                 }
                 mainContainer.add(messagePanel, 0);
             }else {
-                if(mainContainer.getComponentCount() > 0) {
-                    messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
-                }
                 mainContainer.add(messagePanel);
             }
             this.pack();
         });
         EventRouter.INSTANCE.registerHandler(CloseMessagePanelEvent.class, event -> {
             Component panel = ((CloseMessagePanelEvent) event).getComponent();
-            deltaYInUpwards += panel.getHeight();
             this.remove(panel);
             if (mainContainer.getComponentCount() > 0) {
-                MessagePanel component = (MessagePanel) mainContainer.getComponent(0);
-                component.setBorder(null);
+                deltaYInUpwards += panel.getHeight();
             }
             this.pack();
             if(mainContainer.getComponentCount() == 0){
@@ -180,12 +189,17 @@ public class IncMessageFrame extends MovableComponentFrame{
         JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER,20f,"Notification panel"));
 
-        JPanel growPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        growPanel.add(componentsFactory.getTextLabel("Flow direction"));
-        JComboBox growPicker = componentsFactory.getComboBox(new String[]{"Upwards", "Downwards"});
-        growPicker.setSelectedIndex(FlowDirections.valueOf(flowDirections.toString()).ordinal());
-        growPicker.addActionListener(e -> {
-            switch ((String)growPicker.getSelectedItem()){
+        JPanel growPanel = componentsFactory.getTransparentPanel(new GridBagLayout());
+        GridBagConstraints constraint = new GridBagConstraints();
+        constraint.gridy = 0;
+        constraint.gridx = 0;
+        constraint.fill = GridBagConstraints.HORIZONTAL;
+        constraint.weightx = 0.5f;
+        constraint.insets = new Insets(2,0,0,2);
+        JComboBox flowDirectionPicker = componentsFactory.getComboBox(new String[]{"Upwards", "Downwards"});
+        flowDirectionPicker.setSelectedIndex(FlowDirections.valueOf(flowDirections.toString()).ordinal());
+        flowDirectionPicker.addActionListener(e -> {
+            switch ((String)flowDirectionPicker.getSelectedItem()){
                 case "Upwards":{
                     changeDirection(FlowDirections.UPWARDS);
                     break;
@@ -196,7 +210,11 @@ public class IncMessageFrame extends MovableComponentFrame{
                 }
             }
         });
-        growPanel.add(growPicker);
+
+        growPanel.add(componentsFactory.getTextLabel("Flow direction"),constraint);
+        constraint.gridx = 1;
+        growPanel.add(flowDirectionPicker,constraint);
+
         panel.add(labelPanel);
         panel.add(growPanel);
         return panel;
@@ -207,26 +225,30 @@ public class IncMessageFrame extends MovableComponentFrame{
                 case DOWNWARDS:{
                     Component[] components = mainContainer.getComponents();
                     for (Component component : components) {
+                        if(tradeMode.equals(TradeMode.DEFAULT)) {
+                            ((MessagePanel) component).setStyle(MessagePanelStyle.DOWNWARDS_SMALL);
+                        }else {
+                            ((MessagePanel) component).setStyle(MessagePanelStyle.SP_MODE);
+                        }
                         mainContainer.remove(component);
                         mainContainer.add(component, 0);
                     }
-                    components = mainContainer.getComponents();
-                    ((JPanel)components[0]).setBorder(null);
-                    ((JPanel)components[components.length-1]).setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
                     this.setLocation(ConfigManager.INSTANCE.getFrameSettings(this.getClass().getSimpleName()).getFrameLocation());
                     break;
                 }
                 case UPWARDS: {
                     int deltaY = 0;
                     Component[] components = mainContainer.getComponents();
-                    for (int i = 1; i < components.length; i++) {
-                        deltaY += components[i].getHeight();
-                        mainContainer.remove(components[i]);
-                        mainContainer.add(components[i],0);
+                    for (Component component : components) {
+                        if (tradeMode.equals(TradeMode.DEFAULT)) {
+                            ((MessagePanel) component).setStyle(MessagePanelStyle.UPWARDS_SMALL);
+                        } else {
+                            ((MessagePanel) component).setStyle(MessagePanelStyle.SP_MODE);
+                        }
+                        deltaY += component.getHeight();
+                        mainContainer.remove(component);
+                        mainContainer.add(component, 0);
                     }
-                    components = mainContainer.getComponents();
-                    ((JPanel)components[0]).setBorder(null);
-                    ((JPanel)components[components.length-1]).setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
                     this.setLocation(this.getLocation().x, this.getLocation().y - deltaY);
                     break;
                 }
@@ -234,5 +256,13 @@ public class IncMessageFrame extends MovableComponentFrame{
         }
         this.deltaYInUpwards = 0;
         this.flowDirections = direction;
+    }
+
+    @Override
+    protected Point getFrameLocation() {
+        if(flowDirections.equals(FlowDirections.UPWARDS)){
+            return new Point(this.getLocationOnScreen().x,this.getLocationOnScreen().y + this.getHeight());
+        }
+        return super.getFrameLocation();
     }
 }

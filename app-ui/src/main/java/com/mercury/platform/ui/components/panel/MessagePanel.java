@@ -53,51 +53,66 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
 
     public MessagePanel(Message message, ComponentFrame owner, MessagePanelStyle style){
         super(new BorderLayout());
-
         this.message = message;
         this.owner = owner;
         this.style = style;
         this.whisper = message.getWhisperNickname();
         this.setBackground(AppThemeColor.TRANSPARENT);
+
         this.messagePanel = getFormattedMessagePanel();
         this.customButtonsPanel = getButtonsPanel(whisper);
-
-        this.setBackground(AppThemeColor.TRANSPARENT);
-
         init();
         initHandlers();
     }
     private void init(){
         this.removeAll();
         this.whisperPanel = getWhisperPanel();
-        this.add(whisperPanel,BorderLayout.PAGE_START);
-        this.add(messagePanel,BorderLayout.CENTER);
-        this.add(customButtonsPanel,BorderLayout.PAGE_END);
+        if(style.equals(MessagePanelStyle.DOWNWARDS_SMALL) ||
+                style.equals(MessagePanelStyle.SP_MODE) ||
+                style.equals(MessagePanelStyle.HISTORY)) {
+            this.add(whisperPanel,BorderLayout.PAGE_START);
+            this.add(messagePanel,BorderLayout.CENTER);
+            this.add(customButtonsPanel,BorderLayout.PAGE_END);
+        }else {
+            this.add(customButtonsPanel,BorderLayout.PAGE_START);
+            this.add(messagePanel,BorderLayout.CENTER);
+            this.add(whisperPanel,BorderLayout.PAGE_END);
+        }
         switch (style){
-            case SMALL:{
+            case DOWNWARDS_SMALL:{
+                whisperPanel.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.MSG_HEADER_BORDER),
+                        BorderFactory.createEmptyBorder(-5,0,-5,0)));
                 messagePanel.setVisible(false);
                 customButtonsPanel.setVisible(false);
                 break;
             }
-            case MEDIUM:{
-                break;
-            }
-            case BIGGEST:{
+            case SP_MODE:{
+                whisperPanel.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createMatteBorder(1,0,1,0,AppThemeColor.MSG_HEADER_BORDER),
+                        BorderFactory.createEmptyBorder(-5,0,-5,0)));
                 messagePanel.setVisible(true);
                 customButtonsPanel.setVisible(true);
                 break;
             }
+            case UPWARDS_SMALL:{
+                whisperPanel.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.MSG_HEADER_BORDER),
+                        BorderFactory.createEmptyBorder(-5,0,-5,0)));
+                messagePanel.setVisible(false);
+                customButtonsPanel.setVisible(false);
+                break;
+            }
             case HISTORY:{
+                whisperPanel.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.MSG_HEADER_BORDER),
+                        BorderFactory.createEmptyBorder(-5,0,-5,0)));
                 messagePanel.setVisible(true);
                 customButtonsPanel.setVisible(false);
                 break;
             }
-            case SPMODE:{
-                messagePanel.setVisible(true);
-                customButtonsPanel.setVisible(true);
-                break;
-            }
         }
+        this.repaint();
     }
 
     private JPanel getFormattedMessagePanel(){
@@ -180,10 +195,12 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         whisperLabel.setVerticalAlignment(SwingConstants.CENTER);
 
         JPanel nickNamePanel = componentsFactory.getTransparentPanel(new BorderLayout());
-        if(style.equals(MessagePanelStyle.HISTORY) || style.equals(MessagePanelStyle.SPMODE)){
+        if(style.equals(MessagePanelStyle.HISTORY) || style.equals(MessagePanelStyle.SP_MODE)){
             nickNamePanel.add(whisperLabel,BorderLayout.CENTER);
         }else {
-            nickNamePanel.add(getExpandButton(),BorderLayout.LINE_START);
+            JPanel buttonWrapper = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
+            buttonWrapper.add(getExpandButton());
+            nickNamePanel.add(buttonWrapper,BorderLayout.LINE_START);
             nickNamePanel.add(whisperLabel,BorderLayout.CENTER);
         }
         topPanel.add(nickNamePanel,BorderLayout.CENTER);
@@ -286,8 +303,11 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         }
     }
     private JButton getExpandButton(){
-        String iconPath = (style == MessagePanelStyle.SMALL) ? "app/expand-mp.png":"app/collapse-mp.png";
-        expandButton = componentsFactory.getIconButton(iconPath, 16, AppThemeColor.MSG_HEADER,TooltipConstants.EXPAND_COLLAPSE);
+        String iconPath =
+                (style.equals(MessagePanelStyle.DOWNWARDS_SMALL) ||
+                        style.equals(MessagePanelStyle.UPWARDS_SMALL))
+                        ? "app/expand-mp.png":"app/collapse-mp.png";
+        expandButton = componentsFactory.getIconButton(iconPath, 15, AppThemeColor.MSG_HEADER,"");
         expandButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -295,12 +315,29 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                     expandButton.setIcon(componentsFactory.getIcon("app/collapse-mp.png", 16));
                     messagePanel.setVisible(true);
                     customButtonsPanel.setVisible(true);
+                    whisperPanel.setBorder(BorderFactory.createCompoundBorder(
+                            BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.MSG_HEADER_BORDER),
+                            BorderFactory.createEmptyBorder(-5,0,-5,0)));
+                    int panelHeight = getSize().height;
+                    owner.pack();
+                    int currentHeight = getSize().height;
+                    if(style.equals(MessagePanelStyle.UPWARDS_SMALL)) {
+                        owner.addUpwardsSpace(currentHeight - panelHeight);
+                    }
                 }else {
                     expandButton.setIcon(componentsFactory.getIcon("app/expand-mp.png", 16));
                     messagePanel.setVisible(false);
                     customButtonsPanel.setVisible(false);
+                    whisperPanel.setBorder(BorderFactory.createCompoundBorder(
+                            BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.MSG_HEADER_BORDER),
+                            BorderFactory.createEmptyBorder(-5,0,-5,0)));
+                    int panelHeight = getSize().height;
+                    owner.pack();
+                    int currentHeight = getSize().height;
+                    if(style.equals(MessagePanelStyle.UPWARDS_SMALL)) {
+                        owner.removeUpwardsSpace(panelHeight - currentHeight);
+                    }
                 }
-                owner.pack();
             }
         });
         return expandButton;

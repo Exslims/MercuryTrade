@@ -57,6 +57,9 @@ public abstract class ComponentFrame extends OverlaidFrame{
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, BORDER_THICKNESS)));
     }
+    protected Point getFrameLocation(){
+        return this.getLocationOnScreen();
+    }
 
     public void disableHideEffect(){
         this.setOpacity(maxOpacity);
@@ -84,6 +87,14 @@ public abstract class ComponentFrame extends OverlaidFrame{
         hideAnimation = new Timeline(this);
         hideAnimation.setDuration(HIDE_TIME);
         hideAnimation.addPropertyToInterpolate("opacity",maxOpacity,minOpacity);
+    }
+
+    public void addUpwardsSpace(int value) {
+        this.setLocation(this.getLocation().x,this.getLocation().y - value);
+    }
+
+    public void removeUpwardsSpace(int value) {
+        this.setLocation(this.getLocation().x,this.getLocation().y + value);
     }
 
     private class ResizeByWidthMouseMotionListener extends MouseMotionAdapter{
@@ -134,9 +145,12 @@ public abstract class ComponentFrame extends OverlaidFrame{
             }
             if(EResizeSpace){
                 Dimension size = ComponentFrame.this.getSize();
+                if(ComponentFrame.this.getClass().getSimpleName().equals("IncMessageFrame")){
+                    size = new Dimension(ComponentFrame.this.getSize().width,0);
+                }
                 ComponentFrame.this.setMaximumSize(size);
                 ComponentFrame.this.setMinimumSize(size);
-                configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(),ComponentFrame.this.getSize());
+                configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(),size);
             }else if(SEResizeSpace){
                 ComponentFrame.this.setMinimumSize(ComponentFrame.this.getSize());
                 ComponentFrame.this.setMaximumSize(ComponentFrame.this.getSize());
@@ -205,7 +219,7 @@ public abstract class ComponentFrame extends OverlaidFrame{
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            configManager.saveFrameLocation(ComponentFrame.this.getClass().getSimpleName(),ComponentFrame.this.getLocationOnScreen());
+            configManager.saveFrameLocation(ComponentFrame.this.getClass().getSimpleName(),ComponentFrame.this.getFrameLocation());
         }
     }
 

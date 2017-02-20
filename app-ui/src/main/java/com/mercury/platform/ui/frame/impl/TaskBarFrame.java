@@ -226,6 +226,8 @@ public class TaskBarFrame extends MovableComponentFrame{
             }
         });
 
+        taskBarPanel.add(moveButton);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(visibleMode);
         taskBarPanel.add(Box.createRigidArea(new Dimension(2, 4)));
         taskBarPanel.add(chatMode);
@@ -233,8 +235,6 @@ public class TaskBarFrame extends MovableComponentFrame{
         taskBarPanel.add(chatFilter);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(historyButton);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
-        taskBarPanel.add(moveButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(settingsButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));

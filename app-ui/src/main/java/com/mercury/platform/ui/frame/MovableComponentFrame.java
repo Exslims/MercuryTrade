@@ -32,7 +32,7 @@ public abstract class MovableComponentFrame extends ComponentFrame {
                     prevBGColor = this.getBackground();
                     prevBorder = this.getRootPane().getBorder();
                     JPanel panel = setUpMoveListeners(panelWhenMove());
-                    if(mainContainer.getHeight() < 30) {
+                    if(mainContainer.getHeight() < 100 && !this.getClass().getSimpleName().equals("TaskBarFrame")){
                         panel.setPreferredSize(new Dimension(200, 100));
                     }else {
                         panel.setPreferredSize(mainContainer.getSize());
@@ -53,6 +53,9 @@ public abstract class MovableComponentFrame extends ComponentFrame {
                 this.setBackground(prevBGColor);
                 this.getRootPane().setBorder(prevBorder);
                 this.setVisible(wasVisible);
+                if(mainContainer.getComponentCount() > 0 && this.getClass().getSimpleName().equals("IncMessageFrame")){
+                    this.setVisible(true);
+                }
                 this.setPreferredSize(null);
                 this.pack();
                 this.repaint();
