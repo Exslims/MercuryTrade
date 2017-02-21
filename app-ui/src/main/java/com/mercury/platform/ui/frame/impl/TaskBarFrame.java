@@ -9,6 +9,7 @@ import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.frame.impl.util.TradeMode;
 import com.mercury.platform.ui.manager.FramesManager;
+import com.mercury.platform.ui.manager.UpdateManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import org.apache.commons.lang3.StringUtils;
@@ -27,38 +28,32 @@ import java.awt.event.*;
  */
 public class TaskBarFrame extends MovableComponentFrame{
     private final Logger logger = LogManager.getLogger(TaskBarFrame.class.getSimpleName());
-    private final String LOCAL_UPDATER_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\local-updater.jar";
 
     private boolean updateReady = false;
 
     private Timeline collapseAnim;
-    private JPanel updatePanel;
     private static final int MAX_WIDTH = 286;
 
     public TaskBarFrame() {
         super("MT-TaskBar");
+        processEResize = false;
+        processSEResize = false;
     }
 
     @Override
     protected void initialize() {
         super.initialize();
-        processSEResize = false;
-        updatePanel = getUpdatePanel();
-        updatePanel.setVisible(false);
         add(getTaskBarPanel(), BorderLayout.CENTER);
-        add(updatePanel, BorderLayout.PAGE_START);
         pack();
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 TaskBarFrame.this.repaint();
-                if(!EResizeSpace) {
-                    if (collapseAnim != null) {
-                        collapseAnim.abort();
-                    }
-                    initCollapseAnimations("expand");
-                    collapseAnim.play();
+                if (collapseAnim != null) {
+                    collapseAnim.abort();
                 }
+                initCollapseAnimations("expand");
+                collapseAnim.play();
             }
 
             @Override
@@ -82,49 +77,6 @@ public class TaskBarFrame extends MovableComponentFrame{
     @Override
     protected LayoutManager getFrameLayout() {
         return new BorderLayout();
-    }
-
-    private JPanel getUpdatePanel(){
-        JPanel panel = componentsFactory.getTransparentPanel();
-        panel.setLayout(new BoxLayout(panel,BoxLayout.X_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(3,0,0,0));
-
-        JLabel label = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT,TextAlignment.LEFTOP,16f,"Ready for update: ");
-        JLabel restartLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT,TextAlignment.LEFTOP,16f,"Restart");
-        restartLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                setCursor(new Cursor(Cursor.HAND_CURSOR));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                doUpdate();
-            }
-        });
-        restartLabel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(AppThemeColor.TEXT_IMPORTANT),
-                BorderFactory.createEmptyBorder(2,2,2,2)
-        ));
-        label.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
-        panel.add(label);
-        panel.add(restartLabel);
-        return panel;
-    }
-    private void doUpdate(){
-        try {
-            String path = StringUtils.substringAfter(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath(), "/");
-            logger.debug("Execute local updater, source path: {}",path);
-            Runtime.getRuntime().exec("java -jar " + LOCAL_UPDATER_PATH + " " + "\"" + path + "\"");
-            System.exit(0);
-        } catch (Exception e1) {
-            logger.error("Error while execute local-updater: ", e1);
-        }
     }
 
     private JPanel getTaskBarPanel(){
@@ -162,10 +114,12 @@ public class TaskBarFrame extends MovableComponentFrame{
                     itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-enable.png", 24));
                     frameOpened = true;
                     TaskBarFrame.this.repaint();
+                    FramesManager.INSTANCE.enableMovement("ItemsGridFrame");
                 } else {
                     frameOpened = false;
                     itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-disable.png", 24));
                     TaskBarFrame.this.repaint();
+                    FramesManager.INSTANCE.disableMovement("ItemsGridFrame");
                 }
             }
         });
@@ -195,7 +149,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         chatFilter.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                FramesManager.INSTANCE.hideOrShowFrame(ChatFilterFrame.class);
+                FramesManager.INSTANCE.hideOrShowFrame(ChatScannerFrame.class);
             }
         });
         //todo in feature
@@ -219,7 +173,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         moveButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                FramesManager.INSTANCE.enableMovement();
+                FramesManager.INSTANCE.enableMovementExclude("ItemsGridFrame");
             }
         });
 
@@ -236,7 +190,7 @@ public class TaskBarFrame extends MovableComponentFrame{
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(updateReady){
-                    doUpdate();
+                    UpdateManager.INSTANCE.doUpdate();
                 }else {
                     System.exit(0);
                 }
@@ -269,7 +223,6 @@ public class TaskBarFrame extends MovableComponentFrame{
             TaskBarFrame.this.repaint();
         });
         EventRouter.INSTANCE.registerHandler(UpdateReadyEvent.class,event -> {
-            updatePanel.setVisible(true);
             updateReady = true;
             pack();
         });

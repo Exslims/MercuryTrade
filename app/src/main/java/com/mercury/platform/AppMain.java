@@ -4,7 +4,7 @@ import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.core.utils.FileMonitor;
 import com.mercury.platform.core.utils.path.GamePathSearcher;
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.ui.frame.GamePathChooser;
+import com.mercury.platform.ui.frame.impl.GamePathChooser;
 import com.mercury.platform.ui.manager.FramesManager;
 
 import javax.swing.*;

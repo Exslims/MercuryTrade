@@ -38,7 +38,7 @@ public class SetUpLocationFrame extends ComponentFrame {
         lock.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                FramesManager.INSTANCE.enableMovement();
+                FramesManager.INSTANCE.disableMovement();
                 SetUpLocationFrame.this.setVisible(false);
             }
         });

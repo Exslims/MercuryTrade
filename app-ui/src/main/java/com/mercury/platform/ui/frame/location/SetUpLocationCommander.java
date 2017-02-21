@@ -3,41 +3,64 @@ package com.mercury.platform.ui.frame.location;
 import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-/**
- * Created by Константин on 21.01.2017.
- */
 public class SetUpLocationCommander {
-    private UndecoratedFrameState currentState;
-    private List<MovableComponentFrame> movableFrames;
+    private Map<String,MovableComponentFrame> movableFrames;
+    private List<MovableComponentFrame> activeFrames;
     public SetUpLocationCommander() {
-        movableFrames = new ArrayList<>();
-        currentState = UndecoratedFrameState.DEFAULT;
+        movableFrames = new HashMap<>();
+        activeFrames = new ArrayList<>();
     }
     public void addFrame(MovableComponentFrame movableFrame){
-        movableFrames.add(movableFrame);
+        movableFrames.put(movableFrame.getClass().getSimpleName(),movableFrame);
     }
-    public void callSetupLocation(){
-        movableFrames.forEach(frame->{
-            switch (currentState){
-                case DEFAULT:{
-                    frame.setState(UndecoratedFrameState.MOVING);
-                    FramesManager.INSTANCE.showFrame(SetUpLocationFrame.class);
-                    break;
-                }
-                case MOVING:{
-                    frame.setState(UndecoratedFrameState.DEFAULT);
-                    FramesManager.INSTANCE.hideFrame(SetUpLocationFrame.class);
-                    break;
-                }
+    public void setUpAllExclude(String... frames){
+        List<String> framesList = Arrays.asList(frames);
+        movableFrames.forEach((title,frame)->{
+            if(!framesList.contains(title)) {
+                process(frame,UndecoratedFrameState.MOVING);
+                activeFrames.add(frame);
             }
         });
-        if(currentState.equals(UndecoratedFrameState.DEFAULT)){
-            currentState = UndecoratedFrameState.MOVING;
-        }else {
-            currentState = UndecoratedFrameState.DEFAULT;
+    }
+    public void setUpAll(){
+        movableFrames.forEach((title,frame)->{
+            process(frame,UndecoratedFrameState.MOVING);
+            activeFrames.add(frame);
+        });
+    }
+    public void setUp(String frameClass){
+        MovableComponentFrame frame = movableFrames.get(frameClass);
+        process(frame,UndecoratedFrameState.MOVING);
+        activeFrames.add(frame);
+    }
+
+    public void disableAll() {
+        activeFrames.forEach(frame -> {
+            process(frame,UndecoratedFrameState.DEFAULT);
+        });
+        activeFrames.clear();
+    }
+
+    public void disable(String frameClass) {
+        MovableComponentFrame frame = movableFrames.get(frameClass);
+        process(frame,UndecoratedFrameState.DEFAULT);
+        activeFrames.remove(frame);
+    }
+
+    private void process(MovableComponentFrame frame, UndecoratedFrameState state){
+        switch (state){
+            case MOVING:{
+                frame.setState(UndecoratedFrameState.MOVING);
+                FramesManager.INSTANCE.showFrame(SetUpLocationFrame.class);
+                break;
+            }
+            case DEFAULT:{
+                frame.setState(UndecoratedFrameState.DEFAULT);
+                FramesManager.INSTANCE.hideFrame(SetUpLocationFrame.class);
+                break;
+            }
         }
     }
 }

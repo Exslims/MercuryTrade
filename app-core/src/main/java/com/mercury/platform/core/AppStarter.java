@@ -13,6 +13,7 @@ import com.mercury.platform.shared.events.custom.UILoadedEvent;
 import com.sun.jna.Native;
 import com.sun.jna.PointerType;
 
+import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executor;
@@ -53,7 +54,7 @@ public class AppStarter {
                         }
                     }
                 }
-            },0,500);
+            },0,250);
         });
     }
 }

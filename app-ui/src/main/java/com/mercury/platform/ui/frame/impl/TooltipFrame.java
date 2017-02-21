@@ -41,15 +41,21 @@ public class TooltipFrame extends OverlaidFrame {
         EventRouter.INSTANCE.registerHandler(ShowTooltipEvent.class, event -> {
             String tooltip = ((ShowTooltipEvent) event).getTooltip();
             Point cursorPoint = ((ShowTooltipEvent) event).getCursorPoint();
-            setLocation(cursorPoint);
+
+            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+            if(cursorPoint.y + this.getHeight() > dim.height){
+                this.setLocation(cursorPoint.x,cursorPoint.y - this.getHeight());
+            }else {
+                this.setLocation(cursorPoint);
+            }
+
             tooltipLabel.setText(tooltip);
-            pack();
-            repaint();
+            this.pack();
+            this.repaint();
             tooltipTimer = new Timer(500, e -> {
                 tooltipTimer.stop();
                 setVisible(true);
             });
-//            tooltipTimer.setInitialDelay(1200);
             tooltipTimer.start();
         });
         EventRouter.INSTANCE.registerHandler(HideTooltipEvent.class, event -> {

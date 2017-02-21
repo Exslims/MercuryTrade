@@ -37,6 +37,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
         super("MT-Mesh");
         cells = new ArrayList<>();
         tabButtons = new HashMap<>();
+        this.setVisible(false);
     }
 
     @Override
@@ -95,7 +96,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
                 String tab = StringUtils.substringBetween(tabInfo, "\"", "\"");
                 int x = Integer.parseInt(StringUtils.substringBetween(tabInfo,"left ",","));
                 int y = Integer.parseInt(StringUtils.substringAfter(tabInfo,"top "));
-                JButton button = componentsFactory.getBorderedButton(nickname + ":" + tab);
+                JButton button = componentsFactory.getBorderedButton(nickname + ": " + tab);
                 button.setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
                         BorderFactory.createLineBorder(AppThemeColor.FRAME, 3)
@@ -121,6 +122,9 @@ public class ItemsGridFrame extends MovableComponentFrame{
                         });
                     }
                 });
+                if(navBar.getComponentCount() == 0) {
+                    this.setVisible(true);
+                }
                 navBar.add(button);
                 tabButtons.put(tabInfo,button);
                 pack();
@@ -143,6 +147,9 @@ public class ItemsGridFrame extends MovableComponentFrame{
                     tabButtons.remove(tabInfo);
                     this.pack();
                     this.repaint();
+                    if(navBar.getComponentCount() == 0){
+                        this.setVisible(false);
+                    }
                 }
             }
         });

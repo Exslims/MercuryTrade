@@ -183,8 +183,8 @@ public class TestCasesFrame extends TitledComponentFrame {
         testPanel.add(textLabel,titleColumn);
         titleColumn.gridy++;
 
-        JButton button6 = componentsFactory.getBorderedButton("Click");
-        button6.addMouseListener(new MouseAdapter() {
+        JButton button1 = componentsFactory.getBorderedButton("Click");
+        button1.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 Message message = parser.parse(String.format(currencyTemplate,
@@ -198,16 +198,16 @@ public class TestCasesFrame extends TitledComponentFrame {
                 EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(message));
             }
         });
-        testPanel.add(button6,buttonColumn);
+        testPanel.add(button1,buttonColumn);
         buttonColumn.gridy++;
-        JLabel textLabel16 = componentsFactory.getTextLabel("Random currency message");
-        testPanel.add(textLabel16,titleColumn);
+        JLabel textLabel1 = componentsFactory.getTextLabel("Random currency message");
+        testPanel.add(textLabel1,titleColumn);
         titleColumn.gridy++;
 
 
 
-        JButton button7 = componentsFactory.getBorderedButton("Click");
-        button7.addMouseListener(new MouseAdapter() {
+        JButton button2 = componentsFactory.getBorderedButton("Click");
+        button2.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 EventRouter.INSTANCE.fireEvent(new WhisperNotificationEvent());
@@ -237,10 +237,23 @@ public class TestCasesFrame extends TitledComponentFrame {
                 leftTimer.start();
             }
         });
-        testPanel.add(button7,buttonColumn);
+        testPanel.add(button2,buttonColumn);
         buttonColumn.gridy++;
-        JLabel textLabel17 = componentsFactory.getTextLabel("Test accessibility status");
-        testPanel.add(textLabel17,titleColumn);
+        JLabel textLabel2 = componentsFactory.getTextLabel("Test accessibility status");
+        testPanel.add(textLabel2,titleColumn);
+        titleColumn.gridy++;
+
+        JButton button3 = componentsFactory.getBorderedButton("Click");
+        button3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                EventRouter.INSTANCE.fireEvent(new UpdateReadyEvent());
+            }
+        });
+        testPanel.add(button3,buttonColumn);
+        buttonColumn.gridy++;
+        JLabel textLabel3 = componentsFactory.getTextLabel("Test update frame");
+        testPanel.add(textLabel3,titleColumn);
         titleColumn.gridy++;
         testPanel.setBackground(AppThemeColor.TRANSPARENT);
 

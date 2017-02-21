@@ -39,18 +39,14 @@ public class FramesManager {
     public void start(){
         createTrayIcon();
 
-        OverlaidFrame chatFilter = new ChatFilterFrame();
-        framesMap.put(ChatFilterFrame.class,chatFilter);
         OverlaidFrame incMessageFrame = new IncMessageFrame();
         framesMap.put(IncMessageFrame.class,incMessageFrame);
         OverlaidFrame taskBarFrame = new TaskBarFrame();
-        framesMap.put(TaskBarFrame.class,taskBarFrame);
         OverlaidFrame itemsMeshFrame = new ItemsGridFrame();
         framesMap.put(ItemsGridFrame.class,itemsMeshFrame);
 
         locationCommander.addFrame((MovableComponentFrame) incMessageFrame);
         locationCommander.addFrame((MovableComponentFrame) taskBarFrame);
-        locationCommander.addFrame((MovableComponentFrame) chatFilter);
         locationCommander.addFrame((MovableComponentFrame) itemsMeshFrame);
         NotesLoader notesLoader = new NotesLoader();
         List<Note> notesOnFirstStart = notesLoader.getNotesOnFirstStart();
@@ -68,8 +64,10 @@ public class FramesManager {
         framesMap.put(TooltipFrame.class,new TooltipFrame());
         framesMap.put(NotificationFrame.class,new NotificationFrame());
         framesMap.put(DonationAlertFrame.class,new DonationAlertFrame());
+        framesMap.put(ChatScannerFrame.class,new ChatScannerFrame());
+        framesMap.put(UpdateReadyFrame.class,new UpdateReadyFrame());
+        framesMap.put(TaskBarFrame.class,taskBarFrame);
         framesMap.put(SetUpLocationFrame.class,new SetUpLocationFrame());
-//        framesMap.put(GamePathChooser.class,new GamePathChooser());
 
         framesMap.forEach((k,v)->{
             v.init();
@@ -106,9 +104,20 @@ public class FramesManager {
         }
     }
     public void enableMovement(){
-        locationCommander.callSetupLocation();
+        locationCommander.setUpAll();
     }
-
+    public void enableMovementExclude(String... frames){
+        locationCommander.setUpAllExclude(frames);
+    }
+    public void enableMovement(String frameClass){
+        locationCommander.setUp(frameClass);
+    }
+    public void disableMovement(){
+        locationCommander.disableAll();
+    }
+    public void disableMovement(String frameClass){
+        locationCommander.disable(frameClass);
+    }
     private void createTrayIcon(){
         PopupMenu trayMenu = new PopupMenu();
         MenuItem item = new MenuItem("Exit");

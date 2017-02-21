@@ -54,7 +54,7 @@ public class ConfigManager {
         defaultFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(540,100)));
         defaultFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 500),new Dimension(280,400)));
         defaultFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
-        defaultFramesSettings.put("ChatFilterFrame",new FrameSettings(new Point(400, 600),new Dimension(200,100)));
+        defaultFramesSettings.put("ChatScannerFrame",new FrameSettings(new Point(400, 600),new Dimension(300,100)));
         defaultFramesSettings.put("ItemsGridFrame",new FrameSettings(new Point(12, 79),new Dimension(641,718)));
         defaultFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,100)));
         defaultFramesSettings.put("SetUpLocationFrame",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
@@ -69,7 +69,7 @@ public class ConfigManager {
         minimumFrameSize.put("SettingsFrame",new Dimension(540,100));
         minimumFrameSize.put("HistoryFrame",new Dimension(280,400));
         minimumFrameSize.put("TimerFrame",new Dimension(240,102));
-        minimumFrameSize.put("ChatFilterFrame",new Dimension(200,100));
+        minimumFrameSize.put("ChatScannerFrame",new Dimension(200,100));
         minimumFrameSize.put("ItemsGridFrame",new Dimension(400,400));
         minimumFrameSize.put("NotesFrame",new Dimension(540,100));
         minimumFrameSize.put("SetUpLocationFrame",new Dimension(240,30));

@@ -1,8 +1,8 @@
-package com.mercury.platform.ui.frame;
+package com.mercury.platform.ui.frame.impl;
 
 import com.mercury.platform.core.utils.FileMonitor;
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.ui.frame.TitledComponentFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
 public class GamePathChooser extends TitledComponentFrame {
     private JLabel statusLabel;
@@ -20,6 +21,7 @@ public class GamePathChooser extends TitledComponentFrame {
         processingHideEvent = false;
         processEResize = false;
         processSEResize = false;
+        setAlwaysOnTop(true);
     }
 
     @Override
@@ -90,7 +92,7 @@ public class GamePathChooser extends TitledComponentFrame {
                     repaint();
                     Timer timer = new Timer(1000,null);
                     timer.addActionListener(actionEvent -> {
-                        ConfigManager.INSTANCE.setGamePath(gamePath);
+                        ConfigManager.INSTANCE.setGamePath(gamePath + File.separator);
                         new FileMonitor().start();
                         FramesManager.INSTANCE.start();
                         setVisible(false);

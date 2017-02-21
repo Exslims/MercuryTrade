@@ -10,9 +10,7 @@ import com.mercury.platform.shared.events.custom.ChatFilterMessageEvent;
 import com.mercury.platform.shared.events.custom.RemoveInterceptorEvent;
 import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
-import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.chat.ChatFilterPanel;
-import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.apache.commons.lang3.StringUtils;
@@ -25,13 +23,13 @@ import java.awt.event.MouseEvent;
 /**
  * Created by Константин on 05.01.2017.
  */
-public class ChatFilterFrame extends MovableComponentFrame {
+public class ChatScannerFrame extends TitledComponentFrame {
     private ChunkMessagesPicker msgPicker;
     private ChatFilterPanel msgContainer;
     private boolean soundEnable = false;
 
     private JTextField textField;
-    public ChatFilterFrame() {
+    public ChatScannerFrame() {
         super("MT-ChatFilter");
         this.setVisible(false);
         prevState = FrameStates.HIDE;
@@ -47,10 +45,17 @@ public class ChatFilterFrame extends MovableComponentFrame {
         msgPicker.init();
 
         msgContainer = new ChatFilterPanel(this);
+        JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
 
-        this.add(getTopPanel(),BorderLayout.PAGE_START);
-        this.add(msgContainer,BorderLayout.CENTER);
+        root.add(getTopPanel(),BorderLayout.PAGE_START);
+        root.add(msgContainer,BorderLayout.CENTER);
+        this.add(root,BorderLayout.CENTER);
         this.pack();
+    }
+
+    @Override
+    protected String getFrameTitle() {
+        return "Chat scanner";
     }
 
     @Override
@@ -94,11 +99,11 @@ public class ChatFilterFrame extends MovableComponentFrame {
                 if(soundEnable){
                     sound.setIcon(componentsFactory.getIcon("app/sound-disable.png",18));
                     soundEnable = false;
-                    ChatFilterFrame.this.repaint();
+                    ChatScannerFrame.this.repaint();
                 }else {
                     sound.setIcon(componentsFactory.getIcon("app/sound-enable.png",18));
                     soundEnable = true;
-                    ChatFilterFrame.this.repaint();
+                    ChatScannerFrame.this.repaint();
                 }
             }
         });
@@ -109,16 +114,6 @@ public class ChatFilterFrame extends MovableComponentFrame {
         root.add(miscPanel,BorderLayout.LINE_END);
         root.add(textField,BorderLayout.CENTER);
         return root;
-    }
-
-    @Override
-    protected JPanel panelWhenMove() {
-        JPanel panel = componentsFactory.getTransparentPanel();
-        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
-        JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,20f,"Chat filter"));
-        panel.add(labelPanel);
-        return panel;
     }
 
     @Override
@@ -136,7 +131,7 @@ public class ChatFilterFrame extends MovableComponentFrame {
             this.setAlwaysOnTop(false);
             this.processingHideEvent = false;
 
-            FrameSettings settings = ConfigManager.INSTANCE.getDefaultFramesSettings().get(ChatFilterFrame.class.getSimpleName());
+            FrameSettings settings = ConfigManager.INSTANCE.getDefaultFramesSettings().get(ChatScannerFrame.class.getSimpleName());
             this.setMinimumSize(settings.getFrameSize());
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
             this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
@@ -171,7 +166,7 @@ public class ChatFilterFrame extends MovableComponentFrame {
                             if(soundEnable){
                                 EventRouter.INSTANCE.fireEvent(new ChatFilterMessageEvent());
                             }
-                            ChatFilterFrame.this.pack();
+                            ChatScannerFrame.this.pack();
                         }
 
                         @Override
