@@ -17,6 +17,7 @@ import java.util.Map;
 /**
  * Application config manager, loads config files from %userprofile%/AppData/Local/MercuryTrader.
  */
+@SuppressWarnings("unchecked")
 public class ConfigManager {
     private Logger logger = LogManager.getLogger(ConfigManager.class);
 
@@ -32,16 +33,34 @@ public class ConfigManager {
     private Map<String, String> cachedButtonsConfig;
     private Map<String, FrameSettings> cachedFramesSettings;
     private Map<String,Dimension> minimumFrameSize;
+    private Map<String,FrameSettings> defaultFramesSettings;
+    private Map<String,Object> defaultAppSettings;
 
-    private WhisperNotifierStatus whisperNotifier;
-    private int decayTime;
-    private int minOpacity;
-    private int maxOpacity;
+    private WhisperNotifierStatus whisperNotifier = WhisperNotifierStatus.ALWAYS;
+    private int decayTime = 0;
+    private int minOpacity = 100;
+    private int maxOpacity = 100;
+    private String gamePath = "";
 
-    private boolean showPatchNotes;
-    private boolean showOnStartUp;
+    private boolean showPatchNotes = false;
+    private boolean showOnStartUp = true;
 
     public ConfigManager() {
+        defaultFramesSettings = new HashMap<>();
+        defaultFramesSettings.put("TaskBarFrame",new FrameSettings(new Point(400, 500),new Dimension(109,20)));
+        defaultFramesSettings.put("IncMessageFrame",new FrameSettings(new Point(700, 600),new Dimension(280,0)));
+        defaultFramesSettings.put("OutMessageFrame",new FrameSettings(new Point(200, 500),new Dimension(280,115)));
+        defaultFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(1400, 500),new Dimension(400,100)));
+        defaultFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(540,100)));
+        defaultFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 500),new Dimension(280,400)));
+        defaultFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
+        defaultFramesSettings.put("ChatFilterFrame",new FrameSettings(new Point(400, 600),new Dimension(200,100)));
+        defaultFramesSettings.put("ItemsGridFrame",new FrameSettings(new Point(12, 79),new Dimension(641,718)));
+        defaultFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,100)));
+        defaultFramesSettings.put("SetUpLocationFrame",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
+        defaultFramesSettings.put("ChunkMessagesPicker",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
+        defaultFramesSettings.put("GamePathChooser",new FrameSettings(new Point(400, 600),new Dimension(520,30)));
+
         minimumFrameSize = new HashMap<>();
         minimumFrameSize.put("TaskBarFrame",new Dimension(109,20));
         minimumFrameSize.put("IncMessageFrame",new Dimension(280,10));
@@ -55,7 +74,17 @@ public class ConfigManager {
         minimumFrameSize.put("NotesFrame",new Dimension(540,100));
         minimumFrameSize.put("SetUpLocationFrame",new Dimension(240,30));
         minimumFrameSize.put("ChunkMessagesPicker",new Dimension(240,30));
-        minimumFrameSize.put("GamePathChooser",new Dimension(150,30));
+        minimumFrameSize.put("GamePathChooser",new Dimension(600,30));
+
+        defaultAppSettings = new HashMap<>();
+        defaultAppSettings.put("decayTime",0);
+        defaultAppSettings.put("minOpacity",100);
+        defaultAppSettings.put("maxOpacity",100);
+        defaultAppSettings.put("showOnStartUp",true);
+        defaultAppSettings.put("showPatchNotes",false);
+        defaultAppSettings.put("whisperNotifier",WhisperNotifierStatus.ALWAYS);
+        defaultAppSettings.put("gamePath","");
+
     }
 
     /**
@@ -81,17 +110,14 @@ public class ConfigManager {
                 saveButtonsConfig(getDefaultButtons());
                 cachedFramesSettings = getDefaultFramesSettings();
                 saveFrameSettings();
-                setWhisperNotifier(WhisperNotifierStatus.ALWAYS);
-                decayTime = 0;
-                minOpacity = 100;
-                maxOpacity = 100;
-                showOnStartUp = true;
-                showPatchNotes = false;
-                saveProperty("decayTime",decayTime);
-                saveProperty("minOpacity",minOpacity);
-                saveProperty("maxOpacity",maxOpacity);
-                saveProperty("showOnStartUp",showOnStartUp);
-                saveProperty("showPatchNotes",showPatchNotes);
+
+                saveProperty("decayTime",String.valueOf(defaultAppSettings.get("decayTime")));
+                saveProperty("minOpacity",String.valueOf(defaultAppSettings.get("minOpacity")));
+                saveProperty("maxOpacity",String.valueOf(defaultAppSettings.get("maxOpacity")));
+                saveProperty("showOnStartUp",String.valueOf(defaultAppSettings.get("showOnStartUp")));
+                saveProperty("showPatchNotes",String.valueOf(defaultAppSettings.get("showPatchNotes")));
+                saveProperty("gamePath",gamePath);
+                saveProperty("whisperNotifier", defaultAppSettings.get("whisperNotifier").toString());
 
             } catch (Exception e) {
                 logger.error(e);
@@ -122,17 +148,73 @@ public class ConfigManager {
                 );
                 cachedFramesSettings.put((String) next.get("frameClassName"), settings);
             }
-            whisperNotifier = WhisperNotifierStatus.valueOf((String)root.get("whisperNotifier"));
-            decayTime = ((Long)root.get("decayTime")).intValue();
-            minOpacity = ((Long)root.get("minOpacity")).intValue();
-            maxOpacity = ((Long)root.get("maxOpacity")).intValue();
-            showOnStartUp = (boolean) root.get("showOnStartUp");
-            showPatchNotes = (boolean) root.get("showPatchNotes");
+            whisperNotifier = WhisperNotifierStatus.valueOf(loadProperty("whisperNotifier"));
+            decayTime = Long.valueOf(loadProperty("decayTime")).intValue();
+            minOpacity = Long.valueOf(loadProperty("minOpacity")).intValue();
+            maxOpacity = Long.valueOf(loadProperty("maxOpacity")).intValue();
+            showOnStartUp = Boolean.valueOf(loadProperty("showOnStartUp"));
+            showPatchNotes = Boolean.valueOf(loadProperty("showPatchNotes"));
+            gamePath = loadProperty("gamePath");
         } catch (Exception e) {
             logger.error("Error in loadConfigFile: ",e);
         }
     }
 
+    private void saveFrameSettings(){
+        JSONArray frames = new JSONArray();
+        cachedFramesSettings.forEach((frameName,frameSettings)->{
+            JSONObject object = new JSONObject();
+            JSONObject location = new JSONObject();
+            location.put("frameX",frameSettings.getFrameLocation().x);
+            location.put("frameY",frameSettings.getFrameLocation().y);
+
+            JSONObject size = new JSONObject();
+            size.put("width",frameSettings.getFrameSize().width);
+            size.put("height",frameSettings.getFrameSize().height);
+
+            object.put("location",location);
+            object.put("size",size);
+            object.put("frameClassName", frameName);
+
+            frames.add(object);
+        });
+
+        saveProperty("framesSettings",frames);
+    }
+    private String loadProperty(String key){
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject root = (JSONObject) parser.parse(new FileReader(CONFIG_FILE));
+            Object object = root.get(key);
+            if(object != null){
+                return (String) object;
+            }else {
+                return String.valueOf(defaultAppSettings.get(key));
+            }
+        }catch (Exception e){
+            logger.error("Error while loading property: " + key,e);
+        }
+        return null;
+    }
+    private  <T> void saveProperty(String token, T object){
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject root = (JSONObject) parser.parse(new FileReader(CONFIG_FILE));
+            Object obj = root.get(token);
+            if(obj != null){
+                root.replace(token,object);
+            }else {
+                root.put(token,object);
+            }
+            FileWriter fileWriter = new FileWriter(CONFIG_FILE);
+            fileWriter.write(root.toJSONString());
+            fileWriter.flush();
+            fileWriter.close();
+        } catch (Exception e) {
+            logger.error("Error in ConfigManager.saveProperty",e);
+        }
+
+    }
     public Map<String, String> getButtonsConfig(){
         return cachedButtonsConfig;
     }
@@ -178,73 +260,55 @@ public class ConfigManager {
         saveProperty("buttons", list);
     }
 
-    private void saveFrameSettings(){
-        JSONArray frames = new JSONArray();
-        cachedFramesSettings.forEach((frameName,frameSettings)->{
-            JSONObject object = new JSONObject();
-            JSONObject location = new JSONObject();
-            location.put("frameX",frameSettings.getFrameLocation().x);
-            location.put("frameY",frameSettings.getFrameLocation().y);
-
-            JSONObject size = new JSONObject();
-            size.put("width",frameSettings.getFrameSize().width);
-            size.put("height",frameSettings.getFrameSize().height);
-
-            object.put("location",location);
-            object.put("size",size);
-            object.put("frameClassName", frameName);
-
-            frames.add(object);
-        });
-
-        saveProperty("framesSettings",frames);
-    }
-    public <T> void saveProperty(String token, T object){
-        JSONParser parser = new JSONParser();
-        try {
-            JSONObject root = (JSONObject) parser.parse(new FileReader(CONFIG_FILE));
-            Object obj = root.get(token);
-            if(obj != null){
-                root.replace(token,object);
-            }else {
-                root.put(token,object);
-            }
-            FileWriter fileWriter = new FileWriter(CONFIG_FILE);
-            fileWriter.write(root.toJSONString());
-            fileWriter.flush();
-            fileWriter.close();
-        } catch (Exception e) {
-            logger.error("Error in ConfigManager.saveProperty",e);
-        }
-
-    }
-
     public WhisperNotifierStatus getWhisperNotifier() {
         return whisperNotifier;
     }
-
-    public void setWhisperNotifier(WhisperNotifierStatus whisperNotifier) {
-        this.whisperNotifier = whisperNotifier;
-        saveProperty("whisperNotifier", whisperNotifier.toString());
-    }
-
     public int getDecayTime() {
         return decayTime;
     }
-
     public int getMinOpacity() {
         return minOpacity;
     }
-
     public int getMaxOpacity() {
         return maxOpacity;
     }
-
+    public String getGamePath(){
+        return gamePath;
+    }
     public boolean isShowOnStartUp() {
         return showOnStartUp;
     }
     public boolean isShowPatchNotes() {
         return showPatchNotes;
+    }
+
+    public void setDecayTime(int decayTime) {
+        this.decayTime = decayTime;
+        saveProperty("decayTime", String.valueOf(this.decayTime));
+    }
+    public void setMinOpacity(int minOpacity) {
+        this.minOpacity = minOpacity;
+        saveProperty("minOpacity", String.valueOf(this.minOpacity));
+    }
+    public void setMaxOpacity(int maxOpacity) {
+        this.maxOpacity = maxOpacity;
+        saveProperty("maxOpacity", String.valueOf(this.maxOpacity));
+    }
+    public void setShowPatchNotes(boolean showPatchNotes) {
+        this.showPatchNotes = showPatchNotes;
+        saveProperty("showPatchNotes", String.valueOf(this.showPatchNotes));
+    }
+    public void setShowOnStartUp(boolean showOnStartUp) {
+        this.showOnStartUp = showOnStartUp;
+        saveProperty("showOnStartUp", String.valueOf(this.showOnStartUp));
+    }
+    public void setWhisperNotifier(WhisperNotifierStatus whisperNotifier) {
+        this.whisperNotifier = whisperNotifier;
+        saveProperty("whisperNotifier", whisperNotifier.toString());
+    }
+    public void setGamePath(String gamePath){
+        this.gamePath = gamePath;
+        saveProperty("gamePath",gamePath);
     }
 
     private Map<String, String > getDefaultButtons(){
@@ -256,23 +320,13 @@ public class ConfigManager {
         return defaultButtons;
     }
     public Map<String,FrameSettings> getDefaultFramesSettings(){
-        Map<String,FrameSettings> dFramesSettings = new HashMap<>();
-        dFramesSettings.put("TaskBarFrame",new FrameSettings(new Point(400, 500),new Dimension(109,20)));
-        dFramesSettings.put("IncMessageFrame",new FrameSettings(new Point(700, 600),new Dimension(280,0)));
-        dFramesSettings.put("OutMessageFrame",new FrameSettings(new Point(200, 500),new Dimension(280,115)));
-        dFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(1400, 500),new Dimension(400,100)));
-        dFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(540,100)));
-        dFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 500),new Dimension(280,400)));
-        dFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
-        dFramesSettings.put("ChatFilterFrame",new FrameSettings(new Point(400, 600),new Dimension(200,100)));
-        dFramesSettings.put("ItemsGridFrame",new FrameSettings(new Point(12, 79),new Dimension(641,718)));
-        dFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,100)));
-        dFramesSettings.put("SetUpLocationFrame",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
-        dFramesSettings.put("ChunkMessagesPicker",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
-        dFramesSettings.put("GamePathChooser",new FrameSettings(new Point(400, 600),new Dimension(150,30)));
-        return dFramesSettings;
+        return defaultFramesSettings;
     }
     public Dimension getMinimumFrameSize(String frameName){
         return minimumFrameSize.get(frameName);
+    }
+    public boolean isValidGamePath(String gamePath){
+        File file = new File(gamePath + File.separator + "logs" + File.separator + "Client.txt");
+        return file.exists();
     }
 }

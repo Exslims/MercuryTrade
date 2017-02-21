@@ -76,7 +76,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
 
         navBar = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         JPanel emptyPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        emptyPanel.setPreferredSize(new Dimension(50,40));
+        emptyPanel.setPreferredSize(new Dimension(50,46));
 
         root.add(navBar);
         root.add(emptyPanel);
@@ -106,14 +106,14 @@ public class ItemsGridFrame extends MovableComponentFrame{
                     public void mousePressed(MouseEvent e) {
                         cells.forEach(cell -> {
                             if(cell.getX() == x && cell.getY() == y){
-                                if(cell.getLabel().getBackground().equals(AppThemeColor.ITEM_HL)){
-                                    cell.getLabel().setBackground(AppThemeColor.TRANSPARENT);
+                                if(cell.getLabel().getBorder() != null){
+                                    cell.getLabel().setBorder(null);
                                     prevLabel = null;
                                 }else {
                                     if(prevLabel != null){
-                                        prevLabel.setBackground(AppThemeColor.TRANSPARENT);
+                                        prevLabel.setBorder(null); //todo
                                     }
-                                    cell.getLabel().setBackground(AppThemeColor.ITEM_HL);
+                                    cell.getLabel().setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_IMPORTANT,5));
                                 }
                                 prevLabel= cell.getLabel();
                                 repaint();

@@ -24,13 +24,12 @@ public class HideSettingsManager {
         frames.add(frame);
     }
     public void apply(int decayTime, int minOpacity, int maxOpacity){
-        ConfigManager.INSTANCE.saveProperty("minOpacity",minOpacity);
-        ConfigManager.INSTANCE.saveProperty("maxOpacity",maxOpacity);
-        ConfigManager.INSTANCE.saveProperty("decayTime",decayTime);
+        ConfigManager.INSTANCE.setMinOpacity(minOpacity);
+        ConfigManager.INSTANCE.setMaxOpacity(maxOpacity);
+        ConfigManager.INSTANCE.setDecayTime(decayTime);
 
         frames.forEach(frame -> {
             if(decayTime > 0){
-                ConfigManager.INSTANCE.saveProperty("decayTime",decayTime);
                 frame.enableHideEffect(decayTime,minOpacity,maxOpacity);
             }else {
                 frame.disableHideEffect();

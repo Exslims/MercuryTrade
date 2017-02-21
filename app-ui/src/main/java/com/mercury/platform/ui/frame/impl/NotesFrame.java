@@ -41,7 +41,7 @@ public class NotesFrame extends TitledComponentFrame {
                 prevState = FrameStates.HIDE;
             }
         }else {
-            ConfigManager.INSTANCE.saveProperty("showPatchNotes",false);
+            ConfigManager.INSTANCE.setShowPatchNotes(false);
             prevState = FrameStates.SHOW;
         }
     }
@@ -128,7 +128,7 @@ public class NotesFrame extends TitledComponentFrame {
             public void mousePressed(MouseEvent e) {
                 NotesFrame.this.setVisible(false);
                 if(type.equals(NotesType.INFO)) {
-                    ConfigManager.INSTANCE.saveProperty("showOnStartUp", showOnStartUp.isSelected());
+                    ConfigManager.INSTANCE.setShowOnStartUp(showOnStartUp.isSelected());
                     FramesManager.INSTANCE.showFrame(TaskBarFrame.class);
                     FramesManager.INSTANCE.enableMovement();
                 }

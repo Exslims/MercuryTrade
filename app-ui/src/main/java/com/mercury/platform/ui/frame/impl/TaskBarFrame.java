@@ -33,7 +33,7 @@ public class TaskBarFrame extends MovableComponentFrame{
 
     private Timeline collapseAnim;
     private JPanel updatePanel;
-    private static final int MAX_WIDTH = 250;
+    private static final int MAX_WIDTH = 286;
 
     public TaskBarFrame() {
         super("MT-TaskBar");
@@ -153,6 +153,23 @@ public class TaskBarFrame extends MovableComponentFrame{
             }
         });
 
+        JButton itemGrid = componentsFactory.getIconButton("app/item-grid-disable.png",24,AppThemeColor.FRAME_1, TooltipConstants.VISIBLE_MODE);
+        itemGrid.addMouseListener(new MouseAdapter() {
+            private boolean frameOpened = false;
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!frameOpened) {
+                    itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-enable.png", 24));
+                    frameOpened = true;
+                    TaskBarFrame.this.repaint();
+                } else {
+                    frameOpened = false;
+                    itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-disable.png", 24));
+                    TaskBarFrame.this.repaint();
+                }
+            }
+        });
+
         JButton chatMode = componentsFactory.getIconButton("app/standard-mode.png",24,AppThemeColor.FRAME_1,TooltipConstants.TRADE_MODE);
         chatMode.addMouseListener(new MouseAdapter() {
             private TradeMode currentMode = TradeMode.DEFAULT;
@@ -235,6 +252,8 @@ public class TaskBarFrame extends MovableComponentFrame{
         taskBarPanel.add(chatFilter);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(historyButton);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
+        taskBarPanel.add(itemGrid);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(settingsButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));

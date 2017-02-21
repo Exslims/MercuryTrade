@@ -27,18 +27,12 @@ public class AppStarter {
     public void startApplication(){
         new SoundNotifier();
         new ChatHelper();
-        new GamePathSearcher(FileMonitor::new);
 
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(new UpdateClientStarter());
         ConfigManager.INSTANCE.load();
         HistoryManager.INSTANCE.load();
 
-
-        /*
-        [DllImport("user32.dll&quot]
-            private static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
-         */
         EventRouter.INSTANCE.registerHandler(UILoadedEvent.class, event -> {
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {

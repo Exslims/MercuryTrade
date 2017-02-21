@@ -81,7 +81,6 @@ public class FramesManager {
         framesMap.forEach((k,frame) -> {
             if(frame instanceof ComponentFrame) {
                 if (decayTime > 0) {
-                    ConfigManager.INSTANCE.saveProperty("decayTime", decayTime);
                     ((ComponentFrame)frame).enableHideEffect(decayTime, minOpacity, maxOpacity);
                 } else {
                     ((ComponentFrame)frame).disableHideEffect();
