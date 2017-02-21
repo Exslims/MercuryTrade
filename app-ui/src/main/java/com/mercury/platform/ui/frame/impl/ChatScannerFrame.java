@@ -16,9 +16,16 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
+import javax.swing.plaf.SplitPaneUI;
+import javax.swing.plaf.basic.BasicSpinnerUI;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Arrays;
 
 /**
  * Created by Константин on 05.01.2017.
@@ -28,7 +35,7 @@ public class ChatScannerFrame extends TitledComponentFrame {
     private ChatFilterPanel msgContainer;
     private boolean soundEnable = false;
 
-    private JTextField textField;
+    private JList<String> list;
     public ChatScannerFrame() {
         super("MT-ChatFilter");
         this.setVisible(false);
@@ -45,10 +52,30 @@ public class ChatScannerFrame extends TitledComponentFrame {
         msgPicker.init();
 
         msgContainer = new ChatFilterPanel(this);
-        JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
+        msgContainer.setPreferredSize(new Dimension(400,100));
 
-        root.add(getTopPanel(),BorderLayout.PAGE_START);
-        root.add(msgContainer,BorderLayout.CENTER);
+        JSplitPane root = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        BasicSplitPaneUI ui = (BasicSplitPaneUI)root.getUI();
+        ui.getDivider().addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                repaint();
+            }
+
+        });
+        ui.getDivider().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                repaint();
+            }
+        });
+        ui.getDivider().setBorder(BorderFactory.createMatteBorder(0,2,0,2,AppThemeColor.BORDER));
+        root.setDividerLocation(0.5);
+        root.setDividerSize(4);
+        root.setBorder(null);
+        root.setBackground(AppThemeColor.FRAME);
+        root.setLeftComponent(msgContainer);
+        root.setRightComponent(getTopPanel());
         this.add(root,BorderLayout.CENTER);
         this.pack();
     }
@@ -65,19 +92,22 @@ public class ChatScannerFrame extends TitledComponentFrame {
 
     private JPanel getTopPanel(){
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
-        root.setBorder(BorderFactory.createEmptyBorder(4,4,0,4));
+        root.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
 
-        textField = componentsFactory.getTextField("");
-        textField.setPreferredSize(new Dimension(130,18));
-        textField.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
-        textField.setBackground(AppThemeColor.SLIDE_BG);
+        list = new JList<>(new String[]{"wtb","wts","exalt"});
+        list.setLayoutOrientation(JList.VERTICAL);
+        list.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
+        list.setBackground(AppThemeColor.SLIDE_BG);
+        list.setForeground(AppThemeColor.TEXT_DEFAULT);
+        list.setFont(componentsFactory.getFontByLang("template",FontStyle.REGULAR).deriveFont(16f));
 
-        JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         JButton edit = componentsFactory.getIconButton("app/edit.png", 18, AppThemeColor.TRANSPARENT, "");
         edit.setBorder(null);
         edit.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                msgPicker.setLocation(e.getLocationOnScreen());
                 msgPicker.showComponent();
             }
         });
@@ -110,9 +140,15 @@ public class ChatScannerFrame extends TitledComponentFrame {
         miscPanel.add(edit);
         miscPanel.add(clear);
         miscPanel.add(sound);
+        miscPanel.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                repaint();
+            }
+        });
 
-        root.add(miscPanel,BorderLayout.LINE_END);
-        root.add(textField,BorderLayout.CENTER);
+        root.add(miscPanel,BorderLayout.PAGE_START);
+        root.add(list,BorderLayout.CENTER);
         return root;
     }
 
@@ -153,8 +189,12 @@ public class ChatScannerFrame extends TitledComponentFrame {
             save.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    textField.setFont(componentsFactory.getFontByLang(chunks.getText(), FontStyle.REGULAR).deriveFont(16f));
-                    textField.setText(chunks.getText());
+                    list.setFont(componentsFactory.getFontByLang(chunks.getText(), FontStyle.REGULAR).deriveFont(16f));
+                    String chunkStr = StringUtils.deleteWhitespace(chunks.getText());;
+                    String[] split = chunkStr.split(",");
+                    DefaultListModel<String> model = new DefaultListModel<>();
+                    Arrays.stream(split).forEach(model::addElement);
+                    list.setModel(model);
 
                     if (interceptor != null) {
                         EventRouter.INSTANCE.fireEvent(new RemoveInterceptorEvent(interceptor));

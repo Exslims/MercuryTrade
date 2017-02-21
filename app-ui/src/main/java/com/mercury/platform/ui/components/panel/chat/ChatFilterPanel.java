@@ -101,7 +101,6 @@ public class ChatFilterPanel extends JPanel {
 
         messagePanel.add(miscPanel,BorderLayout.LINE_START);
         messagePanel.add(componentsFactory.getSimpleTextAre(message), BorderLayout.CENTER);
-        messagePanel.setMaximumSize(new Dimension(1000,500));
         container.add(messagePanel);
     }
     public void clear(){

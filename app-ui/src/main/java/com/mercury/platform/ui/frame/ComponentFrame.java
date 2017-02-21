@@ -114,11 +114,11 @@ public abstract class ComponentFrame extends OverlaidFrame{
             int frameHeight = ComponentFrame.this.getHeight();
             Point frameLocation = ComponentFrame.this.getLocation();
             Rectangle ERect = new Rectangle(
-                    frameLocation.x + frameWidth - (BORDER_THICKNESS + 6),
-                    frameLocation.y,BORDER_THICKNESS+6,frameHeight-4);
+                    frameLocation.x + frameWidth - (BORDER_THICKNESS + 8),
+                    frameLocation.y,BORDER_THICKNESS+8,frameHeight);
             Rectangle SERect = new Rectangle(
-                    frameLocation.x + frameWidth - (BORDER_THICKNESS + 6),
-                    frameLocation.y + frameHeight - (BORDER_THICKNESS + 6),BORDER_THICKNESS+6,4);
+                    frameLocation.x + frameWidth - (BORDER_THICKNESS + 8),
+                    frameLocation.y + frameHeight - (BORDER_THICKNESS + 8),BORDER_THICKNESS+8,8);
 
             if(processEResize && ERect.getBounds().contains(e.getLocationOnScreen())) {
                 if(processSEResize && SERect.getBounds().contains(e.getLocationOnScreen())){
