@@ -17,6 +17,8 @@ public abstract class MovableComponentFrame extends ComponentFrame {
     private boolean wasVisible;
     private Color prevBGColor;
     private Border prevBorder;
+    private boolean prevProcessEResize;
+    private boolean prevProcessSEResize;
     protected UndecoratedFrameState undecoratedFrameState;
     protected MovableComponentFrame(String title) {
         super(title);
@@ -31,6 +33,11 @@ public abstract class MovableComponentFrame extends ComponentFrame {
                     wasVisible = this.isVisible();
                     prevBGColor = this.getBackground();
                     prevBorder = this.getRootPane().getBorder();
+                    prevProcessEResize = processEResize;
+                    prevProcessSEResize = processSEResize;
+
+                    processEResize = false;
+                    processSEResize = false;
                     JPanel panel = setUpMoveListeners(panelWhenMove());
                     if(mainContainer.getHeight() < 100 && !this.getClass().getSimpleName().equals("TaskBarFrame")){
                         panel.setPreferredSize(new Dimension(200, 100));
@@ -53,6 +60,8 @@ public abstract class MovableComponentFrame extends ComponentFrame {
                 this.setBackground(prevBGColor);
                 this.getRootPane().setBorder(prevBorder);
                 this.setVisible(wasVisible);
+                this.processSEResize = prevProcessSEResize;
+                this.processEResize = prevProcessEResize;
                 if(mainContainer.getComponentCount() > 0 && this.getClass().getSimpleName().equals("IncMessageFrame")){
                     this.setVisible(true);
                 }
@@ -77,7 +86,9 @@ public abstract class MovableComponentFrame extends ComponentFrame {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
+                if(!panel.getBounds().contains(e.getPoint())) {
+                    getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
+                }
                 MovableComponentFrame.this.repaint();
             }
         });

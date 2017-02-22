@@ -8,6 +8,7 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.events.custom.AddShowDelayEvent;
 import com.mercury.platform.shared.events.custom.ChangeFrameVisibleEvent;
 import com.mercury.platform.shared.events.custom.UILoadedEvent;
 import com.sun.jna.Native;
@@ -25,6 +26,8 @@ import java.util.concurrent.Executors;
 public class AppStarter {
     public static FrameStates APP_STATUS = FrameStates.HIDE;
     private User32 user32 = User32.INSTANCE;
+    private int delay;
+
     public void startApplication(){
         new SoundNotifier();
         new ChatHelper();
@@ -49,12 +52,22 @@ public class AppStarter {
                         }
                     }else{
                         if(APP_STATUS == FrameStates.HIDE) {
+                            if(delay > 0){
+                                try {
+                                    Thread.sleep(delay);
+                                    delay = 0;
+                                } catch (InterruptedException e) {
+                                }
+                            }
                             APP_STATUS = FrameStates.SHOW;
                             EventRouter.INSTANCE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.SHOW));
                         }
                     }
                 }
-            },0,250);
+            },0,50);
+        });
+        EventRouter.INSTANCE.registerHandler(AddShowDelayEvent.class,event -> {
+            delay = 300;
         });
     }
 }

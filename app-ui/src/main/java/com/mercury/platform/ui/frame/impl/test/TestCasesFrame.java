@@ -119,6 +119,10 @@ public class TestCasesFrame extends TitledComponentFrame {
         nickNames.add("Xach");
         nickNames.add("Yaitaly");
         nickNames.add("xXxДолбоебxXx");
+        nickNames.add("Example");
+        nickNames.add("Example");
+        nickNames.add("Example");
+        nickNames.add("Example");
 
         offer.add("#############");
         offer.add(" ");
@@ -254,6 +258,29 @@ public class TestCasesFrame extends TitledComponentFrame {
         buttonColumn.gridy++;
         JLabel textLabel3 = componentsFactory.getTextLabel("Test update frame");
         testPanel.add(textLabel3,titleColumn);
+        titleColumn.gridy++;
+        testPanel.setBackground(AppThemeColor.TRANSPARENT);
+
+        JButton button4 = componentsFactory.getBorderedButton("Click");
+        button4.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Message message = parser.parse(String.format(poeTradeTemplate,
+                        "Example",
+                        items.get(random.nextInt(items.size())),
+                        random.nextInt(200),
+                        "chaos",
+                        random.nextInt(12) + 1,
+                        random.nextInt(12) + 1,
+                        "can sell cheaper??"
+                ));
+                EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(message));
+            }
+        });
+        testPanel.add(button4,buttonColumn);
+        buttonColumn.gridy++;
+        JLabel textLabel4 = componentsFactory.getTextLabel("Test123");
+        testPanel.add(textLabel4,titleColumn);
         titleColumn.gridy++;
         testPanel.setBackground(AppThemeColor.TRANSPARENT);
 

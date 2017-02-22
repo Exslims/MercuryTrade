@@ -6,6 +6,7 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.AddInterceptorEvent;
+import com.mercury.platform.shared.events.custom.AddShowDelayEvent;
 import com.mercury.platform.shared.events.custom.ChatFilterMessageEvent;
 import com.mercury.platform.shared.events.custom.RemoveInterceptorEvent;
 import com.mercury.platform.shared.pojo.FrameSettings;
@@ -216,7 +217,10 @@ public class ChatScannerFrame extends TitledComponentFrame {
                                 String stubChunks = chunks.getText();
                                 String chunks = StringUtils.deleteWhitespace(stubChunks);
                                 String[] chunksArray = StringUtils.split(chunks, ",");
-
+                                if(!message.contains("] $") && !message.contains("] #")){
+                                    System.out.println(message);
+                                    return false;
+                                }
                                 for (String chunk : chunksArray) {
                                     chunk = chunk.toLowerCase();
                                     if(message.contains(chunk)){
@@ -229,6 +233,7 @@ public class ChatScannerFrame extends TitledComponentFrame {
                     };
                     EventRouter.INSTANCE.fireEvent(new AddInterceptorEvent(interceptor));
                     hideComponent();
+                    EventRouter.INSTANCE.fireEvent(new AddShowDelayEvent());
                 }
             });
             root.add(chunks,BorderLayout.CENTER);

@@ -98,10 +98,20 @@ public class ChatFilterPanel extends JPanel {
         JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         miscPanel.add(invite);
         miscPanel.add(openChat);
+        miscPanel.add(componentsFactory.getTextLabel(nickname + ":"));
 
         messagePanel.add(miscPanel,BorderLayout.LINE_START);
         messagePanel.add(componentsFactory.getSimpleTextAre(message), BorderLayout.CENTER);
         container.add(messagePanel);
+        trimContainer();
+    }
+    private void trimContainer(){
+        if(container.getComponentCount() > 20){
+            for (int i = 0; i < 5; i++) {
+                container.remove(0);
+            }
+            owner.pack();
+        }
     }
     public void clear(){
         container.removeAll();

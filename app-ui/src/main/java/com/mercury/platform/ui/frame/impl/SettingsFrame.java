@@ -2,6 +2,7 @@ package com.mercury.platform.ui.frame.impl;
 
 
 import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.events.custom.AddShowDelayEvent;
 import com.mercury.platform.shared.events.custom.RepaintEvent;
 import com.mercury.platform.ui.components.fields.MercuryTabbedPane;
 import com.mercury.platform.ui.components.panel.settings.*;
@@ -63,7 +64,8 @@ public class SettingsFrame extends TitledComponentFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 innerPanels.forEach(ConfigurationPanel::processAndSave);
-                SettingsFrame.this.dispose();
+                SettingsFrame.this.setVisible(false);
+                EventRouter.INSTANCE.fireEvent(new AddShowDelayEvent());
             }
         });
         JButton close = componentsFactory.getBorderedButton("Close");
@@ -71,6 +73,7 @@ public class SettingsFrame extends TitledComponentFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 SettingsFrame.this.setVisible(false);
+                EventRouter.INSTANCE.fireEvent(new AddShowDelayEvent());
             }
         });
         panel.add(save);

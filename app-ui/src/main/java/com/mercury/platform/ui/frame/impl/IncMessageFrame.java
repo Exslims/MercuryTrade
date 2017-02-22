@@ -211,9 +211,16 @@ public class IncMessageFrame extends MovableComponentFrame{
             }
         });
 
-        growPanel.add(componentsFactory.getTextLabel("Flow direction"),constraint);
+        growPanel.add(componentsFactory.getTextLabel("Flow direction:"),constraint);
         constraint.gridx = 1;
         growPanel.add(flowDirectionPicker,constraint);
+        constraint.gridx = 0;
+        constraint.gridy = 1;
+        growPanel.add(componentsFactory.getTextLabel("Expand first:"),constraint);
+        constraint.gridx = 1;
+        JCheckBox expandFirst = new JCheckBox();
+        expandFirst.setBackground(AppThemeColor.TRANSPARENT);
+        growPanel.add(expandFirst,constraint);
 
         panel.add(labelPanel);
         panel.add(growPanel);
