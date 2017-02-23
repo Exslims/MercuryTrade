@@ -38,6 +38,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         super("MT-TaskBar");
         processEResize = false;
         processSEResize = false;
+        prevState = FrameStates.SHOW;
     }
 
     @Override
@@ -68,10 +69,6 @@ public class TaskBarFrame extends MovableComponentFrame{
                 }
             }
         });
-        if(ConfigManager.INSTANCE.isShowOnStartUp()){
-            prevState = FrameStates.HIDE;
-        }
-        EventRouter.INSTANCE.fireEvent(new UILoadedEvent());
     }
 
     @Override
@@ -239,7 +236,7 @@ public class TaskBarFrame extends MovableComponentFrame{
             }
         }
         collapseAnim.setEase(new Spline(1f));
-        collapseAnim.setDuration(300);
+        collapseAnim.setDuration(150);
     }
     private boolean withInPanel(JPanel panel){
         return new Rectangle(panel.getLocationOnScreen(),panel.getSize()).contains(MouseInfo.getPointerInfo().getLocation());

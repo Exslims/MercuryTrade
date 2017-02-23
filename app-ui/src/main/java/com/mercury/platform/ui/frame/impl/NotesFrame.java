@@ -32,6 +32,8 @@ public class NotesFrame extends TitledComponentFrame {
         super("MT-NotesFrame");
         this.currentNotes = notes;
         this.type = type;
+        processEResize = false;
+        processSEResize = false;
         if(type.equals(NotesType.INFO)) {
             boolean showOnStartUp = ConfigManager.INSTANCE.isShowOnStartUp();
             if (showOnStartUp) {
@@ -49,9 +51,6 @@ public class NotesFrame extends TitledComponentFrame {
     @Override
     protected void initialize() {
         super.initialize();
-        processEResize = false;
-        processSEResize = false;
-
         JPanel rootPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         rootPanel.setBorder(BorderFactory.createEmptyBorder(6,6,6,6));
 
@@ -129,9 +128,11 @@ public class NotesFrame extends TitledComponentFrame {
                 NotesFrame.this.setVisible(false);
                 if(type.equals(NotesType.INFO)) {
                     ConfigManager.INSTANCE.setShowOnStartUp(showOnStartUp.isSelected());
-                    FramesManager.INSTANCE.showFrame(TaskBarFrame.class);
-                    FramesManager.INSTANCE.enableMovement();
+                    FramesManager.INSTANCE.enableMovementExclude("ItemsGridFrame");
+                }else {
+                    ConfigManager.INSTANCE.setShowPatchNotes(false);
                 }
+                prevState = FrameStates.HIDE;
             }
         });
         close.setBackground(AppThemeColor.FRAME);

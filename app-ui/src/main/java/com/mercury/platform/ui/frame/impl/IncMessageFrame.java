@@ -35,15 +35,12 @@ public class IncMessageFrame extends MovableComponentFrame{
     private boolean dnd = false;
     public IncMessageFrame(){
         super("MT-IncMessagesFrame");
-        prevState = FrameStates.HIDE;
-        setVisible(false);
+        processSEResize = false;
     }
 
     @Override
     protected void initialize() {
         super.initialize();
-        processSEResize = false;
-
         this.addMouseListener(new MouseAdapter() { //todo
             @Override
             public void mouseExited(MouseEvent e) {

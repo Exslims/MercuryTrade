@@ -46,21 +46,6 @@ public class ConfigManager {
     private boolean showOnStartUp = true;
 
     public ConfigManager() {
-        defaultFramesSettings = new HashMap<>();
-        defaultFramesSettings.put("TaskBarFrame",new FrameSettings(new Point(400, 500),new Dimension(109,20)));
-        defaultFramesSettings.put("IncMessageFrame",new FrameSettings(new Point(700, 600),new Dimension(280,0)));
-        defaultFramesSettings.put("OutMessageFrame",new FrameSettings(new Point(200, 500),new Dimension(280,115)));
-        defaultFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(1400, 500),new Dimension(400,100)));
-        defaultFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(540,100)));
-        defaultFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 500),new Dimension(280,400)));
-        defaultFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
-        defaultFramesSettings.put("ChatScannerFrame",new FrameSettings(new Point(400, 600),new Dimension(300,100)));
-        defaultFramesSettings.put("ItemsGridFrame",new FrameSettings(new Point(12, 79),new Dimension(641,718)));
-        defaultFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,100)));
-        defaultFramesSettings.put("SetUpLocationFrame",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
-        defaultFramesSettings.put("ChunkMessagesPicker",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
-        defaultFramesSettings.put("GamePathChooser",new FrameSettings(new Point(400, 600),new Dimension(520,30)));
-
         minimumFrameSize = new HashMap<>();
         minimumFrameSize.put("TaskBarFrame",new Dimension(109,20));
         minimumFrameSize.put("IncMessageFrame",new Dimension(280,10));
@@ -72,7 +57,7 @@ public class ConfigManager {
         minimumFrameSize.put("ChatScannerFrame",new Dimension(200,100));
         minimumFrameSize.put("ItemsGridFrame",new Dimension(400,400));
         minimumFrameSize.put("NotesFrame",new Dimension(540,100));
-        minimumFrameSize.put("SetUpLocationFrame",new Dimension(240,30));
+        minimumFrameSize.put("SetUpLocationFrame",new Dimension(300,30));
         minimumFrameSize.put("ChunkMessagesPicker",new Dimension(240,30));
         minimumFrameSize.put("GamePathChooser",new Dimension(600,30));
 
@@ -320,6 +305,20 @@ public class ConfigManager {
         return defaultButtons;
     }
     public Map<String,FrameSettings> getDefaultFramesSettings(){
+        defaultFramesSettings = new HashMap<>();
+        defaultFramesSettings.put("TaskBarFrame",new FrameSettings(new Point(400, 500),new Dimension(109,20)));
+        defaultFramesSettings.put("IncMessageFrame",new FrameSettings(new Point(700, 600),new Dimension(280,0)));
+        defaultFramesSettings.put("OutMessageFrame",new FrameSettings(new Point(200, 500),new Dimension(280,115)));
+        defaultFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(1400, 500),new Dimension(400,100)));
+        defaultFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(540,100)));
+        defaultFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 500),new Dimension(280,400)));
+        defaultFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
+        defaultFramesSettings.put("ChatScannerFrame",new FrameSettings(new Point(400, 600),new Dimension(500,250)));
+        defaultFramesSettings.put("ItemsGridFrame",new FrameSettings(new Point(12, 79),new Dimension(641,718)));
+        defaultFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,100)));
+        defaultFramesSettings.put("SetUpLocationFrame",new FrameSettings(new Point(400, 600),new Dimension(300,30)));
+        defaultFramesSettings.put("ChunkMessagesPicker",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
+        defaultFramesSettings.put("GamePathChooser",new FrameSettings(new Point(400, 600),new Dimension(520,30)));
         return defaultFramesSettings;
     }
     public Dimension getMinimumFrameSize(String frameName){

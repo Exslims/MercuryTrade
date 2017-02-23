@@ -1,8 +1,10 @@
 package com.mercury.platform.ui.manager;
 
 import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.UILoadedEvent;
+import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.frame.impl.test.TestCasesFrame;
@@ -49,9 +51,10 @@ public class FramesManager {
         locationCommander.addFrame((MovableComponentFrame) taskBarFrame);
         locationCommander.addFrame((MovableComponentFrame) itemsMeshFrame);
         NotesLoader notesLoader = new NotesLoader();
+
         List<Note> notesOnFirstStart = notesLoader.getNotesOnFirstStart();
-        if(notesOnFirstStart.size() != 0){
-            framesMap.put(NotesFrame.class,new NotesFrame(notesOnFirstStart, NotesFrame.NotesType.INFO));
+        if(ConfigManager.INSTANCE.isShowOnStartUp()) {
+            framesMap.put(NotesFrame.class, new NotesFrame(notesOnFirstStart, NotesFrame.NotesType.INFO));
         }
         List<Note> patchNotes = notesLoader.getPatchNotes();
         if(ConfigManager.INSTANCE.isShowPatchNotes() && patchNotes.size() != 0){
@@ -86,7 +89,6 @@ public class FramesManager {
                 }
             }
         });
-
         EventRouter.INSTANCE.fireEvent(new UILoadedEvent());
     }
     public void showFrame(Class frameClass){
@@ -117,6 +119,17 @@ public class FramesManager {
     }
     public void disableMovement(String frameClass){
         locationCommander.disable(frameClass);
+    }
+    public void restoreDefaultLocation(){
+        framesMap.forEach((k,v) -> {
+            FrameSettings settings = ConfigManager.INSTANCE.getDefaultFramesSettings().get(k.getSimpleName());
+            if(v instanceof MovableComponentFrame){
+                System.out.println(v.getClass().getSimpleName() + ":" + v.getLocation());
+                v.setLocation(settings.getFrameLocation());
+                ConfigManager.INSTANCE.saveFrameLocation(v.getClass().getSimpleName(),settings.getFrameLocation());
+                System.out.println(v.getClass().getSimpleName() + ":" + v.getLocation());
+            }
+        });
     }
     private void createTrayIcon(){
         PopupMenu trayMenu = new PopupMenu();

@@ -1,9 +1,7 @@
 package com.mercury.platform.ui.frame.impl;
 
-import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.ShowDonationAlert;
-import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.pushingpixels.trident.Timeline;
@@ -13,9 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * Created by Константин on 27.01.2017.
@@ -27,8 +23,6 @@ public class DonationAlertFrame extends OverlaidFrame {
         super("MT-DonationsAlert");
         this.setOpacity(0f);
         this.setBackground(AppThemeColor.TRANSPARENT);
-        this.prevState = FrameStates.HIDE;
-        this.setVisible(false);
     }
 
     @Override

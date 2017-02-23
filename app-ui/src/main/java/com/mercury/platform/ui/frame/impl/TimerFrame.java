@@ -26,8 +26,6 @@ public class TimerFrame extends TitledComponentFrame {
     private int chaosSpend = 0;
     public TimerFrame() {
         super("MT-Timer");
-        this.setVisible(false);
-        prevState = FrameStates.HIDE;
     }
 
     @Override

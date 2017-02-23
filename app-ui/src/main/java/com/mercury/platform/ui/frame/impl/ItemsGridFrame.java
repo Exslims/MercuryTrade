@@ -37,7 +37,6 @@ public class ItemsGridFrame extends MovableComponentFrame{
         super("MT-Mesh");
         cells = new ArrayList<>();
         tabButtons = new HashMap<>();
-        this.setVisible(false);
     }
 
     @Override
@@ -92,7 +91,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
             String nickname = ((ShowItemMeshEvent) event).getNickname();
             String tabInfo = ((ShowItemMeshEvent) event).getTabInfo();
 
-            if(!tabInfo.contains("[") && !tabButtons.containsKey(tabInfo)){
+            if(!tabInfo.contains("[") && !tabButtons.containsKey(nickname + tabInfo)){
                 String tab = StringUtils.substringBetween(tabInfo, "\"", "\"");
                 int x = Integer.parseInt(StringUtils.substringBetween(tabInfo,"left ",","));
                 int y = Integer.parseInt(StringUtils.substringAfter(tabInfo,"top "));
@@ -107,17 +106,17 @@ public class ItemsGridFrame extends MovableComponentFrame{
                     public void mousePressed(MouseEvent e) {
                         cells.forEach(cell -> {
                             if(cell.getX() == x && cell.getY() == y){
+//                                if(prevLabel != null){
+//                                    prevLabel.setBorder(null); //todo
+//                                }
                                 if(cell.getLabel().getBorder() != null){
                                     cell.getLabel().setBorder(null);
-                                    prevLabel = null;
                                 }else {
-                                    if(prevLabel != null){
-                                        prevLabel.setBorder(null); //todo
-                                    }
                                     cell.getLabel().setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_IMPORTANT,5));
                                 }
-                                prevLabel= cell.getLabel();
+//                                prevLabel= cell.getLabel();
                                 repaint();
+                                pack();
                             }
                         });
                     }
@@ -126,7 +125,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
                     this.setVisible(true);
                 }
                 navBar.add(button);
-                tabButtons.put(tabInfo,button);
+                tabButtons.put(nickname+tabInfo,button);
                 pack();
             }
         });
@@ -134,17 +133,18 @@ public class ItemsGridFrame extends MovableComponentFrame{
             Message message = ((CloseMessagePanelEvent) event).getMessage();
             if(message instanceof ItemMessage) {
                 String tabInfo = ((ItemMessage) message).getTabInfo();
-                if(tabInfo != null && !tabInfo.contains("[")){
-                    navBar.remove(tabButtons.get(tabInfo));
+                String nickname = message.getWhisperNickname();
+                if(tabInfo != null){
+                    navBar.remove(tabButtons.get(nickname+tabInfo));
                     int x = Integer.parseInt(StringUtils.substringBetween(tabInfo,"left ",","));
                     int y = Integer.parseInt(StringUtils.substringAfter(tabInfo,"top "));
                     cells.forEach(cell -> {
                         if(cell.getX() == x && cell.getY() == y){
-                            cell.getLabel().setBackground(AppThemeColor.TRANSPARENT);
+                            cell.getLabel().setBorder(null);
                             repaint();
                         }
                     });
-                    tabButtons.remove(tabInfo);
+                    tabButtons.remove(nickname+tabInfo);
                     this.pack();
                     this.repaint();
                     if(navBar.getComponentCount() == 0){

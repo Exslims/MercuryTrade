@@ -13,6 +13,8 @@ import com.mercury.platform.shared.events.custom.ChangeFrameVisibleEvent;
 import com.mercury.platform.shared.events.custom.UILoadedEvent;
 import com.sun.jna.Native;
 import com.sun.jna.PointerType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.util.Timer;
@@ -24,9 +26,10 @@ import java.util.concurrent.Executors;
  * Created by Константин on 31.12.2016.
  */
 public class AppStarter {
+    private static final Logger logger = LogManager.getLogger(AppStarter.class.getSimpleName());
     public static FrameStates APP_STATUS = FrameStates.HIDE;
     private User32 user32 = User32.INSTANCE;
-    private int delay;
+    private volatile int delay;
 
     public void startApplication(){
         new SoundNotifier();

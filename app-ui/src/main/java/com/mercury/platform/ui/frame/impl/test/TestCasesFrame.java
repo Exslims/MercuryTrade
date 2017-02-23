@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.frame.impl.test;
 
+import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
@@ -29,6 +30,7 @@ public class TestCasesFrame extends TitledComponentFrame {
 
     public TestCasesFrame() {
         super("MT-TestCases");
+        prevState = FrameStates.SHOW;
         items = new ArrayList<>();
         currency = new ArrayList<>();
         nickNames = new ArrayList<>();

@@ -5,6 +5,8 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 
 public class GamePathChooser extends TitledComponentFrame {
+    private final Logger logger = LogManager.getLogger(GamePathChooser.class.getSimpleName());
     private JLabel statusLabel;
     private String gamePath;
 
@@ -36,8 +39,10 @@ public class GamePathChooser extends TitledComponentFrame {
         this.pack();
         this.setVisible(true);
 
-        System.out.println(this.getSize());
-        System.out.println(this.getLocationOnScreen());
+        logger.info("GamePathChooser was initialized..");
+        logger.info("Visible: " + this.isVisible());
+        logger.info("Size: " + this.getSize());
+        logger.info("Location: " + this.getLocation());
     }
     private JPanel getChooserPanel(){
         JPanel panel = componentsFactory.getTransparentPanel(new BorderLayout());
@@ -99,6 +104,7 @@ public class GamePathChooser extends TitledComponentFrame {
                         timer.stop();
                     });
                     timer.start();
+                    logger.info("UI module was started.");
                 }else {
                     statusLabel.setText("Wrong game path...");
                     pack();

@@ -39,9 +39,6 @@ public class ChatScannerFrame extends TitledComponentFrame {
     private JList<String> list;
     public ChatScannerFrame() {
         super("MT-ChatFilter");
-        this.setVisible(false);
-        prevState = FrameStates.HIDE;
-
         FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
         this.setPreferredSize(frameSettings.getFrameSize());
     }

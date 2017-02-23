@@ -1,6 +1,5 @@
 package com.mercury.platform.ui.frame.impl;
 
-import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
@@ -15,23 +14,17 @@ import com.mercury.platform.ui.components.panel.ScrollContainer;
 import com.mercury.platform.ui.components.panel.misc.MessagePanelStyle;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.TooltipConstants;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-/**
- * Created by Константин on 27.12.2016.
- */
+
 public class HistoryFrame extends TitledComponentFrame{
     private JPanel mainContainer;
     public HistoryFrame() {
         super("MT-History");
-        this.setVisible(false);
-        prevState = FrameStates.HIDE;
-
         FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
         this.setPreferredSize(frameSettings.getFrameSize());
     }

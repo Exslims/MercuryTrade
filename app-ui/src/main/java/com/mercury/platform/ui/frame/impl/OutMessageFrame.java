@@ -25,7 +25,6 @@ import java.awt.event.MouseEvent;
 public class OutMessageFrame extends ComponentFrame {
     public OutMessageFrame() {
         super("MT-OutMessageFrame");
-        setVisible(false);
     }
 
     private void addNewMessage(Message message){

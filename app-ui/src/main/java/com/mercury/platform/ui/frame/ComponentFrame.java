@@ -50,9 +50,11 @@ public abstract class ComponentFrame extends OverlaidFrame{
         HideSettingsManager.INSTANCE.registerFrame(this);
 
         FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
-        this.setLocation(frameSettings.getFrameLocation());
-        this.setMinimumSize(frameSettings.getFrameSize());
-        this.setMaximumSize(frameSettings.getFrameSize());
+        if(frameSettings != null) {
+            this.setLocation(frameSettings.getFrameLocation());
+            this.setMinimumSize(frameSettings.getFrameSize());
+            this.setMaximumSize(frameSettings.getFrameSize());
+        }
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, BORDER_THICKNESS)));
@@ -219,6 +221,16 @@ public abstract class ComponentFrame extends OverlaidFrame{
 
         @Override
         public void mouseReleased(MouseEvent e) {
+            if(getLocationOnScreen().x < 0){
+                setLocation(0, getLocationOnScreen().y);
+            }
+            if(getLocationOnScreen().y < 0){
+                setLocation(getLocationOnScreen().x, 0);
+            }
+            Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+            if(getLocationOnScreen().y + getSize().height > dimension.height){
+                setLocation(getLocationOnScreen().x, dimension.height - getSize().height);
+            }
             configManager.saveFrameLocation(ComponentFrame.this.getClass().getSimpleName(),ComponentFrame.this.getFrameLocation());
         }
     }

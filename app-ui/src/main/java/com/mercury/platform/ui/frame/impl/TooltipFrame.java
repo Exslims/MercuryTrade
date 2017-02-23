@@ -21,9 +21,7 @@ public class TooltipFrame extends OverlaidFrame {
     public TooltipFrame() {
         super("MT-Tooltips");
         this.processingHideEvent = false;
-        this.setVisible(false);
         this.setAlwaysOnTop(true);
-        prevState = FrameStates.HIDE;
         this.setOpacity(ConfigManager.INSTANCE.getMaxOpacity()/100f);
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),

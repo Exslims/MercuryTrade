@@ -35,7 +35,8 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         setFocusableWindowState(false);
         setFocusable(false);
         setAlwaysOnTop(true);
-
+        setVisible(false);
+        this.prevState = FrameStates.HIDE;
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -46,24 +47,30 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         EventRouter.INSTANCE.registerHandler(ChangeFrameVisibleEvent.class, new MercuryEventHandler<ChangeFrameVisibleEvent>() {
             @Override
             public void handle(ChangeFrameVisibleEvent event) {
-                if (processingHideEvent){
-                    switch (event.getStates()) {
+                if(!SwingUtilities.isEventDispatchThread()) {
+                    SwingUtilities.invokeLater(()-> changeVisible(event.getStates()));
+                }else {
+                    changeVisible(event.getStates());
+                }
+            }
+            private void changeVisible(FrameStates state){
+                if (processingHideEvent) {
+                    switch (state) {
                         case SHOW: {
-                            if (prevState == null) {
-                                prevState = FrameStates.SHOW;
-                            }
                             if (prevState.equals(FrameStates.SHOW)) {
                                 showComponent();
                             }
                         }
                         break;
                         case HIDE: {
-                            if (!OverlaidFrame.this.isVisible()) {
-                                prevState = FrameStates.HIDE;
-                            } else {
-                                prevState = FrameStates.SHOW;
+                            if (OverlaidFrame.this.isVisible()) {
+                                if (!OverlaidFrame.this.isVisible()) {
+                                    prevState = FrameStates.HIDE;
+                                } else {
+                                    prevState = FrameStates.SHOW;
+                                }
+                                hideComponent();
                             }
-                            hideComponent();
                         }
                         break;
                     }
@@ -88,5 +95,8 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     }
     public void hideComponent(){
         this.setVisible(false);
+    }
+    public void setFrameState(FrameStates state) {
+        this.prevState = state;
     }
 }

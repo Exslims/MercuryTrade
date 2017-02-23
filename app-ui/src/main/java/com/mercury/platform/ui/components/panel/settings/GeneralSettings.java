@@ -8,6 +8,8 @@ import com.mercury.platform.ui.manager.HideSettingsManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Created by Константин on 05.01.2017.
@@ -76,12 +78,16 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
 
         maxSlider = componentsFactory.getSlider(20,100,ConfigManager.INSTANCE.getMaxOpacity());
         maxSlider.addChangeListener(e -> {
-            int minValue = minSlider.getValue();
-            if(minValue == maxSlider.getValue()+1){
-                minSlider.setValue(maxSlider.getValue());
-            }
             maxValueField.setText(String.valueOf(maxSlider.getValue()) + "%");
             owner.setOpacity(maxSlider.getValue()/100.0f);
+        });
+        maxSlider.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if(minSlider.getValue() > maxSlider.getValue()){
+                    minSlider.setValue(maxSlider.getValue());
+                }
+            }
         });
 
         JPanel notifierPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));

@@ -18,7 +18,8 @@ public class SetUpLocationFrame extends ComponentFrame {
     public SetUpLocationFrame() {
         super("MT-SetUpLocationFrame");
         this.setVisible(false);
-        prevState = FrameStates.HIDE;
+        processEResize = false;
+        processSEResize = false;
     }
 
     @Override
@@ -28,12 +29,27 @@ public class SetUpLocationFrame extends ComponentFrame {
         rootPanel.setBorder(BorderFactory.createEmptyBorder(6,6,0,6));
 
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
-        root.setPreferredSize(new Dimension(225,30));
+        root.setPreferredSize(new Dimension(300,30));
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
         root.setBackground(AppThemeColor.SLIDE_BG);
         root.add(componentsFactory.getSimpleTextAre(" Panels are currently unlocked"),BorderLayout.CENTER);
 
         JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton restoreDefault = componentsFactory.getBorderedButton("Restore default");
+        restoreDefault.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.BORDER),
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 3)
+        ));
+        restoreDefault.setBackground(AppThemeColor.FRAME);
+
+        restoreDefault.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                FramesManager.INSTANCE.restoreDefaultLocation();
+            }
+        });
+        restoreDefault.setPreferredSize(new Dimension(140, 26));
+
         JButton lock = componentsFactory.getBorderedButton("Lock!");
         lock.addMouseListener(new MouseAdapter() {
             @Override
@@ -44,6 +60,7 @@ public class SetUpLocationFrame extends ComponentFrame {
         });
         lock.setPreferredSize(new Dimension(100, 26));
 
+        miscPanel.add(restoreDefault);
         miscPanel.add(lock);
         rootPanel.add(root,BorderLayout.CENTER);
         this.add(rootPanel,BorderLayout.CENTER);

@@ -19,7 +19,6 @@ import java.awt.event.MouseEvent;
 public class UpdateReadyFrame extends OverlaidFrame {
     public UpdateReadyFrame() {
         super("MT-UpdateNotification");
-        prevState = FrameStates.HIDE;
     }
 
     @Override
@@ -29,7 +28,6 @@ public class UpdateReadyFrame extends OverlaidFrame {
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1)));
         this.add(getUpdatePanel());
         this.setOpacity(ConfigManager.INSTANCE.getMaxOpacity()/100f);
-        this.setVisible(false);
         this.pack();
     }
     private JPanel getUpdatePanel(){
