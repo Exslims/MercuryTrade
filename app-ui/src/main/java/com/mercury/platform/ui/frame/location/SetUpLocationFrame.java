@@ -29,10 +29,10 @@ public class SetUpLocationFrame extends ComponentFrame {
         rootPanel.setBorder(BorderFactory.createEmptyBorder(6,6,0,6));
 
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
-        root.setPreferredSize(new Dimension(300,30));
+        root.setPreferredSize(new Dimension(700,70));
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
         root.setBackground(AppThemeColor.SLIDE_BG);
-        root.add(componentsFactory.getSimpleTextAre(" Panels are currently unlocked"),BorderLayout.CENTER);
+        root.add(componentsFactory.getSimpleTextAre("              Panels UNLOCKED. \n\nMove them and click Lock when done."),BorderLayout.CENTER);
 
         JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         JButton restoreDefault = componentsFactory.getBorderedButton("Restore default");

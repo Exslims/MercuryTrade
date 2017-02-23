@@ -246,7 +246,7 @@ public class ChatScannerFrame extends TitledComponentFrame {
 
         @Override
         protected String getFrameTitle() {
-            return "Message chunks";
+            return "Search for:";
         }
     }
 }

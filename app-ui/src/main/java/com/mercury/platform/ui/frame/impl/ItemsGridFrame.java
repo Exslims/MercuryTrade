@@ -160,7 +160,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
     protected JPanel panelWhenMove() {
         JPanel panel = componentsFactory.getTransparentPanel(new BorderLayout());
         JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,20f,"Items mesh panel"));
+        labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,20f,"Align this grid with your stash"));
         labelPanel.setPreferredSize(new Dimension(50,74));
         panel.add(labelPanel,BorderLayout.PAGE_START);
 

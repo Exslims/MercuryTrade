@@ -42,7 +42,7 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
 
 
         JPanel hideSettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        hideSettingsPanel.add(componentsFactory.getTextLabel("Fade time(seconds) 0 - Always show"));
+        hideSettingsPanel.add(componentsFactory.getTextLabel("Fade time (seconds). 0 - Always show"));
 
         secondsPicker = componentsFactory.getComboBox(new String[]{"0","1","2","3","4","5"});
         int decayTime = ConfigManager.INSTANCE.getDecayTime();

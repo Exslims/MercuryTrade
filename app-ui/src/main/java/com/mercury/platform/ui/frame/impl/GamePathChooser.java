@@ -54,7 +54,7 @@ public class GamePathChooser extends TitledComponentFrame {
 
         JPanel chooserPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
 
-        JTextField textField = componentsFactory.getTextField("For example: C:/POE");
+        JTextField textField = componentsFactory.getTextField("Example: C:/Path of Exile");
         textField.setPreferredSize(new Dimension(450,26));
         textField.setMinimumSize(new Dimension(450,26));
         textField.addMouseListener(new MouseAdapter() {

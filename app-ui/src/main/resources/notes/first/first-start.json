@@ -42,8 +42,8 @@
     "layout" : "HORIZONTAL"
   },
   {
-    "title" : "Minor feature: Items grid",
-    "text" : "TODO",
+    "title" : "Minor feature: Stash item highlighting",
+    "text" : "Every item in your stash is stored at some specific 'cell' in a tab - where you put it. MercuryTrade will highlight that 'cell' to locate it on a glance. \n You will need to set up the Item Grid.",
     "image" : "",
     "layout" : "HORIZONTAL"
   },
