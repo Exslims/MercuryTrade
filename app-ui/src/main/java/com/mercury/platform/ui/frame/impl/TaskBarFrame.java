@@ -12,7 +12,6 @@ import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.manager.UpdateManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.pushingpixels.trident.Timeline;
@@ -28,17 +27,18 @@ import java.awt.event.*;
  */
 public class TaskBarFrame extends MovableComponentFrame{
     private final Logger logger = LogManager.getLogger(TaskBarFrame.class.getSimpleName());
-
     private boolean updateReady = false;
-
     private Timeline collapseAnim;
     private static final int MAX_WIDTH = 286;
+    private TradeMode tradeMode;
+    private JButton tradeModeButton;
 
     public TaskBarFrame() {
         super("MT-TaskBar");
         processEResize = false;
         processSEResize = false;
         prevState = FrameStates.SHOW;
+        tradeMode = TradeMode.DEFAULT;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         taskBarPanel.setBackground(AppThemeColor.TRANSPARENT);
         taskBarPanel.setLayout(new BoxLayout(taskBarPanel,BoxLayout.X_AXIS));
 
-        JButton visibleMode = componentsFactory.getIconButton("app/visible-always-mode.png",24,AppThemeColor.FRAME_1, TooltipConstants.VISIBLE_MODE);
+        JButton visibleMode = componentsFactory.getIconButton("app/visible-always-mode.png",24,AppThemeColor.FRAME_ALPHA, TooltipConstants.VISIBLE_MODE);
         visibleMode.addMouseListener(new MouseAdapter() {
             private boolean dnd = false;
             @Override
@@ -102,7 +102,7 @@ public class TaskBarFrame extends MovableComponentFrame{
             }
         });
 
-        JButton itemGrid = componentsFactory.getIconButton("app/item-grid-disable.png",24,AppThemeColor.FRAME_1, TooltipConstants.VISIBLE_MODE);
+        JButton itemGrid = componentsFactory.getIconButton("app/item-grid-disable.png",24,AppThemeColor.FRAME_ALPHA, TooltipConstants.VISIBLE_MODE);
         itemGrid.addMouseListener(new MouseAdapter() {
             private boolean frameOpened = false;
             @Override
@@ -121,44 +121,34 @@ public class TaskBarFrame extends MovableComponentFrame{
             }
         });
 
-        JButton chatMode = componentsFactory.getIconButton("app/standard-mode.png",24,AppThemeColor.FRAME_1,TooltipConstants.TRADE_MODE);
-        chatMode.addMouseListener(new MouseAdapter() {
-            private TradeMode currentMode = TradeMode.DEFAULT;
+        tradeModeButton = componentsFactory.getIconButton("app/standard-mode.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.TRADE_MODE);
+        tradeModeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(currentMode.equals(TradeMode.DEFAULT)){
-                    chatMode.setIcon(componentsFactory.getIcon("app/supertrade-mode.png",24));
-                    currentMode = TradeMode.SUPER;
+                if(tradeMode.equals(TradeMode.DEFAULT)){
+                    tradeModeButton.setIcon(componentsFactory.getIcon("app/supertrade-mode.png",24));
                     TaskBarFrame.this.repaint();
                     EventRouter.INSTANCE.fireEvent(new NotificationEvent("SuperTrade mode ON"));
                     EventRouter.INSTANCE.fireEvent(new ChangedTradeModeEvent.ToSuperTradeModeEvent());
                 }else {
-                    currentMode = TradeMode.DEFAULT;
-                    chatMode.setIcon(componentsFactory.getIcon("app/standard-mode.png",24));
+                    tradeModeButton.setIcon(componentsFactory.getIcon("app/standard-mode.png",24));
                     TaskBarFrame.this.repaint();
                     EventRouter.INSTANCE.fireEvent(new NotificationEvent("SuperTrade mode OFF"));
                     EventRouter.INSTANCE.fireEvent(new ChangedTradeModeEvent.ToDefaultTradeModeEvent());
                 }
+                configManager.setTradeMode(tradeMode.toString());
             }
         });
 
-        JButton chatFilter = componentsFactory.getIconButton("app/chat-filter.png",24,AppThemeColor.FRAME_1,TooltipConstants.CHAT_FILTER);
+        JButton chatFilter = componentsFactory.getIconButton("app/chat-filter.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.CHAT_FILTER);
         chatFilter.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 FramesManager.INSTANCE.hideOrShowFrame(ChatScannerFrame.class);
             }
         });
-        //todo in feature
-//        JButton timer = componentsFactory.getIconButton("app/timer.png",24,AppThemeColor.FRAME_1,TooltipConstants.TIMER);
-//        timer.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                FramesManager.INSTANCE.hideOrShowFrame(TimerFrame.class);
-//            }
-//        });
 
-        JButton historyButton = componentsFactory.getIconButton("app/history.png",24,AppThemeColor.FRAME_1,TooltipConstants.HISTORY);
+        JButton historyButton = componentsFactory.getIconButton("app/history.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.HISTORY);
         historyButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -166,7 +156,7 @@ public class TaskBarFrame extends MovableComponentFrame{
             }
         });
 
-        JButton moveButton = componentsFactory.getIconButton("app/drag_and_drop.png", 24,AppThemeColor.FRAME_1,TooltipConstants.SETUP_FRAMES_LOCATION);
+        JButton moveButton = componentsFactory.getIconButton("app/drag_and_drop.png", 24,AppThemeColor.FRAME_ALPHA,TooltipConstants.SETUP_FRAMES_LOCATION);
         moveButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -174,7 +164,7 @@ public class TaskBarFrame extends MovableComponentFrame{
             }
         });
 
-        JButton settingsButton = componentsFactory.getIconButton("app/settings.png", 26,AppThemeColor.FRAME_1,TooltipConstants.SETTINGS);
+        JButton settingsButton = componentsFactory.getIconButton("app/settings.png", 26,AppThemeColor.FRAME_ALPHA,TooltipConstants.SETTINGS);
         settingsButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -182,14 +172,14 @@ public class TaskBarFrame extends MovableComponentFrame{
             }
         });
 
-        JButton exitButton = componentsFactory.getIconButton("app/exit.png", 24,AppThemeColor.FRAME_1,"");
+        JButton exitButton = componentsFactory.getIconButton("app/exit.png", 24,AppThemeColor.FRAME_ALPHA,"");
         exitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(updateReady){
                     UpdateManager.INSTANCE.doUpdate();
                 }else {
-                    System.exit(0);
+                    EventRouter.INSTANCE.fireEvent(new ShutdownApplication());
                 }
             }
         });
@@ -198,7 +188,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(visibleMode);
         taskBarPanel.add(Box.createRigidArea(new Dimension(2, 4)));
-        taskBarPanel.add(chatMode);
+        taskBarPanel.add(tradeModeButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(chatFilter);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
@@ -221,7 +211,16 @@ public class TaskBarFrame extends MovableComponentFrame{
         });
         EventRouter.INSTANCE.registerHandler(UpdateReadyEvent.class,event -> {
             updateReady = true;
-            pack();
+        });
+        EventRouter.INSTANCE.registerHandler(ChangedTradeModeEvent.ToSuperTradeModeEvent.class, event -> {
+            tradeMode = TradeMode.SUPER;
+            tradeModeButton.setIcon(componentsFactory.getIcon("app/supertrade-mode.png",24));
+            this.repaint();
+        });
+        EventRouter.INSTANCE.registerHandler(ChangedTradeModeEvent.ToDefaultTradeModeEvent.class, event -> {
+            tradeMode = TradeMode.DEFAULT;
+            tradeModeButton.setIcon(componentsFactory.getIcon("app/standard-mode.png",24));
+            this.repaint();
         });
     }
     private void initCollapseAnimations(String state){
@@ -257,7 +256,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,20f,"Task Bar"));
         panel.add(labelPanel);
-
+        panel.setPreferredSize(this.getSize());
         return panel;
     }
 }

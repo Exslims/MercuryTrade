@@ -192,7 +192,7 @@ public class ComponentsFactory {
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
                 BorderFactory.createLineBorder(AppThemeColor.BUTTON, 2)
         );
-        JButton iconButton = getIconButton(iconPath, iconSize, AppThemeColor.FRAME_1,tooltip);
+        JButton iconButton = getIconButton(iconPath, iconSize, AppThemeColor.FRAME_ALPHA,tooltip);
         iconButton.setBorder(BorderFactory.createLineBorder(AppThemeColor.BUTTON, 2));
         return iconButton;
     }
@@ -205,7 +205,7 @@ public class ComponentsFactory {
      * @return JButton with icon
      */
     public JButton getIconButton(String iconPath, int iconSize, Dimension buttonSize, String tooltip){
-        JButton iconButton = getIconButton(iconPath, iconSize, AppThemeColor.FRAME_1, tooltip);
+        JButton iconButton = getIconButton(iconPath, iconSize, AppThemeColor.FRAME_ALPHA, tooltip);
         iconButton.setPreferredSize(buttonSize);
         iconButton.setSize(buttonSize);
         return iconButton;

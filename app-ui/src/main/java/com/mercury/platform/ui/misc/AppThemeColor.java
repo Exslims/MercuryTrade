@@ -18,7 +18,7 @@ public class AppThemeColor {
     public static final Color BORDER = new Color(22,126,138);
     public static final Color FRAME = new Color(42, 44, 43,240);
     public static final Color FRAME_RGB = new Color(42, 44, 43);
-    public static final Color FRAME_1 = new Color(42, 44, 43,1);
+    public static final Color FRAME_ALPHA = new Color(42, 44, 43,1);
     public static final Color TRANSPARENT = new Color(0,0,0,0);
     public static final Color HEADER = new Color(55,65,64);
     public static final Color ITEM_HL = new Color(55,65,64,200);

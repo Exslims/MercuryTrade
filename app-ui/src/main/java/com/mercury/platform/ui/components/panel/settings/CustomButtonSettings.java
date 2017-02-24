@@ -1,6 +1,8 @@
 package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.events.custom.CustomButtonsChangedEvent;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -32,6 +34,7 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
         Map<String,String> buttonsConfig = new HashMap<>();
         inputs.forEach((k,v)-> buttonsConfig.put(k.getText(),v.getText()));
         ConfigManager.INSTANCE.saveButtonsConfig(buttonsConfig);
+        EventRouter.INSTANCE.fireEvent(new CustomButtonsChangedEvent());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.frame.location;
 
 import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.manager.FramesManager;
@@ -20,6 +21,12 @@ public class SetUpLocationFrame extends ComponentFrame {
         this.setVisible(false);
         processEResize = false;
         processSEResize = false;
+
+        FrameSettings frameSettings = configManager.getDefaultFramesSettings().get(this.getClass().getSimpleName());
+        if(frameSettings != null) {
+            this.setMinimumSize(frameSettings.getFrameSize());
+            this.setMaximumSize(frameSettings.getFrameSize());
+        }
     }
 
     @Override

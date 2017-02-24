@@ -96,7 +96,4 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     public void hideComponent(){
         this.setVisible(false);
     }
-    public void setFrameState(FrameStates state) {
-        this.prevState = state;
-    }
 }

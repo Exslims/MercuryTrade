@@ -10,6 +10,7 @@ import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.AddShowDelayEvent;
 import com.mercury.platform.shared.events.custom.ChangeFrameVisibleEvent;
+import com.mercury.platform.shared.events.custom.ShutdownApplication;
 import com.mercury.platform.shared.events.custom.UILoadedEvent;
 import com.sun.jna.Native;
 import com.sun.jna.PointerType;
@@ -29,7 +30,8 @@ public class AppStarter {
     private static final Logger logger = LogManager.getLogger(AppStarter.class.getSimpleName());
     public static FrameStates APP_STATUS = FrameStates.HIDE;
     private User32 user32 = User32.INSTANCE;
-    private volatile int delay;
+    private volatile int delay = 100;
+    private boolean shutdown = false;
 
     public void startApplication(){
         new SoundNotifier();
@@ -45,6 +47,10 @@ public class AppStarter {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
+                    if(shutdown){
+                        timer.cancel();
+                        System.exit(0);
+                    }
                     byte[] windowText = new byte[512];
                     PointerType hwnd = user32.GetForegroundWindow();
                     User32.INSTANCE.GetWindowTextA(hwnd, windowText, 512);
@@ -55,12 +61,10 @@ public class AppStarter {
                         }
                     }else{
                         if(APP_STATUS == FrameStates.HIDE) {
-                            if(delay > 0){
-                                try {
-                                    Thread.sleep(delay);
-                                    delay = 0;
-                                } catch (InterruptedException e) {
-                                }
+                            try {
+                                Thread.sleep(delay);
+                                delay = 100;
+                            } catch (InterruptedException e) {
                             }
                             APP_STATUS = FrameStates.SHOW;
                             EventRouter.INSTANCE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.SHOW));
@@ -71,6 +75,9 @@ public class AppStarter {
         });
         EventRouter.INSTANCE.registerHandler(AddShowDelayEvent.class,event -> {
             delay = 300;
+        });
+        EventRouter.INSTANCE.registerHandler(ShutdownApplication.class, event -> {
+            shutdown = true;
         });
     }
 }

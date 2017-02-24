@@ -134,8 +134,9 @@ public class ItemsGridFrame extends MovableComponentFrame{
             if(message instanceof ItemMessage) {
                 String tabInfo = ((ItemMessage) message).getTabInfo();
                 String nickname = message.getWhisperNickname();
-                if(tabInfo != null){
-                    navBar.remove(tabButtons.get(nickname+tabInfo));
+                JButton tabButton = tabButtons.get(nickname + tabInfo);
+                if(tabButton != null){
+                    navBar.remove(tabButton);
                     int x = Integer.parseInt(StringUtils.substringBetween(tabInfo,"left ",","));
                     int y = Integer.parseInt(StringUtils.substringAfter(tabInfo,"top "));
                     cells.forEach(cell -> {

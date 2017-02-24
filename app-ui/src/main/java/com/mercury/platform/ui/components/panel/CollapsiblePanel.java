@@ -43,7 +43,7 @@ public class CollapsiblePanel<InnerPanel extends JPanel> extends JPanel {
     }
     private JButton getExpandButton(){
         String iconPath = expand ? "app/collapse.png":"app/expand.png";
-        JButton expandButton = componentsFactory.getIconButton(iconPath, 16,AppThemeColor.FRAME_1, TooltipConstants.EXPAND_COLLAPSE);
+        JButton expandButton = componentsFactory.getIconButton(iconPath, 16,AppThemeColor.FRAME_ALPHA, TooltipConstants.EXPAND_COLLAPSE);
         expandButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

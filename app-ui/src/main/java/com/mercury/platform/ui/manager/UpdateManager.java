@@ -1,5 +1,7 @@
 package com.mercury.platform.ui.manager;
 
+import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.events.custom.ShutdownApplication;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +26,7 @@ public class UpdateManager {
             logger.debug("Execute local updater, source path: {}",path);
             if(new File(JAR_FILE_PATH).exists()) {
                 Runtime.getRuntime().exec("java -jar " + LOCAL_UPDATER_PATH + " " + "\"" + path + "\"");
-                System.exit(0);
+                EventRouter.INSTANCE.fireEvent(new ShutdownApplication());
             }
         } catch (Exception e1) {
             logger.error("Error while execute local-updater: ", e1);

@@ -41,6 +41,8 @@ public class ConfigManager {
     private int minOpacity = 100;
     private int maxOpacity = 100;
     private String gamePath = "";
+    private String flowDirection = "DOWNWARDS";
+    private String tradeMode = "DEFAULT";
 
     private boolean showPatchNotes = false;
     private boolean showOnStartUp = true;
@@ -69,6 +71,8 @@ public class ConfigManager {
         defaultAppSettings.put("showPatchNotes",false);
         defaultAppSettings.put("whisperNotifier",WhisperNotifierStatus.ALWAYS);
         defaultAppSettings.put("gamePath","");
+        defaultAppSettings.put("flowDirection","DOWNWARDS");
+        defaultAppSettings.put("tradeMode","DEFAULT");
 
     }
 
@@ -103,6 +107,8 @@ public class ConfigManager {
                 saveProperty("showPatchNotes",String.valueOf(defaultAppSettings.get("showPatchNotes")));
                 saveProperty("gamePath",gamePath);
                 saveProperty("whisperNotifier", defaultAppSettings.get("whisperNotifier").toString());
+                saveProperty("flowDirection", defaultAppSettings.get("flowDirection"));
+                saveProperty("tradeMode", defaultAppSettings.get("tradeMode"));
 
             } catch (Exception e) {
                 logger.error(e);
@@ -140,6 +146,8 @@ public class ConfigManager {
             showOnStartUp = Boolean.valueOf(loadProperty("showOnStartUp"));
             showPatchNotes = Boolean.valueOf(loadProperty("showPatchNotes"));
             gamePath = loadProperty("gamePath");
+            flowDirection = loadProperty("flowDirection");
+            tradeMode = loadProperty("tradeMode");
         } catch (Exception e) {
             logger.error("Error in loadConfigFile: ",e);
         }
@@ -266,6 +274,12 @@ public class ConfigManager {
     public boolean isShowPatchNotes() {
         return showPatchNotes;
     }
+    public String getFlowDirection() {
+        return flowDirection;
+    }
+    public String getTradeMode() {
+        return tradeMode;
+    }
 
     public void setDecayTime(int decayTime) {
         this.decayTime = decayTime;
@@ -294,6 +308,14 @@ public class ConfigManager {
     public void setGamePath(String gamePath){
         this.gamePath = gamePath;
         saveProperty("gamePath",gamePath);
+    }
+    public void setFlowDirection(String flowDirection) {
+        this.flowDirection = flowDirection;
+        saveProperty("flowDirection",flowDirection);
+    }
+    public void setTradeMode(String tradeMode) {
+        this.tradeMode = tradeMode;
+        saveProperty("tradeMode",tradeMode);
     }
 
     private Map<String, String > getDefaultButtons(){

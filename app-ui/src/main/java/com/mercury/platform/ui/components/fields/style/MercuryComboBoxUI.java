@@ -15,6 +15,6 @@ public class MercuryComboBoxUI extends BasicComboBoxUI {
     }
 
     @Override protected JButton createArrowButton() {
-        return ComponentsFactory.INSTANCE.getIconButton("app/expand-combobox.png",16, AppThemeColor.FRAME_1,"Expand.");
+        return ComponentsFactory.INSTANCE.getIconButton("app/expand-combobox.png",16, AppThemeColor.FRAME_ALPHA,"Expand.");
     }
 }

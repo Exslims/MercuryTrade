@@ -9,70 +9,72 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- * Created by Константин on 22.01.2017.
- */
 public abstract class MovableComponentFrame extends ComponentFrame {
     protected Container mainContainer;
-    private boolean wasVisible;
-    private Color prevBGColor;
-    private Border prevBorder;
-    private boolean prevProcessEResize;
-    private boolean prevProcessSEResize;
-    protected UndecoratedFrameState undecoratedFrameState;
+    protected FrameConstraints prevConstraints;
+    protected boolean locationWasChanged = false;
     protected MovableComponentFrame(String title) {
         super(title);
         mainContainer = this.getContentPane();
-        undecoratedFrameState = UndecoratedFrameState.DEFAULT;
     }
     protected abstract JPanel panelWhenMove();
+    protected void onUnlock(){
+        this.pack();
+        this.repaint();
+    }
+    protected void onLock(){
+        this.repaint();
+        this.pack();
+    }
     public void setState(UndecoratedFrameState state){
         switch (state){
             case MOVING:{
-                if(undecoratedFrameState.equals(UndecoratedFrameState.DEFAULT)) {
-                    wasVisible = this.isVisible();
-                    prevBGColor = this.getBackground();
-                    prevBorder = this.getRootPane().getBorder();
-                    prevProcessEResize = processEResize;
-                    prevProcessSEResize = processSEResize;
-
-                    processEResize = false;
-                    processSEResize = false;
-                    JPanel panel = setUpMoveListeners(panelWhenMove());
-                    if(mainContainer.getHeight() < 100 && !this.getClass().getSimpleName().equals("TaskBarFrame")){
-                        panel.setPreferredSize(new Dimension(200, 100));
-                    }else {
-                        panel.setPreferredSize(mainContainer.getSize());
-                    }
-                    this.setBackground(AppThemeColor.FRAME);
-                    this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
-                    this.setContentPane(panel);
-                    this.setVisible(true);
-                    this.setAlwaysOnTop(true);
-                    this.pack();
-                    this.repaint();
-                    undecoratedFrameState = UndecoratedFrameState.MOVING;
-                }
+                this.prevConstraints = new FrameConstraints(
+                        this.processSEResize,
+                        this.processEResize,
+                        this.isVisible(),
+                        this.getBackground(),
+                        this.getRootPane().getBorder(),
+                        this.getLocation()
+                );
+                JPanel panel = setUpMoveListeners(panelWhenMove());
+                this.processEResize = false;
+                this.processSEResize = false;
+                this.setBackground(AppThemeColor.FRAME);
+                this.setLocation(configManager.getFrameSettings(this.getClass().getSimpleName()).getFrameLocation());
+                this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
+                this.setContentPane(panel);
+                this.setVisible(true);
+                this.setAlwaysOnTop(true);
+                this.onUnlock();
                 break;
             }
             case DEFAULT: {
                 this.setContentPane(mainContainer);
-                this.setBackground(prevBGColor);
-                this.getRootPane().setBorder(prevBorder);
-                this.setVisible(wasVisible);
-                this.processSEResize = prevProcessSEResize;
-                this.processEResize = prevProcessEResize;
+                this.processSEResize = prevConstraints.processSEResize;
+                this.processEResize = prevConstraints.processEResize;
+                this.setVisible(prevConstraints.visible);
+                this.setBackground(prevConstraints.bgColor);
+                this.getRootPane().setBorder(prevConstraints.border);
+                this.setLocation(prevConstraints.location);
                 if(mainContainer.getComponentCount() > 0 && this.getClass().getSimpleName().equals("IncMessageFrame")){
                     this.setVisible(true);
                 }
                 this.setPreferredSize(null);
-                this.pack();
-                this.repaint();
-                undecoratedFrameState = UndecoratedFrameState.DEFAULT;
+
+                this.onLock();
                 break;
             }
         }
     }
+
+    @Override
+    protected void onLocationChange(Point location) {
+        super.onLocationChange(location);
+        prevConstraints.location = location;
+        locationWasChanged = true;
+    }
+
     private JPanel setUpMoveListeners(JPanel panel){
         panel.addMouseMotionListener(new DraggedFrameMotionListener());
         panel.addMouseListener(new DraggedFrameMouseListener());
@@ -93,5 +95,30 @@ public abstract class MovableComponentFrame extends ComponentFrame {
             }
         });
         return panel;
+    }
+    protected class FrameConstraints {
+        private boolean processSEResize;
+        private boolean processEResize;
+        private boolean visible;
+        private Color bgColor;
+        private Border border;
+        private Point location;
+
+        FrameConstraints(boolean processSEResize, boolean processEResize, boolean visible, Color bgColor, Border border,Point location) {
+            this.processSEResize = processSEResize;
+            this.processEResize = processEResize;
+            this.visible = visible;
+            this.bgColor = bgColor;
+            this.border = border;
+            this.location = location;
+        }
+
+        public void setLocation(Point location) {
+            this.location = location;
+        }
+
+        public Point getLocation() {
+            return location;
+        }
     }
 }

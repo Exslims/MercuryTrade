@@ -3,6 +3,8 @@ package com.mercury.platform.ui.manager;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.events.custom.ChangedTradeModeEvent;
+import com.mercury.platform.shared.events.custom.ShutdownApplication;
 import com.mercury.platform.shared.events.custom.UILoadedEvent;
 import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.ui.frame.ComponentFrame;
@@ -10,6 +12,7 @@ import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.frame.impl.test.TestCasesFrame;
 import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.frame.impl.*;
+import com.mercury.platform.ui.frame.impl.util.TradeMode;
 import com.mercury.platform.ui.frame.location.SetUpLocationCommander;
 import com.mercury.platform.ui.frame.location.SetUpLocationFrame;
 import com.mercury.platform.ui.misc.note.Note;
@@ -89,6 +92,17 @@ public class FramesManager {
                 }
             }
         });
+        TradeMode tradeMode = TradeMode.valueOf(ConfigManager.INSTANCE.getTradeMode());
+        switch (tradeMode){
+            case DEFAULT:{
+                EventRouter.INSTANCE.fireEvent(new ChangedTradeModeEvent.ToDefaultTradeModeEvent());
+                break;
+            }
+            case SUPER:{
+                EventRouter.INSTANCE.fireEvent(new ChangedTradeModeEvent.ToSuperTradeModeEvent());
+                break;
+            }
+        }
         EventRouter.INSTANCE.fireEvent(new UILoadedEvent());
     }
     public void showFrame(Class frameClass){
@@ -124,10 +138,8 @@ public class FramesManager {
         framesMap.forEach((k,v) -> {
             FrameSettings settings = ConfigManager.INSTANCE.getDefaultFramesSettings().get(k.getSimpleName());
             if(v instanceof MovableComponentFrame){
-                System.out.println(v.getClass().getSimpleName() + ":" + v.getLocation());
                 v.setLocation(settings.getFrameLocation());
                 ConfigManager.INSTANCE.saveFrameLocation(v.getClass().getSimpleName(),settings.getFrameLocation());
-                System.out.println(v.getClass().getSimpleName() + ":" + v.getLocation());
             }
         });
     }
@@ -135,7 +147,7 @@ public class FramesManager {
         PopupMenu trayMenu = new PopupMenu();
         MenuItem item = new MenuItem("Exit");
         item.addActionListener(e -> {
-            System.exit(0);
+            EventRouter.INSTANCE.fireEvent(new ShutdownApplication());
         });
         trayMenu.add(item);
 
