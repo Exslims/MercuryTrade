@@ -52,6 +52,8 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     private JPanel messagePanel;
     private JPanel customButtonsPanel;
 
+    private boolean expanded = false;
+
     public MessagePanel(Message message, ComponentFrame owner, MessagePanelStyle style){
         super(new BorderLayout());
         this.message = message;
@@ -77,7 +79,6 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 BorderFactory.createMatteBorder(1, 0, 1, 0, AppThemeColor.MSG_HEADER_BORDER),
                 BorderFactory.createEmptyBorder(-7, 0, -8, 0)));
         if(style.equals(MessagePanelStyle.DOWNWARDS_SMALL) ||
-                style.equals(MessagePanelStyle.SP_MODE) ||
                 style.equals(MessagePanelStyle.HISTORY)) {
             this.add(whisperPanel,BorderLayout.PAGE_START);
             this.add(messagePanel,BorderLayout.CENTER);
@@ -91,11 +92,6 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             case DOWNWARDS_SMALL:{
                 messagePanel.setVisible(false);
                 customButtonsPanel.setVisible(false);
-                break;
-            }
-            case SP_MODE:{
-                messagePanel.setVisible(true);
-                customButtonsPanel.setVisible(true);
                 break;
             }
             case UPWARDS_SMALL:{
@@ -189,7 +185,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         whisperLabel.setVerticalAlignment(SwingConstants.CENTER);
 
         JPanel nickNamePanel = componentsFactory.getTransparentPanel(new BorderLayout());
-        if(style.equals(MessagePanelStyle.HISTORY) || style.equals(MessagePanelStyle.SP_MODE)){
+        if(style.equals(MessagePanelStyle.HISTORY)){
             nickNamePanel.add(whisperLabel,BorderLayout.CENTER);
         }else {
             JPanel buttonWrapper = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
@@ -315,6 +311,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         return expandButton;
     }
     public void expand(){
+        expanded = true;
         if(style.equals(MessagePanelStyle.DOWNWARDS_SMALL)) {
             expandButton.setIcon(componentsFactory.getIcon("app/expand-mp.png", 18));
             messagePanel.setVisible(true);
@@ -329,6 +326,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         ((MessagesContainer)owner).onExpandMessage();
     }
     public void collapse(){
+        expanded = false;
         if(style.equals(MessagePanelStyle.DOWNWARDS_SMALL)) {
             expandButton.setIcon(componentsFactory.getIcon("app/default-mp.png", 18));
             messagePanel.setVisible(false);
@@ -341,6 +339,10 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
         setMinimumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
         ((MessagesContainer)owner).onCollapseMessage();
+    }
+
+    public boolean isExpanded() {
+        return expanded;
     }
 
     public void setStyle(MessagePanelStyle style) {

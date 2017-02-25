@@ -64,13 +64,11 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
                         break;
                         case HIDE: {
                             if (OverlaidFrame.this.isVisible()) {
-                                if (!OverlaidFrame.this.isVisible()) {
-                                    prevState = FrameStates.HIDE;
-                                } else {
-                                    prevState = FrameStates.SHOW;
-                                }
-                                hideComponent();
+                                prevState = FrameStates.SHOW;
+                            }else {
+                                prevState = FrameStates.HIDE;
                             }
+                            hideComponent();
                         }
                         break;
                     }

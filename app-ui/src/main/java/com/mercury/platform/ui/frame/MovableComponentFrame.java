@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 
 public abstract class MovableComponentFrame extends ComponentFrame {
     protected Container mainContainer;
-    protected FrameConstraints prevConstraints;
+    private FrameConstraints prevConstraints;
     protected boolean locationWasChanged = false;
     protected boolean inMoveMode = false;
     protected MovableComponentFrame(String title) {

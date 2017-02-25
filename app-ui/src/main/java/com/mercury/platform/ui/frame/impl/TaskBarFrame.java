@@ -29,16 +29,13 @@ public class TaskBarFrame extends MovableComponentFrame{
     private final Logger logger = LogManager.getLogger(TaskBarFrame.class.getSimpleName());
     private boolean updateReady = false;
     private Timeline collapseAnim;
-    private static final int MAX_WIDTH = 286;
-    private TradeMode tradeMode;
-    private JButton tradeModeButton;
+    private static final int MAX_WIDTH = 250;
 
     public TaskBarFrame() {
         super("MT-TaskBar");
         processEResize = false;
         processSEResize = false;
         prevState = FrameStates.SHOW;
-        tradeMode = TradeMode.DEFAULT;
     }
 
     @Override
@@ -121,25 +118,6 @@ public class TaskBarFrame extends MovableComponentFrame{
             }
         });
 
-        tradeModeButton = componentsFactory.getIconButton("app/standard-mode.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.TRADE_MODE);
-        tradeModeButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if(tradeMode.equals(TradeMode.DEFAULT)){
-                    tradeModeButton.setIcon(componentsFactory.getIcon("app/supertrade-mode.png",24));
-                    TaskBarFrame.this.repaint();
-                    EventRouter.INSTANCE.fireEvent(new NotificationEvent("SuperTrade mode ON"));
-                    EventRouter.INSTANCE.fireEvent(new ChangedTradeModeEvent.ToSuperTradeModeEvent());
-                }else {
-                    tradeModeButton.setIcon(componentsFactory.getIcon("app/standard-mode.png",24));
-                    TaskBarFrame.this.repaint();
-                    EventRouter.INSTANCE.fireEvent(new NotificationEvent("SuperTrade mode OFF"));
-                    EventRouter.INSTANCE.fireEvent(new ChangedTradeModeEvent.ToDefaultTradeModeEvent());
-                }
-                configManager.setTradeMode(tradeMode.toString());
-            }
-        });
-
         JButton chatFilter = componentsFactory.getIconButton("app/chat-filter.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.CHAT_FILTER);
         chatFilter.addMouseListener(new MouseAdapter() {
             @Override
@@ -188,8 +166,6 @@ public class TaskBarFrame extends MovableComponentFrame{
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(visibleMode);
         taskBarPanel.add(Box.createRigidArea(new Dimension(2, 4)));
-        taskBarPanel.add(tradeModeButton);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(chatFilter);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(historyButton);
@@ -211,16 +187,6 @@ public class TaskBarFrame extends MovableComponentFrame{
         });
         EventRouter.INSTANCE.registerHandler(UpdateReadyEvent.class,event -> {
             updateReady = true;
-        });
-        EventRouter.INSTANCE.registerHandler(ChangedTradeModeEvent.ToSuperTradeModeEvent.class, event -> {
-            tradeMode = TradeMode.SUPER;
-            tradeModeButton.setIcon(componentsFactory.getIcon("app/supertrade-mode.png",24));
-            this.repaint();
-        });
-        EventRouter.INSTANCE.registerHandler(ChangedTradeModeEvent.ToDefaultTradeModeEvent.class, event -> {
-            tradeMode = TradeMode.DEFAULT;
-            tradeModeButton.setIcon(componentsFactory.getIcon("app/standard-mode.png",24));
-            this.repaint();
         });
     }
     private void initCollapseAnimations(String state){

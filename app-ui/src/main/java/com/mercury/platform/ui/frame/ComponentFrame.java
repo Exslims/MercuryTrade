@@ -44,6 +44,7 @@ public abstract class ComponentFrame extends OverlaidFrame{
     @Override
     protected void initialize(){
         initAnimationTimers();
+        this.setVisible(false);
 
         this.addMouseListener(new ResizeByWidthMouseListener());
         this.addMouseMotionListener(new ResizeByWidthMouseMotionListener());
@@ -93,7 +94,9 @@ public abstract class ComponentFrame extends OverlaidFrame{
     protected void onLocationChange(Point location){
         configManager.saveFrameLocation(this.getClass().getSimpleName(),location);
     }
-
+    protected void onFrameDragged(Point location){
+        ComponentFrame.this.setLocation(location);
+    }
     public void addUpwardsSpace(int value) {
         this.setLocation(this.getLocation().x,this.getLocation().y - value);
         this.pack();
@@ -217,7 +220,7 @@ public abstract class ComponentFrame extends OverlaidFrame{
         @Override
         public void mouseDragged(MouseEvent e) {
             e.translatePoint(ComponentFrame.this.getLocation().x - x,ComponentFrame.this.getLocation().y - y);
-            ComponentFrame.this.setLocation(e.getX(),e.getY());
+            onFrameDragged(new Point(e.getX(),e.getY()));
         }
     }
     public class DraggedFrameMouseListener extends MouseAdapter{
