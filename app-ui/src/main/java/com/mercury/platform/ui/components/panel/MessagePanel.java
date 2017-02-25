@@ -13,6 +13,7 @@ import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.misc.MessagePanelStyle;
 import com.mercury.platform.ui.frame.ComponentFrame;
+import com.mercury.platform.ui.frame.impl.MessagesContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 
@@ -66,6 +67,8 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         this.customButtonsPanel = getButtonsPanel(whisper);
         init();
         initHandlers();
+        setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
+        setMinimumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
     }
     private void init(){
         this.removeAll();
@@ -107,6 +110,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             }
         }
         this.repaint();
+        owner.pack();
     }
 
     private JPanel getFormattedMessagePanel(){
@@ -301,47 +305,50 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         expandButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(style.equals(MessagePanelStyle.DOWNWARDS_SMALL)) {
-                    if(!messagePanel.isVisible()) {
-                        expandButton.setIcon(componentsFactory.getIcon("app/expand-mp.png", 18));
-                        messagePanel.setVisible(true);
-                        customButtonsPanel.setVisible(true);
-                        owner.pack();
-                    }else {
-                        expandButton.setIcon(componentsFactory.getIcon("app/default-mp.png", 18));
-                        messagePanel.setVisible(false);
-                        customButtonsPanel.setVisible(false);
-                        owner.pack();
-                    }
-                }else if(style.equals(MessagePanelStyle.UPWARDS_SMALL)){
-                    if(!messagePanel.isVisible()) {
-                        expandButton.setIcon(componentsFactory.getIcon("app/collapse-mp.png", 18));
-                        messagePanel.setVisible(true);
-                        customButtonsPanel.setVisible(true);
-                        int panelHeight = getSize().height;
-                        owner.pack();
-                        int currentHeight = getSize().height;
-                        owner.addUpwardsSpace(currentHeight - panelHeight);
-                    }else {
-                        expandButton.setIcon(componentsFactory.getIcon("app/default-mp.png", 18));
-                        messagePanel.setVisible(false);
-                        customButtonsPanel.setVisible(false);
-                        int panelHeight = getSize().height;
-                        owner.pack();
-                        int currentHeight = getSize().height;
-                        owner.removeUpwardsSpace(panelHeight - currentHeight);
-                    }
-
+                if(!messagePanel.isVisible()) {
+                    expand();
+                }else {
+                    collapse();
                 }
             }
         });
         return expandButton;
+    }
+    public void expand(){
+        if(style.equals(MessagePanelStyle.DOWNWARDS_SMALL)) {
+            expandButton.setIcon(componentsFactory.getIcon("app/expand-mp.png", 18));
+            messagePanel.setVisible(true);
+            customButtonsPanel.setVisible(true);
+        }else {
+            expandButton.setIcon(componentsFactory.getIcon("app/collapse-mp.png", 18));
+            messagePanel.setVisible(true);
+            customButtonsPanel.setVisible(true);
+        }
+        setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
+        setMinimumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
+        ((MessagesContainer)owner).onExpandMessage();
+    }
+    public void collapse(){
+        if(style.equals(MessagePanelStyle.DOWNWARDS_SMALL)) {
+            expandButton.setIcon(componentsFactory.getIcon("app/default-mp.png", 18));
+            messagePanel.setVisible(false);
+            customButtonsPanel.setVisible(false);
+        }else {
+            expandButton.setIcon(componentsFactory.getIcon("app/default-mp.png", 18));
+            messagePanel.setVisible(false);
+            customButtonsPanel.setVisible(false);
+        }
+        setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
+        setMinimumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
+        ((MessagesContainer)owner).onCollapseMessage();
     }
 
     public void setStyle(MessagePanelStyle style) {
         this.style = style;
         this.cachedTime = timeLabel.getText();
         init();
+        setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
+        setMinimumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
     }
 
     public MessagePanelStyle getStyle() {

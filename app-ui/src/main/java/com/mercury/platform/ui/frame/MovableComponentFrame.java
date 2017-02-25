@@ -13,6 +13,7 @@ public abstract class MovableComponentFrame extends ComponentFrame {
     protected Container mainContainer;
     protected FrameConstraints prevConstraints;
     protected boolean locationWasChanged = false;
+    protected boolean inMoveMode = false;
     protected MovableComponentFrame(String title) {
         super(title);
         mainContainer = this.getContentPane();
@@ -29,13 +30,16 @@ public abstract class MovableComponentFrame extends ComponentFrame {
     public void setState(UndecoratedFrameState state){
         switch (state){
             case MOVING:{
+                inMoveMode = true;
                 this.prevConstraints = new FrameConstraints(
                         this.processSEResize,
                         this.processEResize,
                         this.isVisible(),
                         this.getBackground(),
                         this.getRootPane().getBorder(),
-                        this.getLocation()
+                        this.getLocation(),
+                        this.getMinimumSize(),
+                        this.getMaximumSize()
                 );
                 JPanel panel = setUpMoveListeners(panelWhenMove());
                 this.processEResize = false;
@@ -43,6 +47,7 @@ public abstract class MovableComponentFrame extends ComponentFrame {
                 this.setBackground(AppThemeColor.FRAME);
                 this.setLocation(configManager.getFrameSettings(this.getClass().getSimpleName()).getFrameLocation());
                 this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
+                this.setMinimumSize(null);
                 this.setContentPane(panel);
                 this.setVisible(true);
                 this.setAlwaysOnTop(true);
@@ -57,11 +62,10 @@ public abstract class MovableComponentFrame extends ComponentFrame {
                 this.setBackground(prevConstraints.bgColor);
                 this.getRootPane().setBorder(prevConstraints.border);
                 this.setLocation(prevConstraints.location);
-                if(mainContainer.getComponentCount() > 0 && this.getClass().getSimpleName().equals("IncMessageFrame")){
-                    this.setVisible(true);
-                }
-                this.setPreferredSize(null);
-
+                this.setMinimumSize(prevConstraints.minSize);
+                this.setMaximumSize(prevConstraints.maxSize);
+                this.setVisible(true);
+                inMoveMode = false;
                 this.onLock();
                 break;
             }
@@ -103,14 +107,25 @@ public abstract class MovableComponentFrame extends ComponentFrame {
         private Color bgColor;
         private Border border;
         private Point location;
+        private Dimension minSize;
+        private Dimension maxSize;
 
-        FrameConstraints(boolean processSEResize, boolean processEResize, boolean visible, Color bgColor, Border border,Point location) {
+        FrameConstraints(boolean processSEResize,
+                         boolean processEResize,
+                         boolean visible,
+                         Color bgColor,
+                         Border border,
+                         Point location,
+                         Dimension minSize,
+                         Dimension maxSize) {
             this.processSEResize = processSEResize;
             this.processEResize = processEResize;
             this.visible = visible;
             this.bgColor = bgColor;
             this.border = border;
             this.location = location;
+            this.minSize = minSize;
+            this.maxSize = maxSize;
         }
 
         public void setLocation(Point location) {

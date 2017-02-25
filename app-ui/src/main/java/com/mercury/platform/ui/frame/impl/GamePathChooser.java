@@ -18,6 +18,7 @@ public class GamePathChooser extends TitledComponentFrame {
     private final Logger logger = LogManager.getLogger(GamePathChooser.class.getSimpleName());
     private JLabel statusLabel;
     private String gamePath;
+    private boolean readyToStart = false;
 
     public GamePathChooser() {
         super("MT-GamePathChooser");
@@ -85,37 +86,43 @@ public class GamePathChooser extends TitledComponentFrame {
 
     private JPanel getMiscPanel(){
         JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-
-        JButton saveButton = componentsFactory.getBorderedButton("Save");
-        saveButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if(ConfigManager.INSTANCE.isValidGamePath(gamePath)){
-                    statusLabel.setText("Success!");
-                    statusLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
-                    pack();
-                    repaint();
-                    Timer timer = new Timer(1000,null);
-                    timer.addActionListener(actionEvent -> {
-                        ConfigManager.INSTANCE.setGamePath(gamePath + File.separator);
-                        new FileMonitor().start();
-                        FramesManager.INSTANCE.start();
-                        setVisible(false);
-                        timer.stop();
-                    });
-                    timer.start();
-                    logger.info("UI module was started.");
-                }else {
-                    statusLabel.setText("Wrong game path...");
-                    pack();
-                }
-            }
-        });
         JButton closeButton = componentsFactory.getBorderedButton("Close");
         closeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.exit(0);
+                if(!readyToStart) {
+                    System.exit(0);
+                }
+            }
+        });
+        JButton saveButton = componentsFactory.getBorderedButton("Save");
+        saveButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(!readyToStart) {
+                    if (ConfigManager.INSTANCE.isValidGamePath(gamePath)) {
+                        readyToStart = true;
+                        statusLabel.setText("Success!");
+                        saveButton.setEnabled(false);
+                        closeButton.setEnabled(false);
+                        statusLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
+                        pack();
+                        repaint();
+                        Timer timer = new Timer(1000, null);
+                        timer.addActionListener(actionEvent -> {
+                            timer.stop();
+                            ConfigManager.INSTANCE.setGamePath(gamePath + File.separator);
+                            new FileMonitor().start();
+                            FramesManager.INSTANCE.start();
+                            setVisible(false);
+                        });
+                        timer.start();
+                        logger.info("UI module was started.");
+                    } else {
+                        statusLabel.setText("Wrong game path...");
+                        pack();
+                    }
+                }
             }
         });
         miscPanel.add(saveButton);

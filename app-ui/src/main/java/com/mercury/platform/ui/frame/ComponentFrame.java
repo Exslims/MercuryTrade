@@ -152,12 +152,13 @@ public abstract class ComponentFrame extends OverlaidFrame{
             }
             if(EResizeSpace){
                 Dimension size = ComponentFrame.this.getSize();
-                if(ComponentFrame.this.getClass().getSimpleName().equals("IncMessageFrame")){
-                    size = new Dimension(ComponentFrame.this.getSize().width,0);
-                }
                 ComponentFrame.this.setMaximumSize(size);
                 ComponentFrame.this.setMinimumSize(size);
-                configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(),size);
+                if(ComponentFrame.this.getClass().getSimpleName().equals("IncMessageFrame")){
+                    configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(),new Dimension(size.width,0));
+                }else {
+                    configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(), size);
+                }
             }else if(SEResizeSpace){
                 ComponentFrame.this.setMinimumSize(ComponentFrame.this.getSize());
                 ComponentFrame.this.setMaximumSize(ComponentFrame.this.getSize());
@@ -174,8 +175,10 @@ public abstract class ComponentFrame extends OverlaidFrame{
 
         @Override
         public void mousePressed(MouseEvent e) {
-            Dimension size = configManager.getMinimumFrameSize(ComponentFrame.this.getClass().getSimpleName());
-            ComponentFrame.this.setMinimumSize(size);
+            if(EResizeSpace || SEResizeSpace) {
+                Dimension size = configManager.getMinimumFrameSize(ComponentFrame.this.getClass().getSimpleName());
+                ComponentFrame.this.setMinimumSize(size);
+            }
         }
     }
 

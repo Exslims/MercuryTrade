@@ -43,6 +43,8 @@ public class ConfigManager {
     private String gamePath = "";
     private String flowDirection = "DOWNWARDS";
     private String tradeMode = "DEFAULT";
+    private int limitMsgCount = 3;
+    private int expandedMsgCount = 0;
 
     private boolean showPatchNotes = false;
     private boolean showOnStartUp = true;
@@ -50,7 +52,7 @@ public class ConfigManager {
     public ConfigManager() {
         minimumFrameSize = new HashMap<>();
         minimumFrameSize.put("TaskBarFrame",new Dimension(109,20));
-        minimumFrameSize.put("IncMessageFrame",new Dimension(280,10));
+        minimumFrameSize.put("IncMessageFrame",new Dimension(315,10));
         minimumFrameSize.put("OutMessageFrame",new Dimension(280,115));
         minimumFrameSize.put("TestCasesFrame",new Dimension(400,100));
         minimumFrameSize.put("SettingsFrame",new Dimension(540,100));
@@ -73,6 +75,8 @@ public class ConfigManager {
         defaultAppSettings.put("gamePath","");
         defaultAppSettings.put("flowDirection","DOWNWARDS");
         defaultAppSettings.put("tradeMode","DEFAULT");
+        defaultAppSettings.put("limitMsgCount",3);
+        defaultAppSettings.put("expandedMsgCount",0);
 
     }
 
@@ -109,6 +113,8 @@ public class ConfigManager {
                 saveProperty("whisperNotifier", defaultAppSettings.get("whisperNotifier").toString());
                 saveProperty("flowDirection", defaultAppSettings.get("flowDirection"));
                 saveProperty("tradeMode", defaultAppSettings.get("tradeMode"));
+                saveProperty("limitMsgCount", String.valueOf(defaultAppSettings.get("limitMsgCount")));
+                saveProperty("expandedMsgCount", String.valueOf(defaultAppSettings.get("expandedMsgCount")));
 
             } catch (Exception e) {
                 logger.error(e);
@@ -148,6 +154,8 @@ public class ConfigManager {
             gamePath = loadProperty("gamePath");
             flowDirection = loadProperty("flowDirection");
             tradeMode = loadProperty("tradeMode");
+            limitMsgCount = Long.valueOf(loadProperty("limitMsgCount")).intValue();
+            expandedMsgCount = Long.valueOf(loadProperty("expandedMsgCount")).intValue();
         } catch (Exception e) {
             logger.error("Error in loadConfigFile: ",e);
         }
@@ -280,6 +288,13 @@ public class ConfigManager {
     public String getTradeMode() {
         return tradeMode;
     }
+    public int getLimitMsgCount() {
+        return limitMsgCount;
+    }
+    public int getExpandedMsgCount() {
+        return expandedMsgCount;
+    }
+
 
     public void setDecayTime(int decayTime) {
         this.decayTime = decayTime;
@@ -317,6 +332,14 @@ public class ConfigManager {
         this.tradeMode = tradeMode;
         saveProperty("tradeMode",tradeMode);
     }
+    public void setLimitMsgCount(int limitMsgCount) {
+        this.limitMsgCount = limitMsgCount;
+        saveProperty("limitMsgCount",String.valueOf(this.limitMsgCount));
+    }
+    public void setExpandedMsgCount(int expandedMsgCount) {
+        this.expandedMsgCount = expandedMsgCount;
+        saveProperty("expandedMsgCount",String.valueOf(this.expandedMsgCount));
+    }
 
     private Map<String, String > getDefaultButtons(){
         Map<String,String> defaultButtons = new HashMap<>();
@@ -329,7 +352,7 @@ public class ConfigManager {
     public Map<String,FrameSettings> getDefaultFramesSettings(){
         defaultFramesSettings = new HashMap<>();
         defaultFramesSettings.put("TaskBarFrame",new FrameSettings(new Point(400, 500),new Dimension(109,20)));
-        defaultFramesSettings.put("IncMessageFrame",new FrameSettings(new Point(700, 600),new Dimension(280,0)));
+        defaultFramesSettings.put("IncMessageFrame",new FrameSettings(new Point(700, 600),new Dimension(315,0)));
         defaultFramesSettings.put("OutMessageFrame",new FrameSettings(new Point(200, 500),new Dimension(280,115)));
         defaultFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(1400, 500),new Dimension(400,100)));
         defaultFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(540,100)));
