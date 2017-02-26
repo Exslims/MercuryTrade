@@ -20,7 +20,7 @@ Feedback and suggestions:
 &nbsp; *Main feature:* **Notification**
 
  <p align="center">
-  <img src="http://i.imgur.com/6og030P.png"/>
+  <img src="http://i.imgur.com/5lj4ZYf.png"/>
 </p>
 When you receive a trade related message this notification panel pops up. It contains all the information you might need to make a decision. It offers a set of fully customizable "quick response buttons" (such as "Sold" / "No" / "Wait 3m" etc, customizable) as well as buttons to invite, kick and tradewith the person who made an offer. If you've received multiple notifications before dismissing your current one, they will stack up like a deck of cards underneath each other and won't clutter the screen. Notification panels can be set up to fade out after X seconds (customizable option).
 
@@ -40,10 +40,10 @@ Each notification you receive is stored in a separate file by **MercuryTrade**. 
  
  **MercuryTrade** features a real-time **Chat Scanner**. All chat messages with matching words will be displayed in a separate window - no need to strain your eyes looking for a Trial anymore!
  
-&nbsp; *Minor feature:* **SuperTrade mode**
+&nbsp; *Minor feature:* **Переписать**
 
  <p align="center">
-  <img src="http://i.imgur.com/fvGWxkh.png"/>
+  <img src="http://i.imgur.com/KZuAT7I.png"/>
 </p>
 
 By default (on the left) each consecutive notification you receive is folded to save screen space. SuperTrade mode is a switch that will force notification panels to be fully displayed. This is useful if you need to manage a lot of trades with multiple people at once, i.e. exchanging currency or other commodities, because people come and go in no specific border. This will clutter the screen with notifications, but all of them will be right in front of your eyes.
