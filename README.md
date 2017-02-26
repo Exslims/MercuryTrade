@@ -20,7 +20,7 @@ Feedback and suggestions:
 &nbsp; *Main feature:* **Notification**
 
  <p align="center">
-  <img src="http://i.imgur.com/6og030P.png"/>
+  <img src="http://i.imgur.com/5lj4ZYf.png"/>
 </p>
 When you receive a trade related message this notification panel pops up. It contains all the information you might need to make a decision. It offers a set of fully customizable "quick response buttons" (such as "Sold" / "No" / "Wait 3m" etc, customizable) as well as buttons to invite, kick and tradewith the person who made an offer. If you've received multiple notifications before dismissing your current one, they will stack up like a deck of cards underneath each other and won't clutter the screen. Notification panels can be set up to fade out after X seconds (customizable option).
 
