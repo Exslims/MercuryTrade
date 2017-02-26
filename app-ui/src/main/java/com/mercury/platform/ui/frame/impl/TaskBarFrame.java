@@ -27,7 +27,7 @@ public class TaskBarFrame extends MovableComponentFrame{
     private final Logger logger = LogManager.getLogger(TaskBarFrame.class.getSimpleName());
     private boolean updateReady = false;
     private Timeline collapseAnimation;
-    private static final int MAX_WIDTH = 178;
+    private static final int MAX_WIDTH = 214;
 
     public TaskBarFrame() {
         super("MT-TaskBar");
@@ -120,15 +120,15 @@ public class TaskBarFrame extends MovableComponentFrame{
 //            }
 //        });
 
-//        JButton chatFilter = componentsFactory.getIconButton("app/chat-filter.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.CHAT_FILTER);
-//        chatFilter.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mousePressed(MouseEvent e) {
-//                if(SwingUtilities.isLeftMouseButton(e)) {
-//                    FramesManager.INSTANCE.hideOrShowFrame(ChatScannerFrame.class);
-//                }
-//            }
-//        });
+        JButton chatFilter = componentsFactory.getIconButton("app/chat-filter.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.CHAT_FILTER);
+        chatFilter.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    FramesManager.INSTANCE.hideOrShowFrame(ChatScannerFrame.class);
+                }
+            }
+        });
 
         JButton historyButton = componentsFactory.getIconButton("app/history.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.HISTORY);
         historyButton.addMouseListener(new MouseAdapter() {
@@ -177,8 +177,8 @@ public class TaskBarFrame extends MovableComponentFrame{
         taskBarPanel.add(moveButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(visibleMode);
-//        taskBarPanel.add(Box.createRigidArea(new Dimension(2, 4)));
-//        taskBarPanel.add(chatFilter);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(2, 4)));
+        taskBarPanel.add(chatFilter);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(historyButton);
 //        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));

@@ -68,7 +68,7 @@ public class FramesManager {
         framesMap.put(TooltipFrame.class,new TooltipFrame());
         framesMap.put(NotificationFrame.class,new NotificationFrame());
         framesMap.put(DonationAlertFrame.class,new DonationAlertFrame());
-//        framesMap.put(ChatScannerFrame.class,new ChatScannerFrame());
+        framesMap.put(ChatScannerFrame.class,new ChatScannerFrame());
         framesMap.put(UpdateReadyFrame.class,new UpdateReadyFrame());
         framesMap.put(TaskBarFrame.class,taskBarFrame);
         framesMap.put(SetUpLocationFrame.class,new SetUpLocationFrame());
@@ -90,17 +90,6 @@ public class FramesManager {
                 }
             }
         });
-        TradeMode tradeMode = TradeMode.valueOf(ConfigManager.INSTANCE.getTradeMode());
-        switch (tradeMode){
-            case DEFAULT:{
-                EventRouter.INSTANCE.fireEvent(new ChangedTradeModeEvent.ToDefaultTradeModeEvent());
-                break;
-            }
-            case SUPER:{
-                EventRouter.INSTANCE.fireEvent(new ChangedTradeModeEvent.ToSuperTradeModeEvent());
-                break;
-            }
-        }
         EventRouter.INSTANCE.fireEvent(new UILoadedEvent());
     }
     public void showFrame(Class frameClass){
