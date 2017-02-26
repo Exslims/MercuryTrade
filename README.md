@@ -40,10 +40,10 @@ Each notification you receive is stored in a separate file by **MercuryTrade**. 
  
  **MercuryTrade** features a real-time **Chat Scanner**. All chat messages with matching words will be displayed in a separate window - no need to strain your eyes looking for a Trial anymore!
  
-&nbsp; *Minor feature:* **SuperTrade mode**
+&nbsp; *Minor feature:* **Переписать**
 
  <p align="center">
-  <img src="http://i.imgur.com/fvGWxkh.png"/>
+  <img src="http://i.imgur.com/KZuAT7I.png"/>
 </p>
 
 By default (on the left) each consecutive notification you receive is folded to save screen space. SuperTrade mode is a switch that will force notification panels to be fully displayed. This is useful if you need to manage a lot of trades with multiple people at once, i.e. exchanging currency or other commodities, because people come and go in no specific border. This will clutter the screen with notifications, but all of them will be right in front of your eyes.
