@@ -346,6 +346,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
                 Component[] components = mainContainer.getComponents();
                 for (int i = 0; i < components.length; i++) {
                     if(i > limitMsgCount - 1){
+                        components[i].setVisible(false);
                         expandAllFrame.incMessageCount();
                     }
                 }

@@ -35,7 +35,6 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
     public void processAndSave() {
         List<ResponseButton> buttons = new ArrayList<>();
         id = 0;
-        Collections.reverse(inputs);
         inputs.forEach(pair -> {
             buttons.add(new ResponseButton(id,pair.title.getText(),pair.response.getText()));
             id++;
