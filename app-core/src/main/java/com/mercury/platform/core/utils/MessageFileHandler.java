@@ -29,7 +29,6 @@ public class MessageFileHandler implements HasEventHandlers {
         interceptors = new ArrayList<>();
         interceptors.add(new EnteringAreaInterceptor());
         interceptors.add(new IncTradeMessagesInterceptor());
-//        interceptors.add(new OutTradeMessagesInterceptor());
         interceptors.add(new PlayerJoinInterceptor());
         interceptors.add(new PlayerLeftInterceptor());
 

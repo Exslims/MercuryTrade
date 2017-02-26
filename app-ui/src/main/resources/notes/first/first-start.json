@@ -6,15 +6,21 @@
     "layout" : "VERTICAL"
   },
   {
-    "title" : "Main feature: Notification (1/2)",
+    "title" : "Main feature: Notification (1/3)",
     "text" : "When you receive a trade related message this notification panel pops up. It contains all the information you might need to make a decision. \n\nLet's take a look.",
     "image" : "notes/first/1.png",
     "layout" : "VERTICAL"
   },
   {
-    "title" : "Main feature: Notification (2/2)",
+    "title" : "Main feature: Notification (2/3)",
     "text" : "",
     "image" : "notes/first/1_2.png",
+    "layout" : "VERTICAL"
+  },
+  {
+    "title" : "Main feature: Notification (3/3)",
+    "text" : "This box will appear if \"Pre-group limit\" is exceeded. All consecutive notifications will be grouped together to save screen space. Toggling this button will expand or collapse the whole group.",
+    "image" : "notes/first/1_3.png",
     "layout" : "VERTICAL"
   },
   {
@@ -34,24 +40,6 @@
     "text" : "Each notification you receive is stored by MercuryTrade in a separate file. \n\nYou won't be losing potential trades due to client crashes or relogs anymore!",
     "image" : "notes/first/3.png",
     "layout" : "HORIZONTAL"
-  },
-  {
-    "title" : "Minor feature: Chat Scanner",
-    "text" : "MercuryTrade features a real-time Chat Scanner. \nAll chat messages with matching words will be displayed in a separate window - no need to strain your eyes looking for a Trial anymore!",
-    "image" : "notes/first/8.png",
-    "layout" : "HORIZONTAL"
-  },
-  {
-    "title" : "Minor feature: Stash item highlighting",
-    "text" : "Every item in your stash is stored at some specific 'cell' in a tab - where you put it. MercuryTrade will highlight that 'cell' to locate it on a glance. \n You will need to set up the Item Grid.",
-    "image" : "",
-    "layout" : "HORIZONTAL"
-  },
-  {
-    "title" : "Minor feature: \"SuperTrade\" mode",
-    "text" : "By default (on the left) each consecutive notification you receive is folded to save screen space. SuperTrade mode is a switch that will force notification panels to be fully displayed. \nEasier to manage multiple trades at once if needed.",
-    "image" : "notes/first/4.png",
-    "layout" : "VERTICAL"
   },
   {
     "title" : "Minor feature: \"Do not Disturb\" mode",

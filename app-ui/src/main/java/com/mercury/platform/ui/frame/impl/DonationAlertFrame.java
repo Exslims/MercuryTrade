@@ -51,7 +51,7 @@ public class DonationAlertFrame extends OverlaidFrame {
 
         hideAnimation = new Timeline(this);
         hideAnimation.setDuration(200);
-        hideAnimation.setInitialDelay(2500);
+        hideAnimation.setInitialDelay(4000);
         hideAnimation.addPropertyToInterpolate("opacity", 0.9f, 0f);
         hideAnimation.addCallback(new TimelineCallback() {
             @Override
@@ -83,7 +83,7 @@ public class DonationAlertFrame extends OverlaidFrame {
         this.add(donate);
         this.pack();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dim.width/2-this.getSize().width/2 - 500, dim.height/2-this.getSize().height/2);
+        this.setLocation(dim.width - 180, dim.height - 180);
     }
 
     @Override

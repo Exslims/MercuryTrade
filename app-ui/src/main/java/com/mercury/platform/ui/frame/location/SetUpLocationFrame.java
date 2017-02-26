@@ -33,7 +33,7 @@ public class SetUpLocationFrame extends ComponentFrame {
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
         root.setBackground(AppThemeColor.SLIDE_BG);
-        root.add(componentsFactory.getSimpleTextAre("              Panels UNLOCKED. \nMove them and click Lock when done."),BorderLayout.CENTER);
+        root.add(componentsFactory.getSimpleTextAre("              Panels UNLOCKED \nMove them and click Lock when done."),BorderLayout.CENTER);
 
         JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         JButton restoreDefault = componentsFactory.getBorderedButton("Restore default");

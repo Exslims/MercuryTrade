@@ -123,9 +123,9 @@ public class TestCasesFrame extends TitledComponentFrame {
         offer.add(" ");
         offer.add("");
         offer.add("  ");
-        offer.add("offerofferofferofferoffer");
-        offer.add("offerofferofferofferofferofferofferoffer");
-        offer.add("offeroffer");
+        offer.add("offer offer offer offer offer");
+        offer.add("offer offer offer offer offer offer offer offer");
+        offer.add("offer offer");
         offer.add("offer");
     }
 
@@ -138,7 +138,7 @@ public class TestCasesFrame extends TitledComponentFrame {
 
     @Override
     protected String getFrameTitle() {
-        return "Test cases";
+        return "Example of usage";
     }
 
     private JPanel getTestCasesPanel(){
@@ -243,41 +243,41 @@ public class TestCasesFrame extends TitledComponentFrame {
         testPanel.add(textLabel2,titleColumn);
         titleColumn.gridy++;
 
-        JButton button3 = componentsFactory.getBorderedButton("Click");
-        button3.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new UpdateReadyEvent());
-            }
-        });
-        testPanel.add(button3,buttonColumn);
-        buttonColumn.gridy++;
-        JLabel textLabel3 = componentsFactory.getTextLabel("Test update frame");
-        testPanel.add(textLabel3,titleColumn);
-        titleColumn.gridy++;
-        testPanel.setBackground(AppThemeColor.TRANSPARENT);
+//        JButton button3 = componentsFactory.getBorderedButton("Click");
+//        button3.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+//                EventRouter.INSTANCE.fireEvent(new UpdateReadyEvent());
+//            }
+//        });
+//        testPanel.add(button3,buttonColumn);
+//        buttonColumn.gridy++;
+//        JLabel textLabel3 = componentsFactory.getTextLabel("Test update frame");
+//        testPanel.add(textLabel3,titleColumn);
+//        titleColumn.gridy++;
+//        testPanel.setBackground(AppThemeColor.TRANSPARENT);
 
-        JButton button4 = componentsFactory.getBorderedButton("Click");
-        button4.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                Message message = parser.parse(String.format(poeTradeTemplate,
-                        "Example",
-                        items.get(random.nextInt(items.size())),
-                        random.nextInt(200),
-                        "chaos",
-                        random.nextInt(12) + 1,
-                        random.nextInt(12) + 1,
-                        "can sell cheaper??"
-                ));
-                EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(message));
-            }
-        });
-        testPanel.add(button4,buttonColumn);
-        buttonColumn.gridy++;
-        JLabel textLabel4 = componentsFactory.getTextLabel("Test123");
-        testPanel.add(textLabel4,titleColumn);
-        titleColumn.gridy++;
+//        JButton button4 = componentsFactory.getBorderedButton("Click");
+//        button4.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+//                Message message = parser.parse(String.format(poeTradeTemplate,
+//                        "Example",
+//                        items.get(random.nextInt(items.size())),
+//                        random.nextInt(200),
+//                        "chaos",
+//                        random.nextInt(12) + 1,
+//                        random.nextInt(12) + 1,
+//                        "can sell cheaper??"
+//                ));
+//                EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(message));
+//            }
+//        });
+//        testPanel.add(button4,buttonColumn);
+//        buttonColumn.gridy++;
+//        JLabel textLabel4 = componentsFactory.getTextLabel("Placeholder");
+//        testPanel.add(textLabel4,titleColumn);
+//        titleColumn.gridy++;
         testPanel.setBackground(AppThemeColor.TRANSPARENT);
 
         return testPanel;

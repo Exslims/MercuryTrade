@@ -402,6 +402,11 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
     }
 
     @Override
+    public void setOpacity(float opacity) {
+        super.setOpacity(opacity);
+        expandAllFrame.setOpacity(opacity);
+    }
+    @Override
     protected void onUnlock() {
         super.onUnlock();
         setUpExpandButton();

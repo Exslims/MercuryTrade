@@ -11,7 +11,7 @@ public class EnteringAreaInterceptor extends MessageInterceptor {
     private int callCount = 0;
     @Override
     protected void process(String message) {
-        if(callCount % 10 == 0) {
+        if(callCount % 4 == 0) {
             EventRouter.INSTANCE.fireEvent(new ShowDonationAlert());
         }
         callCount++;
@@ -22,7 +22,7 @@ public class EnteringAreaInterceptor extends MessageInterceptor {
         return new MessageFilter() {
             @Override
             public boolean isMatching(String message) {
-                return message.contains("Got Instance Details");
+                return (message.contains("You have entered") && message.contains("Hideout.")) || message.contains("Entering area Hideout");
             }
         };
     }

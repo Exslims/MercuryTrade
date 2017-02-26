@@ -14,7 +14,7 @@ import java.io.File;
  * 08.12.2016
  */
 public class FileMonitor {
-    private static final long POLLING_INTERVAL = 100;
+    private static final long POLLING_INTERVAL = 200;
     private static class FileMonitorHolder {
         static final FileMonitor HOLDER_INSTANCE = new FileMonitor();
     }

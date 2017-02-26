@@ -107,7 +107,7 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
         titleFiled.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if(titleFiled.getText().length() > 5 || titleFiled.getText().length() < 1){
+                if(titleFiled.getText().length() > 5){
                     e.consume();
                 }
             }

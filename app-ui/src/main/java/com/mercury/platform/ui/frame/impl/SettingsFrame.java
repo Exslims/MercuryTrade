@@ -64,7 +64,7 @@ public class SettingsFrame extends TitledComponentFrame {
         JButton save = componentsFactory.getBorderedButton("Save");
         save.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
                     innerPanels.forEach(ConfigurationPanel::processAndSave);
                     hideComponent();
@@ -74,7 +74,7 @@ public class SettingsFrame extends TitledComponentFrame {
         JButton close = componentsFactory.getBorderedButton("Close");
         close.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
                     innerPanels.forEach(ConfigurationPanel::restore);
                     pack();

@@ -1,13 +1,11 @@
 package com.mercury.platform.ui.frame.impl;
 
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.MovableComponentFrame;
-import com.mercury.platform.ui.frame.impl.util.TradeMode;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.manager.UpdateManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -28,8 +26,8 @@ import java.awt.event.*;
 public class TaskBarFrame extends MovableComponentFrame{
     private final Logger logger = LogManager.getLogger(TaskBarFrame.class.getSimpleName());
     private boolean updateReady = false;
-    private Timeline collapseAnim;
-    private static final int MAX_WIDTH = 250;
+    private Timeline collapseAnimation;
+    private static final int MAX_WIDTH = 178;
 
     public TaskBarFrame() {
         super("MT-TaskBar");
@@ -47,22 +45,22 @@ public class TaskBarFrame extends MovableComponentFrame{
             @Override
             public void mouseEntered(MouseEvent e) {
                 TaskBarFrame.this.repaint();
-                if (collapseAnim != null) {
-                    collapseAnim.abort();
+                if (collapseAnimation != null) {
+                    collapseAnimation.abort();
                 }
                 initCollapseAnimations("expand");
-                collapseAnim.play();
+                collapseAnimation.play();
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 TaskBarFrame.this.repaint();
                 if(isVisible() && !withInPanel((JPanel)TaskBarFrame.this.getContentPane()) && !EResizeSpace) {
-                    if (collapseAnim != null) {
-                        collapseAnim.abort();
+                    if (collapseAnimation != null) {
+                        collapseAnimation.abort();
                     }
                     initCollapseAnimations("collapse");
-                    collapseAnim.play();
+                    collapseAnimation.play();
                 }
             }
         });
@@ -101,36 +99,36 @@ public class TaskBarFrame extends MovableComponentFrame{
             }
         });
 
-        JButton itemGrid = componentsFactory.getIconButton("app/item-grid-disable.png",24,AppThemeColor.FRAME_ALPHA, TooltipConstants.VISIBLE_MODE);
-        itemGrid.addMouseListener(new MouseAdapter() {
-            private boolean frameOpened = false;
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
-                    if (!frameOpened) {
-                        itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-enable.png", 24));
-                        frameOpened = true;
-                        TaskBarFrame.this.repaint();
-                        FramesManager.INSTANCE.enableMovement("ItemsGridFrame");
-                    } else {
-                        frameOpened = false;
-                        itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-disable.png", 24));
-                        TaskBarFrame.this.repaint();
-                        FramesManager.INSTANCE.disableMovement("ItemsGridFrame");
-                    }
-                }
-            }
-        });
+//        JButton itemGrid = componentsFactory.getIconButton("app/item-grid-disable.png",24,AppThemeColor.FRAME_ALPHA, TooltipConstants.VISIBLE_MODE);
+//        itemGrid.addMouseListener(new MouseAdapter() {
+//            private boolean frameOpened = false;
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+//                if(SwingUtilities.isLeftMouseButton(e)) {
+//                    if (!frameOpened) {
+//                        itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-enable.png", 24));
+//                        frameOpened = true;
+//                        TaskBarFrame.this.repaint();
+//                        FramesManager.INSTANCE.enableMovement("ItemsGridFrame");
+//                    } else {
+//                        frameOpened = false;
+//                        itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-disable.png", 24));
+//                        TaskBarFrame.this.repaint();
+//                        FramesManager.INSTANCE.disableMovement("ItemsGridFrame");
+//                    }
+//                }
+//            }
+//        });
 
-        JButton chatFilter = componentsFactory.getIconButton("app/chat-filter.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.CHAT_FILTER);
-        chatFilter.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
-                    FramesManager.INSTANCE.hideOrShowFrame(ChatScannerFrame.class);
-                }
-            }
-        });
+//        JButton chatFilter = componentsFactory.getIconButton("app/chat-filter.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.CHAT_FILTER);
+//        chatFilter.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+//                if(SwingUtilities.isLeftMouseButton(e)) {
+//                    FramesManager.INSTANCE.hideOrShowFrame(ChatScannerFrame.class);
+//                }
+//            }
+//        });
 
         JButton historyButton = componentsFactory.getIconButton("app/history.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.HISTORY);
         historyButton.addMouseListener(new MouseAdapter() {
@@ -179,12 +177,12 @@ public class TaskBarFrame extends MovableComponentFrame{
         taskBarPanel.add(moveButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(visibleMode);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(2, 4)));
-        taskBarPanel.add(chatFilter);
+//        taskBarPanel.add(Box.createRigidArea(new Dimension(2, 4)));
+//        taskBarPanel.add(chatFilter);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(historyButton);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
-        taskBarPanel.add(itemGrid);
+//        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
+//        taskBarPanel.add(itemGrid);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(settingsButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
@@ -204,18 +202,18 @@ public class TaskBarFrame extends MovableComponentFrame{
         });
     }
     private void initCollapseAnimations(String state){
-        collapseAnim = new Timeline(this);
+        collapseAnimation = new Timeline(this);
         switch (state){
             case "expand":{
-                collapseAnim.addPropertyToInterpolate("width",this.getWidth(),MAX_WIDTH);
+                collapseAnimation.addPropertyToInterpolate("width",this.getWidth(),MAX_WIDTH);
                 break;
             }
             case "collapse":{
-                collapseAnim.addPropertyToInterpolate("width",this.getWidth(),configManager.getFrameSettings(this.getClass().getSimpleName()).getFrameSize().width);
+                collapseAnimation.addPropertyToInterpolate("width",this.getWidth(),configManager.getFrameSettings(this.getClass().getSimpleName()).getFrameSize().width);
             }
         }
-        collapseAnim.setEase(new Spline(1f));
-        collapseAnim.setDuration(150);
+        collapseAnimation.setEase(new Spline(1f));
+        collapseAnimation.setDuration(150);
     }
     private boolean withInPanel(JPanel panel){
         return new Rectangle(panel.getLocationOnScreen(),panel.getSize()).contains(MouseInfo.getPointerInfo().getLocation());

@@ -47,12 +47,12 @@ public class FramesManager {
         OverlaidFrame incMessageFrame = new IncMessageFrame();
         framesMap.put(IncMessageFrame.class,incMessageFrame);
         OverlaidFrame taskBarFrame = new TaskBarFrame();
-        OverlaidFrame itemsMeshFrame = new ItemsGridFrame();
-        framesMap.put(ItemsGridFrame.class,itemsMeshFrame);
+//        OverlaidFrame itemsMeshFrame = new ItemsGridFrame();
+//        framesMap.put(ItemsGridFrame.class,itemsMeshFrame);
 
         locationCommander.addFrame((MovableComponentFrame) incMessageFrame);
         locationCommander.addFrame((MovableComponentFrame) taskBarFrame);
-        locationCommander.addFrame((MovableComponentFrame) itemsMeshFrame);
+//        locationCommander.addFrame((MovableComponentFrame) itemsMeshFrame);
         NotesLoader notesLoader = new NotesLoader();
 
         List<Note> notesOnFirstStart = notesLoader.getNotesOnFirstStart();
@@ -68,7 +68,7 @@ public class FramesManager {
         framesMap.put(TooltipFrame.class,new TooltipFrame());
         framesMap.put(NotificationFrame.class,new NotificationFrame());
         framesMap.put(DonationAlertFrame.class,new DonationAlertFrame());
-        framesMap.put(ChatScannerFrame.class,new ChatScannerFrame());
+//        framesMap.put(ChatScannerFrame.class,new ChatScannerFrame());
         framesMap.put(UpdateReadyFrame.class,new UpdateReadyFrame());
         framesMap.put(TaskBarFrame.class,taskBarFrame);
         framesMap.put(SetUpLocationFrame.class,new SetUpLocationFrame());
