@@ -1,3 +1,5 @@
+
+
 # MercuryTrade
 
 Download and Install Java: [https://java.com/download](https://java.com/download)
@@ -7,7 +9,7 @@ Download MercuryTrade.jar:
 Feedback and suggestions: 
 
 ---
- <p align="center">
+<p align="center">
   <img src="http://i.imgur.com/DWJQSsL.png"/>
 </p>
 
@@ -19,48 +21,80 @@ Feedback and suggestions:
 
 &nbsp; *Main feature:* **Notification**
 
- <p align="center">
-  <img src="http://i.imgur.com/5lj4ZYf.png"/>
+<p align="center">
+  <img src="http://i.imgur.com/Sv2Iod9.png"/>
 </p>
-When you receive a trade related message this notification panel pops up. It contains all the information you might need to make a decision. It offers a set of fully customizable "quick response buttons" (such as "Sold" / "No" / "Wait 3m" etc, customizable) as well as buttons to invite, kick and tradewith the person who made an offer. If you've received multiple notifications before dismissing your current one, they will stack up like a deck of cards underneath each other and won't clutter the screen. Notification panels can be set up to fade out after X seconds (customizable option).
+
+When you receive a trade related message this notification panel pops up. It contains all the information you might need to make a decision. It offers a set of fully customizable "quick response buttons" (such as "Sold" / "No" / "Wait 3m" etc, customizable) as well as buttons to invite, kick and trade with the person who made the offer. 
+
+<p align="center">
+  <img src="http://i.imgur.com/6WyeA9D.png"/>
+</p>
+
+<p align="center"> <i>Multiple notifications</i> </p>
+
+If you've received multiple notifications before dismissing your current one, they will stack up like a deck of cards underneath each other and won't clutter the screen. Notification panels can be set up to fade out after X seconds (customizable option).
+
+<p align="center">
+  <img src="http://i.imgur.com/KZuAT7I.png"/>
+</p>
+
+<p align="center"> <i>"Group" showcase: you received 5 notifications</i> </p>
+
+<p> The box on the left - "Group" - will appear if "Pre-group limit" is exceeded (this limit is also customizable). All consecutive notifications will be grouped together to save screen space. Toggling this button will expand the whole group. </p>
+
+<p align="center">
+  <img src="http://i.imgur.com/ljIOEYk.png"/>
+</p>
+
+<p align="center"> <i>Notification Panel settings (unlocked mode)</i> </p>
+
+
+<p align="center">
+  <img src="http://i.imgur.com/LQ3cySc.png"/>
+</p>
+
+<p align="center"> <i>Response buttons are fully customizable</i> </p>
+
+
+#
 
 
 &nbsp; *Main feature:* **History**
 
- <p align="center">
+<p align="center">
   <img src="http://i.imgur.com/oXh2Prp.png"/>
 </p>
+
+<p align="center"> <i>History</i> </p>
+
 Each notification you receive is stored in a separate file by **MercuryTrade**. History allows you to access that file in a useful way to interact with the customers. Comes in handy if you've been afking for a while or you want to reach a person you traded with some time ago or in case your client has crashed - in-game chat will be cleared, your history will not.
 
-&nbsp; *Minor feature:* **Chat Scanner**
 
- <p align="center">
-  <img src="http://i.imgur.com/sqmrD9a.png"/>
-</p>
- 
- **MercuryTrade** features a real-time **Chat Scanner**. All chat messages with matching words will be displayed in a separate window - no need to strain your eyes looking for a Trial anymore!
- 
-&nbsp; *Minor feature:* **Переписать**
-
- <p align="center">
-  <img src="http://i.imgur.com/KZuAT7I.png"/>
-</p>
-
-By default (on the left) each consecutive notification you receive is folded to save screen space. SuperTrade mode is a switch that will force notification panels to be fully displayed. This is useful if you need to manage a lot of trades with multiple people at once, i.e. exchanging currency or other commodities, because people come and go in no specific border. This will clutter the screen with notifications, but all of them will be right in front of your eyes.
-
-<p></p>
+#
 
 &nbsp; *Minor feature:* **Accessibility status**
- <p align="center">
+<p align="center">
   <img src="http://i.imgur.com/dTUrF7v.png"/>
 </p>
+
+<p align="center"> <i>Name will change its color accordingly</i> </p>
+
 
 **MercuryTrade** notifications have an **indication for when a person comes in or leaves your hideout** - that way you can offer a trade as soon as possible and keep track of all the people without even closing your stash. Especially useful for SuperTrade mode.
 
 
 Important to mention: in Path of Exile when you use your stash you can't click on party frames, because they're hidden behind the stash window. **MercuryTrade** solves this inconvenience as you can interact with the person through a related notification panel.
 
+#
+
 &nbsp; *Minor feature:* **Do not Disturb**
+
+<p align="center">
+  <img src="http://i.imgur.com/NaYNXnt.png"/>
+</p>
+
+<p align="center"> <i>DND on TaskBar panel</i> </p>
 
 Activate this mode if you don't want to see (and hear!) anything from the application for a while. **MercuryTrade** will continue working in hidden mode.
 
@@ -70,32 +104,36 @@ Activate this mode if you don't want to see (and hear!) anything from the applic
 
 Download and install Java on your computer, then open MercuryTrade.jar. Because the program operates on top of a Path of Exile window as an overlay, **make sure your client is not in fullscreen mode**.
 
-Upon launch you'll be greeted with a short overview of the application (same as this ReadMe) or patch notes. Afterwards you should see these 2 new panels: **Task Panel** and **Notification Panel (template)**
+Upon launch you'll be greeted with a short overview of the application (identical to this ReadMe) and patch notes. Afterwards you should see **Task Panel** and **Notification Panel**.
 
 <br/>
 
 **Task panel**:
 
-* (1) **Do Not Disturb** mode button switch.
+<p align="center">
+  <img src="http://i.imgur.com/FfheILR.png"/>
+</p>
 
-* (2) **SuperTrade** mode button switch.
+* (1) **Panel unlock**.
 
-* (3) **Chat Scanner** panel window.
+* (2) **Do Not Disturb** mode button switch.
 
-* (4) **History** panel window.
+* (3) **History** panel window.
 
-* (5) **Panel reposition** mode.
-
-* (6) **Settings**.
+* (4) **Settings**.
   
-* (7) **Exit**.
+* (5) **Exit**.
 
 <br/>
 
-**Notification panel (template)**
+**Notification panel** *(unlocked mode)*
 
-* This dummy notification is shown for when you 1st time run the program. This will allow you to reposition the panel to your taste and to just see how it will look like before you receive a legit trade related message.
+<p align="center">
+  <img src="http://i.imgur.com/ljIOEYk.png"/>
+</p>
 
 <br/>
+
+After you go through the overview, panels will be in "Unlocked" mode. This will allow you to reposition them to your taste.
 
 
