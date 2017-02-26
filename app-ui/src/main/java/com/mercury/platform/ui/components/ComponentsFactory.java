@@ -279,6 +279,31 @@ public class ComponentsFactory {
         }
         return iconLabel;
     }
+    public JLabel getIconLabel(String iconPath, int size, String tooltip){
+        JLabel iconLabel = new JLabel();
+        try {
+            iconLabel.setIcon(getIcon(iconPath,size));
+        } catch (Exception e) {
+            return getTextLabel(StringUtils.substringBetween(iconPath,"/","."));
+        }
+        iconLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                EventRouter.INSTANCE.fireEvent(new ShowTooltipEvent(tooltip, MouseInfo.getPointerInfo().getLocation()));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+            }
+        });
+        return iconLabel;
+    }
     public JLabel getIconLabel(String iconPath){
         JLabel iconLabel = new JLabel();
         try {

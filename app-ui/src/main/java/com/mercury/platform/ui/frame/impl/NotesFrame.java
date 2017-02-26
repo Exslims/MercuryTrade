@@ -92,12 +92,14 @@ public class NotesFrame extends TitledComponentFrame {
         next.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                contentPanel.next();
-                if(!contentPanel.hasNext()){
-                    lastNote = true;
-                    navBar.add(close);
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    contentPanel.next();
+                    if (!contentPanel.hasNext()) {
+                        lastNote = true;
+                        navBar.add(close);
+                    }
+                    NotesFrame.this.pack();
                 }
-                NotesFrame.this.pack();
             }
         });
         JButton previous = componentsFactory.getButton(
@@ -112,27 +114,32 @@ public class NotesFrame extends TitledComponentFrame {
         previous.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                contentPanel.prev();
-                if(lastNote){
-                    navBar.remove(close);
-                    lastNote = false;
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    contentPanel.prev();
+                    if (lastNote) {
+                        navBar.remove(close);
+                        lastNote = false;
+                    }
+                    NotesFrame.this.pack();
+                    NotesFrame.this.repaint();
                 }
-                NotesFrame.this.pack();
-                NotesFrame.this.repaint();
             }
         });
 
         close.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                NotesFrame.this.setVisible(false);
-                if(type.equals(NotesType.INFO)) {
-                    ConfigManager.INSTANCE.setShowOnStartUp(showOnStartUp.isSelected());
-                    FramesManager.INSTANCE.enableMovementExclude("ItemsGridFrame");
-                }else {
-                    ConfigManager.INSTANCE.setShowPatchNotes(false);
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    NotesFrame.this.setVisible(false);
+                    if (type.equals(NotesType.INFO)) {
+                        ConfigManager.INSTANCE.setShowOnStartUp(showOnStartUp.isSelected());
+
+                        FramesManager.INSTANCE.enableMovementExclude("ItemsGridFrame");
+                    } else {
+                        ConfigManager.INSTANCE.setShowPatchNotes(false);
+                    }
+                    prevState = FrameStates.HIDE;
                 }
-                prevState = FrameStates.HIDE;
             }
         });
         close.setBackground(AppThemeColor.FRAME);

@@ -91,20 +91,11 @@ public abstract class ComponentFrame extends OverlaidFrame{
         hideAnimation.setDuration(HIDE_TIME);
         hideAnimation.addPropertyToInterpolate("opacity",maxOpacity,minOpacity);
     }
-    protected void onLocationChange(Point location){
+    public void onLocationChange(Point location){
         configManager.saveFrameLocation(this.getClass().getSimpleName(),location);
     }
     protected void onFrameDragged(Point location){
         ComponentFrame.this.setLocation(location);
-    }
-    public void addUpwardsSpace(int value) {
-        this.setLocation(this.getLocation().x,this.getLocation().y - value);
-        this.pack();
-    }
-
-    public void removeUpwardsSpace(int value) {
-        this.setLocation(this.getLocation().x,this.getLocation().y + value);
-        this.pack();
     }
 
     private class ResizeByWidthMouseMotionListener extends MouseMotionAdapter{

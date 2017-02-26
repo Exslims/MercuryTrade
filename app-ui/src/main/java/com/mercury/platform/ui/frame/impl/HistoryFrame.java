@@ -118,6 +118,7 @@ public class HistoryFrame extends TitledComponentFrame{
                 messagePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.BORDER));
             }
             mainContainer.add(messagePanel);
+            trimContainer();
             this.pack();
 
         });
@@ -125,5 +126,13 @@ public class HistoryFrame extends TitledComponentFrame{
             this.revalidate();
             this.repaint();
         });
+    }
+    private void trimContainer(){
+        if(mainContainer.getComponentCount() > 40){
+            for (int i = 0; i < 5; i++) {
+                mainContainer.remove(0);
+            }
+            pack();
+        }
     }
 }

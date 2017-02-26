@@ -29,7 +29,7 @@ public class SoundNotifier {
             WhisperNotifierStatus status = ConfigManager.INSTANCE.getWhisperNotifier();
             if (status == WhisperNotifierStatus.ALWAYS ||
                     ((status == WhisperNotifierStatus.ALTAB) && (AppStarter.APP_STATUS == FrameStates.HIDE))) {
-                play("app/icq-message.wav");
+                play("app/notification.wav");
             }
         });
         EventRouter.INSTANCE.registerHandler(UpdateReadyEvent.class, event -> {

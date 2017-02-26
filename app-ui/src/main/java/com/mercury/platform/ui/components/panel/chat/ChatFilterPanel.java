@@ -82,14 +82,18 @@ public class ChatFilterPanel extends JPanel {
         invite.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/invite " + nicknameF));
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/invite " + nicknameF));
+                }
             }
         });
         JButton openChat = componentsFactory.getIconButton("app/openChat.png", 12, AppThemeColor.SLIDE_BG, TooltipConstants.OPEN_CHAT);
         openChat.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new OpenChatEvent(nicknameF));
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    EventRouter.INSTANCE.fireEvent(new OpenChatEvent(nicknameF));
+                }
             }
         });
         invite.setBorder(null);

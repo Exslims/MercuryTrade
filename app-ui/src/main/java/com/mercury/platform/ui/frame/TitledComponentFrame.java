@@ -48,7 +48,9 @@ public abstract class TitledComponentFrame extends ComponentFrame {
             hideButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    TitledComponentFrame.this.setVisible(false);
+                    if(SwingUtilities.isLeftMouseButton(e)) {
+                        TitledComponentFrame.this.setVisible(false);
+                    }
                 }
             });
             miscPanel.add(hideButton);

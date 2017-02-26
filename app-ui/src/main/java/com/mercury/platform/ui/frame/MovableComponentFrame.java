@@ -64,7 +64,6 @@ public abstract class MovableComponentFrame extends ComponentFrame {
                 this.setLocation(prevConstraints.location);
                 this.setMinimumSize(prevConstraints.minSize);
                 this.setMaximumSize(prevConstraints.maxSize);
-                this.setVisible(true);
                 inMoveMode = false;
                 this.onLock();
                 break;
@@ -73,7 +72,7 @@ public abstract class MovableComponentFrame extends ComponentFrame {
     }
 
     @Override
-    protected void onLocationChange(Point location) {
+    public void onLocationChange(Point location) {
         super.onLocationChange(location);
         prevConstraints.location = location;
         locationWasChanged = true;

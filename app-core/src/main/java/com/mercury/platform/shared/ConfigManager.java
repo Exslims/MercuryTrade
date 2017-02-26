@@ -2,6 +2,7 @@ package com.mercury.platform.shared;
 
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import com.mercury.platform.shared.pojo.FrameSettings;
+import com.mercury.platform.shared.pojo.ResponseButton;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,8 +12,8 @@ import org.json.simple.parser.JSONParser;
 
 import java.awt.*;
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
 /**
  * Application config manager, loads config files from %userprofile%/AppData/Local/MercuryTrader.
@@ -30,7 +31,7 @@ public class ConfigManager {
     private final String CONFIG_FILE_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade";
     private final String CONFIG_FILE = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\app-config.json";
 
-    private Map<String, String> cachedButtonsConfig;
+    private List<ResponseButton> cachedButtonsConfig;
     private Map<String, FrameSettings> cachedFramesSettings;
     private Map<String,Dimension> minimumFrameSize;
     private Map<String,FrameSettings> defaultFramesSettings;
@@ -129,9 +130,13 @@ public class ConfigManager {
             JSONObject root = (JSONObject) parser.parse(new FileReader(CONFIG_FILE));
 
             JSONArray buttons = (JSONArray) root.get("buttons");
-            cachedButtonsConfig = new HashMap<>();
-            for (JSONObject next : (Iterable<JSONObject>) buttons) {
-                cachedButtonsConfig.put((String) next.get("title"), (String) next.get("value"));
+            cachedButtonsConfig = new ArrayList<>();
+            try {
+                for (JSONObject next : (Iterable<JSONObject>) buttons) {
+                    cachedButtonsConfig.add(new ResponseButton((long) next.get("id"), (String) next.get("title"), (String) next.get("value")));
+                }
+            }catch (NullPointerException e){
+                saveButtonsConfig(getDefaultButtons());
             }
 
             JSONArray framesSetting = (JSONArray) root.get("framesSettings");
@@ -216,7 +221,7 @@ public class ConfigManager {
         }
 
     }
-    public Map<String, String> getButtonsConfig(){
+    public List<ResponseButton> getButtonsConfig(){
         return cachedButtonsConfig;
     }
 
@@ -249,14 +254,15 @@ public class ConfigManager {
      * Save custom buttons config.
      * @param buttons map of buttons data.(title,text to send)
      */
-    public void saveButtonsConfig(Map<String, String> buttons){
+    public void saveButtonsConfig(List<ResponseButton> buttons){
         cachedButtonsConfig = buttons;
         JSONArray list = new JSONArray();
-        buttons.forEach((k,v)->{
-            JSONObject buttonsConfig = new JSONObject();
-            buttonsConfig.put("title",k);
-            buttonsConfig.put("value",v);
-            list.add(buttonsConfig);
+        buttons.forEach((button)->{
+            JSONObject buttonConfig = new JSONObject();
+            buttonConfig.put("id",button.getId());
+            buttonConfig.put("title",button.getTitle());
+            buttonConfig.put("value",button.getResponseText());
+            list.add(buttonConfig);
         });
         saveProperty("buttons", list);
     }
@@ -341,12 +347,12 @@ public class ConfigManager {
         saveProperty("expandedMsgCount",String.valueOf(this.expandedMsgCount));
     }
 
-    private Map<String, String > getDefaultButtons(){
-        Map<String,String> defaultButtons = new HashMap<>();
-        defaultButtons.put("1m","one minute");
-        defaultButtons.put("thx","thanks");
-        defaultButtons.put("no thx", "no thanks");
-        defaultButtons.put("sold", "sold");
+    private List<ResponseButton> getDefaultButtons(){
+        List<ResponseButton> defaultButtons = new ArrayList<>();
+        defaultButtons.add(new ResponseButton(0,"1m","one minute"));
+        defaultButtons.add(new ResponseButton(1,"thx","thanks"));
+        defaultButtons.add(new ResponseButton(2,"no thx", "no thanks"));
+        defaultButtons.add(new ResponseButton(3,"sold", "sold"));
         return defaultButtons;
     }
     public Map<String,FrameSettings> getDefaultFramesSettings(){

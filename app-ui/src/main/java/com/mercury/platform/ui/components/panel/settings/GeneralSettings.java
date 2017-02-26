@@ -122,4 +122,11 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         HideSettingsManager.INSTANCE.apply(timeToDelay,minOpacity,maxOpacity);
         ConfigManager.INSTANCE.setWhisperNotifier(WhisperNotifierStatus.get(notifierStatusPicker.getSelectedIndex()));
     }
+
+    @Override
+    public void restore() {
+        this.removeAll();
+        this.createUI();
+        owner.setOpacity(maxSlider.getValue()/100.0f);
+    }
 }

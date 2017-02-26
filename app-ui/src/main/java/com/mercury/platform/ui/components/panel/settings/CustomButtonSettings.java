@@ -3,6 +3,7 @@ package com.mercury.platform.ui.components.panel.settings;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.CustomButtonsChangedEvent;
+import com.mercury.platform.shared.pojo.ResponseButton;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -13,15 +14,16 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by Константин on 05.01.2017.
  */
 public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
-    private Map<JTextField,JTextField> inputs;
+    private List<ValuePair> inputs;
     private JFrame owner;
+    private int id;
 
     public CustomButtonSettings(JFrame owner) {
         super();
@@ -31,32 +33,40 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
 
     @Override
     public void processAndSave() {
-        Map<String,String> buttonsConfig = new HashMap<>();
-        inputs.forEach((k,v)-> buttonsConfig.put(k.getText(),v.getText()));
-        ConfigManager.INSTANCE.saveButtonsConfig(buttonsConfig);
+        List<ResponseButton> buttons = new ArrayList<>();
+        id = 0;
+        Collections.reverse(inputs);
+        inputs.forEach(pair -> {
+            buttons.add(new ResponseButton(id,pair.title.getText(),pair.response.getText()));
+            id++;
+        });
+        ConfigManager.INSTANCE.saveButtonsConfig(buttons);
         EventRouter.INSTANCE.fireEvent(new CustomButtonsChangedEvent());
     }
 
     @Override
+    public void restore() {
+        this.removeAll();
+        createUI();
+    }
+
+    @Override
     protected LayoutManager getPanelLayout() {
-        return  new BorderLayout();
+        return new GridBagLayout();
     }
 
     @Override
     public void createUI() {
-        inputs = new HashMap<>();
-        Map<String, String> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();
-
-        JPanel tablePanel = componentsFactory.getTransparentPanel(new GridBagLayout());
-
+        inputs = new ArrayList<>();
+        List<ResponseButton> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();
+        Collections.sort(buttonsConfig);
         GridBagConstraints titleColumn = new GridBagConstraints();
         GridBagConstraints valueColumn = new GridBagConstraints();
         GridBagConstraints utilColumn = new GridBagConstraints();
 
         setUpGBConstants(titleColumn,valueColumn,utilColumn);
-        inputs = new HashMap<>();
 
-        tablePanel.setBackground(AppThemeColor.TRANSPARENT);
+        this.setBackground(AppThemeColor.TRANSPARENT);
 
         JLabel titleLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, null,15f,"Label");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -64,69 +74,69 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
         JLabel valueLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, null,15f,"Response text");
         valueLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        tablePanel.add(titleLabel, titleColumn);
+        this.add(titleLabel, titleColumn);
         titleColumn.gridy++;
-        tablePanel.add(valueLabel,valueColumn);
+        this.add(valueLabel,valueColumn);
         valueColumn.gridy++;
-        tablePanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, null,15f,""),utilColumn);
+        this.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, null,15f,""),utilColumn);
         utilColumn.gridy++;
 
-        buttonsConfig.forEach((title,value) ->{
-            addNewRow(tablePanel,title,value,titleColumn,valueColumn,utilColumn);
+        buttonsConfig.forEach(button ->{
+            addNewRow(button.getTitle(),button.getResponseText(),titleColumn,valueColumn,utilColumn);
         });
 
         JButton addNew = componentsFactory.getBorderedButton("Add");
         addNew.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                if(inputs.size() <= 8) {
-                    tablePanel.remove(addNew);
-                    addNewRow(tablePanel, "expl", "example", titleColumn, valueColumn, utilColumn);
-                    tablePanel.add(addNew, utilColumn);
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    if (inputs.size() <= 12) {
+                        remove(addNew);
+                        addNewRow("expl", "example", titleColumn, valueColumn, utilColumn);
+                        add(addNew, utilColumn);
 
-                    owner.pack();
+                        owner.pack();
+                    }
                 }
             }
         });
-        tablePanel.add(addNew,utilColumn);
-
-
-        JPanel msgPanelWrapper = componentsFactory.getTransparentPanel(new FlowLayout());
-        this.add(tablePanel,BorderLayout.CENTER);
-        this.add(msgPanelWrapper,BorderLayout.PAGE_END);
+        this.add(addNew,utilColumn);
     }
-    private void addNewRow(JPanel rootPanel, String title, String value, GridBagConstraints tC, GridBagConstraints vC, GridBagConstraints uC){
+    private void addNewRow(String title, String value, GridBagConstraints tC, GridBagConstraints vC, GridBagConstraints uC){
         JTextField titleFiled = componentsFactory.getTextField(title,FontStyle.BOLD,14f);
         titleFiled.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if(titleFiled.getText().length() > 5){
+                if(titleFiled.getText().length() > 5 || titleFiled.getText().length() < 1){
                     e.consume();
                 }
             }
         });
 
-        rootPanel.add(titleFiled,tC);
+        this.add(titleFiled,tC);
         tC.gridy++;
 
         JTextField valueField = componentsFactory.getTextField(value,FontStyle.BOLD,14f);
-        inputs.put(titleFiled,valueField);
-        rootPanel.add(valueField,vC);
+        ValuePair pair = new ValuePair(titleFiled, valueField);
+        inputs.add(pair);
+        this.add(valueField,vC);
         vC.gridy++;
 
         JButton remove = componentsFactory.getBorderedButton("x");
         remove.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                inputs.remove(titleFiled);
-                rootPanel.remove(titleFiled);
-                rootPanel.remove(valueField);
-                rootPanel.remove(remove);
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    inputs.remove(pair);
+                    remove(titleFiled);
+                    remove(valueField);
+                    remove(remove);
 
-                owner.pack();
+                    owner.pack();
+                }
             }
         });
-        rootPanel.add(remove,uC);
+        this.add(remove,uC);
         uC.gridy++;
     }
     private void setUpGBConstants(GridBagConstraints titleColumn, GridBagConstraints valueColumn, GridBagConstraints utilColumn){
@@ -152,5 +162,14 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
         utilColumn.insets = new Insets(3,2,3,0);
         titleColumn.insets = new Insets(3,2,3,0);
         valueColumn.insets = new Insets(3,2,3,0);
+    }
+    private class ValuePair {
+        private JTextField title;
+        private JTextField response;
+
+        public ValuePair(JTextField title, JTextField response) {
+            this.title = title;
+            this.response = response;
+        }
     }
 }

@@ -48,17 +48,19 @@ public class MercuryTabbedPane extends JPanel{
         tabButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                tabButton.setBackground(AppThemeColor.SLIDE_BG);
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    tabButton.setBackground(AppThemeColor.SLIDE_BG);
 
-                headerButtons.forEach(button -> {
-                    if(!button.equals(tabButton)){
-                        button.setBackground(AppThemeColor.TRANSPARENT);
-                    }
-                });
-                tabPanel.removeAll();
-                tabPanel.add(component,BorderLayout.CENTER);
-                owner.pack();
-                owner.repaint();
+                    headerButtons.forEach(button -> {
+                        if (!button.equals(tabButton)) {
+                            button.setBackground(AppThemeColor.TRANSPARENT);
+                        }
+                    });
+                    tabPanel.removeAll();
+                    tabPanel.add(component, BorderLayout.CENTER);
+                    owner.pack();
+                    owner.repaint();
+                }
             }
         });
         if(headerButtons.size() == 0){

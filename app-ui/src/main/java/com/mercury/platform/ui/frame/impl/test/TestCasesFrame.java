@@ -112,27 +112,21 @@ public class TestCasesFrame extends TitledComponentFrame {
         currency.add("xoph's breachstone");
         currency.add("yriel's");
 
-        nickNames.add("Kanarid");
-        nickNames.add("Vin");
-        nickNames.add("Rrra_LOL");
-        nickNames.add("Pabeesari");
-        nickNames.add("Joll");
-        nickNames.add("Jashicore_QWEEEE");
-        nickNames.add("Xach");
-        nickNames.add("Yaitaly");
-        nickNames.add("xXxДолбоебxXx");
-        nickNames.add("Example");
-        nickNames.add("Example");
-        nickNames.add("Example");
-        nickNames.add("Example");
+        nickNames.add("Example1");
+        nickNames.add("Example2");
+        nickNames.add("Example3");
+        nickNames.add("Example4");
+        nickNames.add("Example5");
+        nickNames.add("Example6");
 
-        offer.add("#############");
+        offer.add("offer");
         offer.add(" ");
         offer.add("");
         offer.add("  ");
-        offer.add("##########################");
-        offer.add("#######################################");
-        offer.add("######");
+        offer.add("offerofferofferofferoffer");
+        offer.add("offerofferofferofferofferofferofferoffer");
+        offer.add("offeroffer");
+        offer.add("offer");
     }
 
     @Override

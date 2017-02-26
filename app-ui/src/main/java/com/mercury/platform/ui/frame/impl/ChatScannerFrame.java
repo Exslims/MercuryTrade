@@ -105,8 +105,10 @@ public class ChatScannerFrame extends TitledComponentFrame {
         edit.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                msgPicker.setLocation(e.getLocationOnScreen());
-                msgPicker.showComponent();
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    msgPicker.setLocation(e.getLocationOnScreen());
+                    msgPicker.showComponent();
+                }
             }
         });
         JButton clear = componentsFactory.getIconButton("app/clear-icon.png", 18, AppThemeColor.TRANSPARENT, "Clear window.");
@@ -114,9 +116,11 @@ public class ChatScannerFrame extends TitledComponentFrame {
         clear.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                msgContainer.clear();
-                pack();
-                repaint();
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    msgContainer.clear();
+                    pack();
+                    repaint();
+                }
             }
         });
         JButton sound = componentsFactory.getIconButton("app/sound-disable.png", 18, AppThemeColor.TRANSPARENT, "Enable sound notification.");
@@ -124,14 +128,16 @@ public class ChatScannerFrame extends TitledComponentFrame {
         sound.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(soundEnable){
-                    sound.setIcon(componentsFactory.getIcon("app/sound-disable.png",18));
-                    soundEnable = false;
-                    ChatScannerFrame.this.repaint();
-                }else {
-                    sound.setIcon(componentsFactory.getIcon("app/sound-enable.png",18));
-                    soundEnable = true;
-                    ChatScannerFrame.this.repaint();
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    if (soundEnable) {
+                        sound.setIcon(componentsFactory.getIcon("app/sound-disable.png", 18));
+                        soundEnable = false;
+                        ChatScannerFrame.this.repaint();
+                    } else {
+                        sound.setIcon(componentsFactory.getIcon("app/sound-enable.png", 18));
+                        soundEnable = true;
+                        ChatScannerFrame.this.repaint();
+                    }
                 }
             }
         });

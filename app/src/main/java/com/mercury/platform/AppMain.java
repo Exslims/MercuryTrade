@@ -8,6 +8,8 @@ import com.mercury.platform.ui.manager.FramesManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Arrays;
+
 public class AppMain {
     private static final Logger logger = LogManager.getLogger(AppMain.class.getSimpleName());
     public static void main(String[] args) {
@@ -22,7 +24,7 @@ public class AppMain {
                 FramesManager.INSTANCE.start();
             }
         } catch (Exception e){
-            logger.error(e);
+            logger.error(Arrays.toString(e.getStackTrace()));
         }
 
     }

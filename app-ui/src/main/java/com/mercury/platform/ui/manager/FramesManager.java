@@ -56,9 +56,7 @@ public class FramesManager {
         NotesLoader notesLoader = new NotesLoader();
 
         List<Note> notesOnFirstStart = notesLoader.getNotesOnFirstStart();
-        if(ConfigManager.INSTANCE.isShowOnStartUp()) {
-            framesMap.put(NotesFrame.class, new NotesFrame(notesOnFirstStart, NotesFrame.NotesType.INFO));
-        }
+        framesMap.put(NotesFrame.class, new NotesFrame(notesOnFirstStart, NotesFrame.NotesType.INFO));
         List<Note> patchNotes = notesLoader.getPatchNotes();
         if(ConfigManager.INSTANCE.isShowPatchNotes() && patchNotes.size() != 0){
             NotesFrame patchNotesFrame = new NotesFrame(patchNotes,NotesFrame.NotesType.PATCH);
@@ -108,6 +106,9 @@ public class FramesManager {
     public void showFrame(Class frameClass){
         framesMap.get(frameClass).showComponent();
     }
+    public void preShowFrame(Class frameClass){
+        framesMap.get(frameClass).setPrevState(FrameStates.SHOW);
+    }
     public void hideFrame(Class frameClass){
         framesMap.get(frameClass).hideComponent();
     }
@@ -137,9 +138,9 @@ public class FramesManager {
     public void restoreDefaultLocation(){
         framesMap.forEach((k,v) -> {
             FrameSettings settings = ConfigManager.INSTANCE.getDefaultFramesSettings().get(k.getSimpleName());
-            if(v instanceof MovableComponentFrame){
+            if(v instanceof MovableComponentFrame && !v.getClass().getSimpleName().equals("ItemsGridFrame")){
                 v.setLocation(settings.getFrameLocation());
-                ConfigManager.INSTANCE.saveFrameLocation(v.getClass().getSimpleName(),settings.getFrameLocation());
+                ((MovableComponentFrame) v).onLocationChange(settings.getFrameLocation());
             }
         });
     }

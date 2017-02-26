@@ -28,6 +28,7 @@ public class SettingsFrame extends TitledComponentFrame {
         setAlwaysOnTop(false);
         innerPanels = new ArrayList<>();
         processingHideEvent = false;
+        processSEResize = false;
     }
 
     @Override
@@ -48,6 +49,7 @@ public class SettingsFrame extends TitledComponentFrame {
 
         tabbedPane.addTab("General",generalSettings);
         tabbedPane.addTab("Response buttons",cbSettings);
+        tabbedPane.addTab("Help",new HelpPanel());
         tabbedPane.addTab("Support",new SupportPanel());
         tabbedPane.addTab("About",new AboutPanel());
         this.add(tabbedPane, BorderLayout.CENTER);
@@ -62,18 +64,22 @@ public class SettingsFrame extends TitledComponentFrame {
         JButton save = componentsFactory.getBorderedButton("Save");
         save.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                innerPanels.forEach(ConfigurationPanel::processAndSave);
-                SettingsFrame.this.setVisible(false);
-                EventRouter.INSTANCE.fireEvent(new AddShowDelayEvent());
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    innerPanels.forEach(ConfigurationPanel::processAndSave);
+                    hideComponent();
+                }
             }
         });
         JButton close = componentsFactory.getBorderedButton("Close");
         close.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                SettingsFrame.this.setVisible(false);
-                EventRouter.INSTANCE.fireEvent(new AddShowDelayEvent());
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    innerPanels.forEach(ConfigurationPanel::restore);
+                    pack();
+                    hideComponent();
+                }
             }
         });
         panel.add(save);
@@ -92,5 +98,11 @@ public class SettingsFrame extends TitledComponentFrame {
     @Override
     protected String getFrameTitle() {
         return "Settings";
+    }
+
+    @Override
+    public void hideComponent() {
+        super.hideComponent();
+        EventRouter.INSTANCE.fireEvent(new AddShowDelayEvent());
     }
 }

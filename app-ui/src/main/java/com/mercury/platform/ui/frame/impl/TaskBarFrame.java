@@ -82,19 +82,21 @@ public class TaskBarFrame extends MovableComponentFrame{
         visibleMode.addMouseListener(new MouseAdapter() {
             private boolean dnd = false;
             @Override
-            public void mouseClicked(MouseEvent e) {
-                if (!dnd) {
-                    visibleMode.setIcon(componentsFactory.getIcon("app/visible-dnd-mode.png", 24));
-                    dnd = true;
-                    TaskBarFrame.this.repaint();
-                    EventRouter.INSTANCE.fireEvent(new NotificationEvent("DND on"));
-                    EventRouter.INSTANCE.fireEvent(new DndModeEvent(true));
-                } else {
-                    dnd = false;
-                    visibleMode.setIcon(componentsFactory.getIcon("app/visible-always-mode.png", 24));
-                    TaskBarFrame.this.repaint();
-                    EventRouter.INSTANCE.fireEvent(new NotificationEvent("DND off"));
-                    EventRouter.INSTANCE.fireEvent(new DndModeEvent(false));
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    if (!dnd) {
+                        visibleMode.setIcon(componentsFactory.getIcon("app/visible-dnd-mode.png", 24));
+                        dnd = true;
+                        TaskBarFrame.this.repaint();
+                        EventRouter.INSTANCE.fireEvent(new NotificationEvent("DND on"));
+                        EventRouter.INSTANCE.fireEvent(new DndModeEvent(true));
+                    } else {
+                        dnd = false;
+                        visibleMode.setIcon(componentsFactory.getIcon("app/visible-always-mode.png", 24));
+                        TaskBarFrame.this.repaint();
+                        EventRouter.INSTANCE.fireEvent(new NotificationEvent("DND off"));
+                        EventRouter.INSTANCE.fireEvent(new DndModeEvent(false));
+                    }
                 }
             }
         });
@@ -103,17 +105,19 @@ public class TaskBarFrame extends MovableComponentFrame{
         itemGrid.addMouseListener(new MouseAdapter() {
             private boolean frameOpened = false;
             @Override
-            public void mouseClicked(MouseEvent e) {
-                if (!frameOpened) {
-                    itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-enable.png", 24));
-                    frameOpened = true;
-                    TaskBarFrame.this.repaint();
-                    FramesManager.INSTANCE.enableMovement("ItemsGridFrame");
-                } else {
-                    frameOpened = false;
-                    itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-disable.png", 24));
-                    TaskBarFrame.this.repaint();
-                    FramesManager.INSTANCE.disableMovement("ItemsGridFrame");
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    if (!frameOpened) {
+                        itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-enable.png", 24));
+                        frameOpened = true;
+                        TaskBarFrame.this.repaint();
+                        FramesManager.INSTANCE.enableMovement("ItemsGridFrame");
+                    } else {
+                        frameOpened = false;
+                        itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-disable.png", 24));
+                        TaskBarFrame.this.repaint();
+                        FramesManager.INSTANCE.disableMovement("ItemsGridFrame");
+                    }
                 }
             }
         });
@@ -122,15 +126,19 @@ public class TaskBarFrame extends MovableComponentFrame{
         chatFilter.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                FramesManager.INSTANCE.hideOrShowFrame(ChatScannerFrame.class);
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    FramesManager.INSTANCE.hideOrShowFrame(ChatScannerFrame.class);
+                }
             }
         });
 
         JButton historyButton = componentsFactory.getIconButton("app/history.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.HISTORY);
         historyButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                FramesManager.INSTANCE.hideOrShowFrame(HistoryFrame.class);
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    FramesManager.INSTANCE.hideOrShowFrame(HistoryFrame.class);
+                }
             }
         });
 
@@ -138,7 +146,9 @@ public class TaskBarFrame extends MovableComponentFrame{
         moveButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                FramesManager.INSTANCE.enableMovementExclude("ItemsGridFrame");
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    FramesManager.INSTANCE.enableMovementExclude("ItemsGridFrame");
+                }
             }
         });
 
@@ -146,18 +156,22 @@ public class TaskBarFrame extends MovableComponentFrame{
         settingsButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                FramesManager.INSTANCE.hideOrShowFrame(SettingsFrame.class);
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    FramesManager.INSTANCE.showFrame(SettingsFrame.class);
+                }
             }
         });
 
         JButton exitButton = componentsFactory.getIconButton("app/exit.png", 24,AppThemeColor.FRAME_ALPHA,"");
         exitButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                if(updateReady){
-                    UpdateManager.INSTANCE.doUpdate();
-                }else {
-                    EventRouter.INSTANCE.fireEvent(new ShutdownApplication());
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    if (updateReady) {
+                        UpdateManager.INSTANCE.doUpdate();
+                    } else {
+                        EventRouter.INSTANCE.fireEvent(new ShutdownApplication());
+                    }
                 }
             }
         });

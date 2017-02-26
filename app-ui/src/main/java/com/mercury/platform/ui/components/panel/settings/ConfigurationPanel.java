@@ -10,4 +10,6 @@ import javax.swing.*;
  */
 public abstract class ConfigurationPanel extends TransparentPanel{
     public abstract void processAndSave();
+
+    public abstract void restore();
 }

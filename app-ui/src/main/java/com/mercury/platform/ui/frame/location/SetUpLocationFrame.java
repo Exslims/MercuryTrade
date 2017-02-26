@@ -1,8 +1,6 @@
 package com.mercury.platform.ui.frame.location;
 
-import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.pojo.FrameSettings;
-import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -12,9 +10,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- * Created by Константин on 22.01.2017.
- */
 public class SetUpLocationFrame extends ComponentFrame {
     public SetUpLocationFrame() {
         super("MT-SetUpLocationFrame");
@@ -36,10 +31,9 @@ public class SetUpLocationFrame extends ComponentFrame {
         rootPanel.setBorder(BorderFactory.createEmptyBorder(6,6,0,6));
 
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
-        root.setPreferredSize(new Dimension(700,70));
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
         root.setBackground(AppThemeColor.SLIDE_BG);
-        root.add(componentsFactory.getSimpleTextAre("              Panels UNLOCKED. \n\nMove them and click Lock when done."),BorderLayout.CENTER);
+        root.add(componentsFactory.getSimpleTextAre("              Panels UNLOCKED. \nMove them and click Lock when done."),BorderLayout.CENTER);
 
         JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         JButton restoreDefault = componentsFactory.getBorderedButton("Restore default");

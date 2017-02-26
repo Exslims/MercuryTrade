@@ -8,6 +8,7 @@ import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.pojo.CurrencyMessage;
 import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.shared.pojo.Message;
+import com.mercury.platform.shared.pojo.ResponseButton;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -28,6 +29,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by Константин on 15.12.2016.
@@ -203,9 +205,11 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             inviteButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/invite " + whisper));
-                    if(((ItemMessage) message).getTabInfo() != null){
-                        EventRouter.INSTANCE.fireEvent(new ShowItemMeshEvent(message.getWhisperNickname(),((ItemMessage) message).getTabInfo()));
+                    if(SwingUtilities.isLeftMouseButton(e)) {
+                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/invite " + whisper));
+                        if (((ItemMessage) message).getTabInfo() != null) {
+                            EventRouter.INSTANCE.fireEvent(new ShowItemMeshEvent(message.getWhisperNickname(), ((ItemMessage) message).getTabInfo()));
+                        }
                     }
                 }
             });
@@ -213,14 +217,18 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             kickButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/kick " + whisper));
+                    if(SwingUtilities.isLeftMouseButton(e)) {
+                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/kick " + whisper));
+                    }
                 }
             });
             tradeButton = componentsFactory.getIconButton("app/trade.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
             tradeButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/tradewith " + whisper));
+                    if(SwingUtilities.isLeftMouseButton(e)) {
+                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/tradewith " + whisper));
+                    }
                 }
             });
             interactionPanel.add(inviteButton);
@@ -232,7 +240,9 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         openChatButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new OpenChatEvent(whisper));
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    EventRouter.INSTANCE.fireEvent(new OpenChatEvent(whisper));
+                }
             }
         });
 
@@ -241,7 +251,9 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         hideButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new CloseMessagePanelEvent(MessagePanel.this,message));
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    EventRouter.INSTANCE.fireEvent(new CloseMessagePanelEvent(MessagePanel.this, message));
+                }
             }
         });
         if(!style.equals(MessagePanelStyle.HISTORY)) {
@@ -301,10 +313,12 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         expandButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(!messagePanel.isVisible()) {
-                    expand();
-                }else {
-                    collapse();
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    if (!messagePanel.isVisible()) {
+                        expand();
+                    } else {
+                        collapse();
+                    }
                 }
             }
         });
@@ -357,23 +371,9 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         return style;
     }
     private JPanel getButtonsPanel(String whisper){
-        Map<String, String> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();
         JPanel panel = new JPanel(new FlowLayout());
         panel.setBackground(AppThemeColor.TRANSPARENT);
-
-        buttonsConfig.forEach((title,value)->{
-            JButton button = componentsFactory.getBorderedButton(title);
-            button.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if(button.isEnabled()) {
-                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("@" + whisper + " " + value));
-                    }
-                }
-
-            });
-            panel.add(button,0);
-        });
+        initResponseButtons(panel);
         return panel;
     }
     @Override
@@ -402,18 +402,24 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         });
         EventRouter.INSTANCE.registerHandler(CustomButtonsChangedEvent.class, event -> {
             this.customButtonsPanel.removeAll();
-            Map<String, String> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();
-            buttonsConfig.forEach((title,value)->{
-                JButton button = componentsFactory.getBorderedButton(title);
-                button.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("@" + whisper + " " + value));
-                    }
-                });
-                customButtonsPanel.add(button,0);
-            });
+            initResponseButtons(customButtonsPanel);
             owner.repaint();
+        });
+    }
+    private void initResponseButtons(JPanel panel){
+        List<ResponseButton> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();
+        Collections.sort(buttonsConfig);
+        buttonsConfig.forEach((buttonConfig)->{
+            JButton button = componentsFactory.getBorderedButton(buttonConfig.getTitle());
+            button.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if(SwingUtilities.isLeftMouseButton(e)) {
+                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("@" + whisper + " " + buttonConfig.getResponseText()));
+                    }
+                }
+            });
+            panel.add(button,0);
         });
     }
 }
