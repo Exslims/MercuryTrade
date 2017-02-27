@@ -13,7 +13,7 @@ Feedback and suggestions:
   <img src="http://i.imgur.com/DWJQSsL.png"/>
 </p>
 
-**MercuryTrade** is an overlay application for Path of Exile written in Java. It's designed to facilitate all possible trading interactions in the game providing a much better user experience for the players. The program went through countless design iterations and made by active Path of Exile players who use this tool themselves on a regular basis.
+**MercuryTrade** is an overlay application for Path of Exile written in Java. It's designed to facilitate all possible trading interactions providing a much better user experience for the players. The program went through countless design iterations and made by active Path of Exile players who use this tool themselves on a regular basis.
 
 ---
 ## FUNCTIONALITY:
@@ -69,7 +69,7 @@ If you've received multiple notifications before dismissing your current one, th
 
 <p align="center"> <i>History</i> </p>
 
-Each notification you receive is stored in a separate file by **MercuryTrade**. History allows you to access that file in a useful way to interact with the customers. Comes in handy if you've been afking for a while or you want to reach a person you traded with some time ago or in case your client has crashed - in-game chat will be cleared, your history will not.
+Each notification you receive is stored in a separate file by **MercuryTrade**. History allows you to access that file in a useful way to interact with customers. Comes in handy if you want to reach a person you traded with some time ago or in case your client has crashed - your in-game chat will be lost, but History will not.
 
 
 #
