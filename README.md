@@ -13,7 +13,7 @@ Feedback and suggestions:
   <img src="http://i.imgur.com/DWJQSsL.png"/>
 </p>
 
-**MercuryTrade** is an overlay application for Path of Exile written in Java. It's designed to facilitate all possible trading interactions in the game providing a much better user experience for the players. The program went through countless design interactions and made by active Path of Exile players who use this tool themselves on a regular basis.
+**MercuryTrade** is an overlay application for Path of Exile written in Java. It's designed to facilitate all possible trading interactions in the game providing a much better user experience for the players. The program went through countless design iterations and made by active Path of Exile players who use this tool themselves on a regular basis.
 
 ---
 ## FUNCTIONALITY:
@@ -25,7 +25,7 @@ Feedback and suggestions:
   <img src="http://i.imgur.com/Sv2Iod9.png"/>
 </p>
 
-When you receive a trade related message this notification panel pops up. It contains all the information you might need to make a decision. It offers a set of fully customizable "quick response buttons" (such as "Sold" / "No" / "Wait 3m" etc, customizable) as well as buttons to invite, kick and trade with the person who made the offer. 
+When you receive a trade related message this notification panel pops up. It contains all the information you need to make a decision. It offers a set of fully customizable "quick response buttons" - such as "Sold" / "No" / "Wait 3m" / etc - as well as buttons to invite, kick and trade with the person who made the offer. 
 
 <p align="center">
   <img src="http://i.imgur.com/6WyeA9D.png"/>
@@ -33,7 +33,7 @@ When you receive a trade related message this notification panel pops up. It con
 
 <p align="center"> <i>Multiple notifications</i> </p>
 
-If you've received multiple notifications before dismissing your current one, they will stack up like a deck of cards underneath each other and won't clutter the screen. Notification panels can be set up to fade out after X seconds (customizable option).
+If you've received multiple notifications before dismissing your current one, they will stack up like a deck of cards underneath (or on top) of each other and won't clutter the screen. Notification panels can be set up to fade out after X seconds - a customizable option.
 
 <p align="center">
   <img src="http://i.imgur.com/KZuAT7I.png"/>
