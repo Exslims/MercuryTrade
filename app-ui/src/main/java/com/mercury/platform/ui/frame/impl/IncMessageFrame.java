@@ -48,6 +48,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
     private boolean dnd = false;
     public IncMessageFrame(){
         super("MT-IncMessagesFrame");
+
         processSEResize = false;
         flowDirections = FlowDirections.valueOf(configManager.getFlowDirection());
         pikerDirection = FlowDirections.valueOf(configManager.getFlowDirection());
