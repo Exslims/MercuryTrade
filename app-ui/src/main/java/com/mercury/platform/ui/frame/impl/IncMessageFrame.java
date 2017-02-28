@@ -154,6 +154,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
                         mainContainer.getComponent((limitMsgCount - 1)).setVisible(true);
                         expandAllFrame.decMessageCount();
                         expandAllFrame.setVisible(false);
+                        expanded = false;
                     }else if(mainContainer.getComponentCount() > limitMsgCount) {
                         mainContainer.getComponent((limitMsgCount - 1)).setVisible(true);
                         expandAllFrame.decMessageCount();
@@ -167,6 +168,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
                         mainContainer.getComponent(mainContainer.getComponentCount() - limitMsgCount).setVisible(true);
                         expandAllFrame.decMessageCount();
                         expandAllFrame.setVisible(false);
+                        expanded = false;
                     }else if(mainContainer.getComponentCount() > (limitMsgCount + 1)) {
                         mainContainer.getComponent(mainContainer.getComponentCount() - limitMsgCount).setVisible(true);
                         expandAllFrame.decMessageCount();
