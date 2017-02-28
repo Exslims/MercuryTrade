@@ -1,25 +1,25 @@
 {"notes":[
   {
     "title" : "Overview",
-    "text" : "MercuryTrade is an overlay application for Path of Exile. It's designed to facilitate all possible trading interactions in the game providing a much better user experience for the players. This one minute overview will cover other features as well. \nAll the future updates will be available for download from within this application. \n\nMercuryTrade is 100% legit: no macros, no injectors!",
+    "text" : "MercuryTrade is an overlay application for Path of Exile. It's designed to facilitate all possible trading interactions providing a much better user experience for the players. All the future updates will be available for download from within this application. \n\nThis one minute overview will cover other features as well. \n\nMercuryTrade is 100% legit: no memory manipulations, no injectors!",
     "image" : "app/app-icon.png",
     "layout" : "VERTICAL"
   },
   {
     "title" : "Main feature: Notification (1/3)",
-    "text" : "When you receive a trade related message this notification panel pops up. It contains all the information you might need to make a decision. \n\nLet's take a look.",
+    "text" : "When you receive a trade related message this notification panel pops up. It contains all the information you need to make a decision. \n\nLet's take a look.",
     "image" : "notes/first/1.png",
     "layout" : "VERTICAL"
   },
   {
     "title" : "Main feature: Notification (2/3)",
-    "text" : "",
+    "text" : "All the buttons will interact with the person who triggered the notification.",
     "image" : "notes/first/1_2.png",
     "layout" : "VERTICAL"
   },
   {
     "title" : "Main feature: Notification (3/3)",
-    "text" : "This box will appear if \"Pre-group limit\" is exceeded. All consecutive notifications will be grouped together to save screen space. Toggling this button will expand or collapse the whole group.",
+    "text" : "The box on the left - \"Group\" - will appear if \"Pre-group limit\" is exceeded. All consecutive notifications will be grouped together to save screen space. Toggling this button will expand the whole group.",
     "image" : "notes/first/1_3.png",
     "layout" : "VERTICAL"
   },
@@ -31,7 +31,7 @@
   },
   {
     "title" : "Minor feature: Accessibility status",
-    "text" : "MercuryTrade notifications have an indication for when a person comes in or leaves your hideout - that way you can offer a trade as soon as possible and keep track of all the people without even closing your stash. Especially useful for SuperTrade mode",
+    "text" : "MercuryTrade notifications have an indication for when a person comes in or leaves your hideout - that way you can offer a trade as soon as possible and keep track of all the people without even closing your stash. Extremely useful when you trade with many people at once!",
     "image" : "notes/first/7.png",
     "layout" : "VERTICAL"
   },
@@ -49,7 +49,7 @@
   },
   {
     "title" : "Settings",
-    "text" : "Tailor \"Automatic notification fading\", \"Transparency levels\" and \"Sound alerts\" to your taste.",
+    "text" : "Some additional options for further customization.",
     "image" : "notes/first/6.png",
     "layout" : "VERTICAL"
   },
