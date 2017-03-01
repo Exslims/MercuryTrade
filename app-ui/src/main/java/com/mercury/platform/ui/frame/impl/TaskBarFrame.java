@@ -99,26 +99,26 @@ public class TaskBarFrame extends MovableComponentFrame{
             }
         });
 
-//        JButton itemGrid = componentsFactory.getIconButton("app/item-grid-disable.png",24,AppThemeColor.FRAME_ALPHA, TooltipConstants.VISIBLE_MODE);
-//        itemGrid.addMouseListener(new MouseAdapter() {
-//            private boolean frameOpened = false;
-//            @Override
-//            public void mousePressed(MouseEvent e) {
-//                if(SwingUtilities.isLeftMouseButton(e)) {
-//                    if (!frameOpened) {
-//                        itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-enable.png", 24));
-//                        frameOpened = true;
-//                        TaskBarFrame.this.repaint();
-//                        FramesManager.INSTANCE.enableMovement("ItemsGridFrame");
-//                    } else {
-//                        frameOpened = false;
-//                        itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-disable.png", 24));
-//                        TaskBarFrame.this.repaint();
-//                        FramesManager.INSTANCE.disableMovement("ItemsGridFrame");
-//                    }
-//                }
-//            }
-//        });
+        JButton itemGrid = componentsFactory.getIconButton("app/item-grid-disable.png",24,AppThemeColor.FRAME_ALPHA, TooltipConstants.VISIBLE_MODE);
+        itemGrid.addMouseListener(new MouseAdapter() {
+            private boolean frameOpened = false;
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    if (!frameOpened) {
+                        itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-enable.png", 24));
+                        frameOpened = true;
+                        TaskBarFrame.this.repaint();
+                        FramesManager.INSTANCE.enableMovementDirect("ItemsGridFrame");
+                    } else {
+                        frameOpened = false;
+                        itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-disable.png", 24));
+                        TaskBarFrame.this.repaint();
+                        FramesManager.INSTANCE.disableMovement("ItemsGridFrame");
+                    }
+                }
+            }
+        });
 
         JButton chatFilter = componentsFactory.getIconButton("app/chat-filter.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.CHAT_FILTER);
         chatFilter.addMouseListener(new MouseAdapter() {
@@ -181,8 +181,8 @@ public class TaskBarFrame extends MovableComponentFrame{
         taskBarPanel.add(chatFilter);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(historyButton);
-//        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
-//        taskBarPanel.add(itemGrid);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
+        taskBarPanel.add(itemGrid);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(settingsButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
@@ -235,6 +235,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,20f,"Task Bar"));
         panel.add(labelPanel);
         panel.setPreferredSize(this.getSize());
+        panel.setBackground(AppThemeColor.FRAME);
         return panel;
     }
 }

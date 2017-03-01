@@ -3,33 +3,31 @@ package com.mercury.platform.ui.frame.impl;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.CloseMessagePanelEvent;
 import com.mercury.platform.shared.events.custom.ShowItemMeshEvent;
-import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.components.panel.mesh.ItemCell;
+import com.mercury.platform.ui.components.panel.grid.ItemCell;
+import com.mercury.platform.ui.components.panel.grid.ItemInfoPanel;
 import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.apache.commons.lang3.StringUtils;
-import org.pushingpixels.trident.Timeline;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.awt.event.MouseMotionAdapter;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Константин on 18.02.2017.
  */
 public class ItemsGridFrame extends MovableComponentFrame{
     private List<ItemCell> cells;
-    private Map<String,JButton> tabButtons;
+    private Map<String,ItemInfoPanel> tabButtons;
     private JPanel navBar;
     private JLabel prevLabel;
 
@@ -37,12 +35,13 @@ public class ItemsGridFrame extends MovableComponentFrame{
         super("MT-Mesh");
         cells = new ArrayList<>();
         tabButtons = new HashMap<>();
+        enableMouseOverBorder = false;
+        disableHideEffect();
     }
 
     @Override
     protected void initialize() {
         super.initialize();
-        disableHideEffect();
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.getRootPane().setBorder(null);
 
@@ -61,12 +60,24 @@ public class ItemsGridFrame extends MovableComponentFrame{
                 label.setBackground(AppThemeColor.TRANSPARENT);
                 ItemCell cell = new ItemCell(x+1,y+1,label);
                 cells.add(cell);
+                prevLabel = label;
                 itemsMesh.add(label,column);
             }
         }
+        JPanel rightPanel = componentsFactory.getTransparentPanel(new BorderLayout());
+        rightPanel.setBackground(AppThemeColor.TRANSPARENT);
+        rightPanel.setPreferredSize(new Dimension(16,668));
+        JPanel downPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        downPanel.setBorder(BorderFactory.createEmptyBorder(-10,0,0,0));
+        downPanel.setBackground(AppThemeColor.TRANSPARENT);
+        downPanel.setPreferredSize(new Dimension(661,16));
+        downPanel.addMouseMotionListener(new ResizeByHeightMouseMotionListener());
 
         this.add(getHeaderPanel(),BorderLayout.PAGE_START);
         this.add(itemsMesh, BorderLayout.CENTER);
+        this.add(rightPanel,BorderLayout.LINE_END);
+        this.add(downPanel,BorderLayout.PAGE_END);
+        this.setPreferredSize(this.getMaximumSize());
         this.pack();
     }
 
@@ -76,15 +87,13 @@ public class ItemsGridFrame extends MovableComponentFrame{
 
         navBar = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         JPanel emptyPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        emptyPanel.setPreferredSize(new Dimension(50,46));
+        emptyPanel.setPreferredSize(new Dimension(50,24));
 
         root.add(navBar);
         root.add(emptyPanel);
         return root;
     }
 
-//     "Gear sell, unique"; position: left 7, top 1
-//    (Shop [left:3,top:8])
     @Override
     public void initHandlers() {
         EventRouter.INSTANCE.registerHandler(ShowItemMeshEvent.class, event -> {
@@ -95,30 +104,43 @@ public class ItemsGridFrame extends MovableComponentFrame{
                 String tab = StringUtils.substringBetween(tabInfo, "\"", "\"");
                 int x = Integer.parseInt(StringUtils.substringBetween(tabInfo,"left ",","));
                 int y = Integer.parseInt(StringUtils.substringAfter(tabInfo,"top "));
-                JButton button = componentsFactory.getBorderedButton(nickname + ": " + tab);
-                button.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
-                        BorderFactory.createLineBorder(AppThemeColor.FRAME, 3)
-                ));
-                button.setBackground(AppThemeColor.FRAME);
+                ItemInfoPanel button = new ItemInfoPanel(nickname,tab);
+                button.setAlignmentY(SwingConstants.CENTER);
                 button.addMouseListener(new MouseAdapter() {
+                    private Timer timer;
                     @Override
-                    public void mousePressed(MouseEvent e) {
-                        cells.forEach(cell -> {
-                            if(cell.getX() == x && cell.getY() == y){
-//                                if(prevLabel != null){
-//                                    prevLabel.setBorder(null); //todo
-//                                }
-                                if(cell.getLabel().getBorder() != null){
-                                    cell.getLabel().setBorder(null);
-                                }else {
-                                    cell.getLabel().setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_IMPORTANT,5));
-                                }
-//                                prevLabel= cell.getLabel();
-                                repaint();
-                                pack();
+                    public void mouseEntered(MouseEvent e) {
+                        Optional<ItemCell> targetCell = cells
+                                .stream()
+                                .filter(cell -> (cell.getX() == x && cell.getY() == y))
+                                .findFirst();
+                        targetCell.ifPresent(itemCell -> {
+                            if(timer != null && timer.isRunning()){
+                                timer.stop();
                             }
+                            itemCell.getLabel().setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_DEFAULT, 2));
                         });
+                        repaint();
+                        pack();
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        Optional<ItemCell> targetCell = cells
+                                .stream()
+                                .filter(cell -> (cell.getX() == x && cell.getY() == y))
+                                .findFirst();
+                        targetCell.ifPresent(itemCell -> {
+                            timer = new Timer(1500, null);
+                            timer.addActionListener(action -> {
+                                timer.stop();
+                                itemCell.getLabel().setBorder(null);
+                                repaint();
+                            });
+                            timer.start();
+                        });
+                        repaint();
+                        pack();
                     }
                 });
                 if(navBar.getComponentCount() == 0) {
@@ -134,16 +156,18 @@ public class ItemsGridFrame extends MovableComponentFrame{
             if(message instanceof ItemMessage) {
                 String tabInfo = ((ItemMessage) message).getTabInfo();
                 String nickname = message.getWhisperNickname();
-                JButton tabButton = tabButtons.get(nickname + tabInfo);
+                ItemInfoPanel tabButton = tabButtons.get(nickname + tabInfo);
                 if(tabButton != null){
                     navBar.remove(tabButton);
                     int x = Integer.parseInt(StringUtils.substringBetween(tabInfo,"left ",","));
                     int y = Integer.parseInt(StringUtils.substringAfter(tabInfo,"top "));
-                    cells.forEach(cell -> {
-                        if(cell.getX() == x && cell.getY() == y){
-                            cell.getLabel().setBorder(null);
-                            repaint();
-                        }
+                    Optional<ItemCell> targetCell = cells
+                            .stream()
+                            .filter(cell -> (cell.getX() == x && cell.getY() == y))
+                            .findFirst();
+                    targetCell.ifPresent(itemCell -> {
+                        itemCell.getLabel().setBorder(null);
+                        repaint();
                     });
                     tabButtons.remove(nickname+tabInfo);
                     this.pack();
@@ -161,8 +185,9 @@ public class ItemsGridFrame extends MovableComponentFrame{
     protected JPanel panelWhenMove() {
         JPanel panel = componentsFactory.getTransparentPanel(new BorderLayout());
         JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,20f,"Align this grid with your stash"));
-        labelPanel.setPreferredSize(new Dimension(50,74));
+        labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,20f,"Align this grid with your stash"));
+        labelPanel.setPreferredSize(new Dimension(50,68));
+        labelPanel.setBackground(AppThemeColor.FRAME);
         panel.add(labelPanel,BorderLayout.PAGE_START);
 
         JPanel itemsMesh = componentsFactory.getTransparentPanel(new GridBagLayout());
@@ -178,16 +203,82 @@ public class ItemsGridFrame extends MovableComponentFrame{
                 JLabel label = componentsFactory.getTextLabel("");
                 label.setOpaque(true);
                 label.setBackground(AppThemeColor.TRANSPARENT);
-                label.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER));
+                label.setBorder(BorderFactory.createLineBorder(AppThemeColor.SCROLL_BAR));
                 itemsMesh.add(label,column);
             }
         }
+        itemsMesh.setBackground(AppThemeColor.FRAME_ALPHA);
         panel.add(itemsMesh,BorderLayout.CENTER);
+        setUpResizePanels(panel);
+//        panel.setSize(this.getSize());
         return panel;
+    }
+
+    private void setUpResizePanels(JPanel root){
+        JLabel rightArrow = componentsFactory.getIconLabel("app/default-mp.png",16); //todo
+        JPanel rightPanel = componentsFactory.getTransparentPanel(new BorderLayout());
+        rightPanel.setBackground(AppThemeColor.FRAME);
+        rightPanel.add(rightArrow,BorderLayout.CENTER);
+
+        rightPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                rightPanel.setBackground(AppThemeColor.TEXT_DISABLE);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                rightPanel.setBackground(AppThemeColor.FRAME);
+            }
+        });
+        rightPanel.addMouseMotionListener(new ResizeByWidthMouseMotionListener());
+
+        JLabel downArrow = componentsFactory.getIconLabel("app/expand-mp.png",16); //todo
+        JPanel downPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        downPanel.setBorder(BorderFactory.createEmptyBorder(-10,0,0,0));
+        downPanel.setBackground(AppThemeColor.FRAME);
+        downPanel.add(downArrow);
+
+        downPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                downPanel.setBackground(AppThemeColor.TEXT_DISABLE);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                downPanel.setBackground(AppThemeColor.FRAME);
+            }
+        });
+        downPanel.addMouseMotionListener(new ResizeByHeightMouseMotionListener());
+
+        root.add(rightPanel,BorderLayout.LINE_END);
+        root.add(downPanel,BorderLayout.PAGE_END);
     }
 
     @Override
     protected LayoutManager getFrameLayout() {
         return new BorderLayout();
+    }
+
+    private class ResizeByWidthMouseMotionListener extends MouseMotionAdapter {
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            sizeWasChanged = true;
+            JPanel source = (JPanel) e.getSource();
+            Point frameLocation = getLocation();
+            setSize(new Dimension(e.getLocationOnScreen().x - frameLocation.x + source.getWidth(), getHeight()));
+            configManager.saveFrameSize(ItemsGridFrame.class.getSimpleName(),getSize());
+        }
+    }
+    private class ResizeByHeightMouseMotionListener extends MouseMotionAdapter {
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            sizeWasChanged = true;
+            JPanel source = (JPanel) e.getSource();
+            Point frameLocation = getLocation();
+            setSize(new Dimension(getWidth(),e.getLocationOnScreen().y - frameLocation.y + source.getHeight()));
+            configManager.saveFrameSize(ItemsGridFrame.class.getSimpleName(),getSize());
+        }
     }
 }

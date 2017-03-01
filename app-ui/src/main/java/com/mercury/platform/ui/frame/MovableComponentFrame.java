@@ -13,7 +13,9 @@ public abstract class MovableComponentFrame extends ComponentFrame {
     protected Container mainContainer;
     private FrameConstraints prevConstraints;
     protected boolean locationWasChanged = false;
+    protected boolean sizeWasChanged = false;
     protected boolean inMoveMode = false;
+    protected boolean enableMouseOverBorder = true;
     protected MovableComponentFrame(String title) {
         super(title);
         mainContainer = this.getContentPane();
@@ -44,7 +46,7 @@ public abstract class MovableComponentFrame extends ComponentFrame {
                 JPanel panel = setUpMoveListeners(panelWhenMove());
                 this.processEResize = false;
                 this.processSEResize = false;
-                this.setBackground(AppThemeColor.FRAME);
+                this.setBackground(panel.getBackground());
                 this.setLocation(configManager.getFrameSettings(this.getClass().getSimpleName()).getFrameLocation());
                 this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
                 this.setMinimumSize(null);
@@ -62,8 +64,15 @@ public abstract class MovableComponentFrame extends ComponentFrame {
                 this.setBackground(prevConstraints.bgColor);
                 this.getRootPane().setBorder(prevConstraints.border);
                 this.setLocation(prevConstraints.location);
-                this.setMinimumSize(prevConstraints.minSize);
-                this.setMaximumSize(prevConstraints.maxSize);
+                if(sizeWasChanged){
+                    this.setPreferredSize(this.getSize());
+                    this.setMinimumSize(this.getSize());
+                    this.setMaximumSize(this.getSize());
+                    sizeWasChanged = false;
+                }else {
+                    this.setMinimumSize(prevConstraints.minSize);
+                    this.setMaximumSize(prevConstraints.maxSize);
+                }
                 inMoveMode = false;
                 this.onLock();
                 break;
@@ -82,21 +91,23 @@ public abstract class MovableComponentFrame extends ComponentFrame {
         panel.addMouseMotionListener(new DraggedFrameMotionListener());
         panel.addMouseListener(new DraggedFrameMouseListener());
 
-        panel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_MESSAGE, 1));
-                MovableComponentFrame.this.repaint();
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                if(!panel.getBounds().contains(e.getPoint())) {
-                    getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
+        if(enableMouseOverBorder) {
+            panel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_MESSAGE, 1));
+                    MovableComponentFrame.this.repaint();
                 }
-                MovableComponentFrame.this.repaint();
-            }
-        });
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    if (!panel.getBounds().contains(e.getPoint())) {
+                        getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
+                    }
+                    MovableComponentFrame.this.repaint();
+                }
+            });
+        }
         return panel;
     }
     protected class FrameConstraints {
