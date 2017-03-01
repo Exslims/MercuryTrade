@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.frame.impl;
 
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.CloseMessagePanelEvent;
 import com.mercury.platform.shared.events.custom.ShowItemMeshEvent;
@@ -36,7 +37,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
         cells = new ArrayList<>();
         tabButtons = new HashMap<>();
         enableMouseOverBorder = false;
-        disableHideEffect();
+        processHideEffect = false;
     }
 
     @Override
@@ -97,58 +98,61 @@ public class ItemsGridFrame extends MovableComponentFrame{
     @Override
     public void initHandlers() {
         EventRouter.INSTANCE.registerHandler(ShowItemMeshEvent.class, event -> {
-            String nickname = ((ShowItemMeshEvent) event).getNickname();
-            String tabInfo = ((ShowItemMeshEvent) event).getTabInfo();
+            if(configManager.isItemsGridEnable()) {
+                String nickname = ((ShowItemMeshEvent) event).getNickname();
+                String tabInfo = ((ShowItemMeshEvent) event).getTabInfo();
+                //now support only poe trade
+                if (!tabInfo.contains("[") && !tabButtons.containsKey(nickname + tabInfo)) {
+                    String tab = StringUtils.substringBetween(tabInfo, "\"", "\"");
+                    int x = Integer.parseInt(StringUtils.substringBetween(tabInfo, "left ", ","));
+                    int y = Integer.parseInt(StringUtils.substringAfter(tabInfo, "top "));
+                    ItemInfoPanel button = new ItemInfoPanel(nickname, tab);
+                    button.setAlignmentY(SwingConstants.CENTER);
+                    button.addMouseListener(new MouseAdapter() {
+                        private Timer timer;
 
-            if(!tabInfo.contains("[") && !tabButtons.containsKey(nickname + tabInfo)){
-                String tab = StringUtils.substringBetween(tabInfo, "\"", "\"");
-                int x = Integer.parseInt(StringUtils.substringBetween(tabInfo,"left ",","));
-                int y = Integer.parseInt(StringUtils.substringAfter(tabInfo,"top "));
-                ItemInfoPanel button = new ItemInfoPanel(nickname,tab);
-                button.setAlignmentY(SwingConstants.CENTER);
-                button.addMouseListener(new MouseAdapter() {
-                    private Timer timer;
-                    @Override
-                    public void mouseEntered(MouseEvent e) {
-                        Optional<ItemCell> targetCell = cells
-                                .stream()
-                                .filter(cell -> (cell.getX() == x && cell.getY() == y))
-                                .findFirst();
-                        targetCell.ifPresent(itemCell -> {
-                            if(timer != null && timer.isRunning()){
-                                timer.stop();
-                            }
-                            itemCell.getLabel().setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_DEFAULT, 2));
-                        });
-                        repaint();
-                        pack();
-                    }
-
-                    @Override
-                    public void mouseExited(MouseEvent e) {
-                        Optional<ItemCell> targetCell = cells
-                                .stream()
-                                .filter(cell -> (cell.getX() == x && cell.getY() == y))
-                                .findFirst();
-                        targetCell.ifPresent(itemCell -> {
-                            timer = new Timer(1500, null);
-                            timer.addActionListener(action -> {
-                                timer.stop();
-                                itemCell.getLabel().setBorder(null);
-                                repaint();
+                        @Override
+                        public void mouseEntered(MouseEvent e) {
+                            Optional<ItemCell> targetCell = cells
+                                    .stream()
+                                    .filter(cell -> (cell.getX() == x && cell.getY() == y))
+                                    .findFirst();
+                            targetCell.ifPresent(itemCell -> {
+                                if (timer != null && timer.isRunning()) {
+                                    timer.stop();
+                                }
+                                itemCell.getLabel().setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_DEFAULT, 2));
                             });
-                            timer.start();
-                        });
-                        repaint();
-                        pack();
+                            repaint();
+                            pack();
+                        }
+
+                        @Override
+                        public void mouseExited(MouseEvent e) {
+                            Optional<ItemCell> targetCell = cells
+                                    .stream()
+                                    .filter(cell -> (cell.getX() == x && cell.getY() == y))
+                                    .findFirst();
+                            targetCell.ifPresent(itemCell -> {
+                                timer = new Timer(1500, null);
+                                timer.addActionListener(action -> {
+                                    timer.stop();
+                                    itemCell.getLabel().setBorder(null);
+                                    repaint();
+                                });
+                                timer.start();
+                            });
+                            repaint();
+                            pack();
+                        }
+                    });
+                    if (navBar.getComponentCount() == 0) {
+                        this.setVisible(true);
                     }
-                });
-                if(navBar.getComponentCount() == 0) {
-                    this.setVisible(true);
+                    navBar.add(button);
+                    tabButtons.put(nickname + tabInfo, button);
+                    pack();
                 }
-                navBar.add(button);
-                tabButtons.put(nickname+tabInfo,button);
-                pack();
             }
         });
         EventRouter.INSTANCE.registerHandler(CloseMessagePanelEvent.class, event -> {
@@ -188,22 +192,26 @@ public class ItemsGridFrame extends MovableComponentFrame{
         topPanel.setBackground(AppThemeColor.FRAME);
         topPanel.setPreferredSize(new Dimension(50,68));
         JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        JLabel titleLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP, 20f, "Align this grid with your stash");
+        Color titleColor = configManager.isItemsGridEnable()?AppThemeColor.TEXT_NICKNAME:AppThemeColor.TEXT_DISABLE;
+        JLabel titleLabel = componentsFactory.getTextLabel(FontStyle.BOLD, titleColor, TextAlignment.LEFTOP, 20f, "Align this grid with your stash");
         labelPanel.add(titleLabel);
         topPanel.add(labelPanel, BorderLayout.CENTER);
-        JButton disableButton = componentsFactory.getBorderedButton("Disable");
+        String title = (configManager.isItemsGridEnable())?"Disable" : "Enable";
+        JButton disableButton = componentsFactory.getBorderedButton(title);
         disableButton.setPreferredSize(new Dimension(90,24));
         componentsFactory.setUpToggleCallbacks(disableButton,
                 () -> {
                     disableButton.setText("Enable");
                     titleLabel.setForeground(AppThemeColor.TEXT_DISABLE);
+                    configManager.setItemsGridEnable(false);
                     repaint();
                 },
                 () -> {
                     disableButton.setText("Disable");
                     titleLabel.setForeground(AppThemeColor.TEXT_NICKNAME);
+                    configManager.setItemsGridEnable(true);
                     repaint();
-                },true);
+                },configManager.isItemsGridEnable());
         JPanel disablePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         disablePanel.add(disableButton);
         topPanel.add(disablePanel,BorderLayout.LINE_END);

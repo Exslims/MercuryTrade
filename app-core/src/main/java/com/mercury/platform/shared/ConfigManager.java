@@ -49,6 +49,7 @@ public class ConfigManager {
 
     private boolean showPatchNotes = false;
     private boolean showOnStartUp = true;
+    private boolean itemsGridEnable = true;
 
     public ConfigManager() {
         minimumFrameSize = new HashMap<>();
@@ -78,6 +79,7 @@ public class ConfigManager {
         defaultAppSettings.put("tradeMode","DEFAULT");
         defaultAppSettings.put("limitMsgCount",3);
         defaultAppSettings.put("expandedMsgCount",0);
+        defaultAppSettings.put("itemsGridEnable",true);
 
     }
 
@@ -116,6 +118,7 @@ public class ConfigManager {
                 saveProperty("tradeMode", defaultAppSettings.get("tradeMode"));
                 saveProperty("limitMsgCount", String.valueOf(defaultAppSettings.get("limitMsgCount")));
                 saveProperty("expandedMsgCount", String.valueOf(defaultAppSettings.get("expandedMsgCount")));
+                saveProperty("itemsGridEnable", String.valueOf(defaultAppSettings.get("itemsGridEnable")));
 
             } catch (Exception e) {
                 logger.error(e);
@@ -161,6 +164,7 @@ public class ConfigManager {
             tradeMode = loadProperty("tradeMode");
             limitMsgCount = Long.valueOf(loadProperty("limitMsgCount")).intValue();
             expandedMsgCount = Long.valueOf(loadProperty("expandedMsgCount")).intValue();
+            itemsGridEnable = Boolean.valueOf(loadProperty("itemsGridEnable"));
         } catch (Exception e) {
             logger.error("Error in loadConfigFile: ",e);
         }
@@ -300,7 +304,9 @@ public class ConfigManager {
     public int getExpandedMsgCount() {
         return expandedMsgCount;
     }
-
+    public boolean isItemsGridEnable() {
+        return itemsGridEnable;
+    }
 
     public void setDecayTime(int decayTime) {
         this.decayTime = decayTime;
@@ -346,7 +352,10 @@ public class ConfigManager {
         this.expandedMsgCount = expandedMsgCount;
         saveProperty("expandedMsgCount",String.valueOf(this.expandedMsgCount));
     }
-
+    public void setItemsGridEnable(boolean itemsGridEnable) {
+        this.itemsGridEnable = itemsGridEnable;
+        saveProperty("itemsGridEnable",String.valueOf(this.itemsGridEnable));
+    }
     private List<ResponseButton> getDefaultButtons(){
         List<ResponseButton> defaultButtons = new ArrayList<>();
         defaultButtons.add(new ResponseButton(0,"1m","one minute"));

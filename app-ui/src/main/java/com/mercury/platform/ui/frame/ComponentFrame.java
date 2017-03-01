@@ -36,6 +36,7 @@ public abstract class ComponentFrame extends OverlaidFrame{
 
     protected boolean processSEResize = true;
     protected boolean processEResize = true;
+    protected boolean processHideEffect = true;
 
     protected ComponentFrame(String title) {
         super(title);
@@ -65,21 +66,25 @@ public abstract class ComponentFrame extends OverlaidFrame{
     }
 
     public void disableHideEffect(){
-        this.setOpacity(maxOpacity);
-        this.hideAnimationEnable = false;
-        if(hideEffectListener != null) {
-            this.removeMouseListener(hideEffectListener);
+        if(processHideEffect) {
+            this.setOpacity(maxOpacity);
+            this.hideAnimationEnable = false;
+            if (hideEffectListener != null) {
+                this.removeMouseListener(hideEffectListener);
+            }
         }
     }
     public void enableHideEffect(int delay, int minOpacity, int maxOpacity){
-        this.HIDE_DELAY = delay*1000;
-        this.minOpacity = minOpacity/100f;
-        this.maxOpacity = maxOpacity/100f;
-        this.setOpacity(minOpacity/100f);
-        hideEffectListener = new HideEffectListener();
-        initAnimationTimers();
-        this.addMouseListener(hideEffectListener);
-        this.hideAnimationEnable = true;
+        if(processHideEffect) {
+            this.HIDE_DELAY = delay * 1000;
+            this.minOpacity = minOpacity / 100f;
+            this.maxOpacity = maxOpacity / 100f;
+            this.setOpacity(minOpacity / 100f);
+            hideEffectListener = new HideEffectListener();
+            initAnimationTimers();
+            this.addMouseListener(hideEffectListener);
+            this.hideAnimationEnable = true;
+        }
     }
 
     private void initAnimationTimers(){

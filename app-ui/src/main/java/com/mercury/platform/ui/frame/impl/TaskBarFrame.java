@@ -27,7 +27,7 @@ public class TaskBarFrame extends MovableComponentFrame{
     private final Logger logger = LogManager.getLogger(TaskBarFrame.class.getSimpleName());
     private boolean updateReady = false;
     private Timeline collapseAnimation;
-    private static final int MAX_WIDTH = 214;
+    private static final int MAX_WIDTH = 250;
 
     public TaskBarFrame() {
         super("MT-TaskBar");
