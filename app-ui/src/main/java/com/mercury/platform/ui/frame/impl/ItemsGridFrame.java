@@ -184,11 +184,30 @@ public class ItemsGridFrame extends MovableComponentFrame{
     @Override
     protected JPanel panelWhenMove() {
         JPanel panel = componentsFactory.getTransparentPanel(new BorderLayout());
+        JPanel topPanel = componentsFactory.getTransparentPanel(new BorderLayout());
+        topPanel.setBackground(AppThemeColor.FRAME);
+        topPanel.setPreferredSize(new Dimension(50,68));
         JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,20f,"Align this grid with your stash"));
-        labelPanel.setPreferredSize(new Dimension(50,68));
-        labelPanel.setBackground(AppThemeColor.FRAME);
-        panel.add(labelPanel,BorderLayout.PAGE_START);
+        JLabel titleLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP, 20f, "Align this grid with your stash");
+        labelPanel.add(titleLabel);
+        topPanel.add(labelPanel, BorderLayout.CENTER);
+        JButton disableButton = componentsFactory.getBorderedButton("Disable");
+        disableButton.setPreferredSize(new Dimension(90,24));
+        componentsFactory.setUpToggleCallbacks(disableButton,
+                () -> {
+                    disableButton.setText("Enable");
+                    titleLabel.setForeground(AppThemeColor.TEXT_DISABLE);
+                    repaint();
+                },
+                () -> {
+                    disableButton.setText("Disable");
+                    titleLabel.setForeground(AppThemeColor.TEXT_NICKNAME);
+                    repaint();
+                },true);
+        JPanel disablePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        disablePanel.add(disableButton);
+        topPanel.add(disablePanel,BorderLayout.LINE_END);
+        panel.add(topPanel,BorderLayout.PAGE_START);
 
         JPanel itemsMesh = componentsFactory.getTransparentPanel(new GridBagLayout());
         GridBagConstraints column = new GridBagConstraints();

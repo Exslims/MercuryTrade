@@ -6,6 +6,7 @@ import com.mercury.platform.shared.events.custom.ShowTooltipEvent;
 import com.mercury.platform.ui.components.fields.style.MercuryComboBoxUI;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
+import com.mercury.platform.ui.components.panel.misc.ToggleCallback;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -119,6 +120,23 @@ public class ComponentsFactory {
                 BorderFactory.createLineBorder(AppThemeColor.BUTTON, 3)
         );
         return getButton(FontStyle.BOLD, AppThemeColor.BUTTON, compoundBorder, text, 14f);
+    }
+
+    public JButton setUpToggleCallbacks(JButton button,ToggleCallback firstState, ToggleCallback secondState, boolean initialState){
+        button.addMouseListener(new MouseAdapter() {
+            private boolean state = initialState;
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(state){
+                    firstState.onToggle();
+                    state = false;
+                }else {
+                    secondState.onToggle();
+                    state = true;
+                }
+            }
+        });
+        return button;
     }
 
     /**
