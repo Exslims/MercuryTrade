@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.components;
 
 import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.events.custom.ButtonPressedEvent;
 import com.mercury.platform.shared.events.custom.HideTooltipEvent;
 import com.mercury.platform.shared.events.custom.ShowTooltipEvent;
 import com.mercury.platform.ui.components.fields.style.MercuryComboBoxUI;
@@ -81,6 +82,14 @@ public class ComponentsFactory {
         button.setBackground(background);
         button.setForeground(AppThemeColor.TEXT_DEFAULT);
         button.setFocusPainted(false);
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    EventRouter.INSTANCE.fireEvent(new ButtonPressedEvent());
+                }
+            }
+        });
         if(isAscii(text)){
             button.setFont(getSelectedFont(fontStyle).deriveFont(fontSize));
         }else {
@@ -179,6 +188,14 @@ public class ComponentsFactory {
                 }
             });
         }
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    EventRouter.INSTANCE.fireEvent(new ButtonPressedEvent());
+                }
+            }
+        });
         button.setBorder(BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,4));
         button.setVerticalAlignment(SwingConstants.CENTER);
         BufferedImage icon = null;

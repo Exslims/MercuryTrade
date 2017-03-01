@@ -5,10 +5,7 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.MercuryEventHandler;
-import com.mercury.platform.shared.events.custom.ChatFilterMessageEvent;
-import com.mercury.platform.shared.events.custom.DndModeEvent;
-import com.mercury.platform.shared.events.custom.UpdateReadyEvent;
-import com.mercury.platform.shared.events.custom.WhisperNotificationEvent;
+import com.mercury.platform.shared.events.custom.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,6 +37,9 @@ public class SoundNotifier {
         });
         EventRouter.INSTANCE.registerHandler(DndModeEvent.class, event -> {
             this.dnd = ((DndModeEvent)event).isDnd();
+        });
+        EventRouter.INSTANCE.registerHandler(ButtonPressedEvent.class, event -> {
+            play("app/button-pressed.wav");
         });
     }
     private void play(String wavPath){
