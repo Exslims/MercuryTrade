@@ -39,9 +39,25 @@ public class SoundNotifier {
             this.dnd = ((DndModeEvent)event).isDnd();
         });
         EventRouter.INSTANCE.registerHandler(ButtonPressedEvent.class, event -> {
-            play("app/button-pressed.wav");
+            play(randomWav("app/sounds/click1/button-pressed-10.wav","app/sounds/click1/button-pressed-20.wav","app/sounds/click1/button-pressed-30.wav"));
         });
     }
+
+    private String randomWav(String s1, String s2, String s3) {
+
+        double rnd = Math.random();
+        if (rnd < 0.33) {
+            return(s1);
+        }
+        else if (rnd < 0.66) {
+            return(s2);
+        }
+        else {
+            return(s3);
+        }
+
+    }
+
     private void play(String wavPath){
         if(!dnd) {
             ClassLoader classLoader = getClass().getClassLoader();
