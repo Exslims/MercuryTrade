@@ -207,8 +207,10 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 public void mousePressed(MouseEvent e) {
                     if(SwingUtilities.isLeftMouseButton(e)) {
                         EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/invite " + whisper));
-                        if (((ItemMessage) message).getTabInfo() != null) {
-                            EventRouter.INSTANCE.fireEvent(new ShowItemMeshEvent(message.getWhisperNickname(), ((ItemMessage) message).getTabInfo()));
+                        if(message instanceof ItemMessage) {
+                            if (((ItemMessage) message).getTabInfo() != null) {
+                                EventRouter.INSTANCE.fireEvent(new ShowItemMeshEvent(message.getWhisperNickname(), ((ItemMessage) message).getTabInfo()));
+                            }
                         }
                     }
                 }

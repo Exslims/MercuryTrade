@@ -14,6 +14,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Created by Константин on 08.12.2016.
@@ -39,9 +40,14 @@ public class SoundNotifier {
             this.dnd = ((DndModeEvent)event).isDnd();
         });
         EventRouter.INSTANCE.registerHandler(ButtonPressedEvent.class, event -> {
-            play("app/button-pressed.wav");
+            String[] clicks = {
+                    "app/sounds/click1/button-pressed-10.wav",
+                    "app/sounds/click1/button-pressed-20.wav",
+                    "app/sounds/click1/button-pressed-30.wav"};
+            play(clicks[new Random().nextInt(3)]);
         });
     }
+
     private void play(String wavPath){
         if(!dnd) {
             ClassLoader classLoader = getClass().getClassLoader();
