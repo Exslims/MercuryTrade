@@ -4,9 +4,9 @@
 
 Download and Install Java: [https://java.com/download](https://java.com/download)
 
-Download MercuryTrade.jar: 
+Download MercuryTrade.jar: [Latest release](https://github.com/Exslims/MercuryTrade/releases)
 
-Feedback and suggestions: 
+Feedback and suggestions: [Link](https://github.com/Exslims/MercuryTrade/issues)
 
 ---
 <p align="center">
