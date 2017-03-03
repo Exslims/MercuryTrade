@@ -11,6 +11,7 @@ import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.grid.ItemCell;
 import com.mercury.platform.ui.components.panel.grid.ItemInfoPanel;
 import com.mercury.platform.ui.frame.MovableComponentFrame;
+import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.apache.commons.lang3.StringUtils;
 
@@ -212,8 +213,19 @@ public class ItemsGridFrame extends MovableComponentFrame{
                     configManager.setItemsGridEnable(true);
                     repaint();
                 },configManager.isItemsGridEnable());
-        JPanel disablePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_ALPHA, "");
+        hideButton.setBorder(BorderFactory.createEmptyBorder(2,0,0,2));
+        hideButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    FramesManager.INSTANCE.disableMovement(ItemsGridFrame.class.getSimpleName());
+                }
+            }
+        });
+        JPanel disablePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.RIGHT));
         disablePanel.add(disableButton);
+        disablePanel.add(hideButton);
         topPanel.add(disablePanel,BorderLayout.LINE_END);
         panel.add(topPanel,BorderLayout.PAGE_START);
 
