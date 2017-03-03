@@ -101,7 +101,7 @@ public abstract class MovableComponentFrame extends ComponentFrame {
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    if (!panel.getBounds().contains(e.getPoint())) {
+                    if (!MovableComponentFrame.this.getBounds().contains(e.getPoint())) {
                         getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
                     }
                     MovableComponentFrame.this.repaint();

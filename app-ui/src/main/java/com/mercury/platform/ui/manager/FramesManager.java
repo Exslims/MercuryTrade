@@ -49,10 +49,12 @@ public class FramesManager {
         OverlaidFrame taskBarFrame = new TaskBarFrame();
         OverlaidFrame itemsMeshFrame = new ItemsGridFrame();
         framesMap.put(ItemsGridFrame.class,itemsMeshFrame);
-
+        OverlaidFrame currencySearchFrame = new CurrencySearchFrame();
+        framesMap.put(CurrencySearchFrame.class,currencySearchFrame);
         locationCommander.addFrame((MovableComponentFrame) incMessageFrame);
         locationCommander.addFrame((MovableComponentFrame) taskBarFrame);
         locationCommander.addFrame((MovableComponentFrame) itemsMeshFrame);
+        locationCommander.addFrame((MovableComponentFrame) currencySearchFrame);
         NotesLoader notesLoader = new NotesLoader();
 
         List<Note> notesOnFirstStart = notesLoader.getNotesOnFirstStart();

@@ -66,6 +66,7 @@ public class ConfigManager {
         minimumFrameSize.put("SetUpLocationFrame",new Dimension(300,30));
         minimumFrameSize.put("ChunkMessagesPicker",new Dimension(240,30));
         minimumFrameSize.put("GamePathChooser",new Dimension(600,30));
+        minimumFrameSize.put("CurrencySearchFrame",new Dimension(400,300));
 
         defaultAppSettings = new HashMap<>();
         defaultAppSettings.put("decayTime",0);
@@ -379,6 +380,7 @@ public class ConfigManager {
         defaultFramesSettings.put("SetUpLocationFrame",new FrameSettings(new Point(400, 600),new Dimension(300,30)));
         defaultFramesSettings.put("ChunkMessagesPicker",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
         defaultFramesSettings.put("GamePathChooser",new FrameSettings(new Point(400, 600),new Dimension(520,30)));
+        defaultFramesSettings.put("CurrencySearchFrame",new FrameSettings(new Point(400, 600),new Dimension(400,300)));
         return defaultFramesSettings;
     }
     public Dimension getMinimumFrameSize(String frameName){
