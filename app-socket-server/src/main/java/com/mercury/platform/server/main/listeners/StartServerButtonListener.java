@@ -46,6 +46,7 @@ public class StartServerButtonListener extends MouseAdapter {
     public void mouseClicked(MouseEvent e) {
         try {
             byte[] bytes = Files.readAllBytes(frame.getPath());
+            frame.getStatusLabel().setText("Status: Started");
             UpdateHolder instance = UpdateHolder.getInstance();
             instance.setUpdate(bytes);
             instance.setVersion(Integer.valueOf(frame.getVersion().replace("." , "0")));

@@ -2,6 +2,7 @@ package com.mercury.platform.server.main.listeners;
 
 import com.mercury.platform.server.core.UpdaterServer;
 import com.mercury.platform.server.main.listeners.operations.OperationThread;
+import com.mercury.platform.ui.MercuryUpdaterFrame;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -12,6 +13,7 @@ import java.util.concurrent.Executors;
  * Created by Frost on 28.01.2017.
  */
 public class ShutdownServerButtonListener extends MouseAdapter {
+    private MercuryUpdaterFrame frame;
 
     private static class ServerShutdownThread extends OperationThread {
 
@@ -32,12 +34,14 @@ public class ShutdownServerButtonListener extends MouseAdapter {
 
     private ServerShutdownThread thread;
 
-    public ShutdownServerButtonListener(UpdaterServer server) {
+    public ShutdownServerButtonListener(MercuryUpdaterFrame frame,UpdaterServer server) {
         this.thread = new ServerShutdownThread(server);
+        this.frame = frame;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         Executors.newSingleThreadExecutor().submit(this.thread);
+        frame.getStatusLabel().setText("Status: Shutdown");
     }
 }
