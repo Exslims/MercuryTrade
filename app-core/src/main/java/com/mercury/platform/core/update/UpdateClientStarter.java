@@ -31,7 +31,7 @@ public class UpdateClientStarter implements Runnable{
             LOGGER.info("update received, size = {} bytes" , handler.getBytes().length);
             Files.write(Paths.get(JARS_FILE_PATH + "\\MercuryTrade.jar") , handler.getBytes() , StandardOpenOption.CREATE);
             setMercuryVersion(getIncrementedVersion(MercuryConstants.APP_VERSION));
-            ConfigManager.INSTANCE.setShowPatchNotes(true);
+//            ConfigManager.INSTANCE.setShowPatchNotes(true);
             EventRouter.INSTANCE.fireEvent(new UpdateReadyEvent());
         });
         try {
