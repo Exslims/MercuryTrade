@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.frame.impl;
 
+import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
@@ -74,7 +75,11 @@ public class UpdateReadyFrame extends OverlaidFrame {
             }else {
                 this.setLocation(tbLocation.x, tbLocation.y + 40);
             }
-            setVisible(true);
+            if (!this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
+                this.setVisible(true);
+            } else {
+                prevState = FrameStates.SHOW;
+            }
             pack();
         });
     }

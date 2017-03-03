@@ -5,10 +5,7 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.MercuryEventHandler;
-import com.mercury.platform.shared.events.custom.ChatFilterMessageEvent;
-import com.mercury.platform.shared.events.custom.DndModeEvent;
-import com.mercury.platform.shared.events.custom.UpdateReadyEvent;
-import com.mercury.platform.shared.events.custom.WhisperNotificationEvent;
+import com.mercury.platform.shared.events.custom.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,6 +14,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Created by Константин on 08.12.2016.
@@ -41,7 +39,15 @@ public class SoundNotifier {
         EventRouter.INSTANCE.registerHandler(DndModeEvent.class, event -> {
             this.dnd = ((DndModeEvent)event).isDnd();
         });
+        EventRouter.INSTANCE.registerHandler(ButtonPressedEvent.class, event -> {
+            String[] clicks = {
+                    "app/sounds/click1/button-pressed-10.wav",
+                    "app/sounds/click1/button-pressed-20.wav",
+                    "app/sounds/click1/button-pressed-30.wav"};
+            play(clicks[new Random().nextInt(3)]);
+        });
     }
+
     private void play(String wavPath){
         if(!dnd) {
             ClassLoader classLoader = getClass().getClassLoader();
