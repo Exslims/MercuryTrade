@@ -11,9 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MessageFileHandler implements HasEventHandlers {
@@ -35,28 +33,28 @@ public class MessageFileHandler implements HasEventHandlers {
         initHandlers();
     }
 
-    public void parse(){
+    public void parse() {
         List<String> stubMessages = new ArrayList<>();
         File logFile = new File(logFilePath);
         try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(logFile,"r");
+            RandomAccessFile randomAccessFile = new RandomAccessFile(logFile, "r");
             int lines = 0;
             StringBuilder builder = new StringBuilder();
             long length = logFile.length();
             length--;
             randomAccessFile.seek(length);
-            for(long seek = length; seek >= 0; --seek){
+            for (long seek = length; seek >= 0; --seek) {
                 randomAccessFile.seek(seek);
-                char c = (char)randomAccessFile.read();
+                char c = (char) randomAccessFile.read();
                 builder.append(c);
-                if(c == '\n'){
+                if (c == '\n') {
                     builder = builder.reverse();
                     String str = builder.toString();
-                    String utf8 = new String(str.getBytes("ISO-8859-1"),"UTF-8");
+                    String utf8 = new String(str.getBytes("ISO-8859-1"), "UTF-8");
                     stubMessages.add(utf8);
                     lines++;
                     builder = new StringBuilder();
-                    if (lines == 30){
+                    if (lines == 30) {
                         break;
                     }
                 }
@@ -64,20 +62,20 @@ public class MessageFileHandler implements HasEventHandlers {
         } catch (Exception e) {
             logger.error("Error in MessageFileHandler: ", e);
         }
-        List<String> filteredMessages = stubMessages.stream().filter(message -> {
-            if(message != null && !message.equals("\n")) {
-                Date msgDate = new Date(StringUtils.substring(message, 0, 20));
-                return msgDate.after(lastMessageDate);
-            }
-            return false;
+        List<String> filteredMessages = stubMessages.stream().filter(message ->
+                message != null && !message.equals("\n"))
+                .collect(Collectors.toList());
 
+        List<String> resultMessages = filteredMessages.stream().filter(message -> {
+            Date date = new Date(StringUtils.substring(message, 0, 20));
+            return date.after(lastMessageDate);
         }).collect(Collectors.toList());
-        if(filteredMessages.size() != 0) {
-            lastMessageDate = new Date(StringUtils.substring(filteredMessages.get(0), 0, 20));
-        }
-
         interceptors.forEach(interceptor -> {
-            filteredMessages.forEach(interceptor::match);
+            resultMessages.forEach(message -> {
+                if (interceptor.match(message)) {
+                    lastMessageDate = new Date(StringUtils.substring(message, 0, 20));
+                }
+            });
         });
     }
 
