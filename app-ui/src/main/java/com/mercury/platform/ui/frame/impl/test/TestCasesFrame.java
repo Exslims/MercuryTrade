@@ -30,7 +30,6 @@ public class TestCasesFrame extends TitledComponentFrame {
 
     public TestCasesFrame() {
         super("MT-TestCases");
-        prevState = FrameStates.SHOW;
         items = new ArrayList<>();
         currency = new ArrayList<>();
         nickNames = new ArrayList<>();
