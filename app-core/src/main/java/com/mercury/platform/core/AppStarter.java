@@ -33,13 +33,13 @@ public class AppStarter {
     private boolean shutdown = false;
 
     public void startApplication(){
+        ConfigManager.INSTANCE.load();
         new SoundNotifier();
         new ChatHelper();
 
         Executor executor = Executors.newSingleThreadExecutor();
         UpdateClientStarter updateClientStarter = new UpdateClientStarter();
         executor.execute(updateClientStarter);
-        ConfigManager.INSTANCE.load();
         HistoryManager.INSTANCE.load();
 
         EventRouter.INSTANCE.registerHandler(UILoadedEvent.class, event -> {

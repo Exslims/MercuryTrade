@@ -28,6 +28,7 @@ public class TaskBarFrame extends MovableComponentFrame{
     private boolean updateReady = false;
     private Timeline collapseAnimation;
     private static final int MAX_WIDTH = 250;
+    private MouseListener collapseListener;
 
     public TaskBarFrame() {
         super("MercuryTrade");
@@ -41,7 +42,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         super.initialize();
         add(getTaskBarPanel(), BorderLayout.CENTER);
         pack();
-        this.addMouseListener(new MouseAdapter() {
+        collapseListener = new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 TaskBarFrame.this.repaint();
@@ -63,9 +64,18 @@ public class TaskBarFrame extends MovableComponentFrame{
                     collapseAnimation.play();
                 }
             }
-        });
-    }
+        };
 
+        enableCollapseAnimation();
+    }
+    private void enableCollapseAnimation(){
+        this.setWidth(configManager.getFrameSettings(this.getClass().getSimpleName()).getFrameSize().width);
+        this.addMouseListener(collapseListener);
+    }
+    private void disableCollapseAnimation(){
+        this.setWidth(MAX_WIDTH);
+        this.removeMouseListener(collapseListener);
+    }
     @Override
     protected LayoutManager getFrameLayout() {
         return new BorderLayout();
@@ -76,49 +86,38 @@ public class TaskBarFrame extends MovableComponentFrame{
         taskBarPanel.setBackground(AppThemeColor.TRANSPARENT);
         taskBarPanel.setLayout(new BoxLayout(taskBarPanel,BoxLayout.X_AXIS));
 
+
         JButton visibleMode = componentsFactory.getIconButton("app/visible-always-mode.png",24,AppThemeColor.FRAME_ALPHA, TooltipConstants.VISIBLE_MODE);
-        visibleMode.addMouseListener(new MouseAdapter() {
-            private boolean dnd = false;
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
-                    if (!dnd) {
-                        visibleMode.setIcon(componentsFactory.getIcon("app/visible-dnd-mode.png", 24));
-                        dnd = true;
-                        TaskBarFrame.this.repaint();
-                        EventRouter.INSTANCE.fireEvent(new NotificationEvent("DND on"));
-                        EventRouter.INSTANCE.fireEvent(new DndModeEvent(true));
-                    } else {
-                        dnd = false;
-                        visibleMode.setIcon(componentsFactory.getIcon("app/visible-always-mode.png", 24));
-                        TaskBarFrame.this.repaint();
-                        EventRouter.INSTANCE.fireEvent(new NotificationEvent("DND off"));
-                        EventRouter.INSTANCE.fireEvent(new DndModeEvent(false));
-                    }
-                }
-            }
-        });
+        componentsFactory.setUpToggleCallbacks(visibleMode,
+                () -> {
+                    visibleMode.setIcon(componentsFactory.getIcon("app/visible-dnd-mode.png", 24));
+                    TaskBarFrame.this.repaint();
+                    EventRouter.INSTANCE.fireEvent(new NotificationEvent("DND on"));
+                    EventRouter.INSTANCE.fireEvent(new DndModeEvent(true));
+                },
+                () -> {
+                    visibleMode.setIcon(componentsFactory.getIcon("app/visible-always-mode.png", 24));
+                    TaskBarFrame.this.repaint();
+                    EventRouter.INSTANCE.fireEvent(new NotificationEvent("DND off"));
+                    EventRouter.INSTANCE.fireEvent(new DndModeEvent(false));
+                },
+                false
+                );
 
         JButton itemGrid = componentsFactory.getIconButton("app/item-grid-disable.png",24,AppThemeColor.FRAME_ALPHA, TooltipConstants.VISIBLE_MODE);
-        itemGrid.addMouseListener(new MouseAdapter() {
-            private boolean frameOpened = false;
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
-                    if (!frameOpened) {
-                        itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-enable.png", 24));
-                        frameOpened = true;
-                        TaskBarFrame.this.repaint();
-                        FramesManager.INSTANCE.enableMovementDirect("ItemsGridFrame");
-                    } else {
-                        frameOpened = false;
-                        itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-disable.png", 24));
-                        TaskBarFrame.this.repaint();
-                        FramesManager.INSTANCE.disableMovement("ItemsGridFrame");
-                    }
-                }
-            }
-        });
+        componentsFactory.setUpToggleCallbacks(itemGrid,
+                () -> {
+                    itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-enable.png", 24));
+                    TaskBarFrame.this.repaint();
+                    FramesManager.INSTANCE.enableMovementDirect("ItemsGridFrame");
+                },
+                () -> {
+                    itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-disable.png", 24));
+                    TaskBarFrame.this.repaint();
+                    FramesManager.INSTANCE.disableMovement("ItemsGridFrame");
+                },
+                 false
+                );
 
         JButton chatFilter = componentsFactory.getIconButton("app/chat-filter.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.CHAT_FILTER);
         chatFilter.addMouseListener(new MouseAdapter() {
@@ -143,7 +142,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         JButton moveButton = componentsFactory.getIconButton("app/drag_and_drop.png", 24,AppThemeColor.FRAME_ALPHA,TooltipConstants.SETUP_FRAMES_LOCATION);
         moveButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
                     FramesManager.INSTANCE.enableMovementExclude("ItemsGridFrame");
                 }
@@ -153,7 +152,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         JButton settingsButton = componentsFactory.getIconButton("app/settings.png", 26,AppThemeColor.FRAME_ALPHA,TooltipConstants.SETTINGS);
         settingsButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
                     FramesManager.INSTANCE.showFrame(SettingsFrame.class);
                 }
@@ -228,7 +227,14 @@ public class TaskBarFrame extends MovableComponentFrame{
     }
 
     @Override
+    protected void onLock() {
+        super.onLock();
+        enableCollapseAnimation();
+    }
+
+    @Override
     protected JPanel panelWhenMove() {
+        disableCollapseAnimation();
         JPanel panel = componentsFactory.getTransparentPanel();
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
         JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));

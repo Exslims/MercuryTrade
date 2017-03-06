@@ -44,7 +44,7 @@ public class MercuryServerConfig {
 
     private void initConfigByDefault() {
         this.disruptorBufferSize = 1024;
-        this.port = 5556;
+        this.port = 5557;
         this.threadsCount = Runtime.getRuntime().availableProcessors() - 1;
     }
 

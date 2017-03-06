@@ -3,6 +3,8 @@ package com.mercury.platform.ui.frame.impl;
 import com.mercury.platform.core.MercuryConstants;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.events.custom.StartUpdateEvent;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
@@ -42,9 +44,6 @@ public class NotesFrame extends TitledComponentFrame {
                 this.setVisible(false);
                 prevState = FrameStates.HIDE;
             }
-        }else {
-            ConfigManager.INSTANCE.setShowPatchNotes(false);
-            prevState = FrameStates.SHOW;
         }
     }
 
@@ -82,6 +81,20 @@ public class NotesFrame extends TitledComponentFrame {
     private JPanel getNavBar(){
         JPanel navBar = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.RIGHT));
         Dimension dimension = new Dimension(80, 26);
+
+        JButton download = componentsFactory.getButton(
+                FontStyle.BOLD,
+                AppThemeColor.FRAME,
+                BorderFactory.createLineBorder(AppThemeColor.BORDER),
+                "Close",
+                14f);
+        download.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                EventRouter.INSTANCE.fireEvent(new StartUpdateEvent());
+            }
+        });
+
         JButton close = componentsFactory.getButton(
                 FontStyle.BOLD,
                 AppThemeColor.FRAME,
@@ -133,10 +146,7 @@ public class NotesFrame extends TitledComponentFrame {
                     NotesFrame.this.setVisible(false);
                     if (type.equals(NotesType.INFO)) {
                         ConfigManager.INSTANCE.setShowOnStartUp(showOnStartUp.isSelected());
-
                         FramesManager.INSTANCE.enableMovementExclude("ItemsGridFrame");
-                    } else {
-                        ConfigManager.INSTANCE.setShowPatchNotes(false);
                     }
                     prevState = FrameStates.HIDE;
                 }

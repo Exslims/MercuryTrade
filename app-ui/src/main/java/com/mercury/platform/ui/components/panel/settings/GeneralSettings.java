@@ -2,6 +2,8 @@ package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.events.custom.CheckUpdatesEvent;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.manager.HideSettingsManager;
@@ -112,6 +114,17 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         this.add(maxSlider,constraint);
         constraint.gridy = 3;
         this.add(notifierStatusPicker,constraint);
+
+        constraint.gridx = 0;
+        constraint.gridy = 4;
+        JButton checkUpdate = componentsFactory.getBorderedButton("CheckUpdate");
+        checkUpdate.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                EventRouter.INSTANCE.fireEvent(new CheckUpdatesEvent());
+            }
+        });
+        this.add(checkUpdate,constraint);
 
     }
     @Override

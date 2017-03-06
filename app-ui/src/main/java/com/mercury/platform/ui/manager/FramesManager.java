@@ -2,8 +2,9 @@ package com.mercury.platform.ui.manager;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.ChangedTradeModeEvent;
+import com.mercury.platform.shared.events.custom.ShowPatchNotesEvent;
 import com.mercury.platform.shared.events.custom.ShutdownApplication;
 import com.mercury.platform.shared.events.custom.UILoadedEvent;
 import com.mercury.platform.shared.pojo.FrameSettings;
@@ -12,7 +13,6 @@ import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.frame.impl.test.TestCasesFrame;
 import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.frame.impl.*;
-import com.mercury.platform.ui.frame.impl.util.TradeMode;
 import com.mercury.platform.ui.frame.location.SetUpLocationCommander;
 import com.mercury.platform.ui.frame.location.SetUpLocationFrame;
 import com.mercury.platform.ui.misc.note.Note;
@@ -28,7 +28,8 @@ import java.util.List;
 /**
  * Created by Константин on 18.01.2017.
  */
-public class FramesManager {
+public class FramesManager implements HasEventHandlers{
+
     private static class FramesManagerHolder {
         static final FramesManager HOLDER_INSTANCE = new FramesManager();
     }
@@ -59,11 +60,6 @@ public class FramesManager {
 
         List<Note> notesOnFirstStart = notesLoader.getNotesOnFirstStart();
         framesMap.put(NotesFrame.class, new NotesFrame(notesOnFirstStart, NotesFrame.NotesType.INFO));
-        List<Note> patchNotes = notesLoader.getPatchNotes();
-        if(ConfigManager.INSTANCE.isShowPatchNotes() && patchNotes.size() != 0){
-            NotesFrame patchNotesFrame = new NotesFrame(patchNotes,NotesFrame.NotesType.PATCH);
-            patchNotesFrame.init();
-        }
         framesMap.put(HistoryFrame.class,new HistoryFrame());
         framesMap.put(SettingsFrame.class,new SettingsFrame());
         framesMap.put(TestCasesFrame.class,new TestCasesFrame());
@@ -92,7 +88,19 @@ public class FramesManager {
                 }
             }
         });
+        initHandlers();
         EventRouter.INSTANCE.fireEvent(new UILoadedEvent());
+    }
+    @Override
+    public void initHandlers() {
+        EventRouter.INSTANCE.registerHandler(ShowPatchNotesEvent.class, handler -> {
+            String patchNotes = ((ShowPatchNotesEvent) handler).getPatchNotes();
+            NotesLoader notesLoader = new NotesLoader();
+            List<Note> notes = notesLoader.getPatchNotes(patchNotes);
+            NotesFrame patchNotesFrame = new NotesFrame(notes,NotesFrame.NotesType.PATCH);
+            patchNotesFrame.init();
+            patchNotesFrame.showComponent();
+        });
     }
     public void showFrame(Class frameClass){
         framesMap.get(frameClass).showComponent();

@@ -18,6 +18,14 @@ import java.util.Arrays;
  */
 public class ServerHandler extends ChannelInboundHandlerAdapter {
 
+    private String test = "{\"notes\":[\n" +
+            "  {\n" +
+            "    \"title\" : \"Update 1.0.0.1\",\n" +
+            "    \"text\" : \"- Removed the \\\"Donate\\\" button, as it proved to be too immersion breaking. \\nWe would appretiate more feedback from our first users!\\n\\n (Yes, we are aware the reddit topic has been hidden from the frontpage. No two-way communication yet so far.)\",\n" +
+            "    \"image\" : \"\",\n" +
+            "    \"layout\" : \"VERTICAL\"\n" +
+            "  }\n" +
+            "]}";
     private static final Logger LOGGER = LogManager.getLogger(ServerHandler.class.getSimpleName());
     private UpdaterServerAsyncEventBus eventBus = UpdaterServerAsyncEventBus.getInstance();
     private UpdateHolder updateHolder = UpdateHolder.getInstance();
@@ -35,28 +43,29 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         if (msg instanceof Integer) {
             Integer version = (Integer) msg;
             LOGGER.info("client {} version = {}", context.channel().remoteAddress(), version);
+            context.channel().writeAndFlush(test);
 
-            if (version < updateHolder.getVersion()) {
-                byte[] update = UpdateHolder.getInstance().getUpdate();
-                context.channel().writeAndFlush(update.length);
-                int chunkSize = 800*1024;
-                int chunkStart = 0;
-                int chunkEnd = 0;
-
-                while (chunkStart < update.length) {
-                    if (chunkStart + chunkSize > update.length) {
-                        chunkSize = update.length - chunkStart;
-                    }
-
-                    chunkEnd = chunkStart + chunkSize;
-
-                    context.channel().writeAndFlush(Arrays.copyOfRange(update, chunkStart, chunkEnd));
-
-                    chunkStart += chunkSize;
-                }
-                InetSocketAddress address = (InetSocketAddress) context.channel().remoteAddress();
-                eventBus.post(new ClientUpdatedEvent(address));
-            }
+//            if (version < updateHolder.getVersion()) {
+//                byte[] update = UpdateHolder.getInstance().getUpdate();
+//                context.channel().writeAndFlush(update.length);
+//                int chunkSize = 800*1024;
+//                int chunkStart = 0;
+//                int chunkEnd = 0;
+//
+//                while (chunkStart < update.length) {
+//                    if (chunkStart + chunkSize > update.length) {
+//                        chunkSize = update.length - chunkStart;
+//                    }
+//
+//                    chunkEnd = chunkStart + chunkSize;
+//
+//                    context.channel().writeAndFlush(Arrays.copyOfRange(update, chunkStart, chunkEnd));
+//
+//                    chunkStart += chunkSize;
+//                }
+//                InetSocketAddress address = (InetSocketAddress) context.channel().remoteAddress();
+//                eventBus.post(new ClientUpdatedEvent(address));
+//            }
         }
     }
 

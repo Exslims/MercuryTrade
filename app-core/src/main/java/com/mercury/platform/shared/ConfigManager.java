@@ -50,6 +50,7 @@ public class ConfigManager {
     private boolean showPatchNotes = false;
     private boolean showOnStartUp = true;
     private boolean itemsGridEnable = true;
+    private boolean autoUpdateEnable = true;
 
     public ConfigManager() {
         minimumFrameSize = new HashMap<>();
@@ -81,6 +82,7 @@ public class ConfigManager {
         defaultAppSettings.put("limitMsgCount",3);
         defaultAppSettings.put("expandedMsgCount",0);
         defaultAppSettings.put("itemsGridEnable",true);
+        defaultAppSettings.put("autoUpdateEnable",true);
 
     }
 
@@ -120,6 +122,7 @@ public class ConfigManager {
                 saveProperty("limitMsgCount", String.valueOf(defaultAppSettings.get("limitMsgCount")));
                 saveProperty("expandedMsgCount", String.valueOf(defaultAppSettings.get("expandedMsgCount")));
                 saveProperty("itemsGridEnable", String.valueOf(defaultAppSettings.get("itemsGridEnable")));
+                saveProperty("autoUpdateEnable", String.valueOf(defaultAppSettings.get("autoUpdateEnable")));
 
             } catch (Exception e) {
                 logger.error(e);
@@ -132,7 +135,6 @@ public class ConfigManager {
         JSONParser parser = new JSONParser();
         try {
             JSONObject root = (JSONObject) parser.parse(new FileReader(CONFIG_FILE));
-
             JSONArray buttons = (JSONArray) root.get("buttons");
             cachedButtonsConfig = new ArrayList<>();
             try {
@@ -166,6 +168,7 @@ public class ConfigManager {
             limitMsgCount = Long.valueOf(loadProperty("limitMsgCount")).intValue();
             expandedMsgCount = Long.valueOf(loadProperty("expandedMsgCount")).intValue();
             itemsGridEnable = Boolean.valueOf(loadProperty("itemsGridEnable"));
+            itemsGridEnable = Boolean.valueOf(loadProperty("autoUpdateEnable"));
         } catch (Exception e) {
             logger.error("Error in loadConfigFile: ",e);
         }
@@ -307,6 +310,12 @@ public class ConfigManager {
     }
     public boolean isItemsGridEnable() {
         return itemsGridEnable;
+    }
+    public boolean isAutoUpdateEnable() {
+        return autoUpdateEnable;
+    }
+    public void setAutoUpdateEnable(boolean autoUpdateEnable) {
+        this.autoUpdateEnable = autoUpdateEnable;
     }
 
     public void setDecayTime(int decayTime) {

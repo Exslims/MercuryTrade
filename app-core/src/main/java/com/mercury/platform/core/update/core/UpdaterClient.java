@@ -23,6 +23,7 @@ public class UpdaterClient {
     private final String host;
     private final int port;
     private volatile boolean stopped;
+    EventLoopGroup group = null;
 
     public UpdaterClient(String host, String mercuryVersion, int port) {
         this.host = host;
@@ -34,7 +35,6 @@ public class UpdaterClient {
     public void start() throws InterruptedException {
         this.stopped = false;
         while (!stopped) {
-            EventLoopGroup group = null;
             try {
                 group = new NioEventLoopGroup();
                 Bootstrap bootstrap = new Bootstrap();
@@ -57,15 +57,17 @@ public class UpdaterClient {
     }
     public void shutdown() {
         this.stopped = true;
+        try {
+            if (group != null)
+                group.shutdownGracefully().sync();
+        }catch (InterruptedException e){}
     }
     public int getMercuryVersion() {
         return VersionHolder.getInstance().getVersion();
     }
-
     public void registerListener(UpdateEventHandler handler) {
         UpdaterClientEventBus.getInstance().register(handler);
     }
-
     public void removeListener(UpdateEventHandler handler) {
         UpdaterClientEventBus.getInstance().unregister(handler);
     }
