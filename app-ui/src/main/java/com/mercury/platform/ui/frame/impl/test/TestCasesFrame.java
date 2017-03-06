@@ -29,7 +29,7 @@ public class TestCasesFrame extends TitledComponentFrame {
     private String currencyTemplate = "2017/02/11 18:56:15 9973390 951 [INFO Client 8980] @From %s: Hi, I'd like to buy your %d %s for my %d %s in Breach. %s";
 
     public TestCasesFrame() {
-        super("MT-TestCases");
+        super("MercuryTrade");
         items = new ArrayList<>();
         currency = new ArrayList<>();
         nickNames = new ArrayList<>();
@@ -242,19 +242,19 @@ public class TestCasesFrame extends TitledComponentFrame {
         testPanel.add(textLabel2,titleColumn);
         titleColumn.gridy++;
 
-        JButton button3 = componentsFactory.getBorderedButton("Click");
-        button3.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new UpdateReadyEvent());
-            }
-        });
-        testPanel.add(button3,buttonColumn);
-        buttonColumn.gridy++;
-        JLabel textLabel3 = componentsFactory.getTextLabel("Test update frame");
-        testPanel.add(textLabel3,titleColumn);
-        titleColumn.gridy++;
-        testPanel.setBackground(AppThemeColor.TRANSPARENT);
+//        JButton button3 = componentsFactory.getBorderedButton("Click");
+//        button3.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+//                EventRouter.INSTANCE.fireEvent(new UpdateReadyEvent());
+//            }
+//        });
+//        testPanel.add(button3,buttonColumn);
+//        buttonColumn.gridy++;
+//        JLabel textLabel3 = componentsFactory.getTextLabel("Test update frame");
+//        testPanel.add(textLabel3,titleColumn);
+//        titleColumn.gridy++;
+//        testPanel.setBackground(AppThemeColor.TRANSPARENT);
 
 //        JButton button4 = componentsFactory.getBorderedButton("Click");
 //        button4.addMouseListener(new MouseAdapter() {

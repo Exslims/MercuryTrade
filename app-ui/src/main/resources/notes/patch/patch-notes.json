@@ -1,20 +1,8 @@
 {"notes":[
   {
-    "title" : "Chat Scanner",
-    "text" : "MercuryTrade features a real-time Chat Scanner. \nAll chat messages with matching words will be displayed in a separate window - no need to strain your eyes looking for a Trial anymore!",
-    "image" : "notes/first/8.png",
-    "layout" : "HORIZONTAL"
-  },
-  {
-    "title" : "Items grid",
-    "text" : "TODO",
+    "title" : "Update 1.0.0.1",
+    "text" : "- Removed the \"Donate\" button, as it proved to be too immersion breaking. \nWe would appretiate more feedback from our first users!\n\n (Yes, we are aware the reddit topic has been hidden from the frontpage. No two-way communication yet so far.)",
     "image" : "",
-    "layout" : "HORIZONTAL"
-  },
-  {
-    "title" : "Bug fixes",
-    "text" : "TEST TEST TEST TEST TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST",
-    "image" : "",
-    "layout" : "HORIZONTAL"
+    "layout" : "VERTICAL"
   }
 ]}

@@ -19,7 +19,7 @@ import java.awt.event.MouseEvent;
 
 public class UpdateReadyFrame extends OverlaidFrame {
     public UpdateReadyFrame() {
-        super("MT-UpdateNotification");
+        super("MercuryTrade");
     }
 
     @Override

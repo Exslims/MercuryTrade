@@ -22,12 +22,8 @@ import java.util.List;
 public class SettingsFrame extends TitledComponentFrame {
     private List<ConfigurationPanel> innerPanels;
     public SettingsFrame(){
-        super("MT-Settings");
-        setFocusable(true);
-        setFocusableWindowState(true);
-        setAlwaysOnTop(false);
+        super("MercuryTrade");
         innerPanels = new ArrayList<>();
-        processingHideEvent = false;
         processSEResize = false;
     }
 

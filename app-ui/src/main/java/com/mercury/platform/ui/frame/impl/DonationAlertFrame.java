@@ -20,7 +20,7 @@ public class DonationAlertFrame extends OverlaidFrame {
     private Timeline hideAnimation;
     private Timeline showAnimation;
     public DonationAlertFrame() {
-        super("MT-DonationsAlert");
+        super("MercuryTrade");
         this.setOpacity(0f);
         this.setBackground(AppThemeColor.TRANSPARENT);
     }

@@ -21,7 +21,7 @@ public class GamePathChooser extends TitledComponentFrame {
     private boolean readyToStart = false;
 
     public GamePathChooser() {
-        super("MT-GamePathChooser");
+        super("MercuryTrade");
         processingHideEvent = false;
         processEResize = false;
         processSEResize = false;

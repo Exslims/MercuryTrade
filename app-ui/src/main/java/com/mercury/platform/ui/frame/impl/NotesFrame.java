@@ -29,7 +29,7 @@ public class NotesFrame extends TitledComponentFrame {
 
     private JCheckBox showOnStartUp;
     public NotesFrame(List<Note> notes, NotesType type) {
-        super("MT-NotesFrame");
+        super("MercuryTrade");
         this.currentNotes = notes;
         this.type = type;
         processEResize = false;

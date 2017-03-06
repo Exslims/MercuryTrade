@@ -30,7 +30,7 @@ public class TaskBarFrame extends MovableComponentFrame{
     private static final int MAX_WIDTH = 250;
 
     public TaskBarFrame() {
-        super("MT-TaskBar");
+        super("MercuryTrade");
         processEResize = false;
         processSEResize = false;
         prevState = FrameStates.SHOW;

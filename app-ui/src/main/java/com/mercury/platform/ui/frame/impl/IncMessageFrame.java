@@ -47,7 +47,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
 
     private boolean dnd = false;
     public IncMessageFrame(){
-        super("MT-IncMessagesFrame");
+        super("MercuryTrade");
 
         processSEResize = false;
         flowDirections = FlowDirections.valueOf(configManager.getFlowDirection());
@@ -522,7 +522,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
         private boolean wasVisible;
 
         ExpandAllFrame() {
-            super("MT-ExpandAll");
+            super("MercuryTrade");
         }
         @Override
         protected void initialize() {
