@@ -20,7 +20,7 @@ import java.awt.*;
 public class TooltipFrame extends OverlaidFrame {
     private Timer tooltipTimer;
     public TooltipFrame() {
-        super("MT-Tooltips");
+        super("MercuryTrade");
         this.processingHideEvent = false;
         this.setAlwaysOnTop(true);
         this.setOpacity(ConfigManager.INSTANCE.getMaxOpacity()/100f);

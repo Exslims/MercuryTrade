@@ -30,7 +30,6 @@ public class AppStarter {
     private static final Logger logger = LogManager.getLogger(AppStarter.class.getSimpleName());
     public static FrameStates APP_STATUS = FrameStates.HIDE;
     private User32 user32 = User32.INSTANCE;
-    private volatile int delay = 100;
     private boolean shutdown = false;
 
     public void startApplication(){
@@ -38,7 +37,8 @@ public class AppStarter {
         new ChatHelper();
 
         Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(new UpdateClientStarter());
+        UpdateClientStarter updateClientStarter = new UpdateClientStarter();
+        executor.execute(updateClientStarter);
         ConfigManager.INSTANCE.load();
         HistoryManager.INSTANCE.load();
 
@@ -49,32 +49,25 @@ public class AppStarter {
                 public void run() {
                     if(shutdown){
                         timer.cancel();
+                        updateClientStarter.shutdown();
                         System.exit(0);
                     }
                     byte[] windowText = new byte[512];
                     PointerType hwnd = user32.GetForegroundWindow();
                     User32.INSTANCE.GetWindowTextA(hwnd, windowText, 512);
-                    if(!Native.toString(windowText).equals("Path of Exile")){
+                    if(!Native.toString(windowText).equals("Path of Exile") && !Native.toString(windowText).equals("MercuryTrade")){
                         if(APP_STATUS == FrameStates.SHOW) {
                             APP_STATUS = FrameStates.HIDE;
                             EventRouter.INSTANCE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.HIDE));
                         }
                     }else{
                         if(APP_STATUS == FrameStates.HIDE) {
-                            try {
-                                Thread.sleep(delay);
-                                delay = 100;
-                            } catch (InterruptedException e) {
-                            }
                             APP_STATUS = FrameStates.SHOW;
                             EventRouter.INSTANCE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.SHOW));
                         }
                     }
                 }
-            },0,50);
-        });
-        EventRouter.INSTANCE.registerHandler(AddShowDelayEvent.class,event -> {
-            delay = 300;
+            },0,500);
         });
         EventRouter.INSTANCE.registerHandler(ShutdownApplication.class, event -> {
             shutdown = true;

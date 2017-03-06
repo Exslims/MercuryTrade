@@ -25,7 +25,7 @@ public class MessageFileHandler implements HasEventHandlers {
         this.logFilePath = logFilePath;
 
         interceptors = new ArrayList<>();
-        interceptors.add(new EnteringAreaInterceptor());
+//        interceptors.add(new EnteringAreaInterceptor());
         interceptors.add(new IncTradeMessagesInterceptor());
         interceptors.add(new PlayerJoinInterceptor());
         interceptors.add(new PlayerLeftInterceptor());

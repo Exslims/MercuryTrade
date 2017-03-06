@@ -27,13 +27,12 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
     protected LayoutManager layout;
     protected OverlaidFrame(String title){
         super(title);
+        this.setType(Type.UTILITY);
         getRootPane().setOpaque(false);
         setUndecorated(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(AppThemeColor.FRAME);
-        setFocusableWindowState(false);
-        setFocusable(false);
         setAlwaysOnTop(true);
         setVisible(false);
         this.prevState = FrameStates.HIDE;

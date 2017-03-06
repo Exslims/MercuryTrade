@@ -34,7 +34,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
     private JLabel prevLabel;
 
     public ItemsGridFrame() {
-        super("MT-Mesh");
+        super("MercuryTrade");
         cells = new ArrayList<>();
         tabButtons = new HashMap<>();
     }

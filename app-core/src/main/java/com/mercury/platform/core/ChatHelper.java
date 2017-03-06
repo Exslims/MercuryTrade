@@ -96,33 +96,33 @@ public class ChatHelper implements HasEventHandlers {
     }
 
 
-    private GlobalKeyAdapter getAdapter(){
-        return new GlobalKeyAdapter() {
-            @Override
-            public void keyPressed(GlobalKeyEvent event) {
-                switch (event.getVirtualKeyCode()){
-                    case GlobalKeyEvent.VK_F2: {
-//                        EventRouter.fireEvent(new StateChangeEvent(FrameStates.SHOW));
-                    }
-                    break;
-                    case GlobalKeyEvent.VK_F3: {
-//                        EventRouter.fireEvent(new StateChangeEvent(FrameStates.UNDEFINED));
-                    }
-                    break;
-                    case GlobalKeyEvent.VK_TAB: {
-//                        if(!altPressed) {
-//                            nextTab();
-//                        }
-                    }
-                    break;
-                    case GlobalKeyEvent.VK_2:{
-                        useAllFlasks();
-                    }
-                    break;
-                }
-            }
-        };
-    }
+//    private GlobalKeyAdapter getAdapter(){
+//        return new GlobalKeyAdapter() {
+//            @Override
+//            public void keyPressed(GlobalKeyEvent event) {
+//                switch (event.getVirtualKeyCode()){
+//                    case GlobalKeyEvent.VK_F2: {
+////                        EventRouter.fireEvent(new StateChangeEvent(FrameStates.SHOW));
+//                    }
+//                    break;
+//                    case GlobalKeyEvent.VK_F3: {
+////                        EventRouter.fireEvent(new StateChangeEvent(FrameStates.UNDEFINED));
+//                    }
+//                    break;
+//                    case GlobalKeyEvent.VK_TAB: {
+////                        if(!altPressed) {
+////                            nextTab();
+////                        }
+//                    }
+//                    break;
+//                    case GlobalKeyEvent.VK_2:{
+//                        useAllFlasks();
+//                    }
+//                    break;
+//                }
+//            }
+//        };
+//    }
 
     public void setForegroundWindow(final String titleName){
             user32.EnumWindows((hWnd, arg1) -> {
@@ -141,18 +141,18 @@ public class ChatHelper implements HasEventHandlers {
             }, null);
     }
 
-    private void nextTab(){
-        robot.keyPress(KeyEvent.VK_RIGHT);
-        robot.keyRelease(KeyEvent.VK_RIGHT);
-    }
-    private void useAllFlasks(){
-        robot.keyPress(KeyEvent.VK_3);
-        robot.keyRelease(KeyEvent.VK_3);
-        robot.keyPress(KeyEvent.VK_4);
-        robot.keyRelease(KeyEvent.VK_4);
-        robot.keyPress(KeyEvent.VK_5);
-        robot.keyRelease(KeyEvent.VK_5);
-    }
+//    private void nextTab(){
+//        robot.keyPress(KeyEvent.VK_RIGHT);
+//        robot.keyRelease(KeyEvent.VK_RIGHT);
+//    }
+//    private void useAllFlasks(){
+//        robot.keyPress(KeyEvent.VK_3);
+//        robot.keyRelease(KeyEvent.VK_3);
+//        robot.keyPress(KeyEvent.VK_4);
+//        robot.keyRelease(KeyEvent.VK_4);
+//        robot.keyPress(KeyEvent.VK_5);
+//        robot.keyRelease(KeyEvent.VK_5);
+//    }
 
     @Override
     public void initHandlers() {
@@ -161,12 +161,6 @@ public class ChatHelper implements HasEventHandlers {
 
         EventRouter.INSTANCE.registerHandler(OpenChatEvent.class, event -> {
             openChat(((OpenChatEvent) event).getWhisper());
-        });
-        EventRouter.INSTANCE.registerHandler(CopyToClipboardEvent.class, event -> {
-            String content = ((CopyToClipboardEvent) event).getContent();
-            StringSelection selection = new StringSelection(content);
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboard.setContents(selection, null);
         });
         EventRouter.INSTANCE.registerHandler(SetForegroundGameEvent.class, event -> {
             setForegroundWindow("Path of Exile");

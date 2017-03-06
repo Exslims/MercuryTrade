@@ -29,7 +29,7 @@ public class TestCasesFrame extends TitledComponentFrame {
     private String currencyTemplate = "2017/02/11 18:56:15 9973390 951 [INFO Client 8980] @From %s: Hi, I'd like to buy your %d %s for my %d %s in Breach. %s";
 
     public TestCasesFrame() {
-        super("MT-TestCases");
+        super("MercuryTrade");
         items = new ArrayList<>();
         currency = new ArrayList<>();
         nickNames = new ArrayList<>();

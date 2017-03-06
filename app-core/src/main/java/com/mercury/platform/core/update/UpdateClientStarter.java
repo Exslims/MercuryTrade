@@ -24,9 +24,11 @@ public class UpdateClientStarter implements Runnable{
     private static final Logger LOGGER = LogManager.getLogger(UpdateClientStarter.class.getSimpleName());
     private static final String JARS_FILE_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\temp";
 
+    private UpdaterClient updaterClient;
+
     @Override
     public void run() {
-        UpdaterClient updaterClient = new UpdaterClient(MercuryConstants.SERVER_HOST, MercuryConstants.APP_VERSION, MercuryConstants.PORT);
+        updaterClient = new UpdaterClient(MercuryConstants.SERVER_HOST, MercuryConstants.APP_VERSION, MercuryConstants.PORT);
         updaterClient.registerListener(handler -> {
             LOGGER.info("update received, size = {} bytes" , handler.getBytes().length);
             Files.write(Paths.get(JARS_FILE_PATH + "\\MercuryTrade.jar") , handler.getBytes() , StandardOpenOption.CREATE);
@@ -50,5 +52,8 @@ public class UpdateClientStarter implements Runnable{
         Integer intVersion = Integer.valueOf(replace);
         intVersion++;
         return String.valueOf(intVersion).replace("0",".");
+    }
+    public void shutdown(){
+        updaterClient.shutdown();
     }
 }

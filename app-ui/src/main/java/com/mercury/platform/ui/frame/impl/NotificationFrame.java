@@ -19,7 +19,7 @@ public class NotificationFrame extends OverlaidFrame {
     private JLabel messageLabel;
     private Timeline showAnimation;
     public NotificationFrame() {
-        super("MT-NotificationFrame");
+        super("MercuryTrade");
         this.setOpacity(0.9f);
         this.setBackground(AppThemeColor.TRANSPARENT);
     }
