@@ -7,7 +7,6 @@ import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.manager.FramesManager;
-import com.mercury.platform.ui.manager.UpdateManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +24,6 @@ import java.awt.event.*;
  */
 public class TaskBarFrame extends MovableComponentFrame{
     private final Logger logger = LogManager.getLogger(TaskBarFrame.class.getSimpleName());
-    private boolean updateReady = false;
     private Timeline collapseAnimation;
     private static final int MAX_WIDTH = 250;
     private MouseListener collapseListener;
@@ -101,7 +99,7 @@ public class TaskBarFrame extends MovableComponentFrame{
                     EventRouter.INSTANCE.fireEvent(new NotificationEvent("DND off"));
                     EventRouter.INSTANCE.fireEvent(new DndModeEvent(false));
                 },
-                false
+                true
                 );
 
         JButton itemGrid = componentsFactory.getIconButton("app/item-grid-disable.png",24,AppThemeColor.FRAME_ALPHA, TooltipConstants.VISIBLE_MODE);
@@ -116,7 +114,7 @@ public class TaskBarFrame extends MovableComponentFrame{
                     TaskBarFrame.this.repaint();
                     FramesManager.INSTANCE.disableMovement("ItemsGridFrame");
                 },
-                 false
+                 true
                 );
 
         JButton chatFilter = componentsFactory.getIconButton("app/chat-filter.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.CHAT_FILTER);
@@ -164,11 +162,7 @@ public class TaskBarFrame extends MovableComponentFrame{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    if (updateReady) {
-                        UpdateManager.INSTANCE.doUpdate();
-                    } else {
-                        EventRouter.INSTANCE.fireEvent(new ShutdownApplication());
-                    }
+                    FramesManager.INSTANCE.exit();
                 }
             }
         });
@@ -195,9 +189,6 @@ public class TaskBarFrame extends MovableComponentFrame{
         EventRouter.INSTANCE.registerHandler(RepaintEvent.RepaintTaskBar.class, event -> {
             TaskBarFrame.this.revalidate();
             TaskBarFrame.this.repaint();
-        });
-        EventRouter.INSTANCE.registerHandler(UpdateReadyEvent.class,event -> {
-            updateReady = true;
         });
     }
     private void initCollapseAnimations(String state){

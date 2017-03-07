@@ -15,6 +15,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.home.mercury</groupId>
+            <artifactId>app-shared</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
             <groupId>lc.kra.system</groupId>
             <artifactId>system-hook</artifactId>
         </dependency>

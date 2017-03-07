@@ -376,6 +376,9 @@ public class ComponentsFactory {
         }
         return DEFAULT_FONT;
     }
+    public Font getFont(FontStyle style){
+        return getSelectedFont(style);
+    }
     public JComboBox getComboBox(String[] childs){
         JComboBox comboBox = new JComboBox(childs);
         comboBox.setBackground(AppThemeColor.HEADER);

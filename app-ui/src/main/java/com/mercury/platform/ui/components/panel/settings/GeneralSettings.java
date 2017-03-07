@@ -1,12 +1,17 @@
 package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
+import com.mercury.platform.core.update.core.holder.ApplicationHolder;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.CheckUpdatesEvent;
+import com.mercury.platform.shared.events.custom.AlertEvent;
+import com.mercury.platform.shared.events.custom.CheckOutPatchNotes;
+import com.mercury.platform.shared.events.custom.ClosingPatchNotesEvent;
+import com.mercury.platform.shared.events.custom.RequestPatchNotesEvent;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.manager.HideSettingsManager;
+import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,10 +27,23 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
     private JComboBox secondsPicker;
     private JComboBox notifierStatusPicker;
     private ComponentFrame owner;
+    private JButton checkUpdate;
+    private JCheckBox checkEnable;
     public GeneralSettings(ComponentFrame owner) {
         super();
         this.owner = owner;
         createUI();
+
+        EventRouter.INSTANCE.registerHandler(AlertEvent.class, event -> {
+            if(!ConfigManager.INSTANCE.isCheckUpdateOnStartUp()) {
+                checkUpdate.setEnabled(true);
+            }
+        });
+        EventRouter.INSTANCE.registerHandler(ClosingPatchNotesEvent.class, event -> {
+            if(!ConfigManager.INSTANCE.isCheckUpdateOnStartUp()) {
+                checkUpdate.setEnabled(true);
+            }
+        });
     }
 
     @Override
@@ -39,9 +57,27 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         constraint.gridy = 0;
         constraint.gridx = 0;
         constraint.fill = GridBagConstraints.HORIZONTAL;
-        constraint.weightx = 0.5f;
+        constraint.weightx = 0.7f;
         constraint.insets = new Insets(0,0,0,30);
 
+        JPanel updatePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
+        updatePanel.add(componentsFactory.getTextLabel("Notify when update is available"));
+        checkEnable = new JCheckBox();
+        checkEnable.setBackground(AppThemeColor.TRANSPARENT);
+        checkEnable.setSelected(ConfigManager.INSTANCE.isCheckUpdateOnStartUp());
+        updatePanel.add(checkEnable);
+
+        JPanel checkUpdatesPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        checkUpdate = componentsFactory.getBorderedButton("Check for updates");
+        checkUpdate.addActionListener(action -> {
+            checkUpdate.setEnabled(false);
+            ApplicationHolder.getInstance().setManualRequest(true);
+            EventRouter.INSTANCE.fireEvent(new RequestPatchNotesEvent());
+        });
+        if(ConfigManager.INSTANCE.isCheckUpdateOnStartUp()){
+            checkUpdate.setEnabled(false);
+        }
+        checkUpdatesPanel.add(checkUpdate);
 
         JPanel hideSettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         hideSettingsPanel.add(componentsFactory.getTextLabel("Fade time (seconds). 0 - Always show"));
@@ -98,34 +134,27 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         WhisperNotifierStatus whisperNotifier = ConfigManager.INSTANCE.getWhisperNotifier();
         notifierStatusPicker.setSelectedIndex(whisperNotifier.getCode());
 
-        this.add(hideSettingsPanel,constraint);
+        this.add(updatePanel,constraint);
         constraint.gridy = 1;
-        this.add(minOpacitySettingsPanel,constraint);
+        this.add(hideSettingsPanel,constraint);
         constraint.gridy = 2;
-        this.add(maxOpacitySettingsPanel,constraint);
+        this.add(minOpacitySettingsPanel,constraint);
         constraint.gridy = 3;
+        this.add(maxOpacitySettingsPanel,constraint);
+        constraint.gridy = 4;
         this.add(notifierPanel,constraint);
         constraint.gridx = 1;
         constraint.gridy = 0;
-        this.add(secondsPicker,constraint);
+        constraint.weightx = 0.3f;
+        this.add(checkUpdatesPanel,constraint);
         constraint.gridy = 1;
-        this.add(minSlider,constraint);
+        this.add(secondsPicker,constraint);
         constraint.gridy = 2;
-        this.add(maxSlider,constraint);
+        this.add(minSlider,constraint);
         constraint.gridy = 3;
-        this.add(notifierStatusPicker,constraint);
-
-        constraint.gridx = 0;
+        this.add(maxSlider,constraint);
         constraint.gridy = 4;
-        JButton checkUpdate = componentsFactory.getBorderedButton("CheckUpdate");
-        checkUpdate.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new CheckUpdatesEvent());
-            }
-        });
-        this.add(checkUpdate,constraint);
-
+        this.add(notifierStatusPicker,constraint);
     }
     @Override
     public void processAndSave() {
@@ -134,6 +163,7 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         int maxOpacity = maxSlider.getValue();
         HideSettingsManager.INSTANCE.apply(timeToDelay,minOpacity,maxOpacity);
         ConfigManager.INSTANCE.setWhisperNotifier(WhisperNotifierStatus.get(notifierStatusPicker.getSelectedIndex()));
+        ConfigManager.INSTANCE.setCheckUpdateOnStartUp(checkEnable.isSelected());
     }
 
     @Override

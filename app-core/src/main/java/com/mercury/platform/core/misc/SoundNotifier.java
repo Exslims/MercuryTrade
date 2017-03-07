@@ -30,7 +30,7 @@ public class SoundNotifier {
                 play("app/notification.wav");
             }
         });
-        EventRouter.INSTANCE.registerHandler(UpdateReadyEvent.class, event -> {
+        EventRouter.INSTANCE.registerHandler(UpdateInfoEvent.class, event -> {
             play("app/patch_tone.wav");
         });
         EventRouter.INSTANCE.registerHandler(ChatFilterMessageEvent.class, event -> {

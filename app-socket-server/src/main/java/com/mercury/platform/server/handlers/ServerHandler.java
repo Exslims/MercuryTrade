@@ -5,6 +5,10 @@ import com.mercury.platform.server.bus.UpdaterServerAsyncEventBus;
 import com.mercury.platform.server.bus.event.ClientActiveEvent;
 import com.mercury.platform.server.bus.event.ClientUnregisteredEvent;
 import com.mercury.platform.server.bus.event.ClientUpdatedEvent;
+import com.mercury.platform.update.AlreadyLatestUpdateMessage;
+import com.mercury.platform.update.PatchNotesDescriptor;
+import com.mercury.platform.update.UpdateDescriptor;
+import com.mercury.platform.update.UpdateType;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +22,9 @@ import java.util.Arrays;
  */
 public class ServerHandler extends ChannelInboundHandlerAdapter {
 
-    private String test = "{\"notes\":[\n" +
+    private String test = "{\n" +
+            "  \"version\":\"1.0.0.2\",\n" +
+            "  \"notes\":[\n" +
             "  {\n" +
             "    \"title\" : \"Update 1.0.0.1\",\n" +
             "    \"text\" : \"- Removed the \\\"Donate\\\" button, as it proved to be too immersion breaking. \\nWe would appretiate more feedback from our first users!\\n\\n (Yes, we are aware the reddit topic has been hidden from the frontpage. No two-way communication yet so far.)\",\n" +
@@ -32,7 +38,6 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext context) throws Exception {
-//        LOGGER.info("{} channel is active" , this.getClass().getSimpleName());
         InetSocketAddress address = (InetSocketAddress) context.channel().remoteAddress();
         eventBus.post(new ClientActiveEvent(address));
     }
@@ -40,32 +45,46 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext context, Object msg) throws Exception {
 
-        if (msg instanceof Integer) {
-            Integer version = (Integer) msg;
-            LOGGER.info("client {} version = {}", context.channel().remoteAddress(), version);
-            context.channel().writeAndFlush(test);
+        if (msg instanceof UpdateDescriptor) {
+            UpdateDescriptor descriptor = (UpdateDescriptor) msg;
+            if (descriptor.getVersion() < updateHolder.getVersion()) {
+                switch (descriptor.getType()) {
+                    case REQUEST_PATCH_NOTES:{
+                        PatchNotesDescriptor patchDescriptor = new PatchNotesDescriptor(test);
+                        context.channel().writeAndFlush(patchDescriptor);
+                        break;
+                    }
+                    case REQUEST_INFO: {
+                        UpdateDescriptor updateDescriptor = new UpdateDescriptor(UpdateType.REQUEST_INFO,updateHolder.getVersion());
+                        context.channel().writeAndFlush(updateDescriptor);
+                        break;
+                    }
+                    case REQUEST_UPDATE: {
+                        byte[] update = UpdateHolder.getInstance().getUpdate();
+                        context.channel().writeAndFlush(update.length);
+                        int chunkSize = 800 * 1024;
+                        int chunkStart = 0;
+                        int chunkEnd = 0;
 
-//            if (version < updateHolder.getVersion()) {
-//                byte[] update = UpdateHolder.getInstance().getUpdate();
-//                context.channel().writeAndFlush(update.length);
-//                int chunkSize = 800*1024;
-//                int chunkStart = 0;
-//                int chunkEnd = 0;
-//
-//                while (chunkStart < update.length) {
-//                    if (chunkStart + chunkSize > update.length) {
-//                        chunkSize = update.length - chunkStart;
-//                    }
-//
-//                    chunkEnd = chunkStart + chunkSize;
-//
-//                    context.channel().writeAndFlush(Arrays.copyOfRange(update, chunkStart, chunkEnd));
-//
-//                    chunkStart += chunkSize;
-//                }
-//                InetSocketAddress address = (InetSocketAddress) context.channel().remoteAddress();
-//                eventBus.post(new ClientUpdatedEvent(address));
-//            }
+                        while (chunkStart < update.length) {
+                            if (chunkStart + chunkSize > update.length) {
+                                chunkSize = update.length - chunkStart;
+                            }
+
+                            chunkEnd = chunkStart + chunkSize;
+
+                            context.channel().writeAndFlush(Arrays.copyOfRange(update, chunkStart, chunkEnd));
+
+                            chunkStart += chunkSize;
+                        }
+                        InetSocketAddress address = (InetSocketAddress) context.channel().remoteAddress();
+                        eventBus.post(new ClientUpdatedEvent(address));
+                        break;
+                    }
+                }
+            }else {
+                context.channel().writeAndFlush(new AlreadyLatestUpdateMessage());
+            }
         }
     }
 

@@ -60,7 +60,7 @@ public abstract class TitledComponentFrame extends ComponentFrame {
     }
     protected abstract String getFrameTitle();
 
-    protected void setFrameTitle(String title) {
+    public void setFrameTitle(String title) {
         frameTitleLabel.setText(title);
     }
     protected void removeHideButton() {

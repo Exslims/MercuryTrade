@@ -7,11 +7,9 @@ import com.mercury.platform.core.utils.path.GamePathSearcher;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.HistoryManager;
+import com.mercury.platform.shared.UpdateManager;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.AddShowDelayEvent;
-import com.mercury.platform.shared.events.custom.ChangeFrameVisibleEvent;
-import com.mercury.platform.shared.events.custom.ShutdownApplication;
-import com.mercury.platform.shared.events.custom.UILoadedEvent;
+import com.mercury.platform.shared.events.custom.*;
 import com.sun.jna.Native;
 import com.sun.jna.PointerType;
 import org.apache.logging.log4j.LogManager;
@@ -31,6 +29,7 @@ public class AppStarter {
     public static FrameStates APP_STATUS = FrameStates.HIDE;
     private User32 user32 = User32.INSTANCE;
     private boolean shutdown = false;
+    private boolean updating = false;
 
     public void startApplication(){
         ConfigManager.INSTANCE.load();
@@ -50,6 +49,9 @@ public class AppStarter {
                     if(shutdown){
                         timer.cancel();
                         updateClientStarter.shutdown();
+                        if(updating){
+                            UpdateManager.INSTANCE.doUpdate();
+                        }
                         System.exit(0);
                     }
                     byte[] windowText = new byte[512];
@@ -71,6 +73,10 @@ public class AppStarter {
         });
         EventRouter.INSTANCE.registerHandler(ShutdownApplication.class, event -> {
             shutdown = true;
+        });
+        EventRouter.INSTANCE.registerHandler(ShutDownForUpdateEvent.class, event -> {
+            shutdown = true;
+            updating = true;
         });
     }
 }

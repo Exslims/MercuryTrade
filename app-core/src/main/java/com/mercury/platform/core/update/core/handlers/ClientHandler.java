@@ -3,12 +3,12 @@ package com.mercury.platform.core.update.core.handlers;
 import com.google.common.primitives.Bytes;
 import com.mercury.platform.core.update.bus.UpdaterClientEventBus;
 import com.mercury.platform.core.update.bus.event.UpdateReceivedEvent;
-import com.mercury.platform.core.update.core.holder.VersionHolder;
+import com.mercury.platform.core.update.core.holder.ApplicationHolder;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.CheckUpdatesEvent;
-import com.mercury.platform.shared.events.custom.ShowPatchNotesEvent;
-import com.mercury.platform.shared.events.custom.StartUpdateEvent;
+import com.mercury.platform.shared.events.custom.*;
+import com.mercury.platform.update.UpdateDescriptor;
+import com.mercury.platform.update.UpdateType;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.apache.logging.log4j.LogManager;
@@ -24,51 +24,65 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
 
     private volatile byte[] chunks;
     private volatile int length;
+    private volatile int percentDelta;
+    private ResponseDispatcher responseDispatcher;
 
     private ChannelHandlerContext context;
     public ClientHandler() {
         chunks = new byte[0];
-        EventRouter.INSTANCE.registerHandler(CheckUpdatesEvent.class, handler -> {
-            checkUpdate();
-        });
-        EventRouter.INSTANCE.registerHandler(StartUpdateEvent.class, handler -> {
-            getLatestUpdate();
-        });
+        responseDispatcher = new ResponseDispatcher();
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object object) throws Exception {
-        if (object instanceof String) {
-            EventRouter.INSTANCE.fireEvent(new ShowPatchNotesEvent((String)object));
-        }
+        responseDispatcher.process(object);
         if (object instanceof Integer) {
             this.length = (int) object;
+            this.percentDelta = getPercentOf(this.length,800 * 1024);
         }
         if (object instanceof byte[]) {
             byte[] bytes = (byte[]) object;
             chunks = Bytes.concat(chunks,bytes);
+            EventRouter.INSTANCE.fireEvent(new ChunkLoadedEvent(percentDelta));
             if (chunks.length == length) {
                 UpdateReceivedEvent event = new UpdateReceivedEvent(chunks);
                 UpdaterClientEventBus.getInstance().post(event);
             }
         }
     }
+    private int getPercentOf(int length, int value){
+        return (value * 100)/length;
+    }
 
 
     @Override
     public void channelActive(ChannelHandlerContext context) throws Exception {
         this.context = context;
+        if(context != null){
+            if(ConfigManager.INSTANCE.isCheckUpdateOnStartUp()) {
+                LOGGER.info("Requesting update info from server");
+                Integer version = ApplicationHolder.getInstance().getVersion();
+                context.channel().writeAndFlush(new UpdateDescriptor(UpdateType.REQUEST_INFO, version));
+            }
+            EventRouter.INSTANCE.registerHandler(CheckOutPatchNotes.class, handler -> {
+                checkOutPatchNotes();
+            });
+            EventRouter.INSTANCE.registerHandler(StartUpdateEvent.class, handler -> {
+                getLatestUpdate();
+            });
+        }
     }
-    private void checkUpdate(){
-        LOGGER.debug("Sending version message to server");
-        Integer version = VersionHolder.getInstance().getVersion();
+    private void checkOutPatchNotes(){
+        LOGGER.debug("Requesting patch notes message from server");
+        Integer version = ApplicationHolder.getInstance().getVersion();
         if(context != null) {
-            context.channel().writeAndFlush(version);
+            context.channel().writeAndFlush(new UpdateDescriptor(UpdateType.REQUEST_PATCH_NOTES,version));
         }
     }
     private void getLatestUpdate(){
-        LOGGER.debug("Sending update message to server");
-        context.channel().writeAndFlush("UPDATE ME");
+        LOGGER.debug("Requesting update message from server");
+        Integer version = ApplicationHolder.getInstance().getVersion();
+        context.channel().writeAndFlush(new UpdateDescriptor(UpdateType.REQUEST_UPDATE, version));
     }
 
 
@@ -81,5 +95,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
     public void exceptionCaught(ChannelHandlerContext context, Throwable cause) throws Exception {
         LOGGER.error(Arrays.toString(cause.getStackTrace()));
     }
+
+
 
 }

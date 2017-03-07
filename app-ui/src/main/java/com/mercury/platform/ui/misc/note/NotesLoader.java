@@ -21,8 +21,22 @@ public class NotesLoader {
     public List<Note> getNotesOnFirstStart(){
         return getNotes("notes/first/first-start.json");
     }
-    public List<Note> getPatchNotes(String source){
+    public List<Note> getPatchNotesFromString(String source){
         return getNotesFromString(source);
+    }
+    public List<Note> getPatchNotes(){
+        return getNotes("notes/patch/patch-notes.json");
+    }
+    public String getVersionFrom(String source) {
+        String version = "";
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject root = (JSONObject) parser.parse(source);
+            version = (String)root.get("version");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return version;
     }
     private List<Note> getNotes(String filePath) {
         List<Note> notes = new ArrayList<>();

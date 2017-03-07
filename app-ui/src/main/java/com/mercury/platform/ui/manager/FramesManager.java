@@ -5,9 +5,11 @@ import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.ShowPatchNotesEvent;
+import com.mercury.platform.shared.events.custom.ShutDownForUpdateEvent;
 import com.mercury.platform.shared.events.custom.ShutdownApplication;
 import com.mercury.platform.shared.events.custom.UILoadedEvent;
 import com.mercury.platform.shared.pojo.FrameSettings;
+import com.mercury.platform.ui.frame.AlertFrame;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.frame.impl.test.TestCasesFrame;
@@ -50,26 +52,30 @@ public class FramesManager implements HasEventHandlers{
         OverlaidFrame taskBarFrame = new TaskBarFrame();
         OverlaidFrame itemsMeshFrame = new ItemsGridFrame();
         framesMap.put(ItemsGridFrame.class,itemsMeshFrame);
-//        OverlaidFrame currencySearchFrame = new CurrencySearchFrame();
-//        framesMap.put(CurrencySearchFrame.class,currencySearchFrame);
         locationCommander.addFrame((MovableComponentFrame) incMessageFrame);
         locationCommander.addFrame((MovableComponentFrame) taskBarFrame);
         locationCommander.addFrame((MovableComponentFrame) itemsMeshFrame);
-//        locationCommander.addFrame((MovableComponentFrame) currencySearchFrame);
         NotesLoader notesLoader = new NotesLoader();
 
         List<Note> notesOnFirstStart = notesLoader.getNotesOnFirstStart();
         framesMap.put(NotesFrame.class, new NotesFrame(notesOnFirstStart, NotesFrame.NotesType.INFO));
+
         framesMap.put(HistoryFrame.class,new HistoryFrame());
         framesMap.put(SettingsFrame.class,new SettingsFrame());
         framesMap.put(TestCasesFrame.class,new TestCasesFrame());
         framesMap.put(TooltipFrame.class,new TooltipFrame());
         framesMap.put(NotificationFrame.class,new NotificationFrame());
         framesMap.put(DonationAlertFrame.class,new DonationAlertFrame());
+        List<Note> patchNotes = notesLoader.getPatchNotes();
+        if(ConfigManager.INSTANCE.isShowPatchNotes() && patchNotes.size() != 0){
+            NotesFrame patchNotesFrame = new NotesFrame(patchNotes,NotesFrame.NotesType.PATCH);
+            patchNotesFrame.init();
+        }
         framesMap.put(ChatScannerFrame.class,new ChatScannerFrame());
         framesMap.put(UpdateReadyFrame.class,new UpdateReadyFrame());
         framesMap.put(TaskBarFrame.class,taskBarFrame);
         framesMap.put(SetUpLocationFrame.class,new SetUpLocationFrame());
+        framesMap.put(AlertFrame.class,new AlertFrame());
 
         framesMap.forEach((k,v)->{
             v.init();
@@ -96,10 +102,23 @@ public class FramesManager implements HasEventHandlers{
         EventRouter.INSTANCE.registerHandler(ShowPatchNotesEvent.class, handler -> {
             String patchNotes = ((ShowPatchNotesEvent) handler).getPatchNotes();
             NotesLoader notesLoader = new NotesLoader();
-            List<Note> notes = notesLoader.getPatchNotes(patchNotes);
+            List<Note> notes = notesLoader.getPatchNotesFromString(patchNotes);
             NotesFrame patchNotesFrame = new NotesFrame(notes,NotesFrame.NotesType.PATCH);
             patchNotesFrame.init();
+            patchNotesFrame.setFrameTitle("MercuryTrade v" + notesLoader.getVersionFrom(patchNotes));
             patchNotesFrame.showComponent();
+        });
+    }
+    public void exit() {
+        framesMap.forEach((k,v) -> {
+            v.setVisible(false);
+            EventRouter.INSTANCE.fireEvent(new ShutdownApplication());
+        });
+    }
+    public void exitForUpdate() {
+        framesMap.forEach((k,v) -> {
+            v.setVisible(false);
+            EventRouter.INSTANCE.fireEvent(new ShutDownForUpdateEvent());
         });
     }
     public void showFrame(Class frameClass){
@@ -147,7 +166,7 @@ public class FramesManager implements HasEventHandlers{
         PopupMenu trayMenu = new PopupMenu();
         MenuItem item = new MenuItem("Exit");
         item.addActionListener(e -> {
-            EventRouter.INSTANCE.fireEvent(new ShutdownApplication());
+            exit();
         });
         trayMenu.add(item);
 
