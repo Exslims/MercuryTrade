@@ -392,14 +392,14 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             JButton button = componentsFactory.getBorderedButton(buttonConfig.getTitle());
             button.addActionListener(e -> {
                 EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("@" + whisper + " " + buttonConfig.getResponseText()));
-                if(buttonConfig.isKick()){
-                    try{
-                        Thread.sleep(100);
-                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/kick " + whisper));
-                    }catch (InterruptedException ex){
-
-                    }
-                }
+//                if(buttonConfig.isKick()){
+//                    try{
+//                        Thread.sleep(100);
+//                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/kick " + whisper));
+//                    }catch (InterruptedException ex){
+//
+//                    }
+//                }
                 if(buttonConfig.isClose()){
                     try{
                         Thread.sleep(100);

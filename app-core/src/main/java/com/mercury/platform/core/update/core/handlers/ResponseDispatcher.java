@@ -23,8 +23,9 @@ public class ResponseDispatcher {
             EventRouter.INSTANCE.fireEvent(new UpdateInfoEvent(nextVersion));
         }
         if(object instanceof AlreadyLatestUpdateMessage){
-            String message = ((AlreadyLatestUpdateMessage) object).getMessage();
             if(ApplicationHolder.getInstance().isManualRequest()) {
+                ApplicationHolder.getInstance().setManualRequest(false);
+                String message = ((AlreadyLatestUpdateMessage) object).getMessage();
                 EventRouter.INSTANCE.fireEvent(new AlertEvent(message));
             }
         }

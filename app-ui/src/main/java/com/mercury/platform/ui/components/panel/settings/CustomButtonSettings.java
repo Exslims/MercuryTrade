@@ -75,8 +75,8 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
         JLabel valueLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,"Response text");
         valueLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JLabel kickLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,"Kick");
-        kickLabel.setHorizontalAlignment(SwingConstants.CENTER);
+//        JLabel kickLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,"Kick");
+//        kickLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         JLabel closeLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,"Close");
         closeLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -85,8 +85,8 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
         titleColumn.gridy++;
         this.add(valueLabel,valueColumn);
         valueColumn.gridy++;
-        this.add(kickLabel,kickColumn);
-        kickColumn.gridy++;
+//        this.add(kickLabel,kickColumn);
+//        kickColumn.gridy++;
         this.add(closeLabel,closeColumn);
         closeColumn.gridy++;
         this.add(componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,""),utilColumn);
@@ -142,7 +142,7 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
         kickCheckBox.setBackground(AppThemeColor.TRANSPARENT);
         kickCheckBox.setSelected(kick);
         kickWrapper.add(kickCheckBox);
-        this.add(kickWrapper,kC);
+//        this.add(kickWrapper,kC);
         kC.gridy++;
 
         JPanel closeWrapper = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));

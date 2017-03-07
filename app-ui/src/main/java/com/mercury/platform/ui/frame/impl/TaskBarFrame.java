@@ -18,14 +18,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-/**
- * Exslims
- * 07.12.2016
- */
 public class TaskBarFrame extends MovableComponentFrame{
     private final Logger logger = LogManager.getLogger(TaskBarFrame.class.getSimpleName());
     private Timeline collapseAnimation;
-    private static final int MAX_WIDTH = 250;
+    private static final int MAX_WIDTH = 178;
     private MouseListener collapseListener;
 
     public TaskBarFrame() {
@@ -171,12 +167,12 @@ public class TaskBarFrame extends MovableComponentFrame{
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(visibleMode);
         taskBarPanel.add(Box.createRigidArea(new Dimension(2, 4)));
-        taskBarPanel.add(chatFilter);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
+//        taskBarPanel.add(chatFilter);
+//        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(historyButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
-        taskBarPanel.add(itemGrid);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
+//        taskBarPanel.add(itemGrid);
+//        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(settingsButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(exitButton);

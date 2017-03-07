@@ -22,12 +22,12 @@ import java.util.Arrays;
  */
 public class ServerHandler extends ChannelInboundHandlerAdapter {
 
-    private String test = "{\n" +
+    private String json = "{\n" +
             "  \"version\":\"1.0.0.2\",\n" +
             "  \"notes\":[\n" +
             "  {\n" +
-            "    \"title\" : \"Update 1.0.0.1\",\n" +
-            "    \"text\" : \"- Removed the \\\"Donate\\\" button, as it proved to be too immersion breaking. \\nWe would appretiate more feedback from our first users!\\n\\n (Yes, we are aware the reddit topic has been hidden from the frontpage. No two-way communication yet so far.)\",\n" +
+            "    \"title\" : \"Update\",\n" +
+            "    \"text\" : \"- Reworked MercuryTrade's Update system. Now you can check for updates manually (\\\"Check for updates\\\" in Settings). Added a checkbox \\\"Updates Available notification\\\". See Settings. \\n- When there is an update available for download you'll receive its Patch Notes first. You can dismiss the update if you want. \\n- Added an option so that a notification will close itself after a response. \\n- Added support for multiple monitor setups. \\n- Fixed an issue with notification buttons not responding for inputs for some players. \\n- Mostly back-end changes.\",\n" +
             "    \"image\" : \"\",\n" +
             "    \"layout\" : \"VERTICAL\"\n" +
             "  }\n" +
@@ -50,7 +50,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             if (descriptor.getVersion() < updateHolder.getVersion()) {
                 switch (descriptor.getType()) {
                     case REQUEST_PATCH_NOTES:{
-                        PatchNotesDescriptor patchDescriptor = new PatchNotesDescriptor(test);
+                        PatchNotesDescriptor patchDescriptor = new PatchNotesDescriptor(json);
                         context.channel().writeAndFlush(patchDescriptor);
                         break;
                     }

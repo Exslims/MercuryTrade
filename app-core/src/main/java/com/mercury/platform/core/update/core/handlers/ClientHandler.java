@@ -73,16 +73,18 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
         }
     }
     private void checkOutPatchNotes(){
-        LOGGER.debug("Requesting patch notes message from server");
         Integer version = ApplicationHolder.getInstance().getVersion();
         if(context != null) {
+            LOGGER.debug("Requesting patch notes message from server");
             context.channel().writeAndFlush(new UpdateDescriptor(UpdateType.REQUEST_PATCH_NOTES,version));
         }
     }
     private void getLatestUpdate(){
-        LOGGER.debug("Requesting update message from server");
-        Integer version = ApplicationHolder.getInstance().getVersion();
-        context.channel().writeAndFlush(new UpdateDescriptor(UpdateType.REQUEST_UPDATE, version));
+        if(context != null) {
+            LOGGER.debug("Requesting update message from server");
+            Integer version = ApplicationHolder.getInstance().getVersion();
+            context.channel().writeAndFlush(new UpdateDescriptor(UpdateType.REQUEST_UPDATE, version));
+        }
     }
 
 

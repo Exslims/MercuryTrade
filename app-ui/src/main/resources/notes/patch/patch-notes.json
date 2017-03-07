@@ -2,8 +2,8 @@
   "version":"1.0.0.2",
   "notes":[
   {
-    "title" : "Test",
-    "text" : "123123",
+    "title" : "Update",
+    "text" : "- Reworked MercuryTrade's Update system. Now you can check for updates manually (\"Check for updates\" in Settings). Added a checkbox \"Updates Available notification\". See Settings. \n- When there is an update available for download you'll receive its Patch Notes first. You can dismiss the update if you want. \n- Added an option so that a notification will close itself after a response. \n- Added support for multiple monitor setups. \n- Fixed an issue with notification buttons not responding for inputs for some players. \n- Mostly back-end changes.",
     "image" : "",
     "layout" : "VERTICAL"
   }

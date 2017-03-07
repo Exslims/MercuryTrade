@@ -35,14 +35,10 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         createUI();
 
         EventRouter.INSTANCE.registerHandler(AlertEvent.class, event -> {
-            if(!ConfigManager.INSTANCE.isCheckUpdateOnStartUp()) {
-                checkUpdate.setEnabled(true);
-            }
+            checkUpdate.setEnabled(true);
         });
         EventRouter.INSTANCE.registerHandler(ClosingPatchNotesEvent.class, event -> {
-            if(!ConfigManager.INSTANCE.isCheckUpdateOnStartUp()) {
-                checkUpdate.setEnabled(true);
-            }
+            checkUpdate.setEnabled(true);
         });
     }
 
@@ -61,7 +57,7 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         constraint.insets = new Insets(0,0,0,30);
 
         JPanel updatePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        updatePanel.add(componentsFactory.getTextLabel("Notify when update is available"));
+        updatePanel.add(componentsFactory.getTextLabel("\"Updates Available\" notification"));
         checkEnable = new JCheckBox();
         checkEnable.setBackground(AppThemeColor.TRANSPARENT);
         checkEnable.setSelected(ConfigManager.INSTANCE.isCheckUpdateOnStartUp());
