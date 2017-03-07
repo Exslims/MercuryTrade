@@ -85,6 +85,29 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             }else {
                 context.channel().writeAndFlush(new AlreadyLatestUpdateMessage());
             }
+        }else if(msg instanceof Integer){
+            Integer version = (Integer)msg;
+            if(version < updateHolder.getVersion()) {
+                byte[] update = UpdateHolder.getInstance().getUpdate();
+                context.channel().writeAndFlush(update.length);
+                int chunkSize = 800 * 1024;
+                int chunkStart = 0;
+                int chunkEnd = 0;
+
+                while (chunkStart < update.length) {
+                    if (chunkStart + chunkSize > update.length) {
+                        chunkSize = update.length - chunkStart;
+                    }
+
+                    chunkEnd = chunkStart + chunkSize;
+
+                    context.channel().writeAndFlush(Arrays.copyOfRange(update, chunkStart, chunkEnd));
+
+                    chunkStart += chunkSize;
+                }
+                InetSocketAddress address = (InetSocketAddress) context.channel().remoteAddress();
+                eventBus.post(new ClientUpdatedEvent(address));
+            }
         }
     }
 

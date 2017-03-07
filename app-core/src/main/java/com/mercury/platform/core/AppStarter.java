@@ -29,6 +29,7 @@ public class AppStarter {
     public static FrameStates APP_STATUS = FrameStates.HIDE;
     private User32 user32 = User32.INSTANCE;
     private boolean shutdown = false;
+    private volatile int delay = 100;
     private boolean updating = false;
 
     public void startApplication(){
@@ -57,19 +58,27 @@ public class AppStarter {
                     byte[] windowText = new byte[512];
                     PointerType hwnd = user32.GetForegroundWindow();
                     User32.INSTANCE.GetWindowTextA(hwnd, windowText, 512);
-                    if(!Native.toString(windowText).equals("Path of Exile") && !Native.toString(windowText).equals("MercuryTrade")){
+                    if(!Native.toString(windowText).equals("Path of Exile")){
                         if(APP_STATUS == FrameStates.SHOW) {
                             APP_STATUS = FrameStates.HIDE;
                             EventRouter.INSTANCE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.HIDE));
                         }
                     }else{
                         if(APP_STATUS == FrameStates.HIDE) {
+                            try {
+                                Thread.sleep(delay);
+                                delay = 100;
+                            } catch (InterruptedException e) {
+                            }
                             APP_STATUS = FrameStates.SHOW;
                             EventRouter.INSTANCE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.SHOW));
                         }
                     }
                 }
-            },0,500);
+            },0,50);
+        });
+        EventRouter.INSTANCE.registerHandler(AddShowDelayEvent.class,event -> {
+            delay = 300;
         });
         EventRouter.INSTANCE.registerHandler(ShutdownApplication.class, event -> {
             shutdown = true;

@@ -74,9 +74,6 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
             ApplicationHolder.getInstance().setManualRequest(true);
             EventRouter.INSTANCE.fireEvent(new RequestPatchNotesEvent());
         });
-        if(ConfigManager.INSTANCE.isCheckUpdateOnStartUp()){
-            checkUpdate.setEnabled(false);
-        }
         checkUpdatesPanel.add(checkUpdate);
 
         JPanel hideSettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));

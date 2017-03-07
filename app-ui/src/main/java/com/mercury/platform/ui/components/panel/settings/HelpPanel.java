@@ -34,7 +34,7 @@ public class HelpPanel extends JPanel implements HasUI {
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)){
                     FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
-                    FramesManager.INSTANCE.showFrame(NotesFrame.class);
+                    FramesManager.INSTANCE.preShowFrame(NotesFrame.class);
                 }
             }
         });
@@ -44,7 +44,7 @@ public class HelpPanel extends JPanel implements HasUI {
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)){
                     FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
-                    FramesManager.INSTANCE.showFrame(TestCasesFrame.class);
+                    FramesManager.INSTANCE.preShowFrame(TestCasesFrame.class);
                 }
             }
         });

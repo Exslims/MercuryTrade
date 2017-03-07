@@ -21,8 +21,6 @@ public class TooltipFrame extends OverlaidFrame {
     private Timer tooltipTimer;
     public TooltipFrame() {
         super("MercuryTrade");
-        this.processingHideEvent = false;
-        this.setAlwaysOnTop(true);
         this.setOpacity(ConfigManager.INSTANCE.getMaxOpacity()/100f);
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),

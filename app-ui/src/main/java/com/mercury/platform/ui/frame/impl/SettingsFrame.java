@@ -11,6 +11,8 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
@@ -23,7 +25,11 @@ public class SettingsFrame extends TitledComponentFrame {
     private List<ConfigurationPanel> innerPanels;
     public SettingsFrame(){
         super("MercuryTrade");
+        setFocusable(true);
+        setFocusableWindowState(true);
+        setAlwaysOnTop(false);
         innerPanels = new ArrayList<>();
+        processingHideEvent = false;
         processSEResize = false;
     }
 
@@ -58,26 +64,18 @@ public class SettingsFrame extends TitledComponentFrame {
         panel.setBackground(AppThemeColor.HEADER);
 
         JButton save = componentsFactory.getBorderedButton("Save");
-        save.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
-                    innerPanels.forEach(ConfigurationPanel::processAndSave);
-                    hideComponent();
-                }
-            }
+        save.addActionListener(e -> {
+            innerPanels.forEach(ConfigurationPanel::processAndSave);
+            hideComponent();
         });
         JButton close = componentsFactory.getBorderedButton("Close");
-        close.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
-                    innerPanels.forEach(ConfigurationPanel::restore);
-                    pack();
-                    hideComponent();
-                }
-            }
+        close.addActionListener(e -> {
+            innerPanels.forEach(ConfigurationPanel::restore);
+            pack();
+            hideComponent();
         });
+        save.setPreferredSize(new Dimension(80, 26));
+        close.setPreferredSize(new Dimension(80, 26));
         panel.add(save);
         panel.add(close);
         return panel;

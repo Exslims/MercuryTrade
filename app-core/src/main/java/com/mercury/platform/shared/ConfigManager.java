@@ -139,7 +139,15 @@ public class ConfigManager {
             cachedButtonsConfig = new ArrayList<>();
             try {
                 for (JSONObject next : (Iterable<JSONObject>) buttons) {
-                    cachedButtonsConfig.add(new ResponseButton((long) next.get("id"), (String) next.get("title"), (String) next.get("value")));
+                    Object object = next.get("isKick");
+                    boolean isKick = false;
+                    Object object1 = next.get("isKick");
+                    boolean isClose = false;
+                    if(object != null){
+                        isKick = Boolean.valueOf((String)object);
+                        isClose = Boolean.valueOf((String)object1);
+                    }
+                    cachedButtonsConfig.add(new ResponseButton((long) next.get("id"), (String) next.get("title"), (String) next.get("value"),isKick,isClose));
                 }
             }catch (NullPointerException e){
                 saveButtonsConfig(getDefaultButtons());
@@ -270,6 +278,8 @@ public class ConfigManager {
             buttonConfig.put("id",button.getId());
             buttonConfig.put("title",button.getTitle());
             buttonConfig.put("value",button.getResponseText());
+            buttonConfig.put("isKick",String.valueOf(button.isKick()));
+            buttonConfig.put("isClose",String.valueOf(button.isClose()));
             list.add(buttonConfig);
         });
         saveProperty("buttons", list);
@@ -369,10 +379,10 @@ public class ConfigManager {
     }
     private List<ResponseButton> getDefaultButtons(){
         List<ResponseButton> defaultButtons = new ArrayList<>();
-        defaultButtons.add(new ResponseButton(0,"1m","one minute"));
-        defaultButtons.add(new ResponseButton(1,"thx","thanks"));
-        defaultButtons.add(new ResponseButton(2,"no thx", "no thanks"));
-        defaultButtons.add(new ResponseButton(3,"sold", "sold"));
+        defaultButtons.add(new ResponseButton(0,"1m","one minute",false,false));
+        defaultButtons.add(new ResponseButton(1,"thx","thanks",true,false));
+        defaultButtons.add(new ResponseButton(2,"no thx", "no thanks",false,false));
+        defaultButtons.add(new ResponseButton(3,"sold", "sold",false,false));
         return defaultButtons;
     }
     public Map<String,FrameSettings> getDefaultFramesSettings(){

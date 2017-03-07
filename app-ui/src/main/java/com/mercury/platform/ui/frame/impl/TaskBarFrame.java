@@ -147,7 +147,7 @@ public class TaskBarFrame extends MovableComponentFrame{
             }
         });
 
-        JButton settingsButton = componentsFactory.getIconButton("app/settings.png", 26,AppThemeColor.FRAME_ALPHA,TooltipConstants.SETTINGS);
+        JButton settingsButton = componentsFactory.getIconButton("app/settings.png", 26,AppThemeColor.FRAME_ALPHA,"");
         settingsButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

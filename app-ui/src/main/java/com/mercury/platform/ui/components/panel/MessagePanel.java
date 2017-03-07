@@ -202,51 +202,28 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         interactionPanel.add(getTimePanel());
         if(!style.equals(MessagePanelStyle.HISTORY)) {
             JButton inviteButton = componentsFactory.getIconButton("app/invite.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.INVITE);
-            inviteButton.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if(SwingUtilities.isLeftMouseButton(e)) {
-                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/invite " + whisper));
-                        if(message instanceof ItemMessage) {
-                            if (((ItemMessage) message).getTabInfo() != null) {
-                                EventRouter.INSTANCE.fireEvent(new ShowItemMeshEvent(message.getWhisperNickname(), ((ItemMessage) message).getTabInfo()));
-                            }
-                        }
+            inviteButton.addActionListener(e -> {
+                EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/invite " + whisper));
+                if(message instanceof ItemMessage) {
+                    if (((ItemMessage) message).getTabInfo() != null) {
+                        EventRouter.INSTANCE.fireEvent(new ShowItemMeshEvent(message.getWhisperNickname(), ((ItemMessage) message).getTabInfo()));
                     }
                 }
             });
             JButton kickButton = componentsFactory.getIconButton("app/kick.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.KICK);
-            kickButton.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if(SwingUtilities.isLeftMouseButton(e)) {
-                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/kick " + whisper));
-                    }
-                }
-            });
+            kickButton.addActionListener(e ->
+                    EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/kick " + whisper)));
             tradeButton = componentsFactory.getIconButton("app/trade.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
-            tradeButton.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if(SwingUtilities.isLeftMouseButton(e)) {
-                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/tradewith " + whisper));
-                    }
-                }
-            });
+            tradeButton.addActionListener(e ->
+                    EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/tradewith " + whisper)));
             interactionPanel.add(inviteButton);
             interactionPanel.add(kickButton);
             interactionPanel.add(tradeButton);
         }
         JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
         openChatButton.setToolTipText("Open chat");
-        openChatButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
-                    EventRouter.INSTANCE.fireEvent(new OpenChatEvent(whisper));
-                }
-            }
-        });
+        openChatButton.addActionListener(e ->
+                EventRouter.INSTANCE.fireEvent(new OpenChatEvent(whisper)));
 
         interactionPanel.add(openChatButton);
         JButton hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.HIDE_PANEL);
@@ -413,15 +390,26 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         Collections.sort(buttonsConfig);
         buttonsConfig.forEach((buttonConfig)->{
             JButton button = componentsFactory.getBorderedButton(buttonConfig.getTitle());
-            button.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if(SwingUtilities.isLeftMouseButton(e)) {
-                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("@" + whisper + " " + buttonConfig.getResponseText()));
+            button.addActionListener(e -> {
+                EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("@" + whisper + " " + buttonConfig.getResponseText()));
+                if(buttonConfig.isKick()){
+                    try{
+                        Thread.sleep(100);
+                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/kick " + whisper));
+                    }catch (InterruptedException ex){
+
+                    }
+                }
+                if(buttonConfig.isClose()){
+                    try{
+                        Thread.sleep(100);
+                        EventRouter.INSTANCE.fireEvent(new CloseMessagePanelEvent(MessagePanel.this, message));
+                    }catch (InterruptedException ex){
+
                     }
                 }
             });
-            panel.add(button,0);
+            panel.add(button);
         });
     }
 }
