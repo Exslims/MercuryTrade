@@ -223,9 +223,6 @@ public abstract class ComponentFrame extends OverlaidFrame{
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            if(getLocationOnScreen().x < 0){
-                setLocation(0, getLocationOnScreen().y);
-            }
             if(getLocationOnScreen().y < 0){
                 setLocation(getLocationOnScreen().x, 0);
             }

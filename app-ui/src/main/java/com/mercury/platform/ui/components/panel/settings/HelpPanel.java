@@ -31,7 +31,7 @@ public class HelpPanel extends JPanel implements HasUI {
         JButton openTutorial = componentsFactory.getBorderedButton("Open tutorial");
         openTutorial.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)){
                     FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
                     FramesManager.INSTANCE.showFrame(NotesFrame.class);
@@ -41,7 +41,7 @@ public class HelpPanel extends JPanel implements HasUI {
         JButton openTests = componentsFactory.getBorderedButton("Open tests");
         openTests.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)){
                     FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
                     FramesManager.INSTANCE.showFrame(TestCasesFrame.class);
