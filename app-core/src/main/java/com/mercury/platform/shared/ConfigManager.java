@@ -141,7 +141,7 @@ public class ConfigManager {
                 for (JSONObject next : (Iterable<JSONObject>) buttons) {
                     Object object = next.get("isKick");
                     boolean isKick = false;
-                    Object object1 = next.get("isKick");
+                    Object object1 = next.get("isClose");
                     boolean isClose = false;
                     if(object != null){
                         isKick = Boolean.valueOf((String)object);

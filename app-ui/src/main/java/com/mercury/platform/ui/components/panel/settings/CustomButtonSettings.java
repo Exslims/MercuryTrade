@@ -148,7 +148,7 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
         JPanel closeWrapper = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         JCheckBox closeCheckBox = new JCheckBox();
         closeCheckBox.setBackground(AppThemeColor.TRANSPARENT);
-        closeCheckBox.setSelected(kick);
+        closeCheckBox.setSelected(close);
         closeWrapper.add(closeCheckBox);
         this.add(closeWrapper,cC);
         cC.gridy++;
