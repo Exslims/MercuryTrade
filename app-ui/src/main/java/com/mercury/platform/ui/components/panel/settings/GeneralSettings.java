@@ -8,6 +8,7 @@ import com.mercury.platform.shared.events.custom.AlertEvent;
 import com.mercury.platform.shared.events.custom.CheckOutPatchNotes;
 import com.mercury.platform.shared.events.custom.ClosingPatchNotesEvent;
 import com.mercury.platform.shared.events.custom.RequestPatchNotesEvent;
+import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.manager.HideSettingsManager;
@@ -44,20 +45,25 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
 
     @Override
     protected LayoutManager getPanelLayout() {
-        return new GridBagLayout();
+        return new BorderLayout();
     }
 
     @Override
     public void createUI() {
+        this.add(getSettingsPanel(),BorderLayout.PAGE_START);
+    }
+    private JPanel getSettingsPanel() {
+        JPanel root = componentsFactory.getTransparentPanel(new GridBagLayout());
+
         GridBagConstraints constraint = new GridBagConstraints();
         constraint.gridy = 0;
         constraint.gridx = 0;
         constraint.fill = GridBagConstraints.HORIZONTAL;
         constraint.weightx = 0.7f;
-        constraint.insets = new Insets(0,0,0,30);
+        constraint.insets = new Insets(0,0,0,5);
 
         JPanel updatePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        updatePanel.add(componentsFactory.getTextLabel("\"Updates Available\" notification"));
+        updatePanel.add(componentsFactory.getTextLabel("Notify me when an update is available", FontStyle.REGULAR));
         checkEnable = new JCheckBox();
         checkEnable.setBackground(AppThemeColor.TRANSPARENT);
         checkEnable.setSelected(ConfigManager.INSTANCE.isCheckUpdateOnStartUp());
@@ -73,17 +79,17 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         checkUpdatesPanel.add(checkUpdate);
 
         JPanel hideSettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        hideSettingsPanel.add(componentsFactory.getTextLabel("Fade time (seconds). 0 - Always show"));
+        hideSettingsPanel.add(componentsFactory.getTextLabel("Fade time (seconds). 0 - Always show", FontStyle.REGULAR));
 
         secondsPicker = componentsFactory.getComboBox(new String[]{"0","1","2","3","4","5"});
         int decayTime = ConfigManager.INSTANCE.getDecayTime();
         secondsPicker.setSelectedIndex(decayTime);
 
         JPanel minOpacitySettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        minOpacitySettingsPanel.add(componentsFactory.getTextLabel("Min opacity: "));
+        minOpacitySettingsPanel.add(componentsFactory.getTextLabel("Min opacity: ", FontStyle.REGULAR));
 
         JPanel minValuePanel = componentsFactory.getTransparentPanel(new FlowLayout());
-        JLabel minValueField = componentsFactory.getTextLabel(ConfigManager.INSTANCE.getMinOpacity() + "%"); //todo
+        JLabel minValueField = componentsFactory.getTextLabel(ConfigManager.INSTANCE.getMinOpacity() + "%", FontStyle.REGULAR); //todo
         minValuePanel.add(minValueField);
         minValuePanel.setPreferredSize(new Dimension(35,30));
         minOpacitySettingsPanel.add(minValuePanel);
@@ -99,10 +105,10 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         });
 
         JPanel maxOpacitySettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        maxOpacitySettingsPanel.add(componentsFactory.getTextLabel("Max opacity: "));
+        maxOpacitySettingsPanel.add(componentsFactory.getTextLabel("Max opacity: ", FontStyle.REGULAR));
 
         JPanel maxValuePanel = componentsFactory.getTransparentPanel(new FlowLayout());
-        JLabel maxValueField = componentsFactory.getTextLabel(ConfigManager.INSTANCE.getMaxOpacity() + "%"); //todo
+        JLabel maxValueField = componentsFactory.getTextLabel(ConfigManager.INSTANCE.getMaxOpacity() + "%", FontStyle.REGULAR); //todo
         maxValuePanel.add(maxValueField);
         maxValuePanel.setPreferredSize(new Dimension(35,30));
         maxOpacitySettingsPanel.add(maxValuePanel);
@@ -122,32 +128,33 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         });
 
         JPanel notifierPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        notifierPanel.add(componentsFactory.getTextLabel("Notification sound alerts: "));
+        notifierPanel.add(componentsFactory.getTextLabel("Notification sound alerts: ", FontStyle.REGULAR));
         notifierStatusPicker = componentsFactory.getComboBox(new String[]{"Always play a sound", "Only when tabbed out","Never"});
         WhisperNotifierStatus whisperNotifier = ConfigManager.INSTANCE.getWhisperNotifier();
         notifierStatusPicker.setSelectedIndex(whisperNotifier.getCode());
 
-        this.add(updatePanel,constraint);
+        root.add(updatePanel,constraint);
         constraint.gridy = 1;
-        this.add(hideSettingsPanel,constraint);
+        root.add(hideSettingsPanel,constraint);
         constraint.gridy = 2;
-        this.add(minOpacitySettingsPanel,constraint);
+        root.add(minOpacitySettingsPanel,constraint);
         constraint.gridy = 3;
-        this.add(maxOpacitySettingsPanel,constraint);
+        root.add(maxOpacitySettingsPanel,constraint);
         constraint.gridy = 4;
-        this.add(notifierPanel,constraint);
+        root.add(notifierPanel,constraint);
         constraint.gridx = 1;
         constraint.gridy = 0;
         constraint.weightx = 0.3f;
-        this.add(checkUpdatesPanel,constraint);
+        root.add(checkUpdatesPanel,constraint);
         constraint.gridy = 1;
-        this.add(secondsPicker,constraint);
+        root.add(secondsPicker,constraint);
         constraint.gridy = 2;
-        this.add(minSlider,constraint);
+        root.add(minSlider,constraint);
         constraint.gridy = 3;
-        this.add(maxSlider,constraint);
+        root.add(maxSlider,constraint);
         constraint.gridy = 4;
-        this.add(notifierStatusPicker,constraint);
+        root.add(notifierStatusPicker,constraint);
+        return root;
     }
     @Override
     public void processAndSave() {

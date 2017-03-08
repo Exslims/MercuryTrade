@@ -79,9 +79,9 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         this.whisperPanel = getWhisperPanel();
         whisperPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 0, 1, 0, AppThemeColor.MSG_HEADER_BORDER),
-                BorderFactory.createEmptyBorder(-7, 0, -8, 0)));
+                BorderFactory.createEmptyBorder(-6, 0, -6, 0)));
         if(style.equals(MessagePanelStyle.DOWNWARDS_SMALL) ||
-                style.equals(MessagePanelStyle.HISTORY)) {
+                style.equals(MessagePanelStyle.HISTORY) || style.equals(MessagePanelStyle.SP_MODE)) {
             this.add(whisperPanel,BorderLayout.PAGE_START);
             this.add(messagePanel,BorderLayout.CENTER);
             this.add(customButtonsPanel,BorderLayout.PAGE_END);
@@ -105,6 +105,10 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 messagePanel.setVisible(true);
                 customButtonsPanel.setVisible(false);
                 break;
+            }
+            case SP_MODE:{
+                messagePanel.setVisible(true);
+                customButtonsPanel.setVisible(true);
             }
         }
         this.repaint();
@@ -178,7 +182,6 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     }
     private JPanel getWhisperPanel(){
         JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBorder(BorderFactory.createEmptyBorder(-5,0,-5,0));
         topPanel.setBackground(AppThemeColor.MSG_HEADER);
 
         whisperLabel = componentsFactory.getTextLabel(FontStyle.BOLD,cachedWhisperColor, TextAlignment.LEFTOP,15f,whisper + ":");
@@ -191,13 +194,17 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             nickNamePanel.add(whisperLabel,BorderLayout.CENTER);
         }else {
             JPanel buttonWrapper = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+            buttonWrapper.setBorder(BorderFactory.createEmptyBorder(1,0,0,0));
             buttonWrapper.add(getExpandButton());
-            nickNamePanel.add(buttonWrapper,BorderLayout.LINE_START);
+            if(!style.equals(MessagePanelStyle.SP_MODE)) {
+                nickNamePanel.add(buttonWrapper, BorderLayout.LINE_START);
+            }
             nickNamePanel.add(whisperLabel,BorderLayout.CENTER);
         }
         topPanel.add(nickNamePanel,BorderLayout.CENTER);
 
         JPanel interactionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        interactionPanel.setBorder(BorderFactory.createEmptyBorder(1,0,1,0));
         interactionPanel.setBackground(AppThemeColor.TRANSPARENT);
         interactionPanel.add(getTimePanel());
         if(!style.equals(MessagePanelStyle.HISTORY)) {
@@ -211,16 +218,34 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 }
             });
             JButton kickButton = componentsFactory.getIconButton("app/kick.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.KICK);
-            kickButton.addActionListener(e ->
-                    EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/kick " + whisper)));
+            kickButton.addActionListener(e -> {
+                EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/kick " + whisper));
+                if(ConfigManager.INSTANCE.isDismissAfterKick()){
+                    try{
+                        Thread.sleep(50);
+                        EventRouter.INSTANCE.fireEvent(new CloseMessagePanelEvent(MessagePanel.this, message));
+                    }catch (InterruptedException ex){
+
+                    }
+                }
+            });
             tradeButton = componentsFactory.getIconButton("app/trade.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
             tradeButton.addActionListener(e ->
                     EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/tradewith " + whisper)));
             interactionPanel.add(inviteButton);
             interactionPanel.add(kickButton);
             interactionPanel.add(tradeButton);
+        }else {
+            JButton reloadButton = componentsFactory.getIconButton("app/reload-history.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
+            reloadButton.setToolTipText("Reload");
+            reloadButton.addActionListener(e -> {
+                setStyle(MessagePanelStyle.SP_MODE);
+                owner.pack();
+                owner.repaint();
+            });
+            interactionPanel.add(reloadButton);
         }
-        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
+        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
         openChatButton.setToolTipText("Open chat");
         openChatButton.addActionListener(e ->
                 EventRouter.INSTANCE.fireEvent(new OpenChatEvent(whisper)));
@@ -235,7 +260,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 }
             }
         });
-        if(!style.equals(MessagePanelStyle.HISTORY)) {
+        if(!style.equals(MessagePanelStyle.HISTORY) && !style.equals(MessagePanelStyle.SP_MODE)) {
             interactionPanel.add(hideButton);
         }
 
@@ -392,17 +417,9 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             JButton button = componentsFactory.getBorderedButton(buttonConfig.getTitle());
             button.addActionListener(e -> {
                 EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("@" + whisper + " " + buttonConfig.getResponseText()));
-//                if(buttonConfig.isKick()){
-//                    try{
-//                        Thread.sleep(100);
-//                        EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/kick " + whisper));
-//                    }catch (InterruptedException ex){
-//
-//                    }
-//                }
                 if(buttonConfig.isClose()){
                     try{
-                        Thread.sleep(100);
+                        Thread.sleep(50);
                         EventRouter.INSTANCE.fireEvent(new CloseMessagePanelEvent(MessagePanel.this, message));
                     }catch (InterruptedException ex){
 

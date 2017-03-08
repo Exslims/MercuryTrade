@@ -21,7 +21,7 @@ import java.awt.event.*;
 public class TaskBarFrame extends MovableComponentFrame{
     private final Logger logger = LogManager.getLogger(TaskBarFrame.class.getSimpleName());
     private Timeline collapseAnimation;
-    private static final int MAX_WIDTH = 178;
+    private static final int MAX_WIDTH = 250;
     private MouseListener collapseListener;
 
     public TaskBarFrame() {
@@ -113,6 +113,11 @@ public class TaskBarFrame extends MovableComponentFrame{
                  true
                 );
 
+        JButton toHideOut = componentsFactory.getIconButton("app/hideout.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.HIDEOUT);
+        toHideOut.addActionListener(action -> {
+            EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/hideout"));
+        });
+
         JButton chatFilter = componentsFactory.getIconButton("app/chat-filter.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.CHAT_FILTER);
         chatFilter.addMouseListener(new MouseAdapter() {
             @Override
@@ -136,7 +141,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         JButton moveButton = componentsFactory.getIconButton("app/drag_and_drop.png", 24,AppThemeColor.FRAME_ALPHA,TooltipConstants.SETUP_FRAMES_LOCATION);
         moveButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
                     FramesManager.INSTANCE.enableMovementExclude("ItemsGridFrame");
                 }
@@ -162,8 +167,9 @@ public class TaskBarFrame extends MovableComponentFrame{
                 }
             }
         });
-
         taskBarPanel.add(moveButton);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
+        taskBarPanel.add(toHideOut);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(visibleMode);
         taskBarPanel.add(Box.createRigidArea(new Dimension(2, 4)));
@@ -171,8 +177,8 @@ public class TaskBarFrame extends MovableComponentFrame{
 //        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(historyButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
-//        taskBarPanel.add(itemGrid);
-//        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
+        taskBarPanel.add(itemGrid);
+        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(settingsButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(exitButton);

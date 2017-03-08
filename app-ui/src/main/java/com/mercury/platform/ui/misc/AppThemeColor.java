@@ -23,6 +23,7 @@ public class AppThemeColor {
     public static final Color HEADER = new Color(55,65,64);
     public static final Color ITEM_HL = new Color(55,65,64,200);
     public static final Color SLIDE_BG = new Color(45, 55, 54);
+    public static final Color SETTINGS_BG = new Color(41, 52, 51);
     public static final Color MSG_HEADER = new Color(52, 62, 61);
     public static final Color MSG_HEADER_BORDER = new Color(62, 73, 72);
 }

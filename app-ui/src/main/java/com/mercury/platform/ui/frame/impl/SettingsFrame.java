@@ -50,7 +50,7 @@ public class SettingsFrame extends TitledComponentFrame {
         innerPanels.add(cbSettings);
 
         tabbedPane.addTab("General",generalSettings);
-        tabbedPane.addTab("Response buttons",cbSettings);
+        tabbedPane.addTab("Notification panel",cbSettings);
         tabbedPane.addTab("Help",new HelpPanel());
         tabbedPane.addTab("Support",new SupportPanel());
         tabbedPane.addTab("About",new AboutPanel());

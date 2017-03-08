@@ -52,16 +52,19 @@ public class HistoryManager {
                 logger.error("Error during loading history file: ", e);
             }
         }else {
-            try {
-                FileWriter fileWriter = new FileWriter(HISTORY_FILE);
-                JSONObject root = new JSONObject();
-                root.put("messages", new JSONArray());
-                fileWriter.write(root.toJSONString());
-                fileWriter.flush();
-                fileWriter.close();
-            } catch (IOException e) {
-                logger.error("Error during creating history file: ", e);
-            }
+            createEmptyFile();
+        }
+    }
+    private void createEmptyFile(){
+        try {
+            FileWriter fileWriter = new FileWriter(HISTORY_FILE);
+            JSONObject root = new JSONObject();
+            root.put("messages", new JSONArray());
+            fileWriter.write(root.toJSONString());
+            fileWriter.flush();
+            fileWriter.close();
+        } catch (IOException e) {
+            logger.error("Error during creating history file: ", e);
         }
     }
     public void add(Message message){
@@ -69,7 +72,7 @@ public class HistoryManager {
         try {
             JSONObject root = (JSONObject)parser.parse(new FileReader(HISTORY_FILE));
             JSONArray msgsArray = (JSONArray) root.get("messages");
-            msgsArray.add(0,message.getSourceString());
+            msgsArray.add(message.getSourceString());
             root.replace("messages",msgsArray);
             FileWriter fileWriter = new FileWriter(HISTORY_FILE);
             fileWriter.write(root.toJSONString());
@@ -78,6 +81,23 @@ public class HistoryManager {
 
         } catch (Exception e) {
             logger.error("Error during adding message to history file: ", e);
+        }
+    }
+    public void clear(){
+        curIndex = 0;
+        messages = new String[0];
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject root = (JSONObject)parser.parse(new FileReader(HISTORY_FILE));
+            JSONArray msgsArray = (JSONArray) root.get("messages");
+            msgsArray.clear();
+            root.replace("messages",msgsArray);
+            FileWriter fileWriter = new FileWriter(HISTORY_FILE);
+            fileWriter.write(root.toJSONString());
+            fileWriter.flush();
+            fileWriter.close();
+        } catch (Exception e) {
+            logger.error("Error during creating history file: ", e);
         }
     }
     public String[] fetchNext(int messagesCount){

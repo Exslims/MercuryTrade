@@ -51,6 +51,7 @@ public class ConfigManager {
     private boolean showOnStartUp = true;
     private boolean itemsGridEnable = true;
     private boolean checkUpdateOnStartUp = true;
+    private boolean dismissAfterKick = true;
 
     public ConfigManager() {
         minimumFrameSize = new HashMap<>();
@@ -83,6 +84,7 @@ public class ConfigManager {
         defaultAppSettings.put("expandedMsgCount",0);
         defaultAppSettings.put("itemsGridEnable",true);
         defaultAppSettings.put("checkUpdateOnStartUp",true);
+        defaultAppSettings.put("dismissAfterKick",false);
 
     }
 
@@ -123,6 +125,7 @@ public class ConfigManager {
                 saveProperty("expandedMsgCount", String.valueOf(defaultAppSettings.get("expandedMsgCount")));
                 saveProperty("itemsGridEnable", String.valueOf(defaultAppSettings.get("itemsGridEnable")));
                 saveProperty("checkUpdateOnStartUp", String.valueOf(defaultAppSettings.get("checkUpdateOnStartUp")));
+                saveProperty("dismissAfterKick", String.valueOf(defaultAppSettings.get("dismissAfterKick")));
 
             } catch (Exception e) {
                 logger.error(e);
@@ -177,6 +180,7 @@ public class ConfigManager {
             expandedMsgCount = Long.valueOf(loadProperty("expandedMsgCount")).intValue();
             itemsGridEnable = Boolean.valueOf(loadProperty("itemsGridEnable"));
             checkUpdateOnStartUp = Boolean.valueOf(loadProperty("checkUpdateOnStartUp"));
+            dismissAfterKick = Boolean.valueOf(loadProperty("dismissAfterKick"));
         } catch (Exception e) {
             logger.error("Error in loadConfigFile: ",e);
         }
@@ -327,6 +331,15 @@ public class ConfigManager {
     public void setCheckUpdateOnStartUp(boolean checkUpdateOnStartUp) {
         this.checkUpdateOnStartUp = checkUpdateOnStartUp;
         saveProperty("checkUpdateOnStartUp", String.valueOf(this.checkUpdateOnStartUp));
+    }
+
+    public boolean isDismissAfterKick() {
+        return dismissAfterKick;
+    }
+
+    public void setDismissAfterKick(boolean dismissAfterKick) {
+        this.dismissAfterKick = dismissAfterKick;
+        saveProperty("dismissAfterKick", String.valueOf(this.dismissAfterKick));
     }
 
     public void setDecayTime(int decayTime) {

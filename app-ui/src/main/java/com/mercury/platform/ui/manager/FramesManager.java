@@ -50,11 +50,11 @@ public class FramesManager implements HasEventHandlers{
         OverlaidFrame incMessageFrame = new IncMessageFrame();
         framesMap.put(IncMessageFrame.class,incMessageFrame);
         OverlaidFrame taskBarFrame = new TaskBarFrame();
-//        OverlaidFrame itemsMeshFrame = new ItemsGridFrame();
-//        framesMap.put(ItemsGridFrame.class,itemsMeshFrame);
+        OverlaidFrame itemsMeshFrame = new ItemsGridFrame();
+        framesMap.put(ItemsGridFrame.class,itemsMeshFrame);
         locationCommander.addFrame((MovableComponentFrame) incMessageFrame);
         locationCommander.addFrame((MovableComponentFrame) taskBarFrame);
-//        locationCommander.addFrame((MovableComponentFrame) itemsMeshFrame);
+        locationCommander.addFrame((MovableComponentFrame) itemsMeshFrame);
         NotesLoader notesLoader = new NotesLoader();
 
         List<Note> notesOnFirstStart = notesLoader.getNotesOnFirstStart();
