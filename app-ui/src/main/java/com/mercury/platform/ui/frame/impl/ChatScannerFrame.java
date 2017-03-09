@@ -38,7 +38,7 @@ public class ChatScannerFrame extends TitledComponentFrame {
 
     private JList<String> list;
     public ChatScannerFrame() {
-        super("MT-ChatFilter");
+        super("MercuryTrade");
         FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
         this.setPreferredSize(frameSettings.getFrameSize());
     }
@@ -165,12 +165,7 @@ public class ChatScannerFrame extends TitledComponentFrame {
         private MessageInterceptor interceptor;
 
         protected ChunkMessagesPicker() {
-            super("MT-ChatFilter-picker");
-            this.setFocusableWindowState(true);
-            this.setFocusable(true);
-            this.setAlwaysOnTop(false);
-            this.processingHideEvent = false;
-
+            super("MercuryTrade");
             FrameSettings settings = ConfigManager.INSTANCE.getDefaultFramesSettings().get(ChatScannerFrame.class.getSimpleName());
             this.setMinimumSize(settings.getFrameSize());
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

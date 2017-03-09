@@ -12,7 +12,7 @@ import java.awt.event.MouseEvent;
 
 public class SetUpLocationFrame extends ComponentFrame {
     public SetUpLocationFrame() {
-        super("MT-SetUpLocationFrame");
+        super("MercuryTrade");
         this.setVisible(false);
         processEResize = false;
         processSEResize = false;
@@ -36,7 +36,7 @@ public class SetUpLocationFrame extends ComponentFrame {
         root.add(componentsFactory.getSimpleTextAre("              Panels UNLOCKED \nMove them and click Lock when done."),BorderLayout.CENTER);
 
         JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton restoreDefault = componentsFactory.getBorderedButton("Restore default");
+        JButton restoreDefault = componentsFactory.getBorderedButton("Restore defaults");
         restoreDefault.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER),
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 3)

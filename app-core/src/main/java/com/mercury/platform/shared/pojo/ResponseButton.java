@@ -5,13 +5,17 @@ package com.mercury.platform.shared.pojo;
  */
 public class ResponseButton implements Comparable<ResponseButton>{
     private long id;
+    private boolean kick;
+    private boolean close;
     private String title;
     private String responseText;
 
-    public ResponseButton(long id,String title, String responseText) {
+    public ResponseButton(long id,String title, String responseText, boolean kick, boolean close) {
         this.id = id;
         this.title = title;
         this.responseText = responseText;
+        this.kick = kick;
+        this.close = close;
     }
 
     public String getTitle() {
@@ -36,6 +40,21 @@ public class ResponseButton implements Comparable<ResponseButton>{
 
     public void setId(int id) {
         this.id = id;
+    }
+    public boolean isKick() {
+        return kick;
+    }
+
+    public void setKick(boolean kick) {
+        this.kick = kick;
+    }
+
+    public boolean isClose() {
+        return close;
+    }
+
+    public void setClose(boolean close) {
+        this.close = close;
     }
 
     @Override

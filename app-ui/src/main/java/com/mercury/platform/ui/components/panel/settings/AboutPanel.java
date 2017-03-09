@@ -54,6 +54,15 @@ public class AboutPanel extends JPanel implements HasUI {
         JLabel redditButton = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,16f,"Reddit");
         redditButton.addMouseListener(new MouseAdapter() {
             @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().browse(new URI("https://www.reddit.com/r/pathofexile/comments/5xjof4/introducing_mercurytrade_the_ultimate_solution/"));
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+
+            @Override
             public void mouseEntered(MouseEvent e) {
                 setCursor(new Cursor(Cursor.HAND_CURSOR));
             }

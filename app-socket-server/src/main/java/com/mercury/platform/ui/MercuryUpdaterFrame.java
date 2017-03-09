@@ -29,6 +29,7 @@ public class MercuryUpdaterFrame extends JFrame {
 
     private volatile JLabel onlineCountLabel;
     private volatile JLabel updateCount;
+    private volatile JLabel statusLabel;
     private volatile JTextField versionField;
     private volatile JButton startUpdate;
     private UpdaterServer server;
@@ -111,11 +112,14 @@ public class MercuryUpdaterFrame extends JFrame {
 
         JPanel updatePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel updateLabel = new JLabel("Update count: ");
+
+        statusLabel = new JLabel("Status: pending...");
         //
         updateCount = new JLabel("0");
 
         updatePanel.add(updateLabel);
         updatePanel.add(updateCount);
+        updatePanel.add(statusLabel);
 
         panel.add(onlinePanel);
         panel.add(updatePanel);
@@ -128,7 +132,7 @@ public class MercuryUpdaterFrame extends JFrame {
         startUpdate.addMouseListener(new StartServerButtonListener(this,server));
         startUpdate.setEnabled(false);
         JButton shutdownUpdate = new JButton("Shut down");
-        shutdownUpdate.addMouseListener(new ShutdownServerButtonListener(server));
+        shutdownUpdate.addMouseListener(new ShutdownServerButtonListener(this,server));
 
         panel.add(startUpdate);
         panel.add(shutdownUpdate);
@@ -140,5 +144,8 @@ public class MercuryUpdaterFrame extends JFrame {
     }
     public String getVersion() {
         return versionField.getText();
+    }
+    public JLabel getStatusLabel(){
+        return statusLabel;
     }
 }

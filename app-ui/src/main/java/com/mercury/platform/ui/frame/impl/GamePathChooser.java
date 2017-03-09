@@ -21,7 +21,7 @@ public class GamePathChooser extends TitledComponentFrame {
     private boolean readyToStart = false;
 
     public GamePathChooser() {
-        super("MT-GamePathChooser");
+        super("MercuryTrade");
         processingHideEvent = false;
         processEResize = false;
         processSEResize = false;
@@ -39,11 +39,6 @@ public class GamePathChooser extends TitledComponentFrame {
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         this.pack();
         this.setVisible(true);
-
-        logger.info("GamePathChooser was initialized..");
-        logger.info("Visible: " + this.isVisible());
-        logger.info("Size: " + this.getSize());
-        logger.info("Location: " + this.getLocation());
     }
     private JPanel getChooserPanel(){
         JPanel panel = componentsFactory.getTransparentPanel(new BorderLayout());

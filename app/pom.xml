@@ -22,6 +22,11 @@
             <artifactId>app-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.home.mercury</groupId>
+            <artifactId>app-shared</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!--external-->
         <dependency>
             <groupId>lc.kra.system</groupId>

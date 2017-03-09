@@ -4,12 +4,12 @@ import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.UpdateReadyEvent;
+import com.mercury.platform.shared.events.custom.CheckOutPatchNotes;
+import com.mercury.platform.shared.events.custom.UpdateInfoEvent;
 import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.OverlaidFrame;
-import com.mercury.platform.ui.manager.UpdateManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -19,7 +19,7 @@ import java.awt.event.MouseEvent;
 
 public class UpdateReadyFrame extends OverlaidFrame {
     public UpdateReadyFrame() {
-        super("MT-UpdateNotification");
+        super("MercuryTrade");
     }
 
     @Override
@@ -33,40 +33,41 @@ public class UpdateReadyFrame extends OverlaidFrame {
     }
     private JPanel getUpdatePanel(){
         JPanel panel = componentsFactory.getTransparentPanel();
-        panel.setLayout(new BoxLayout(panel,BoxLayout.X_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(3,0,0,0));
-
-        JLabel label = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, TextAlignment.LEFTOP,16f,"Ready for update: ");
-        JLabel restartLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_IMPORTANT,TextAlignment.LEFTOP,16f,"Restart");
-        restartLabel.addMouseListener(new MouseAdapter() {
+        panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        JLabel label = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, TextAlignment.LEFTOP,16f,"New version available:");
+        label.setBorder(null);
+        Dimension dimension = new Dimension(80, 26);
+        JButton showInfo = componentsFactory.getBorderedButton("Show info");
+        showInfo.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseEntered(MouseEvent e) {
-                setCursor(new Cursor(Cursor.HAND_CURSOR));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                UpdateManager.INSTANCE.doUpdate();
+            public void mousePressed(MouseEvent e) {
+                setVisible(false);
+                EventRouter.INSTANCE.fireEvent(new CheckOutPatchNotes());
             }
         });
-        restartLabel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(AppThemeColor.TEXT_IMPORTANT),
-                BorderFactory.createEmptyBorder(2,2,2,2)
-        ));
-        label.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        JButton dismiss = componentsFactory.getButton(
+                FontStyle.BOLD,
+                AppThemeColor.FRAME,
+                BorderFactory.createLineBorder(AppThemeColor.BORDER),
+                "Dismiss",
+                14f);
+        dismiss.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                setVisible(false);
+            }
+        });
+        showInfo.setPreferredSize(dimension);
+        dismiss.setPreferredSize(dimension);
         panel.add(label);
-        panel.add(restartLabel);
+        panel.add(showInfo);
+        panel.add(dismiss);
         return panel;
     }
 
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(UpdateReadyEvent.class, event -> {
+        EventRouter.INSTANCE.registerHandler(UpdateInfoEvent.class, event -> {
             FrameSettings tbSettings = ConfigManager.INSTANCE.getFrameSettings("TaskBarFrame");
             Point tbLocation = tbSettings.getFrameLocation();
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

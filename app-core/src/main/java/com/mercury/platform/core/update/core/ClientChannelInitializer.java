@@ -25,4 +25,5 @@ public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> 
         socketChannel.pipeline().addLast(new ObjectDecoder(classResolver));
         socketChannel.pipeline().addLast(new ClientHandler());
     }
+
 }

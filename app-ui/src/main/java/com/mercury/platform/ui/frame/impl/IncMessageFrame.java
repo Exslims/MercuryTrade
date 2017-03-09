@@ -47,7 +47,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
 
     private boolean dnd = false;
     public IncMessageFrame(){
-        super("MT-IncMessagesFrame");
+        super("MercuryTrade");
 
         processSEResize = false;
         flowDirections = FlowDirections.valueOf(configManager.getFlowDirection());
@@ -234,6 +234,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
     protected JPanel panelWhenMove() {
         JPanel panel = componentsFactory.getTransparentPanel();
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+        panel.setBackground(AppThemeColor.FRAME);
         JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER,18f,"Notification panel"));
 
@@ -521,7 +522,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
         private boolean wasVisible;
 
         ExpandAllFrame() {
-            super("MT-ExpandAll");
+            super("MercuryTrade");
         }
         @Override
         protected void initialize() {

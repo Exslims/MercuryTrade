@@ -50,7 +50,11 @@
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.home.mercury</groupId>
+            <artifactId>app-shared</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>

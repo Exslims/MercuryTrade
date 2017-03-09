@@ -1,20 +1,10 @@
-{"notes":[
+{
+  "version":"1.0.0.3",
+  "notes":[
   {
-    "title" : "Chat Scanner",
-    "text" : "MercuryTrade features a real-time Chat Scanner. \nAll chat messages with matching words will be displayed in a separate window - no need to strain your eyes looking for a Trial anymore!",
-    "image" : "notes/first/8.png",
-    "layout" : "HORIZONTAL"
-  },
-  {
-    "title" : "Items grid",
-    "text" : "TODO",
+    "title" : "New update",
+    "text" : "- Added a button to TaskBar - \"Travel to hideout\".\n- Added a button to History - \"Clear History\".\n- Added a button to History - \"Restore notification panel\".\n- Added a checkbox option - \"Close Notification panel on Kick\".\n- Added checkboxes for allowing Response buttons to close notification panel on click. See settings.\n- Increased character limit on \"Label\" text field: You can now have longer shortcut names.\n- Fixed a bug with response buttons not being properly removed.",
     "image" : "",
-    "layout" : "HORIZONTAL"
-  },
-  {
-    "title" : "Bug fixes",
-    "text" : "TEST TEST TEST TEST TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST",
-    "image" : "",
-    "layout" : "HORIZONTAL"
+    "layout" : "VERTICAL"
   }
 ]}

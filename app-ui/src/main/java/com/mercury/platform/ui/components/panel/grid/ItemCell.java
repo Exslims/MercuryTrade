@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.components.panel.mesh;
+package com.mercury.platform.ui.components.panel.grid;
 
 import javax.swing.*;
 

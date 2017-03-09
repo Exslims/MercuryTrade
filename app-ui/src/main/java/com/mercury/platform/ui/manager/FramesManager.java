@@ -2,17 +2,19 @@ package com.mercury.platform.ui.manager;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.ChangedTradeModeEvent;
+import com.mercury.platform.shared.events.custom.ShowPatchNotesEvent;
+import com.mercury.platform.shared.events.custom.ShutDownForUpdateEvent;
 import com.mercury.platform.shared.events.custom.ShutdownApplication;
 import com.mercury.platform.shared.events.custom.UILoadedEvent;
 import com.mercury.platform.shared.pojo.FrameSettings;
+import com.mercury.platform.ui.frame.AlertFrame;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.frame.impl.test.TestCasesFrame;
 import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.frame.impl.*;
-import com.mercury.platform.ui.frame.impl.util.TradeMode;
 import com.mercury.platform.ui.frame.location.SetUpLocationCommander;
 import com.mercury.platform.ui.frame.location.SetUpLocationFrame;
 import com.mercury.platform.ui.misc.note.Note;
@@ -28,7 +30,8 @@ import java.util.List;
 /**
  * Created by Константин on 18.01.2017.
  */
-public class FramesManager {
+public class FramesManager implements HasEventHandlers{
+
     private static class FramesManagerHolder {
         static final FramesManager HOLDER_INSTANCE = new FramesManager();
     }
@@ -49,7 +52,6 @@ public class FramesManager {
         OverlaidFrame taskBarFrame = new TaskBarFrame();
 //        OverlaidFrame itemsMeshFrame = new ItemsGridFrame();
 //        framesMap.put(ItemsGridFrame.class,itemsMeshFrame);
-
         locationCommander.addFrame((MovableComponentFrame) incMessageFrame);
         locationCommander.addFrame((MovableComponentFrame) taskBarFrame);
 //        locationCommander.addFrame((MovableComponentFrame) itemsMeshFrame);
@@ -57,21 +59,23 @@ public class FramesManager {
 
         List<Note> notesOnFirstStart = notesLoader.getNotesOnFirstStart();
         framesMap.put(NotesFrame.class, new NotesFrame(notesOnFirstStart, NotesFrame.NotesType.INFO));
-        List<Note> patchNotes = notesLoader.getPatchNotes();
-        if(ConfigManager.INSTANCE.isShowPatchNotes() && patchNotes.size() != 0){
-            NotesFrame patchNotesFrame = new NotesFrame(patchNotes,NotesFrame.NotesType.PATCH);
-            patchNotesFrame.init();
-        }
+
         framesMap.put(HistoryFrame.class,new HistoryFrame());
         framesMap.put(SettingsFrame.class,new SettingsFrame());
         framesMap.put(TestCasesFrame.class,new TestCasesFrame());
         framesMap.put(TooltipFrame.class,new TooltipFrame());
         framesMap.put(NotificationFrame.class,new NotificationFrame());
         framesMap.put(DonationAlertFrame.class,new DonationAlertFrame());
+        List<Note> patchNotes = notesLoader.getPatchNotes();
+        if(ConfigManager.INSTANCE.isShowPatchNotes() && patchNotes.size() != 0){
+            NotesFrame patchNotesFrame = new NotesFrame(patchNotes,NotesFrame.NotesType.PATCH);
+            patchNotesFrame.init();
+        }
 //        framesMap.put(ChatScannerFrame.class,new ChatScannerFrame());
         framesMap.put(UpdateReadyFrame.class,new UpdateReadyFrame());
         framesMap.put(TaskBarFrame.class,taskBarFrame);
         framesMap.put(SetUpLocationFrame.class,new SetUpLocationFrame());
+        framesMap.put(AlertFrame.class,new AlertFrame());
 
         framesMap.forEach((k,v)->{
             v.init();
@@ -90,7 +94,32 @@ public class FramesManager {
                 }
             }
         });
+        initHandlers();
         EventRouter.INSTANCE.fireEvent(new UILoadedEvent());
+    }
+    @Override
+    public void initHandlers() {
+        EventRouter.INSTANCE.registerHandler(ShowPatchNotesEvent.class, handler -> {
+            String patchNotes = ((ShowPatchNotesEvent) handler).getPatchNotes();
+            NotesLoader notesLoader = new NotesLoader();
+            List<Note> notes = notesLoader.getPatchNotesFromString(patchNotes);
+            NotesFrame patchNotesFrame = new NotesFrame(notes,NotesFrame.NotesType.PATCH);
+            patchNotesFrame.init();
+            patchNotesFrame.setFrameTitle("MercuryTrade v" + notesLoader.getVersionFrom(patchNotes));
+            patchNotesFrame.showComponent();
+        });
+    }
+    public void exit() {
+        framesMap.forEach((k,v) -> {
+            v.setVisible(false);
+            EventRouter.INSTANCE.fireEvent(new ShutdownApplication());
+        });
+    }
+    public void exitForUpdate() {
+        framesMap.forEach((k,v) -> {
+            v.setVisible(false);
+            EventRouter.INSTANCE.fireEvent(new ShutDownForUpdateEvent());
+        });
     }
     public void showFrame(Class frameClass){
         framesMap.get(frameClass).showComponent();
@@ -115,8 +144,8 @@ public class FramesManager {
     public void enableMovementExclude(String... frames){
         locationCommander.setUpAllExclude(frames);
     }
-    public void enableMovement(String frameClass){
-        locationCommander.setUp(frameClass);
+    public void enableMovementDirect(String frameClass){
+        locationCommander.setUp(frameClass,false);
     }
     public void disableMovement(){
         locationCommander.disableAll();
@@ -137,7 +166,7 @@ public class FramesManager {
         PopupMenu trayMenu = new PopupMenu();
         MenuItem item = new MenuItem("Exit");
         item.addActionListener(e -> {
-            EventRouter.INSTANCE.fireEvent(new ShutdownApplication());
+            exit();
         });
         trayMenu.add(item);
 

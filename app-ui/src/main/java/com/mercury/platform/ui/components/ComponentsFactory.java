@@ -7,6 +7,7 @@ import com.mercury.platform.shared.events.custom.ShowTooltipEvent;
 import com.mercury.platform.ui.components.fields.style.MercuryComboBoxUI;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
+import com.mercury.platform.ui.components.panel.misc.ToggleCallback;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -128,6 +129,23 @@ public class ComponentsFactory {
                 BorderFactory.createLineBorder(AppThemeColor.BUTTON, 3)
         );
         return getButton(FontStyle.BOLD, AppThemeColor.BUTTON, compoundBorder, text, 14f);
+    }
+
+    public JButton setUpToggleCallbacks(JButton button,ToggleCallback firstState, ToggleCallback secondState, boolean initialState){
+        button.addMouseListener(new MouseAdapter() {
+            private boolean state = initialState;
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(state){
+                    firstState.onToggle();
+                    state = false;
+                }else {
+                    secondState.onToggle();
+                    state = true;
+                }
+            }
+        });
+        return button;
     }
 
     /**
@@ -350,6 +368,28 @@ public class ComponentsFactory {
         textField.setBackground(AppThemeColor.HEADER);
         return textField;
     }
+
+    public JCheckBox getCheckBox(String tooltip){
+        JCheckBox checkBox = new JCheckBox();
+        checkBox.setBackground(AppThemeColor.TRANSPARENT);
+        checkBox.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                EventRouter.INSTANCE.fireEvent(new ShowTooltipEvent(tooltip, MouseInfo.getPointerInfo().getLocation()));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+            }
+        });
+        return checkBox;
+    }
     public Font getFontByLang(String text,FontStyle style){
         if(style != null) {
             if(isAscii(text)){
@@ -357,6 +397,9 @@ public class ComponentsFactory {
             }
         }
         return DEFAULT_FONT;
+    }
+    public Font getFont(FontStyle style){
+        return getSelectedFont(style);
     }
     public JComboBox getComboBox(String[] childs){
         JComboBox comboBox = new JComboBox(childs);

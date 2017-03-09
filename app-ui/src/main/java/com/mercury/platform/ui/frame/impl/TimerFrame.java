@@ -23,7 +23,7 @@ public class TimerFrame extends TitledComponentFrame {
     private int mapCount = 0;
     private int chaosSpend = 0;
     public TimerFrame() {
-        super("MT-Timer");
+        super("MercuryTrade");
     }
 
     @Override

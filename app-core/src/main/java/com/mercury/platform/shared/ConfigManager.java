@@ -49,6 +49,9 @@ public class ConfigManager {
 
     private boolean showPatchNotes = false;
     private boolean showOnStartUp = true;
+    private boolean itemsGridEnable = true;
+    private boolean checkUpdateOnStartUp = true;
+    private boolean dismissAfterKick = false;
 
     public ConfigManager() {
         minimumFrameSize = new HashMap<>();
@@ -65,6 +68,7 @@ public class ConfigManager {
         minimumFrameSize.put("SetUpLocationFrame",new Dimension(300,30));
         minimumFrameSize.put("ChunkMessagesPicker",new Dimension(240,30));
         minimumFrameSize.put("GamePathChooser",new Dimension(600,30));
+        minimumFrameSize.put("CurrencySearchFrame",new Dimension(400,300));
 
         defaultAppSettings = new HashMap<>();
         defaultAppSettings.put("decayTime",0);
@@ -78,6 +82,9 @@ public class ConfigManager {
         defaultAppSettings.put("tradeMode","DEFAULT");
         defaultAppSettings.put("limitMsgCount",3);
         defaultAppSettings.put("expandedMsgCount",0);
+        defaultAppSettings.put("itemsGridEnable",true);
+        defaultAppSettings.put("checkUpdateOnStartUp",true);
+        defaultAppSettings.put("dismissAfterKick",false);
 
     }
 
@@ -116,6 +123,9 @@ public class ConfigManager {
                 saveProperty("tradeMode", defaultAppSettings.get("tradeMode"));
                 saveProperty("limitMsgCount", String.valueOf(defaultAppSettings.get("limitMsgCount")));
                 saveProperty("expandedMsgCount", String.valueOf(defaultAppSettings.get("expandedMsgCount")));
+                saveProperty("itemsGridEnable", String.valueOf(defaultAppSettings.get("itemsGridEnable")));
+                saveProperty("checkUpdateOnStartUp", String.valueOf(defaultAppSettings.get("checkUpdateOnStartUp")));
+                saveProperty("dismissAfterKick", String.valueOf(defaultAppSettings.get("dismissAfterKick")));
 
             } catch (Exception e) {
                 logger.error(e);
@@ -128,12 +138,19 @@ public class ConfigManager {
         JSONParser parser = new JSONParser();
         try {
             JSONObject root = (JSONObject) parser.parse(new FileReader(CONFIG_FILE));
-
             JSONArray buttons = (JSONArray) root.get("buttons");
             cachedButtonsConfig = new ArrayList<>();
             try {
                 for (JSONObject next : (Iterable<JSONObject>) buttons) {
-                    cachedButtonsConfig.add(new ResponseButton((long) next.get("id"), (String) next.get("title"), (String) next.get("value")));
+                    Object object = next.get("isKick");
+                    boolean isKick = false;
+                    Object object1 = next.get("isClose");
+                    boolean isClose = false;
+                    if(object != null){
+                        isKick = Boolean.valueOf((String)object);
+                        isClose = Boolean.valueOf((String)object1);
+                    }
+                    cachedButtonsConfig.add(new ResponseButton((long) next.get("id"), (String) next.get("title"), (String) next.get("value"),isKick,isClose));
                 }
             }catch (NullPointerException e){
                 saveButtonsConfig(getDefaultButtons());
@@ -161,6 +178,9 @@ public class ConfigManager {
             tradeMode = loadProperty("tradeMode");
             limitMsgCount = Long.valueOf(loadProperty("limitMsgCount")).intValue();
             expandedMsgCount = Long.valueOf(loadProperty("expandedMsgCount")).intValue();
+            itemsGridEnable = Boolean.valueOf(loadProperty("itemsGridEnable"));
+            checkUpdateOnStartUp = Boolean.valueOf(loadProperty("checkUpdateOnStartUp"));
+            dismissAfterKick = Boolean.valueOf(loadProperty("dismissAfterKick"));
         } catch (Exception e) {
             logger.error("Error in loadConfigFile: ",e);
         }
@@ -262,6 +282,8 @@ public class ConfigManager {
             buttonConfig.put("id",button.getId());
             buttonConfig.put("title",button.getTitle());
             buttonConfig.put("value",button.getResponseText());
+            buttonConfig.put("isKick",String.valueOf(button.isKick()));
+            buttonConfig.put("isClose",String.valueOf(button.isClose()));
             list.add(buttonConfig);
         });
         saveProperty("buttons", list);
@@ -300,7 +322,25 @@ public class ConfigManager {
     public int getExpandedMsgCount() {
         return expandedMsgCount;
     }
+    public boolean isItemsGridEnable() {
+        return itemsGridEnable;
+    }
+    public boolean isCheckUpdateOnStartUp() {
+        return checkUpdateOnStartUp;
+    }
+    public void setCheckUpdateOnStartUp(boolean checkUpdateOnStartUp) {
+        this.checkUpdateOnStartUp = checkUpdateOnStartUp;
+        saveProperty("checkUpdateOnStartUp", String.valueOf(this.checkUpdateOnStartUp));
+    }
 
+    public boolean isDismissAfterKick() {
+        return dismissAfterKick;
+    }
+
+    public void setDismissAfterKick(boolean dismissAfterKick) {
+        this.dismissAfterKick = dismissAfterKick;
+        saveProperty("dismissAfterKick", String.valueOf(this.dismissAfterKick));
+    }
 
     public void setDecayTime(int decayTime) {
         this.decayTime = decayTime;
@@ -346,13 +386,16 @@ public class ConfigManager {
         this.expandedMsgCount = expandedMsgCount;
         saveProperty("expandedMsgCount",String.valueOf(this.expandedMsgCount));
     }
-
+    public void setItemsGridEnable(boolean itemsGridEnable) {
+        this.itemsGridEnable = itemsGridEnable;
+        saveProperty("itemsGridEnable",String.valueOf(this.itemsGridEnable));
+    }
     private List<ResponseButton> getDefaultButtons(){
         List<ResponseButton> defaultButtons = new ArrayList<>();
-        defaultButtons.add(new ResponseButton(0,"1m","one minute"));
-        defaultButtons.add(new ResponseButton(1,"thx","thanks"));
-        defaultButtons.add(new ResponseButton(2,"no thx", "no thanks"));
-        defaultButtons.add(new ResponseButton(3,"sold", "sold"));
+        defaultButtons.add(new ResponseButton(0,"1m","one minute",false,false));
+        defaultButtons.add(new ResponseButton(1,"thx","thanks",true,false));
+        defaultButtons.add(new ResponseButton(2,"no thx", "no thanks",false,false));
+        defaultButtons.add(new ResponseButton(3,"sold", "sold",false,false));
         return defaultButtons;
     }
     public Map<String,FrameSettings> getDefaultFramesSettings(){
@@ -370,6 +413,7 @@ public class ConfigManager {
         defaultFramesSettings.put("SetUpLocationFrame",new FrameSettings(new Point(400, 600),new Dimension(300,30)));
         defaultFramesSettings.put("ChunkMessagesPicker",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
         defaultFramesSettings.put("GamePathChooser",new FrameSettings(new Point(400, 600),new Dimension(520,30)));
+        defaultFramesSettings.put("CurrencySearchFrame",new FrameSettings(new Point(400, 600),new Dimension(400,300)));
         return defaultFramesSettings;
     }
     public Dimension getMinimumFrameSize(String frameName){
