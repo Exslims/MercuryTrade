@@ -190,7 +190,7 @@ public class ComponentsFactory {
         }
         button.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
                     EventRouter.INSTANCE.fireEvent(new ButtonPressedEvent());
                 }
@@ -367,6 +367,28 @@ public class ComponentsFactory {
         ));
         textField.setBackground(AppThemeColor.HEADER);
         return textField;
+    }
+
+    public JCheckBox getCheckBox(String tooltip){
+        JCheckBox checkBox = new JCheckBox();
+        checkBox.setBackground(AppThemeColor.TRANSPARENT);
+        checkBox.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                EventRouter.INSTANCE.fireEvent(new ShowTooltipEvent(tooltip, MouseInfo.getPointerInfo().getLocation()));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+            }
+        });
+        return checkBox;
     }
     public Font getFontByLang(String text,FontStyle style){
         if(style != null) {

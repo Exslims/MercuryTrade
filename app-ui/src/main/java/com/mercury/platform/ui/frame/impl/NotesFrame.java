@@ -156,8 +156,10 @@ public class NotesFrame extends TitledComponentFrame {
         next.setPreferredSize(dimension);
         close.setPreferredSize(dimension);
 
-        if(type.equals(NotesType.PATCH)){
+        if(type.equals(NotesType.PATCH) && !ConfigManager.INSTANCE.isShowPatchNotes()){
             navBar.add(download);
+        }else {
+            ConfigManager.INSTANCE.setShowPatchNotes(false);
         }
         if(currentNotes.size() == 1){
             navBar.add(close);

@@ -21,7 +21,7 @@ import java.awt.event.*;
 public class TaskBarFrame extends MovableComponentFrame{
     private final Logger logger = LogManager.getLogger(TaskBarFrame.class.getSimpleName());
     private Timeline collapseAnimation;
-    private static final int MAX_WIDTH = 250;
+    private static final int MAX_WIDTH = 217;
     private MouseListener collapseListener;
 
     public TaskBarFrame() {
@@ -177,8 +177,8 @@ public class TaskBarFrame extends MovableComponentFrame{
 //        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(historyButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
-        taskBarPanel.add(itemGrid);
-        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
+//        taskBarPanel.add(itemGrid);
+//        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(settingsButton);
         taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
         taskBarPanel.add(exitButton);

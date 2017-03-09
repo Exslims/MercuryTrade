@@ -14,6 +14,7 @@ import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.misc.MessagePanelStyle;
 import com.mercury.platform.ui.frame.ComponentFrame;
+import com.mercury.platform.ui.frame.impl.HistoryContainer;
 import com.mercury.platform.ui.frame.impl.MessagesContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
@@ -112,7 +113,6 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             }
         }
         this.repaint();
-        owner.pack();
     }
 
     private JPanel getFormattedMessagePanel(){
@@ -236,12 +236,9 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             interactionPanel.add(kickButton);
             interactionPanel.add(tradeButton);
         }else {
-            JButton reloadButton = componentsFactory.getIconButton("app/reload-history.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
-            reloadButton.setToolTipText("Reload");
+            JButton reloadButton = componentsFactory.getIconButton("app/reload-history.png", 14, AppThemeColor.MSG_HEADER, "Restore");
             reloadButton.addActionListener(e -> {
-                setStyle(MessagePanelStyle.SP_MODE);
-                owner.pack();
-                owner.repaint();
+                ((HistoryContainer)owner).onReloadMessage(MessagePanel.this);
             });
             interactionPanel.add(reloadButton);
         }
@@ -417,7 +414,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             JButton button = componentsFactory.getBorderedButton(buttonConfig.getTitle());
             button.addActionListener(e -> {
                 EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("@" + whisper + " " + buttonConfig.getResponseText()));
-                if(buttonConfig.isClose()){
+                if(buttonConfig.isClose() && !style.equals(MessagePanelStyle.SP_MODE)){
                     try{
                         Thread.sleep(50);
                         EventRouter.INSTANCE.fireEvent(new CloseMessagePanelEvent(MessagePanel.this, message));

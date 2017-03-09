@@ -1,9 +1,9 @@
 {
-  "version":"1.0.0.2",
+  "version":"1.0.0.3",
   "notes":[
   {
-    "title" : "Update",
-    "text" : "- Reworked MercuryTrade's Update system. Now you can check for updates manually (\"Check for updates\" in Settings). Added a checkbox \"Updates Available notification\". See Settings. \n- When there is an update available for download you'll receive its Patch Notes first. You can dismiss the update if you want. \n- Added an option so that a notification will close itself after a response. \n- Added support for multiple monitor setups. \n- Fixed an issue with notification buttons not responding for inputs for some players. \n- Mostly back-end changes.",
+    "title" : "New update",
+    "text" : "- Added a button to TaskBar - \"Travel to hideout\".\n- Added a button to History - \"Clear History\".\n- Added a button to History - \"Restore notification panel\".\n- Added a checkbox option - \"Close Notification panel on Kick\".\n- Added checkboxes for allowing Response buttons to close notification panel on click. See settings.\n- Increased character limit on \"Label\" text field: You can now have longer shortcut names.\n- Fixed a bug with response buttons not being properly removed.",
     "image" : "",
     "layout" : "VERTICAL"
   }

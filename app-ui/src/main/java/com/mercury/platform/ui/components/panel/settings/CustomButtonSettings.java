@@ -88,7 +88,7 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
     }
     private JPanel getTopPanel() {
         JPanel topPanel = componentsFactory.getTransparentPanel(new BorderLayout());
-        topPanel.add(componentsFactory.getTextLabel("Dismiss notification after Kick:", FontStyle.REGULAR), BorderLayout.LINE_START);
+        topPanel.add(componentsFactory.getTextLabel("Close Notification panel on Kick:", FontStyle.REGULAR), BorderLayout.LINE_START);
         dismissCheckBox = new JCheckBox();
         dismissCheckBox.setBackground(AppThemeColor.TRANSPARENT);
         dismissCheckBox.setSelected(ConfigManager.INSTANCE.isDismissAfterKick());
@@ -122,7 +122,7 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
 //        JLabel kickLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,"Kick");
 //        kickLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JLabel closeLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,"Dismiss?");
+        JLabel closeLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,"Close");
         closeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         buttonsTable.add(titleLabel, titleColumn);
@@ -191,7 +191,7 @@ public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
         kC.gridy++;
 
         JPanel closeWrapper = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        JCheckBox closeCheckBox = new JCheckBox();
+        JCheckBox closeCheckBox = componentsFactory.getCheckBox("Close notification panel on click");
         closeCheckBox.setBackground(AppThemeColor.TRANSPARENT);
         closeCheckBox.setSelected(close);
         closeWrapper.add(closeCheckBox);

@@ -51,7 +51,7 @@ public class ConfigManager {
     private boolean showOnStartUp = true;
     private boolean itemsGridEnable = true;
     private boolean checkUpdateOnStartUp = true;
-    private boolean dismissAfterKick = true;
+    private boolean dismissAfterKick = false;
 
     public ConfigManager() {
         minimumFrameSize = new HashMap<>();

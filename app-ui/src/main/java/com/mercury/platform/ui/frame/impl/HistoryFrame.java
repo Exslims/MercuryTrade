@@ -22,7 +22,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 
-public class HistoryFrame extends TitledComponentFrame implements MessagesContainer{
+public class HistoryFrame extends TitledComponentFrame implements HistoryContainer{
     private JPanel mainContainer;
     public HistoryFrame() {
         super("MercuryTrade");
@@ -137,12 +137,10 @@ public class HistoryFrame extends TitledComponentFrame implements MessagesContai
     }
 
     @Override
-    public void onExpandMessage() {
-
-    }
-
-    @Override
-    public void onCollapseMessage() {
-
+    public void onReloadMessage(MessagePanel messagePanel) {
+        messagePanel.setStyle(MessagePanelStyle.SP_MODE);
+        messagePanel.setPreferredSize(new Dimension(this.getWidth()-10,messagePanel.getPreferredSize().height));
+        this.pack();
+        this.repaint();
     }
 }

@@ -54,7 +54,7 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
     }
     private JPanel getSettingsPanel() {
         JPanel root = componentsFactory.getTransparentPanel(new GridBagLayout());
-
+        root.setBackground(AppThemeColor.SLIDE_BG);
         GridBagConstraints constraint = new GridBagConstraints();
         constraint.gridy = 0;
         constraint.gridx = 0;
