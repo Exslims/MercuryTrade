@@ -4,14 +4,14 @@
 
 Download and Install Java: [https://java.com/download](https://java.com/download)
 
-Download MercuryTrade.jar: 
+Download MercuryTrade.jar: [Latest release](https://github.com/Exslims/MercuryTrade/releases)
 
-Feedback and suggestions: 
+Feedback and suggestions: [Link](https://github.com/Exslims/MercuryTrade/issues)
 
 ---
-<p align="center">
-  <img src="http://i.imgur.com/DWJQSsL.png"/>
-</p>
+ <p align="center">
+ <img src="http://i.imgur.com/DWJQSsL.png"/>
+  </p>
 
 **MercuryTrade** is an overlay application for Path of Exile written in Java. It's designed to facilitate all possible trading interactions providing a much better user experience for the players. The program went through countless design iterations and made by active Path of Exile players who use this tool themselves on a regular basis.
 
