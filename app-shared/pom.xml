@@ -6,7 +6,7 @@
 
     <groupId>com.home.mercury</groupId>
     <artifactId>app-shared</artifactId>
-    <version>1.0.0.4</version>
+    <version>1.0.0.5</version>
     <packaging>jar</packaging>
     <dependencies>
 
