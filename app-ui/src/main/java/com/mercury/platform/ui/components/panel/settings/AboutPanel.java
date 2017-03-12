@@ -31,7 +31,7 @@ public class AboutPanel extends JPanel implements HasUI {
     public void createUI() {
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         JPanel imgPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        imgPanel.add(componentsFactory.getIconLabel("app/app-icon.png"));
+        imgPanel.add(componentsFactory.getIconLabel("app/app-icon-big.png"));
         this.add(imgPanel);
 
         JPanel aboutPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
@@ -93,10 +93,32 @@ public class AboutPanel extends JPanel implements HasUI {
             }
         });
 
+        JLabel discordButton = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,16f,"Discord");
+        discordButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().browse(new URI("https://discord.gg/aG9C8XJ"));
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+        });
+
         JPanel feedbackPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         feedbackPanel.add(componentsFactory.getTextLabel("Feedback & Suggestions: ", FontStyle.REGULAR));
         feedbackPanel.add(redditButton);
         feedbackPanel.add(githubButton);
+        feedbackPanel.add(discordButton);
 
         panel.add(feedbackPanel);
         return panel;

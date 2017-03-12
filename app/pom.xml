@@ -25,13 +25,13 @@
         <dependency>
             <groupId>com.home.mercury</groupId>
             <artifactId>app-shared</artifactId>
-            <version>${project.version}</version>
+            <version>1.0.0.1</version>
         </dependency>
         <!--external-->
-        <dependency>
-            <groupId>lc.kra.system</groupId>
-            <artifactId>system-hook</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>lc.kra.system</groupId>-->
+            <!--<artifactId>system-hook</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.sun.jna</groupId>
             <artifactId>jna</artifactId>

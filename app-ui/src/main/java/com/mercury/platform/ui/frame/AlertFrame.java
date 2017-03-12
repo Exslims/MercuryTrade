@@ -1,6 +1,5 @@
 package com.mercury.platform.ui.frame;
 
-import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.AlertEvent;
 import com.mercury.platform.ui.misc.AppThemeColor;

@@ -52,6 +52,8 @@ public class ConfigManager {
     private boolean itemsGridEnable = true;
     private boolean checkUpdateOnStartUp = true;
     private boolean dismissAfterKick = false;
+    private boolean inGameDnd = false;
+    private String dndResponseText = "Response text";
 
     public ConfigManager() {
         minimumFrameSize = new HashMap<>();
@@ -59,7 +61,7 @@ public class ConfigManager {
         minimumFrameSize.put("IncMessageFrame",new Dimension(315,10));
         minimumFrameSize.put("OutMessageFrame",new Dimension(280,115));
         minimumFrameSize.put("TestCasesFrame",new Dimension(400,100));
-        minimumFrameSize.put("SettingsFrame",new Dimension(540,100));
+        minimumFrameSize.put("SettingsFrame",new Dimension(540,400));
         minimumFrameSize.put("HistoryFrame",new Dimension(280,400));
         minimumFrameSize.put("TimerFrame",new Dimension(240,102));
         minimumFrameSize.put("ChatScannerFrame",new Dimension(200,100));
@@ -85,6 +87,8 @@ public class ConfigManager {
         defaultAppSettings.put("itemsGridEnable",true);
         defaultAppSettings.put("checkUpdateOnStartUp",true);
         defaultAppSettings.put("dismissAfterKick",false);
+        defaultAppSettings.put("inGameDnd",false);
+        defaultAppSettings.put("dndResponseText","Response text");
 
     }
 
@@ -126,6 +130,8 @@ public class ConfigManager {
                 saveProperty("itemsGridEnable", String.valueOf(defaultAppSettings.get("itemsGridEnable")));
                 saveProperty("checkUpdateOnStartUp", String.valueOf(defaultAppSettings.get("checkUpdateOnStartUp")));
                 saveProperty("dismissAfterKick", String.valueOf(defaultAppSettings.get("dismissAfterKick")));
+                saveProperty("inGameDnd", String.valueOf(defaultAppSettings.get("inGameDnd")));
+                saveProperty("dndResponseText", defaultAppSettings.get("dndResponseText"));
 
             } catch (Exception e) {
                 logger.error(e);
@@ -181,6 +187,8 @@ public class ConfigManager {
             itemsGridEnable = Boolean.valueOf(loadProperty("itemsGridEnable"));
             checkUpdateOnStartUp = Boolean.valueOf(loadProperty("checkUpdateOnStartUp"));
             dismissAfterKick = Boolean.valueOf(loadProperty("dismissAfterKick"));
+            inGameDnd = Boolean.valueOf(loadProperty("inGameDnd"));
+            dndResponseText = loadProperty("dndResponseText");
         } catch (Exception e) {
             logger.error("Error in loadConfigFile: ",e);
         }
@@ -390,6 +398,25 @@ public class ConfigManager {
         this.itemsGridEnable = itemsGridEnable;
         saveProperty("itemsGridEnable",String.valueOf(this.itemsGridEnable));
     }
+
+    public boolean isInGameDnd() {
+        return inGameDnd;
+    }
+
+    public void setInGameDnd(boolean inGameDnd) {
+        this.inGameDnd = inGameDnd;
+        saveProperty("inGameDnd",String.valueOf(this.inGameDnd));
+    }
+
+    public String getDndResponseText() {
+        return dndResponseText;
+    }
+
+    public void setDndResponseText(String dndResponseText) {
+        this.dndResponseText = dndResponseText;
+        saveProperty("dndResponseText",dndResponseText);
+    }
+
     private List<ResponseButton> getDefaultButtons(){
         List<ResponseButton> defaultButtons = new ArrayList<>();
         defaultButtons.add(new ResponseButton(0,"1m","one minute",false,false));
@@ -404,7 +431,7 @@ public class ConfigManager {
         defaultFramesSettings.put("IncMessageFrame",new FrameSettings(new Point(700, 600),new Dimension(315,0)));
         defaultFramesSettings.put("OutMessageFrame",new FrameSettings(new Point(200, 500),new Dimension(280,115)));
         defaultFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(1400, 500),new Dimension(400,100)));
-        defaultFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(540,100)));
+        defaultFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(540,500)));
         defaultFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 500),new Dimension(280,400)));
         defaultFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
         defaultFramesSettings.put("ChatScannerFrame",new FrameSettings(new Point(400, 600),new Dimension(500,250)));

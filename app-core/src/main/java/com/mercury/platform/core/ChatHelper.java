@@ -1,8 +1,10 @@
 package com.mercury.platform.core;
 
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.ChatCommandEvent;
+import com.mercury.platform.shared.events.custom.DndModeEvent;
 import com.mercury.platform.shared.events.custom.OpenChatEvent;
 import com.sun.jna.Native;
 import org.apache.logging.log4j.LogManager;
@@ -30,65 +32,61 @@ public class ChatHelper implements HasEventHandlers {
     }
 
     private void executeMessage(String message) {
-        new Thread(() -> {
-            StringSelection selection = new StringSelection(message);
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboard.setContents(selection, null);
+        StringSelection selection = new StringSelection(message);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(selection, null);
 
-            gameToFront();
+        gameToFront();
 
-            robot.keyPress(KeyEvent.VK_ENTER);
-            robot.keyRelease(KeyEvent.VK_ENTER);
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
 
-            robot.keyPress(KeyEvent.VK_CONTROL);
-            robot.keyPress(KeyEvent.VK_A);
-            robot.keyRelease(KeyEvent.VK_CONTROL);
-            robot.keyRelease(KeyEvent.VK_A);
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_A);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.keyRelease(KeyEvent.VK_A);
 
-            robot.keyPress(KeyEvent.VK_BACK_SPACE);
-            robot.keyRelease(KeyEvent.VK_BACK_SPACE);
+        robot.keyPress(KeyEvent.VK_BACK_SPACE);
+        robot.keyRelease(KeyEvent.VK_BACK_SPACE);
 
-            robot.keyPress(KeyEvent.VK_CONTROL);
-            robot.keyPress(KeyEvent.VK_V);
-            robot.keyRelease(KeyEvent.VK_V);
-            robot.keyRelease(KeyEvent.VK_CONTROL);
-            robot.keyPress(KeyEvent.VK_ENTER);
-            robot.keyRelease(KeyEvent.VK_ENTER);
-        }).start();
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
     }
-    private void openChat(String whisper){
-        new Thread(() -> {
-            gameToFront();
+    private void openChat(String whisper) {
+        gameToFront();
 
-            StringSelection selection = new StringSelection("@" + whisper);
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboard.setContents(selection, selection);
+        StringSelection selection = new StringSelection("@" + whisper);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(selection, selection);
 
-            robot.keyPress(KeyEvent.VK_ENTER);
-            robot.keyRelease(KeyEvent.VK_ENTER);
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
 
-            robot.keyPress(KeyEvent.VK_CONTROL);
-            robot.keyPress(KeyEvent.VK_A);
-            robot.keyRelease(KeyEvent.VK_CONTROL);
-            robot.keyRelease(KeyEvent.VK_A);
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_A);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.keyRelease(KeyEvent.VK_A);
 
-            robot.keyPress(KeyEvent.VK_BACK_SPACE);
-            robot.keyRelease(KeyEvent.VK_BACK_SPACE);
+        robot.keyPress(KeyEvent.VK_BACK_SPACE);
+        robot.keyRelease(KeyEvent.VK_BACK_SPACE);
 
-            robot.keyPress(KeyEvent.VK_CONTROL);
-            robot.keyPress(KeyEvent.VK_V);
-            robot.keyRelease(KeyEvent.VK_V);
-            robot.keyRelease(KeyEvent.VK_CONTROL);
-            robot.keyPress(KeyEvent.VK_SPACE);
-            robot.keyRelease(KeyEvent.VK_SPACE);
-        }).start();
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_SPACE);
+        robot.keyRelease(KeyEvent.VK_SPACE);
     }
-
+    /**
+     * NEED REFACTORING
+     */
     private void gameToFront(){
         List<String> titles = new ArrayList<>();
         titles.add("Path of Exile");
-        titles.add("PathOfExile");
-        titles.add("PathOfExile_64");
         user32.EnumWindows((hWnd, arg1) -> {
                 byte[] windowText = new byte[512];
                 user32.GetWindowTextA(hWnd, windowText, 512);
@@ -112,6 +110,16 @@ public class ChatHelper implements HasEventHandlers {
 
         EventRouter.INSTANCE.registerHandler(OpenChatEvent.class, event -> {
             openChat(((OpenChatEvent) event).getWhisper());
+        });
+        EventRouter.INSTANCE.registerHandler(DndModeEvent.class, event -> {
+            boolean dnd = ((DndModeEvent) event).isDnd();
+            if(ConfigManager.INSTANCE.isInGameDnd()){
+                if(dnd) {
+                    executeMessage("/dnd " + ConfigManager.INSTANCE.getDndResponseText());
+                }else {
+                    executeMessage("/dnd");
+                }
+            }
         });
     }
 }

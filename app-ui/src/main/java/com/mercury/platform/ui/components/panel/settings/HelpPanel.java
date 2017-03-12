@@ -52,23 +52,23 @@ public class HelpPanel extends JPanel implements HasUI {
                 }
             }
         });
-//        JButton patchNotes = componentsFactory.getBorderedButton("Open patch notes");
-//        patchNotes.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                if(SwingUtilities.isLeftMouseButton(e)){
-//                    NotesLoader notesLoader = new NotesLoader();
-//                    java.util.List<Note> patchNotes = notesLoader.getPatchNotes();
-//                    if(patchNotes.size() != 0){
-//                        NotesFrame patchNotesFrame = new NotesFrame(patchNotes,NotesFrame.NotesType.PATCH);
-//                        patchNotesFrame.init();
-//                        patchNotesFrame.showComponent();
-//                    }
-//                }
-//            }
-//        });
+        JButton patchNotes = componentsFactory.getBorderedButton("Open patch notes");
+        patchNotes.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)){
+                    NotesLoader notesLoader = new NotesLoader();
+                    java.util.List<Note> patchNotes = notesLoader.getPatchNotes();
+                    if(patchNotes.size() != 0){
+                        NotesFrame patchNotesFrame = new NotesFrame(patchNotes,NotesFrame.NotesType.PATCH);
+                        patchNotesFrame.init();
+                        patchNotesFrame.showComponent();
+                    }
+                }
+            }
+        });
         this.add(openTutorial);
         this.add(openTests);
-//        this.add(patchNotes);
+        this.add(patchNotes);
     }
 }

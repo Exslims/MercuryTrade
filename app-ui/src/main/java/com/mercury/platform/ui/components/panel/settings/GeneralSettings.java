@@ -19,28 +19,17 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- * Created by Константин on 05.01.2017.
- */
-public class GeneralSettings extends ConfigurationPanel implements HasUI {
+public class GeneralSettings extends ConfigurationPanel{
     private JSlider minSlider;
     private JSlider maxSlider;
     private JComboBox secondsPicker;
     private JComboBox notifierStatusPicker;
     private ComponentFrame owner;
-    private JButton checkUpdate;
     private JCheckBox checkEnable;
     public GeneralSettings(ComponentFrame owner) {
         super();
         this.owner = owner;
         createUI();
-
-        EventRouter.INSTANCE.registerHandler(AlertEvent.class, event -> {
-            checkUpdate.setEnabled(true);
-        });
-        EventRouter.INSTANCE.registerHandler(ClosingPatchNotesEvent.class, event -> {
-            checkUpdate.setEnabled(true);
-        });
     }
 
     @Override
@@ -67,16 +56,6 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         checkEnable = new JCheckBox();
         checkEnable.setBackground(AppThemeColor.TRANSPARENT);
         checkEnable.setSelected(ConfigManager.INSTANCE.isCheckUpdateOnStartUp());
-        updatePanel.add(checkEnable);
-
-        JPanel checkUpdatesPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        checkUpdate = componentsFactory.getBorderedButton("Check for updates");
-        checkUpdate.addActionListener(action -> {
-            checkUpdate.setEnabled(false);
-            ApplicationHolder.getInstance().setManualRequest(true);
-            EventRouter.INSTANCE.fireEvent(new RequestPatchNotesEvent());
-        });
-        checkUpdatesPanel.add(checkUpdate);
 
         JPanel hideSettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         hideSettingsPanel.add(componentsFactory.getTextLabel("Fade time (seconds). 0 - Always show", FontStyle.REGULAR));
@@ -145,7 +124,7 @@ public class GeneralSettings extends ConfigurationPanel implements HasUI {
         constraint.gridx = 1;
         constraint.gridy = 0;
         constraint.weightx = 0.3f;
-        root.add(checkUpdatesPanel,constraint);
+        root.add(checkEnable,constraint);
         constraint.gridy = 1;
         root.add(secondsPicker,constraint);
         constraint.gridy = 2;

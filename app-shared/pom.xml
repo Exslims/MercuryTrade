@@ -4,13 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.home.mercury</groupId>
-        <artifactId>MercuryTrade</artifactId>
-        <version>${project.version}</version>
-    </parent>
-
+    <groupId>com.home.mercury</groupId>
     <artifactId>app-shared</artifactId>
+    <version>1.0.0.4</version>
     <packaging>jar</packaging>
     <dependencies>
 
