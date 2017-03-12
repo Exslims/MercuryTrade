@@ -1,9 +1,9 @@
 {
-  "version":"1.0.0.3",
+  "version":"1.0.0.4",
   "notes":[
   {
     "title" : "New update",
-    "text" : "- Added a button to TaskBar - \"Travel to hideout\".\n- Added a button to History - \"Clear History\".\n- Added a button to History - \"Restore notification panel\".\n- Added a checkbox option - \"Close Notification panel on Kick\".\n- Added checkboxes for allowing Response buttons to close notification panel on click. See settings.\n- Increased character limit on \"Label\" text field: You can now have longer shortcut names.\n- Fixed a bug with response buttons not being properly removed.",
+    "text" : "- Now when you Invite a person via notification the item name will be copied to your clipboard.\n- DND mode updated: now there is an option to activate PoE’s in-game /dnd as well. You can set up your own auto-response message in Settings.\n- Some fixes for reported issues.\n- We made a discord server: (See About for the URL). Bug reports, feedback and whatever you want to tell us.\n\nWe are planning a BIG update coming up this weekend - stay tuned! Make sure to tell your friends about MercuryTrade!\nThanks for your feedback and support! Every bit counts!",
     "image" : "",
     "layout" : "VERTICAL"
   }

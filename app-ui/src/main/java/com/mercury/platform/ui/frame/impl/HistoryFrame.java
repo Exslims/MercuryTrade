@@ -69,7 +69,7 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
             messagePanel.disableTime();
             mainContainer.add(messagePanel);
         }
-        this.miscPanel.setBorder(BorderFactory.createEmptyBorder(-2,0,-2,0));
+//        this.miscPanel.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
         this.miscPanel.add(getClearButton(),0);
         this.pack();
         vBar.setValue(vBar.getMaximum());
@@ -91,7 +91,7 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
     private JButton getClearButton(){
         JButton clearHistory =
                 componentsFactory.getIconButton("app/clear-history.png",
-                        12,
+                        13,
                         AppThemeColor.TRANSPARENT,
                         "Clear history");
         clearHistory.addMouseListener(new MouseAdapter() {
@@ -103,6 +103,7 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
                 repaint();
             }
         });
+        clearHistory.setBorder(BorderFactory.createEmptyBorder(0,0,0,10));
         return clearHistory;
     }
 

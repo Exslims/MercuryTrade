@@ -131,7 +131,7 @@ public class ComponentsFactory {
         return getButton(FontStyle.BOLD, AppThemeColor.BUTTON, compoundBorder, text, 14f);
     }
 
-    public JButton setUpToggleCallbacks(JButton button,ToggleCallback firstState, ToggleCallback secondState, boolean initialState){
+    public Component setUpToggleCallbacks(Component button,ToggleCallback firstState, ToggleCallback secondState, boolean initialState){
         button.addMouseListener(new MouseAdapter() {
             private boolean state = initialState;
             @Override

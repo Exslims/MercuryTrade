@@ -25,6 +25,8 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -212,6 +214,13 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             inviteButton.addActionListener(e -> {
                 EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/invite " + whisper));
                 if(message instanceof ItemMessage) {
+                    Timer timer = new Timer(30, action -> {
+                        StringSelection selection = new StringSelection(((ItemMessage) message).getItemName());
+                        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                        clipboard.setContents(selection, null);
+                    });
+                    timer.setRepeats(false);
+                    timer.start();
                     if (((ItemMessage) message).getTabInfo() != null) {
                         EventRouter.INSTANCE.fireEvent(new ShowItemMeshEvent(message.getWhisperNickname(), ((ItemMessage) message).getTabInfo()));
                     }
@@ -221,12 +230,11 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             kickButton.addActionListener(e -> {
                 EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/kick " + whisper));
                 if(ConfigManager.INSTANCE.isDismissAfterKick()){
-                    try{
-                        Thread.sleep(50);
+                    Timer timer = new Timer(30, action -> {
                         EventRouter.INSTANCE.fireEvent(new CloseMessagePanelEvent(MessagePanel.this, message));
-                    }catch (InterruptedException ex){
-
-                    }
+                    });
+                    timer.setRepeats(false);
+                    timer.start();
                 }
             });
             tradeButton = componentsFactory.getIconButton("app/trade.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);

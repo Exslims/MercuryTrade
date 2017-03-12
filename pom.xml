@@ -12,14 +12,13 @@
         <module>app</module>
         <module>app-ui</module>
         <module>app-core</module>
-        <module>app-socket-server</module>
         <module>app-shared</module>
         <module>app-local-updater</module>
     </modules>
     <packaging>pom</packaging>
 
     <properties>
-        <project.version>1.0.0.0</project.version>
+        <project.version>1.0.0.4</project.version>
 
         <systemhook.version>2.5</systemhook.version>
         <jna.version>3.0.9</jna.version>
@@ -39,11 +38,12 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>lc.kra.system</groupId>
-                <artifactId>system-hook</artifactId>
-                <version>${systemhook.version}</version>
-            </dependency>
+            <!--hotkeys-->
+            <!--<dependency>-->
+                <!--<groupId>lc.kra.system</groupId>-->
+                <!--<artifactId>system-hook</artifactId>-->
+                <!--<version>${systemhook.version}</version>-->
+            <!--</dependency>-->
             <dependency>
                 <groupId>com.sun.jna</groupId>
                 <artifactId>jna</artifactId>
@@ -122,16 +122,16 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <repositories>
-        <repository>
-            <id>system-hook-mvn-repo</id>
-            <url>https://raw.github.com/kristian/system-hook/mvn-repo/</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-    </repositories>
+    <!--<repositories>-->
+        <!--<repository>-->
+            <!--<id>system-hook-mvn-repo</id>-->
+            <!--<url>https://raw.github.com/kristian/system-hook/mvn-repo/</url>-->
+            <!--<snapshots>-->
+                <!--<enabled>true</enabled>-->
+                <!--<updatePolicy>always</updatePolicy>-->
+            <!--</snapshots>-->
+        <!--</repository>-->
+    <!--</repositories>-->
     <build>
         <plugins>
             <plugin>

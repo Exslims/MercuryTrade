@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Created by Константин on 05.01.2017.
  */
-public class CustomButtonSettings extends ConfigurationPanel implements HasUI {
+public class CustomButtonSettings extends ConfigurationPanel{
     private List<ValuePair> inputs;
     private JFrame owner;
     private JPanel buttonsTable;
