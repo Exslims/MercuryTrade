@@ -1,9 +1,9 @@
 {
-  "version":"1.0.0.4",
+  "version":"1.0.0.5",
   "notes":[
   {
     "title" : "New update",
-    "text" : "- Now when you Invite a person via notification the item name will be copied to your clipboard.\n- DND mode updated: now there is an option to activate PoE’s in-game /dnd as well. You can set up your own auto-response message in Settings.\n- Some fixes for reported issues.\n- We made a discord server: (See About for the URL). Bug reports, feedback and whatever you want to tell us.\n\nWe are planning a BIG update coming up this weekend - stay tuned! Make sure to tell your friends about MercuryTrade!\nThanks for your feedback and support! Every bit counts!",
+    "text" : "- New feature: Stash Highlight - now Mercury highlights where the item is located via a small overlay box on your screen. Check it out!\n\n- IMPORTANT: We are opening the code on github. This should completely clear MercuryTrade from any possible controversy from now on.\n\nWe are making a thread on Reddit with the announcement. Thanks for your support!",
     "image" : "",
     "layout" : "VERTICAL"
   }
