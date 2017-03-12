@@ -17,7 +17,7 @@
         <dependency>
             <groupId>com.home.mercury</groupId>
             <artifactId>app-shared</artifactId>
-            <version>1.0.0.1</version>
+            <version>1.0.0.4</version>
         </dependency>
         <!--<dependency>-->
             <!--<groupId>lc.kra.system</groupId>-->
