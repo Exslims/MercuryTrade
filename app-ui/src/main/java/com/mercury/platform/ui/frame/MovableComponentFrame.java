@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 public abstract class MovableComponentFrame extends ComponentFrame {
     protected Container mainContainer;
     private FrameConstraints prevConstraints;
+    protected UndecoratedFrameState moveState = UndecoratedFrameState.DEFAULT;
     protected boolean locationWasChanged = false;
     protected boolean sizeWasChanged = false;
     protected boolean inMoveMode = false;
@@ -32,6 +33,7 @@ public abstract class MovableComponentFrame extends ComponentFrame {
     public void setState(UndecoratedFrameState state){
         switch (state){
             case MOVING:{
+                this.moveState = UndecoratedFrameState.MOVING;
                 inMoveMode = true;
                 this.prevConstraints = new FrameConstraints(
                         this.processSEResize,
@@ -57,6 +59,7 @@ public abstract class MovableComponentFrame extends ComponentFrame {
                 break;
             }
             case DEFAULT: {
+                this.moveState = UndecoratedFrameState.DEFAULT;
                 this.setContentPane(mainContainer);
                 this.processSEResize = prevConstraints.processSEResize;
                 this.processEResize = prevConstraints.processEResize;
@@ -110,6 +113,11 @@ public abstract class MovableComponentFrame extends ComponentFrame {
         }
         return panel;
     }
+
+    public UndecoratedFrameState getMoveState() {
+        return moveState;
+    }
+
     protected class FrameConstraints {
         private boolean processSEResize;
         private boolean processEResize;

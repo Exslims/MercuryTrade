@@ -147,6 +147,9 @@ public class FramesManager implements HasEventHandlers{
     public void enableMovementDirect(String frameClass){
         locationCommander.setUp(frameClass,false);
     }
+    public void enableOrDisableMovementDirect(String frameClass){
+        locationCommander.enableOrDisableMovement(frameClass,false);
+    }
     public void disableMovement(){
         locationCommander.disableAll();
     }

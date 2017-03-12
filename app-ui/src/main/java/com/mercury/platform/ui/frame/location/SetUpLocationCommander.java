@@ -35,6 +35,16 @@ public class SetUpLocationCommander {
         enableMovement(frame,showingSetUpFrame);
         activeFrames.add(frame);
     }
+    public void enableOrDisableMovement(String frameClass, boolean showingSetUpFrame) {
+        MovableComponentFrame frame = movableFrames.get(frameClass);
+        if(frame.getMoveState().equals(UndecoratedFrameState.DEFAULT)){
+            enableMovement(frame,showingSetUpFrame);
+            activeFrames.add(frame);
+        }else {
+            disableMovement(frame);
+            activeFrames.remove(frame);
+        }
+    }
 
     public void disableAll() {
         activeFrames.forEach(this::disableMovement);

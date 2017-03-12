@@ -98,20 +98,28 @@ public class TaskBarFrame extends MovableComponentFrame{
                 true
                 );
 
-        JButton itemGrid = componentsFactory.getIconButton("app/item-grid-disable.png",24,AppThemeColor.FRAME_ALPHA, TooltipConstants.VISIBLE_MODE);
-        componentsFactory.setUpToggleCallbacks(itemGrid,
-                () -> {
-                    itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-enable.png", 24));
-                    TaskBarFrame.this.repaint();
-                    FramesManager.INSTANCE.enableMovementDirect("ItemsGridFrame");
-                },
-                () -> {
-                    itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-disable.png", 24));
-                    TaskBarFrame.this.repaint();
-                    FramesManager.INSTANCE.disableMovement("ItemsGridFrame");
-                },
-                 true
-                );
+        JButton itemGrid = componentsFactory.getIconButton("app/item-grid-enable.png",24,AppThemeColor.FRAME_ALPHA, TooltipConstants.VISIBLE_MODE);
+        itemGrid.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    FramesManager.INSTANCE.enableOrDisableMovementDirect("ItemsGridFrame");
+                }
+            }
+        });
+//        componentsFactory.setUpToggleCallbacks(itemGrid,
+//                () -> {
+//                    itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-enable.png", 24));
+//                    TaskBarFrame.this.repaint();
+//                    FramesManager.INSTANCE.enableMovementDirect("ItemsGridFrame");
+//                },
+//                () -> {
+//                    itemGrid.setIcon(componentsFactory.getIcon("app/item-grid-disable.png", 24));
+//                    TaskBarFrame.this.repaint();
+//                    FramesManager.INSTANCE.disableMovement("ItemsGridFrame");
+//                },
+//                 true
+//                );
 
         JButton toHideOut = componentsFactory.getIconButton("app/hideout.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.HIDEOUT);
         toHideOut.addActionListener(action -> {
