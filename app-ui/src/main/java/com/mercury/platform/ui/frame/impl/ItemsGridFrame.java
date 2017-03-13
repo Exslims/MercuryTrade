@@ -213,8 +213,8 @@ public class ItemsGridFrame extends MovableComponentFrame{
                     configManager.setItemsGridEnable(true);
                     repaint();
                 },configManager.isItemsGridEnable());
-        JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_ALPHA, "");
-        hideButton.setBorder(BorderFactory.createEmptyBorder(2,0,0,2));
+        JButton hideButton  = componentsFactory.getBorderedButton("Save");
+        hideButton.setPreferredSize(new Dimension(90,24));
         hideButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -249,7 +249,6 @@ public class ItemsGridFrame extends MovableComponentFrame{
         itemsMesh.setBackground(AppThemeColor.FRAME_ALPHA);
         panel.add(itemsMesh,BorderLayout.CENTER);
         setUpResizePanels(panel);
-//        panel.setSize(this.getSize());
         return panel;
     }
 
@@ -259,36 +258,15 @@ public class ItemsGridFrame extends MovableComponentFrame{
         rightPanel.setBackground(AppThemeColor.FRAME);
         rightPanel.add(rightArrow,BorderLayout.CENTER);
 
-        rightPanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                rightPanel.setBackground(AppThemeColor.TEXT_DISABLE);
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                rightPanel.setBackground(AppThemeColor.FRAME);
-            }
-        });
+        rightPanel.addMouseListener(new ArrowMouseListener(rightPanel,new Cursor(Cursor.E_RESIZE_CURSOR)));
         rightPanel.addMouseMotionListener(new ResizeByWidthMouseMotionListener());
-
         JLabel downArrow = componentsFactory.getIconLabel("app/expand-mp.png",16); //todo
         JPanel downPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         downPanel.setBorder(BorderFactory.createEmptyBorder(-10,0,0,0));
         downPanel.setBackground(AppThemeColor.FRAME);
         downPanel.add(downArrow);
 
-        downPanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                downPanel.setBackground(AppThemeColor.TEXT_DISABLE);
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                downPanel.setBackground(AppThemeColor.FRAME);
-            }
-        });
+        downPanel.addMouseListener(new ArrowMouseListener(downPanel, new Cursor(Cursor.N_RESIZE_CURSOR)));
         downPanel.addMouseMotionListener(new ResizeByHeightMouseMotionListener());
 
         root.add(rightPanel,BorderLayout.LINE_END);
@@ -318,6 +296,35 @@ public class ItemsGridFrame extends MovableComponentFrame{
             Point frameLocation = getLocation();
             setSize(new Dimension(getWidth(),e.getLocationOnScreen().y - frameLocation.y + source.getHeight()));
             configManager.saveFrameSize(ItemsGridFrame.class.getSimpleName(),getSize());
+        }
+    }
+    private class ArrowMouseListener extends MouseAdapter {
+        private JPanel panel;
+        private Cursor cursor;
+
+        private ArrowMouseListener(JPanel panel, Cursor cursor) {
+            this.panel = panel;
+            this.cursor = cursor;
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            panel.setBackground(AppThemeColor.TEXT_DISABLE);
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            panel.setBackground(AppThemeColor.FRAME);
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            setCursor(cursor);
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         }
     }
 }

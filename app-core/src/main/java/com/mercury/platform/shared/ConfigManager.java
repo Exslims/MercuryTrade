@@ -83,7 +83,7 @@ public class ConfigManager {
         defaultAppSettings.put("flowDirection","DOWNWARDS");
         defaultAppSettings.put("tradeMode","DEFAULT");
         defaultAppSettings.put("limitMsgCount",3);
-        defaultAppSettings.put("expandedMsgCount",0);
+        defaultAppSettings.put("expandedMsgCount",2);
         defaultAppSettings.put("itemsGridEnable",true);
         defaultAppSettings.put("checkUpdateOnStartUp",true);
         defaultAppSettings.put("dismissAfterKick",false);

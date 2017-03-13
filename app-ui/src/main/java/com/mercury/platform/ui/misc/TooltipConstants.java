@@ -15,6 +15,7 @@ public class TooltipConstants {
     public static final String HISTORY = "History. Browse through all notifications you received previously.";
     public static final String SETUP_FRAMES_LOCATION = "Panel unlock. Unlock panels to reposition.";
     public static final String SETTINGS = "Settings";
+    public static final String ITEM_GRID = "Items Grid settings";
     public static final String EXIT = "Exit";
 
     //Timer tooltips

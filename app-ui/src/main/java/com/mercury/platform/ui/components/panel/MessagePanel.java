@@ -71,7 +71,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1)));
 
         this.messagePanel = getFormattedMessagePanel();
-        this.customButtonsPanel = getButtonsPanel(whisper);
+        this.customButtonsPanel = getButtonsPanel();
         init();
         initHandlers();
         setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
@@ -124,10 +124,47 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
 
         JPanel tradePanel = new JPanel(new BorderLayout());
         tradePanel.setBackground(AppThemeColor.TRANSPARENT);
-        tradePanel.setBorder(BorderFactory.createEmptyBorder(-11,0,-11,0));
+        tradePanel.setBorder(BorderFactory.createEmptyBorder(-11,2,-11,0));
         if(message instanceof ItemMessage) {
-            JLabel itemLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_IMPORTANT, TextAlignment.CENTER, 16f, ((ItemMessage)message).getItemName());
-            tradePanel.add(itemLabel,BorderLayout.CENTER);
+            JButton itemButton = componentsFactory.getButton(((ItemMessage) message).getItemName());
+            itemButton.setForeground(AppThemeColor.TEXT_IMPORTANT);
+            itemButton.setFont(componentsFactory.getFont(FontStyle.BOLD).deriveFont(16f));
+            itemButton.setBackground(AppThemeColor.TRANSPARENT);
+            itemButton.setBorder(BorderFactory.createEmptyBorder(0,4,0,2));
+            itemButton.setHorizontalAlignment(SwingConstants.LEFT);
+            itemButton.setContentAreaFilled(false);
+            itemButton.setRolloverEnabled(false);
+            itemButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if(message instanceof ItemMessage) {
+                        copyItemNameToClipboard(((ItemMessage) message).getItemName());
+                        if (((ItemMessage) message).getTabInfo() != null) {
+                            EventRouter.INSTANCE.fireEvent(new ShowItemMeshEvent(message.getWhisperNickname(), ((ItemMessage) message).getTabInfo()));
+                        }
+                    }
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    owner.repaint();
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    itemButton.setBorder(new CompoundBorder(
+                            BorderFactory.createMatteBorder(0,1,0,1,AppThemeColor.BORDER),
+                            BorderFactory.createEmptyBorder(0,3,0,1)));
+                    owner.repaint();
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    itemButton.setBorder(BorderFactory.createEmptyBorder(0,4,0,2));
+                    owner.repaint();
+                }
+            });
+            tradePanel.add(itemButton,BorderLayout.CENTER);
         }else if(message instanceof CurrencyMessage){
             CurrencyMessage message = (CurrencyMessage) this.message;
             JPanel curCountPanel = new JPanel();
@@ -214,13 +251,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             inviteButton.addActionListener(e -> {
                 EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/invite " + whisper));
                 if(message instanceof ItemMessage) {
-                    Timer timer = new Timer(30, action -> {
-                        StringSelection selection = new StringSelection(((ItemMessage) message).getItemName());
-                        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                        clipboard.setContents(selection, null);
-                    });
-                    timer.setRepeats(false);
-                    timer.start();
+                    copyItemNameToClipboard(((ItemMessage) message).getItemName());
                     if (((ItemMessage) message).getTabInfo() != null) {
                         EventRouter.INSTANCE.fireEvent(new ShowItemMeshEvent(message.getWhisperNickname(), ((ItemMessage) message).getTabInfo()));
                     }
@@ -379,7 +410,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     public MessagePanelStyle getStyle() {
         return style;
     }
-    private JPanel getButtonsPanel(String whisper){
+    private JPanel getButtonsPanel(){
         JPanel panel = new JPanel(new FlowLayout());
         panel.setBackground(AppThemeColor.TRANSPARENT);
         initResponseButtons(panel);
@@ -423,15 +454,23 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             button.addActionListener(e -> {
                 EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("@" + whisper + " " + buttonConfig.getResponseText()));
                 if(buttonConfig.isClose() && !style.equals(MessagePanelStyle.SP_MODE)){
-                    try{
-                        Thread.sleep(50);
+                    Timer timer = new Timer(30, action -> {
                         EventRouter.INSTANCE.fireEvent(new CloseMessagePanelEvent(MessagePanel.this, message));
-                    }catch (InterruptedException ex){
-
-                    }
+                    });
+                    timer.setRepeats(false);
+                    timer.start();
                 }
             });
             panel.add(button);
         });
+    }
+    private void copyItemNameToClipboard(String itemName){
+        Timer timer = new Timer(30, action -> {
+            StringSelection selection = new StringSelection(itemName);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(selection, null);
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
 }
