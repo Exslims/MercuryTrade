@@ -6,16 +6,16 @@
 
 Descarga e instala Java: [https://java.com/download](https://java.com/download)
 
-Descarga MercuryTrade.jar: [Latest release](https://github.com/Exslims/MercuryTrade/releases)
+Descarga MercuryTrade.jar: [Última versión](https://github.com/Exslims/MercuryTrade/releases)
 
-Sugerencias y *feedback*: [Link](https://github.com/Exslims/MercuryTrade/issues)
+Sugerencias y *feedback*: [Enlace](https://github.com/Exslims/MercuryTrade/issues)
 
 ---
  <p align="center">
  <img src="http://i.imgur.com/DWJQSsL.png"/>
   </p>
 
-**MercuryTrade** es una aplicación para para Path of Exile escrita en JAVA. Está diseñada para facilitar todas las interacciones que se producen durante el comercio y así mejorar la experiencia de usuario. El programa ha pasado por muchas iteraciones durante el diseño y ha sido creado y usado por jugadores activos de Path of Exile.
+**MercuryTrade** es una aplicación para Path of Exile escrita en JAVA. Está diseñada para facilitar todas las interacciones que se producen durante el comercio y así mejorar la experiencia de usuario. El programa ha pasado por muchas iteraciones durante el diseño y ha sido creado y usado por jugadores activos de Path of Exile.
 
 ---
 ## FUNCIONALIDAD:
@@ -27,7 +27,7 @@ Sugerencias y *feedback*: [Link](https://github.com/Exslims/MercuryTrade/issues)
   <img src="http://i.imgur.com/Sv2Iod9.png"/>
 </p>
 
-Cuando recibes un mensaje de comercio esta ventana aparece. Contiene toda la información necesaria para tomar una decisión. Ofrece una serie de botones personalizables "botones de respuesta rápida" - tales como "Vendido" / "No" / "Espera 3m" / etc - así como botones para invitar, expulsar y comercia con la persona que ha realizado la oferta.
+Cuando recibes un mensaje de comercio, esta ventana aparece. Contiene toda la información necesaria para tomar una decisión. Ofrece una serie de botones personalizables "botones de respuesta rápida" - tales como "Vendido" / "No" / "Espera 3m" / etc - así como botones para invitar, expulsar y comerciar con la persona que ha realizado la oferta.
 
 <p align="center">
   <img src="http://i.imgur.com/6WyeA9D.png"/>
@@ -87,7 +87,7 @@ Cada notificación que recibes es guardada por **MercuryTrade** en otro fichero.
 Las notificaciones de **MercuryTrade** tienen un  **indicador para saber cuándo una persona entra o deja tu *hideout* ** - de esa forma puedes ofrecer comercio en cuanto la persona entra en tu *hideout* sin tener que cerrar tu baúl. Especialmente útil en el modo de *SuperTrade*
 
 
-Mención importante: en Path  of Exile, no puedes hacer uso de los *frames* de grupo mientras estás usando el baúl ya que están tapados por la ventana del mismo. **MercuryTrade** solventa este impedimiento ya que puedes interactuar con dicha persona mediante los paneles de notificación.
+Mención importante: en Path  of Exile, no puedes hacer uso de los *frames* de grupo mientras estás usando el baúl, ya que están tapados por la ventana del mismo. **MercuryTrade** solventa este impedimiento ya que puedes interactuar con dicha persona mediante los paneles de notificación.
 
 #
 
@@ -130,7 +130,7 @@ Activa este modo si no quieres ver (¡y escuchar!) nada referente a la aplicaci�
 ## CÓMO INSTALAR:
 ---
 
-Descarga e instala JAVA en tu ordenador y ejecuta MercuryTrade.jar. Como el programa opera encima de la ventana de Path of Exile, **asegúrate de que no tienes el juego en pantalla completa**.
+Descarga e instala JAVA en tu ordenador y ejecuta MercuryTrade.jar. Como el programa opera encima de la ventana de Path of Exile, debes **asegurarte de que no tienes el juego en pantalla completa**.
 
 Tras lanzarlo, serás bienvenido con una pequeña visión de conjunto de la aplicación (idéntica a este Léeme) y las notas del parche. Tras esto, deberías mirar el **Task Panel** y el **Notification Panel**.
 
@@ -146,11 +146,11 @@ Tras lanzarlo, serás bienvenido con una pequeña visión de conjunto de la apli
 
 * (2) **Ir al Hideout**.
 
-* (3) **No Molestar** mode button switch.
+* (3) **No Molestar** (botón de activar/desactivar).
 
-* (4) **Historial** panel window.
+* (4) **Historial** panel.
 
-* (5) **Item Grid** set up.
+* (5) **Item Grid** configuración.
 
 * (6) **Configuración**.
   
@@ -158,7 +158,7 @@ Tras lanzarlo, serás bienvenido con una pequeña visión de conjunto de la apli
 
 <br/>
 
-**Notification panel** *(modo desbloqueado)*
+**Panel de notificaciones** *(modo desbloqueado)*
 
 <p align="center">
   <img src="http://i.imgur.com/ljIOEYk.png"/>
