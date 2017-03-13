@@ -1,9 +1,9 @@
 {
-  "version":"1.0.0.5",
+  "version":"1.0.0.6",
   "notes":[
   {
     "title" : "New update",
-    "text" : "- New feature: Stash Highlight - now Mercury highlights where the item is located via a small overlay box on your screen. Check it out!\n\n- IMPORTANT: We are opening the code on github. This should completely clear MercuryTrade from any possible controversy from now on.\n\nWe are making a thread on Reddit with the announcement. Thanks for your support!",
+    "text" : "FOR THE USERS WHO HAVE ISSUES WITH BUTTONS NOT WORKING:\na) Do not run Path of Exile as administrator. This will most likely fix the problem.\nb) If that doesn't help either, we made another launcher as an alternative way to run the application - please check out our github page.\n\n- Item Name section in the notification panel is now a button. Click to copy item name to clipboard.\n- Better Item Grid clarity.\n- Fixed an issue with \"Restart\" panel appearing beyond the screen.",
     "image" : "",
     "layout" : "VERTICAL"
   }

@@ -1,6 +1,8 @@
 package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.events.custom.UpdateInfoEvent;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.frame.impl.NotesFrame;
@@ -67,8 +69,19 @@ public class HelpPanel extends JPanel implements HasUI {
                 }
             }
         });
+        JButton updateEvent = componentsFactory.getBorderedButton("Update event");
+        updateEvent.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)){
+                    EventRouter.INSTANCE.fireEvent(new UpdateInfoEvent(123));
+                    FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
+                }
+            }
+        });
         this.add(openTutorial);
         this.add(openTests);
         this.add(patchNotes);
+        this.add(updateEvent);
     }
 }

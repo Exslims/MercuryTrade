@@ -74,7 +74,11 @@ public class UpdateReadyFrame extends OverlaidFrame {
             if(tbLocation.y + 30 + this.getHeight() > dim.height){
                 this.setLocation(tbLocation.x,tbLocation.y - 44);
             }else {
-                this.setLocation(tbLocation.x, tbLocation.y + 40);
+                this.setLocation(tbLocation.x, tbLocation.y + 44);
+            }
+            int deltaWidth = dim.width - (this.getLocation().x + this.getWidth());
+            if(deltaWidth < 0){
+                this.setLocation(tbLocation.x - Math.abs(deltaWidth), this.getLocation().y);
             }
             if (!this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
                 this.setVisible(true);
