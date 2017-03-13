@@ -53,7 +53,7 @@ If you've received multiple notifications before dismissing your current one, th
 
 
 <p align="center">
-  <img src="http://i.imgur.com/LQ3cySc.png"/>
+  <img src="http://i.imgur.com/Y00d0FF.png"/>
 </p>
 
 <p align="center"> <i>Response buttons are fully customizable</i> </p>
@@ -66,7 +66,7 @@ If you've received multiple notifications before dismissing your current one, th
 &nbsp; *Main feature:* **History**
 
 <p align="center">
-  <img src="http://i.imgur.com/oXh2Prp.png"/>
+  <img src="http://i.imgur.com/hQarj9q.png"/>
 </p>
 
 <p align="center"> <i>History</i> </p>
@@ -91,10 +91,35 @@ Important to mention: in Path of Exile when you use your stash you can't click o
 
 #
 
+&nbsp; *Minor feature:* **Stash Highlight**
+
+<p align="center">
+  <img src="http://i.imgur.com/FA8J8Fp.png"/>
+</p>
+
+<p align="center"> <i>Mouse over this little box to highlight the location.</i> </p>
+
+<br/>
+
+Mercury can highlight the stash location of the item somebody's buying. You will have to set up this Item Grid to align it with your stash, because different people play on different screen resolutions.
+
+<p align="center">
+  <img src="http://i.imgur.com/TOD1lM7.png"/>
+</p>
+
+<p align="center"> <i>Item Grid set up.</i> </p>
+
+
+
+
+
+#
+
+
 &nbsp; *Minor feature:* **Do not Disturb**
 
 <p align="center">
-  <img src="http://i.imgur.com/NaYNXnt.png"/>
+  <img src="http://i.imgur.com/59NxCqA.png"/>
 </p>
 
 <p align="center"> <i>DND on TaskBar panel</i> </p>
@@ -114,18 +139,22 @@ Upon launch you'll be greeted with a short overview of the application (identica
 **Task panel**:
 
 <p align="center">
-  <img src="http://i.imgur.com/FfheILR.png"/>
+  <img src="http://i.imgur.com/LYl3Xi1.png"/>
 </p>
 
 * (1) **Panel unlock**.
 
-* (2) **Do Not Disturb** mode button switch.
+* (2) **Travel to Hideout**.
 
-* (3) **History** panel window.
+* (3) **Do Not Disturb** mode button switch.
 
-* (4) **Settings**.
+* (4) **History** panel window.
+
+* (5) **Item Grid** set up.
+
+* (6) **Settings**.
   
-* (5) **Exit**.
+* (7) **Exit**.
 
 <br/>
 
