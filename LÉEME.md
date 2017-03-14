@@ -10,6 +10,8 @@ Descarga MercuryTrade.jar: [Última versión](https://github.com/Exslims/Mercury
 
 Sugerencias y *feedback*: [Enlace](https://github.com/Exslims/MercuryTrade/issues)
 
+**EJECUTABLE ALTERNATIVO**: MercuryTrade.**RAR**: última versión. ¡Descomprime y ejecuta como administrador el .exe! Este ejecutable es principalmente para la gente que tiene problemas de visibilidad con los botones.
+
 ---
  <p align="center">
  <img src="http://i.imgur.com/DWJQSsL.png"/>
