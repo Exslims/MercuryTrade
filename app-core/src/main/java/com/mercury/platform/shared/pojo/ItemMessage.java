@@ -1,21 +1,11 @@
 package com.mercury.platform.shared.pojo;
 
-import java.util.Date;
-
-/**
- * Created by Константин on 11.01.2017.
- */
 public class ItemMessage extends Message {
     private String itemName;
-    private String tabInfo;
-
+    private String tabName;
+    private int left;
+    private int top;
     public ItemMessage() {
-    }
-
-    public ItemMessage(String sourceString,String whisperNickname, Date messageDate, String itemName, Double curCount, String currency, String tabName, String offer) {
-        super(sourceString,whisperNickname,offer,messageDate,curCount,currency);
-        this.itemName = itemName;
-        this.tabInfo = tabName;
     }
 
     public String getItemName() {
@@ -26,11 +16,27 @@ public class ItemMessage extends Message {
         this.itemName = itemName;
     }
 
-    public String getTabInfo() {
-        return tabInfo;
+    public String getTabName() {
+        return tabName;
     }
 
-    public void setTabInfo(String tabName) {
-        this.tabInfo = tabName;
+    public void setTabName(String tabName) {
+        this.tabName = tabName;
+    }
+
+    public int getLeft() {
+        return left;
+    }
+
+    public void setLeft(int left) {
+        this.left = left;
+    }
+
+    public int getTop() {
+        return top;
+    }
+
+    public void setTop(int top) {
+        this.top = top;
     }
 }

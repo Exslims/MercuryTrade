@@ -1,9 +1,8 @@
 package com.mercury.platform.ui.frame.impl;
 
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.CloseMessagePanelEvent;
-import com.mercury.platform.shared.events.custom.ShowItemMeshEvent;
+import com.mercury.platform.shared.events.custom.ShowItemGridEvent;
 import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -18,9 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 
@@ -31,7 +28,6 @@ public class ItemsGridFrame extends MovableComponentFrame{
     private List<ItemCell> cells;
     private Map<String,ItemInfoPanel> tabButtons;
     private JPanel navBar;
-    private JLabel prevLabel;
 
     public ItemsGridFrame() {
         super("MercuryTrade");
@@ -47,23 +43,15 @@ public class ItemsGridFrame extends MovableComponentFrame{
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.getRootPane().setBorder(null);
 
-        JPanel itemsMesh = componentsFactory.getTransparentPanel(new GridBagLayout());
-        GridBagConstraints column = new GridBagConstraints();
-        column.weightx = 0.1f;
-        column.weighty = 0.1f;
-        column.fill = GridBagConstraints.BOTH;
-        column.anchor = GridBagConstraints.NORTHWEST;
+        JPanel itemsMesh = componentsFactory.getTransparentPanel(new GridLayout(12,12));
         for (int x = 0; x < 12; x++) {
-            column.gridx = x;
             for (int y = 0; y < 12; y++) {
-                column.gridy = y;
-                JLabel label = componentsFactory.getTextLabel("");
-                label.setOpaque(true);
-                label.setBackground(AppThemeColor.TRANSPARENT);
-                ItemCell cell = new ItemCell(x+1,y+1,label);
+                JPanel cellPanel = new JPanel();
+                cellPanel.setOpaque(true);
+                cellPanel.setBackground(AppThemeColor.TRANSPARENT);
+                ItemCell cell = new ItemCell(x+1,y+1,cellPanel);
                 cells.add(cell);
-                prevLabel = label;
-                itemsMesh.add(label,column);
+                itemsMesh.add(cellPanel);
             }
         }
         JPanel rightPanel = componentsFactory.getTransparentPanel(new BorderLayout());
@@ -98,15 +86,14 @@ public class ItemsGridFrame extends MovableComponentFrame{
 
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(ShowItemMeshEvent.class, event -> {
+        EventRouter.INSTANCE.registerHandler(ShowItemGridEvent.class, event -> {
             if(configManager.isItemsGridEnable()) {
-                String nickname = ((ShowItemMeshEvent) event).getNickname();
-                String tabInfo = ((ShowItemMeshEvent) event).getTabInfo();
-                //now support only poe trade
-                if (!tabInfo.contains("[") && !tabButtons.containsKey(nickname + tabInfo)) {
-                    String tab = StringUtils.substringBetween(tabInfo, "\"", "\"");
-                    int x = Integer.parseInt(StringUtils.substringBetween(tabInfo, "left ", ","));
-                    int y = Integer.parseInt(StringUtils.substringAfter(tabInfo, "top "));
+                ItemMessage message = ((ShowItemGridEvent) event).getMessage();
+                String nickname = message.getWhisperNickname();
+                if (!tabButtons.containsKey(nickname + message.getTabName())) {
+                    String tab = message.getTabName();
+                    int x = message.getLeft();
+                    int y = message.getTop();
                     ItemInfoPanel button = new ItemInfoPanel(nickname, tab);
                     button.setAlignmentY(SwingConstants.CENTER);
                     button.addMouseListener(new MouseAdapter() {
@@ -151,21 +138,21 @@ public class ItemsGridFrame extends MovableComponentFrame{
                         this.setVisible(true);
                     }
                     navBar.add(button);
-                    tabButtons.put(nickname + tabInfo, button);
+                    tabButtons.put(nickname + message.getTabName(), button);
                     pack();
                 }
             }
         });
         EventRouter.INSTANCE.registerHandler(CloseMessagePanelEvent.class, event -> {
-            Message message = ((CloseMessagePanelEvent) event).getMessage();
-            if(message instanceof ItemMessage) {
-                String tabInfo = ((ItemMessage) message).getTabInfo();
+            Message sourceMessage = ((CloseMessagePanelEvent) event).getMessage();
+            if(sourceMessage instanceof ItemMessage) {
+                ItemMessage message = ((ItemMessage) sourceMessage);
                 String nickname = message.getWhisperNickname();
-                ItemInfoPanel tabButton = tabButtons.get(nickname + tabInfo);
+                ItemInfoPanel tabButton = tabButtons.get(nickname + message.getTabName());
                 if(tabButton != null){
                     navBar.remove(tabButton);
-                    int x = Integer.parseInt(StringUtils.substringBetween(tabInfo,"left ",","));
-                    int y = Integer.parseInt(StringUtils.substringAfter(tabInfo,"top "));
+                    int x = message.getLeft();
+                    int y = message.getTop();
                     Optional<ItemCell> targetCell = cells
                             .stream()
                             .filter(cell -> (cell.getX() == x && cell.getY() == y))
@@ -174,7 +161,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
                         itemCell.getLabel().setBorder(null);
                         repaint();
                     });
-                    tabButtons.remove(nickname+tabInfo);
+                    tabButtons.remove(nickname+message.getTabName());
                     this.pack();
                     this.repaint();
                     if(navBar.getComponentCount() == 0){
@@ -192,11 +179,54 @@ public class ItemsGridFrame extends MovableComponentFrame{
         JPanel topPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         topPanel.setBackground(AppThemeColor.FRAME);
         topPanel.setPreferredSize(new Dimension(50,68));
-        JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel defaultGridPanel = componentsFactory.getTransparentPanel(new GridLayout(12,12));
+        for (int x = 0; x < 12; x++) {
+            for (int y = 0; y < 12; y++) {
+                JPanel cell = new JPanel();
+                cell.setOpaque(true);
+                cell.setBackground(AppThemeColor.TRANSPARENT);
+                cell.setBorder(BorderFactory.createLineBorder(AppThemeColor.SCROLL_BAR));
+                defaultGridPanel.add(cell);
+            }
+        }
+        defaultGridPanel.setBackground(AppThemeColor.FRAME_ALPHA);
+
+        JPanel quadGridPanel = componentsFactory.getTransparentPanel(new GridLayout(24,24));
+        for (int x = 0; x < 24; x++) {
+            for (int y = 0; y < 24; y++) {
+                JPanel cell = new JPanel();
+                cell.setOpaque(true);
+                cell.setBackground(AppThemeColor.TRANSPARENT);
+                cell.setBorder(BorderFactory.createLineBorder(AppThemeColor.SCROLL_BAR));
+                quadGridPanel.add(cell);
+            }
+        }
+        quadGridPanel.setBackground(AppThemeColor.FRAME_ALPHA);
+        JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
+        JComboBox tabType = componentsFactory.getComboBox(new String[]{"1x1", "4x4"});
+        tabType.addItemListener(e -> {
+            if(e.getStateChange() == ItemEvent.SELECTED){
+                String item = (String)e.getItem();
+                if(item.equals("4x4")){
+                    panel.remove(defaultGridPanel);
+                    panel.add(quadGridPanel, BorderLayout.CENTER);
+                    this.pack();
+                    this.repaint();
+                }else {
+                    panel.remove(quadGridPanel);
+                    panel.add(defaultGridPanel, BorderLayout.CENTER);
+                    this.pack();
+                    this.repaint();
+                }
+            }
+        });
+
+        labelPanel.add(tabType);
         Color titleColor = configManager.isItemsGridEnable()?AppThemeColor.TEXT_NICKNAME:AppThemeColor.TEXT_DISABLE;
         JLabel titleLabel = componentsFactory.getTextLabel(FontStyle.BOLD, titleColor, TextAlignment.LEFTOP, 20f, "Align this grid with your stash");
         labelPanel.add(titleLabel);
         topPanel.add(labelPanel, BorderLayout.CENTER);
+
         String title = (configManager.isItemsGridEnable())?"Disable" : "Enable";
         JButton disableButton = componentsFactory.getBorderedButton(title);
         disableButton.setPreferredSize(new Dimension(90,24));
@@ -228,26 +258,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
         disablePanel.add(hideButton);
         topPanel.add(disablePanel,BorderLayout.LINE_END);
         panel.add(topPanel,BorderLayout.PAGE_START);
-
-        JPanel itemsMesh = componentsFactory.getTransparentPanel(new GridBagLayout());
-        GridBagConstraints column = new GridBagConstraints();
-        column.weightx = 0.1f;
-        column.weighty = 0.1f;
-        column.fill = GridBagConstraints.BOTH;
-        column.anchor = GridBagConstraints.NORTHWEST;
-        for (int x = 0; x < 12; x++) {
-            column.gridx = x;
-            for (int y = 0; y < 12; y++) {
-                column.gridy = y;
-                JLabel label = componentsFactory.getTextLabel("");
-                label.setOpaque(true);
-                label.setBackground(AppThemeColor.TRANSPARENT);
-                label.setBorder(BorderFactory.createLineBorder(AppThemeColor.SCROLL_BAR));
-                itemsMesh.add(label,column);
-            }
-        }
-        itemsMesh.setBackground(AppThemeColor.FRAME_ALPHA);
-        panel.add(itemsMesh,BorderLayout.CENTER);
+        panel.add(defaultGridPanel,BorderLayout.CENTER);
         setUpResizePanels(panel);
         return panel;
     }

@@ -3,6 +3,7 @@ package com.mercury.platform.core;
 import com.mercury.platform.core.misc.SoundNotifier;
 import com.mercury.platform.core.update.UpdateClientStarter;
 import com.mercury.platform.core.utils.FileMonitor;
+import com.mercury.platform.core.utils.error.ErrorHandler;
 import com.mercury.platform.core.utils.path.GamePathSearcher;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
@@ -36,6 +37,7 @@ public class AppStarter {
         ConfigManager.INSTANCE.load();
         new SoundNotifier();
         new ChatHelper();
+        new ErrorHandler();
 
         Executor executor = Executors.newSingleThreadExecutor();
         UpdateClientStarter updateClientStarter = new UpdateClientStarter();

@@ -13,19 +13,14 @@ import java.util.Arrays;
 public class AppMain {
     private static final Logger logger = LogManager.getLogger(AppMain.class.getSimpleName());
     public static void main(String[] args) {
-        try {
-            new AppStarter().startApplication();
-            String gamePath = ConfigManager.INSTANCE.getGamePath();
-            if(gamePath.equals("") || !ConfigManager.INSTANCE.isValidGamePath(gamePath)){
-                GamePathChooser gamePathChooser = new GamePathChooser();
-                gamePathChooser.init();
-            }else{
-                new FileMonitor().start();
-                FramesManager.INSTANCE.start();
-            }
-        } catch (Exception e){
-            logger.error(Arrays.toString(e.getStackTrace()));
+        new AppStarter().startApplication();
+        String gamePath = ConfigManager.INSTANCE.getGamePath();
+        if(gamePath.equals("") || !ConfigManager.INSTANCE.isValidGamePath(gamePath)){
+            GamePathChooser gamePathChooser = new GamePathChooser();
+            gamePathChooser.init();
+        }else{
+            new FileMonitor().start();
+            FramesManager.INSTANCE.start();
         }
-
     }
 }

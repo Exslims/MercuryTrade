@@ -5,11 +5,11 @@ import javax.swing.*;
 public class ItemCell{
     private int x;
     private int y;
-    private JLabel label;
-    public ItemCell(int x, int y, JLabel label) {
+    private JPanel cell;
+    public ItemCell(int x, int y, JPanel cell) {
         this.x = x;
         this.y = y;
-        this.label = label;
+        this.cell = cell;
     }
 
     public int getX() {
@@ -20,7 +20,7 @@ public class ItemCell{
         return y;
     }
 
-    public JLabel getLabel() {
-        return label;
+    public JPanel getLabel() {
+        return cell;
     }
 }

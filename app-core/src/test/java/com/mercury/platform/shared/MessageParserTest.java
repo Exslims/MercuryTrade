@@ -31,7 +31,6 @@ public class MessageParserTest {
         assertEquals(message2.getItemName(),"Bronn's Lithe Cutthroat's Garb");
         assertEquals(message2.getCurrency(),"exalt");
         assertEquals(message2.getCurCount(),new Double(15));
-        assertEquals(message2.getTabInfo()," \"Maps\"; position: left 5, top 6");
 
         assertEquals(message2.getOffer()," offer 32");
 

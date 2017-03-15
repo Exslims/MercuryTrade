@@ -139,8 +139,8 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 public void mousePressed(MouseEvent e) {
                     if(message instanceof ItemMessage) {
                         copyItemNameToClipboard(((ItemMessage) message).getItemName());
-                        if (((ItemMessage) message).getTabInfo() != null) {
-                            EventRouter.INSTANCE.fireEvent(new ShowItemMeshEvent(message.getWhisperNickname(), ((ItemMessage) message).getTabInfo()));
+                        if (((ItemMessage) message).getTabName() != null) {
+                            EventRouter.INSTANCE.fireEvent(new ShowItemGridEvent((ItemMessage) message));
                         }
                     }
                 }
@@ -252,8 +252,8 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/invite " + whisper));
                 if(message instanceof ItemMessage) {
                     copyItemNameToClipboard(((ItemMessage) message).getItemName());
-                    if (((ItemMessage) message).getTabInfo() != null) {
-                        EventRouter.INSTANCE.fireEvent(new ShowItemMeshEvent(message.getWhisperNickname(), ((ItemMessage) message).getTabInfo()));
+                    if (((ItemMessage) message).getTabName() != null) {
+                        EventRouter.INSTANCE.fireEvent(new ShowItemGridEvent((ItemMessage) message));
                     }
                 }
             });
