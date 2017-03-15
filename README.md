@@ -10,6 +10,8 @@ Download MercuryTrade.jar: [Latest release](https://github.com/Exslims/MercuryTr
 
 Feedback and suggestions: [Link](https://github.com/Exslims/MercuryTrade/issues)
 
+**ALTERNATIVE LAUNCHER**: MercuryTrade.**RAR**: [Latest release](https://github.com/Exslims/MercuryTrade/releases). Unpack and run the attached .exe as administrator! This is primarily for the people who have issues with buttons not working.
+
 ---
  <p align="center">
  <img src="http://i.imgur.com/DWJQSsL.png"/>
@@ -133,6 +135,7 @@ Activate this mode if you don't want to see (and hear!) anything from the applic
 Download and install Java on your computer, then open MercuryTrade.jar. Because the program operates on top of a Path of Exile window as an overlay, **make sure your client is not in fullscreen mode**.
 
 Upon launch you'll be greeted with a short overview of the application (identical to this ReadMe) and patch notes. Afterwards you should see **Task Panel** and **Notification Panel**.
+
 
 <br/>
 
