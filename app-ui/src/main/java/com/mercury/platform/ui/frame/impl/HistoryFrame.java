@@ -64,10 +64,11 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
         for (String message : messages) {
             MessageParser parser = new MessageParser();
             Message parsedMessage = parser.parse(message);
-            MessagePanel messagePanel;
-            messagePanel = new MessagePanel(parsedMessage, this, MessagePanelStyle.HISTORY);
-            messagePanel.disableTime();
-            mainContainer.add(messagePanel);
+            if(parsedMessage != null) {
+                MessagePanel messagePanel = new MessagePanel(parsedMessage, this, MessagePanelStyle.HISTORY);
+                messagePanel.disableTime();
+                mainContainer.add(messagePanel);
+            }
         }
 //        this.miscPanel.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
         this.miscPanel.add(getClearButton(),0);
@@ -79,10 +80,11 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
                 for (String message : nextMessages) {
                     MessageParser parser = new MessageParser();
                     Message parsedMessage = parser.parse(message);
-                    MessagePanel messagePanel;
-                    messagePanel = new MessagePanel(parsedMessage, this, MessagePanelStyle.HISTORY);
-                    messagePanel.disableTime();
-                    mainContainer.add(messagePanel, 0);
+                    if(parsedMessage != null) {
+                        MessagePanel messagePanel = new MessagePanel(parsedMessage, this, MessagePanelStyle.HISTORY);
+                        messagePanel.disableTime();
+                        mainContainer.add(messagePanel, 0);
+                    }
                     vBar.setValue(vBar.getValue() + 100);
                 }
             }

@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.frame.impl;
 
 import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.events.custom.CloseGridItemEvent;
 import com.mercury.platform.shared.events.custom.CloseMessagePanelEvent;
 import com.mercury.platform.shared.events.custom.ShowItemGridEvent;
 import com.mercury.platform.shared.pojo.ItemMessage;
@@ -91,10 +92,9 @@ public class ItemsGridFrame extends MovableComponentFrame{
                 ItemMessage message = ((ShowItemGridEvent) event).getMessage();
                 String nickname = message.getWhisperNickname();
                 if (!tabButtons.containsKey(nickname + message.getTabName())) {
-                    String tab = message.getTabName();
                     int x = message.getLeft();
                     int y = message.getTop();
-                    ItemInfoPanel button = new ItemInfoPanel(nickname, tab);
+                    ItemInfoPanel button = new ItemInfoPanel(message);
                     button.setAlignmentY(SwingConstants.CENTER);
                     button.addMouseListener(new MouseAdapter() {
                         private Timer timer;
@@ -146,31 +146,35 @@ public class ItemsGridFrame extends MovableComponentFrame{
         EventRouter.INSTANCE.registerHandler(CloseMessagePanelEvent.class, event -> {
             Message sourceMessage = ((CloseMessagePanelEvent) event).getMessage();
             if(sourceMessage instanceof ItemMessage) {
-                ItemMessage message = ((ItemMessage) sourceMessage);
-                String nickname = message.getWhisperNickname();
-                ItemInfoPanel tabButton = tabButtons.get(nickname + message.getTabName());
-                if(tabButton != null){
-                    navBar.remove(tabButton);
-                    int x = message.getLeft();
-                    int y = message.getTop();
-                    Optional<ItemCell> targetCell = cells
-                            .stream()
-                            .filter(cell -> (cell.getX() == x && cell.getY() == y))
-                            .findFirst();
-                    targetCell.ifPresent(itemCell -> {
-                        itemCell.getLabel().setBorder(null);
-                        repaint();
-                    });
-                    tabButtons.remove(nickname+message.getTabName());
-                    this.pack();
-                    this.repaint();
-                    if(navBar.getComponentCount() == 0){
-                        this.setVisible(false);
-                    }
-                }
+                closeGridItem((ItemMessage) sourceMessage);
             }
         });
-
+        EventRouter.INSTANCE.registerHandler(CloseGridItemEvent.class, event -> {
+            closeGridItem(((CloseGridItemEvent) event).getMessage());
+        });
+    }
+    private void closeGridItem(ItemMessage message) {
+        String nickname = message.getWhisperNickname();
+        ItemInfoPanel tabButton = tabButtons.get(nickname + message.getTabName());
+        if (tabButton != null) {
+            navBar.remove(tabButton);
+            int x = message.getLeft();
+            int y = message.getTop();
+            Optional<ItemCell> targetCell = cells
+                    .stream()
+                    .filter(cell -> (cell.getX() == x && cell.getY() == y))
+                    .findFirst();
+            targetCell.ifPresent(itemCell -> {
+                itemCell.getLabel().setBorder(null);
+                repaint();
+            });
+            tabButtons.remove(nickname + message.getTabName());
+            this.pack();
+            this.repaint();
+            if (navBar.getComponentCount() == 0) {
+                this.setVisible(false);
+            }
+        }
     }
 
     @Override
