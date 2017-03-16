@@ -37,7 +37,7 @@ public class CustomButtonSettings extends ConfigurationPanel{
     }
 
     @Override
-    public void processAndSave() {
+    public boolean processAndSave() {
         List<ResponseButton> buttons = new ArrayList<>();
         id = 0;
         inputs.forEach(pair -> {
@@ -52,17 +52,13 @@ public class CustomButtonSettings extends ConfigurationPanel{
         ConfigManager.INSTANCE.saveButtonsConfig(buttons);
         ConfigManager.INSTANCE.setDismissAfterKick(dismissCheckBox.isSelected());
         EventRouter.INSTANCE.fireEvent(new CustomButtonsChangedEvent());
+        return true;
     }
 
     @Override
     public void restore() {
-        this.removeAll();
+        scrollContainer.removeAll();
         createUI();
-    }
-
-    @Override
-    protected LayoutManager getPanelLayout() {
-        return new BoxLayout(this,BoxLayout.Y_AXIS);
     }
 
     @Override
@@ -83,8 +79,8 @@ public class CustomButtonSettings extends ConfigurationPanel{
         responseButtons.add(responseLabel,BorderLayout.PAGE_START);
         responseButtons.add(getButtonsTable(),BorderLayout.CENTER);
 
-        this.add(otherSettings);
-        this.add(responseButtons);
+        scrollContainer.add(otherSettings);
+        scrollContainer.add(responseButtons);
     }
     private JPanel getTopPanel() {
         JPanel topPanel = componentsFactory.getTransparentPanel(new BorderLayout());
@@ -119,9 +115,6 @@ public class CustomButtonSettings extends ConfigurationPanel{
         JLabel valueLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,"Response text");
         valueLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-//        JLabel kickLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,"Kick");
-//        kickLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
         JLabel closeLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,"Close");
         closeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -129,8 +122,6 @@ public class CustomButtonSettings extends ConfigurationPanel{
         titleColumn.gridy++;
         buttonsTable.add(valueLabel,valueColumn);
         valueColumn.gridy++;
-//        this.add(kickLabel,kickColumn);
-//        kickColumn.gridy++;
         buttonsTable.add(closeLabel,closeColumn);
         closeColumn.gridy++;
         buttonsTable.add(componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,""),utilColumn);
@@ -187,7 +178,6 @@ public class CustomButtonSettings extends ConfigurationPanel{
         kickCheckBox.setBackground(AppThemeColor.TRANSPARENT);
         kickCheckBox.setSelected(kick);
         kickWrapper.add(kickCheckBox);
-//        this.add(kickWrapper,kC);
         kC.gridy++;
 
         JPanel closeWrapper = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));

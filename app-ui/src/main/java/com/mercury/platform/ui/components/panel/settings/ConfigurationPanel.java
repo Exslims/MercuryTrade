@@ -10,7 +10,7 @@ import javax.swing.*;
  * Created by Константин on 05.01.2017.
  */
 public abstract class ConfigurationPanel extends TransparentPanel implements HasUI{
-    public abstract void processAndSave();
+    public abstract boolean processAndSave();
 
     public abstract void restore();
 }

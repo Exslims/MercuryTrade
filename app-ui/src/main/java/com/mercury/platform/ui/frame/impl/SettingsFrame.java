@@ -27,6 +27,7 @@ import java.util.List;
  */
 public class SettingsFrame extends TitledComponentFrame {
     private List<ConfigurationPanel> innerPanels;
+    private boolean successfullySaved = true;
     public SettingsFrame(){
         super("MercuryTrade");
         setFocusable(true);
@@ -103,8 +104,16 @@ public class SettingsFrame extends TitledComponentFrame {
 
         JButton save = componentsFactory.getBorderedButton("Save");
         save.addActionListener(e -> {
-            innerPanels.forEach(ConfigurationPanel::processAndSave);
-            hideComponent();
+            innerPanels.forEach(settingsPanel -> {
+                if(!settingsPanel.processAndSave()){
+                    successfullySaved = false;
+                }
+            });
+            if(successfullySaved) {
+                hideComponent();
+            }else {
+                successfullySaved = true;
+            }
         });
         JButton close = componentsFactory.getBorderedButton("Close");
         close.addActionListener(e -> {

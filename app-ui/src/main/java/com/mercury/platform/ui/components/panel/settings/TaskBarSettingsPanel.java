@@ -20,7 +20,6 @@ public class TaskBarSettingsPanel extends ConfigurationPanel{
         super();
         createUI();
     }
-
     @Override
     public void createUI() {
         JPanel root = componentsFactory.getTransparentPanel(new GridLayout(1, 1));
@@ -34,7 +33,7 @@ public class TaskBarSettingsPanel extends ConfigurationPanel{
         dndSettings.add(dndLabel,BorderLayout.PAGE_START);
         dndSettings.add(getDNDPanel(),BorderLayout.CENTER);
         root.add(dndSettings);
-        this.add(root, BorderLayout.PAGE_START);
+        scrollContainer.add(root, BorderLayout.PAGE_START);
     }
     private JPanel getDNDPanel(){
         JPanel topPanel = componentsFactory.getTransparentPanel(new GridLayout(2,2));
@@ -65,18 +64,14 @@ public class TaskBarSettingsPanel extends ConfigurationPanel{
     }
     @Override
     public void restore() {
-        this.removeAll();
+        scrollContainer.removeAll();
         createUI();
     }
 
     @Override
-    protected LayoutManager getPanelLayout() {
-        return new BorderLayout();
-    }
-
-    @Override
-    public void processAndSave() {
+    public boolean processAndSave() {
         ConfigManager.INSTANCE.setInGameDnd(enableInGameDND.isSelected());
         ConfigManager.INSTANCE.setDndResponseText(responseField.getText());
+        return true;
     }
 }
