@@ -128,7 +128,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         if(message instanceof ItemMessage) {
             JButton itemButton = componentsFactory.getButton(((ItemMessage) message).getItemName());
             itemButton.setForeground(AppThemeColor.TEXT_IMPORTANT);
-            itemButton.setFont(componentsFactory.getFont(FontStyle.BOLD).deriveFont(16f));
+            itemButton.setFont(componentsFactory.getFont(FontStyle.BOLD).deriveFont(17f));
             itemButton.setBackground(AppThemeColor.TRANSPARENT);
             itemButton.setBorder(BorderFactory.createEmptyBorder(0,4,0,2));
             itemButton.setHorizontalAlignment(SwingConstants.LEFT);
@@ -187,7 +187,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         JPanel forPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         forPanel.setBackground(AppThemeColor.TRANSPARENT);
 
-        JLabel separator = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, "=>");
+        JLabel separator = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 18f, "=>");
         separator.setHorizontalAlignment(SwingConstants.CENTER);
         forPanel.add(separator);
         String curCount = " ";
@@ -213,7 +213,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         labelsPanel.add(tradePanel);
         String offer = message.getOffer();
         if(offer != null && offer.trim().length() > 0) {
-            JLabel offerLabel = componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 16f, offer);
+            JLabel offerLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, offer);
             offerLabel.setAlignmentY(Component.TOP_ALIGNMENT);
             labelsPanel.add(offerLabel);
         }
@@ -411,7 +411,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         return style;
     }
     private JPanel getButtonsPanel(){
-        JPanel panel = new JPanel(new FlowLayout());
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panel.setBackground(AppThemeColor.TRANSPARENT);
         initResponseButtons(panel);
         return panel;
@@ -451,6 +451,10 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         Collections.sort(buttonsConfig);
         buttonsConfig.forEach((buttonConfig)->{
             JButton button = componentsFactory.getBorderedButton(buttonConfig.getTitle());
+            button.setFont(componentsFactory.getFont(FontStyle.BOLD).deriveFont(14f));
+            if(button.getPreferredSize().width < 50){
+                button.setPreferredSize(new Dimension(50,button.getPreferredSize().height));
+            }
             button.addActionListener(e -> {
                 EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("@" + whisper + " " + buttonConfig.getResponseText()));
                 if(buttonConfig.isClose() && !style.equals(MessagePanelStyle.SP_MODE)){
