@@ -1,4 +1,4 @@
-package com.mercury.platform.shared.events.custom;
+package com.mercury.platform.ui.misc.event;
 
 import com.mercury.platform.shared.events.MercuryEvent;
 import com.mercury.platform.shared.pojo.ItemMessage;

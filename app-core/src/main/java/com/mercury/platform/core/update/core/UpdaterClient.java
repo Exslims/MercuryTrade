@@ -37,12 +37,12 @@ public class UpdaterClient {
         ApplicationHolder.getInstance().setVersion(Integer.valueOf(version));
         connectionEstablished = false;
 
-        EventRouter.INSTANCE.registerHandler(RequestPatchNotesEvent.class, event -> {
+        EventRouter.CORE.registerHandler(RequestPatchNotesEvent.class, event -> {
             if(!connectionEstablished){
                 ApplicationHolder.getInstance().setManualRequest(false);
-                EventRouter.INSTANCE.fireEvent(new AlertEvent("Server is currently down, please try again later."));
+                EventRouter.CORE.fireEvent(new AlertEvent("Server is currently down, please try again later."));
             }else {
-                EventRouter.INSTANCE.fireEvent(new CheckOutPatchNotes());
+                EventRouter.CORE.fireEvent(new CheckOutPatchNotes());
             }
         });
     }

@@ -43,7 +43,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
         if (object instanceof byte[]) {
             byte[] bytes = (byte[]) object;
             chunks = Bytes.concat(chunks,bytes);
-            EventRouter.INSTANCE.fireEvent(new ChunkLoadedEvent(percentDelta));
+            EventRouter.CORE.fireEvent(new ChunkLoadedEvent(percentDelta));
             if (chunks.length == length) {
                 UpdateReceivedEvent event = new UpdateReceivedEvent(chunks);
                 UpdaterClientEventBus.getInstance().post(event);
@@ -64,10 +64,10 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
                 Integer version = ApplicationHolder.getInstance().getVersion();
                 context.channel().writeAndFlush(new UpdateDescriptor(UpdateType.REQUEST_INFO, version));
             }
-            EventRouter.INSTANCE.registerHandler(CheckOutPatchNotes.class, handler -> {
+            EventRouter.CORE.registerHandler(CheckOutPatchNotes.class, handler -> {
                 checkOutPatchNotes();
             });
-            EventRouter.INSTANCE.registerHandler(StartUpdateEvent.class, handler -> {
+            EventRouter.CORE.registerHandler(StartUpdateEvent.class, handler -> {
                 getLatestUpdate();
             });
         }

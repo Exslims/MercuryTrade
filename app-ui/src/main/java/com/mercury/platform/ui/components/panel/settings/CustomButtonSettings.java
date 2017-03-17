@@ -6,7 +6,6 @@ import com.mercury.platform.shared.events.custom.CustomButtonsChangedEvent;
 import com.mercury.platform.shared.pojo.ResponseButton;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -51,7 +50,7 @@ public class CustomButtonSettings extends ConfigurationPanel{
         });
         ConfigManager.INSTANCE.saveButtonsConfig(buttons);
         ConfigManager.INSTANCE.setDismissAfterKick(dismissCheckBox.isSelected());
-        EventRouter.INSTANCE.fireEvent(new CustomButtonsChangedEvent());
+        EventRouter.UI.fireEvent(new CustomButtonsChangedEvent());
         return true;
     }
 

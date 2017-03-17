@@ -88,7 +88,7 @@ public class DonationAlertFrame extends OverlaidFrame {
 
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(ShowDonationAlert.class, e-> {
+        EventRouter.CORE.registerHandler(ShowDonationAlert.class, e-> {
             setAlwaysOnTop(true);
             setVisible(true);
             this.pack();

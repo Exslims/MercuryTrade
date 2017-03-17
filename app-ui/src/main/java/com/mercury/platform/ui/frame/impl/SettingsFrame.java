@@ -4,7 +4,6 @@ package com.mercury.platform.ui.frame.impl;
 import com.mercury.platform.core.update.core.holder.ApplicationHolder;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.AddShowDelayEvent;
-import com.mercury.platform.shared.events.custom.RepaintEvent;
 import com.mercury.platform.shared.events.custom.RequestPatchNotesEvent;
 import com.mercury.platform.ui.components.fields.MercuryTabbedPane;
 import com.mercury.platform.ui.components.panel.settings.*;
@@ -15,10 +14,6 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
@@ -78,7 +73,7 @@ public class SettingsFrame extends TitledComponentFrame {
                         "Check for updates");
         checkUpdates.addActionListener(action -> {
             ApplicationHolder.getInstance().setManualRequest(true);
-            EventRouter.INSTANCE.fireEvent(new RequestPatchNotesEvent());
+            EventRouter.CORE.fireEvent(new RequestPatchNotesEvent());
         });
         JButton openTests =
                 componentsFactory.getIconButton("app/open-tests.png",
@@ -130,10 +125,6 @@ public class SettingsFrame extends TitledComponentFrame {
 
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {
-            SettingsFrame.this.revalidate();
-            SettingsFrame.this.repaint();
-        });
     }
 
     @Override
@@ -144,6 +135,6 @@ public class SettingsFrame extends TitledComponentFrame {
     @Override
     public void hideComponent() {
         super.hideComponent();
-        EventRouter.INSTANCE.fireEvent(new AddShowDelayEvent());
+        EventRouter.CORE.fireEvent(new AddShowDelayEvent());
     }
 }

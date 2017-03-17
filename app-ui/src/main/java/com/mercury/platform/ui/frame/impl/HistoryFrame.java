@@ -5,16 +5,15 @@ import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.MercuryEvent;
 import com.mercury.platform.shared.events.custom.NewWhispersEvent;
-import com.mercury.platform.shared.events.custom.RepaintEvent;
 import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.shared.pojo.Message;
-import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.MessagePanel;
 import com.mercury.platform.ui.components.panel.ScrollContainer;
 import com.mercury.platform.ui.components.panel.misc.MessagePanelStyle;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.event.RepaintEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.swing.*;
@@ -116,16 +115,17 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
 
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(NewWhispersEvent.class, (MercuryEvent event) -> {
-            Message message = ((NewWhispersEvent) event).getMessage();
-            HistoryManager.INSTANCE.add(message);
-            MessagePanel messagePanel = new MessagePanel(message, this, MessagePanelStyle.HISTORY);
-            mainContainer.add(messagePanel);
-            trimContainer();
-            this.pack();
-
+        EventRouter.CORE.registerHandler(NewWhispersEvent.class, (MercuryEvent event) -> {
+            SwingUtilities.invokeLater(()-> {
+                Message message = ((NewWhispersEvent) event).getMessage();
+                HistoryManager.INSTANCE.add(message);
+                MessagePanel messagePanel = new MessagePanel(message, this, MessagePanelStyle.HISTORY);
+                mainContainer.add(messagePanel);
+                trimContainer();
+                this.pack();
+            });
         });
-        EventRouter.INSTANCE.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {
+        EventRouter.UI.registerHandler(RepaintEvent.RepaintMessageFrame.class, event -> {
             this.revalidate();
             this.repaint();
         });

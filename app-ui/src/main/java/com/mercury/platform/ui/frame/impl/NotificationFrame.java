@@ -50,7 +50,7 @@ public class NotificationFrame extends OverlaidFrame {
 
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(NotificationEvent.class, event -> {
+        EventRouter.UI.registerHandler(NotificationEvent.class, event -> {
             messageLabel.setText(((NotificationEvent) event).getNotification());
             NotificationFrame.this.pack();
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

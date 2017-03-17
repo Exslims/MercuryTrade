@@ -13,10 +13,12 @@ import com.mercury.platform.ui.components.panel.misc.MessagePanelStyle;
 import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.frame.impl.util.FlowDirections;
-import com.mercury.platform.ui.frame.impl.util.TradeMode;
 import com.mercury.platform.ui.frame.location.UndecoratedFrameState;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
+import com.mercury.platform.ui.misc.event.CloseMessagePanelEvent;
+import com.mercury.platform.ui.misc.event.RepaintEvent;
+import com.mercury.platform.ui.misc.event.ShowTooltipEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -81,7 +83,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
 
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(DndModeEvent.class, event -> {
+        EventRouter.CORE.registerHandler(DndModeEvent.class, event -> {
             this.dnd = ((DndModeEvent)event).isDnd();
             if(dnd){
                 this.setVisible(false);
@@ -96,52 +98,54 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
                 setUpExpandButton();
             }
         });
-        EventRouter.INSTANCE.registerHandler(NewWhispersEvent.class, event -> {
-            Message message = ((NewWhispersEvent) event).getMessage();
-            MessagePanel messagePanel;
-            if(flowDirections.equals(FlowDirections.DOWNWARDS)) {
-                messagePanel = new MessagePanel(message, this, MessagePanelStyle.DOWNWARDS_SMALL);
-            }else {
-                messagePanel = new MessagePanel(message, this, MessagePanelStyle.UPWARDS_SMALL);
-            }
-            if (!dnd && !this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
-                this.setVisible(true);
-            } else {
-                prevState = FrameStates.SHOW;
-            }
-            if(flowDirections.equals(FlowDirections.UPWARDS)){
-                mainContainer.add(messagePanel, 1);
-            }else {
-                mainContainer.add(messagePanel);
-            }
-            this.pack();
-            if(currentExpandedMsgCount < expandedMsgCount){
-                messagePanel.expand();
-            }
-            switch (flowDirections){
-                case DOWNWARDS:{
-                    if(mainContainer.getComponentCount() > limitMsgCount && !expanded){
-                        messagePanel.setVisible(false);
-                    }
-                    if(mainContainer.getComponentCount() > limitMsgCount){
-                        setUpExpandButton();
-                        expandAllFrame.incMessageCount();
-                    }
-                    break;
+        EventRouter.CORE.registerHandler(NewWhispersEvent.class, event -> {
+            SwingUtilities.invokeLater(()-> {
+                Message message = ((NewWhispersEvent) event).getMessage();
+                MessagePanel messagePanel;
+                if (flowDirections.equals(FlowDirections.DOWNWARDS)) {
+                    messagePanel = new MessagePanel(message, this, MessagePanelStyle.DOWNWARDS_SMALL);
+                } else {
+                    messagePanel = new MessagePanel(message, this, MessagePanelStyle.UPWARDS_SMALL);
                 }
-                case UPWARDS:{
-                    if(mainContainer.getComponentCount() > (limitMsgCount + 1) && !expanded){
-                        messagePanel.setVisible(false);
-                    }
-                    if(mainContainer.getComponentCount() > (limitMsgCount + 1)){
-                        setUpExpandButton();
-                        expandAllFrame.incMessageCount();
-                    }
-                    break;
+                if (!dnd && !this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
+                    this.setVisible(true);
+                } else {
+                    prevState = FrameStates.SHOW;
                 }
-            }
+                if (flowDirections.equals(FlowDirections.UPWARDS)) {
+                    mainContainer.add(messagePanel, 1);
+                } else {
+                    mainContainer.add(messagePanel);
+                }
+                this.pack();
+                if (currentExpandedMsgCount < expandedMsgCount) {
+                    messagePanel.expand();
+                }
+                switch (flowDirections) {
+                    case DOWNWARDS: {
+                        if (mainContainer.getComponentCount() > limitMsgCount && !expanded) {
+                            messagePanel.setVisible(false);
+                        }
+                        if (mainContainer.getComponentCount() > limitMsgCount) {
+                            setUpExpandButton();
+                            expandAllFrame.incMessageCount();
+                        }
+                        break;
+                    }
+                    case UPWARDS: {
+                        if (mainContainer.getComponentCount() > (limitMsgCount + 1) && !expanded) {
+                            messagePanel.setVisible(false);
+                        }
+                        if (mainContainer.getComponentCount() > (limitMsgCount + 1)) {
+                            setUpExpandButton();
+                            expandAllFrame.incMessageCount();
+                        }
+                        break;
+                    }
+                }
+            });
         });
-        EventRouter.INSTANCE.registerHandler(CloseMessagePanelEvent.class, event -> {
+        EventRouter.UI.registerHandler(CloseMessagePanelEvent.class, event -> {
             Component panel = ((CloseMessagePanelEvent) event).getComponent();
             if(((MessagePanel)panel).isExpanded()){
                 currentExpandedMsgCount--;
@@ -180,7 +184,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
             this.pack();
             setUpExpandButton();
         });
-        EventRouter.INSTANCE.registerHandler(RepaintEvent.RepaintMessagePanel.class, event -> {
+        EventRouter.UI.registerHandler(RepaintEvent.RepaintMessageFrame.class, event -> {
             IncMessageFrame.this.revalidate();
             IncMessageFrame.this.repaint();
         });
@@ -673,12 +677,12 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
                     infoLabel.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseEntered(MouseEvent e) {
-                            EventRouter.INSTANCE.fireEvent(new ShowTooltipEvent(TooltipConstants.NOTIFICATION_SETTINGS, MouseInfo.getPointerInfo().getLocation()));
+                            EventRouter.UI.fireEvent(new ShowTooltipEvent(TooltipConstants.NOTIFICATION_SETTINGS, MouseInfo.getPointerInfo().getLocation()));
                         }
 
                         @Override
                         public void mouseExited(MouseEvent e) {
-                            EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+                            EventRouter.UI.fireEvent(new HideTooltipEvent());
                         }
                     });
                     panel.add(infoLabel,BorderLayout.CENTER);

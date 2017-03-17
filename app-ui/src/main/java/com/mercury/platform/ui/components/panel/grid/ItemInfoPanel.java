@@ -1,11 +1,12 @@
 package com.mercury.platform.ui.components.panel.grid;
 
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.CloseGridItemEvent;
+import com.mercury.platform.ui.misc.event.CloseGridItemEvent;
 import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.event.RepaintEvent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,10 +19,13 @@ import java.awt.event.MouseEvent;
 public class ItemInfoPanel extends JPanel implements HasUI{
     private ComponentsFactory componentsFactory;
     private ItemMessage message;
+    private JPanel cell;
 
-    public ItemInfoPanel(ItemMessage message) {
+    public ItemInfoPanel(ItemMessage message, JPanel cell) {
         this.message = message;
+        this.cell = cell;
         componentsFactory = new ComponentsFactory();
+        setupMouseOverListener();
         createUI();
     }
 
@@ -39,19 +43,29 @@ public class ItemInfoPanel extends JPanel implements HasUI{
 
         JButton hideButton = componentsFactory.getIconButton("app/close.png", 10, AppThemeColor.FRAME_ALPHA, "Close");
         hideButton.addActionListener((action)->{
-            EventRouter.INSTANCE.fireEvent(new CloseGridItemEvent(message));
+            EventRouter.UI.fireEvent(new CloseGridItemEvent(message));
         });
         this.add(hideButton,BorderLayout.LINE_END);
 
-        JPanel tabInfoPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        tabInfoPanel.add(componentsFactory.getTextLabel("Tab: " +message.getTabName()));
+        JPanel tabInfoPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        JLabel tabLabel = componentsFactory.getTextLabel("Tab: " + message.getTabName());
+        tabInfoPanel.add(tabLabel);
         tabInfoPanel.setBorder(BorderFactory.createEmptyBorder(-8,0,-6,0));
+        JCheckBox isItQuad = componentsFactory.getCheckBox("todo");
+        tabInfoPanel.add(isItQuad);
         this.add(tabInfoPanel,BorderLayout.PAGE_END);
         this.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
+    }
+    private void setupMouseOverListener(){
         this.addMouseListener(new MouseAdapter() {
+            private Timer timer;
             @Override
             public void mouseEntered(MouseEvent e) {
                 setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_DEFAULT, 1));
+                if (timer != null && timer.isRunning()) {
+                    timer.stop();
+                }
+                cell.setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_DEFAULT, 2));
             }
 
             @Override
@@ -59,6 +73,13 @@ public class ItemInfoPanel extends JPanel implements HasUI{
                 if(!getBounds().contains(e.getPoint())) {
                     setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
                 }
+                timer = new Timer(1500, null);
+                timer.addActionListener(action -> {
+                    timer.stop();
+                    cell.setBorder(null);
+                    EventRouter.UI.fireEvent(new RepaintEvent.RepaintItemGrid());
+                });
+                timer.start();
             }
         });
     }

@@ -3,9 +3,7 @@ package com.mercury.platform.core.utils.interceptor;
 import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.NewWhispersEvent;
 import com.mercury.platform.shared.events.custom.OutTradeMessageEvent;
-import com.mercury.platform.shared.events.custom.WhisperNotificationEvent;
 import com.mercury.platform.shared.pojo.Message;
 
 /**
@@ -16,7 +14,7 @@ public class OutTradeMessagesInterceptor extends MessageInterceptor {
     @Override
     protected void process(String message) {
         Message parsedMessage = messageParser.parse(message);
-        EventRouter.INSTANCE.fireEvent(new OutTradeMessageEvent(parsedMessage));
+        EventRouter.CORE.fireEvent(new OutTradeMessageEvent(parsedMessage));
     }
 
     @Override

@@ -9,9 +9,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MessageParser {
-    private final static String poeTradePattern = "^(.*\\s)?(\\w+): Hi, I would like to buy your (.+) listed for (\\d+) (.+) in ([\\w-]+)\\.*\\s*(\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\))?\\s*(.*)$";
-    private final static String poeCurrencyPattern = "^(.*\\s)?(\\w+): Hi, I'd like to buy your (\\d+) (.+) for my (\\d+) (.+) in ([\\w-]+)\\.*\\s*(.*)$";
-    private final static String poeTradeNoBuyout = "^(.*\\s)?(\\w+): Hi, I would like to buy your (.+) in ([\\w-]+)\\.*\\s*(\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\))?\\s*(.*)$";
+    private final static String poeTradePattern = "^(.*\\s)?(\\w+):.+ to buy your (.+) listed for (\\d+) (.+) in ([\\w-]+)\\.*\\s*(\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\))?\\s*(.*)$";
+    private final static String poeCurrencyPattern = "^(.*\\s)?(\\w+):.+ to buy your (\\d+) (.+) for my (\\d+) (.+) in ([\\w-]+)\\.*\\s*(.*)$";
+    private final static String poeTradeNoBuyout = "^(.*\\s)?(\\w+):.+ to buy your (.+) in ([\\w-]+)\\.*\\s*(\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\))?\\s*(.*)$";
 
     private Pattern poeTradeItemPattern;
     private Pattern poeTradeCurrencyPattern;
@@ -41,6 +41,18 @@ public class MessageParser {
             message.setOffer(poeTradeItemMatcher.group(11));
             return message;
         }
+        Matcher poeTradeCurrencyMatcher = poeTradeCurrencyPattern.matcher(sourceMessage);
+        if(poeTradeCurrencyMatcher.find()){
+            CurrencyMessage message = new CurrencyMessage();
+            message.setSourceString(fullMessage);
+            message.setWhisperNickname(poeTradeCurrencyMatcher.group(2));
+            message.setCurrForSaleCount(Double.parseDouble(poeTradeCurrencyMatcher.group(3)));
+            message.setCurrForSaleTitle(poeTradeCurrencyMatcher.group(4));
+            message.setCurCount(Double.parseDouble(poeTradeCurrencyMatcher.group(5)));
+            message.setCurrency(poeTradeCurrencyMatcher.group(6));
+            message.setOffer(poeTradeCurrencyMatcher.group(8));
+            return message;
+        }
         Matcher poeTradeNoBuyoutMatcher = poeTradeNoBuyoutPattern.matcher(sourceMessage);
         if(poeTradeNoBuyoutMatcher.find()){
             ItemMessage message = new ItemMessage();
@@ -55,18 +67,6 @@ public class MessageParser {
                 message.setTop(Integer.parseInt(poeTradeNoBuyoutMatcher.group(8)));
             }
             message.setOffer(poeTradeNoBuyoutMatcher.group(9));
-            return message;
-        }
-        Matcher poeTradeCurrencyMatcher = poeTradeCurrencyPattern.matcher(sourceMessage);
-        if(poeTradeCurrencyMatcher.find()){
-            CurrencyMessage message = new CurrencyMessage();
-            message.setSourceString(fullMessage);
-            message.setWhisperNickname(poeTradeCurrencyMatcher.group(2));
-            message.setCurrForSaleCount(Double.parseDouble(poeTradeCurrencyMatcher.group(3)));
-            message.setCurrForSaleTitle(poeTradeCurrencyMatcher.group(4));
-            message.setCurCount(Double.parseDouble(poeTradeCurrencyMatcher.group(5)));
-            message.setCurrency(poeTradeCurrencyMatcher.group(6));
-            message.setOffer(poeTradeCurrencyMatcher.group(8));
             return message;
         }
         return null;

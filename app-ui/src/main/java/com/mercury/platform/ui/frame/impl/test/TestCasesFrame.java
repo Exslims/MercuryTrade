@@ -1,10 +1,8 @@
 package com.mercury.platform.ui.frame.impl.test;
 
-import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
-import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -173,7 +171,7 @@ public class TestCasesFrame extends TitledComponentFrame {
                         random.nextInt(12) + 1,
                         offer.get(random.nextInt(offer.size()))
                 ));
-                EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(message));
+                EventRouter.CORE.fireEvent(new NewWhispersEvent(message));
             }
         });
         testPanel.add(button,buttonColumn);
@@ -194,7 +192,7 @@ public class TestCasesFrame extends TitledComponentFrame {
                         currency.get(random.nextInt(currency.size())),
                         offer.get(random.nextInt(offer.size()))
                 ));
-                EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(message));
+                EventRouter.CORE.fireEvent(new NewWhispersEvent(message));
             }
         });
         testPanel.add(button1,buttonColumn);
@@ -209,7 +207,7 @@ public class TestCasesFrame extends TitledComponentFrame {
         button2.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new WhisperNotificationEvent());
+                EventRouter.CORE.fireEvent(new WhisperNotificationEvent());
                 String nickname = nickNames.get(random.nextInt(nickNames.size()));
                 Message message = parser.parse(String.format(currencyTemplate,
                         nickname,
@@ -219,18 +217,18 @@ public class TestCasesFrame extends TitledComponentFrame {
                         currency.get(random.nextInt(currency.size())),
                         offer.get(random.nextInt(offer.size()))
                 ));
-                EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(message));
+                EventRouter.CORE.fireEvent(new NewWhispersEvent(message));
 
                 Timer joinedTimer = new Timer(1000,null);
                 joinedTimer.addActionListener(e1 -> {
-                    EventRouter.INSTANCE.fireEvent(new PlayerJoinEvent(nickname));
+                    EventRouter.CORE.fireEvent(new PlayerJoinEvent(nickname));
                     joinedTimer.stop();
                 });
                 joinedTimer.start();
 
                 Timer leftTimer = new Timer(2000,null);
                 leftTimer.addActionListener(e1 -> {
-                    EventRouter.INSTANCE.fireEvent(new PlayerLeftEvent(nickname));
+                    EventRouter.CORE.fireEvent(new PlayerLeftEvent(nickname));
                     leftTimer.stop();
                 });
                 leftTimer.start();
@@ -246,7 +244,7 @@ public class TestCasesFrame extends TitledComponentFrame {
 //        button3.addMouseListener(new MouseAdapter() {
 //            @Override
 //            public void mousePressed(MouseEvent e) {
-//                EventRouter.INSTANCE.fireEvent(new UpdateReadyEvent());
+//                EventRouter.CORE.fireEvent(new UpdateReadyEvent());
 //            }
 //        });
 //        testPanel.add(button3,buttonColumn);
@@ -269,7 +267,7 @@ public class TestCasesFrame extends TitledComponentFrame {
 //                        random.nextInt(12) + 1,
 //                        "can sell cheaper??"
 //                ));
-//                EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(message));
+//                EventRouter.CORE.fireEvent(new NewWhispersEvent(message));
 //            }
 //        });
 //        testPanel.add(button4,buttonColumn);

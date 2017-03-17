@@ -3,7 +3,6 @@ package com.mercury.platform.ui.frame.impl;
 import com.mercury.platform.core.utils.interceptor.MessageInterceptor;
 import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.AddInterceptorEvent;
 import com.mercury.platform.shared.events.custom.AddShowDelayEvent;
@@ -17,15 +16,11 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import javax.swing.plaf.SplitPaneUI;
-import javax.swing.plaf.basic.BasicSpinnerUI;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 
 /**
@@ -196,14 +191,14 @@ public class ChatScannerFrame extends TitledComponentFrame {
                     list.setModel(model);
 
                     if (interceptor != null) {
-                        EventRouter.INSTANCE.fireEvent(new RemoveInterceptorEvent(interceptor));
+                        EventRouter.CORE.fireEvent(new RemoveInterceptorEvent(interceptor));
                     }
                     interceptor = new MessageInterceptor() {
                         @Override
                         protected void process(String message) {
                             msgContainer.addMessage(message);
                             if(soundEnable){
-                                EventRouter.INSTANCE.fireEvent(new ChatFilterMessageEvent());
+                                EventRouter.CORE.fireEvent(new ChatFilterMessageEvent());
                             }
                             ChatScannerFrame.this.pack();
                         }
@@ -229,9 +224,9 @@ public class ChatScannerFrame extends TitledComponentFrame {
                             };
                         }
                     };
-                    EventRouter.INSTANCE.fireEvent(new AddInterceptorEvent(interceptor));
+                    EventRouter.CORE.fireEvent(new AddInterceptorEvent(interceptor));
                     hideComponent();
-                    EventRouter.INSTANCE.fireEvent(new AddShowDelayEvent());
+                    EventRouter.CORE.fireEvent(new AddShowDelayEvent());
                 }
             });
             root.add(chunks,BorderLayout.CENTER);

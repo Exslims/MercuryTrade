@@ -105,13 +105,13 @@ public class ChatHelper implements HasEventHandlers {
 
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(ChatCommandEvent.class, event
+        EventRouter.CORE.registerHandler(ChatCommandEvent.class, event
                 -> executeMessage(((ChatCommandEvent)event).getMessage()));
 
-        EventRouter.INSTANCE.registerHandler(OpenChatEvent.class, event -> {
+        EventRouter.CORE.registerHandler(OpenChatEvent.class, event -> {
             openChat(((OpenChatEvent) event).getWhisper());
         });
-        EventRouter.INSTANCE.registerHandler(DndModeEvent.class, event -> {
+        EventRouter.CORE.registerHandler(DndModeEvent.class, event -> {
             boolean dnd = ((DndModeEvent) event).isDnd();
             if(ConfigManager.INSTANCE.isInGameDnd()){
                 if(dnd) {

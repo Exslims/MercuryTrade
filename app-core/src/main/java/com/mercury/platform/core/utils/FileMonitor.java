@@ -16,7 +16,7 @@ public class FileMonitor {
     private MessageFileHandler fileHandler;
     private FileAlterationMonitor monitor;
     public FileMonitor(){
-        EventRouter.INSTANCE.registerHandler(ChangePOEFolderEvent.class,event -> {
+        EventRouter.CORE.registerHandler(ChangePOEFolderEvent.class, event -> {
             if(monitor != null){
                 try {
                     monitor.stop();

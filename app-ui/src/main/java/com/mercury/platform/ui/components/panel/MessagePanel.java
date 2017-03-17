@@ -18,6 +18,9 @@ import com.mercury.platform.ui.frame.impl.HistoryContainer;
 import com.mercury.platform.ui.frame.impl.MessagesContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
+import com.mercury.platform.ui.misc.event.CloseMessagePanelEvent;
+import com.mercury.platform.ui.misc.event.RepaintEvent;
+import com.mercury.platform.ui.misc.event.ShowItemGridEvent;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -34,9 +37,7 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
-/**
- * Created by Константин on 15.12.2016.
- */
+
 public class MessagePanel extends JPanel implements HasEventHandlers{
     private ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
     private ComponentFrame owner;
@@ -140,7 +141,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                     if(message instanceof ItemMessage) {
                         copyItemNameToClipboard(((ItemMessage) message).getItemName());
                         if (((ItemMessage) message).getTabName() != null) {
-                            EventRouter.INSTANCE.fireEvent(new ShowItemGridEvent((ItemMessage) message));
+                            EventRouter.UI.fireEvent(new ShowItemGridEvent((ItemMessage) message));
                         }
                     }
                 }
@@ -249,20 +250,20 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         if(!style.equals(MessagePanelStyle.HISTORY)) {
             JButton inviteButton = componentsFactory.getIconButton("app/invite.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.INVITE);
             inviteButton.addActionListener(e -> {
-                EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/invite " + whisper));
+                EventRouter.CORE.fireEvent(new ChatCommandEvent("/invite " + whisper));
                 if(message instanceof ItemMessage) {
                     copyItemNameToClipboard(((ItemMessage) message).getItemName());
                     if (((ItemMessage) message).getTabName() != null) {
-                        EventRouter.INSTANCE.fireEvent(new ShowItemGridEvent((ItemMessage) message));
+                        EventRouter.UI.fireEvent(new ShowItemGridEvent((ItemMessage) message));
                     }
                 }
             });
             JButton kickButton = componentsFactory.getIconButton("app/kick.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.KICK);
             kickButton.addActionListener(e -> {
-                EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/kick " + whisper));
+                EventRouter.CORE.fireEvent(new ChatCommandEvent("/kick " + whisper));
                 if(ConfigManager.INSTANCE.isDismissAfterKick()){
                     Timer timer = new Timer(30, action -> {
-                        EventRouter.INSTANCE.fireEvent(new CloseMessagePanelEvent(MessagePanel.this, message));
+                        EventRouter.UI.fireEvent(new CloseMessagePanelEvent(MessagePanel.this, message));
                     });
                     timer.setRepeats(false);
                     timer.start();
@@ -270,7 +271,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             });
             tradeButton = componentsFactory.getIconButton("app/trade.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
             tradeButton.addActionListener(e ->
-                    EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/tradewith " + whisper)));
+                    EventRouter.CORE.fireEvent(new ChatCommandEvent("/tradewith " + whisper)));
             interactionPanel.add(inviteButton);
             interactionPanel.add(kickButton);
             interactionPanel.add(tradeButton);
@@ -284,7 +285,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
         openChatButton.setToolTipText("Open chat");
         openChatButton.addActionListener(e ->
-                EventRouter.INSTANCE.fireEvent(new OpenChatEvent(whisper)));
+                EventRouter.CORE.fireEvent(new OpenChatEvent(whisper)));
 
         interactionPanel.add(openChatButton);
         JButton hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.HIDE_PANEL);
@@ -292,7 +293,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    EventRouter.INSTANCE.fireEvent(new CloseMessagePanelEvent(MessagePanel.this, message));
+                    EventRouter.UI.fireEvent(new CloseMessagePanelEvent(MessagePanel.this, message));
                 }
             }
         });
@@ -333,7 +334,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                         labelText = day + "d " + hours + "h " + minute + "m";
                     }
                     timeLabel.setText(labelText);
-                    EventRouter.INSTANCE.fireEvent(new RepaintEvent.RepaintMessagePanel());
+                    EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
                 }
             });
             timeAgo.start();
@@ -418,29 +419,33 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     }
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(PlayerJoinEvent.class, event -> {
-            String nickName = ((PlayerJoinEvent) event).getNickName();
-            if(nickName.equals(whisper)){
-                whisperLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
-                cachedWhisperColor = AppThemeColor.TEXT_SUCCESS;
-                if(!style.equals(MessagePanelStyle.HISTORY)) {
-                    tradeButton.setEnabled(true);
+        EventRouter.CORE.registerHandler(PlayerJoinEvent.class, event -> {
+            SwingUtilities.invokeLater(()-> {
+                String nickName = ((PlayerJoinEvent) event).getNickName();
+                if(nickName.equals(whisper)){
+                    whisperLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
+                    cachedWhisperColor = AppThemeColor.TEXT_SUCCESS;
+                    if(!style.equals(MessagePanelStyle.HISTORY)) {
+                        tradeButton.setEnabled(true);
+                    }
+                    EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
                 }
-                EventRouter.INSTANCE.fireEvent(new RepaintEvent.RepaintMessagePanel());
-            }
+            });
         });
-        EventRouter.INSTANCE.registerHandler(PlayerLeftEvent.class, event -> {
-            String nickName = ((PlayerLeftEvent) event).getNickName();
-            if(nickName.equals(whisper)){
-                whisperLabel.setForeground(AppThemeColor.TEXT_DISABLE);
-                cachedWhisperColor = AppThemeColor.TEXT_DISABLE;
-                if(!style.equals(MessagePanelStyle.HISTORY)) {
-                    tradeButton.setEnabled(false);
+        EventRouter.CORE.registerHandler(PlayerLeftEvent.class, event -> {
+            SwingUtilities.invokeLater(()-> {
+                String nickName = ((PlayerLeftEvent) event).getNickName();
+                if (nickName.equals(whisper)) {
+                    whisperLabel.setForeground(AppThemeColor.TEXT_DISABLE);
+                    cachedWhisperColor = AppThemeColor.TEXT_DISABLE;
+                    if (!style.equals(MessagePanelStyle.HISTORY)) {
+                        tradeButton.setEnabled(false);
+                    }
+                    EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
                 }
-                EventRouter.INSTANCE.fireEvent(new RepaintEvent.RepaintMessagePanel());
-            }
+            });
         });
-        EventRouter.INSTANCE.registerHandler(CustomButtonsChangedEvent.class, event -> {
+        EventRouter.UI.registerHandler(CustomButtonsChangedEvent.class, event -> {
             this.customButtonsPanel.removeAll();
             initResponseButtons(customButtonsPanel);
             owner.repaint();
@@ -456,10 +461,10 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
                 button.setPreferredSize(new Dimension(50,button.getPreferredSize().height));
             }
             button.addActionListener(e -> {
-                EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("@" + whisper + " " + buttonConfig.getResponseText()));
+                EventRouter.CORE.fireEvent(new ChatCommandEvent("@" + whisper + " " + buttonConfig.getResponseText()));
                 if(buttonConfig.isClose() && !style.equals(MessagePanelStyle.SP_MODE)){
                     Timer timer = new Timer(30, action -> {
-                        EventRouter.INSTANCE.fireEvent(new CloseMessagePanelEvent(MessagePanel.this, message));
+                        EventRouter.UI.fireEvent(new CloseMessagePanelEvent(MessagePanel.this, message));
                     });
                     timer.setRepeats(false);
                     timer.start();

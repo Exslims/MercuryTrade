@@ -17,9 +17,11 @@ import java.util.concurrent.locks.ReentrantLock;
 public class EventRouter {
     private static final Logger LOGGER = LogManager.getLogger(EventRouter.class.getSimpleName());
     private static class EventRouterHolder {
-        static final EventRouter HOLDER_INSTANCE = new EventRouter();
+        static final EventRouter CORE_INSTANCE = new EventRouter();
+        static final EventRouter UI_INSTANCE = new EventRouter();
     }
-    public static EventRouter INSTANCE = EventRouterHolder.HOLDER_INSTANCE;
+    public static EventRouter CORE = EventRouterHolder.CORE_INSTANCE;
+    public static EventRouter UI = EventRouterHolder.UI_INSTANCE;
 
     private ReentrantLock lock = new ReentrantLock();
 

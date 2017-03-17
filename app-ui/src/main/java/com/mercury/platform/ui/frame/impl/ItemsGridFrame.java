@@ -1,9 +1,11 @@
 package com.mercury.platform.ui.frame.impl;
 
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.CloseGridItemEvent;
-import com.mercury.platform.shared.events.custom.CloseMessagePanelEvent;
-import com.mercury.platform.shared.events.custom.ShowItemGridEvent;
+import com.mercury.platform.shared.pojo.StashTab;
+import com.mercury.platform.ui.components.panel.misc.StashTabsContainer;
+import com.mercury.platform.ui.misc.event.CloseGridItemEvent;
+import com.mercury.platform.ui.misc.event.CloseMessagePanelEvent;
+import com.mercury.platform.ui.misc.event.ShowItemGridEvent;
 import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -13,10 +15,9 @@ import com.mercury.platform.ui.components.panel.grid.ItemInfoPanel;
 import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import org.apache.commons.lang3.StringUtils;
+import com.mercury.platform.ui.misc.event.RepaintEvent;
 
 import javax.swing.*;
-import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -26,16 +27,22 @@ import java.util.List;
  * Created by Константин on 18.02.2017.
  */
 public class ItemsGridFrame extends MovableComponentFrame{
-    private List<ItemCell> cells;
+    private List<ItemCell> defaultCells;
+    private List<ItemCell> quadCells;
     private Map<String,ItemInfoPanel> tabButtons;
+    private StashTabsContainer stashTabsContainer;
     private JPanel navBar;
+
+    private JPanel defaultGrid;
+    private JPanel quadTabGrid;
 
     public ItemsGridFrame() {
         super("MercuryTrade");
-        cells = new ArrayList<>();
+        defaultCells = new ArrayList<>();
         tabButtons = new HashMap<>();
         enableMouseOverBorder = false;
         processHideEffect = false;
+        stashTabsContainer = new StashTabsContainer();
     }
 
     @Override
@@ -44,15 +51,15 @@ public class ItemsGridFrame extends MovableComponentFrame{
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.getRootPane().setBorder(null);
 
-        JPanel itemsMesh = componentsFactory.getTransparentPanel(new GridLayout(12,12));
-        for (int x = 0; x < 12; x++) {
-            for (int y = 0; y < 12; y++) {
+        defaultGrid = componentsFactory.getTransparentPanel(new GridLayout(12,12));
+        for (int y = 0; y < 12; y++) {
+            for (int x = 0; x < 12; x++) {
                 JPanel cellPanel = new JPanel();
                 cellPanel.setOpaque(true);
                 cellPanel.setBackground(AppThemeColor.TRANSPARENT);
                 ItemCell cell = new ItemCell(x+1,y+1,cellPanel);
-                cells.add(cell);
-                itemsMesh.add(cellPanel);
+                defaultCells.add(cell);
+                defaultGrid.add(cellPanel);
             }
         }
         JPanel rightPanel = componentsFactory.getTransparentPanel(new BorderLayout());
@@ -65,7 +72,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
         downPanel.addMouseMotionListener(new ResizeByHeightMouseMotionListener());
 
         this.add(getHeaderPanel(),BorderLayout.PAGE_START);
-        this.add(itemsMesh, BorderLayout.CENTER);
+        this.add(defaultGrid, BorderLayout.CENTER);
         this.add(rightPanel,BorderLayout.LINE_END);
         this.add(downPanel,BorderLayout.PAGE_END);
         this.setPreferredSize(this.getMaximumSize());
@@ -87,70 +94,63 @@ public class ItemsGridFrame extends MovableComponentFrame{
 
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(ShowItemGridEvent.class, event -> {
+        EventRouter.UI.registerHandler(ShowItemGridEvent.class, event -> {
             if(configManager.isItemsGridEnable()) {
                 ItemMessage message = ((ShowItemGridEvent) event).getMessage();
                 String nickname = message.getWhisperNickname();
                 if (!tabButtons.containsKey(nickname + message.getTabName())) {
                     int x = message.getLeft();
                     int y = message.getTop();
-                    ItemInfoPanel button = new ItemInfoPanel(message);
-                    button.setAlignmentY(SwingConstants.CENTER);
-                    button.addMouseListener(new MouseAdapter() {
-                        private Timer timer;
-
-                        @Override
-                        public void mouseEntered(MouseEvent e) {
-                            Optional<ItemCell> targetCell = cells
-                                    .stream()
-                                    .filter(cell -> (cell.getX() == x && cell.getY() == y))
-                                    .findFirst();
-                            targetCell.ifPresent(itemCell -> {
-                                if (timer != null && timer.isRunning()) {
-                                    timer.stop();
-                                }
-                                itemCell.getLabel().setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_DEFAULT, 2));
-                            });
-                            repaint();
-                            pack();
-                        }
-
-                        @Override
-                        public void mouseExited(MouseEvent e) {
-                            Optional<ItemCell> targetCell = cells
-                                    .stream()
-                                    .filter(cell -> (cell.getX() == x && cell.getY() == y))
-                                    .findFirst();
-                            targetCell.ifPresent(itemCell -> {
-                                timer = new Timer(1500, null);
-                                timer.addActionListener(action -> {
-                                    timer.stop();
-                                    itemCell.getLabel().setBorder(null);
-                                    repaint();
-                                });
-                                timer.start();
-                            });
-                            repaint();
-                            pack();
-                        }
-                    });
-                    if (navBar.getComponentCount() == 0) {
-                        this.setVisible(true);
+                    StashTab stashTab = null;
+                    if(stashTabsContainer.containsTab(message.getTabName())) {
+                        stashTab = stashTabsContainer.getStashTab(message.getTabName());
                     }
-                    navBar.add(button);
-                    tabButtons.put(nickname + message.getTabName(), button);
-                    pack();
+
+                    Optional<ItemCell> targetCell = defaultCells
+                            .stream()
+                            .filter(cell -> (cell.getX() == x && cell.getY() == y))
+                            .findFirst();
+                    targetCell.ifPresent((itemCell -> {
+                        ItemInfoPanel cellHeader = new ItemInfoPanel(message,itemCell.getCell());
+                        cellHeader.setAlignmentY(SwingConstants.CENTER);
+                        cellHeader.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseEntered(MouseEvent e) {
+                                if(stashTabsContainer.containsTab(message.getTabName())){
+                                    StashTab stashTab = stashTabsContainer.getStashTab(message.getTabName());
+                                    BorderLayout layout = (BorderLayout) getLayout();
+                                    remove(layout.getLayoutComponent(BorderLayout.CENTER));
+                                    if(stashTab.isQuad()){
+                                        add(quadTabGrid,BorderLayout.CENTER);
+                                    }else {
+                                        add(defaultGrid,BorderLayout.CENTER);
+                                    }
+                                    repaint();
+                                }
+                            }
+                        });
+                        if (navBar.getComponentCount() == 0) {
+                            this.setVisible(true);
+                        }
+                        navBar.add(cellHeader);
+                        tabButtons.put(nickname + message.getTabName(), cellHeader);
+                        pack();
+                    }));
                 }
             }
         });
-        EventRouter.INSTANCE.registerHandler(CloseMessagePanelEvent.class, event -> {
+        EventRouter.UI.registerHandler(CloseMessagePanelEvent.class, event -> {
             Message sourceMessage = ((CloseMessagePanelEvent) event).getMessage();
             if(sourceMessage instanceof ItemMessage) {
                 closeGridItem((ItemMessage) sourceMessage);
             }
         });
-        EventRouter.INSTANCE.registerHandler(CloseGridItemEvent.class, event -> {
+        EventRouter.UI.registerHandler(CloseGridItemEvent.class, event -> {
             closeGridItem(((CloseGridItemEvent) event).getMessage());
+        });
+        EventRouter.UI.registerHandler(RepaintEvent.RepaintItemGrid.class, event -> {
+            this.revalidate();
+            this.repaint();
         });
     }
     private void closeGridItem(ItemMessage message) {
@@ -160,12 +160,12 @@ public class ItemsGridFrame extends MovableComponentFrame{
             navBar.remove(tabButton);
             int x = message.getLeft();
             int y = message.getTop();
-            Optional<ItemCell> targetCell = cells
+            Optional<ItemCell> targetCell = defaultCells
                     .stream()
                     .filter(cell -> (cell.getX() == x && cell.getY() == y))
                     .findFirst();
             targetCell.ifPresent(itemCell -> {
-                itemCell.getLabel().setBorder(null);
+                itemCell.getCell().setBorder(null);
                 repaint();
             });
             tabButtons.remove(nickname + message.getTabName());

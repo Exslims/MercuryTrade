@@ -18,8 +18,8 @@ public class IncTradeMessagesInterceptor extends MessageInterceptor {
     protected void process(String message) {
         Message parsedMessage = messageParser.parse(StringUtils.substringAfter(message,"@"));
         if(parsedMessage != null) {
-            EventRouter.INSTANCE.fireEvent(new WhisperNotificationEvent());
-            EventRouter.INSTANCE.fireEvent(new NewWhispersEvent(parsedMessage));
+            EventRouter.CORE.fireEvent(new WhisperNotificationEvent());
+            EventRouter.CORE.fireEvent(new NewWhispersEvent(parsedMessage));
         }
     }
 

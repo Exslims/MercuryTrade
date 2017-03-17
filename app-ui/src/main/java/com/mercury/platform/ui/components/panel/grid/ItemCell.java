@@ -20,7 +20,7 @@ public class ItemCell{
         return y;
     }
 
-    public JPanel getLabel() {
+    public JPanel getCell() {
         return cell;
     }
 }

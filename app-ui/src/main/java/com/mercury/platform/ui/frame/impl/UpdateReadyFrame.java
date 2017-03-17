@@ -42,7 +42,7 @@ public class UpdateReadyFrame extends OverlaidFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 setVisible(false);
-                EventRouter.INSTANCE.fireEvent(new CheckOutPatchNotes());
+                EventRouter.CORE.fireEvent(new CheckOutPatchNotes());
             }
         });
         JButton dismiss = componentsFactory.getButton(
@@ -67,7 +67,7 @@ public class UpdateReadyFrame extends OverlaidFrame {
 
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(UpdateInfoEvent.class, event -> {
+        EventRouter.CORE.registerHandler(UpdateInfoEvent.class, event -> {
             FrameSettings tbSettings = ConfigManager.INSTANCE.getFrameSettings("TaskBarFrame");
             Point tbLocation = tbSettings.getFrameLocation();
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

@@ -2,9 +2,7 @@ package com.mercury.platform.core;
 
 import com.mercury.platform.core.misc.SoundNotifier;
 import com.mercury.platform.core.update.UpdateClientStarter;
-import com.mercury.platform.core.utils.FileMonitor;
 import com.mercury.platform.core.utils.error.ErrorHandler;
-import com.mercury.platform.core.utils.path.GamePathSearcher;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.HistoryManager;
@@ -16,7 +14,6 @@ import com.sun.jna.PointerType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executor;
@@ -44,7 +41,7 @@ public class AppStarter {
         executor.execute(updateClientStarter);
         HistoryManager.INSTANCE.load();
 
-        EventRouter.INSTANCE.registerHandler(UILoadedEvent.class, event -> {
+        EventRouter.CORE.registerHandler(UILoadedEvent.class, event -> {
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
@@ -63,7 +60,7 @@ public class AppStarter {
                     if(!Native.toString(windowText).equals("Path of Exile")){
                         if(APP_STATUS == FrameStates.SHOW) {
                             APP_STATUS = FrameStates.HIDE;
-                            EventRouter.INSTANCE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.HIDE));
+                            EventRouter.CORE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.HIDE));
                         }
                     }else{
                         if(APP_STATUS == FrameStates.HIDE) {
@@ -73,19 +70,19 @@ public class AppStarter {
                             } catch (InterruptedException e) {
                             }
                             APP_STATUS = FrameStates.SHOW;
-                            EventRouter.INSTANCE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.SHOW));
+                            EventRouter.CORE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.SHOW));
                         }
                     }
                 }
             },0,50);
         });
-        EventRouter.INSTANCE.registerHandler(AddShowDelayEvent.class,event -> {
+        EventRouter.CORE.registerHandler(AddShowDelayEvent.class, event -> {
             delay = 300;
         });
-        EventRouter.INSTANCE.registerHandler(ShutdownApplication.class, event -> {
+        EventRouter.CORE.registerHandler(ShutdownApplication.class, event -> {
             shutdown = true;
         });
-        EventRouter.INSTANCE.registerHandler(ShutDownForUpdateEvent.class, event -> {
+        EventRouter.CORE.registerHandler(ShutDownForUpdateEvent.class, event -> {
             shutdown = true;
             updating = true;
         });

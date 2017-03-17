@@ -1,20 +1,20 @@
 package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
-import com.mercury.platform.core.update.core.holder.ApplicationHolder;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.manager.HideSettingsManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.event.ShowTooltipEvent;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
 public class GeneralSettings extends ConfigurationPanel{
     private JSlider minSlider;
@@ -155,8 +155,8 @@ public class GeneralSettings extends ConfigurationPanel{
         ConfigManager.INSTANCE.setWhisperNotifier(WhisperNotifierStatus.get(notifierStatusPicker.getSelectedIndex()));
         ConfigManager.INSTANCE.setCheckUpdateOnStartUp(checkEnable.isSelected());
         if(ConfigManager.INSTANCE.isValidGamePath(gamePathField.getText())){
-            ConfigManager.INSTANCE.setGamePath(gamePathField.getText());
-            EventRouter.INSTANCE.fireEvent(new ChangePOEFolderEvent());
+            ConfigManager.INSTANCE.setGamePath(gamePathField.getText()+ File.separator);
+            EventRouter.CORE.fireEvent(new ChangePOEFolderEvent());
         }else {
             gamePathField.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(AppThemeColor.TEXT_IMPORTANT,1),
@@ -186,17 +186,17 @@ public class GeneralSettings extends ConfigurationPanel{
     private class WrongGamePathListener extends MouseAdapter{
         @Override
         public void mouseEntered(MouseEvent e) {
-            EventRouter.INSTANCE.fireEvent(new ShowTooltipEvent("Wrong Path of Exile folder", MouseInfo.getPointerInfo().getLocation()));
+            EventRouter.UI.fireEvent(new ShowTooltipEvent("Wrong Path of Exile folder", MouseInfo.getPointerInfo().getLocation()));
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-            EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+            EventRouter.UI.fireEvent(new HideTooltipEvent());
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-            EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+            EventRouter.UI.fireEvent(new HideTooltipEvent());
         }
     }
 }

@@ -1,12 +1,10 @@
-package com.mercury.platform.shared.events.custom;
+package com.mercury.platform.ui.misc.event;
 
 import com.mercury.platform.shared.events.MercuryEvent;
 
 import java.awt.*;
 
-/**
- * Created by Константин on 18.01.2017.
- */
+
 public class ShowTooltipEvent implements MercuryEvent {
     private String tooltip;
     private Point cursorPoint;

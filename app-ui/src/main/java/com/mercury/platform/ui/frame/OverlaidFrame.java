@@ -44,7 +44,7 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
             }
         });
 
-        EventRouter.INSTANCE.registerHandler(ChangeFrameVisibleEvent.class, new MercuryEventHandler<ChangeFrameVisibleEvent>() {
+        EventRouter.CORE.registerHandler(ChangeFrameVisibleEvent.class, new MercuryEventHandler<ChangeFrameVisibleEvent>() {
             @Override
             public void handle(ChangeFrameVisibleEvent event) {
                 if(!SwingUtilities.isEventDispatchThread()) {

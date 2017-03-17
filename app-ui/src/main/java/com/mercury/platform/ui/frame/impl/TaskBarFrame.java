@@ -9,6 +9,7 @@ import com.mercury.platform.ui.frame.MovableComponentFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
+import com.mercury.platform.ui.misc.event.RepaintEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.pushingpixels.trident.Timeline;
@@ -86,14 +87,14 @@ public class TaskBarFrame extends MovableComponentFrame{
                 () -> {
                     visibleMode.setIcon(componentsFactory.getIcon("app/visible-dnd-mode.png", 24));
                     TaskBarFrame.this.repaint();
-                    EventRouter.INSTANCE.fireEvent(new NotificationEvent("DND on"));
-                    EventRouter.INSTANCE.fireEvent(new DndModeEvent(true));
+                    EventRouter.UI.fireEvent(new NotificationEvent("DND on"));
+                    EventRouter.CORE.fireEvent(new DndModeEvent(true));
                 },
                 () -> {
                     visibleMode.setIcon(componentsFactory.getIcon("app/visible-always-mode.png", 24));
                     TaskBarFrame.this.repaint();
-                    EventRouter.INSTANCE.fireEvent(new NotificationEvent("DND off"));
-                    EventRouter.INSTANCE.fireEvent(new DndModeEvent(false));
+                    EventRouter.UI.fireEvent(new NotificationEvent("DND off"));
+                    EventRouter.CORE.fireEvent(new DndModeEvent(false));
                 },
                 true
                 );
@@ -110,7 +111,7 @@ public class TaskBarFrame extends MovableComponentFrame{
 
         JButton toHideOut = componentsFactory.getIconButton("app/hideout.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.HIDEOUT);
         toHideOut.addActionListener(action -> {
-            EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/hideout"));
+            EventRouter.CORE.fireEvent(new ChatCommandEvent("/hideout"));
         });
 
         JButton chatFilter = componentsFactory.getIconButton("app/chat-filter.png",24,AppThemeColor.FRAME_ALPHA,TooltipConstants.CHAT_FILTER);
@@ -183,7 +184,7 @@ public class TaskBarFrame extends MovableComponentFrame{
 
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(RepaintEvent.RepaintTaskBar.class, event -> {
+        EventRouter.UI.registerHandler(RepaintEvent.RepaintTaskBar.class, event -> {
             TaskBarFrame.this.revalidate();
             TaskBarFrame.this.repaint();
         });

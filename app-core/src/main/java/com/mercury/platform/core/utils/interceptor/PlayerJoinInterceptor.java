@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 public class PlayerJoinInterceptor extends MessageInterceptor {
     @Override
     protected void process(String message) {
-        EventRouter.INSTANCE.fireEvent(new PlayerJoinEvent(StringUtils.substringBetween(message," : ", " has joined the area.")));
+        EventRouter.CORE.fireEvent(new PlayerJoinEvent(StringUtils.substringBetween(message," : ", " has joined the area.")));
     }
 
     @Override

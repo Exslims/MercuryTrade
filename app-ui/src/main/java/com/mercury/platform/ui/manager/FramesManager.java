@@ -95,11 +95,11 @@ public class FramesManager implements HasEventHandlers{
             }
         });
         initHandlers();
-        EventRouter.INSTANCE.fireEvent(new UILoadedEvent());
+        EventRouter.CORE.fireEvent(new UILoadedEvent());
     }
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(ShowPatchNotesEvent.class, handler -> {
+        EventRouter.CORE.registerHandler(ShowPatchNotesEvent.class, handler -> {
             String patchNotes = ((ShowPatchNotesEvent) handler).getPatchNotes();
             NotesLoader notesLoader = new NotesLoader();
             List<Note> notes = notesLoader.getPatchNotesFromString(patchNotes);
@@ -112,13 +112,13 @@ public class FramesManager implements HasEventHandlers{
     public void exit() {
         framesMap.forEach((k,v) -> {
             v.setVisible(false);
-            EventRouter.INSTANCE.fireEvent(new ShutdownApplication());
+            EventRouter.CORE.fireEvent(new ShutdownApplication());
         });
     }
     public void exitForUpdate() {
         framesMap.forEach((k,v) -> {
             v.setVisible(false);
-            EventRouter.INSTANCE.fireEvent(new ShutDownForUpdateEvent());
+            EventRouter.CORE.fireEvent(new ShutDownForUpdateEvent());
         });
     }
     public void showFrame(Class frameClass){

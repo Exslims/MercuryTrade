@@ -66,7 +66,7 @@ public class OutMessageFrame extends ComponentFrame {
         hoIn.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/hideout " + message.getWhisperNickname()));
+                EventRouter.CORE.fireEvent(new ChatCommandEvent("/hideout " + message.getWhisperNickname()));
             }
         });
         miscPanel.add(hoIn);
@@ -74,7 +74,7 @@ public class OutMessageFrame extends ComponentFrame {
         hoOut.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/hideout"));
+                EventRouter.CORE.fireEvent(new ChatCommandEvent("/hideout"));
             }
         });
         miscPanel.add(hoOut);
@@ -120,7 +120,7 @@ public class OutMessageFrame extends ComponentFrame {
     }
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(OutTradeMessageEvent.class, event -> {
+        EventRouter.CORE.registerHandler(OutTradeMessageEvent.class, event -> {
             if (!this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
                 this.setAlwaysOnTop(true);
                 this.setVisible(true);

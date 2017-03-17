@@ -1,7 +1,6 @@
 package com.mercury.platform.core.utils;
 
 import com.mercury.platform.core.utils.interceptor.*;
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
@@ -81,10 +80,10 @@ public class MessageFileHandler implements HasEventHandlers {
 
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(AddInterceptorEvent.class, event -> {
+        EventRouter.CORE.registerHandler(AddInterceptorEvent.class, event -> {
             interceptors.add(((AddInterceptorEvent) event).getInterceptor());
         });
-        EventRouter.INSTANCE.registerHandler(RemoveInterceptorEvent.class, event -> {
+        EventRouter.CORE.registerHandler(RemoveInterceptorEvent.class, event -> {
             interceptors.remove(((RemoveInterceptorEvent) event).getInterceptor());
         });
     }

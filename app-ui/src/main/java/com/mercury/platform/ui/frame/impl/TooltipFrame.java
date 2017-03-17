@@ -1,15 +1,13 @@
 package com.mercury.platform.ui.frame.impl;
 
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.HideTooltipEvent;
-import com.mercury.platform.shared.events.custom.ShowTooltipEvent;
+import com.mercury.platform.ui.misc.event.ShowTooltipEvent;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.manager.HideSettingsManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,7 +30,7 @@ public class TooltipFrame extends OverlaidFrame {
     }
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(ShowTooltipEvent.class, event -> {
+        EventRouter.UI.registerHandler(ShowTooltipEvent.class, event -> {
             getContentPane().removeAll();
             this.setPreferredSize(null);
             String tooltip = ((ShowTooltipEvent) event).getTooltip();
@@ -68,7 +66,7 @@ public class TooltipFrame extends OverlaidFrame {
             });
             tooltipTimer.start();
         });
-        EventRouter.INSTANCE.registerHandler(HideTooltipEvent.class, event -> {
+        EventRouter.UI.registerHandler(HideTooltipEvent.class, event -> {
             if(tooltipTimer != null) {
                 tooltipTimer.stop();
                 setVisible(false);

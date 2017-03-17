@@ -3,7 +3,7 @@ package com.mercury.platform.ui.components;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.ButtonPressedEvent;
 import com.mercury.platform.shared.events.custom.HideTooltipEvent;
-import com.mercury.platform.shared.events.custom.ShowTooltipEvent;
+import com.mercury.platform.ui.misc.event.ShowTooltipEvent;
 import com.mercury.platform.ui.components.fields.style.MercuryComboBoxUI;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -86,7 +86,7 @@ public class ComponentsFactory {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    EventRouter.INSTANCE.fireEvent(new ButtonPressedEvent());
+                    EventRouter.CORE.fireEvent(new ButtonPressedEvent());
                 }
             }
         });
@@ -174,17 +174,17 @@ public class ComponentsFactory {
             button.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    EventRouter.INSTANCE.fireEvent(new ShowTooltipEvent(tooltip, MouseInfo.getPointerInfo().getLocation()));
+                    EventRouter.UI.fireEvent(new ShowTooltipEvent(tooltip, MouseInfo.getPointerInfo().getLocation()));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+                    EventRouter.UI.fireEvent(new HideTooltipEvent());
                 }
 
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+                    EventRouter.UI.fireEvent(new HideTooltipEvent());
                 }
             });
         }
@@ -192,7 +192,7 @@ public class ComponentsFactory {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    EventRouter.INSTANCE.fireEvent(new ButtonPressedEvent());
+                    EventRouter.CORE.fireEvent(new ButtonPressedEvent());
                 }
             }
         });
@@ -324,17 +324,17 @@ public class ComponentsFactory {
         iconLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new ShowTooltipEvent(tooltip, MouseInfo.getPointerInfo().getLocation()));
+                EventRouter.UI.fireEvent(new ShowTooltipEvent(tooltip, MouseInfo.getPointerInfo().getLocation()));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+                EventRouter.UI.fireEvent(new HideTooltipEvent());
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+                EventRouter.UI.fireEvent(new HideTooltipEvent());
             }
         });
         return iconLabel;
@@ -375,17 +375,17 @@ public class ComponentsFactory {
         checkBox.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new ShowTooltipEvent(tooltip, MouseInfo.getPointerInfo().getLocation()));
+                EventRouter.UI.fireEvent(new ShowTooltipEvent(tooltip, MouseInfo.getPointerInfo().getLocation()));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+                EventRouter.UI.fireEvent(new HideTooltipEvent());
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.INSTANCE.fireEvent(new HideTooltipEvent());
+                EventRouter.UI.fireEvent(new HideTooltipEvent());
             }
         });
         return checkBox;

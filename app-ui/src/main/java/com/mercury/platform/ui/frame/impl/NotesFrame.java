@@ -4,7 +4,6 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.ChunkLoadedEvent;
-import com.mercury.platform.shared.events.custom.ClosingPatchNotesEvent;
 import com.mercury.platform.shared.events.custom.StartUpdateEvent;
 import com.mercury.platform.shared.events.custom.UpdateReadyEvent;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -87,7 +86,7 @@ public class NotesFrame extends TitledComponentFrame {
         download.addActionListener(action -> {
             download.setEnabled(false);
             progressBarFrame.setVisible(true);
-            EventRouter.INSTANCE.fireEvent(new StartUpdateEvent());
+            EventRouter.CORE.fireEvent(new StartUpdateEvent());
         });
 
         JButton close = componentsFactory.getButton(
@@ -142,8 +141,6 @@ public class NotesFrame extends TitledComponentFrame {
                     if (type.equals(NotesType.INFO)) {
                         ConfigManager.INSTANCE.setShowOnStartUp(showOnStartUp.isSelected());
                         FramesManager.INSTANCE.enableMovementExclude("ItemsGridFrame");
-                    }else {
-                        EventRouter.INSTANCE.fireEvent(new ClosingPatchNotesEvent());
                     }
                     prevState = FrameStates.HIDE;
                 }
@@ -296,7 +293,7 @@ public class NotesFrame extends TitledComponentFrame {
 
         @Override
         public void initHandlers() {
-            EventRouter.INSTANCE.registerHandler(ChunkLoadedEvent.class, event -> {
+            EventRouter.CORE.registerHandler(ChunkLoadedEvent.class, event -> {
                 SwingUtilities.invokeLater(() -> {
                     int addedPercent = ((ChunkLoadedEvent) event).getPercent();
                     this.percent += addedPercent;
@@ -305,7 +302,7 @@ public class NotesFrame extends TitledComponentFrame {
                     this.pack();
                 });
             });
-            EventRouter.INSTANCE.registerHandler(UpdateReadyEvent.class, event -> {
+            EventRouter.CORE.registerHandler(UpdateReadyEvent.class, event -> {
                 percentLabel.setText("100%");
                 restart.setEnabled(true);
                 progressBar.setIndeterminate(false);

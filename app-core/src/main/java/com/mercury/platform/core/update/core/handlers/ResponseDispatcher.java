@@ -16,17 +16,17 @@ public class ResponseDispatcher {
     public void process(Object object){
         if (object instanceof PatchNotesDescriptor) {
             String notes = ((PatchNotesDescriptor) object).getJson();
-            EventRouter.INSTANCE.fireEvent(new ShowPatchNotesEvent(notes));
+            EventRouter.CORE.fireEvent(new ShowPatchNotesEvent(notes));
         }
         if(object instanceof UpdateDescriptor){
             int nextVersion = ((UpdateDescriptor) object).getVersion();
-            EventRouter.INSTANCE.fireEvent(new UpdateInfoEvent(nextVersion));
+            EventRouter.CORE.fireEvent(new UpdateInfoEvent(nextVersion));
         }
         if(object instanceof AlreadyLatestUpdateMessage){
             if(ApplicationHolder.getInstance().isManualRequest()) {
                 ApplicationHolder.getInstance().setManualRequest(false);
                 String message = ((AlreadyLatestUpdateMessage) object).getMessage();
-                EventRouter.INSTANCE.fireEvent(new AlertEvent(message));
+                EventRouter.CORE.fireEvent(new AlertEvent(message));
             }
         }
     }

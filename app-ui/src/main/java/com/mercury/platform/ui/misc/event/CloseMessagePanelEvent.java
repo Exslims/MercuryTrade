@@ -1,13 +1,10 @@
-package com.mercury.platform.shared.events.custom;
+package com.mercury.platform.ui.misc.event;
 
 import com.mercury.platform.shared.events.MercuryEvent;
 import com.mercury.platform.shared.pojo.Message;
 
 import java.awt.*;
 
-/**
- * Created by Константин on 24.12.2016.
- */
 public class CloseMessagePanelEvent implements MercuryEvent {
     private Component component;
     private Message message;

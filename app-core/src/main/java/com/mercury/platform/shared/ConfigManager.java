@@ -3,12 +3,15 @@ package com.mercury.platform.shared;
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.shared.pojo.ResponseButton;
+import com.mercury.platform.shared.pojo.StashTab;
+import com.sun.istack.internal.NotNull;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.awt.*;
 import java.io.*;
@@ -158,7 +161,7 @@ public class ConfigManager {
                     }
                     cachedButtonsConfig.add(new ResponseButton((long) next.get("id"), (String) next.get("title"), (String) next.get("value"),isKick,isClose));
                 }
-            }catch (NullPointerException e){
+            }catch (Exception e){
                 saveButtonsConfig(getDefaultButtons());
             }
 
@@ -295,6 +298,37 @@ public class ConfigManager {
             list.add(buttonConfig);
         });
         saveProperty("buttons", list);
+    }
+
+    public void saveStashTabs(List<StashTab> tabs){
+        JSONArray list = new JSONArray();
+        tabs.forEach((button)->{
+            JSONObject stashTab = new JSONObject();
+            stashTab.put("title",button.getTitle());
+            stashTab.put("isQuad",button.isQuad());
+            list.add(stashTab);
+        });
+        saveProperty("stashTabs", list);
+    }
+    public List<StashTab> getStashTabs(){
+        List<StashTab> stashTabs = new ArrayList<>();
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject root = (JSONObject) parser.parse(new FileReader(CONFIG_FILE));
+            JSONArray tabs = (JSONArray) root.get("stashTabs");
+            if (tabs == null) {
+                saveStashTabs(stashTabs);
+                return stashTabs;
+            } else {
+                for (JSONObject next : (Iterable<JSONObject>) tabs) {
+                    StashTab stashTab = new StashTab((String)next.get("title"), Boolean.valueOf((String)next.get("isQuad")));
+                    stashTabs.add(stashTab);
+                }
+            }
+        }catch (Exception e){
+            logger.error(e);
+        }
+        return stashTabs;
     }
 
     public WhisperNotifierStatus getWhisperNotifier() {

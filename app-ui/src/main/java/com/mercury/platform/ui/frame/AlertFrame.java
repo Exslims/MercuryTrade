@@ -41,7 +41,7 @@ public class AlertFrame extends OverlaidFrame {
 
     @Override
     public void initHandlers() {
-        EventRouter.INSTANCE.registerHandler(AlertEvent.class, event -> {
+        EventRouter.CORE.registerHandler(AlertEvent.class, event -> {
             String message = ((AlertEvent) event).getMessage();
             messageLabel.setText(message);
             this.repaint();

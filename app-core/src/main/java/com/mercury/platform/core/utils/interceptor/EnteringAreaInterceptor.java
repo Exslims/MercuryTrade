@@ -12,7 +12,7 @@ public class EnteringAreaInterceptor extends MessageInterceptor {
     @Override
     protected void process(String message) {
         if(callCount % 4 == 0) {
-            EventRouter.INSTANCE.fireEvent(new ShowDonationAlert());
+            EventRouter.CORE.fireEvent(new ShowDonationAlert());
         }
         callCount++;
     }

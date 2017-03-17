@@ -11,8 +11,6 @@ import com.mercury.platform.ui.misc.TooltipConstants;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -83,7 +81,7 @@ public class ChatFilterPanel extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    EventRouter.INSTANCE.fireEvent(new ChatCommandEvent("/invite " + nicknameF));
+                    EventRouter.CORE.fireEvent(new ChatCommandEvent("/invite " + nicknameF));
                 }
             }
         });
@@ -92,7 +90,7 @@ public class ChatFilterPanel extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    EventRouter.INSTANCE.fireEvent(new OpenChatEvent(nicknameF));
+                    EventRouter.CORE.fireEvent(new OpenChatEvent(nicknameF));
                 }
             }
         });
