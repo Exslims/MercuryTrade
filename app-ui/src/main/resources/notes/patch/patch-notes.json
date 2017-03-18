@@ -1,9 +1,9 @@
 {
-  "version":"1.0.0.6",
+  "version":"1.0.0.7",
   "notes":[
   {
     "title" : "New update",
-    "text" : "FOR THE USERS WHO HAVE ISSUES WITH BUTTONS NOT WORKING:\na) Do not run Path of Exile as administrator. This will most likely fix the problem.\nb) If that doesn't help either, we made another launcher as an alternative way to run the application - please check out our github page.\n\n- Item Name section in the notification panel is now a button. Click to copy item name to clipboard.\n- Better Item Grid clarity.\n- Fixed an issue with \"Restart\" panel appearing beyond the screen.",
+    "text" : "- Added Quad Tab support for Stash Highlight!\n- Now you can reselect your game folder in Settings.\n- Response buttons are now a bit bigger. Later we'll add Scalability in Settings.\n- Trade whispers of any kind are now fully supported.\n- Bug fixes and stability improvements, lots of.\n\nThanks guys for all your feedback and support! If you're experiencing issues with updating, please download the app directly from Github as our server struggles to handle that many people.",
     "image" : "",
     "layout" : "VERTICAL"
   }
