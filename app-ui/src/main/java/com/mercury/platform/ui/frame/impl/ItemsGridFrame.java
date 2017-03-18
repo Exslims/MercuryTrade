@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.frame.impl;
 
+import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.pojo.StashTab;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
@@ -166,17 +167,20 @@ public class ItemsGridFrame extends MovableComponentFrame{
     }
     private Optional<ItemCell> getCellByCoordinates(StashTab tab, int x, int y){
         Optional<ItemCell> targetCell;
+        if(x > 12 || y > 12) {
+            tab.setQuad(true);
+        }
         if(tab.isQuad()){
             targetCell = quadCells
                     .stream()
                     .filter(cell -> (cell.getX() == x && cell.getY() == y))
                     .findFirst();
-        }else {
-            targetCell = defaultCells
+            return targetCell;
+        }
+        targetCell = defaultCells
                     .stream()
                     .filter(cell -> (cell.getX() == x && cell.getY() == y))
                     .findFirst();
-        }
         return targetCell;
     }
     private ItemInfoPanel createGridItem(ItemMessage message,ItemCell cell,StashTab stashTab){
