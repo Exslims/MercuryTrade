@@ -456,10 +456,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         Collections.sort(buttonsConfig);
         buttonsConfig.forEach((buttonConfig)->{
             JButton button = componentsFactory.getBorderedButton(buttonConfig.getTitle());
-            button.setFont(componentsFactory.getFont(FontStyle.BOLD).deriveFont(14f));
-            if(button.getPreferredSize().width < 50){
-                button.setPreferredSize(new Dimension(50,button.getPreferredSize().height));
-            }
+            button.setFont(componentsFactory.getFont(FontStyle.BOLD).deriveFont(15f));
             button.addActionListener(e -> {
                 EventRouter.CORE.fireEvent(new ChatCommandEvent("@" + whisper + " " + buttonConfig.getResponseText()));
                 if(buttonConfig.isClose() && !style.equals(MessagePanelStyle.SP_MODE)){

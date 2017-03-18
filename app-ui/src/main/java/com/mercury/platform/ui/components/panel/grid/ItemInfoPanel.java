@@ -2,6 +2,7 @@ package com.mercury.platform.ui.components.panel.grid;
 
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.pojo.StashTab;
+import com.mercury.platform.ui.misc.TooltipConstants;
 import com.mercury.platform.ui.misc.event.CloseGridItemEvent;
 import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.ui.components.ComponentsFactory;
@@ -56,7 +57,7 @@ public class ItemInfoPanel extends JPanel implements HasUI{
         tabInfoPanel.add(tabLabel);
         tabInfoPanel.setBorder(BorderFactory.createEmptyBorder(-8,0,-6,0));
         if(stashTab.isUndefined()) {
-            JCheckBox isItQuad = componentsFactory.getCheckBox("todo");
+            JCheckBox isItQuad = componentsFactory.getCheckBox(TooltipConstants.IS_IT_QUAD);
             tabInfoPanel.add(isItQuad);
 
             isItQuad.addActionListener(action->{

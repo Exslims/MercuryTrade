@@ -72,7 +72,7 @@ public class HistoryManager {
         try {
             JSONObject root = (JSONObject)parser.parse(new FileReader(HISTORY_FILE));
             JSONArray msgsArray = (JSONArray) root.get("messages");
-            msgsArray.add(message.getSourceString());
+            msgsArray.add(0,message.getSourceString());
             root.replace("messages",msgsArray);
             FileWriter fileWriter = new FileWriter(HISTORY_FILE);
             fileWriter.write(root.toJSONString());

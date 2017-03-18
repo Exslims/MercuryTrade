@@ -50,6 +50,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.getRootPane().setBorder(null);
         defaultGrid = componentsFactory.getTransparentPanel(new GridLayout(12,12));
+        defaultGrid.setBorder(null);
         for (int y = 0; y < 12; y++) {
             for (int x = 0; x < 12; x++) {
                 ItemCell gridCell = getGridCell(x, y);
@@ -58,6 +59,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
             }
         }
         quadTabGrid = componentsFactory.getTransparentPanel(new GridLayout(24,24));
+        quadTabGrid.setBorder(null);
         for (int y = 0; y < 24; y++) {
             for (int x = 0; x < 24; x++) {
                 ItemCell gridCell = getGridCell(x, y);
@@ -230,6 +232,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
         topPanel.setBackground(AppThemeColor.FRAME);
         JPanel headerPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         JPanel defaultGridPanel = componentsFactory.getTransparentPanel(new GridLayout(12,12));
+        defaultGridPanel.setBorder(null);
         for (int x = 0; x < 12; x++) {
             for (int y = 0; y < 12; y++) {
                 defaultGridPanel.add(getCellPlaceholder());
@@ -238,6 +241,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
         defaultGridPanel.setBackground(AppThemeColor.FRAME_ALPHA);
 
         JPanel quadGridPanel = componentsFactory.getTransparentPanel(new GridLayout(24,24));
+        quadGridPanel.setBorder(null);
         for (int x = 0; x < 24; x++) {
             for (int y = 0; y < 24; y++) {
                 quadGridPanel.add(getCellPlaceholder());

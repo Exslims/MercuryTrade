@@ -36,6 +36,9 @@ public class TooltipConstants {
     public static final String HO_IN = "Travel to this player's hideout";
     public static final String HO_OUT = "Travel to your hideout";
 
+
+    public static final String IS_IT_QUAD = "todo";
+
     //History tooltips
     public static final String HISTORY_CLEAR = "Clear history";
 
