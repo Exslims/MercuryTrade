@@ -92,7 +92,7 @@ public class UpdaterClient {
                 }
             });
         }catch (Exception e){
-            LOGGER.error("Error while connection to the server: ",e);
+            doConnect();
         }
     }
     public void shutdown() {

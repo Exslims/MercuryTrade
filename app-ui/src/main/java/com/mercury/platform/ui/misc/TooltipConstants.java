@@ -37,7 +37,7 @@ public class TooltipConstants {
     public static final String HO_OUT = "Travel to your hideout";
 
 
-    public static final String IS_IT_QUAD = "todo";
+    public static final String IS_IT_QUAD = "Is this tab a Quad Tab? Specify once for Mercury to know";
 
     //History tooltips
     public static final String HISTORY_CLEAR = "Clear history";

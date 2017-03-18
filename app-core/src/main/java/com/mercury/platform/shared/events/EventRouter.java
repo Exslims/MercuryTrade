@@ -53,4 +53,11 @@ public class EventRouter {
         eventHandlerMap.put(eventClass, mercuryEventHandlers);
         lock.unlock();
     }
+    public void unregisterHandler(Class eventClass, MercuryEventHandler handler){
+        lock.lock();
+        List<MercuryEventHandler> mercuryEventHandlers = eventHandlerMap.get(eventClass);
+        mercuryEventHandlers.remove(handler);
+        eventHandlerMap.put(eventClass, mercuryEventHandlers);
+        lock.unlock();
+    }
 }

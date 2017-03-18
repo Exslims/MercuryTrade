@@ -6,6 +6,7 @@ import com.mercury.platform.core.update.bus.event.UpdateReceivedEvent;
 import com.mercury.platform.core.update.core.holder.ApplicationHolder;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.events.MercuryEventHandler;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.update.UpdateDescriptor;
 import com.mercury.platform.update.UpdateType;
@@ -26,11 +27,16 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
     private volatile int length;
     private volatile int percentDelta;
     private ResponseDispatcher responseDispatcher;
+    private MercuryEventHandler<CheckOutPatchNotes> checkOutPatchNotesHandler;
+    private MercuryEventHandler<StartUpdateEvent> startUpdateEventHandler;
 
     private ChannelHandlerContext context;
     public ClientHandler() {
         chunks = new byte[0];
         responseDispatcher = new ResponseDispatcher();
+
+        checkOutPatchNotesHandler = event -> checkOutPatchNotes();
+        startUpdateEventHandler = event -> getLatestUpdate();
     }
 
     @Override
@@ -64,12 +70,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
                 Integer version = ApplicationHolder.getInstance().getVersion();
                 context.channel().writeAndFlush(new UpdateDescriptor(UpdateType.REQUEST_INFO, version));
             }
-            EventRouter.CORE.registerHandler(CheckOutPatchNotes.class, handler -> {
-                checkOutPatchNotes();
-            });
-            EventRouter.CORE.registerHandler(StartUpdateEvent.class, handler -> {
-                getLatestUpdate();
-            });
+            EventRouter.CORE.registerHandler(CheckOutPatchNotes.class, checkOutPatchNotesHandler);
+            EventRouter.CORE.registerHandler(StartUpdateEvent.class, startUpdateEventHandler);
         }
     }
     private void checkOutPatchNotes(){
@@ -91,11 +93,16 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void channelInactive(ChannelHandlerContext context) throws Exception {
         LOGGER.info("Channel is inactive");
+        EventRouter.CORE.unregisterHandler(CheckOutPatchNotes.class, checkOutPatchNotesHandler);
+        EventRouter.CORE.unregisterHandler(StartUpdateEvent.class, startUpdateEventHandler);
+
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext context, Throwable cause) throws Exception {
-        LOGGER.error(Arrays.toString(cause.getStackTrace()));
+        EventRouter.CORE.unregisterHandler(CheckOutPatchNotes.class, checkOutPatchNotesHandler);
+        EventRouter.CORE.unregisterHandler(StartUpdateEvent.class, startUpdateEventHandler);
+        LOGGER.error(cause);
     }
 
 
