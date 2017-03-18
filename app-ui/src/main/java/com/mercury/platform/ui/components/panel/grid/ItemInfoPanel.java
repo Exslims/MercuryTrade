@@ -1,11 +1,13 @@
 package com.mercury.platform.ui.components.panel.grid;
 
 import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.pojo.StashTab;
 import com.mercury.platform.ui.misc.event.CloseGridItemEvent;
 import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.event.ItemCellStateChangedEvent;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
 
 import javax.swing.*;
@@ -13,17 +15,19 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- * Created by Константин on 01.03.2017.
- */
 public class ItemInfoPanel extends JPanel implements HasUI{
     private ComponentsFactory componentsFactory;
     private ItemMessage message;
     private JPanel cell;
+    private StashTab stashTab;
+    private ItemCell itemCell;
+    private Timer timer;
 
-    public ItemInfoPanel(ItemMessage message, JPanel cell) {
+    public ItemInfoPanel(ItemMessage message, ItemCell itemCell, StashTab stashTab) {
         this.message = message;
-        this.cell = cell;
+        this.cell = itemCell.getCell();
+        this.itemCell = itemCell;
+        this.stashTab = stashTab;
         componentsFactory = new ComponentsFactory();
         setupMouseOverListener();
         createUI();
@@ -51,14 +55,25 @@ public class ItemInfoPanel extends JPanel implements HasUI{
         JLabel tabLabel = componentsFactory.getTextLabel("Tab: " + message.getTabName());
         tabInfoPanel.add(tabLabel);
         tabInfoPanel.setBorder(BorderFactory.createEmptyBorder(-8,0,-6,0));
-        JCheckBox isItQuad = componentsFactory.getCheckBox("todo");
-        tabInfoPanel.add(isItQuad);
+        if(stashTab.isUndefined()) {
+            JCheckBox isItQuad = componentsFactory.getCheckBox("todo");
+            tabInfoPanel.add(isItQuad);
+
+            isItQuad.addActionListener(action->{
+                stashTab.setQuad(isItQuad.isSelected());
+                if (timer != null && timer.isRunning()) {
+                    timer.stop();
+                }
+                cell.setBorder(null);
+                EventRouter.UI.fireEvent(new ItemCellStateChangedEvent(ItemInfoPanel.this));
+            });
+        }
+
         this.add(tabInfoPanel,BorderLayout.PAGE_END);
         this.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
     }
     private void setupMouseOverListener(){
         this.addMouseListener(new MouseAdapter() {
-            private Timer timer;
             @Override
             public void mouseEntered(MouseEvent e) {
                 setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_DEFAULT, 1));
@@ -82,5 +97,29 @@ public class ItemInfoPanel extends JPanel implements HasUI{
                 timer.start();
             }
         });
+    }
+
+    public StashTab getStashTab() {
+        return stashTab;
+    }
+
+    public void setStashTab(StashTab stashTab) {
+        this.stashTab = stashTab;
+    }
+
+    public ItemCell getItemCell() {
+        return itemCell;
+    }
+
+    public void setItemCell(ItemCell itemCell) {
+        this.itemCell = itemCell;
+    }
+
+    public JPanel getCell() {
+        return cell;
+    }
+
+    public void setCell(JPanel cell) {
+        this.cell = cell;
     }
 }

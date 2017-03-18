@@ -3,10 +3,8 @@ package com.mercury.platform.ui.components.panel;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by Константин on 28.01.2017.
- */
-public class ScrollContainer extends JPanel implements Scrollable {
+
+public class HorizontalScrollContainer extends JPanel implements Scrollable {
 
     @Override
     public Dimension getPreferredScrollableViewportSize() {
@@ -25,11 +23,11 @@ public class ScrollContainer extends JPanel implements Scrollable {
 
     @Override
     public boolean getScrollableTracksViewportWidth() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean getScrollableTracksViewportHeight() {
-        return false;
+        return true;
     }
 }

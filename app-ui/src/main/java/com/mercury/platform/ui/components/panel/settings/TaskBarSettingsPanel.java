@@ -33,7 +33,7 @@ public class TaskBarSettingsPanel extends ConfigurationPanel{
         dndSettings.add(dndLabel,BorderLayout.PAGE_START);
         dndSettings.add(getDNDPanel(),BorderLayout.CENTER);
         root.add(dndSettings);
-        scrollContainer.add(root, BorderLayout.PAGE_START);
+        verticalScrollContainer.add(root, BorderLayout.PAGE_START);
     }
     private JPanel getDNDPanel(){
         JPanel topPanel = componentsFactory.getTransparentPanel(new GridLayout(2,2));
@@ -64,7 +64,7 @@ public class TaskBarSettingsPanel extends ConfigurationPanel{
     }
     @Override
     public void restore() {
-        scrollContainer.removeAll();
+        verticalScrollContainer.removeAll();
         createUI();
     }
 

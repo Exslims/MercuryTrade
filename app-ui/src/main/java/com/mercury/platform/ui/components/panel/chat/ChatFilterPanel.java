@@ -5,7 +5,7 @@ import com.mercury.platform.shared.events.custom.ChatCommandEvent;
 import com.mercury.platform.shared.events.custom.OpenChatEvent;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
-import com.mercury.platform.ui.components.panel.ScrollContainer;
+import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +28,7 @@ public class ChatFilterPanel extends JPanel {
     public ChatFilterPanel(JFrame owner) {
         this.owner = owner;
         componentsFactory = new ComponentsFactory();
-        container = new ScrollContainer();
+        container = new VerticalScrollContainer();
         container.setBackground(AppThemeColor.SLIDE_BG);
         container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
 

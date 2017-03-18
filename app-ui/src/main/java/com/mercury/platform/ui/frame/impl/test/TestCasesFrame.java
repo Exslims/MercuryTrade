@@ -23,7 +23,7 @@ public class TestCasesFrame extends TitledComponentFrame {
     private List<String> currency;
     private List<String> nickNames;
     private List<String> offer;
-    private String poeTradeTemplate = "2017/02/11 18:40:32 9029890 951 [INFO Client 8980] @From %s: Hi, I would like to buy your %s listed for %d %s in Breach (stash tab \"Unique/trade\"; position: left %d, top %d) %s";
+    private String poeTradeTemplate = "2017/02/11 18:40:32 9029890 951 [INFO Client 8980] @From %s: Hi, I would like to buy your %s listed for %d %s in Breach (stash tab \"%d\"; position: left %d, top %d) %s";
     private String currencyTemplate = "2017/02/11 18:56:15 9973390 951 [INFO Client 8980] @From %s: Hi, I'd like to buy your %d %s for my %d %s in Breach. %s";
 
     public TestCasesFrame() {
@@ -167,6 +167,7 @@ public class TestCasesFrame extends TitledComponentFrame {
                         items.get(random.nextInt(items.size())),
                         random.nextInt(200),
                         currency.get(random.nextInt(currency.size())),
+                        random.nextInt(30),
                         random.nextInt(12) + 1,
                         random.nextInt(12) + 1,
                         offer.get(random.nextInt(offer.size()))

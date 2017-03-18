@@ -4,9 +4,6 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.pojo.StashTab;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 public class StashTabsContainer {
     private List<StashTab> stashTabs;
     public StashTabsContainer() {
@@ -14,6 +11,8 @@ public class StashTabsContainer {
     }
     public void addTab(StashTab tab){
         stashTabs.add(tab);
+    }
+    public void save(){
         ConfigManager.INSTANCE.saveStashTabs(stashTabs);
     }
 
@@ -25,5 +24,9 @@ public class StashTabsContainer {
     }
     public StashTab getStashTab(String tabTitle){
         return stashTabs.stream().filter(tab -> tab.getTitle().equals(tabTitle)).findFirst().get();
+    }
+    public void removeTab(StashTab tab){
+        stashTabs.remove(tab);
+        save();
     }
 }

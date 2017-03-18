@@ -33,7 +33,7 @@ public class GeneralSettings extends ConfigurationPanel{
 
     @Override
     public void createUI() {
-        scrollContainer.add(getSettingsPanel());
+        verticalScrollContainer.add(getSettingsPanel());
     }
     private JPanel getSettingsPanel() {
         Dimension elementsSize = new Dimension(260, 25);
@@ -173,7 +173,7 @@ public class GeneralSettings extends ConfigurationPanel{
 
     @Override
     public void restore() {
-        scrollContainer.removeAll();
+        verticalScrollContainer.removeAll();
         this.createUI();
         owner.setOpacity(maxSlider.getValue()/100.0f);
     }

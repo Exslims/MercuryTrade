@@ -9,7 +9,7 @@ import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.MessagePanel;
-import com.mercury.platform.ui.components.panel.ScrollContainer;
+import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.components.panel.misc.MessagePanelStyle;
 import com.mercury.platform.ui.frame.TitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -32,7 +32,7 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
     @Override
     protected void initialize() {
         super.initialize();
-        mainContainer = new ScrollContainer();
+        mainContainer = new VerticalScrollContainer();
         mainContainer.setBackground(AppThemeColor.TRANSPARENT);
         mainContainer.setLayout(new BoxLayout(mainContainer,BoxLayout.Y_AXIS));
 

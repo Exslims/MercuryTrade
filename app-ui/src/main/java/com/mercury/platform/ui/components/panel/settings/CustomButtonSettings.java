@@ -56,7 +56,7 @@ public class CustomButtonSettings extends ConfigurationPanel{
 
     @Override
     public void restore() {
-        scrollContainer.removeAll();
+        verticalScrollContainer.removeAll();
         createUI();
     }
 
@@ -78,8 +78,8 @@ public class CustomButtonSettings extends ConfigurationPanel{
         responseButtons.add(responseLabel,BorderLayout.PAGE_START);
         responseButtons.add(getButtonsTable(),BorderLayout.CENTER);
 
-        scrollContainer.add(otherSettings);
-        scrollContainer.add(responseButtons);
+        verticalScrollContainer.add(otherSettings);
+        verticalScrollContainer.add(responseButtons);
     }
     private JPanel getTopPanel() {
         JPanel topPanel = componentsFactory.getTransparentPanel(new BorderLayout());

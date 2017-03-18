@@ -43,7 +43,7 @@ public class MercuryScrollBarUI extends BasicScrollBarUI {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         Color color = null;
         JScrollBar sb = (JScrollBar) c;
-        if (!sb.isEnabled() || r.width > r.height) {
+        if (!sb.isEnabled()) {
             return;
         } else {
             color = AppThemeColor.BUTTON;

@@ -4,14 +4,12 @@ import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.shared.pojo.ResponseButton;
 import com.mercury.platform.shared.pojo.StashTab;
-import com.sun.istack.internal.NotNull;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.awt.*;
 import java.io.*;
@@ -305,7 +303,7 @@ public class ConfigManager {
         tabs.forEach((button)->{
             JSONObject stashTab = new JSONObject();
             stashTab.put("title",button.getTitle());
-            stashTab.put("isQuad",button.isQuad());
+            stashTab.put("isQuad",String.valueOf(button.isQuad()));
             list.add(stashTab);
         });
         saveProperty("stashTabs", list);
@@ -322,6 +320,7 @@ public class ConfigManager {
             } else {
                 for (JSONObject next : (Iterable<JSONObject>) tabs) {
                     StashTab stashTab = new StashTab((String)next.get("title"), Boolean.valueOf((String)next.get("isQuad")));
+                    stashTab.setUndefined(false);
                     stashTabs.add(stashTab);
                 }
             }

@@ -6,13 +6,23 @@ package com.mercury.platform.shared.pojo;
 public class StashTab {
     private String title;
     private boolean isQuad;
+    private boolean undefined;
 
     public StashTab(String title, boolean isQuad) {
         this.title = title;
         this.isQuad = isQuad;
+        this.undefined = true;
     }
 
     public StashTab() {
+    }
+
+    public boolean isUndefined() {
+        return undefined;
+    }
+
+    public void setUndefined(boolean undefined) {
+        this.undefined = undefined;
     }
 
     public String getTitle() {
