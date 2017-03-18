@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 
 public abstract class MovableComponentFrame extends ComponentFrame {
     protected Container mainContainer;
-    private FrameConstraints prevConstraints;
+    protected FrameConstraints prevConstraints;
     protected UndecoratedFrameState moveState = UndecoratedFrameState.DEFAULT;
     protected boolean locationWasChanged = false;
     protected boolean sizeWasChanged = false;

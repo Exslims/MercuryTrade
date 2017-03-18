@@ -83,12 +83,12 @@ public class ItemsGridFrame extends MovableComponentFrame{
         this.setPreferredSize(this.getMaximumSize());
         this.pack();
     }
+
     private ItemCell getGridCell(int x, int y){
         JPanel cellPanel = new JPanel();
         cellPanel.setOpaque(true);
         cellPanel.setBackground(AppThemeColor.TRANSPARENT);
-        ItemCell cell = new ItemCell(x+1,y+1,cellPanel);
-        return cell;
+        return new ItemCell(x+1,y+1,cellPanel);
     }
 
     private JPanel getHeaderPanel(){
@@ -125,6 +125,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
                         }
                         navBar.add(cellHeader);
                         tabButtons.put(nickname + message.getTabName(), cellHeader);
+                        repaint();
                         pack();
                     }
                 }
@@ -222,6 +223,14 @@ public class ItemsGridFrame extends MovableComponentFrame{
             if (navBar.getComponentCount() == 0) {
                 this.setVisible(false);
             }
+        }
+    }
+
+    @Override
+    protected void onLock() {
+        super.onLock();
+        if(navBar.getComponentCount() > 0){
+            this.setVisible(true);
         }
     }
 
