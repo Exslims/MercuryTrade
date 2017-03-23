@@ -8,9 +8,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 public class MessageParser {
-    private final static String poeTradePattern = "^(.*\\s)?(\\w+):.+ to buy your (.+) listed for (\\d+) (.+) in ([\\w-]+)\\.*\\s*(\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\))?\\s*(.*)$";
-    private final static String poeCurrencyPattern = "^(.*\\s)?(\\w+):.+ to buy your (\\d+) (.+) for my (\\d+) (.+) in ([\\w-]+)\\.*\\s*(.*)$";
-    private final static String poeTradeNoBuyout = "^(.*\\s)?(\\w+):.+ to buy your (.+) in ([\\w-]+)\\.*\\s*(\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\))?\\s*(.*)$";
+    private final static String poeTradePattern = "^(.*\\s)?(.+):.+ to buy your (.+) listed for (\\d+) (.+) in ([\\w\\-\\s]+)\\.*\\s*(\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\))?\\s*(.*)$";
+    private final static String poeCurrencyPattern = "^(.*\\s)?(.+):.+ to buy your (\\d+) (.+) for my (\\d+) (.+) in ([\\w\\-\\s]+)\\.*\\s*(.*)$";
+    private final static String poeTradeNoBuyout = "^(.*\\s)?(.+):.+ to buy your (.+) in ([\\w\\-\\s]+)\\.*\\s*(\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\))?\\s*(.*)$";
 
     private Pattern poeTradeItemPattern;
     private Pattern poeTradeCurrencyPattern;
