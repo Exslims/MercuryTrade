@@ -1,9 +1,9 @@
 {
-  "version":"1.0.0.7",
+  "version":"1.0.0.9",
   "notes":[
   {
-    "title" : "New update",
-    "text" : "- Added Quad Tab support for Stash Highlight!\n- Now you can reselect your game folder in Settings.\n- Response buttons are now a bit bigger. Later we'll add Scalability in Settings.\n- Trade whispers of any kind are now fully supported.\n- Bug fixes and stability improvements, lots of.\n\nThanks guys for all your feedback and support! If you're experiencing issues with updating, please download the app directly from Github as our server struggles to handle that many people.",
+    "title" : "Hotfix",
+    "text" : "Fixed Stash Highlight feature not working properly for Hardcore players.\nFixed trade offers coming from players with cyrillic names being ignored.\n\nExpect a bigger update in a few days!",
     "image" : "",
     "layout" : "VERTICAL"
   }
