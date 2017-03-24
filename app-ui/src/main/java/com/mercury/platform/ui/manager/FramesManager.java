@@ -9,14 +9,19 @@ import com.mercury.platform.shared.events.custom.ShutDownForUpdateEvent;
 import com.mercury.platform.shared.events.custom.ShutdownApplication;
 import com.mercury.platform.shared.events.custom.UILoadedEvent;
 import com.mercury.platform.shared.pojo.FrameSettings;
-import com.mercury.platform.ui.frame.AlertFrame;
+import com.mercury.platform.ui.frame.other.*;
 import com.mercury.platform.ui.frame.ComponentFrame;
-import com.mercury.platform.ui.frame.MovableComponentFrame;
-import com.mercury.platform.ui.frame.impl.test.TestCasesFrame;
+import com.mercury.platform.ui.frame.movable.container.IncMessageFrame;
+import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
+import com.mercury.platform.ui.frame.movable.MovableComponentFrame;
+import com.mercury.platform.ui.frame.movable.TaskBarFrame;
+import com.mercury.platform.ui.frame.titled.TestCasesFrame;
 import com.mercury.platform.ui.frame.OverlaidFrame;
-import com.mercury.platform.ui.frame.impl.*;
-import com.mercury.platform.ui.frame.location.SetUpLocationCommander;
-import com.mercury.platform.ui.frame.location.SetUpLocationFrame;
+import com.mercury.platform.ui.frame.setup.location.SetUpLocationCommander;
+import com.mercury.platform.ui.frame.other.SetUpLocationFrame;
+import com.mercury.platform.ui.frame.titled.HistoryFrame;
+import com.mercury.platform.ui.frame.titled.NotesFrame;
+import com.mercury.platform.ui.frame.titled.SettingsFrame;
 import com.mercury.platform.ui.misc.note.Note;
 import com.mercury.platform.ui.misc.note.NotesLoader;
 
@@ -27,9 +32,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-/**
- * Created by Константин on 18.01.2017.
- */
 public class FramesManager implements HasEventHandlers{
 
     private static class FramesManagerHolder {
@@ -138,28 +140,22 @@ public class FramesManager implements HasEventHandlers{
             showFrame(frameClass);
         }
     }
-    public void enableMovement(){
-        locationCommander.setUpAll();
-    }
-    public void enableMovementExclude(String... frames){
+    public void enableMovementExclude(Class... frames){
         locationCommander.setUpAllExclude(frames);
     }
-    public void enableMovementDirect(String frameClass){
-        locationCommander.setUp(frameClass,false);
-    }
-    public void enableOrDisableMovementDirect(String frameClass){
-        locationCommander.enableOrDisableMovement(frameClass,false);
+    public void enableOrDisableMovementDirect(Class frameClass){
+        locationCommander.setOrEndUp(frameClass,false);
     }
     public void disableMovement(){
-        locationCommander.disableAll();
+        locationCommander.endUpAll();
     }
-    public void disableMovement(String frameClass){
-        locationCommander.disable(frameClass);
+    public void disableMovement(Class frameClass){
+        locationCommander.endUp(frameClass);
     }
     public void restoreDefaultLocation(){
         framesMap.forEach((k,v) -> {
             FrameSettings settings = ConfigManager.INSTANCE.getDefaultFramesSettings().get(k.getSimpleName());
-            if(v instanceof MovableComponentFrame && !v.getClass().getSimpleName().equals("ItemsGridFrame")){
+            if(v instanceof MovableComponentFrame && !v.getClass().equals(ItemsGridFrame.class)){
                 v.setLocation(settings.getFrameLocation());
                 ((MovableComponentFrame) v).onLocationChange(settings.getFrameLocation());
             }

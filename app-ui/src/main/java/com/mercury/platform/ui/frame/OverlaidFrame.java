@@ -14,10 +14,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- * Created by Константин on 17.01.2017.
- */
-public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
+public abstract class OverlaidFrame extends JFrame implements HasEventHandlers, Scalable {
     protected FrameStates prevState;
     protected boolean processingHideEvent = true;
 
@@ -82,6 +79,11 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers {
         initialize();
         initHandlers();
     }
+
+    @Override
+    public void onScaleChange() {
+    }
+
     protected abstract LayoutManager getFrameLayout();
     protected abstract void initialize();
 

@@ -12,9 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-/**
- * Created by Константин on 26.12.2016.
- */
 public abstract class ComponentFrame extends OverlaidFrame{
     private final int HIDE_TIME = 200;
     private final int SHOW_TIME = 150;
