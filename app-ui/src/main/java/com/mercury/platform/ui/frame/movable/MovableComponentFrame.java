@@ -17,11 +17,13 @@ public abstract class MovableComponentFrame extends ScalableComponentFrame {
     protected boolean sizeWasChanged = false;
     protected boolean inMoveMode = false;
     protected boolean enableMouseOverBorder = true;
+
+    private JPanel panelForPIN;
     protected MovableComponentFrame(String title) {
         super(title);
         mainContainer = this.getContentPane();
     }
-    protected abstract JPanel panelWhenMove();
+    protected abstract JPanel getPanelForPINSettings();
     protected void onUnlock(){
         this.pack();
         this.repaint();
@@ -45,14 +47,16 @@ public abstract class MovableComponentFrame extends ScalableComponentFrame {
                         this.getMinimumSize(),
                         this.getMaximumSize()
                 );
-                JPanel panel = setUpMoveListeners(panelWhenMove());
+                if(panelForPIN == null){
+                    panelForPIN = setUpMoveListeners(getPanelForPINSettings());
+                }
                 this.processEResize = false;
                 this.processSEResize = false;
-                this.setBackground(panel.getBackground());
+                this.setBackground(panelForPIN.getBackground());
                 this.setLocation(configManager.getFrameSettings(this.getClass().getSimpleName()).getFrameLocation());
                 this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
                 this.setMinimumSize(null);
-                this.setContentPane(panel);
+                this.setContentPane(panelForPIN);
                 this.setVisible(true);
                 this.setAlwaysOnTop(true);
                 this.onUnlock();

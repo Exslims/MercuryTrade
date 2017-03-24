@@ -5,17 +5,15 @@ import com.mercury.platform.shared.pojo.StashTab;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.HorizontalScrollContainer;
-import com.mercury.platform.ui.components.panel.grid.TabInfoPanel;
-import com.mercury.platform.ui.components.panel.grid.StashTabsContainer;
+import com.mercury.platform.ui.components.panel.grid.*;
 import com.mercury.platform.ui.misc.event.*;
 import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.components.panel.grid.ItemCell;
-import com.mercury.platform.ui.components.panel.grid.ItemInfoPanel;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import lombok.NonNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,23 +22,14 @@ import java.util.*;
 import java.util.List;
 
 public class ItemsGridFrame extends MovableComponentFrame{
-    private List<ItemCell> defaultCells;
-    private List<ItemCell> quadCells;
-    private Map<String,ItemInfoPanel> tabButtons;
-    private StashTabsContainer stashTabsContainer;
-    private JPanel navBar;
-
-    private JPanel defaultGrid;
-    private JPanel quadTabGrid;
+    private ItemsGridPanel itemsGridPanel;
     private HorizontalScrollContainer tabsContainer;
-
+    private StashTabsContainer stashTabsContainer;
     public ItemsGridFrame() {
         super("MercuryTrade");
-        defaultCells = new ArrayList<>();
-        quadCells = new ArrayList<>();
-        tabButtons = new HashMap<>();
         enableMouseOverBorder = false;
         processHideEffect = false;
+        itemsGridPanel = new ItemsGridPanel();
         stashTabsContainer = new StashTabsContainer();
     }
 
@@ -49,57 +38,9 @@ public class ItemsGridFrame extends MovableComponentFrame{
         super.initialize();
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.getRootPane().setBorder(null);
-        defaultGrid = componentsFactory.getTransparentPanel(new GridLayout(12,12));
-        defaultGrid.setBorder(null);
-        for (int y = 0; y < 12; y++) {
-            for (int x = 0; x < 12; x++) {
-                ItemCell gridCell = getGridCell(x, y);
-                defaultCells.add(gridCell);
-                defaultGrid.add(gridCell.getCell());
-            }
-        }
-        quadTabGrid = componentsFactory.getTransparentPanel(new GridLayout(24,24));
-        quadTabGrid.setBorder(null);
-        for (int y = 0; y < 24; y++) {
-            for (int x = 0; x < 24; x++) {
-                ItemCell gridCell = getGridCell(x, y);
-                quadCells.add(gridCell);
-                quadTabGrid.add(gridCell.getCell());
-            }
-        }
-        JPanel rightPanel = componentsFactory.getTransparentPanel(new BorderLayout());
-        rightPanel.setBackground(AppThemeColor.TRANSPARENT);
-        rightPanel.setPreferredSize(new Dimension(16,668));
-        JPanel downPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        downPanel.setBorder(BorderFactory.createEmptyBorder(-10,0,0,0));
-        downPanel.setBackground(AppThemeColor.TRANSPARENT);
-        downPanel.setPreferredSize(new Dimension(661,16));
-        downPanel.addMouseMotionListener(new ResizeByHeightMouseMotionListener());
-
-        this.add(getHeaderPanel(),BorderLayout.PAGE_START);
-        this.add(defaultGrid, BorderLayout.CENTER);
-        this.add(rightPanel,BorderLayout.LINE_END);
-        this.add(downPanel,BorderLayout.PAGE_END);
+        this.add(itemsGridPanel,BorderLayout.CENTER);
         this.setPreferredSize(this.getMaximumSize());
         this.pack();
-    }
-
-    private ItemCell getGridCell(int x, int y){
-        JPanel cellPanel = new JPanel();
-        cellPanel.setOpaque(true);
-        cellPanel.setBackground(AppThemeColor.TRANSPARENT);
-        return new ItemCell(x+1,y+1,cellPanel);
-    }
-
-    private JPanel getHeaderPanel(){
-        JPanel root = componentsFactory.getTransparentPanel();
-        root.setLayout(new BoxLayout(root,BoxLayout.Y_AXIS));
-
-        navBar = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        navBar.setBorder(BorderFactory.createEmptyBorder(20,0,27,0));
-
-        root.add(navBar);
-        return root;
     }
 
     @Override
@@ -107,38 +48,24 @@ public class ItemsGridFrame extends MovableComponentFrame{
         EventRouter.UI.registerHandler(ShowItemGridEvent.class, event -> {
             if(configManager.isItemsGridEnable()) {
                 ItemMessage message = ((ShowItemGridEvent) event).getMessage();
-                String nickname = message.getWhisperNickname();
-                if (!tabButtons.containsKey(nickname + message.getTabName())) {
-                    int x = message.getLeft();
-                    int y = message.getTop();
-                    StashTab stashTab;
-                    if(stashTabsContainer.containsTab(message.getTabName())) {
-                        stashTab = stashTabsContainer.getStashTab(message.getTabName());
-                    }else {
-                        stashTab = new StashTab(message.getTabName(),false);
-                    }
-                    Optional<ItemCell> cellByCoordinates = getCellByCoordinates(stashTab, x, y);
-                    if(cellByCoordinates.isPresent()) {
-                        ItemInfoPanel cellHeader = createGridItem(message, cellByCoordinates.get(), stashTab);
-                        if (navBar.getComponentCount() == 0) {
-                            this.setVisible(true);
-                        }
-                        navBar.add(cellHeader);
-                        tabButtons.put(nickname + message.getTabName(), cellHeader);
-                        repaint();
-                        pack();
-                    }
+                if (itemsGridPanel.getActiveTabsCount() == 0) {
+                    this.setVisible(true);
                 }
+                itemsGridPanel.add(message,null);
+                this.pack();
             }
         });
         EventRouter.UI.registerHandler(CloseMessagePanelEvent.class, event -> {
-            Message sourceMessage = ((CloseMessagePanelEvent) event).getMessage();
-            if(sourceMessage instanceof ItemMessage) {
-                closeGridItem((ItemMessage) sourceMessage);
+            Message message = ((CloseMessagePanelEvent) event).getMessage();
+            if(message instanceof ItemMessage) {
+                itemsGridPanel.remove((ItemMessage) message);
+                if (itemsGridPanel.getActiveTabsCount() == 0) {
+                    this.setVisible(false);
+                }
             }
         });
         EventRouter.UI.registerHandler(CloseGridItemEvent.class, event -> {
-            closeGridItem(((CloseGridItemEvent) event).getMessage());
+            itemsGridPanel.remove(((CloseGridItemEvent) event).getMessage());
         });
         EventRouter.UI.registerHandler(RepaintEvent.RepaintItemGrid.class, event -> {
             this.revalidate();
@@ -153,92 +80,20 @@ public class ItemsGridFrame extends MovableComponentFrame{
         });
         EventRouter.UI.registerHandler(ItemCellStateChangedEvent.class, event -> {
             ItemInfoPanel itemInfoPanel = ((ItemCellStateChangedEvent) event).getItemInfoPanel();
-            ItemCell itemCell = itemInfoPanel.getItemCell();
-            int x = itemCell.getX();
-            int y = itemCell.getY();
-            Optional<ItemCell> cellByCoordinates = getCellByCoordinates(itemInfoPanel.getStashTab(), x, y);
-            if(cellByCoordinates.isPresent()){
-                itemInfoPanel.setCell(cellByCoordinates.get().getCell());
-            }
-            this.repaint();
+            itemsGridPanel.changeTabType(itemInfoPanel);
             this.pack();
         });
     }
-    private Optional<ItemCell> getCellByCoordinates(StashTab tab, int x, int y){
-        Optional<ItemCell> targetCell;
-        if(x > 12 || y > 12) {
-            tab.setQuad(true);
-        }
-        if(tab.isQuad()){
-            targetCell = quadCells
-                    .stream()
-                    .filter(cell -> (cell.getX() == x && cell.getY() == y))
-                    .findFirst();
-            return targetCell;
-        }
-        targetCell = defaultCells
-                    .stream()
-                    .filter(cell -> (cell.getX() == x && cell.getY() == y))
-                    .findFirst();
-        return targetCell;
-    }
-    private ItemInfoPanel createGridItem(ItemMessage message,ItemCell cell,StashTab stashTab){
-        ItemInfoPanel itemInfoPanel = new ItemInfoPanel(message,cell,stashTab);
-        itemInfoPanel.setAlignmentY(SwingConstants.CENTER);
-        itemInfoPanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                if(stashTab.isQuad()){
-                    add(quadTabGrid,BorderLayout.CENTER);
-                }else {
-                    add(defaultGrid,BorderLayout.CENTER);
-                }
-                repaint();
-                pack();
-            }
-        });
-        return itemInfoPanel;
-    }
-    private void closeGridItem(ItemMessage message) {
-        String nickname = message.getWhisperNickname();
-        ItemInfoPanel itemInfoPanel = tabButtons.get(nickname + message.getTabName());
-        if (itemInfoPanel != null) {
-            if(itemInfoPanel.getStashTab().isUndefined()){
-                itemInfoPanel.getStashTab().setUndefined(false);
-                stashTabsContainer.addTab(itemInfoPanel.getStashTab());
-                stashTabsContainer.save();
-            }
-
-            navBar.remove(itemInfoPanel);
-            int x = message.getLeft();
-            int y = message.getTop();
-            Optional<ItemCell> targetCell = defaultCells
-                    .stream()
-                    .filter(cell -> (cell.getX() == x && cell.getY() == y))
-                    .findFirst();
-            targetCell.ifPresent(itemCell -> {
-                itemCell.getCell().setBorder(null);
-                repaint();
-            });
-            tabButtons.remove(nickname + message.getTabName());
-            this.pack();
-            this.repaint();
-            if (navBar.getComponentCount() == 0) {
-                this.setVisible(false);
-            }
-        }
-    }
-
     @Override
     protected void onLock() {
         super.onLock();
-        if(navBar.getComponentCount() > 0){
+        if(itemsGridPanel.getActiveTabsCount() > 0){
             this.setVisible(true);
         }
     }
 
     @Override
-    protected JPanel panelWhenMove() {
+    protected JPanel getPanelForPINSettings() {
         JPanel panel = componentsFactory.getTransparentPanel(new BorderLayout());
         JPanel topPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         topPanel.setBackground(AppThemeColor.FRAME);
@@ -392,7 +247,21 @@ public class ItemsGridFrame extends MovableComponentFrame{
 
     @Override
     protected JPanel defaultView(ComponentsFactory factory) {
-        return new JPanel();
+        ItemsGridPanel defaultView = new ItemsGridPanel(factory);
+        ItemMessage message = new ItemMessage();
+        message.setWhisperNickname("Example1");
+        message.setTabName("Example");
+        message.setLeft(5);
+        message.setTop(5);
+
+        ItemInfoPanelController controller = new ItemInfoPanelController() {
+            @Override
+            public void hidePanel() {}
+            @Override
+            public void changeTabType(@NonNull ItemInfoPanel panel) {}
+        };
+        defaultView.add(message,controller);
+        return defaultView;
     }
 
     private class ResizeByWidthMouseMotionListener extends MouseMotionAdapter {

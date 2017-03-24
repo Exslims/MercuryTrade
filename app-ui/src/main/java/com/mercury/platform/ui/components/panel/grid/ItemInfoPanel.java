@@ -24,7 +24,10 @@ public class ItemInfoPanel extends JPanel implements HasUI{
     private ItemCell itemCell;
     private Timer timer;
 
+    private ItemInfoPanelController controller;
+
     public ItemInfoPanel(ItemMessage message, ItemCell itemCell, StashTab stashTab) {
+        this.controller = new ItemInfoPanelControllerImpl(message);
         this.message = message;
         this.cell = itemCell.getCell();
         this.itemCell = itemCell;
@@ -32,6 +35,10 @@ public class ItemInfoPanel extends JPanel implements HasUI{
         componentsFactory = new ComponentsFactory();
         setupMouseOverListener();
         createUI();
+    }
+    public ItemInfoPanel(ItemMessage message, ItemCell itemCell, StashTab stashTab, ItemInfoPanelController controller){
+        this(message,itemCell,stashTab);
+        this.controller = controller;
     }
 
     @Override
@@ -47,9 +54,7 @@ public class ItemInfoPanel extends JPanel implements HasUI{
         this.add(nicknamePanel,BorderLayout.CENTER);
 
         JButton hideButton = componentsFactory.getIconButton("app/close.png", 10, AppThemeColor.FRAME_ALPHA, "Close");
-        hideButton.addActionListener((action)->{
-            EventRouter.UI.fireEvent(new CloseGridItemEvent(message));
-        });
+        hideButton.addActionListener((action)-> controller.hidePanel());
         this.add(hideButton,BorderLayout.LINE_END);
 
         JPanel tabInfoPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
@@ -66,7 +71,7 @@ public class ItemInfoPanel extends JPanel implements HasUI{
                     timer.stop();
                 }
                 cell.setBorder(null);
-                EventRouter.UI.fireEvent(new ItemCellStateChangedEvent(ItemInfoPanel.this));
+                controller.changeTabType(this);
             });
         }
 
@@ -98,6 +103,14 @@ public class ItemInfoPanel extends JPanel implements HasUI{
                 timer.start();
             }
         });
+    }
+
+    public ItemInfoPanelController getController() {
+        return controller;
+    }
+
+    public void setController(ItemInfoPanelController controller) {
+        this.controller = controller;
     }
 
     public StashTab getStashTab() {

@@ -122,7 +122,7 @@ public class TaskBarFrame extends MovableComponentFrame{
     }
 
     @Override
-    protected JPanel panelWhenMove() {
+    protected JPanel getPanelForPINSettings() {
         disableCollapseAnimation();
         JPanel panel = componentsFactory.getTransparentPanel();
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));

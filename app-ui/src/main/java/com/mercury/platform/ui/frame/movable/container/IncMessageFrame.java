@@ -250,7 +250,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
     }
 
     @Override
-    protected JPanel panelWhenMove() {
+    protected JPanel getPanelForPINSettings() {
         JPanel panel = componentsFactory.getTransparentPanel();
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
         panel.setBackground(AppThemeColor.FRAME);

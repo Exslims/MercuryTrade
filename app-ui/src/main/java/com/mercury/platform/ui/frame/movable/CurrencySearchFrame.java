@@ -86,7 +86,7 @@ public class CurrencySearchFrame extends MovableComponentFrame {
     }
 
     @Override
-    protected JPanel panelWhenMove() {
+    protected JPanel getPanelForPINSettings() {
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
         JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,20f,"Currency searcher"));
