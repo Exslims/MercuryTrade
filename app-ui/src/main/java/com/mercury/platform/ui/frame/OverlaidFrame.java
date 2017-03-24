@@ -14,16 +14,17 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public abstract class OverlaidFrame extends JFrame implements HasEventHandlers, Scalable {
+public abstract class OverlaidFrame extends JFrame implements HasEventHandlers{
     protected FrameStates prevState;
     protected boolean processingHideEvent = true;
 
-    protected ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
+    protected ComponentsFactory componentsFactory;
     protected ConfigManager configManager = ConfigManager.INSTANCE;
 
     protected LayoutManager layout;
     protected OverlaidFrame(String title){
         super(title);
+        this.componentsFactory = new ComponentsFactory();
         getRootPane().setOpaque(false);
         setUndecorated(true);
         setLocationRelativeTo(null);
@@ -78,10 +79,6 @@ public abstract class OverlaidFrame extends JFrame implements HasEventHandlers, 
         setLayout(layout);
         initialize();
         initHandlers();
-    }
-
-    @Override
-    public void onScaleChange() {
     }
 
     protected abstract LayoutManager getFrameLayout();

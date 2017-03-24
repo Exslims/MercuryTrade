@@ -5,14 +5,18 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
+import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.shared.pojo.Message;
+import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.components.panel.MessagePanel;
-import com.mercury.platform.ui.components.panel.misc.MessagePanelStyle;
+import com.mercury.platform.ui.components.panel.message.MessagePanel;
+import com.mercury.platform.ui.components.panel.message.MessagePanelController;
+import com.mercury.platform.ui.components.panel.message.NotificationMessageController;
+import com.mercury.platform.ui.components.panel.message.MessagePanelStyle;
 import com.mercury.platform.ui.frame.movable.MovableComponentFrame;
 import com.mercury.platform.ui.frame.OverlaidFrame;
-import com.mercury.platform.ui.frame.setup.location.UndecoratedFrameState;
+import com.mercury.platform.ui.frame.setup.location.LocationState;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import com.mercury.platform.ui.misc.event.CloseMessagePanelEvent;
@@ -27,12 +31,17 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Константин on 24.12.2016.
  */
 public class IncMessageFrame extends MovableComponentFrame implements MessagesContainer {
     private final Logger logger = LogManager.getLogger(IncMessageFrame.class.getSimpleName());
+
+    private Map<Message, MessagePanel> currentMessages;
+
     private boolean wasVisible;
     private FlowDirections flowDirections;
     private FlowDirections pikerDirection;
@@ -50,6 +59,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
     public IncMessageFrame(){
         super("MercuryTrade");
 
+        currentMessages = new HashMap<>();
         processSEResize = false;
         flowDirections = FlowDirections.valueOf(configManager.getFlowDirection());
         pikerDirection = FlowDirections.valueOf(configManager.getFlowDirection());
@@ -101,11 +111,14 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
             SwingUtilities.invokeLater(()-> {
                 Message message = ((NewWhispersEvent) event).getMessage();
                 MessagePanel messagePanel;
-                if (flowDirections.equals(FlowDirections.DOWNWARDS)) {
-                    messagePanel = new MessagePanel(message, this, MessagePanelStyle.DOWNWARDS_SMALL);
-                } else {
-                    messagePanel = new MessagePanel(message, this, MessagePanelStyle.UPWARDS_SMALL);
-                }
+                MessagePanelStyle style = flowDirections.equals(FlowDirections.DOWNWARDS)?
+                        MessagePanelStyle.DOWNWARDS_SMALL: MessagePanelStyle.UPWARDS_SMALL;
+                messagePanel = new MessagePanel(
+                        message,
+                        this,
+                        style,
+                        new NotificationMessageController(message));
+
                 if (!dnd && !this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
                     this.setVisible(true);
                 } else {
@@ -116,6 +129,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
                 } else {
                     mainContainer.add(messagePanel);
                 }
+                currentMessages.put(message,messagePanel);
                 this.pack();
                 if (currentExpandedMsgCount < expandedMsgCount) {
                     messagePanel.expand();
@@ -145,11 +159,13 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
             });
         });
         EventRouter.UI.registerHandler(CloseMessagePanelEvent.class, event -> {
-            Component panel = ((CloseMessagePanelEvent) event).getComponent();
-            if(((MessagePanel)panel).isExpanded()){
+            Message message = ((CloseMessagePanelEvent) event).getMessage();
+            MessagePanel panel = currentMessages.get(message);
+            if(panel.isExpanded()){
                 currentExpandedMsgCount--;
             }
             this.remove(panel);
+            currentMessages.remove(message);
             switch (flowDirections){
                 case DOWNWARDS:{
                     if(mainContainer.getComponentCount() == 0){
@@ -231,12 +247,6 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
                 }
             }
         }
-    }
-
-    @Override
-    public void onScaleChange() {
-        this.removeAll();
-        initialize();
     }
 
     @Override
@@ -329,7 +339,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
 
     @Override
     protected void onLock() {
-        expandAllFrame.setState(UndecoratedFrameState.DEFAULT);
+        expandAllFrame.setState(LocationState.DEFAULT);
         if(!this.flowDirections.equals(pikerDirection)){
             configManager.setFlowDirection(pikerDirection.toString());
             this.changeDirectionTo(pikerDirection);
@@ -424,7 +434,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
     protected void onUnlock() {
         super.onUnlock();
         setUpExpandButton();
-        expandAllFrame.setState(UndecoratedFrameState.MOVING);
+        expandAllFrame.setState(LocationState.MOVING);
     }
 
     @Override
@@ -519,6 +529,40 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
             setUpExpandButton();
         }
         currentExpandedMsgCount--;
+    }
+
+    @Override
+    protected JPanel defaultView(ComponentsFactory factory) {
+        ItemMessage message = new ItemMessage();
+        message.setWhisperNickname("Example1");
+        message.setItemName("Example example example");
+        message.setCurrency("chaos");
+        message.setCurCount(100d);
+        message.setOffer("Offer offer offer");
+
+        JPanel panel = factory.getTransparentPanel();
+        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+        panel.setBackground(AppThemeColor.FRAME);
+        MessagePanelController stubController = new MessagePanelController() {
+            @Override
+            public void performInvite() {}
+            @Override
+            public void performKick() {}
+            @Override
+            public void performOfferTrade() {}
+            @Override
+            public void performOpenChat() {}
+            @Override
+            public void performResponse(String responseText) {}
+            @Override
+            public void performHide() {}
+            @Override
+            public void showITH() {}
+        };
+        MessagePanel messagePanel = new MessagePanel(message, this, MessagePanelStyle.DOWNWARDS_SMALL, stubController, factory);
+        messagePanel.expand();
+        panel.add(messagePanel);
+        return panel;
     }
 
     private class ExpandAllFrame extends OverlaidFrame {
@@ -651,7 +695,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
 
         }
 
-        void setState(UndecoratedFrameState state){
+        void setState(LocationState state){
             switch (state){
                 case DEFAULT:{
                     this.setContentPane(rootContainer);

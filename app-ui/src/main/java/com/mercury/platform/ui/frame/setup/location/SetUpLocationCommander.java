@@ -39,7 +39,7 @@ public class SetUpLocationCommander extends SetUpCommander<MovableComponentFrame
     @Override
     public void setOrEndUp(Class frameClass, boolean showingSetUpFrame) {
         MovableComponentFrame frame = frames.get(frameClass);
-        if(frame.getMoveState().equals(UndecoratedFrameState.DEFAULT)){
+        if(frame.getMoveState().equals(LocationState.DEFAULT)){
             enableMovement(frame,showingSetUpFrame);
             activeFrames.add(frame);
         }else {
@@ -61,13 +61,13 @@ public class SetUpLocationCommander extends SetUpCommander<MovableComponentFrame
         activeFrames.remove(frame);
     }
     private void enableMovement(MovableComponentFrame frame, boolean showSetUpFrame){
-        frame.setState(UndecoratedFrameState.MOVING);
+        frame.setState(LocationState.MOVING);
         if(showSetUpFrame){
             FramesManager.INSTANCE.showFrame(SetUpLocationFrame.class);
         }
     }
     private void disableMovement(MovableComponentFrame frame){
-        frame.setState(UndecoratedFrameState.DEFAULT);
+        frame.setState(LocationState.DEFAULT);
         FramesManager.INSTANCE.hideFrame(SetUpLocationFrame.class);
     }
 }

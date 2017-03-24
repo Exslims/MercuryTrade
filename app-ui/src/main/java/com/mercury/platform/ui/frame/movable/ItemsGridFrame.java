@@ -1,12 +1,12 @@
 package com.mercury.platform.ui.frame.movable;
 
-import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.pojo.StashTab;
+import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.HorizontalScrollContainer;
 import com.mercury.platform.ui.components.panel.grid.TabInfoPanel;
-import com.mercury.platform.ui.components.panel.misc.StashTabsContainer;
+import com.mercury.platform.ui.components.panel.grid.StashTabsContainer;
 import com.mercury.platform.ui.misc.event.*;
 import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.shared.pojo.Message;
@@ -388,6 +388,11 @@ public class ItemsGridFrame extends MovableComponentFrame{
     @Override
     protected LayoutManager getFrameLayout() {
         return new BorderLayout();
+    }
+
+    @Override
+    protected JPanel defaultView(ComponentsFactory factory) {
+        return new JPanel();
     }
 
     private class ResizeByWidthMouseMotionListener extends MouseMotionAdapter {

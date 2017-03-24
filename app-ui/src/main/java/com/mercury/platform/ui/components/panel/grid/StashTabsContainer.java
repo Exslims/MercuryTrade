@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.components.panel.misc;
+package com.mercury.platform.ui.components.panel.grid;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.pojo.StashTab;

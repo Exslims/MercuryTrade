@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.frame.movable;
 
-import com.mercury.platform.ui.frame.ComponentFrame;
-import com.mercury.platform.ui.frame.setup.location.UndecoratedFrameState;
+import com.mercury.platform.ui.frame.ScalableComponentFrame;
+import com.mercury.platform.ui.frame.setup.location.LocationState;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -10,10 +10,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public abstract class MovableComponentFrame extends ComponentFrame {
-    protected Container mainContainer;
-    protected FrameConstraints prevConstraints;
-    protected UndecoratedFrameState moveState = UndecoratedFrameState.DEFAULT;
+public abstract class MovableComponentFrame extends ScalableComponentFrame {
+    private MovableFrameConstraints prevConstraints;
+    private LocationState moveState = LocationState.DEFAULT;
     protected boolean locationWasChanged = false;
     protected boolean sizeWasChanged = false;
     protected boolean inMoveMode = false;
@@ -31,12 +30,12 @@ public abstract class MovableComponentFrame extends ComponentFrame {
         this.repaint();
         this.pack();
     }
-    public void setState(UndecoratedFrameState state){
+    public void setState(LocationState state){
         switch (state){
             case MOVING:{
-                this.moveState = UndecoratedFrameState.MOVING;
+                this.moveState = LocationState.MOVING;
                 inMoveMode = true;
-                this.prevConstraints = new FrameConstraints(
+                this.prevConstraints = new MovableFrameConstraints(
                         this.processSEResize,
                         this.processEResize,
                         this.isVisible(),
@@ -60,7 +59,7 @@ public abstract class MovableComponentFrame extends ComponentFrame {
                 break;
             }
             case DEFAULT: {
-                this.moveState = UndecoratedFrameState.DEFAULT;
+                this.moveState = LocationState.DEFAULT;
                 this.setContentPane(mainContainer);
                 this.processSEResize = prevConstraints.processSEResize;
                 this.processEResize = prevConstraints.processEResize;
@@ -115,11 +114,11 @@ public abstract class MovableComponentFrame extends ComponentFrame {
         return panel;
     }
 
-    public UndecoratedFrameState getMoveState() {
+    public LocationState getMoveState() {
         return moveState;
     }
 
-    protected class FrameConstraints {
+    protected class MovableFrameConstraints {
         private boolean processSEResize;
         private boolean processEResize;
         private boolean visible;
@@ -129,14 +128,14 @@ public abstract class MovableComponentFrame extends ComponentFrame {
         private Dimension minSize;
         private Dimension maxSize;
 
-        FrameConstraints(boolean processSEResize,
-                         boolean processEResize,
-                         boolean visible,
-                         Color bgColor,
-                         Border border,
-                         Point location,
-                         Dimension minSize,
-                         Dimension maxSize) {
+        MovableFrameConstraints(boolean processSEResize,
+                                boolean processEResize,
+                                boolean visible,
+                                Color bgColor,
+                                Border border,
+                                Point location,
+                                Dimension minSize,
+                                Dimension maxSize) {
             this.processSEResize = processSEResize;
             this.processEResize = processEResize;
             this.visible = visible;

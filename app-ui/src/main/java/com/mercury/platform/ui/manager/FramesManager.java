@@ -9,12 +9,14 @@ import com.mercury.platform.shared.events.custom.ShutDownForUpdateEvent;
 import com.mercury.platform.shared.events.custom.ShutdownApplication;
 import com.mercury.platform.shared.events.custom.UILoadedEvent;
 import com.mercury.platform.shared.pojo.FrameSettings;
+import com.mercury.platform.ui.frame.ScalableComponentFrame;
 import com.mercury.platform.ui.frame.other.*;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.frame.movable.container.IncMessageFrame;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
 import com.mercury.platform.ui.frame.movable.MovableComponentFrame;
 import com.mercury.platform.ui.frame.movable.TaskBarFrame;
+import com.mercury.platform.ui.frame.setup.scale.SetUpScaleCommander;
 import com.mercury.platform.ui.frame.titled.TestCasesFrame;
 import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.frame.setup.location.SetUpLocationCommander;
@@ -41,10 +43,12 @@ public class FramesManager implements HasEventHandlers{
 
     private Map<Class,OverlaidFrame> framesMap;
     private SetUpLocationCommander locationCommander;
+    private SetUpScaleCommander scaleCommander;
 
     private FramesManager() {
         framesMap = new HashMap<>();
         locationCommander = new SetUpLocationCommander();
+        scaleCommander = new SetUpScaleCommander();
     }
     public void start(){
         createTrayIcon();
@@ -57,6 +61,11 @@ public class FramesManager implements HasEventHandlers{
         locationCommander.addFrame((MovableComponentFrame) incMessageFrame);
         locationCommander.addFrame((MovableComponentFrame) taskBarFrame);
         locationCommander.addFrame((MovableComponentFrame) itemsMeshFrame);
+
+        scaleCommander.addFrame((ScalableComponentFrame) incMessageFrame);
+        scaleCommander.addFrame((ScalableComponentFrame) taskBarFrame);
+        scaleCommander.addFrame((ScalableComponentFrame) itemsMeshFrame);
+
         NotesLoader notesLoader = new NotesLoader();
 
         List<Note> notesOnFirstStart = notesLoader.getNotesOnFirstStart();
@@ -77,6 +86,7 @@ public class FramesManager implements HasEventHandlers{
         framesMap.put(UpdateReadyFrame.class,new UpdateReadyFrame());
         framesMap.put(TaskBarFrame.class,taskBarFrame);
         framesMap.put(SetUpLocationFrame.class,new SetUpLocationFrame());
+        framesMap.put(SetUpScaleFrame.class,new SetUpScaleFrame());
         framesMap.put(AlertFrame.class,new AlertFrame());
 
         framesMap.forEach((k,v)->{
@@ -151,6 +161,16 @@ public class FramesManager implements HasEventHandlers{
     }
     public void disableMovement(Class frameClass){
         locationCommander.endUp(frameClass);
+    }
+
+    public void enableScale(){
+        showFrame(SetUpScaleFrame.class);
+        scaleCommander.setUpAll();
+    }
+
+    public void disableScale(){
+        hideFrame(SetUpScaleFrame.class);
+        scaleCommander.endUpAll();
     }
     public void restoreDefaultLocation(){
         framesMap.forEach((k,v) -> {

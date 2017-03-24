@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.components.panel.misc;
+package com.mercury.platform.ui.components.panel.message;
 
 /**
  * Created by Константин on 24.12.2016.

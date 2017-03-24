@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.components.panel;
+package com.mercury.platform.ui.components.panel.message;
 
 
 import com.mercury.platform.shared.ConfigManager;
@@ -12,15 +12,12 @@ import com.mercury.platform.shared.pojo.ResponseButton;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.components.panel.misc.MessagePanelStyle;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.frame.titled.container.HistoryContainer;
 import com.mercury.platform.ui.frame.movable.container.MessagesContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
-import com.mercury.platform.ui.misc.event.CloseMessagePanelEvent;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
-import com.mercury.platform.ui.misc.event.ShowItemGridEvent;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -28,8 +25,6 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -39,8 +34,9 @@ import java.util.List;
 
 
 public class MessagePanel extends JPanel implements HasEventHandlers{
-    private ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
+    private ComponentsFactory componentsFactory;
     private ComponentFrame owner;
+    private MessagePanelController controller;
     private MessagePanelStyle style;
 
     private String whisper;
@@ -60,8 +56,10 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
 
     private boolean expanded = false;
 
-    public MessagePanel(Message message, ComponentFrame owner, MessagePanelStyle style){
+    public MessagePanel(Message message, ComponentFrame owner, MessagePanelStyle style, MessagePanelController controller){
         super(new BorderLayout());
+        this.componentsFactory = new ComponentsFactory();
+        this.controller = controller;
         this.message = message;
         this.owner = owner;
         this.style = style;
@@ -77,6 +75,10 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         initHandlers();
         setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
         setMinimumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
+    }
+    public MessagePanel(Message message, ComponentFrame owner, MessagePanelStyle style, MessagePanelController controller, ComponentsFactory componentsFactory){
+        this(message,owner,style,controller);
+        this.componentsFactory = componentsFactory;
     }
     private void init(){
         this.removeAll();
@@ -138,12 +140,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             itemButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    if(message instanceof ItemMessage) {
-                        copyItemNameToClipboard(((ItemMessage) message).getItemName());
-                        if (((ItemMessage) message).getTabName() != null) {
-                            EventRouter.UI.fireEvent(new ShowItemGridEvent((ItemMessage) message));
-                        }
-                    }
+                    controller.showITH();
                 }
 
                 @Override
@@ -249,43 +246,27 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         interactionPanel.add(getTimePanel());
         if(!style.equals(MessagePanelStyle.HISTORY)) {
             JButton inviteButton = componentsFactory.getIconButton("app/invite.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.INVITE);
-            inviteButton.addActionListener(e -> {
-                EventRouter.CORE.fireEvent(new ChatCommandEvent("/invite " + whisper));
-                if(message instanceof ItemMessage) {
-                    copyItemNameToClipboard(((ItemMessage) message).getItemName());
-                    if (((ItemMessage) message).getTabName() != null) {
-                        EventRouter.UI.fireEvent(new ShowItemGridEvent((ItemMessage) message));
-                    }
-                }
-            });
+            inviteButton.addActionListener(e -> controller.performInvite());
             JButton kickButton = componentsFactory.getIconButton("app/kick.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.KICK);
             kickButton.addActionListener(e -> {
-                EventRouter.CORE.fireEvent(new ChatCommandEvent("/kick " + whisper));
-                if(ConfigManager.INSTANCE.isDismissAfterKick()){
-                    Timer timer = new Timer(30, action -> {
-                        EventRouter.UI.fireEvent(new CloseMessagePanelEvent(MessagePanel.this, message));
-                    });
-                    timer.setRepeats(false);
-                    timer.start();
+                controller.performKick();
+                if(ConfigManager.INSTANCE.isDismissAfterKick()&& !style.equals(MessagePanelStyle.SP_MODE)){
+                    controller.performHide();
                 }
             });
             tradeButton = componentsFactory.getIconButton("app/trade.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
-            tradeButton.addActionListener(e ->
-                    EventRouter.CORE.fireEvent(new ChatCommandEvent("/tradewith " + whisper)));
+            tradeButton.addActionListener(e -> controller.performOfferTrade());
             interactionPanel.add(inviteButton);
             interactionPanel.add(kickButton);
             interactionPanel.add(tradeButton);
         }else {
             JButton reloadButton = componentsFactory.getIconButton("app/reload-history.png", 14, AppThemeColor.MSG_HEADER, "Restore");
-            reloadButton.addActionListener(e -> {
-                ((HistoryContainer)owner).onReloadMessage(MessagePanel.this);
-            });
+            reloadButton.addActionListener(e -> ((HistoryContainer)owner).onReloadMessage(MessagePanel.this));
             interactionPanel.add(reloadButton);
         }
         JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
         openChatButton.setToolTipText("Open chat");
-        openChatButton.addActionListener(e ->
-                EventRouter.CORE.fireEvent(new OpenChatEvent(whisper)));
+        openChatButton.addActionListener(e -> controller.performOpenChat());
 
         interactionPanel.add(openChatButton);
         JButton hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.HIDE_PANEL);
@@ -293,7 +274,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    EventRouter.UI.fireEvent(new CloseMessagePanelEvent(MessagePanel.this, message));
+                    controller.performHide();
                 }
             }
         });
@@ -458,25 +439,12 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
             JButton button = componentsFactory.getBorderedButton(buttonConfig.getTitle());
             button.setFont(componentsFactory.getFont(FontStyle.BOLD).deriveFont(15f));
             button.addActionListener(e -> {
-                EventRouter.CORE.fireEvent(new ChatCommandEvent("@" + whisper + " " + buttonConfig.getResponseText()));
+                controller.performResponse(buttonConfig.getResponseText());
                 if(buttonConfig.isClose() && !style.equals(MessagePanelStyle.SP_MODE)){
-                    Timer timer = new Timer(30, action -> {
-                        EventRouter.UI.fireEvent(new CloseMessagePanelEvent(MessagePanel.this, message));
-                    });
-                    timer.setRepeats(false);
-                    timer.start();
+                    controller.performHide();
                 }
             });
             panel.add(button);
         });
-    }
-    private void copyItemNameToClipboard(String itemName){
-        Timer timer = new Timer(30, action -> {
-            StringSelection selection = new StringSelection(itemName);
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboard.setContents(selection, null);
-        });
-        timer.setRepeats(false);
-        timer.start();
     }
 }

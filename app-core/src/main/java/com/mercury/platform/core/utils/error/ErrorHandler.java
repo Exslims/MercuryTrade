@@ -6,8 +6,8 @@ import org.apache.logging.log4j.Logger;
 public class ErrorHandler {
     private Logger logger = LogManager.getLogger(ErrorHandler.class.getSimpleName());
     public ErrorHandler(){
-        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
-            logger.error(throwable);
-        });
+//        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
+//            logger.error(throwable.fillInStackTrace());
+//        });
     }
 }

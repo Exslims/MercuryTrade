@@ -8,9 +8,10 @@ import com.mercury.platform.shared.events.custom.NewWhispersEvent;
 import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.shared.pojo.Message;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
-import com.mercury.platform.ui.components.panel.MessagePanel;
+import com.mercury.platform.ui.components.panel.message.MessagePanel;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
-import com.mercury.platform.ui.components.panel.misc.MessagePanelStyle;
+import com.mercury.platform.ui.components.panel.message.NotificationMessageController;
+import com.mercury.platform.ui.components.panel.message.MessagePanelStyle;
 import com.mercury.platform.ui.frame.titled.container.HistoryContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
@@ -64,7 +65,11 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
             MessageParser parser = new MessageParser();
             Message parsedMessage = parser.parse(message);
             if(parsedMessage != null) {
-                MessagePanel messagePanel = new MessagePanel(parsedMessage, this, MessagePanelStyle.HISTORY);
+                MessagePanel messagePanel = new MessagePanel(
+                        parsedMessage,
+                        this,
+                        MessagePanelStyle.HISTORY,
+                        new NotificationMessageController(parsedMessage));
                 messagePanel.disableTime();
                 mainContainer.add(messagePanel);
             }
@@ -80,7 +85,11 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
                     MessageParser parser = new MessageParser();
                     Message parsedMessage = parser.parse(message);
                     if(parsedMessage != null) {
-                        MessagePanel messagePanel = new MessagePanel(parsedMessage, this, MessagePanelStyle.HISTORY);
+                        MessagePanel messagePanel = new MessagePanel(
+                                parsedMessage,
+                                this,
+                                MessagePanelStyle.HISTORY,
+                                new NotificationMessageController(parsedMessage));
                         messagePanel.disableTime();
                         mainContainer.add(messagePanel, 0);
                     }
@@ -119,7 +128,11 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
             SwingUtilities.invokeLater(()-> {
                 Message message = ((NewWhispersEvent) event).getMessage();
                 HistoryManager.INSTANCE.add(message);
-                MessagePanel messagePanel = new MessagePanel(message, this, MessagePanelStyle.HISTORY);
+                MessagePanel messagePanel = new MessagePanel(
+                        message,
+                        this,
+                        MessagePanelStyle.HISTORY,
+                        new NotificationMessageController(message));
                 mainContainer.add(messagePanel);
                 trimContainer();
                 this.pack();

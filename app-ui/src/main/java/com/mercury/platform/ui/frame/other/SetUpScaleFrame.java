@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.frame.other;
 
-import com.mercury.platform.ui.frame.ComponentFrame;
+import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -9,64 +9,59 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class SetUpLocationFrame extends ComponentFrame {
-    public SetUpLocationFrame() {
+public class SetUpScaleFrame extends OverlaidFrame {
+    public SetUpScaleFrame() {
         super("MercuryTrade");
-        processEResize = false;
-        processSEResize = false;
     }
 
     @Override
     protected void initialize() {
-        super.initialize();
+        this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
+                BorderFactory.createLineBorder(AppThemeColor.BORDER, 1)));
+        this.setMinimumSize(new Dimension(340,200));
+
         JPanel rootPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         rootPanel.setBorder(BorderFactory.createEmptyBorder(6,6,0,6));
 
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
         root.setBackground(AppThemeColor.SLIDE_BG);
-        root.add(componentsFactory.getSimpleTextAre("              Panels UNLOCKED \nMove them and click Lock when done."),BorderLayout.CENTER);
+        root.add(componentsFactory.getSimpleTextAre("qwe"),BorderLayout.CENTER);
 
         JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton restoreDefault = componentsFactory.getBorderedButton("Restore defaults");
-        restoreDefault.setBorder(BorderFactory.createCompoundBorder(
+        JButton cancel = componentsFactory.getBorderedButton("Cancel");
+        cancel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER),
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 3)
         ));
-        restoreDefault.setBackground(AppThemeColor.FRAME);
+        cancel.setBackground(AppThemeColor.FRAME);
 
-        restoreDefault.addMouseListener(new MouseAdapter() {
+        cancel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                FramesManager.INSTANCE.restoreDefaultLocation();
+                FramesManager.INSTANCE.disableScale();
             }
         });
-        restoreDefault.setPreferredSize(new Dimension(140, 26));
+        cancel.setPreferredSize(new Dimension(100, 26));
 
-        JButton lock = componentsFactory.getBorderedButton("Lock!");
-        lock.addMouseListener(new MouseAdapter() {
+        JButton save = componentsFactory.getBorderedButton("Save");
+        save.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                FramesManager.INSTANCE.disableMovement();
-                SetUpLocationFrame.this.setVisible(false);
+                FramesManager.INSTANCE.disableScale();
             }
         });
-        lock.setPreferredSize(new Dimension(100, 26));
+        save.setPreferredSize(new Dimension(100, 26));
 
-        miscPanel.add(restoreDefault);
-        miscPanel.add(lock);
+        miscPanel.add(cancel);
+        miscPanel.add(save);
         rootPanel.add(root,BorderLayout.CENTER);
         this.add(rootPanel,BorderLayout.CENTER);
         this.add(miscPanel,BorderLayout.PAGE_END);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/4-this.getSize().height/2);
         this.pack();
-    }
-
-    @Override
-    public void showComponent() {
-        disableHideEffect();
-        super.showComponent();
     }
 
     @Override

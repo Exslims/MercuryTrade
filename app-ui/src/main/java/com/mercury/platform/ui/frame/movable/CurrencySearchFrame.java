@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.frame.movable;
 
 import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.movable.MovableComponentFrame;
@@ -106,5 +107,10 @@ public class CurrencySearchFrame extends MovableComponentFrame {
         root.add(labelPanel,BorderLayout.CENTER);
         root.setBackground(AppThemeColor.FRAME);
         return root;
+    }
+
+    @Override
+    protected JPanel defaultView(ComponentsFactory factory) {
+        return null;
     }
 }

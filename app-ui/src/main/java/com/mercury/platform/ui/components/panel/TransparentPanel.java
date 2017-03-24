@@ -11,9 +11,11 @@ import java.awt.event.MouseWheelEvent;
 
 
 public abstract class TransparentPanel extends JPanel {
-    protected ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
+    protected ComponentsFactory componentsFactory;
     protected VerticalScrollContainer verticalScrollContainer;
     public TransparentPanel() {
+        this.componentsFactory = new ComponentsFactory();
+
         this.setLayout(new BorderLayout());
         this.setBackground(AppThemeColor.SLIDE_BG);
         this.setBorder(null);

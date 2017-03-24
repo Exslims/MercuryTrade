@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent;
  * Created by Константин on 05.01.2017.
  */
 public class CollapsiblePanel<InnerPanel extends JPanel> extends JPanel {
-    private ComponentsFactory componentsFactory = ComponentsFactory.INSTANCE;
+    private ComponentsFactory componentsFactory;
     private String title;
     private InnerPanel innerPanel;
     private JFrame owner;
@@ -24,6 +24,7 @@ public class CollapsiblePanel<InnerPanel extends JPanel> extends JPanel {
         this.innerPanel = innerPanel;
         this.owner = owner;
         this.expand = expand;
+        this.componentsFactory = new ComponentsFactory();
 
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.setBorder(BorderFactory.createMatteBorder(1,0,1,0,AppThemeColor.BORDER));
