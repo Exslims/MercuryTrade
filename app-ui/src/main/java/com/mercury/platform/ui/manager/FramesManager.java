@@ -76,7 +76,7 @@ public class FramesManager implements HasEventHandlers{
         framesMap.put(TestCasesFrame.class,new TestCasesFrame());
         framesMap.put(TooltipFrame.class,new TooltipFrame());
         framesMap.put(NotificationFrame.class,new NotificationFrame());
-        framesMap.put(DonationAlertFrame.class,new DonationAlertFrame());
+        framesMap.put(MercuryLoadingFrame.class,new MercuryLoadingFrame());
         List<Note> patchNotes = notesLoader.getPatchNotes();
         if(ConfigManager.INSTANCE.isShowPatchNotes() && patchNotes.size() != 0){
             NotesFrame patchNotesFrame = new NotesFrame(patchNotes,NotesFrame.NotesType.PATCH);

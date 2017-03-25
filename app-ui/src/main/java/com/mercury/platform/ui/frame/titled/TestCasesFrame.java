@@ -25,7 +25,7 @@ public class TestCasesFrame extends TitledComponentFrame {
     private List<String> offer;
     private List<String> leagues;
     private String poeTradeTemplate = "2017/02/11 18:40:32 9029890 951 [INFO Client 8980] @From %s: Hi, I would like to buy your %s listed for %d %s in %s (stash tab \"%d\"; position: left %d, top %d) %s";
-    private String currencyTemplate = "2017/02/11 18:56:15 9973390 951 [INFO Client 8980] @From %s: Hi, I'd like to buy your %d %s for my %d %s %s. %s";
+    private String currencyTemplate = "2017/02/11 18:56:15 9973390 951 [INFO Client 8980] @From %s: Hi, I'd like to buy your %d %s for my %d %s in %s. %s";
 
     public TestCasesFrame() {
         super("MercuryTrade");
@@ -225,6 +225,7 @@ public class TestCasesFrame extends TitledComponentFrame {
                         currency.get(random.nextInt(currency.size())),
                         random.nextInt(200),
                         currency.get(random.nextInt(currency.size())),
+                        leagues.get(random.nextInt(leagues.size())),
                         offer.get(random.nextInt(offer.size()))
                 ));
                 EventRouter.CORE.fireEvent(new NewWhispersEvent(message));

@@ -26,19 +26,15 @@ public class ItemInfoPanel extends JPanel implements HasUI{
 
     private ItemInfoPanelController controller;
 
-    public ItemInfoPanel(ItemMessage message, ItemCell itemCell, StashTab stashTab) {
+    public ItemInfoPanel(ItemMessage message, ItemCell itemCell, StashTab stashTab, ComponentsFactory factory){
+        this.componentsFactory = factory;
         this.controller = new ItemInfoPanelControllerImpl(message);
         this.message = message;
         this.cell = itemCell.getCell();
         this.itemCell = itemCell;
         this.stashTab = stashTab;
-        componentsFactory = new ComponentsFactory();
         setupMouseOverListener();
         createUI();
-    }
-    public ItemInfoPanel(ItemMessage message, ItemCell itemCell, StashTab stashTab, ItemInfoPanelController controller){
-        this(message,itemCell,stashTab);
-        this.controller = controller;
     }
 
     @Override
@@ -53,7 +49,7 @@ public class ItemInfoPanel extends JPanel implements HasUI{
         nicknamePanel.setBorder(BorderFactory.createEmptyBorder(-6,0,-6,0));
         this.add(nicknamePanel,BorderLayout.CENTER);
 
-        JButton hideButton = componentsFactory.getIconButton("app/close.png", 10, AppThemeColor.FRAME_ALPHA, "Close");
+        JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_ALPHA, "Close");
         hideButton.addActionListener((action)-> controller.hidePanel());
         this.add(hideButton,BorderLayout.LINE_END);
 

@@ -12,6 +12,7 @@ import com.mercury.platform.shared.pojo.ResponseButton;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
+import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.frame.titled.container.HistoryContainer;
 import com.mercury.platform.ui.frame.movable.container.MessagesContainer;
@@ -33,7 +34,7 @@ import java.util.*;
 import java.util.List;
 
 
-public class MessagePanel extends JPanel implements HasEventHandlers{
+public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
     private ComponentsFactory componentsFactory;
     private ComponentFrame owner;
     private MessagePanelController controller;
@@ -64,21 +65,31 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         this.owner = owner;
         this.style = style;
         this.whisper = message.getWhisperNickname();
+        createUI();
+    }
+    public MessagePanel(Message message, ComponentFrame owner, MessagePanelStyle style, MessagePanelController controller, ComponentsFactory componentsFactory){
+        super(new BorderLayout());
+        this.componentsFactory = componentsFactory;
+        this.controller = controller;
+        this.message = message;
+        this.owner = owner;
+        this.style = style;
+        this.whisper = message.getWhisperNickname();
+        createUI();
+    }
+
+    @Override
+    public void createUI() {
         this.setBackground(AppThemeColor.FRAME);
         this.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,1),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1)));
-
         this.messagePanel = getFormattedMessagePanel();
         this.customButtonsPanel = getButtonsPanel();
         init();
         initHandlers();
         setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
         setMinimumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
-    }
-    public MessagePanel(Message message, ComponentFrame owner, MessagePanelStyle style, MessagePanelController controller, ComponentsFactory componentsFactory){
-        this(message,owner,style,controller);
-        this.componentsFactory = componentsFactory;
     }
     private void init(){
         this.removeAll();
@@ -129,11 +140,14 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         tradePanel.setBackground(AppThemeColor.TRANSPARENT);
         tradePanel.setBorder(BorderFactory.createEmptyBorder(-11,2,-11,0));
         if(message instanceof ItemMessage) {
-            JButton itemButton = componentsFactory.getButton(((ItemMessage) message).getItemName());
+            JButton itemButton = componentsFactory.getButton(
+                    FontStyle.BOLD,
+                    AppThemeColor.BUTTON,
+                    BorderFactory.createEmptyBorder(0,4,0,2),
+                    ((ItemMessage) message).getItemName(), 17f);
+
             itemButton.setForeground(AppThemeColor.TEXT_IMPORTANT);
-            itemButton.setFont(componentsFactory.getFont(FontStyle.BOLD).deriveFont(17f));
             itemButton.setBackground(AppThemeColor.TRANSPARENT);
-            itemButton.setBorder(BorderFactory.createEmptyBorder(0,4,0,2));
             itemButton.setHorizontalAlignment(SwingConstants.LEFT);
             itemButton.setContentAreaFilled(false);
             itemButton.setRolloverEnabled(false);
@@ -194,12 +208,12 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         }
         String currency = message.getCurrency();
         if(!Objects.equals(curCount, "") && currency != null) {
-            JPanel curCountPanel = new JPanel();
-            curCountPanel.setPreferredSize(new Dimension(40,34));
+            JPanel curCountPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
             curCountPanel.setBackground(AppThemeColor.TRANSPARENT);
 
             JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, curCount);
             curCountPanel.add(priceLabel);
+            curCountPanel.setPreferredSize(new Dimension((int)(componentsFactory.getScale() * 40),curCountPanel.getPreferredSize().height));
             JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + currency + ".png", 26);
             JPanel curPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
             curPanel.setBackground(AppThemeColor.TRANSPARENT);
@@ -331,7 +345,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     }
     private JButton getExpandButton(){
         String iconPath = "app/default-mp.png";
-        expandButton = componentsFactory.getIconButton(iconPath, 18, AppThemeColor.MSG_HEADER,"");
+        expandButton = componentsFactory.getIconButton(iconPath, 18f, AppThemeColor.MSG_HEADER,"");
         expandButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -349,11 +363,11 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
     public void expand(){
         expanded = true;
         if(style.equals(MessagePanelStyle.DOWNWARDS_SMALL)) {
-            expandButton.setIcon(componentsFactory.getIcon("app/expand-mp.png", 18));
+            expandButton.setIcon(componentsFactory.getIcon("app/expand-mp.png", 18f));
             messagePanel.setVisible(true);
             customButtonsPanel.setVisible(true);
         }else {
-            expandButton.setIcon(componentsFactory.getIcon("app/collapse-mp.png", 18));
+            expandButton.setIcon(componentsFactory.getIcon("app/collapse-mp.png", 18f));
             messagePanel.setVisible(true);
             customButtonsPanel.setVisible(true);
         }
@@ -436,8 +450,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers{
         List<ResponseButton> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();
         Collections.sort(buttonsConfig);
         buttonsConfig.forEach((buttonConfig)->{
-            JButton button = componentsFactory.getBorderedButton(buttonConfig.getTitle());
-            button.setFont(componentsFactory.getFont(FontStyle.BOLD).deriveFont(15f));
+            JButton button = componentsFactory.getBorderedButton(buttonConfig.getTitle(),15f);
             button.addActionListener(e -> {
                 controller.performResponse(buttonConfig.getResponseText());
                 if(buttonConfig.isClose() && !style.equals(MessagePanelStyle.SP_MODE)){

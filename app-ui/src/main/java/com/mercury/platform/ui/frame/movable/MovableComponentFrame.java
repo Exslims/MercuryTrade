@@ -13,25 +13,23 @@ import java.awt.event.MouseEvent;
 public abstract class MovableComponentFrame extends ScalableComponentFrame {
     private MovableFrameConstraints prevConstraints;
     private LocationState moveState = LocationState.DEFAULT;
+    private JPanel panelForPin;
     protected boolean locationWasChanged = false;
     protected boolean sizeWasChanged = false;
     protected boolean inMoveMode = false;
     protected boolean enableMouseOverBorder = true;
-
-    private JPanel panelForPIN;
     protected MovableComponentFrame(String title) {
         super(title);
         mainContainer = this.getContentPane();
     }
+
+    @Override
+    protected void initialize() {
+        super.initialize();
+        panelForPin = setUpMoveListeners(getPanelForPINSettings());
+    }
+
     protected abstract JPanel getPanelForPINSettings();
-    protected void onUnlock(){
-        this.pack();
-        this.repaint();
-    }
-    protected void onLock(){
-        this.repaint();
-        this.pack();
-    }
     public void setState(LocationState state){
         switch (state){
             case MOVING:{
@@ -47,16 +45,13 @@ public abstract class MovableComponentFrame extends ScalableComponentFrame {
                         this.getMinimumSize(),
                         this.getMaximumSize()
                 );
-                if(panelForPIN == null){
-                    panelForPIN = setUpMoveListeners(getPanelForPINSettings());
-                }
                 this.processEResize = false;
                 this.processSEResize = false;
-                this.setBackground(panelForPIN.getBackground());
+                this.setBackground(panelForPin.getBackground());
                 this.setLocation(configManager.getFrameSettings(this.getClass().getSimpleName()).getFrameLocation());
                 this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
                 this.setMinimumSize(null);
-                this.setContentPane(panelForPIN);
+                this.setContentPane(panelForPin);
                 this.setVisible(true);
                 this.setAlwaysOnTop(true);
                 this.onUnlock();

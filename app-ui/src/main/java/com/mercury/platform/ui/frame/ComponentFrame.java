@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.frame;
 
 import com.mercury.platform.shared.pojo.FrameSettings;
+import com.mercury.platform.ui.frame.movable.TaskBarFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.manager.HideSettingsManager;
 import org.pushingpixels.trident.Timeline;

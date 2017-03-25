@@ -52,7 +52,7 @@ public class ComponentsFactory{
             ITALIC_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-Italic.ttf"));
             REGULAR_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-Regular.ttf"));
             SMALLCAPS_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-SmallCaps.ttf"));
-            DEFAULT_FONT = new Font("Tahoma", Font.BOLD, (int)scale*16);
+            DEFAULT_FONT = new Font("Tahoma", Font.BOLD, (int)(scale*16));
 
         } catch (Exception e) {
             log.error(e);
@@ -128,6 +128,13 @@ public class ComponentsFactory{
         );
         return getButton(FontStyle.BOLD, AppThemeColor.BUTTON, compoundBorder, text, scale*14f);
     }
+    public JButton getBorderedButton(String text, float fontSize){
+        CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
+                BorderFactory.createLineBorder(AppThemeColor.BUTTON, 3)
+        );
+        return getButton(FontStyle.BOLD, AppThemeColor.BUTTON, compoundBorder, text, scale*fontSize);
+    }
 
     public Component setUpToggleCallbacks(Component button,ToggleCallback firstState, ToggleCallback secondState, boolean initialState){
         button.addMouseListener(new MouseAdapter() {
@@ -152,7 +159,7 @@ public class ComponentsFactory{
      * @param iconSize icon size
      * @return JButton object with icon
      */
-    public JButton getIconButton(String iconPath, int iconSize, Color background, String tooltip){
+    public JButton getIconButton(String iconPath, float iconSize, Color background, String tooltip){
         JButton button = new JButton(""){
             @Override
             protected void paintBorder(Graphics g) {
@@ -199,7 +206,7 @@ public class ComponentsFactory{
         BufferedImage icon = null;
         try {
             BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
-            icon = Scalr.resize(buttonIcon, (int)scale*iconSize);
+            icon = Scalr.resize(buttonIcon, (int)(scale*iconSize));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -210,7 +217,7 @@ public class ComponentsFactory{
     }
 
     public JButton getIconifiedTransparentButton(String iconPath, String tooltip){
-        JButton iconButton = getIconButton(iconPath, (int)scale*10, AppThemeColor.FRAME_RGB, tooltip);
+        JButton iconButton = getIconButton(iconPath, 10, AppThemeColor.FRAME_RGB, tooltip);
         iconButton.setIcon(getImage(iconPath));
         return iconButton;
     }
@@ -225,7 +232,7 @@ public class ComponentsFactory{
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
                 BorderFactory.createLineBorder(AppThemeColor.BUTTON, 2)
         );
-        JButton iconButton = getIconButton(iconPath, (int)scale*iconSize, AppThemeColor.FRAME_ALPHA,tooltip);
+        JButton iconButton = getIconButton(iconPath, iconSize, AppThemeColor.FRAME_ALPHA,tooltip);
         iconButton.setBorder(BorderFactory.createLineBorder(AppThemeColor.BUTTON, 2));
         return iconButton;
     }
@@ -238,7 +245,7 @@ public class ComponentsFactory{
      * @return JButton with icon
      */
     public JButton getIconButton(String iconPath, int iconSize, Dimension buttonSize, String tooltip){
-        JButton iconButton = getIconButton(iconPath, (int)scale*iconSize, AppThemeColor.FRAME_ALPHA, tooltip);
+        JButton iconButton = getIconButton(iconPath, iconSize, AppThemeColor.FRAME_ALPHA, tooltip);
         iconButton.setPreferredSize(buttonSize); //todo scale
         iconButton.setSize(buttonSize);
         return iconButton;
@@ -306,7 +313,7 @@ public class ComponentsFactory{
     public JLabel getIconLabel(String iconPath, int size){
         JLabel iconLabel = new JLabel();
         try {
-            iconLabel.setIcon(getIcon(iconPath,(int)scale*size));
+            iconLabel.setIcon(getIcon(iconPath,(int)(scale*size)));
         } catch (Exception e) {
             return getTextLabel(StringUtils.substringBetween(iconPath,"/","."));
         }
@@ -315,7 +322,7 @@ public class ComponentsFactory{
     public JLabel getIconLabel(String iconPath, int size, String tooltip){
         JLabel iconLabel = new JLabel();
         try {
-            iconLabel.setIcon(getIcon(iconPath,(int)scale*size));
+            iconLabel.setIcon(getIcon(iconPath,(int)(scale*size)));
         } catch (Exception e) {
             return getTextLabel(StringUtils.substringBetween(iconPath,"/","."));
         }
@@ -396,8 +403,8 @@ public class ComponentsFactory{
         }
         return DEFAULT_FONT;
     }
-    public Font getFont(FontStyle style){
-        return getSelectedFont(style);
+    public Font getFont(FontStyle style, float fontSize){
+        return getSelectedFont(style).deriveFont(fontSize);
     }
     public JComboBox getComboBox(String[] childs){
         JComboBox comboBox = new JComboBox(childs);
@@ -432,11 +439,11 @@ public class ComponentsFactory{
         panel.setBorder(border);
         return panel;
     }
-    public ImageIcon getIcon(String iconPath, int size){
+    public ImageIcon getIcon(String iconPath, float size){
         BufferedImage icon = null;
         try {
             BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
-            icon = Scalr.resize(buttonIcon, size);
+            icon = Scalr.resize(buttonIcon, (int)(scale * size));
         } catch (IOException e) {
             log.error(e);
         }

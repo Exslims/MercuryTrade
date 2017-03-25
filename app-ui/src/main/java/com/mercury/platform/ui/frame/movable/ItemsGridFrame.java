@@ -246,7 +246,16 @@ public class ItemsGridFrame extends MovableComponentFrame{
     }
 
     @Override
+    protected void registerDirectScaleHandler() {
+        EventRouter.UI.registerHandler(ScaleChangeEvent.ItemPanelScaleChangeEvent.class,event -> {
+            changeScale(((ScaleChangeEvent.ItemPanelScaleChangeEvent)event).getScale());
+        });
+    }
+
+    @Override
     protected JPanel defaultView(ComponentsFactory factory) {
+        JPanel root = factory.getTransparentPanel(new BorderLayout());
+        root.setSize(this.getSize());
         ItemsGridPanel defaultView = new ItemsGridPanel(factory);
         ItemMessage message = new ItemMessage();
         message.setWhisperNickname("Example1");
@@ -261,7 +270,8 @@ public class ItemsGridFrame extends MovableComponentFrame{
             public void changeTabType(@NonNull ItemInfoPanel panel) {}
         };
         defaultView.add(message,controller);
-        return defaultView;
+        root.add(defaultView,BorderLayout.CENTER);
+        return root;
     }
 
     private class ResizeByWidthMouseMotionListener extends MouseMotionAdapter {

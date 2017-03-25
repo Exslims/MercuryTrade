@@ -110,6 +110,11 @@ public class CurrencySearchFrame extends MovableComponentFrame {
     }
 
     @Override
+    protected void registerDirectScaleHandler() {
+
+    }
+
+    @Override
     protected JPanel defaultView(ComponentsFactory factory) {
         return null;
     }

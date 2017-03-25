@@ -24,6 +24,10 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.sun.jna</groupId>
+            <artifactId>jna</artifactId>
+        </dependency>
+        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
@@ -51,6 +55,10 @@
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>platform</artifactId>
         </dependency>
     </dependencies>
     <build>

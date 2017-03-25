@@ -21,6 +21,7 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import com.mercury.platform.ui.misc.event.CloseMessagePanelEvent;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
+import com.mercury.platform.ui.misc.event.ScaleChangeEvent;
 import com.mercury.platform.ui.misc.event.ShowTooltipEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -206,7 +207,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
     }
 
     private void setUpExpandButton(){
-        if(!inMoveMode && !dnd) {
+        if(!inScaleSettings && !inMoveMode && !dnd) {
             switch (flowDirections) {
                 case DOWNWARDS: {
                     if(mainContainer.getComponentCount() >= (limitMsgCount + 1)) {
@@ -339,7 +340,9 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
 
     @Override
     protected void onLock() {
-        expandAllFrame.setState(LocationState.DEFAULT);
+        if(!inScaleSettings) {
+            expandAllFrame.setState(LocationState.DEFAULT);
+        }
         if(!this.flowDirections.equals(pikerDirection)){
             configManager.setFlowDirection(pikerDirection.toString());
             this.changeDirectionTo(pikerDirection);
@@ -433,8 +436,10 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
     @Override
     protected void onUnlock() {
         super.onUnlock();
-        setUpExpandButton();
-        expandAllFrame.setState(LocationState.MOVING);
+        if(!inScaleSettings) {
+            setUpExpandButton();
+            expandAllFrame.setState(LocationState.MOVING);
+        }
     }
 
     @Override
@@ -532,12 +537,19 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
     }
 
     @Override
+    protected void registerDirectScaleHandler() {
+        EventRouter.UI.registerHandler(ScaleChangeEvent.NotificationScaleChangeEvent.class, event -> {
+            changeScale(((ScaleChangeEvent.NotificationScaleChangeEvent)event).getScale());
+        });
+    }
+
+    @Override
     protected JPanel defaultView(ComponentsFactory factory) {
         ItemMessage message = new ItemMessage();
         message.setWhisperNickname("Example1");
         message.setItemName("Example example example");
         message.setCurrency("chaos");
-        message.setCurCount(100d);
+        message.setCurCount(1000d);
         message.setOffer("Offer offer offer");
 
         JPanel panel = factory.getTransparentPanel();

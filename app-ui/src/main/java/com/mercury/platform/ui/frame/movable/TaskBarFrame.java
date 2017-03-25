@@ -16,6 +16,7 @@ import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
+import com.mercury.platform.ui.misc.event.ScaleChangeEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.pushingpixels.trident.Timeline;
@@ -26,10 +27,11 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class TaskBarFrame extends MovableComponentFrame{
-    private final Logger logger = LogManager.getLogger(TaskBarFrame.class.getSimpleName());
     private Timeline collapseAnimation;
-    private static final int MAX_WIDTH = 250;
+    private int MIN_WIDTH;
+    private int MAX_WIDTH;
     private MouseListener collapseListener;
+    private TaskBarPanel taskBarPanel;
 
     public TaskBarFrame() {
         super("MercuryTrade");
@@ -41,7 +43,8 @@ public class TaskBarFrame extends MovableComponentFrame{
     @Override
     protected void initialize() {
         super.initialize();
-        add(new TaskBarPanel(new MercuryTaskBarController()), BorderLayout.CENTER);
+        taskBarPanel = new TaskBarPanel(new MercuryTaskBarController());
+        add(taskBarPanel, BorderLayout.CENTER);
         this.pack();
         collapseListener = new MouseAdapter() {
             @Override
@@ -66,11 +69,12 @@ public class TaskBarFrame extends MovableComponentFrame{
                 }
             }
         };
-
+        this.MAX_WIDTH = taskBarPanel.getPreferredSize().width;
+        this.MIN_WIDTH = taskBarPanel.getWidthOf(4);
         enableCollapseAnimation();
     }
     private void enableCollapseAnimation(){
-        this.setWidth(configManager.getFrameSettings(this.getClass().getSimpleName()).getFrameSize().width);
+        this.setWidth(MIN_WIDTH);
         this.addMouseListener(collapseListener);
     }
     private void disableCollapseAnimation(){
@@ -97,7 +101,7 @@ public class TaskBarFrame extends MovableComponentFrame{
                 break;
             }
             case "collapse":{
-                collapseAnimation.addPropertyToInterpolate("width",this.getWidth(),configManager.getFrameSettings(this.getClass().getSimpleName()).getFrameSize().width);
+                collapseAnimation.addPropertyToInterpolate("width",this.getWidth(),MIN_WIDTH);
             }
         }
         collapseAnimation.setEase(new Spline(1f));
@@ -135,8 +139,16 @@ public class TaskBarFrame extends MovableComponentFrame{
     }
 
     @Override
+    protected void registerDirectScaleHandler() {
+        EventRouter.UI.registerHandler(ScaleChangeEvent.TaskBarScaleChangeEvent.class,event -> {
+            changeScale(((ScaleChangeEvent.TaskBarScaleChangeEvent)event).getScale());
+        });
+    }
+
+    @Override
     protected JPanel defaultView(ComponentsFactory factory) {
         JPanel panel = factory.getTransparentPanel(new BorderLayout());
+        this.setWidth(MIN_WIDTH);
         TaskBarController controller = new TaskBarController() {
             @Override
             public void enableDND() {}
@@ -159,7 +171,11 @@ public class TaskBarFrame extends MovableComponentFrame{
             @Override
             public void exit() {}
         };
+        TaskBarPanel taskBarPanel = new TaskBarPanel(controller, factory);
         panel.add(new TaskBarPanel(controller,factory), BorderLayout.CENTER);
+        this.MIN_WIDTH = taskBarPanel.getWidthOf(4);
+        this.MAX_WIDTH = taskBarPanel.getPreferredSize().width;
+        this.setSize(new Dimension(MIN_WIDTH,this.getHeight()));
         return panel;
     }
 }

@@ -13,6 +13,7 @@ public abstract class ScalableComponentFrame extends ComponentFrame{
     private ScaleState scaleState = ScaleState.DEFAULT;
     private ComponentsFactory stubComponentsFactory;
     private ScalableFrameConstraints prevConstraints;
+    protected boolean inScaleSettings = false;
 
     protected ScalableComponentFrame(String title) {
         super(title);
@@ -23,8 +24,20 @@ public abstract class ScalableComponentFrame extends ComponentFrame{
             float scale = ((ScaleChangeEvent) event).getScale();
             changeScale(scale);
         });
+        registerDirectScaleHandler();
     }
-    private void changeScale(float scale){
+
+    protected void onUnlock(){
+        this.pack();
+        this.repaint();
+    }
+    protected void onLock(){
+        this.repaint();
+        this.pack();
+    }
+
+    protected abstract void registerDirectScaleHandler();
+    protected void changeScale(float scale){
         stubComponentsFactory.setScale(scale);
         initDefaultView();
     }
@@ -37,11 +50,12 @@ public abstract class ScalableComponentFrame extends ComponentFrame{
                 this.setLocation(prevConstraints.location);
                 this.setMinimumSize(prevConstraints.minSize);
                 this.setMaximumSize(prevConstraints.maxSize);
-                this.repaint();
-                this.pack();
+                this.onLock();
+                this.inScaleSettings = false;
                 break;
             }
             case ENABLE: {
+                this.inScaleSettings = true;
                 this.scaleState = ScaleState.ENABLE;
                 this.prevConstraints = new ScalableFrameConstraints(
                         this.isVisible(),
@@ -53,8 +67,7 @@ public abstract class ScalableComponentFrame extends ComponentFrame{
                 this.setLocation(configManager.getFrameSettings(this.getClass().getSimpleName()).getFrameLocation());
                 this.setMinimumSize(null);
                 this.setVisible(true);
-                this.repaint();
-                this.pack();
+                this.onUnlock();
                 break;
             }
         }

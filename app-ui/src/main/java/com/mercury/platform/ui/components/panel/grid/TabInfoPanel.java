@@ -33,7 +33,7 @@ public class TabInfoPanel extends JPanel implements HasUI{
         JPanel tabInfoPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel tabLabel = componentsFactory.getTextLabel(stashTab.getTitle());
         tabLabel.setBorder(null);
-        tabLabel.setFont(componentsFactory.getFont(FontStyle.BOLD).deriveFont(15f));
+        tabLabel.setFont(componentsFactory.getFont(FontStyle.BOLD,15f));
         tabInfoPanel.add(tabLabel);
         JCheckBox isItQuad = componentsFactory.getCheckBox("Is it Quad?");
         isItQuad.setSelected(stashTab.isQuad());

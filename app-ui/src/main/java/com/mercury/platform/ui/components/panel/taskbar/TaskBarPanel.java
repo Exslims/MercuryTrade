@@ -20,8 +20,9 @@ public class TaskBarPanel extends JPanel implements HasUI{
         createUI();
     }
     public TaskBarPanel(@NonNull TaskBarController controller, @NonNull ComponentsFactory factory){
-        this(controller);
+        this.controller = controller;
         this.componentsFactory = factory;
+        createUI();
     }
 
     @Override
@@ -168,5 +169,10 @@ public class TaskBarPanel extends JPanel implements HasUI{
         this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(exitButton);
         this.add(Box.createRigidArea(new Dimension(3, 4)));
+    }
+
+    public int getWidthOf(int elementCount){
+        int size = this.getPreferredSize().width / (this.getComponentCount()/2);
+        return size * elementCount + 3;
     }
 }

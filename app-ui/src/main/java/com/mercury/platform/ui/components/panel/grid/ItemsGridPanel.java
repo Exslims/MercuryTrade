@@ -38,8 +38,13 @@ public class ItemsGridPanel extends JPanel implements HasUI {
         createUI();
     }
     public ItemsGridPanel(@NonNull ComponentsFactory factory){
-        this();
+        super(new BorderLayout());
         this.componentsFactory = factory;
+        defaultCells = new ArrayList<>();
+        quadCells = new ArrayList<>();
+        tabButtons = new HashMap<>();
+        stashTabsContainer = new StashTabsContainer();
+        createUI();
     }
 
     @Override
@@ -67,7 +72,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
         }
         JPanel rightPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         rightPanel.setBackground(AppThemeColor.TRANSPARENT);
-        rightPanel.setPreferredSize(new Dimension(16,668));
+        rightPanel.setPreferredSize(new Dimension(18,668));
         JPanel downPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         downPanel.setBorder(BorderFactory.createEmptyBorder(-10,0,0,0));
         downPanel.setBackground(AppThemeColor.TRANSPARENT);
@@ -153,14 +158,16 @@ public class ItemsGridPanel extends JPanel implements HasUI {
     }
 
     private ItemInfoPanel createGridItem(@NonNull ItemMessage message, @NonNull ItemCell cell, @NonNull StashTab stashTab){
-        ItemInfoPanel itemInfoPanel = new ItemInfoPanel(message,cell,stashTab);
+        ItemInfoPanel itemInfoPanel = new ItemInfoPanel(message,cell,stashTab,componentsFactory);
         itemInfoPanel.setAlignmentY(SwingConstants.CENTER);
         itemInfoPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 if(stashTab.isQuad()){
+                    remove(((BorderLayout)getLayout()).getLayoutComponent(BorderLayout.CENTER));
                     add(quadTabGrid,BorderLayout.CENTER);
                 }else {
+                    remove(((BorderLayout)getLayout()).getLayoutComponent(BorderLayout.CENTER));
                     add(defaultGrid,BorderLayout.CENTER);
                 }
                 EventRouter.UI.fireEvent(new RepaintEvent.RepaintItemGrid());
