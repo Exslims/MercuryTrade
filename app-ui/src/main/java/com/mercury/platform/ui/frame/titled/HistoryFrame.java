@@ -69,7 +69,8 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
                 MessagePanel messagePanel = new MessagePanel(
                         parsedMessage,
                         MessagePanelStyle.HISTORY,
-                        new NotificationMessageController(parsedMessage));
+                        new NotificationMessageController(parsedMessage),
+                        this.componentsFactory);
                 messagePanel.disableTime();
                 mainContainer.add(messagePanel);
             }
@@ -87,7 +88,8 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
                         MessagePanel messagePanel = new MessagePanel(
                                 parsedMessage,
                                 MessagePanelStyle.HISTORY,
-                                new NotificationMessageController(parsedMessage));
+                                new NotificationMessageController(parsedMessage),
+                                this.componentsFactory);
                         messagePanel.disableTime();
                         mainContainer.add(messagePanel, 0);
                     }
@@ -129,7 +131,8 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
                 MessagePanel messagePanel = new MessagePanel(
                         message,
                         MessagePanelStyle.HISTORY,
-                        new NotificationMessageController(message));
+                        new NotificationMessageController(message),
+                        this.componentsFactory);
                 mainContainer.add(messagePanel);
                 trimContainer();
                 this.pack();

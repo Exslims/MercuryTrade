@@ -12,17 +12,19 @@ public class Message {
     private String offer;
     private Double curCount;
     private String currency;
+    private String league;
 
     public Message() {
     }
 
-    public Message(String sourceString, String whisperNickname, String offer, Date msgDate, Double curCount, String currency) {
+    public Message(String sourceString, String whisperNickname, String offer, Date msgDate, Double curCount, String currency, String league) {
         this.sourceString = sourceString;
         this.offer = offer;
         this.messageDate = msgDate;
         this.whisperNickname = whisperNickname;
         this.curCount = curCount;
         this.currency = currency;
+        this.league = league;
     }
 
     public String getWhisperNickname() {
@@ -71,5 +73,13 @@ public class Message {
 
     public void setSourceString(String sourceString) {
         this.sourceString = sourceString;
+    }
+
+    public String getLeague() {
+        return league;
+    }
+
+    public void setLeague(String league) {
+        this.league = league;
     }
 }

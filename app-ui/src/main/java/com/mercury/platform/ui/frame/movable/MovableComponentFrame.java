@@ -13,9 +13,7 @@ import java.awt.event.MouseEvent;
 public abstract class MovableComponentFrame extends ScalableComponentFrame {
     private MovableFrameConstraints prevConstraints;
     private LocationState moveState = LocationState.DEFAULT;
-    private JPanel panelForPin;
     protected boolean locationWasChanged = false;
-    protected boolean sizeWasChanged = false;
     protected boolean inMoveMode = false;
     protected boolean enableMouseOverBorder = true;
     protected MovableComponentFrame(String title) {
@@ -23,12 +21,14 @@ public abstract class MovableComponentFrame extends ScalableComponentFrame {
         mainContainer = this.getContentPane();
     }
 
-    @Override
-    protected void initialize() {
-        super.initialize();
-        panelForPin = setUpMoveListeners(getPanelForPINSettings());
+    protected void onUnlock(){
+        this.pack();
+        this.repaint();
     }
-
+    protected void onLock(){
+        this.repaint();
+        this.pack();
+    }
     protected abstract JPanel getPanelForPINSettings();
     public void setState(LocationState state){
         switch (state){
@@ -47,6 +47,7 @@ public abstract class MovableComponentFrame extends ScalableComponentFrame {
                 );
                 this.processEResize = false;
                 this.processSEResize = false;
+                JPanel panelForPin = setUpMoveListeners(getPanelForPINSettings());
                 this.setBackground(panelForPin.getBackground());
                 this.setLocation(configManager.getFrameSettings(this.getClass().getSimpleName()).getFrameLocation());
                 this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));

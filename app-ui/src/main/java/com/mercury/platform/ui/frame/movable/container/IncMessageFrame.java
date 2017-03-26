@@ -17,11 +17,11 @@ import com.mercury.platform.ui.components.panel.message.MessagePanelStyle;
 import com.mercury.platform.ui.frame.movable.MovableComponentFrame;
 import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.frame.setup.location.LocationState;
+import com.mercury.platform.ui.frame.setup.scale.ScaleState;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
+import com.mercury.platform.ui.misc.data.ScaleData;
 import com.mercury.platform.ui.misc.event.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -32,9 +32,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Константин on 24.12.2016.
- */
 public class IncMessageFrame extends MovableComponentFrame implements MessagesContainer {
     private Map<Message, MessagePanel> currentMessages;
     private boolean wasVisible;
@@ -70,8 +67,17 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
     @Override
     protected void initialize() {
         super.initialize();
+        createUI();
+    }
+
+    @Override
+    public void createUI() {
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.getRootPane().setBorder(null);
+        if(currentMessages.size() > 0){
+            currentMessages.forEach((message, panel) -> this.mainContainer.add(panel));
+            this.setVisible(true);
+        }
         if(flowDirections.equals(FlowDirections.UPWARDS)){
             changeDirectionTo(FlowDirections.UPWARDS);
             locationWasChanged = true;
@@ -104,52 +110,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
         });
         EventRouter.CORE.registerHandler(NewWhispersEvent.class, event -> {
             SwingUtilities.invokeLater(()-> {
-                Message message = ((NewWhispersEvent) event).getMessage();
-                MessagePanel messagePanel;
-                MessagePanelStyle style = flowDirections.equals(FlowDirections.DOWNWARDS)?
-                        MessagePanelStyle.DOWNWARDS_SMALL: MessagePanelStyle.UPWARDS_SMALL;
-                messagePanel = new MessagePanel(
-                        message,
-                        style,
-                        new NotificationMessageController(message));
-
-                if (!dnd && !this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
-                    this.setVisible(true);
-                } else {
-                    prevState = FrameStates.SHOW;
-                }
-                if (flowDirections.equals(FlowDirections.UPWARDS)) {
-                    mainContainer.add(messagePanel, 1);
-                } else {
-                    mainContainer.add(messagePanel);
-                }
-                currentMessages.put(message,messagePanel);
-                this.pack();
-                if (currentExpandedMsgCount < expandedMsgCount) {
-                    messagePanel.expand();
-                }
-                switch (flowDirections) {
-                    case DOWNWARDS: {
-                        if (mainContainer.getComponentCount() > limitMsgCount && !expanded) {
-                            messagePanel.setVisible(false);
-                        }
-                        if (mainContainer.getComponentCount() > limitMsgCount) {
-                            setUpExpandButton();
-                            expandAllFrame.incMessageCount();
-                        }
-                        break;
-                    }
-                    case UPWARDS: {
-                        if (mainContainer.getComponentCount() > (limitMsgCount + 1) && !expanded) {
-                            messagePanel.setVisible(false);
-                        }
-                        if (mainContainer.getComponentCount() > (limitMsgCount + 1)) {
-                            setUpExpandButton();
-                            expandAllFrame.incMessageCount();
-                        }
-                        break;
-                    }
-                }
+                addMessage(((NewWhispersEvent)event).getMessage());
             });
         });
         EventRouter.UI.registerHandler(CloseMessagePanelEvent.class, event -> {
@@ -201,6 +162,55 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
         });
     }
 
+    private void addMessage(Message message){
+        MessagePanel messagePanel;
+        MessagePanelStyle style = flowDirections.equals(FlowDirections.DOWNWARDS)?
+                MessagePanelStyle.DOWNWARDS_SMALL: MessagePanelStyle.UPWARDS_SMALL;
+        messagePanel = new MessagePanel(
+                message,
+                style,
+                new NotificationMessageController(message),
+                this.componentsFactory);
+
+        if (!dnd && !this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
+            this.setVisible(true);
+        } else {
+            prevState = FrameStates.SHOW;
+        }
+        if (flowDirections.equals(FlowDirections.UPWARDS)) {
+            mainContainer.add(messagePanel, 1);
+        } else {
+            mainContainer.add(messagePanel);
+        }
+        currentMessages.put(message,messagePanel);
+        this.pack();
+        if (currentExpandedMsgCount < expandedMsgCount) {
+            messagePanel.expand();
+        }
+        switch (flowDirections) {
+            case DOWNWARDS: {
+                if (mainContainer.getComponentCount() > limitMsgCount && !expanded) {
+                    messagePanel.setVisible(false);
+                }
+                if (mainContainer.getComponentCount() > limitMsgCount) {
+                    setUpExpandButton();
+                    expandAllFrame.incMessageCount();
+                }
+                break;
+            }
+            case UPWARDS: {
+                if (mainContainer.getComponentCount() > (limitMsgCount + 1) && !expanded) {
+                    messagePanel.setVisible(false);
+                }
+                if (mainContainer.getComponentCount() > (limitMsgCount + 1)) {
+                    setUpExpandButton();
+                    expandAllFrame.incMessageCount();
+                }
+                break;
+            }
+        }
+    }
+
     private void setUpExpandButton(){
         if(!inScaleSettings && !inMoveMode && !dnd) {
             switch (flowDirections) {
@@ -212,7 +222,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
                             for (int i = 0; i < limitMsgCount; i++) {
                                 height += components[i].getPreferredSize().height;
                             }
-                            expandAllFrame.setMinimumSize(new Dimension(20, height));
+                            expandAllFrame.setMinimumSize(new Dimension((int)(20 * componentsFactory.getScale()), height));
                             expandAllFrame.setLocation(new Point(this.getLocation().x - expandAllFrame.getPreferredSize().width,
                                     this.getLocation().y));
                             expandAllFrame.pack();
@@ -231,7 +241,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
                                 height += components[i].getPreferredSize().height;
                             }
                             Point location = mainContainer.getComponent(components.length - limitMsgCount).getLocationOnScreen();
-                            expandAllFrame.setMinimumSize(new Dimension(20, height));
+                            expandAllFrame.setMinimumSize(new Dimension((int)(20 * componentsFactory.getScale()), height));
                             expandAllFrame.setLocation(new Point(this.getLocation().x - expandAllFrame.getPreferredSize().width,
                                     location.y));
                             expandAllFrame.pack();
@@ -329,37 +339,10 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
         panel.add(labelPanel);
         panel.add(growPanel);
         outer.add(panel,BorderLayout.CENTER);
-        panel.setPreferredSize(new Dimension(200, 110));
+        panel.setPreferredSize(new Dimension((int)(200 * componentsFactory.getScale()), (int)(110*componentsFactory.getScale())));
         return panel;
     }
 
-    @Override
-    protected void onLock() {
-        if(!inScaleSettings) {
-            expandAllFrame.setState(LocationState.DEFAULT);
-        }
-        if(!this.flowDirections.equals(pikerDirection)){
-            configManager.setFlowDirection(pikerDirection.toString());
-            this.changeDirectionTo(pikerDirection);
-            locationWasChanged = true;
-        }
-        if(limitMsgCount != limitSlider.getValue()) {
-            limitMsgCount = limitSlider.getValue();
-            configManager.setLimitMsgCount(limitMsgCount);
-            this.onLimitCountChange();
-        }
-        if(expandedMsgCount != expandSlider.getValue()) {
-            expandedMsgCount = expandSlider.getValue();
-            configManager.setExpandedMsgCount(expandedMsgCount);
-            this.onExpandedCountChange();
-        }
-        this.changeLocation();
-        super.onLock();
-        this.setUpExpandButton();
-        if(currentMessages.size() > 0){
-            this.setVisible(true);
-        }
-    }
     private void onLimitCountChange(){
         expandAllFrame.resetMessageCount();
         Arrays.stream(mainContainer.getComponents()).forEach(component -> {
@@ -432,12 +415,53 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
         expandAllFrame.setOpacity(opacity);
     }
     @Override
+    protected void onLock() {
+        expandAllFrame.setLocationState(LocationState.DEFAULT);
+        if(!this.flowDirections.equals(pikerDirection)){
+            configManager.setFlowDirection(pikerDirection.toString());
+            this.changeDirectionTo(pikerDirection);
+            locationWasChanged = true;
+        }
+        if(limitMsgCount != limitSlider.getValue()) {
+            limitMsgCount = limitSlider.getValue();
+            configManager.setLimitMsgCount(limitMsgCount);
+            this.onLimitCountChange();
+        }
+        if(expandedMsgCount != expandSlider.getValue()) {
+            expandedMsgCount = expandSlider.getValue();
+            configManager.setExpandedMsgCount(expandedMsgCount);
+            this.onExpandedCountChange();
+        }
+        this.changeLocation();
+        super.onLock();
+        this.setUpExpandButton();
+        if(currentMessages.size() > 0){
+            this.setVisible(true);
+        }
+    }
+    @Override
     protected void onUnlock() {
         super.onUnlock();
-        if(!inScaleSettings) {
-            setUpExpandButton();
-            expandAllFrame.setState(LocationState.MOVING);
+        setUpExpandButton();
+        expandAllFrame.setLocationState(LocationState.MOVING);
+    }
+
+    @Override
+    protected void onScaleLock() {
+        if(currentMessages.size() > 0){
+            expandAllFrame.setScaleState(ScaleState.DEFAULT);
+            this.changeLocation();
+            this.setUpExpandButton();
+            this.pack();
+            this.repaint();
         }
+    }
+
+    @Override
+    protected void onScaleUnlock() {
+        expandAllFrame.setScaleState(ScaleState.ENABLE);
+        this.pack();
+        this.repaint();
     }
 
     @Override
@@ -535,6 +559,25 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
     }
 
     @Override
+    protected void performScaling(ScaleData scaleData) {
+        wasVisible = isVisible();
+        hideComponent();
+        this.componentsFactory.setScale(scaleData.getNotificationScale());
+        currentMessages.forEach((message,panel)->{
+            panel.setComponentsFactory(this.componentsFactory);
+            panel.setStyle(panel.getStyle());
+        });
+        if(wasVisible) {
+            showComponent();
+        }
+        expandAllFrame.processNewScale();
+        changeLocation();
+        setUpExpandButton();
+        this.pack();
+        this.repaint();
+    }
+
+    @Override
     protected void registerDirectScaleHandler() {
         EventRouter.UI.registerHandler(ScaleChangeEvent.NotificationScaleChangeEvent.class, event -> {
             changeScale(((ScaleChangeEvent.NotificationScaleChangeEvent)event).getScale());
@@ -548,6 +591,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
         message.setItemName("Example example example");
         message.setCurrency("chaos");
         message.setCurCount(1000d);
+        message.setLeague("Standard");
         message.setOffer("Offer offer offer");
 
         JPanel panel = factory.getTransparentPanel();
@@ -596,6 +640,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
         @Override
         protected void initialize() {
             this.rootContainer = this.getContentPane();
+            this.componentsFactory = IncMessageFrame.this.componentsFactory;
             this.setBackground(AppThemeColor.MSG_HEADER);
             this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                             BorderFactory.createMatteBorder(1,1,1,0,AppThemeColor.TRANSPARENT),
@@ -603,7 +648,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
 
             labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
             labelPanel.setBackground(AppThemeColor.MSG_HEADER);
-            labelPanel.setPreferredSize(new Dimension(10,22));
+            labelPanel.setPreferredSize(new Dimension((int)(10 * componentsFactory.getScale()),(int)(22 * componentsFactory.getScale())));
             labelPanel.setBorder(BorderFactory.createEmptyBorder(-4,0,0,0));
             msgCountLabel = componentsFactory.getTextLabel("+" + String.valueOf(messageCount));
             String iconPath = (flowDirections.equals(FlowDirections.DOWNWARDS))? "app/collapse-all.png" : "app/expand-all.png";
@@ -663,6 +708,11 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
             }
             this.pack();
         }
+        void processNewScale(){
+            labelPanel.setPreferredSize(new Dimension((int)(10 * componentsFactory.getScale()),(int)(22 * componentsFactory.getScale())));
+            msgCountLabel.setFont(componentsFactory.getFont(FontStyle.BOLD,15f));
+            changeArrowDirection();
+        }
 
         void incMessageCount(){
             messageCount++;
@@ -711,16 +761,10 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
 
         }
 
-        void setState(LocationState state){
+        void setLocationState(LocationState state){
             switch (state){
                 case DEFAULT:{
-                    this.setContentPane(rootContainer);
-                    this.setVisible(prevContraints.visible);
-                    this.getRootPane().setBorder(prevContraints.border);
-                    this.setBackground(prevContraints.bgColor);
-                    prevContraints = null;
-                    setUpExpandButton();
-                    this.pack();
+                    toDefaultState();
                     break;
                 }
                 case MOVING:{
@@ -755,6 +799,33 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
                     this.setLocation(IncMessageFrame.this.getLocation().x - this.getPreferredSize().width - 2, IncMessageFrame.this.getLocation().y);
                     this.setContentPane(panel);
                     this.pack();
+                    break;
+                }
+            }
+        }
+        private void toDefaultState(){
+            this.setContentPane(rootContainer);
+            this.setVisible(prevContraints.visible);
+            this.getRootPane().setBorder(prevContraints.border);
+            this.setBackground(prevContraints.bgColor);
+            prevContraints = null;
+            setUpExpandButton();
+            this.pack();
+        }
+
+        void setScaleState(ScaleState state){
+            switch (state){
+                case DEFAULT: {
+                    toDefaultState();
+                    break;
+                }
+                case ENABLE:{
+                    prevContraints = new ExpandAllFrameConstraints(
+                            this.isVisible(),
+                            this.getRootPane().getBorder(),
+                            this.getBackground()
+                    );
+                    this.setVisible(false);
                     break;
                 }
             }

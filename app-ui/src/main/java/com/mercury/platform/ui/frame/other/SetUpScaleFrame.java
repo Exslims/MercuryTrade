@@ -6,6 +6,8 @@ import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.data.ScaleData;
+import com.mercury.platform.ui.misc.event.SaveScaleEvent;
 import com.mercury.platform.ui.misc.event.ScaleChangeEvent;
 import lombok.NonNull;
 
@@ -15,8 +17,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class SetUpScaleFrame extends OverlaidFrame {
+    private ScaleData scaleData;
     public SetUpScaleFrame() {
         super("MercuryTrade");
+        scaleData = new ScaleData();
     }
 
     @Override
@@ -57,6 +61,7 @@ public class SetUpScaleFrame extends OverlaidFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 FramesManager.INSTANCE.disableScale();
+                EventRouter.UI.fireEvent(new SaveScaleEvent(scaleData));
             }
         });
         save.setPreferredSize(new Dimension(100, 26));
@@ -99,6 +104,7 @@ public class SetUpScaleFrame extends OverlaidFrame {
                 if(notificationSlider.getValue() != prevValue){
                     prevValue = notificationSlider.getValue();
                     notificationValue.setText(String.valueOf(notificationSlider.getValue()));
+                    scaleData.setNotificationScale(notificationSlider.getValue()/10f);
                     EventRouter.UI.fireEvent(new ScaleChangeEvent.NotificationScaleChangeEvent(notificationSlider.getValue()/10f));
                     repaint();
                 }

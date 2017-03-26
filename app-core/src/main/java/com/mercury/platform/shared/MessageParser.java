@@ -32,6 +32,7 @@ public class MessageParser {
             message.setItemName(poeTradeItemMatcher.group(3));
             message.setCurCount(Double.parseDouble(poeTradeItemMatcher.group(4)));
             message.setCurrency(poeTradeItemMatcher.group(6));
+            message.setLeague(poeTradeItemMatcher.group(7));
             if(poeTradeItemMatcher.group(9) != null) {
                 message.setTabName(poeTradeItemMatcher.group(9));
                 message.setLeft(Integer.parseInt(poeTradeItemMatcher.group(10)));

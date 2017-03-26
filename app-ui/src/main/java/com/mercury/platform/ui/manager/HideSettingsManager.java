@@ -6,9 +6,6 @@ import com.mercury.platform.ui.frame.ComponentFrame;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Константин on 11.01.2017.
- */
 public class HideSettingsManager {
     private static class HideSettingsManagerHolder {
         static final HideSettingsManager HOLDER_INSTANCE = new HideSettingsManager();

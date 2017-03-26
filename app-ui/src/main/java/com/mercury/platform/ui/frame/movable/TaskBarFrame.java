@@ -15,6 +15,7 @@ import com.mercury.platform.ui.frame.titled.SettingsFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
+import com.mercury.platform.ui.misc.data.ScaleData;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
 import com.mercury.platform.ui.misc.event.ScaleChangeEvent;
 import org.apache.logging.log4j.LogManager;
@@ -146,6 +147,16 @@ public class TaskBarFrame extends MovableComponentFrame{
     }
 
     @Override
+    protected void performScaling(ScaleData scaleData) {
+
+    }
+
+    @Override
+    public void createUI() {
+
+    }
+
+    @Override
     protected JPanel defaultView(ComponentsFactory factory) {
         JPanel panel = factory.getTransparentPanel(new BorderLayout());
         this.setWidth(MIN_WIDTH);
@@ -173,6 +184,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         };
         TaskBarPanel taskBarPanel = new TaskBarPanel(controller, factory);
         panel.add(new TaskBarPanel(controller,factory), BorderLayout.CENTER);
+        panel.setBackground(AppThemeColor.FRAME);
         this.MIN_WIDTH = taskBarPanel.getWidthOf(4);
         this.MAX_WIDTH = taskBarPanel.getPreferredSize().width;
         this.setSize(new Dimension(MIN_WIDTH,this.getHeight()));

@@ -2,17 +2,22 @@ package com.mercury.platform.ui.frame;
 
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.ui.components.ComponentsFactory;
+import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.frame.setup.scale.ScaleState;
+import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.data.ScaleData;
+import com.mercury.platform.ui.misc.event.SaveScaleEvent;
 import com.mercury.platform.ui.misc.event.ScaleChangeEvent;
 
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class ScalableComponentFrame extends ComponentFrame{
+public abstract class ScalableComponentFrame extends ComponentFrame implements HasUI{
     protected Container mainContainer;
     private ScaleState scaleState = ScaleState.DEFAULT;
     private ComponentsFactory stubComponentsFactory;
     private ScalableFrameConstraints prevConstraints;
+    protected boolean sizeWasChanged = false;
     protected boolean inScaleSettings = false;
 
     protected ScalableComponentFrame(String title) {
@@ -24,19 +29,24 @@ public abstract class ScalableComponentFrame extends ComponentFrame{
             float scale = ((ScaleChangeEvent) event).getScale();
             changeScale(scale);
         });
+        EventRouter.UI.registerHandler(SaveScaleEvent.class,
+                event -> performScaling(((SaveScaleEvent) event).getScaleData()));
         registerDirectScaleHandler();
     }
 
-    protected void onUnlock(){
+
+    protected void onScaleLock(){
         this.pack();
         this.repaint();
     }
-    protected void onLock(){
+    protected void onScaleUnlock(){
         this.repaint();
         this.pack();
     }
 
     protected abstract void registerDirectScaleHandler();
+    protected abstract void performScaling(ScaleData scaleData);
+
     protected void changeScale(float scale){
         stubComponentsFactory.setScale(scale);
         initDefaultView();
@@ -47,11 +57,19 @@ public abstract class ScalableComponentFrame extends ComponentFrame{
                 this.scaleState = ScaleState.DEFAULT;
                 this.setContentPane(mainContainer);
                 this.setVisible(prevConstraints.visible);
+                this.setBackground(prevConstraints.bgColor);
                 this.setLocation(prevConstraints.location);
-                this.setMinimumSize(prevConstraints.minSize);
-                this.setMaximumSize(prevConstraints.maxSize);
-                this.onLock();
+                if(sizeWasChanged){
+                    this.setPreferredSize(this.getSize());
+                    this.setMinimumSize(this.getSize());
+                    this.setMaximumSize(this.getSize());
+                    sizeWasChanged = false;
+                }else {
+                    this.setMinimumSize(prevConstraints.minSize);
+                    this.setMaximumSize(prevConstraints.maxSize);
+                }
                 this.inScaleSettings = false;
+                this.onScaleLock();
                 break;
             }
             case ENABLE: {
@@ -61,13 +79,14 @@ public abstract class ScalableComponentFrame extends ComponentFrame{
                         this.isVisible(),
                         this.getMinimumSize(),
                         this.getMaximumSize(),
-                        this.getLocation()
+                        this.getLocation(),
+                        this.getBackground()
                 );
                 initDefaultView();
                 this.setLocation(configManager.getFrameSettings(this.getClass().getSimpleName()).getFrameLocation());
                 this.setMinimumSize(null);
                 this.setVisible(true);
-                this.onUnlock();
+                this.onScaleUnlock();
                 break;
             }
         }
@@ -87,16 +106,19 @@ public abstract class ScalableComponentFrame extends ComponentFrame{
         private Dimension minSize;
         private Dimension maxSize;
         private Point location;
+        private Color bgColor;
 
         ScalableFrameConstraints(
                         boolean visible,
                         Dimension minSize,
                         Dimension maxSize,
-                        Point location) {
+                        Point location,
+                        Color bgColor) {
             this.visible = visible;
             this.minSize = minSize;
             this.maxSize = maxSize;
             this.location = location;
+            this.bgColor = bgColor;
         }
     }
 }

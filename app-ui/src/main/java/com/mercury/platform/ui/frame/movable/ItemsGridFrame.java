@@ -6,6 +6,7 @@ import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.HorizontalScrollContainer;
 import com.mercury.platform.ui.components.panel.grid.*;
+import com.mercury.platform.ui.misc.data.ScaleData;
 import com.mercury.platform.ui.misc.event.*;
 import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.shared.pojo.Message;
@@ -272,6 +273,16 @@ public class ItemsGridFrame extends MovableComponentFrame{
         defaultView.add(message,controller);
         root.add(defaultView,BorderLayout.CENTER);
         return root;
+    }
+
+    @Override
+    protected void performScaling(ScaleData scaleData) {
+
+    }
+
+    @Override
+    public void createUI() {
+
     }
 
     private class ResizeByWidthMouseMotionListener extends MouseMotionAdapter {

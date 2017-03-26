@@ -13,9 +13,6 @@ import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
-import com.mercury.platform.ui.frame.ComponentFrame;
-import com.mercury.platform.ui.frame.titled.container.HistoryContainer;
-import com.mercury.platform.ui.frame.movable.container.MessagesContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
@@ -53,6 +50,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
     private JPanel whisperPanel;
     private JPanel messagePanel;
     private JPanel customButtonsPanel;
+    private JPanel interactionPanel;
 
     private boolean expanded = false;
 
@@ -61,12 +59,6 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
         this.message = message;
         this.style = style;
         this.whisper = message.getWhisperNickname();
-    }
-    public MessagePanel(Message message, MessagePanelStyle style, MessagePanelController controller){
-        this(message,style);
-        this.controller = controller;
-        this.componentsFactory = new ComponentsFactory();
-        createUI();
     }
     public MessagePanel(Message message, MessagePanelStyle style, MessagePanelController controller, ComponentsFactory componentsFactory){
         this(message,style);
@@ -81,8 +73,6 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
         this.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,1),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1)));
-        this.messagePanel = getFormattedMessagePanel();
-        this.customButtonsPanel = getButtonsPanel();
         init();
         initHandlers();
         setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
@@ -91,6 +81,9 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
     private void init(){
         this.removeAll();
         this.whisperPanel = getWhisperPanel();
+        this.messagePanel = getFormattedMessagePanel();
+        this.customButtonsPanel = getButtonsPanel();
+        initStillInterestingListeners();
         whisperPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 0, 1, 0, AppThemeColor.MSG_HEADER_BORDER),
                 BorderFactory.createEmptyBorder(-6, 0, -6, 0)));
@@ -106,13 +99,13 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
         }
         switch (style){
             case DOWNWARDS_SMALL:{
-                messagePanel.setVisible(false);
-                customButtonsPanel.setVisible(false);
+                messagePanel.setVisible(expanded);
+                customButtonsPanel.setVisible(expanded);
                 break;
             }
             case UPWARDS_SMALL:{
-                messagePanel.setVisible(false);
-                customButtonsPanel.setVisible(false);
+                messagePanel.setVisible(expanded);
+                customButtonsPanel.setVisible(expanded);
                 break;
             }
             case HISTORY:{
@@ -232,7 +225,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(AppThemeColor.MSG_HEADER);
 
-        whisperLabel = componentsFactory.getTextLabel(FontStyle.BOLD,cachedWhisperColor, TextAlignment.LEFTOP,15f,whisper + ":");
+        whisperLabel = componentsFactory.getTextLabel(FontStyle.BOLD,cachedWhisperColor, TextAlignment.LEFTOP,15f,getNicknameLabel());
         Border border = whisperLabel.getBorder();
         whisperLabel.setBorder(new CompoundBorder(border,new EmptyBorder(0,0,0,5)));
         whisperLabel.setVerticalAlignment(SwingConstants.CENTER);
@@ -242,7 +235,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
             nickNamePanel.add(whisperLabel,BorderLayout.CENTER);
         }else {
             JPanel buttonWrapper = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-            buttonWrapper.setBorder(BorderFactory.createEmptyBorder(1,0,0,0));
+            buttonWrapper.setBorder(BorderFactory.createEmptyBorder(2,0,0,0));
             buttonWrapper.add(getExpandButton());
             if(!style.equals(MessagePanelStyle.SP_MODE)) {
                 nickNamePanel.add(buttonWrapper, BorderLayout.LINE_START);
@@ -251,7 +244,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
         }
         topPanel.add(nickNamePanel,BorderLayout.CENTER);
 
-        JPanel interactionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        interactionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         interactionPanel.setBorder(BorderFactory.createEmptyBorder(1,0,1,0));
         interactionPanel.setBackground(AppThemeColor.TRANSPARENT);
         interactionPanel.add(getTimePanel());
@@ -295,6 +288,28 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
 
         topPanel.add(interactionPanel,BorderLayout.LINE_END);
         return topPanel;
+    }
+    private String getNicknameLabel(){
+        String whisperNickname = message.getWhisperNickname();
+        String result = whisperNickname + ":";
+        if(message.getLeague() != null) {
+            String league = message.getLeague().trim();
+            if (league.length() == 0) {
+                return result;
+            }
+            if (league.contains("Hardcore")) {
+                if (league.equals("Hardcore")) {
+                    result = "HC " + result;
+                } else {
+                    result = String.valueOf(league.split(" ")[1].charAt(0)) + "HC " + result;
+                }
+            } else if (league.contains("Standard")) {
+                result = "Standard " + result;
+            } else {
+                result = String.valueOf(league.charAt(0)) + "SC " + result;
+            }
+        }
+        return result;
     }
     private JPanel getTimePanel(){
         JPanel panel = new JPanel();
@@ -343,6 +358,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
     private JButton getExpandButton(){
         String iconPath = "app/default-mp.png";
         expandButton = componentsFactory.getIconButton(iconPath, 18f, AppThemeColor.MSG_HEADER,"");
+        expandButton.setBorder(BorderFactory.createEmptyBorder(4,4,4,0));
         expandButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -457,5 +473,60 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
             });
             panel.add(button);
         });
+    }
+    private void initStillInterestingListeners(){
+        if(!style.equals(MessagePanelStyle.HISTORY)) {
+            Timer timer = new Timer(5000, null);
+            StillInterestingListener stillInterestingListener = new StillInterestingListener(timer);
+            timer.addActionListener((event)->{
+                JButton stillIntButton = componentsFactory.getIconButton("app/still-interesting.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.INVITE);
+
+                String curCount = message.getCurCount() % 1 == 0 ?
+                        String.valueOf(message.getCurCount().intValue()) :
+                        String.valueOf(message.getCurCount());
+                String responseText = "Hi, are you still interested in ";
+                if(message instanceof ItemMessage){
+                    ItemMessage message = (ItemMessage) this.message;
+                    if(message.getCurrency().equals("???")){
+                        responseText += message.getItemName() + "?";
+                    }else {
+                        responseText += message.getItemName() +
+                                " for " + curCount + " " + message.getCurrency() + "?";
+                    }
+                }else {
+                    CurrencyMessage message = (CurrencyMessage) this.message;
+                    String curForSaleCount = message.getCurCount() % 1 == 0 ?
+                            String.valueOf(message.getCurrForSaleCount().intValue()) :
+                            String.valueOf(message.getCurrForSaleCount());
+                    responseText += curForSaleCount + " " + message.getCurrForSaleTitle() + " for " +
+                            curCount + " " + message.getCurrency() + "?";
+                }
+                String finalResponseText = responseText; // hate java
+                stillIntButton.addActionListener(
+                        (action)->controller.performResponse(finalResponseText)
+                );
+                interactionPanel.add(stillIntButton,interactionPanel.getComponentCount()-2);
+                EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
+                this.removeMouseListener(stillInterestingListener);
+            });
+            timer.setRepeats(false);
+            timer.start();
+            this.addMouseListener(stillInterestingListener);
+        }
+    }
+
+    public void setComponentsFactory(ComponentsFactory componentsFactory) {
+        this.componentsFactory = componentsFactory;
+    }
+    private class StillInterestingListener extends MouseAdapter {
+        private Timer timer;
+        private StillInterestingListener(Timer timer) {
+            this.timer = timer;
+        }
+        @Override
+        public void mouseExited(MouseEvent e) {
+            timer.stop();
+            MessagePanel.this.removeMouseListener(this);
+        }
     }
 }
