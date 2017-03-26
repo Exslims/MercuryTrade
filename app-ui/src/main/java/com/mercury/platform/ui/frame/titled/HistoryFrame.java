@@ -14,6 +14,7 @@ import com.mercury.platform.ui.components.panel.message.NotificationMessageContr
 import com.mercury.platform.ui.components.panel.message.MessagePanelStyle;
 import com.mercury.platform.ui.frame.titled.container.HistoryContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.event.ReloadMessageEvent;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -67,14 +68,12 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
             if(parsedMessage != null) {
                 MessagePanel messagePanel = new MessagePanel(
                         parsedMessage,
-                        this,
                         MessagePanelStyle.HISTORY,
                         new NotificationMessageController(parsedMessage));
                 messagePanel.disableTime();
                 mainContainer.add(messagePanel);
             }
         }
-//        this.miscPanel.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
         this.miscPanel.add(getClearButton(),0);
         this.pack();
         vBar.setValue(vBar.getMaximum());
@@ -87,7 +86,6 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
                     if(parsedMessage != null) {
                         MessagePanel messagePanel = new MessagePanel(
                                 parsedMessage,
-                                this,
                                 MessagePanelStyle.HISTORY,
                                 new NotificationMessageController(parsedMessage));
                         messagePanel.disableTime();
@@ -130,13 +128,15 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
                 HistoryManager.INSTANCE.add(message);
                 MessagePanel messagePanel = new MessagePanel(
                         message,
-                        this,
                         MessagePanelStyle.HISTORY,
                         new NotificationMessageController(message));
                 mainContainer.add(messagePanel);
                 trimContainer();
                 this.pack();
             });
+        });
+        EventRouter.UI.registerHandler(ReloadMessageEvent.class,event -> {
+            onReloadMessage(((ReloadMessageEvent)event).getPanel());
         });
         EventRouter.UI.registerHandler(RepaintEvent.RepaintMessageFrame.class, event -> {
             this.revalidate();

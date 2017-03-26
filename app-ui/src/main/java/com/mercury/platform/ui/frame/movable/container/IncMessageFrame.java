@@ -19,10 +19,7 @@ import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.frame.setup.location.LocationState;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
-import com.mercury.platform.ui.misc.event.CloseMessagePanelEvent;
-import com.mercury.platform.ui.misc.event.RepaintEvent;
-import com.mercury.platform.ui.misc.event.ScaleChangeEvent;
-import com.mercury.platform.ui.misc.event.ShowTooltipEvent;
+import com.mercury.platform.ui.misc.event.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,10 +36,7 @@ import java.util.Map;
  * Created by Константин on 24.12.2016.
  */
 public class IncMessageFrame extends MovableComponentFrame implements MessagesContainer {
-    private final Logger logger = LogManager.getLogger(IncMessageFrame.class.getSimpleName());
-
     private Map<Message, MessagePanel> currentMessages;
-
     private boolean wasVisible;
     private FlowDirections flowDirections;
     private FlowDirections pikerDirection;
@@ -116,7 +110,6 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
                         MessagePanelStyle.DOWNWARDS_SMALL: MessagePanelStyle.UPWARDS_SMALL;
                 messagePanel = new MessagePanel(
                         message,
-                        this,
                         style,
                         new NotificationMessageController(message));
 
@@ -200,6 +193,8 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
             this.pack();
             setUpExpandButton();
         });
+        EventRouter.UI.registerHandler(ExpandMessageEvent.class, event -> onExpandMessage());
+        EventRouter.UI.registerHandler(CollapseMessageEvent.class, event -> onCollapseMessage());
         EventRouter.UI.registerHandler(RepaintEvent.RepaintMessageFrame.class, event -> {
             IncMessageFrame.this.revalidate();
             IncMessageFrame.this.repaint();
@@ -361,6 +356,9 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
         this.changeLocation();
         super.onLock();
         this.setUpExpandButton();
+        if(currentMessages.size() > 0){
+            this.setVisible(true);
+        }
     }
     private void onLimitCountChange(){
         expandAllFrame.resetMessageCount();
@@ -570,8 +568,14 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
             public void performHide() {}
             @Override
             public void showITH() {}
+            @Override
+            public void expandMessage() {}
+            @Override
+            public void collapseMessage() {}
+            @Override
+            public void reloadMessage(MessagePanel panel1) {}
         };
-        MessagePanel messagePanel = new MessagePanel(message, this, MessagePanelStyle.DOWNWARDS_SMALL, stubController, factory);
+        MessagePanel messagePanel = new MessagePanel(message, MessagePanelStyle.DOWNWARDS_SMALL, stubController, factory);
         messagePanel.expand();
         panel.add(messagePanel);
         return panel;

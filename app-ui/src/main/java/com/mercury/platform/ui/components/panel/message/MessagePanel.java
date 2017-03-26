@@ -36,7 +36,6 @@ import java.util.List;
 
 public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
     private ComponentsFactory componentsFactory;
-    private ComponentFrame owner;
     private MessagePanelController controller;
     private MessagePanelStyle style;
 
@@ -57,24 +56,22 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
 
     private boolean expanded = false;
 
-    public MessagePanel(Message message, ComponentFrame owner, MessagePanelStyle style, MessagePanelController controller){
+    private MessagePanel(Message message, MessagePanelStyle style) {
         super(new BorderLayout());
-        this.componentsFactory = new ComponentsFactory();
-        this.controller = controller;
         this.message = message;
-        this.owner = owner;
         this.style = style;
         this.whisper = message.getWhisperNickname();
+    }
+    public MessagePanel(Message message, MessagePanelStyle style, MessagePanelController controller){
+        this(message,style);
+        this.controller = controller;
+        this.componentsFactory = new ComponentsFactory();
         createUI();
     }
-    public MessagePanel(Message message, ComponentFrame owner, MessagePanelStyle style, MessagePanelController controller, ComponentsFactory componentsFactory){
-        super(new BorderLayout());
+    public MessagePanel(Message message, MessagePanelStyle style, MessagePanelController controller, ComponentsFactory componentsFactory){
+        this(message,style);
         this.componentsFactory = componentsFactory;
         this.controller = controller;
-        this.message = message;
-        this.owner = owner;
-        this.style = style;
-        this.whisper = message.getWhisperNickname();
         createUI();
     }
 
@@ -159,7 +156,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    owner.repaint();
+                    EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
                 }
 
                 @Override
@@ -167,13 +164,13 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
                     itemButton.setBorder(new CompoundBorder(
                             BorderFactory.createMatteBorder(0,1,0,1,AppThemeColor.BORDER),
                             BorderFactory.createEmptyBorder(0,3,0,1)));
-                    owner.repaint();
+                    EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     itemButton.setBorder(BorderFactory.createEmptyBorder(0,4,0,2));
-                    owner.repaint();
+                    EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
                 }
             });
             tradePanel.add(itemButton,BorderLayout.CENTER);
@@ -275,7 +272,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
             interactionPanel.add(tradeButton);
         }else {
             JButton reloadButton = componentsFactory.getIconButton("app/reload-history.png", 14, AppThemeColor.MSG_HEADER, "Restore");
-            reloadButton.addActionListener(e -> ((HistoryContainer)owner).onReloadMessage(MessagePanel.this));
+            reloadButton.addActionListener(e -> controller.reloadMessage(this));
             interactionPanel.add(reloadButton);
         }
         JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
@@ -373,7 +370,8 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
         }
         setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
         setMinimumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
-        ((MessagesContainer)owner).onExpandMessage();
+
+        controller.expandMessage();
     }
     public void collapse(){
         expanded = false;
@@ -388,7 +386,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
         }
         setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
         setMinimumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
-        ((MessagesContainer)owner).onCollapseMessage();
+        controller.collapseMessage();
     }
 
     public boolean isExpanded() {
@@ -443,7 +441,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
         EventRouter.UI.registerHandler(CustomButtonsChangedEvent.class, event -> {
             this.customButtonsPanel.removeAll();
             initResponseButtons(customButtonsPanel);
-            owner.repaint();
+            EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
         });
     }
     private void initResponseButtons(JPanel panel){
