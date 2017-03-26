@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.misc.event;
 
 import com.mercury.platform.shared.events.MercuryEvent;
-import com.mercury.platform.ui.misc.data.ScaleData;
+import com.mercury.platform.shared.pojo.ScaleData;
 
 public class SaveScaleEvent implements MercuryEvent {
     private ScaleData scaleData;

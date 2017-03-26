@@ -20,7 +20,7 @@ import com.mercury.platform.ui.frame.setup.location.LocationState;
 import com.mercury.platform.ui.frame.setup.scale.ScaleState;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
-import com.mercury.platform.ui.misc.data.ScaleData;
+import com.mercury.platform.shared.pojo.ScaleData;
 import com.mercury.platform.ui.misc.event.*;
 
 import javax.swing.*;
@@ -50,6 +50,8 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
     private boolean dnd = false;
     public IncMessageFrame(){
         super("MercuryTrade");
+        componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().getNotificationScale());
+        stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().getNotificationScale());
 
         currentMessages = new HashMap<>();
         processSEResize = false;
@@ -613,9 +615,13 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
             @Override
             public void showITH() {}
             @Override
-            public void expandMessage() {}
+            public void expandMessage() {
+                pack();
+            }
             @Override
-            public void collapseMessage() {}
+            public void collapseMessage() {
+                pack();
+            }
             @Override
             public void reloadMessage(MessagePanel panel1) {}
         };

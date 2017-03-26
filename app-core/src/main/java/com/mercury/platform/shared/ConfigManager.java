@@ -3,6 +3,7 @@ package com.mercury.platform.shared;
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.shared.pojo.ResponseButton;
+import com.mercury.platform.shared.pojo.ScaleData;
 import com.mercury.platform.shared.pojo.StashTab;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -133,6 +134,7 @@ public class ConfigManager {
                 saveProperty("dismissAfterKick", String.valueOf(defaultAppSettings.get("dismissAfterKick")));
                 saveProperty("inGameDnd", String.valueOf(defaultAppSettings.get("inGameDnd")));
                 saveProperty("dndResponseText", defaultAppSettings.get("dndResponseText"));
+                saveProperty("scaleData", defaultAppSettings.get("scaleData"));
 
             } catch (Exception e) {
                 logger.error(e);
@@ -328,6 +330,37 @@ public class ConfigManager {
             logger.error(e);
         }
         return stashTabs;
+    }
+    //todo
+    public void saveScaleData(ScaleData scaleData){
+        JSONObject scaleDataJSON = new JSONObject();
+        scaleDataJSON.put("notification",String.valueOf(scaleData.getNotificationScale()));
+        scaleDataJSON.put("taskbar",String.valueOf(scaleData.getTaskBarScale()));
+        scaleDataJSON.put("itemcell",String.valueOf(scaleData.getItemCellScale()));
+        saveProperty("scaleData", scaleDataJSON);
+
+    }
+    public ScaleData getScaleData(){
+        ScaleData scaleData = new ScaleData();
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject root = (JSONObject) parser.parse(new FileReader(CONFIG_FILE));
+            JSONObject scaleDataJSON = (JSONObject) root.get("scaleData");
+            if (scaleDataJSON == null) {
+                scaleData.setNotificationScale(1f);
+                scaleData.setTaskBarScale(1f);
+                scaleData.setItemCellScale(1f);
+                saveScaleData(scaleData);
+                return scaleData;
+            } else {
+                scaleData.setNotificationScale(Float.valueOf((String) scaleDataJSON.get("notification")));
+                scaleData.setTaskBarScale(Float.valueOf((String) scaleDataJSON.get("taskbar")));
+                scaleData.setItemCellScale(Float.valueOf((String) scaleDataJSON.get("itemcell")));
+            }
+        }catch (Exception e){
+            logger.error(e);
+        }
+        return scaleData;
     }
 
     public WhisperNotifierStatus getWhisperNotifier() {

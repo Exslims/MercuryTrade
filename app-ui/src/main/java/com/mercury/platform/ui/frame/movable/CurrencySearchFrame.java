@@ -4,9 +4,8 @@ import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.frame.movable.MovableComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.data.ScaleData;
+import com.mercury.platform.shared.pojo.ScaleData;
 
 import javax.swing.*;
 import java.awt.*;

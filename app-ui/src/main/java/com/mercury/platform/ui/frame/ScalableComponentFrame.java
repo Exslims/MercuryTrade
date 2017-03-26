@@ -4,8 +4,7 @@ import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.frame.setup.scale.ScaleState;
-import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.data.ScaleData;
+import com.mercury.platform.shared.pojo.ScaleData;
 import com.mercury.platform.ui.misc.event.SaveScaleEvent;
 import com.mercury.platform.ui.misc.event.ScaleChangeEvent;
 
@@ -15,7 +14,7 @@ import java.awt.*;
 public abstract class ScalableComponentFrame extends ComponentFrame implements HasUI{
     protected Container mainContainer;
     private ScaleState scaleState = ScaleState.DEFAULT;
-    private ComponentsFactory stubComponentsFactory;
+    protected ComponentsFactory stubComponentsFactory;
     private ScalableFrameConstraints prevConstraints;
     protected boolean sizeWasChanged = false;
     protected boolean inScaleSettings = false;

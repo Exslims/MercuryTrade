@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.frame.titled;
 
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
@@ -29,6 +30,7 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
         super("MercuryTrade");
         FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
         this.setPreferredSize(frameSettings.getFrameSize());
+        this.componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().getNotificationScale());
     }
 
     @Override

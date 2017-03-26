@@ -1,25 +1,18 @@
 package com.mercury.platform.ui.frame.movable;
 
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.taskbar.MercuryTaskBarController;
 import com.mercury.platform.ui.components.panel.taskbar.TaskBarController;
 import com.mercury.platform.ui.components.panel.taskbar.TaskBarPanel;
-import com.mercury.platform.ui.frame.titled.ChatScannerFrame;
-import com.mercury.platform.ui.frame.titled.HistoryFrame;
-import com.mercury.platform.ui.frame.titled.SettingsFrame;
-import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.TooltipConstants;
-import com.mercury.platform.ui.misc.data.ScaleData;
+import com.mercury.platform.shared.pojo.ScaleData;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
 import com.mercury.platform.ui.misc.event.ScaleChangeEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.ease.Spline;
 
@@ -36,6 +29,8 @@ public class TaskBarFrame extends MovableComponentFrame{
 
     public TaskBarFrame() {
         super("MercuryTrade");
+        componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().getTaskBarScale());
+        stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().getTaskBarScale());
         processEResize = false;
         processSEResize = false;
         prevState = FrameStates.SHOW;
@@ -44,7 +39,7 @@ public class TaskBarFrame extends MovableComponentFrame{
     @Override
     protected void initialize() {
         super.initialize();
-        taskBarPanel = new TaskBarPanel(new MercuryTaskBarController());
+        taskBarPanel = new TaskBarPanel(new MercuryTaskBarController(),componentsFactory);
         add(taskBarPanel, BorderLayout.CENTER);
         this.pack();
         collapseListener = new MouseAdapter() {

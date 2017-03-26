@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.misc.data;
+package com.mercury.platform.shared.pojo;
 
 public class ScaleData {
     private float notificationScale;

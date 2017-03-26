@@ -1,12 +1,12 @@
 package com.mercury.platform.ui.frame.movable;
 
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.pojo.StashTab;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.HorizontalScrollContainer;
 import com.mercury.platform.ui.components.panel.grid.*;
-import com.mercury.platform.ui.misc.data.ScaleData;
+import com.mercury.platform.shared.pojo.ScaleData;
 import com.mercury.platform.ui.misc.event.*;
 import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.shared.pojo.Message;
@@ -19,8 +19,6 @@ import lombok.NonNull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
-import java.util.List;
 
 public class ItemsGridFrame extends MovableComponentFrame{
     private ItemsGridPanel itemsGridPanel;
@@ -28,9 +26,11 @@ public class ItemsGridFrame extends MovableComponentFrame{
     private StashTabsContainer stashTabsContainer;
     public ItemsGridFrame() {
         super("MercuryTrade");
+        componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().getItemCellScale());
+        stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().getItemCellScale());
         enableMouseOverBorder = false;
         processHideEffect = false;
-        itemsGridPanel = new ItemsGridPanel();
+        itemsGridPanel = new ItemsGridPanel(componentsFactory);
         stashTabsContainer = new StashTabsContainer();
     }
 
