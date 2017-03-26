@@ -27,6 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.List;
 
@@ -50,7 +51,6 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
     private JPanel whisperPanel;
     private JPanel messagePanel;
     private JPanel customButtonsPanel;
-    private JPanel interactionPanel;
 
     private boolean expanded = false;
 
@@ -83,7 +83,6 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
         this.whisperPanel = getWhisperPanel();
         this.messagePanel = getFormattedMessagePanel();
         this.customButtonsPanel = getButtonsPanel();
-        initStillInterestingListeners();
         whisperPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 0, 1, 0, AppThemeColor.MSG_HEADER_BORDER),
                 BorderFactory.createEmptyBorder(-6, 0, -6, 0)));
@@ -128,7 +127,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
 
         JPanel tradePanel = new JPanel(new BorderLayout());
         tradePanel.setBackground(AppThemeColor.TRANSPARENT);
-        tradePanel.setBorder(BorderFactory.createEmptyBorder(-11,2,-11,0));
+//        tradePanel.setBorder(BorderFactory.createEmptyBorder(-11,2,-13,0));
         if(message instanceof ItemMessage) {
             JButton itemButton = componentsFactory.getButton(
                     FontStyle.BOLD,
@@ -169,39 +168,53 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
             tradePanel.add(itemButton,BorderLayout.CENTER);
         }else if(message instanceof CurrencyMessage){
             CurrencyMessage message = (CurrencyMessage) this.message;
-            JPanel curCountPanel = new JPanel();
-            curCountPanel.setPreferredSize(new Dimension(40,34));
+            JPanel curPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,0,5));
+            curPanel.setBackground(AppThemeColor.TRANSPARENT);
+            JPanel curCountPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
             curCountPanel.setBackground(AppThemeColor.TRANSPARENT);
 
-            String curCount = message.getCurrForSaleCount() % 1 == 0 ? String.valueOf(message.getCurrForSaleCount().intValue()) : String.valueOf(message.getCurrForSaleCount());
-            JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, curCount);
+            String curCount = message.getCurrForSaleCount() % 1 == 0 ?
+                    String.valueOf(message.getCurrForSaleCount().intValue()) :
+                    String.valueOf(message.getCurrForSaleCount());
+            JLabel priceLabel = componentsFactory.getTextLabel(
+                    FontStyle.BOLD,
+                    AppThemeColor.TEXT_MESSAGE,
+                    TextAlignment.CENTER,
+                    17f,
+                    curCount);
             curCountPanel.add(priceLabel);
-            JLabel currencyLabel;
-            currencyLabel = componentsFactory.getIconLabel("currency/" + message.getCurrForSaleTitle() + ".png", 26);
-            JPanel curPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            curPanel.setBackground(AppThemeColor.TRANSPARENT);
+            curCountPanel.setPreferredSize(new Dimension((int)(componentsFactory.getScale() * 40),curCountPanel.getPreferredSize().height));
+            JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + message.getCurrForSaleTitle() + ".png", 26);
             curPanel.add(curCountPanel);
             curPanel.add(currencyLabel);
-            curPanel.setBorder(BorderFactory.createMatteBorder(4,0,0,0,AppThemeColor.TRANSPARENT));
+            curPanel.add(getCurrencyRatePanel());
             tradePanel.add(curPanel,BorderLayout.CENTER);
         }
 
         JPanel forPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         forPanel.setBackground(AppThemeColor.TRANSPARENT);
 
-        JLabel separator = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 18f, "=>");
+        JLabel separator = componentsFactory.getTextLabel(
+                FontStyle.BOLD,
+                AppThemeColor.TEXT_MESSAGE,
+                TextAlignment.CENTER,
+                18f,
+                "=>");
+        separator.setBorder(null);
         separator.setHorizontalAlignment(SwingConstants.CENTER);
         forPanel.add(separator);
         String curCount = " ";
         if(message.getCurCount() > 0) {
-            curCount = message.getCurCount() % 1 == 0 ? String.valueOf(message.getCurCount().intValue()) : String.valueOf(message.getCurCount());
+            curCount = message.getCurCount() % 1 == 0 ?
+                    String.valueOf(message.getCurCount().intValue()) :
+                    String.valueOf(message.getCurCount());
         }
         String currency = message.getCurrency();
         if(!Objects.equals(curCount, "") && currency != null) {
             JPanel curCountPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
             curCountPanel.setBackground(AppThemeColor.TRANSPARENT);
 
-            JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, curCount);
+            JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER,17f,null, curCount);
             curCountPanel.add(priceLabel);
             curCountPanel.setPreferredSize(new Dimension((int)(componentsFactory.getScale() * 40),curCountPanel.getPreferredSize().height));
             JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + currency + ".png", 26);
@@ -220,6 +233,22 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
             labelsPanel.add(offerLabel);
         }
         return labelsPanel;
+    }
+    private JPanel getCurrencyRatePanel(){
+        CurrencyMessage message = (CurrencyMessage) this.message;
+        Double currForSaleCount = message.getCurrForSaleCount();
+        Double curCount = message.getCurCount();
+        double rate = curCount / currForSaleCount;
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        JPanel ratePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
+        ratePanel.add(componentsFactory.
+                getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 18f, null,"("));
+        ratePanel.add(componentsFactory.getIconLabel("currency/" + message.getCurrency() + ".png", 26));
+        ratePanel.add(componentsFactory.
+                getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 18f, null,decimalFormat.format(rate)));
+        ratePanel.add(componentsFactory.
+                getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 18f, null,")"));
+        return ratePanel;
     }
     private JPanel getWhisperPanel(){
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -244,7 +273,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
         }
         topPanel.add(nickNamePanel,BorderLayout.CENTER);
 
-        interactionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel interactionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         interactionPanel.setBorder(BorderFactory.createEmptyBorder(1,0,1,0));
         interactionPanel.setBackground(AppThemeColor.TRANSPARENT);
         interactionPanel.add(getTimePanel());
@@ -263,6 +292,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
             interactionPanel.add(inviteButton);
             interactionPanel.add(kickButton);
             interactionPanel.add(tradeButton);
+            interactionPanel.add(getStillInterestedButton());
         }else {
             JButton reloadButton = componentsFactory.getIconButton("app/reload-history.png", 14, AppThemeColor.MSG_HEADER, "Restore");
             reloadButton.addActionListener(e -> controller.reloadMessage(this));
@@ -474,59 +504,37 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
             panel.add(button);
         });
     }
-    private void initStillInterestingListeners(){
-        if(!style.equals(MessagePanelStyle.HISTORY)) {
-            Timer timer = new Timer(5000, null);
-            StillInterestingListener stillInterestingListener = new StillInterestingListener(timer);
-            timer.addActionListener((event)->{
-                JButton stillIntButton = componentsFactory.getIconButton("app/still-interesting.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.INVITE);
+    private JButton getStillInterestedButton(){
+        JButton stillIntButton = componentsFactory.getIconButton("app/still-interesting.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.STILL_INTERESTED);
 
-                String curCount = message.getCurCount() % 1 == 0 ?
-                        String.valueOf(message.getCurCount().intValue()) :
-                        String.valueOf(message.getCurCount());
-                String responseText = "Hi, are you still interested in ";
-                if(message instanceof ItemMessage){
-                    ItemMessage message = (ItemMessage) this.message;
-                    if(message.getCurrency().equals("???")){
-                        responseText += message.getItemName() + "?";
-                    }else {
-                        responseText += message.getItemName() +
-                                " for " + curCount + " " + message.getCurrency() + "?";
-                    }
-                }else {
-                    CurrencyMessage message = (CurrencyMessage) this.message;
-                    String curForSaleCount = message.getCurCount() % 1 == 0 ?
-                            String.valueOf(message.getCurrForSaleCount().intValue()) :
-                            String.valueOf(message.getCurrForSaleCount());
-                    responseText += curForSaleCount + " " + message.getCurrForSaleTitle() + " for " +
-                            curCount + " " + message.getCurrency() + "?";
-                }
-                String finalResponseText = responseText; // hate java
-                stillIntButton.addActionListener(
-                        (action)->controller.performResponse(finalResponseText)
-                );
-                interactionPanel.add(stillIntButton,interactionPanel.getComponentCount()-2);
-                EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
-                this.removeMouseListener(stillInterestingListener);
-            });
-            timer.setRepeats(false);
-            timer.start();
-            this.addMouseListener(stillInterestingListener);
+        String curCount = message.getCurCount() % 1 == 0 ?
+                String.valueOf(message.getCurCount().intValue()) :
+                String.valueOf(message.getCurCount());
+        String responseText = "Hi, are you still interested in ";
+        if(message instanceof ItemMessage){
+            ItemMessage message = (ItemMessage) this.message;
+            if(message.getCurrency().equals("???")){
+                responseText += message.getItemName() + "?";
+            }else {
+                responseText += message.getItemName() +
+                        " for " + curCount + " " + message.getCurrency() + "?";
+            }
+        }else {
+            CurrencyMessage message = (CurrencyMessage) this.message;
+            String curForSaleCount = message.getCurCount() % 1 == 0 ?
+                    String.valueOf(message.getCurrForSaleCount().intValue()) :
+                    String.valueOf(message.getCurrForSaleCount());
+            responseText += curForSaleCount + " " + message.getCurrForSaleTitle() + " for " +
+                    curCount + " " + message.getCurrency() + "?";
         }
+        String finalResponseText = responseText; // hate java
+        stillIntButton.addActionListener(
+                (action)->controller.performResponse(finalResponseText)
+        );
+        return stillIntButton;
     }
 
     public void setComponentsFactory(ComponentsFactory componentsFactory) {
         this.componentsFactory = componentsFactory;
-    }
-    private class StillInterestingListener extends MouseAdapter {
-        private Timer timer;
-        private StillInterestingListener(Timer timer) {
-            this.timer = timer;
-        }
-        @Override
-        public void mouseExited(MouseEvent e) {
-            timer.stop();
-            MessagePanel.this.removeMouseListener(this);
-        }
     }
 }

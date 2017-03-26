@@ -158,8 +158,6 @@ public class TaskBarFrame extends MovableComponentFrame{
 
     @Override
     protected JPanel defaultView(ComponentsFactory factory) {
-        JPanel panel = factory.getTransparentPanel(new BorderLayout());
-        this.setWidth(MIN_WIDTH);
         TaskBarController controller = new TaskBarController() {
             @Override
             public void enableDND() {}
@@ -182,6 +180,7 @@ public class TaskBarFrame extends MovableComponentFrame{
             @Override
             public void exit() {}
         };
+        JPanel panel = factory.getTransparentPanel(new BorderLayout());
         TaskBarPanel taskBarPanel = new TaskBarPanel(controller, factory);
         panel.add(new TaskBarPanel(controller,factory), BorderLayout.CENTER);
         panel.setBackground(AppThemeColor.FRAME);

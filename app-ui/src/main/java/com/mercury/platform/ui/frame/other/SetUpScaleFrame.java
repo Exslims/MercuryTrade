@@ -95,7 +95,8 @@ public class SetUpScaleFrame extends OverlaidFrame {
                 17f,
                 "10");
         notificationValue.setBorder(null);
-        JSlider notificationSlider = componentsFactory.getSlider(5,15,10);
+        JSlider notificationSlider = componentsFactory.getSlider(9,15,10);
+        scaleData.setNotificationScale(10);
         notificationSlider.addChangeListener((event)-> repaint());
         notificationSlider.addMouseListener(new MouseAdapter() {
             private int prevValue = 10;
@@ -125,7 +126,7 @@ public class SetUpScaleFrame extends OverlaidFrame {
                 17f,
                 "10");
         taskBarValue.setBorder(null);
-        JSlider taskBarSlider = componentsFactory.getSlider(5,15,10);
+        JSlider taskBarSlider = componentsFactory.getSlider(9,15,10);
         taskBarSlider.addChangeListener((event)-> repaint());
         taskBarSlider.addMouseListener(new MouseAdapter() {
             private int prevValue = 10;
@@ -154,7 +155,7 @@ public class SetUpScaleFrame extends OverlaidFrame {
                 17f,
                 "10");
         itemInfoValue.setBorder(null);
-        JSlider itemInfoSlider = componentsFactory.getSlider(5,15,10);
+        JSlider itemInfoSlider = componentsFactory.getSlider(9,15,10);
         itemInfoSlider.addChangeListener((event)-> repaint());
         itemInfoSlider.addMouseListener(new MouseAdapter() {
             private int prevValue = 10;
@@ -183,7 +184,6 @@ public class SetUpScaleFrame extends OverlaidFrame {
         panel.setBorder(null);
         panel.add(slider);
         JPanel valuePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-//        valuePanel.setPreferredSize(new Dimension(40,22));
         valuePanel.setBorder(null);
         sliderLabel.setBorder(null);
         valuePanel.add(sliderLabel);

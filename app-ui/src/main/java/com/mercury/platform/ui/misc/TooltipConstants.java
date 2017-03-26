@@ -26,6 +26,7 @@ public class TooltipConstants {
 
     //MessagePanel tooltips
     public static final String INVITE = "Invite player";
+    public static final String STILL_INTERESTED = "Still interested?";
     public static final String KICK = "Kick player";
     public static final String TRADE = "Offer Trade";
     public static final String EXPAND_COLLAPSE = "Expand / collapse";

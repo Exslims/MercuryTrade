@@ -292,6 +292,12 @@ public class ComponentsFactory{
         return label;
     }
 
+    public JLabel getTextLabel(FontStyle fontStyle, Color frColor, TextAlignment alignment, float size, Border border,String text){
+        JLabel textLabel = getTextLabel(fontStyle, frColor, alignment, size, text);
+        textLabel.setBorder(border);
+        return textLabel;
+    }
+
     /**
      * Get default label
      * @param text font text
