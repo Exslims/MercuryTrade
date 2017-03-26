@@ -121,7 +121,7 @@ Mercury can highlight the stash location of the item somebody's buying. You will
 &nbsp; *Minor feature:* **Do not Disturb**
 
 <p align="center">
-  <img src="http://i.imgur.com/59NxCqA.png"/>
+  <img src="http://i.imgur.com/Lh6lodD.png"/>
 </p>
 
 <p align="center"> <i>DND on TaskBar panel</i> </p>
