@@ -127,7 +127,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
 
         JPanel tradePanel = new JPanel(new BorderLayout());
         tradePanel.setBackground(AppThemeColor.TRANSPARENT);
-//        tradePanel.setBorder(BorderFactory.createEmptyBorder(-11,2,-13,0));
+        tradePanel.setBorder(BorderFactory.createEmptyBorder(-11,2,-11,0));
         if(message instanceof ItemMessage) {
             JButton itemButton = componentsFactory.getButton(
                     FontStyle.BOLD,
@@ -167,28 +167,22 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
             });
             tradePanel.add(itemButton,BorderLayout.CENTER);
         }else if(message instanceof CurrencyMessage){
+            JPanel fromPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            fromPanel.setBackground(AppThemeColor.TRANSPARENT);
             CurrencyMessage message = (CurrencyMessage) this.message;
-            JPanel curPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,0,5));
-            curPanel.setBackground(AppThemeColor.TRANSPARENT);
-            JPanel curCountPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            curCountPanel.setBackground(AppThemeColor.TRANSPARENT);
 
             String curCount = message.getCurrForSaleCount() % 1 == 0 ?
                     String.valueOf(message.getCurrForSaleCount().intValue()) :
                     String.valueOf(message.getCurrForSaleCount());
-            JLabel priceLabel = componentsFactory.getTextLabel(
-                    FontStyle.BOLD,
-                    AppThemeColor.TEXT_MESSAGE,
-                    TextAlignment.CENTER,
-                    17f,
-                    curCount);
-            curCountPanel.add(priceLabel);
-            curCountPanel.setPreferredSize(new Dimension((int)(componentsFactory.getScale() * 40),curCountPanel.getPreferredSize().height));
+            JPanel curCountPanel = getCurrencyPanel(curCount);
             JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + message.getCurrForSaleTitle() + ".png", 26);
+            JPanel curPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            curPanel.setBackground(AppThemeColor.TRANSPARENT);
             curPanel.add(curCountPanel);
             curPanel.add(currencyLabel);
             curPanel.add(getCurrencyRatePanel());
-            tradePanel.add(curPanel,BorderLayout.CENTER);
+            fromPanel.add(curPanel);
+            tradePanel.add(fromPanel,BorderLayout.CENTER);
         }
 
         JPanel forPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -200,9 +194,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
                 TextAlignment.CENTER,
                 18f,
                 "=>");
-        separator.setBorder(null);
         separator.setHorizontalAlignment(SwingConstants.CENTER);
-        forPanel.add(separator);
         String curCount = " ";
         if(message.getCurCount() > 0) {
             curCount = message.getCurCount() % 1 == 0 ?
@@ -211,15 +203,11 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
         }
         String currency = message.getCurrency();
         if(!Objects.equals(curCount, "") && currency != null) {
-            JPanel curCountPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            curCountPanel.setBackground(AppThemeColor.TRANSPARENT);
-
-            JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER,17f,null, curCount);
-            curCountPanel.add(priceLabel);
-            curCountPanel.setPreferredSize(new Dimension((int)(componentsFactory.getScale() * 40),curCountPanel.getPreferredSize().height));
+            JPanel curCountPanel = getCurrencyPanel(curCount);
             JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + currency + ".png", 26);
             JPanel curPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
             curPanel.setBackground(AppThemeColor.TRANSPARENT);
+            curPanel.add(separator);
             curPanel.add(curCountPanel);
             curPanel.add(currencyLabel);
             forPanel.add(curPanel);
@@ -234,6 +222,15 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
         }
         return labelsPanel;
     }
+    private JPanel getCurrencyPanel(String curCount){
+        JPanel curCountPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        curCountPanel.setBackground(AppThemeColor.TRANSPARENT);
+
+        JLabel priceLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER,17f,null, curCount);
+        curCountPanel.add(priceLabel);
+        curCountPanel.setPreferredSize(new Dimension((int)(componentsFactory.getScale() * 40),curCountPanel.getPreferredSize().height));
+        return curCountPanel;
+    }
     private JPanel getCurrencyRatePanel(){
         CurrencyMessage message = (CurrencyMessage) this.message;
         Double currForSaleCount = message.getCurrForSaleCount();
@@ -243,11 +240,14 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
         JPanel ratePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         ratePanel.add(componentsFactory.
                 getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 18f, null,"("));
-        ratePanel.add(componentsFactory.getIconLabel("currency/" + message.getCurrency() + ".png", 26));
+        JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + message.getCurrency() + ".png", 26);
+        currencyLabel.setBorder(null);
+        ratePanel.add(currencyLabel);
         ratePanel.add(componentsFactory.
                 getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 18f, null,decimalFormat.format(rate)));
         ratePanel.add(componentsFactory.
                 getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 18f, null,")"));
+        ratePanel.setBorder(BorderFactory.createEmptyBorder(-5,0,-5,0));
         return ratePanel;
     }
     private JPanel getWhisperPanel(){

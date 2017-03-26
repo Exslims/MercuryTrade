@@ -96,7 +96,7 @@ public class SetUpScaleFrame extends OverlaidFrame {
                 "10");
         notificationValue.setBorder(null);
         JSlider notificationSlider = componentsFactory.getSlider(9,15,10);
-        scaleData.setNotificationScale(10);
+        scaleData.setNotificationScale(10/10f);
         notificationSlider.addChangeListener((event)-> repaint());
         notificationSlider.addMouseListener(new MouseAdapter() {
             private int prevValue = 10;
