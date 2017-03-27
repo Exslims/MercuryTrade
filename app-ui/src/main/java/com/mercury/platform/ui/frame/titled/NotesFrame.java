@@ -18,6 +18,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URI;
 import java.util.List;
 
 public class NotesFrame extends TitledComponentFrame {
@@ -85,6 +86,22 @@ public class NotesFrame extends TitledComponentFrame {
             progressBarFrame.setVisible(true);
             EventRouter.CORE.fireEvent(new StartUpdateEvent());
         });
+        JButton gitHub = componentsFactory.getBorderedButton("GitHub");
+        gitHub.addActionListener(action -> {
+            try {
+                Desktop.getDesktop().browse(new URI("https://github.com/Exslims/MercuryTrade/releases"));
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        });
+        JButton donate = componentsFactory.getBorderedButton("Donate");
+        donate.addActionListener(action -> {
+            try {
+                Desktop.getDesktop().browse(new URI("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HJVSYP4YR7V88&lc=US&item_name=MercuryTrade&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"));
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        });
 
         JButton close = componentsFactory.getButton(
                 FontStyle.BOLD,
@@ -145,12 +162,16 @@ public class NotesFrame extends TitledComponentFrame {
         });
         close.setBackground(AppThemeColor.FRAME);
 
-        download.setPreferredSize(dimension);
-        previous.setPreferredSize(dimension);
-        next.setPreferredSize(dimension);
-        close.setPreferredSize(dimension);
+        download.setPreferredSize(componentsFactory.convertSize(dimension));
+        donate.setPreferredSize(componentsFactory.convertSize(dimension));
+        gitHub.setPreferredSize(componentsFactory.convertSize(dimension));
+        previous.setPreferredSize(componentsFactory.convertSize(dimension));
+        next.setPreferredSize(componentsFactory.convertSize(dimension));
+        close.setPreferredSize(componentsFactory.convertSize(dimension));
 
         if(type.equals(NotesType.PATCH) && !ConfigManager.INSTANCE.isShowPatchNotes()){
+            navBar.add(donate);
+            navBar.add(gitHub);
             navBar.add(download);
         }else {
             ConfigManager.INSTANCE.setShowPatchNotes(false);

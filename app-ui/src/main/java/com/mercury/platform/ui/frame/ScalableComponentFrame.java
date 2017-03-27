@@ -10,6 +10,7 @@ import com.mercury.platform.ui.misc.event.ScaleChangeEvent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 public abstract class ScalableComponentFrame extends ComponentFrame implements HasUI{
     protected Container mainContainer;
@@ -44,7 +45,7 @@ public abstract class ScalableComponentFrame extends ComponentFrame implements H
     }
 
     protected abstract void registerDirectScaleHandler();
-    protected abstract void performScaling(ScaleData scaleData);
+    protected abstract void performScaling(Map<String,Float> scaleData);
 
     protected void changeScale(float scale){
         stubComponentsFactory.setScale(scale);

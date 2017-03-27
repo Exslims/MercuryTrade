@@ -1,10 +1,9 @@
 package com.mercury.platform.ui.components;
 
-import com.mercury.platform.shared.HasEventHandlers;
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.ButtonPressedEvent;
 import com.mercury.platform.shared.events.custom.HideTooltipEvent;
-import com.mercury.platform.ui.misc.event.ScaleChangeEvent;
 import com.mercury.platform.ui.misc.event.ShowTooltipEvent;
 import com.mercury.platform.ui.components.fields.style.MercuryComboBoxUI;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -41,6 +40,7 @@ public class ComponentsFactory{
 
     public ComponentsFactory() {
         loadFonts();
+        this.scale = ConfigManager.INSTANCE.getScaleData().get("other");
     }
 
     /**
@@ -409,8 +409,56 @@ public class ComponentsFactory{
         }
         return DEFAULT_FONT;
     }
+    public JPanel getSliderSettingsPanel(JLabel titleLabel, JLabel countLabel, JSlider slider){
+        Dimension elementsSize = convertSize(new Dimension(160, 30));
+        Dimension countSize = convertSize(new Dimension(40, 30));
+        titleLabel.setPreferredSize(elementsSize);
+        slider.setPreferredSize(elementsSize);
+        countLabel.setPreferredSize(countSize);
+        JPanel panel = getTransparentPanel(new GridBagLayout());
+        GridBagConstraints titleGc = new GridBagConstraints();
+        GridBagConstraints countGc = new GridBagConstraints();
+        GridBagConstraints sliderGc = new GridBagConstraints();
+        titleGc.weightx = 0.5f;
+        countGc.weightx = 0.1f;
+        sliderGc.weightx = 0.4f;
+        titleGc.fill = GridBagConstraints.HORIZONTAL;
+        countGc.fill = GridBagConstraints.HORIZONTAL;
+        sliderGc.fill = GridBagConstraints.HORIZONTAL;
+        titleGc.anchor = GridBagConstraints.NORTHWEST;
+        countGc.anchor = GridBagConstraints.NORTHWEST;
+        sliderGc.anchor = GridBagConstraints.NORTHWEST;
+        titleGc.gridx = 0;
+        countGc.gridx = 1;
+        sliderGc.gridx = 2;
+
+        panel.add(titleLabel,titleGc);
+        panel.add(countLabel,countGc);
+        panel.add(slider,sliderGc);
+        return panel;
+    }
+    public JPanel getSettingsPanel(JLabel titleLabel, Component component){
+        Dimension elementsSize = convertSize(new Dimension(130, 30));
+        titleLabel.setPreferredSize(elementsSize);
+        component.setPreferredSize(elementsSize);
+        JPanel panel = getTransparentPanel(new GridBagLayout());
+        GridBagConstraints titleGc = new GridBagConstraints();
+        GridBagConstraints sliderGc = new GridBagConstraints();
+        titleGc.weightx = 0.5f;
+        sliderGc.weightx = 0.5f;
+        titleGc.fill = GridBagConstraints.HORIZONTAL;
+        sliderGc.fill = GridBagConstraints.HORIZONTAL;
+        titleGc.anchor = GridBagConstraints.NORTHWEST;
+        sliderGc.anchor = GridBagConstraints.NORTHWEST;
+        titleGc.gridx = 0;
+        sliderGc.gridx = 1;
+
+        panel.add(titleLabel,titleGc);
+        panel.add(component,sliderGc);
+        return panel;
+    }
     public Font getFont(FontStyle style, float fontSize){
-        return getSelectedFont(style).deriveFont(fontSize);
+        return getSelectedFont(style).deriveFont(scale * fontSize);
     }
     public JComboBox getComboBox(String[] childs){
         JComboBox comboBox = new JComboBox(childs);
@@ -463,6 +511,9 @@ public class ComponentsFactory{
             log.error(e);
         }
         return new ImageIcon(icon);
+    }
+    public Dimension convertSize(Dimension initialSize){
+        return new Dimension((int)(initialSize.width * scale),(int)(initialSize.height*scale));
     }
     public JTextArea getSimpleTextAre(String text){
         JTextArea area = new JTextArea(text);

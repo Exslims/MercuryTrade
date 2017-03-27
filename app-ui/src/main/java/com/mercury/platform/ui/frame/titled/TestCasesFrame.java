@@ -15,9 +15,6 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
-/**
- * Created by Константин on 26.12.2016.
- */
 public class TestCasesFrame extends TitledComponentFrame {
     private List<String> items;
     private List<String> currency;

@@ -1,23 +1,18 @@
 package com.mercury.platform.ui.frame.titled;
 
 
-import com.mercury.platform.core.update.core.holder.ApplicationHolder;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.AddShowDelayEvent;
-import com.mercury.platform.shared.events.custom.RequestPatchNotesEvent;
 import com.mercury.platform.ui.components.fields.MercuryTabbedPane;
 import com.mercury.platform.ui.components.panel.settings.*;
-import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.event.RepaintEvent;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-/**
- * Created by Константин on 16.12.2016.
- */
 public class SettingsFrame extends TitledComponentFrame {
     private List<ConfigurationPanel> innerPanels;
     private boolean successfullySaved = true;
@@ -51,41 +46,9 @@ public class SettingsFrame extends TitledComponentFrame {
         tabbedPane.addTab("General",generalSettings);
         tabbedPane.addTab("Notification panel",cbSettings);
         tabbedPane.addTab("Task panel",taskBarSettings);
-//        tabbedPane.addTab("Help",new HelpPanel());
+        tabbedPane.addTab("Help",new HelpPanel());
         tabbedPane.addTab("Support",new SupportPanel());
         tabbedPane.addTab("About",new AboutPanel());
-
-        JButton openTutorial =
-                componentsFactory.getIconButton("app/tutorial.png",
-                        17,
-                        AppThemeColor.TRANSPARENT,
-                        "Open tutorial");
-        openTutorial.addActionListener(action -> {
-            hideComponent();
-            FramesManager.INSTANCE.preShowFrame(NotesFrame.class);
-        });
-        JButton checkUpdates =
-                componentsFactory.getIconButton("app/check-update.png",
-                        15,
-                        AppThemeColor.TRANSPARENT,
-                        "Check for updates");
-        checkUpdates.addActionListener(action -> {
-            ApplicationHolder.getInstance().setManualRequest(true);
-            EventRouter.CORE.fireEvent(new RequestPatchNotesEvent());
-        });
-        JButton openTests =
-                componentsFactory.getIconButton("app/open-tests.png",
-                        15,
-                        AppThemeColor.TRANSPARENT,
-                        "Open tests frame");
-        openTests.addActionListener(action -> {
-            hideComponent();
-            FramesManager.INSTANCE.preShowFrame(TestCasesFrame.class);
-        });
-        this.miscPanel.add(openTutorial,0);
-        this.miscPanel.add(checkUpdates,0);
-        this.miscPanel.add(openTests,0);
-        this.miscPanel.setBorder(BorderFactory.createEmptyBorder(-4,0,0,0));
 
         this.add(tabbedPane, BorderLayout.CENTER);
         this.add(getBottomPanel(), BorderLayout.PAGE_END);
@@ -123,6 +86,9 @@ public class SettingsFrame extends TitledComponentFrame {
 
     @Override
     public void initHandlers() {
+        EventRouter.UI.registerHandler(RepaintEvent.RepaintSettingFrame.class,event -> {
+            this.repaint();
+        });
     }
 
     @Override

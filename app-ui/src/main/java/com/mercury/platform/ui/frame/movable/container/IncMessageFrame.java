@@ -20,7 +20,6 @@ import com.mercury.platform.ui.frame.setup.location.LocationState;
 import com.mercury.platform.ui.frame.setup.scale.ScaleState;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
-import com.mercury.platform.shared.pojo.ScaleData;
 import com.mercury.platform.ui.misc.event.*;
 
 import javax.swing.*;
@@ -41,7 +40,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
     private JPanel buffer;
     private JSlider limitSlider;
     private int limitMsgCount;
-    private JSlider expandSlider;
+    private JSlider unfoldSlider;
     private int expandedMsgCount;
     private int currentExpandedMsgCount;
 
@@ -50,8 +49,8 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
     private boolean dnd = false;
     public IncMessageFrame(){
         super("MercuryTrade");
-        componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().getNotificationScale());
-        stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().getNotificationScale());
+        componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("notification"));
+        stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("notification"));
 
         currentMessages = new HashMap<>();
         processSEResize = false;
@@ -259,27 +258,16 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
 
     @Override
     protected JPanel getPanelForPINSettings() {
-        JPanel panel = componentsFactory.getTransparentPanel();
-        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+        JPanel panel = componentsFactory.getTransparentPanel(new GridLayout(4,1));
         panel.setBackground(AppThemeColor.FRAME);
         JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER,18f,"Notification panel"));
-
-        JPanel outer = componentsFactory.getTransparentPanel(new BorderLayout());
-        JPanel growPanel = componentsFactory.getTransparentPanel(new GridBagLayout());
-        GridBagConstraints titleColumn = new GridBagConstraints();
-        titleColumn.gridy = 0;
-        titleColumn.gridx = 0;
-        titleColumn.fill = GridBagConstraints.HORIZONTAL;
-        titleColumn.weightx = 0.2f;
-        titleColumn.insets = new Insets(-6,0,0,6);
-        GridBagConstraints fieldColumn = new GridBagConstraints();
-        fieldColumn.gridy = 0;
-        fieldColumn.gridx = 1;
-        fieldColumn.fill = GridBagConstraints.HORIZONTAL;
-        fieldColumn.weightx = 0.7f;
-        fieldColumn.insets = new Insets(-6,0,0,6);
-
+        labelPanel.add(componentsFactory.getTextLabel(
+                FontStyle.BOLD,
+                AppThemeColor.TEXT_MESSAGE,
+                TextAlignment.CENTER,
+                18f,
+                "Notification panel"));
+        panel.add(labelPanel);
         JComboBox flowDirectionPicker = componentsFactory.getComboBox(new String[]{"Upwards", "Downwards"});
         flowDirectionPicker.setSelectedIndex(FlowDirections.valueOf(flowDirections.toString()).ordinal());
         flowDirectionPicker.addActionListener(e -> {
@@ -296,52 +284,32 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
             repaint();
         });
         flowDirectionPicker.setSelectedIndex(flowDirections.ordinal());
-        growPanel.add(componentsFactory.getTextLabel("Flow direction:"),titleColumn);
-        growPanel.add(flowDirectionPicker,fieldColumn);
-        titleColumn.gridy = 1;
-        fieldColumn.gridy = 1;
-        growPanel.add(componentsFactory.getTextLabel("Pre-group limit:"),titleColumn);
-        JPanel limitPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.add(componentsFactory.getSettingsPanel(
+                componentsFactory.getTextLabel("Flow direction:"),flowDirectionPicker));
         JLabel limitCount = componentsFactory.getTextLabel(String.valueOf(limitMsgCount));
-        JPanel limitCountPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        limitCountPanel.add(limitCount);
-        limitCountPanel.setPreferredSize(new Dimension(14,30));
-
         limitSlider = componentsFactory.getSlider(2, 20, limitMsgCount);
         limitSlider.addChangeListener(e -> {
             limitCount.setText(String.valueOf(limitSlider.getValue()));
             repaint();
         });
-        limitSlider.setPreferredSize(new Dimension(138,30));
-        limitPanel.add(limitCountPanel);
-        limitPanel.add(limitSlider);
-        growPanel.add(limitPanel,fieldColumn);
-        titleColumn.gridy = 2;
-        fieldColumn.gridy = 2;
-        titleColumn.insets = new Insets(-16,0,0,6);
-        fieldColumn.insets = new Insets(-16,0,0,6);
-        growPanel.add(componentsFactory.getTextLabel("Unfold by default:"),titleColumn);
-
-        JPanel expandPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel expandCount = componentsFactory.getTextLabel(String.valueOf(expandedMsgCount));
-        JPanel expandCountPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        expandCountPanel.add(expandCount);
-        expandCountPanel.setPreferredSize(new Dimension(14,30));
-
-        expandSlider = componentsFactory.getSlider(0, 20, expandedMsgCount);
-        expandSlider.addChangeListener(e -> {
-            expandCount.setText(String.valueOf(expandSlider.getValue()));
+        panel.add(componentsFactory.getSliderSettingsPanel(
+                componentsFactory.getTextLabel("Pre-group limit:"),
+                limitCount,
+                limitSlider
+                ));
+        JLabel unfoldCount = componentsFactory.getTextLabel(String.valueOf(expandedMsgCount));
+        unfoldSlider = componentsFactory.getSlider(0, 20, expandedMsgCount);
+        unfoldSlider.addChangeListener(e -> {
+            unfoldCount.setText(String.valueOf(unfoldSlider.getValue()));
             repaint();
         });
-        expandSlider.setPreferredSize(new Dimension(138,30));
-        expandPanel.add(expandCountPanel);
-        expandPanel.add(expandSlider);
-
-        growPanel.add(expandPanel,fieldColumn);
-        panel.add(labelPanel);
-        panel.add(growPanel);
-        outer.add(panel,BorderLayout.CENTER);
-        panel.setPreferredSize(new Dimension((int)(200 * componentsFactory.getScale()), (int)(110*componentsFactory.getScale())));
+        panel.add(componentsFactory.getSliderSettingsPanel(
+                componentsFactory.getTextLabel("Unfold by default:"),
+                unfoldCount,
+                unfoldSlider
+        ));
+        panel.setPreferredSize(new Dimension((int)(400 * componentsFactory.getScale()), (int)(130*componentsFactory.getScale())));
+        this.setMaximumSize(panel.getPreferredSize());
         return panel;
     }
 
@@ -429,8 +397,8 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
             configManager.setLimitMsgCount(limitMsgCount);
             this.onLimitCountChange();
         }
-        if(expandedMsgCount != expandSlider.getValue()) {
-            expandedMsgCount = expandSlider.getValue();
+        if(expandedMsgCount != unfoldSlider.getValue()) {
+            expandedMsgCount = unfoldSlider.getValue();
             configManager.setExpandedMsgCount(expandedMsgCount);
             this.onExpandedCountChange();
         }
@@ -451,6 +419,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
     @Override
     protected void onScaleLock() {
         if(currentMessages.size() > 0){
+            this.setVisible(true);
             expandAllFrame.setScaleState(ScaleState.DEFAULT);
             this.changeLocation();
             this.setUpExpandButton();
@@ -461,6 +430,9 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
 
     @Override
     protected void onScaleUnlock() {
+        if(currentMessages.size() > 0) {
+            this.setVisible(true);
+        }
         expandAllFrame.setScaleState(ScaleState.ENABLE);
         this.pack();
         this.repaint();
@@ -522,8 +494,8 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
                 if(locationWasChanged) {
                     int height = this.getLocation().y;
                     this.setLocation(this.getLocation().x, -1000);
-                    this.setMinimumSize(new Dimension(this.getWidth(), height + 1110));
-                    this.setMaximumSize(new Dimension(this.getWidth(), height + 1110));
+                    this.setMinimumSize(new Dimension(this.getWidth(), height + 1000 + (int)(130*componentsFactory.getScale())));
+                    this.setMaximumSize(new Dimension(this.getWidth(), height + 1000 + (int)(130*componentsFactory.getScale())));
                     locationWasChanged = false;
                 }
                 break;
@@ -561,10 +533,10 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
     }
 
     @Override
-    protected void performScaling(ScaleData scaleData) {
+    protected void performScaling(Map<String,Float> scaleData) {
         wasVisible = isVisible();
         hideComponent();
-        this.componentsFactory.setScale(scaleData.getNotificationScale());
+        this.componentsFactory.setScale(scaleData.get("notification"));
         currentMessages.forEach((message,panel)->{
             panel.setComponentsFactory(this.componentsFactory);
             panel.setStyle(panel.getStyle());

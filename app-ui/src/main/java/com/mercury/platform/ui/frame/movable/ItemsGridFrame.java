@@ -19,6 +19,7 @@ import lombok.NonNull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Map;
 
 public class ItemsGridFrame extends MovableComponentFrame{
     private ItemsGridPanel itemsGridPanel;
@@ -26,8 +27,8 @@ public class ItemsGridFrame extends MovableComponentFrame{
     private StashTabsContainer stashTabsContainer;
     public ItemsGridFrame() {
         super("MercuryTrade");
-        componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().getItemCellScale());
-        stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().getItemCellScale());
+        componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("itemcell"));
+        stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("itemcell"));
         enableMouseOverBorder = false;
         processHideEffect = false;
         itemsGridPanel = new ItemsGridPanel(componentsFactory);
@@ -143,7 +144,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
 
         String title = (configManager.isItemsGridEnable())?"Disable" : "Enable";
         JButton disableButton = componentsFactory.getBorderedButton(title);
-        disableButton.setPreferredSize(new Dimension(90,24));
+        disableButton.setPreferredSize(new Dimension((int)(90*componentsFactory.getScale()),(int)(24*componentsFactory.getScale())));
         componentsFactory.setUpToggleCallbacks(disableButton,
                 () -> {
                     disableButton.setText("Enable");
@@ -158,7 +159,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
                     repaint();
                 },configManager.isItemsGridEnable());
         JButton hideButton  = componentsFactory.getBorderedButton("Save");
-        hideButton.setPreferredSize(new Dimension(90,24));
+        hideButton.setPreferredSize(new Dimension((int)(90*componentsFactory.getScale()),(int)(24*componentsFactory.getScale())));
         hideButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -173,7 +174,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
         disablePanel.add(hideButton);
 
         JPanel savedTabsPanel = componentsFactory.getTransparentPanel(new BorderLayout());
-        savedTabsPanel.setPreferredSize(new Dimension(50,56));
+        savedTabsPanel.setPreferredSize(new Dimension(50,(int)(56*componentsFactory.getScale())));
         tabsContainer = new HorizontalScrollContainer();
         tabsContainer.setLayout(new FlowLayout(FlowLayout.LEFT));
         tabsContainer.setBackground(AppThemeColor.TRANSPARENT);
@@ -199,7 +200,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
         savedTabsPanel.add(scrollPane,BorderLayout.CENTER);
         tabsContainer.getParent().setBackground(AppThemeColor.TRANSPARENT);
         stashTabsContainer.getStashTabs().forEach(stashTab -> {
-            TabInfoPanel tabInfoPanel = new TabInfoPanel(stashTab);
+            TabInfoPanel tabInfoPanel = new TabInfoPanel(stashTab,componentsFactory);
             tabsContainer.add(tabInfoPanel);
         });
 
@@ -276,8 +277,8 @@ public class ItemsGridFrame extends MovableComponentFrame{
     }
 
     @Override
-    protected void performScaling(ScaleData scaleData) {
-
+    protected void performScaling(Map<String,Float> scaleData) {
+        this.componentsFactory.setScale(scaleData.get("itemcell"));
     }
 
     @Override

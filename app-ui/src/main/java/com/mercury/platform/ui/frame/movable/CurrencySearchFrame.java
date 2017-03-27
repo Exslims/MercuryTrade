@@ -9,6 +9,7 @@ import com.mercury.platform.shared.pojo.ScaleData;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 /**
  * Created by Константин on 02.03.2017.
@@ -115,7 +116,7 @@ public class CurrencySearchFrame extends MovableComponentFrame {
     }
 
     @Override
-    protected void performScaling(ScaleData scaleData) {
+    protected void performScaling(Map<String,Float> scaleData) {
 
     }
 

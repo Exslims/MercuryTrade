@@ -15,9 +15,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Map;
 
 public class SetUpScaleFrame extends OverlaidFrame {
-    private ScaleData scaleData;
+    private Map<String,Float> scaleData;
     public SetUpScaleFrame() {
         super("MercuryTrade");
     }
@@ -80,22 +81,20 @@ public class SetUpScaleFrame extends OverlaidFrame {
     }
 
     private JPanel getScaleSettingsPanel(){
-        JPanel root = componentsFactory.getTransparentPanel(new GridLayout(3,2));
-        Dimension elementsSize = new Dimension(150, 30);
-
+        JPanel root = componentsFactory.getTransparentPanel(new GridLayout(3,1));
         JLabel notificationLabel = componentsFactory.getTextLabel(
                 FontStyle.REGULAR,
                 AppThemeColor.TEXT_DEFAULT,
                 TextAlignment.LEFTOP,
                 17f,
                 "Notification panel: ");
-        JSlider notificationSlider = componentsFactory.getSlider(9,15, (int) (scaleData.getNotificationScale()*10));
+        JSlider notificationSlider = componentsFactory.getSlider(9,15, (int) (scaleData.get("notification")*10));
         JLabel notificationValue = componentsFactory.getTextLabel(
                 FontStyle.REGULAR,
                 AppThemeColor.TEXT_DEFAULT,
                 TextAlignment.LEFTOP,
                 17f,
-                String.valueOf(notificationSlider.getValue()));
+                String.valueOf(notificationSlider.getValue() * 10) + "%");
         notificationValue.setBorder(null);
         notificationSlider.addChangeListener((event)-> repaint());
         notificationSlider.addMouseListener(new MouseAdapter() {
@@ -104,14 +103,13 @@ public class SetUpScaleFrame extends OverlaidFrame {
             public void mouseReleased(MouseEvent e) {
                 if(notificationSlider.getValue() != prevValue){
                     prevValue = notificationSlider.getValue();
-                    notificationValue.setText(String.valueOf(notificationSlider.getValue()));
-                    scaleData.setNotificationScale(notificationSlider.getValue()/10f);
+                    notificationValue.setText(String.valueOf(notificationSlider.getValue() * 10)+ "%");
+                    scaleData.put("notification",notificationSlider.getValue()/10f);
                     EventRouter.UI.fireEvent(new ScaleChangeEvent.NotificationScaleChangeEvent(notificationSlider.getValue()/10f));
                     repaint();
                 }
             }
         });
-        notificationSlider.setPreferredSize(elementsSize);
 
         JLabel taskBarLabel = componentsFactory.getTextLabel(
                 FontStyle.REGULAR,
@@ -120,13 +118,13 @@ public class SetUpScaleFrame extends OverlaidFrame {
                 17f,
                 "Task panel: ");
 
-        JSlider taskBarSlider = componentsFactory.getSlider(9,15, (int) (scaleData.getTaskBarScale()*10));
+        JSlider taskBarSlider = componentsFactory.getSlider(9,15, (int) (scaleData.get("taskbar")*10));
         JLabel taskBarValue = componentsFactory.getTextLabel(
                 FontStyle.REGULAR,
                 AppThemeColor.TEXT_DEFAULT,
                 TextAlignment.LEFTOP,
                 17f,
-                String.valueOf(taskBarSlider.getValue()));
+                String.valueOf(taskBarSlider.getValue() * 10)+ "%");
         taskBarValue.setBorder(null);
         taskBarSlider.addChangeListener((event)-> repaint());
         taskBarSlider.addMouseListener(new MouseAdapter() {
@@ -135,14 +133,13 @@ public class SetUpScaleFrame extends OverlaidFrame {
             public void mouseReleased(MouseEvent e) {
                 if(taskBarSlider.getValue() != prevValue){
                     prevValue = taskBarSlider.getValue();
-                    taskBarValue.setText(String.valueOf(taskBarSlider.getValue()));
-                    scaleData.setTaskBarScale(taskBarSlider.getValue()/10f);
+                    taskBarValue.setText(String.valueOf(taskBarSlider.getValue() * 10)+ "%");
+                    scaleData.put("taskbar",taskBarSlider.getValue()/10f);
                     EventRouter.UI.fireEvent(new ScaleChangeEvent.TaskBarScaleChangeEvent(taskBarSlider.getValue()/10f));
                     repaint();
                 }
             }
         });
-        taskBarSlider.setPreferredSize(elementsSize);
 
         JLabel itemInfoLabel = componentsFactory.getTextLabel(
                 FontStyle.REGULAR,
@@ -150,13 +147,13 @@ public class SetUpScaleFrame extends OverlaidFrame {
                 TextAlignment.LEFTOP,
                 17f,
                 "Item cell panel: ");
-        JSlider itemInfoSlider = componentsFactory.getSlider(9,15, (int) (scaleData.getItemCellScale() * 10));
+        JSlider itemInfoSlider = componentsFactory.getSlider(9,15, (int) (scaleData.get("itemcell") * 10));
         JLabel itemInfoValue = componentsFactory.getTextLabel(
                 FontStyle.REGULAR,
                 AppThemeColor.TEXT_DEFAULT,
                 TextAlignment.LEFTOP,
                 17f,
-                String.valueOf(itemInfoSlider.getValue()));
+                String.valueOf(itemInfoSlider.getValue() * 10)+ "%");
         itemInfoValue.setBorder(null);
         itemInfoSlider.addChangeListener((event)-> repaint());
         itemInfoSlider.addMouseListener(new MouseAdapter() {
@@ -165,40 +162,20 @@ public class SetUpScaleFrame extends OverlaidFrame {
             public void mouseReleased(MouseEvent e) {
                 if(itemInfoSlider.getValue() != prevValue){
                     prevValue = itemInfoSlider.getValue();
-                    itemInfoValue.setText(String.valueOf(itemInfoSlider.getValue()));
-                    scaleData.setItemCellScale(itemInfoSlider.getValue()/10f);
+                    itemInfoValue.setText(String.valueOf(itemInfoSlider.getValue() * 10)+ "%");
+                    scaleData.put("itemcell",itemInfoSlider.getValue()/10f);
                     EventRouter.UI.fireEvent(new ScaleChangeEvent.ItemPanelScaleChangeEvent(itemInfoSlider.getValue()/10f));
                     repaint();
                 }
             }
         });
-        itemInfoSlider.setPreferredSize(elementsSize);
 
-        root.add(wrapLabel(notificationLabel));
-        root.add(wrapSliderComponents(notificationSlider,notificationValue));
-        root.add(wrapLabel(taskBarLabel));
-        root.add(wrapSliderComponents(taskBarSlider,taskBarValue));
-        root.add(wrapLabel(itemInfoLabel));
-        root.add(wrapSliderComponents(itemInfoSlider,itemInfoValue));
+        root.add(componentsFactory.getSliderSettingsPanel(notificationLabel,notificationValue,notificationSlider));
+        root.add(componentsFactory.getSliderSettingsPanel(taskBarLabel,taskBarValue,taskBarSlider));
+        root.add(componentsFactory.getSliderSettingsPanel(itemInfoLabel,itemInfoValue,itemInfoSlider));
         return root;
     }
-    private JPanel wrapSliderComponents(JSlider slider, JLabel sliderLabel){
-        JPanel panel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        panel.setBorder(null);
-        panel.add(slider);
-        JPanel valuePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        valuePanel.setBorder(null);
-        sliderLabel.setBorder(null);
-        valuePanel.add(sliderLabel);
-        panel.add(valuePanel,0);
-        panel.setBorder(BorderFactory.createEmptyBorder(-2,0,-2,0));
-        return panel;
-    }
-    private JPanel wrapLabel(JLabel label){
-        JPanel panel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        panel.add(label);
-        return panel;
-    }
+
     @Override
     public void initHandlers() {
 

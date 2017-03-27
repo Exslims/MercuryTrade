@@ -3,14 +3,16 @@ package com.mercury.platform.ui.misc.event;
 import com.mercury.platform.shared.events.MercuryEvent;
 import com.mercury.platform.shared.pojo.ScaleData;
 
-public class SaveScaleEvent implements MercuryEvent {
-    private ScaleData scaleData;
+import java.util.Map;
 
-    public SaveScaleEvent(ScaleData scaleData) {
+public class SaveScaleEvent implements MercuryEvent {
+    private Map<String,Float> scaleData;
+
+    public SaveScaleEvent(Map<String,Float> scaleData) {
         this.scaleData = scaleData;
     }
 
-    public ScaleData getScaleData() {
+    public Map<String,Float> getScaleData() {
         return scaleData;
     }
 }

@@ -30,7 +30,7 @@ public class HistoryFrame extends TitledComponentFrame implements HistoryContain
         super("MercuryTrade");
         FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
         this.setPreferredSize(frameSettings.getFrameSize());
-        this.componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().getNotificationScale());
+        this.componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("other"));
     }
 
     @Override

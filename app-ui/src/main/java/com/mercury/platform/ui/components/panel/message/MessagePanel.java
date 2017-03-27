@@ -387,6 +387,13 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
     }
     private JButton getExpandButton(){
         String iconPath = "app/default-mp.png";
+        if(expanded){
+            if(style.equals(MessagePanelStyle.DOWNWARDS_SMALL)){
+                iconPath = "app/expand-mp.png";
+            }else {
+                iconPath = "app/collapse-mp.png";
+            }
+        }
         expandButton = componentsFactory.getIconButton(iconPath, 18f, AppThemeColor.MSG_HEADER,"");
         expandButton.setBorder(BorderFactory.createEmptyBorder(4,4,4,0));
         expandButton.addMouseListener(new MouseAdapter() {

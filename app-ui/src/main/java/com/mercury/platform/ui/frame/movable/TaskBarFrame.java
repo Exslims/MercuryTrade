@@ -19,6 +19,7 @@ import org.pushingpixels.trident.ease.Spline;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Map;
 
 public class TaskBarFrame extends MovableComponentFrame{
     private Timeline collapseAnimation;
@@ -29,8 +30,8 @@ public class TaskBarFrame extends MovableComponentFrame{
 
     public TaskBarFrame() {
         super("MercuryTrade");
-        componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().getTaskBarScale());
-        stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().getTaskBarScale());
+        componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("taskbar"));
+        stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("taskbar"));
         processEResize = false;
         processSEResize = false;
         prevState = FrameStates.SHOW;
@@ -39,9 +40,7 @@ public class TaskBarFrame extends MovableComponentFrame{
     @Override
     protected void initialize() {
         super.initialize();
-        taskBarPanel = new TaskBarPanel(new MercuryTaskBarController(),componentsFactory);
-        add(taskBarPanel, BorderLayout.CENTER);
-        this.pack();
+        createUI();
         collapseListener = new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -65,8 +64,6 @@ public class TaskBarFrame extends MovableComponentFrame{
                 }
             }
         };
-        this.MAX_WIDTH = taskBarPanel.getPreferredSize().width;
-        this.MIN_WIDTH = taskBarPanel.getWidthOf(4);
         enableCollapseAnimation();
     }
     private void enableCollapseAnimation(){
@@ -142,13 +139,24 @@ public class TaskBarFrame extends MovableComponentFrame{
     }
 
     @Override
-    protected void performScaling(ScaleData scaleData) {
-
+    protected void performScaling(Map<String,Float> scaleData) {
+        this.componentsFactory.setScale(scaleData.get("taskbar"));
+        createUI();
     }
 
     @Override
     public void createUI() {
-
+        JPanel panel = componentsFactory.getTransparentPanel(new BorderLayout());
+        TaskBarPanel taskBarPanel = new TaskBarPanel(new MercuryTaskBarController(),componentsFactory);
+        panel.add(taskBarPanel, BorderLayout.CENTER);
+        panel.setBackground(AppThemeColor.FRAME);
+        mainContainer = panel;
+        this.setContentPane(panel);
+        this.pack();
+        this.repaint();
+        this.MIN_WIDTH = taskBarPanel.getWidthOf(4);
+        this.MAX_WIDTH = taskBarPanel.getPreferredSize().width;
+        this.setWidth(MIN_WIDTH);
     }
 
     @Override

@@ -111,7 +111,7 @@ public class TaskBarPanel extends JPanel implements HasUI{
         });
 
         JButton scaleButton = componentsFactory.getIconButton(
-                "app/timer-play.png",
+                "app/scale-settings.png",
                 24,
                 AppThemeColor.FRAME_ALPHA,
                 TooltipConstants.SETUP_FRAMES_LOCATION);

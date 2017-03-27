@@ -155,7 +155,7 @@ public class CustomButtonSettings extends ConfigurationPanel{
                            GridBagConstraints kC,
                            GridBagConstraints cC,
                            GridBagConstraints uC){
-        JTextField titleFiled = componentsFactory.getTextField(title,FontStyle.REGULAR,14f);
+        JTextField titleFiled = componentsFactory.getTextField(title,FontStyle.REGULAR,15f);
         titleFiled.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -168,7 +168,7 @@ public class CustomButtonSettings extends ConfigurationPanel{
         buttonsTable.add(titleFiled,tC);
         tC.gridy++;
 
-        JTextField valueField = componentsFactory.getTextField(value,FontStyle.REGULAR,14f);
+        JTextField valueField = componentsFactory.getTextField(value,FontStyle.REGULAR,15f);
         buttonsTable.add(valueField,vC);
         vC.gridy++;
 

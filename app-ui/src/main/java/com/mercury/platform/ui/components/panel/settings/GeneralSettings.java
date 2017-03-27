@@ -1,19 +1,26 @@
 package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
+import com.mercury.platform.core.update.core.holder.ApplicationHolder;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.frame.ComponentFrame;
+import com.mercury.platform.ui.frame.titled.NotesFrame;
+import com.mercury.platform.ui.frame.titled.SettingsFrame;
+import com.mercury.platform.ui.frame.titled.TestCasesFrame;
+import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.manager.HideSettingsManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.event.RepaintEvent;
 import com.mercury.platform.ui.misc.event.ShowTooltipEvent;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 
 public class GeneralSettings extends ConfigurationPanel{
@@ -33,6 +40,7 @@ public class GeneralSettings extends ConfigurationPanel{
 
     @Override
     public void createUI() {
+        verticalScrollContainer.add(getSettingsSlidePanel());
         verticalScrollContainer.add(getSettingsPanel());
     }
     private JPanel getSettingsPanel() {
@@ -144,6 +152,46 @@ public class GeneralSettings extends ConfigurationPanel{
         root.add(wrapCellElement(notifierStatusPicker));
         root.add(poeFolder);
         root.add(poeFolderPanel);
+        return root;
+    }
+    private JPanel getSettingsSlidePanel(){
+        JPanel root = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton openTutorial =
+                componentsFactory.getIconButton("app/tutorial.png",
+                        30,
+                        AppThemeColor.TRANSPARENT,
+                        "Open tutorial");
+        openTutorial.addActionListener(action -> {
+            FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
+            FramesManager.INSTANCE.preShowFrame(NotesFrame.class);
+        });
+        JButton checkUpdates =
+                componentsFactory.getIconButton("app/check-update.png",
+                        30,
+                        AppThemeColor.TRANSPARENT,
+                        "Check for updates");
+        checkUpdates.addActionListener(action -> {
+            ApplicationHolder.getInstance().setManualRequest(true);
+            EventRouter.CORE.fireEvent(new RequestPatchNotesEvent());
+        });
+        JButton openTests =
+                componentsFactory.getIconButton("app/open-tests.png",
+                        30,
+                        AppThemeColor.TRANSPARENT,
+                        "Open tests frame");
+        openTests.addActionListener(action -> {
+            FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
+            FramesManager.INSTANCE.preShowFrame(TestCasesFrame.class);
+        });
+        root.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                EventRouter.UI.fireEvent(new RepaintEvent.RepaintSettingFrame());
+            }
+        });
+        root.add(openTutorial);
+        root.add(checkUpdates);
+        root.add(openTests);
         return root;
     }
     @Override

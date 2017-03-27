@@ -331,31 +331,34 @@ public class ConfigManager {
         }
         return stashTabs;
     }
-    //todo
-    public void saveScaleData(ScaleData scaleData){
-        JSONObject scaleDataJSON = new JSONObject();
-        scaleDataJSON.put("notification",String.valueOf(scaleData.getNotificationScale()));
-        scaleDataJSON.put("taskbar",String.valueOf(scaleData.getTaskBarScale()));
-        scaleDataJSON.put("itemcell",String.valueOf(scaleData.getItemCellScale()));
-        saveProperty("scaleData", scaleDataJSON);
+    public void saveScaleData(Map<String,Float> scaleData){
+        JSONArray list = new JSONArray();
+        scaleData.forEach((type,value)->{
+            JSONObject scaleSetting = new JSONObject();
+            scaleSetting.put("type",type);
+            scaleSetting.put("value",String.valueOf(value));
+            list.add(scaleSetting);
+        });
+        saveProperty("scaleData", list);
 
     }
-    public ScaleData getScaleData(){
-        ScaleData scaleData = new ScaleData();
+    public Map<String, Float> getScaleData(){
+        Map<String, Float> scaleData = new HashMap<>();
         JSONParser parser = new JSONParser();
         try {
             JSONObject root = (JSONObject) parser.parse(new FileReader(CONFIG_FILE));
-            JSONObject scaleDataJSON = (JSONObject) root.get("scaleData");
-            if (scaleDataJSON == null) {
-                scaleData.setNotificationScale(1f);
-                scaleData.setTaskBarScale(1f);
-                scaleData.setItemCellScale(1f);
+            JSONArray scaleDataArray = (JSONArray) root.get("scaleData");
+            if (scaleDataArray == null) {
+                scaleData.put("notification",1f);
+                scaleData.put("taskbar",1f);
+                scaleData.put("itemcell",1f);
+                scaleData.put("other",1f);
                 saveScaleData(scaleData);
                 return scaleData;
             } else {
-                scaleData.setNotificationScale(Float.valueOf((String) scaleDataJSON.get("notification")));
-                scaleData.setTaskBarScale(Float.valueOf((String) scaleDataJSON.get("taskbar")));
-                scaleData.setItemCellScale(Float.valueOf((String) scaleDataJSON.get("itemcell")));
+                for (JSONObject next : (Iterable<JSONObject>) scaleDataArray) {
+                    scaleData.put((String)next.get("type"),Float.valueOf((String) next.get("value")));
+                }
             }
         }catch (Exception e){
             logger.error(e);

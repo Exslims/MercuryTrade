@@ -7,6 +7,7 @@ import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.event.DismissStashTabInfoEvent;
+import lombok.NonNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,9 +16,9 @@ public class TabInfoPanel extends JPanel implements HasUI{
     private ComponentsFactory componentsFactory;
     private StashTab stashTab;
 
-    public TabInfoPanel(StashTab stashTab) {
+    public TabInfoPanel(@NonNull StashTab stashTab, @NonNull ComponentsFactory componentsFactory) {
         this.stashTab = stashTab;
-        componentsFactory = new ComponentsFactory();
+        this.componentsFactory = componentsFactory;
         createUI();
     }
 
