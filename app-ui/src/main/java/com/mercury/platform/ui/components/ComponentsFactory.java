@@ -40,7 +40,7 @@ public class ComponentsFactory{
 
     public ComponentsFactory() {
         loadFonts();
-        this.scale = ConfigManager.INSTANCE.getScaleData().get("other");
+        this.scale = 1.0f;
     }
 
     /**

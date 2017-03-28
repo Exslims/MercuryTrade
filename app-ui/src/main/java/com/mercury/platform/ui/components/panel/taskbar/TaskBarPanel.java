@@ -114,7 +114,7 @@ public class TaskBarPanel extends JPanel implements HasUI{
                 "app/scale-settings.png",
                 24,
                 AppThemeColor.FRAME_ALPHA,
-                TooltipConstants.SETUP_FRAMES_LOCATION);
+                TooltipConstants.SCALE_SETTINGS);
         scaleButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

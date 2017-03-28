@@ -41,6 +41,7 @@ public class TaskBarFrame extends MovableComponentFrame{
     protected void initialize() {
         super.initialize();
         createUI();
+        this.setMaximumSize(taskBarPanel.getPreferredSize());
         collapseListener = new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -126,7 +127,8 @@ public class TaskBarFrame extends MovableComponentFrame{
         JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,20f,"Task Bar"));
         panel.add(labelPanel);
-        panel.setPreferredSize(this.getSize());
+//        panel.setPreferredSize(new Dimension(taskBarPanel.getWidthOf(4),taskBarPanel.getHeight()));
+//        System.out.println(panel.getPreferredSize());
         panel.setBackground(AppThemeColor.FRAME);
         return panel;
     }
@@ -147,7 +149,7 @@ public class TaskBarFrame extends MovableComponentFrame{
     @Override
     public void createUI() {
         JPanel panel = componentsFactory.getTransparentPanel(new BorderLayout());
-        TaskBarPanel taskBarPanel = new TaskBarPanel(new MercuryTaskBarController(),componentsFactory);
+        taskBarPanel = new TaskBarPanel(new MercuryTaskBarController(),componentsFactory);
         panel.add(taskBarPanel, BorderLayout.CENTER);
         panel.setBackground(AppThemeColor.FRAME);
         mainContainer = panel;
@@ -190,6 +192,8 @@ public class TaskBarFrame extends MovableComponentFrame{
         this.MIN_WIDTH = taskBarPanel.getWidthOf(4);
         this.MAX_WIDTH = taskBarPanel.getPreferredSize().width;
         this.setSize(new Dimension(MIN_WIDTH,this.getHeight()));
+        this.setMinimumSize(new Dimension(MIN_WIDTH,taskBarPanel.getHeight()));
+        this.setMaximumSize(new Dimension(MAX_WIDTH,taskBarPanel.getHeight()));
         return panel;
     }
 }

@@ -7,6 +7,7 @@ import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.HorizontalScrollContainer;
 import com.mercury.platform.ui.components.panel.grid.*;
 import com.mercury.platform.shared.pojo.ScaleData;
+import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.misc.event.*;
 import com.mercury.platform.shared.pojo.ItemMessage;
 import com.mercury.platform.shared.pojo.Message;
@@ -117,7 +118,7 @@ public class ItemsGridFrame extends MovableComponentFrame{
             }
         }
         quadGridPanel.setBackground(AppThemeColor.FRAME_ALPHA);
-        JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel labelPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         JComboBox tabType = componentsFactory.getComboBox(new String[]{"1x1", "4x4"});
         tabType.addItemListener(e -> {
             if(e.getStateChange() == ItemEvent.SELECTED){
@@ -135,11 +136,12 @@ public class ItemsGridFrame extends MovableComponentFrame{
                 }
             }
         });
+        tabType.setPreferredSize(new Dimension((int)(componentsFactory.getScale() * 70),tabType.getHeight()));
 
-        labelPanel.add(tabType);
+        labelPanel.add(tabType,BorderLayout.LINE_START);
         Color titleColor = configManager.isItemsGridEnable()?AppThemeColor.TEXT_NICKNAME:AppThemeColor.TEXT_DISABLE;
         JLabel titleLabel = componentsFactory.getTextLabel(FontStyle.BOLD, titleColor, TextAlignment.LEFTOP, 20f, "Align this grid(approximately)");
-        labelPanel.add(titleLabel);
+        labelPanel.add(titleLabel,BorderLayout.CENTER);
         headerPanel.add(labelPanel, BorderLayout.CENTER);
 
         String title = (configManager.isItemsGridEnable())?"Disable" : "Enable";
@@ -293,7 +295,6 @@ public class ItemsGridFrame extends MovableComponentFrame{
             JPanel source = (JPanel) e.getSource();
             Point frameLocation = getLocation();
             setSize(new Dimension(e.getLocationOnScreen().x - frameLocation.x + source.getWidth(), getHeight()));
-            configManager.saveFrameSize(ItemsGridFrame.class.getSimpleName(),getSize());
         }
     }
     private class ResizeByHeightMouseMotionListener extends MouseMotionAdapter {
@@ -303,7 +304,6 @@ public class ItemsGridFrame extends MovableComponentFrame{
             JPanel source = (JPanel) e.getSource();
             Point frameLocation = getLocation();
             setSize(new Dimension(getWidth(),e.getLocationOnScreen().y - frameLocation.y + source.getHeight()));
-            configManager.saveFrameSize(ItemsGridFrame.class.getSimpleName(),getSize());
         }
     }
     private class ArrowMouseListener extends MouseAdapter {
@@ -317,12 +317,18 @@ public class ItemsGridFrame extends MovableComponentFrame{
 
         @Override
         public void mousePressed(MouseEvent e) {
+            Dimension size = configManager.getMinimumFrameSize(ItemsGridFrame.this.getClass().getSimpleName());
+            ItemsGridFrame.this.setMinimumSize(size);
             panel.setBackground(AppThemeColor.TEXT_DISABLE);
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
+            Dimension size = ItemsGridFrame.this.getSize();
+            ItemsGridFrame.this.setMaximumSize(size);
+            ItemsGridFrame.this.setMinimumSize(size);
             panel.setBackground(AppThemeColor.FRAME);
+            configManager.saveFrameSize(ItemsGridFrame.class.getSimpleName(),getSize());
         }
 
         @Override

@@ -27,6 +27,7 @@ public class TooltipFrame extends OverlaidFrame {
 
     @Override
     protected void initialize() {
+        this.componentsFactory.setScale(1.1f);
     }
     @Override
     public void initHandlers() {
@@ -43,12 +44,12 @@ public class TooltipFrame extends OverlaidFrame {
                 tooltipArea.setText(tooltip);
                 if(tooltip.toCharArray().length < 120){
                     if(tooltip.toCharArray().length < 85){
-                        this.setPreferredSize(new Dimension(320, 50));
+                        this.setPreferredSize(new Dimension(320, 55));
                     }else {
-                        this.setPreferredSize(new Dimension(320, 70));
+                        this.setPreferredSize(new Dimension(320, 75));
                     }
                 }else {
-                    this.setPreferredSize(new Dimension(320, 110));
+                    this.setPreferredSize(new Dimension(320, 145));
                 }
             }
             this.pack();

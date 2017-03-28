@@ -1,8 +1,5 @@
 package com.mercury.platform.ui.misc;
 
-/**
- * Created by Константин on 19.01.2017.
- */
 public class TooltipConstants {
     //Shared
     public static final String CLOSE_BUTTON = "Close";
@@ -16,6 +13,7 @@ public class TooltipConstants {
     public static final String SETUP_FRAMES_LOCATION = "Panel unlock. Unlock panels to reposition.";
     public static final String SETTINGS = "Settings";
     public static final String ITEM_GRID = "Items Grid settings";
+    public static final String SCALE_SETTINGS = "Components scale settings";
     public static final String EXIT = "Exit";
 
     //Timer tooltips

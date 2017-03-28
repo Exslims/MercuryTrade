@@ -86,8 +86,10 @@ public abstract class MovableComponentFrame extends ScalableComponentFrame {
     @Override
     public void onLocationChange(Point location) {
         super.onLocationChange(location);
-        prevConstraints.location = location;
-        locationWasChanged = true;
+        if(inMoveMode) {
+            prevConstraints.location = location;
+            locationWasChanged = true;
+        }
     }
 
     private JPanel setUpMoveListeners(JPanel panel){

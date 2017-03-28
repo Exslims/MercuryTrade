@@ -183,11 +183,16 @@ public class FramesManager implements HasEventHandlers{
     }
     private void createTrayIcon(){
         PopupMenu trayMenu = new PopupMenu();
-        MenuItem item = new MenuItem("Exit");
-        item.addActionListener(e -> {
+        MenuItem exit = new MenuItem("Exit");
+        exit.addActionListener(e -> {
             exit();
         });
-        trayMenu.add(item);
+        MenuItem restore = new MenuItem("Restore default location");
+        restore.addActionListener(e -> {
+            FramesManager.INSTANCE.restoreDefaultLocation();
+        });
+        trayMenu.add(restore);
+        trayMenu.add(exit);
 
         BufferedImage icon = null;
         try {
