@@ -52,10 +52,10 @@ public class SoundNotifier {
             try (AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource(wavPath))) {
                 Clip clip = AudioSystem.getClip();
                 clip.open(stream);
-                double gain = .5D;
-                float db = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
-                FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                gainControl.setValue(db);
+//                double gain = .5D;
+//                float db = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
+//                FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+//                gainControl.setValue(db);
                 clip.start();
             } catch (Exception e) {
                 logger.error("Cannot start playing wav file: ",e);

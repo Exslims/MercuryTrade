@@ -11,7 +11,7 @@ import com.mercury.platform.ui.misc.event.ScaleChangeEvent;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
-
+//todo need generalization
 public abstract class ScalableComponentFrame extends ComponentFrame implements HasUI{
     protected Container mainContainer;
     private ScaleState scaleState = ScaleState.DEFAULT;

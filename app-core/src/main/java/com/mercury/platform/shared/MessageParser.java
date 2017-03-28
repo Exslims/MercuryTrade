@@ -50,6 +50,7 @@ public class MessageParser {
             message.setCurrForSaleTitle(poeTradeCurrencyMatcher.group(5));
             message.setCurCount(Double.parseDouble(poeTradeCurrencyMatcher.group(6)));
             message.setCurrency(poeTradeCurrencyMatcher.group(8));
+            message.setLeague(poeTradeCurrencyMatcher.group(9));
             message.setOffer(poeTradeCurrencyMatcher.group(10));
             return message;
         }
@@ -61,6 +62,7 @@ public class MessageParser {
             message.setItemName(poeTradeNoBuyoutMatcher.group(3));
             message.setCurCount(0d);
             message.setCurrency("???");
+            message.setLeague(poeTradeNoBuyoutMatcher.group(4));
             if(poeTradeNoBuyoutMatcher.group(6) != null) {
                 message.setTabName(poeTradeNoBuyoutMatcher.group(6));
                 message.setLeft(Integer.parseInt(poeTradeNoBuyoutMatcher.group(7)));
