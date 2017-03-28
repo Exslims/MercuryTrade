@@ -39,12 +39,11 @@
 
     <dependencyManagement>
         <dependencies>
-            <!--hotkeys-->
-            <!--<dependency>-->
-                <!--<groupId>lc.kra.system</groupId>-->
-                <!--<artifactId>system-hook</artifactId>-->
-                <!--<version>${systemhook.version}</version>-->
-            <!--</dependency>-->
+            <dependency>
+                <groupId>lc.kra.system</groupId>
+                <artifactId>system-hook</artifactId>
+                <version>${systemhook.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.sun.jna</groupId>
                 <artifactId>jna</artifactId>
@@ -128,16 +127,16 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>system-hook-mvn-repo</id>-->
-            <!--<url>https://raw.github.com/kristian/system-hook/mvn-repo/</url>-->
-            <!--<snapshots>-->
-                <!--<enabled>true</enabled>-->
-                <!--<updatePolicy>always</updatePolicy>-->
-            <!--</snapshots>-->
-        <!--</repository>-->
-    <!--</repositories>-->
+    <repositories>
+        <repository>
+            <id>system-hook-mvn-repo</id>
+            <url>https://raw.github.com/kristian/system-hook/mvn-repo/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
     <build>
         <plugins>
             <plugin>

@@ -47,7 +47,7 @@ public class ConfigManager {
     private String flowDirection = "DOWNWARDS";
     private String tradeMode = "DEFAULT";
     private int limitMsgCount = 3;
-    private int expandedMsgCount = 0;
+    private int expandedMsgCount = 2;
 
     private boolean showPatchNotes = false;
     private boolean showOnStartUp = true;
