@@ -1,9 +1,9 @@
 {
-  "version":"1.0.0.9",
+  "version":"1.0.1.0",
   "notes":[
   {
-    "title" : "Hotfix",
-    "text" : "Fixed Stash Highlight feature not working properly for Hardcore players.\nFixed trade offers coming from players with cyrillic names being ignored.\n\nExpect a bigger update in a few days!",
+    "title" : "Update",
+    "text" : "- Added Scalability! Added a related icon to Taskbar.\n- Added Currency Rate display to Notification panel (currency.poe.trade support).\n- Added \"Still interested in ITEM for PRICE?\" button to Notification panel.\n- Added League name display to Notification panel.\n- Fixed reported bugs and issues you guys had.\n- Minor yet numerous improvements.\nIf you enjoy the app and it makes your life a bit happier consider supporting it!",
     "image" : "",
     "layout" : "VERTICAL"
   }
