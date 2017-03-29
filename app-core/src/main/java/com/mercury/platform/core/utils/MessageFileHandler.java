@@ -69,6 +69,7 @@ public class MessageFileHandler implements HasEventHandlers {
             Date date = new Date(StringUtils.substring(message, 0, 20));
             return date.after(lastMessageDate);
         }).collect(Collectors.toList());
+        Collections.reverse(resultMessages);
         interceptors.forEach(interceptor -> {
             resultMessages.forEach(message -> {
                 if (interceptor.match(message)) {

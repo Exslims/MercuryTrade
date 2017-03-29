@@ -9,9 +9,6 @@ import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-/**
- * Created by Константин on 05.01.2017.
- */
 public class PatchDescriptor<E extends FileDescriptor> implements Iterable<E>, Serializable{
     private List<E> descriptors = new ArrayList<>();
     public void add(E object){

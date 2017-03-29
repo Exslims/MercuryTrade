@@ -186,6 +186,8 @@ public class ChatScannerFrame extends TitledComponentFrame {
                     list.setFont(componentsFactory.getFontByLang(chunks.getText(), FontStyle.REGULAR).deriveFont(16f));
                     String chunkStr = StringUtils.deleteWhitespace(chunks.getText());;
                     String[] split = chunkStr.split(",");
+                    msgContainer.setNewChunks(Arrays.asList(split));
+
                     DefaultListModel<String> model = new DefaultListModel<>();
                     Arrays.stream(split).forEach(model::addElement);
                     list.setModel(model);
@@ -206,14 +208,13 @@ public class ChatScannerFrame extends TitledComponentFrame {
                         @Override
                         protected MessageFilter getFilter() {
                             return message -> {
-                                message = message.toLowerCase();
                                 String stubChunks = chunks.getText();
                                 String chunks = StringUtils.deleteWhitespace(stubChunks);
                                 String[] chunksArray = StringUtils.split(chunks, ",");
                                 if(!message.contains("] $") && !message.contains("] #")){
-                                    System.out.println(message);
                                     return false;
                                 }
+                                message = StringUtils.substringAfter(message,":").toLowerCase();
                                 for (String chunk : chunksArray) {
                                     chunk = chunk.toLowerCase();
                                     if(message.contains(chunk)){
@@ -225,8 +226,8 @@ public class ChatScannerFrame extends TitledComponentFrame {
                         }
                     };
                     EventRouter.CORE.fireEvent(new AddInterceptorEvent(interceptor));
+                    EventRouter.CORE.fireEvent(new AddShowDelayEvent());
                     hideComponent();
-//                    EventRouter.CORE.fireEvent(new AddShowDelayEvent());
                 }
             });
             root.add(chunks,BorderLayout.CENTER);

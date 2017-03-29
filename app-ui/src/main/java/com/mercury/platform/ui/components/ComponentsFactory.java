@@ -1,6 +1,5 @@
 package com.mercury.platform.ui.components;
 
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.ButtonPressedEvent;
 import com.mercury.platform.shared.events.custom.HideTooltipEvent;
