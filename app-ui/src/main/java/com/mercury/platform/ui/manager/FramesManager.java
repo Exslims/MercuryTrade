@@ -17,13 +17,10 @@ import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
 import com.mercury.platform.ui.frame.movable.MovableComponentFrame;
 import com.mercury.platform.ui.frame.movable.TaskBarFrame;
 import com.mercury.platform.ui.frame.setup.scale.SetUpScaleCommander;
-import com.mercury.platform.ui.frame.titled.TestCasesFrame;
+import com.mercury.platform.ui.frame.titled.*;
 import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.frame.setup.location.SetUpLocationCommander;
 import com.mercury.platform.ui.frame.other.SetUpLocationFrame;
-import com.mercury.platform.ui.frame.titled.HistoryFrame;
-import com.mercury.platform.ui.frame.titled.NotesFrame;
-import com.mercury.platform.ui.frame.titled.SettingsFrame;
 import com.mercury.platform.ui.misc.note.Note;
 import com.mercury.platform.ui.misc.note.NotesLoader;
 
@@ -82,7 +79,7 @@ public class FramesManager implements HasEventHandlers{
             NotesFrame patchNotesFrame = new NotesFrame(patchNotes,NotesFrame.NotesType.PATCH);
             patchNotesFrame.init();
         }
-//        framesMap.put(ChatScannerFrame.class,new ChatScannerFrame());
+        framesMap.put(ChatScannerFrame.class,new ChatScannerFrame());
         framesMap.put(UpdateReadyFrame.class,new UpdateReadyFrame());
         framesMap.put(TaskBarFrame.class,taskBarFrame);
         framesMap.put(SetUpLocationFrame.class,new SetUpLocationFrame());

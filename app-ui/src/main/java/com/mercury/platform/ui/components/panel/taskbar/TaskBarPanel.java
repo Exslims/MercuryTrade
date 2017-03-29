@@ -159,8 +159,8 @@ public class TaskBarPanel extends JPanel implements HasUI{
         this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(visibleMode);
         this.add(Box.createRigidArea(new Dimension(2, 4)));
-//        taskBarPanel.add(chatFilter);
-//        taskBarPanel.add(Box.createRigidArea(new Dimension(3, 4)));
+        this.add(chatFilter);
+        this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(historyButton);
         this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(itemGrid);

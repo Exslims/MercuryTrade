@@ -17,7 +17,7 @@ public class SettingsFrame extends TitledComponentFrame {
     private List<ConfigurationPanel> innerPanels;
     private boolean successfullySaved = true;
     public SettingsFrame(){
-        super("MercuryTrade");
+        super("MercuryTrade-Settings");
         setFocusable(true);
         setFocusableWindowState(true);
         setAlwaysOnTop(false);

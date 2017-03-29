@@ -57,7 +57,7 @@ public class AppStarter {
                     byte[] windowText = new byte[512];
                     PointerType hwnd = user32.GetForegroundWindow();
                     User32.INSTANCE.GetWindowTextA(hwnd, windowText, 512);
-                    if(!Native.toString(windowText).equals("Path of Exile")){
+                    if(!Native.toString(windowText).equals("Path of Exile") && !Native.toString(windowText).equals("MercuryTrade")){
                         if(APP_STATUS == FrameStates.SHOW) {
                             APP_STATUS = FrameStates.HIDE;
                             EventRouter.CORE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.HIDE));

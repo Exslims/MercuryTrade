@@ -161,6 +161,10 @@ public class ChatScannerFrame extends TitledComponentFrame {
             this.setMinimumSize(settings.getFrameSize());
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
             this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+//            this.setUndecorated(false);
+            this.setFocusableWindowState(true);
+            this.setFocusable(true);
+            this.setType(Type.UTILITY);
         }
 
         @Override
@@ -222,7 +226,7 @@ public class ChatScannerFrame extends TitledComponentFrame {
                     };
                     EventRouter.CORE.fireEvent(new AddInterceptorEvent(interceptor));
                     hideComponent();
-                    EventRouter.CORE.fireEvent(new AddShowDelayEvent());
+//                    EventRouter.CORE.fireEvent(new AddShowDelayEvent());
                 }
             });
             root.add(chunks,BorderLayout.CENTER);
