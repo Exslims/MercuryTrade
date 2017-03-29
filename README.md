@@ -4,11 +4,13 @@
 
 # MercuryTrade
 
-Download and Install Java: [https://java.com/download](https://java.com/download)
+Descarga e instala Java: [https://java.com/download](https://java.com/download)
 
-Download MercuryTrade.jar: [Latest release](https://github.com/Exslims/MercuryTrade/releases)
+Descarga MercuryTrade.jar: [Última versión](https://github.com/Exslims/MercuryTrade/releases)
 
-Feedback and suggestions: [Link](https://github.com/Exslims/MercuryTrade/issues)
+Sugerencias y *feedback*: [Enlace](https://github.com/Exslims/MercuryTrade/issues)
+
+**EJECUTABLE ALTERNATIVO**: MercuryTrade.**RAR**: última versión. ¡Descomprime y ejecuta como administrador el .exe! Este ejecutable es principalmente para la gente que tiene problemas de visibilidad con los botones.
 
 **ALTERNATIVE LAUNCHER**: MercuryTrade.**RAR**: [Latest release](https://github.com/Exslims/MercuryTrade/releases). Unpack and run the attached .exe as administrator! This is primarily for the people who have issues with buttons not working.
 
@@ -17,99 +19,99 @@ Feedback and suggestions: [Link](https://github.com/Exslims/MercuryTrade/issues)
  <img src="http://i.imgur.com/DWJQSsL.png"/>
   </p>
 
-**MercuryTrade** is an overlay application for Path of Exile written in Java. It's designed to facilitate all possible trading interactions providing a much better user experience for the players. The program went through countless design iterations and made by active Path of Exile players who use this tool themselves on a regular basis.
+**MercuryTrade** es una aplicación para Path of Exile escrita en JAVA. Está diseñada para facilitar todas las interacciones que se producen durante el comercio y así mejorar la experiencia de usuario. El programa ha pasado por muchas iteraciones durante el diseño y ha sido creado y usado por jugadores activos de Path of Exile.
 
 ---
-## FUNCTIONALITY:
+## FUNCIONALIDAD:
 ---
 
-&nbsp; *Main feature:* **Notification**
+&nbsp; *Característica principal:* **Notificaciones**
 
 <p align="center">
   <img src="http://i.imgur.com/Sv2Iod9.png"/>
 </p>
 
-When you receive a trade related message this notification panel pops up. It contains all the information you need to make a decision. It offers a set of fully customizable "quick response buttons" - such as "Sold" / "No" / "Wait 3m" / etc - as well as buttons to invite, kick and trade with the person who made the offer. 
+Cuando recibes un mensaje de comercio, esta ventana aparece. Contiene toda la información necesaria para tomar una decisión. Ofrece una serie de botones personalizables "botones de respuesta rápida" - tales como "Vendido" / "No" / "Espera 3m" / etc - así como botones para invitar, expulsar y comerciar con la persona que ha realizado la oferta.
 
 <p align="center">
   <img src="http://i.imgur.com/6WyeA9D.png"/>
 </p>
 
-<p align="center"> <i>Multiple notifications</i> </p>
+<p align="center"> <i>Múltiples notificaciones</i> </p>
 
-If you've received multiple notifications before dismissing your current one, they will stack up like a deck of cards underneath (or on top) of each other and won't clutter the screen. Notification panels can be set up to fade out after X seconds - a customizable option.
+Si has recibido múltiples notificaciones antes de quitar la que tienes en pantalla, se apilarán como un mazo de cartas debajo (o arriba) unas de otras y no te estorbarán en la pantalla. Los paneles de notificación pueden desaparacer a los X segundos (opción personalizable).
 
 <p align="center">
   <img src="http://i.imgur.com/KZuAT7I.png"/>
 </p>
 
-<p align="center"> <i>"Group" showcase: you received 5 notifications</i> </p>
+<p align="center"> <i>Muestra de agrupamiento: has recibido cinco notificaciones</i> </p>
 
-<p> The box on the left - "Group" - will appear if "Pre-group limit" is exceeded (this limit is also customizable). All consecutive notifications will be grouped together to save screen space. Toggling this button will expand the whole group. </p>
+<p> La cajita de la izquierda - "Group" - aparecerá si "Pre-group limit" es sobrepasado (este límite también es personalizable). Las notificaciones siguientes serán agrupapdas para ahorrar espacio en pantalla. Activar este botón hará que todo el grupo se muestre. </p>
 
 <p align="center">
   <img src="http://i.imgur.com/ljIOEYk.png"/>
 </p>
 
-<p align="center"> <i>Notification Panel settings (unlocked mode)</i> </p>
+<p align="center"> <i>Configuración del panel de notificaciones (modo desbloqueado)</i> </p>
 
 
 <p align="center">
   <img src="http://i.imgur.com/Y00d0FF.png"/>
 </p>
 
-<p align="center"> <i>Response buttons are fully customizable</i> </p>
+<p align="center"> <i>Los botones de respuesta son totalmente personalizables</i> </p>
 
 
 
 #
 
 
-&nbsp; *Main feature:* **History**
+&nbsp; *Característica principal:* **Historial**
 
 <p align="center">
   <img src="http://i.imgur.com/hQarj9q.png"/>
 </p>
 
-<p align="center"> <i>History</i> </p>
+<p align="center"> <i>Historial</i> </p>
 
-Each notification you receive is stored in a separate file by **MercuryTrade**. History allows you to access that file in a useful way to interact with customers. Comes in handy if you want to reach a person you traded with some time ago or in case your client has crashed - your in-game chat will be lost, but History will not.
+Cada notificación que recibes es guardada por **MercuryTrade** en otro fichero. El Historial te permite acceder a ese fichero de una forma cómoda para interactuar con tus clientes. Es muy útil si quieres contactar con una persona con la que comerciaste hace tiempo o por si tu juego se cierra de imprevisto, tu chat dentro del juego se perderá, pero no el Historial.
 
 
 #
 
-&nbsp; *Minor feature:* **Accessibility status**
+&nbsp; *Característica menor:* **Accesibilidad**
 <p align="center">
   <img src="http://i.imgur.com/dTUrF7v.png"/>
 </p>
 
-<p align="center"> <i>Name will change its color accordingly</i> </p>
+<p align="center"> <i>Los nombres cambiarán de color adecuadamente</i> </p>
 
 
-**MercuryTrade** notifications have an **indication for when a person comes in or leaves your hideout** - that way you can offer a trade as soon as possible and keep track of all the people without even closing your stash. Especially useful for SuperTrade mode.
+Las notificaciones de **MercuryTrade** tienen un  **indicador para saber cuándo una persona entra o deja tu *hideout* ** - de esa forma puedes ofrecer comercio en cuanto la persona entra en tu *hideout* sin tener que cerrar tu baúl. Especialmente útil en el modo de *SuperTrade*
 
 
-Important to mention: in Path of Exile when you use your stash you can't click on party frames, because they're hidden behind the stash window. **MercuryTrade** solves this inconvenience as you can interact with the person through a related notification panel.
+Mención importante: en Path  of Exile, no puedes hacer uso de los *frames* de grupo mientras estás usando el baúl, ya que están tapados por la ventana del mismo. **MercuryTrade** solventa este impedimiento ya que puedes interactuar con dicha persona mediante los paneles de notificación.
 
 #
 
-&nbsp; *Minor feature:* **Stash Highlight**
+&nbsp; *Característica menor:* **resaltado del baúl**
 
 <p align="center">
   <img src="http://i.imgur.com/FA8J8Fp.png"/>
 </p>
 
-<p align="center"> <i>Mouse over this little box to highlight the location.</i> </p>
+<p align="center"> <i>Pasa por encima de esta cajita para resaltar la casilla pertinente</i> </p>
 
 <br/>
 
-Mercury can highlight the stash location of the item somebody's buying. You will have to set up this Item Grid to align it with your stash, because different people play on different screen resolutions.
+Mercury puede resaltar la casilla donde se encuentra un objeto que quieren comprarte. Necesitarás ajustar esta *Item Grid* a las casillas de tu baúl ya que cada persona juega con una resolución diferente.
 
 <p align="center">
   <img src="http://i.imgur.com/TOD1lM7.png"/>
 </p>
 
-<p align="center"> <i>Item Grid set up.</i> </p>
+<p align="center"> <i>Configuración del Item Grid.</i> </p>
 
 
 
@@ -118,23 +120,23 @@ Mercury can highlight the stash location of the item somebody's buying. You will
 #
 
 
-&nbsp; *Minor feature:* **Do not Disturb**
+&nbsp; *Característica menor:* **No Molestar**
 
 <p align="center">
   <img src="http://i.imgur.com/Lh6lodD.png"/>
 </p>
 
-<p align="center"> <i>DND on TaskBar panel</i> </p>
+<p align="center"> <i>DND en la barra de herramientas</i> </p>
 
-Activate this mode if you don't want to see (and hear!) anything from the application for a while. **MercuryTrade** will continue working in hidden mode.
+Activa este modo si no quieres ver (¡y escuchar!) nada referente a la aplicación. **MercuryTrade** seguirá trabajando en modo oculto.
 
 ---
-## HOW TO INSTALL:
+## CÓMO INSTALAR:
 ---
 
-Download and install Java on your computer, then open MercuryTrade.jar. Because the program operates on top of a Path of Exile window as an overlay, **make sure your client is not in fullscreen mode**.
+Descarga e instala JAVA en tu ordenador y ejecuta MercuryTrade.jar. Como el programa opera encima de la ventana de Path of Exile, debes **asegurarte de que no tienes el juego en pantalla completa**.
 
-Upon launch you'll be greeted with a short overview of the application (identical to this ReadMe) and patch notes. Afterwards you should see **Task Panel** and **Notification Panel**.
+Tras lanzarlo, serás bienvenido con una pequeña visión de conjunto de la aplicación (idéntica a este Léeme) y las notas del parche. Tras esto, deberías mirar el **Task Panel** y el **Notification Panel**.
 
 
 <br/>
@@ -145,23 +147,23 @@ Upon launch you'll be greeted with a short overview of the application (identica
   <img src="http://i.imgur.com/LYl3Xi1.png"/>
 </p>
 
-* (1) **Panel unlock**.
+* (1) **Desbloquear panel**.
 
-* (2) **Travel to Hideout**.
+* (2) **Ir al Hideout**.
 
-* (3) **Do Not Disturb** mode button switch.
+* (3) **No Molestar** (botón de activar/desactivar).
 
-* (4) **History** panel window.
+* (4) **Historial** panel.
 
-* (5) **Item Grid** set up.
+* (5) **Item Grid** configuración.
 
-* (6) **Settings**.
+* (6) **Configuración**.
   
-* (7) **Exit**.
+* (7) **Salir**.
 
 <br/>
 
-**Notification panel** *(unlocked mode)*
+**Panel de notificaciones** *(modo desbloqueado)*
 
 <p align="center">
   <img src="http://i.imgur.com/ljIOEYk.png"/>
@@ -169,7 +171,7 @@ Upon launch you'll be greeted with a short overview of the application (identica
 
 <br/>
 
-After you go through the overview, panels will be in "Unlocked" mode. This will allow you to reposition them to your taste.
+Tras finalizar la visión de conjunto, los paneles se desbloquearán para que puedas  reposicionarlos a tu gusto.
 
 
 
