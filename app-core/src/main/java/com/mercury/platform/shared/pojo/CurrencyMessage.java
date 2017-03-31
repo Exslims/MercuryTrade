@@ -1,44 +1,11 @@
 package com.mercury.platform.shared.pojo;
 
-import java.util.Date;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-/**
- * Created by Константин on 11.01.2017.
- */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class CurrencyMessage extends Message {
     private Double currForSaleCount;
     private String currForSaleTitle;
-
-    public CurrencyMessage() {
-    }
-
-    public CurrencyMessage(String sourceString,
-                           String whisperNickname,
-                           String offer,
-                           Date msgDate,
-                           Double currForSaleCount,
-                           String currForSaleTitle,
-                           Double priceCount,
-                           String priceTitle,
-                           String league) {
-        super(sourceString,whisperNickname, offer, msgDate,priceCount,priceTitle,league);
-        this.currForSaleCount = currForSaleCount;
-        this.currForSaleTitle = currForSaleTitle;
-    }
-
-    public Double getCurrForSaleCount() {
-        return currForSaleCount;
-    }
-
-    public void setCurrForSaleCount(Double currForSaleCount) {
-        this.currForSaleCount = currForSaleCount;
-    }
-
-    public String getCurrForSaleTitle() {
-        return currForSaleTitle;
-    }
-
-    public void setCurrForSaleTitle(String currForSaleTitle) {
-        this.currForSaleTitle = currForSaleTitle;
-    }
 }

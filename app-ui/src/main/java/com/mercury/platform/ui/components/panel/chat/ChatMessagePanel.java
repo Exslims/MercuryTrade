@@ -10,10 +10,8 @@ import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import lombok.NonNull;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -34,7 +32,7 @@ public class ChatMessagePanel extends JPanel implements HasUI{
         this.message = message;
 
         this.componentsFactory = componentsFactory;
-        this.setBorder(BorderFactory.createEmptyBorder(2,4,2,4));
+        this.setBorder(BorderFactory.createEmptyBorder(2,4,2,2));
         this.setBackground(AppThemeColor.TRANSPARENT);
         createUI();
     }
@@ -86,7 +84,7 @@ public class ChatMessagePanel extends JPanel implements HasUI{
 
         miscPanel.add(operationsPanel,BorderLayout.LINE_START);
         miscPanel.add(nicknamePanel,BorderLayout.CENTER);
-        nicknamePanel.setMaximumSize(new Dimension(90,30));
+        nicknamePanel.setMaximumSize(new Dimension(90,60));
         JLabel messageLabel = new JLabel(message);
         messageLabel.setBackground(AppThemeColor.TRANSPARENT);
         messageLabel.setBorder(null);
@@ -96,13 +94,5 @@ public class ChatMessagePanel extends JPanel implements HasUI{
         root.add(miscPanel,BorderLayout.LINE_START);
         root.add(messageLabel, BorderLayout.CENTER);
         this.add(root,BorderLayout.CENTER);
-    }
-
-    private String trimNickName(String source){
-        String substring = StringUtils.substring(source, 0, 10);
-        if(source.length() > 10) {
-            return substring + "...";
-        }
-        return substring;
     }
 }

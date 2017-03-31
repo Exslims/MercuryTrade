@@ -66,11 +66,10 @@ public class ConfigManager {
         minimumFrameSize.put("SettingsFrame",new Dimension(540,400));
         minimumFrameSize.put("HistoryFrame",new Dimension(280,400));
         minimumFrameSize.put("TimerFrame",new Dimension(240,102));
-        minimumFrameSize.put("ChatScannerFrame",new Dimension(200,100));
-        minimumFrameSize.put("ItemsGridFrame",new Dimension(400,400));
+        minimumFrameSize.put("ChatFilterFrame",new Dimension(400,200));
+        minimumFrameSize.put("ItemsGridFrame",new Dimension(150,150));
         minimumFrameSize.put("NotesFrame",new Dimension(540,100));
-        minimumFrameSize.put("SetUpLocationFrame",new Dimension(300,30));
-        minimumFrameSize.put("ChunkMessagesPicker",new Dimension(240,30));
+        minimumFrameSize.put("ChatFilterSettingsFrame",new Dimension(300,200));
         minimumFrameSize.put("GamePathChooser",new Dimension(600,30));
         minimumFrameSize.put("CurrencySearchFrame",new Dimension(400,300));
 
@@ -159,7 +158,7 @@ public class ConfigManager {
                         isKick = Boolean.valueOf((String)object);
                         isClose = Boolean.valueOf((String)object1);
                     }
-                    cachedButtonsConfig.add(new ResponseButton((long) next.get("id"), (String) next.get("title"), (String) next.get("value"),isKick,isClose));
+                    cachedButtonsConfig.add(new ResponseButton((long) next.get("id"),isKick,isClose,(String) next.get("title"), (String) next.get("value")));
                 }
             }catch (Exception e){
                 saveButtonsConfig(getDefaultButtons());
@@ -260,8 +259,10 @@ public class ConfigManager {
         FrameSettings settings = cachedFramesSettings.get(frameClass);
         if(settings == null) {
             FrameSettings defaultSettings = getDefaultFramesSettings().get(frameClass);
-            cachedFramesSettings.put(frameClass,defaultSettings);
-            saveFrameSettings();
+            if(defaultSettings != null) {
+                cachedFramesSettings.put(frameClass, defaultSettings);
+                saveFrameSettings();
+            }
         }
         return cachedFramesSettings.get(frameClass);
     }
@@ -321,8 +322,7 @@ public class ConfigManager {
                 return stashTabs;
             } else {
                 for (JSONObject next : (Iterable<JSONObject>) tabs) {
-                    StashTab stashTab = new StashTab((String)next.get("title"), Boolean.valueOf((String)next.get("isQuad")));
-                    stashTab.setUndefined(false);
+                    StashTab stashTab = new StashTab((String)next.get("title"), Boolean.valueOf((String)next.get("isQuad")),false);
                     stashTabs.add(stashTab);
                 }
             }
@@ -488,10 +488,10 @@ public class ConfigManager {
 
     private List<ResponseButton> getDefaultButtons(){
         List<ResponseButton> defaultButtons = new ArrayList<>();
-        defaultButtons.add(new ResponseButton(0,"1m","one minute",false,false));
-        defaultButtons.add(new ResponseButton(1,"thx","thanks",true,false));
-        defaultButtons.add(new ResponseButton(2,"no thx", "no thanks",false,false));
-        defaultButtons.add(new ResponseButton(3,"sold", "sold",false,false));
+        defaultButtons.add(new ResponseButton(0,false,false,"1m","one minute"));
+        defaultButtons.add(new ResponseButton(1,true,false,"thx","thanks"));
+        defaultButtons.add(new ResponseButton(2,false,false,"no thx", "no thanks"));
+        defaultButtons.add(new ResponseButton(3,false,false,"sold", "sold"));
         return defaultButtons;
     }
     public Map<String,FrameSettings> getDefaultFramesSettings(){
@@ -503,11 +503,10 @@ public class ConfigManager {
         defaultFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(540,500)));
         defaultFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 500),new Dimension(280,400)));
         defaultFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
-        defaultFramesSettings.put("ChatScannerFrame",new FrameSettings(new Point(400, 600),new Dimension(500,250)));
+        defaultFramesSettings.put("ChatFilterFrame",new FrameSettings(new Point(400, 600),new Dimension(500,300)));
         defaultFramesSettings.put("ItemsGridFrame",new FrameSettings(new Point(12, 79),new Dimension(641,718)));
         defaultFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,100)));
-        defaultFramesSettings.put("SetUpLocationFrame",new FrameSettings(new Point(400, 600),new Dimension(300,30)));
-        defaultFramesSettings.put("ChunkMessagesPicker",new FrameSettings(new Point(400, 600),new Dimension(240,30)));
+        defaultFramesSettings.put("ChatFilterSettingsFrame",new FrameSettings(new Point(400, 600),new Dimension(320,200)));
         defaultFramesSettings.put("GamePathChooser",new FrameSettings(new Point(400, 600),new Dimension(520,30)));
         defaultFramesSettings.put("CurrencySearchFrame",new FrameSettings(new Point(400, 600),new Dimension(400,300)));
         return defaultFramesSettings;

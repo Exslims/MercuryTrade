@@ -5,8 +5,8 @@ import com.mercury.platform.shared.events.custom.ChatCommandEvent;
 import com.mercury.platform.shared.events.custom.DndModeEvent;
 import com.mercury.platform.shared.events.custom.NotificationEvent;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
-import com.mercury.platform.ui.frame.titled.ChatScannerFrame;
-import com.mercury.platform.ui.frame.titled.HistoryFrame;
+import com.mercury.platform.ui.frame.titled.chat.ChatFilterFrame;
+import com.mercury.platform.ui.frame.titled.container.HistoryFrame;
 import com.mercury.platform.ui.frame.titled.SettingsFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
@@ -38,7 +38,7 @@ public class MercuryTaskBarController implements TaskBarController {
 
     @Override
     public void showChatFiler() {
-        FramesManager.INSTANCE.hideOrShowFrame(ChatScannerFrame.class);
+        FramesManager.INSTANCE.hideOrShowFrame(ChatFilterFrame.class);
     }
 
     @Override

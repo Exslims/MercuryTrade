@@ -66,20 +66,19 @@ public class TaskBarPanel extends JPanel implements HasUI{
                 24,
                 AppThemeColor.FRAME_ALPHA,
                 TooltipConstants.HIDEOUT);
-        toHideOut.addActionListener(action -> controller.performHideout());
+        toHideOut.addActionListener(action -> {
+            this.controller.performHideout();
+            this.repaint();
+        });
 
         JButton chatFilter = componentsFactory.getIconButton(
                 "app/chat-filter.png",
                 24,
                 AppThemeColor.FRAME_ALPHA,
                 TooltipConstants.CHAT_FILTER);
-        chatFilter.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
-                    controller.showChatFiler();
-                }
-            }
+        chatFilter.addActionListener(action -> {
+            this.controller.showChatFiler();
+            this.repaint();
         });
 
         JButton historyButton = componentsFactory.getIconButton(
@@ -87,13 +86,9 @@ public class TaskBarPanel extends JPanel implements HasUI{
                 24,
                 AppThemeColor.FRAME_ALPHA,
                 TooltipConstants.HISTORY);
-        historyButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
-                    controller.showHistory();
-                }
-            }
+        historyButton.addActionListener(action -> {
+            this.controller.showHistory();
+            this.repaint();
         });
 
         JButton pinButton = componentsFactory.getIconButton(

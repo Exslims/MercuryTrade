@@ -1,6 +1,5 @@
 package com.mercury.platform.ui.components.panel.chat;
 
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +21,7 @@ public class HtmlMessageBuilder {
     public String build(String message) {
         List<String> resultStrs = new ArrayList<>();
         resultStrs.add("<html>");
-        String[] words = message.split("((?<= )|(?= ))");
+        String[] words = message.split("((?<= )|(?= )|(?<=\\.)|(?=\\.)|(?<=,)|(?<=\\?)|(?=\\?)|(?=,)|(?<=!)|(?=!)|(?<=/)|(?=/)|(?<=>)|(?=>))");
         Arrays.stream(words).forEach(word -> {
             if(chunkStrings.stream().noneMatch(word::equalsIgnoreCase)){
                 resultStrs.add(word);

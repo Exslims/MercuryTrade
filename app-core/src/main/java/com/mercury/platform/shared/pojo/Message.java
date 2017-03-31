@@ -1,10 +1,10 @@
 package com.mercury.platform.shared.pojo;
 
+import lombok.Data;
+
 import java.util.Date;
 
-/**
- * Created by Константин on 10.12.2016.
- */
+@Data
 public class Message {
     private String sourceString;
     private Date messageDate;
@@ -13,73 +13,4 @@ public class Message {
     private Double curCount;
     private String currency;
     private String league;
-
-    public Message() {
-    }
-
-    public Message(String sourceString, String whisperNickname, String offer, Date msgDate, Double curCount, String currency, String league) {
-        this.sourceString = sourceString;
-        this.offer = offer;
-        this.messageDate = msgDate;
-        this.whisperNickname = whisperNickname;
-        this.curCount = curCount;
-        this.currency = currency;
-        this.league = league;
-    }
-
-    public String getWhisperNickname() {
-        return whisperNickname;
-    }
-
-    public void setWhisperNickname(String whisperNickname) {
-        this.whisperNickname = whisperNickname;
-    }
-
-    public String getOffer() {
-        return offer;
-    }
-
-    public void setOffer(String offer) {
-        this.offer = offer;
-    }
-
-    public Date getMessageDate() {
-        return messageDate;
-    }
-
-    public void setMessageDate(Date messageDate) {
-        this.messageDate = messageDate;
-    }
-
-    public Double getCurCount() {
-        return curCount;
-    }
-
-    public void setCurCount(Double curCount) {
-        this.curCount = curCount;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public String getSourceString() {
-        return sourceString;
-    }
-
-    public void setSourceString(String sourceString) {
-        this.sourceString = sourceString;
-    }
-
-    public String getLeague() {
-        return league;
-    }
-
-    public void setLeague(String league) {
-        this.league = league;
-    }
 }

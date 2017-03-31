@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.frame.titled;
+package com.mercury.platform.ui.frame.titled.container;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HistoryManager;
@@ -13,7 +13,7 @@ import com.mercury.platform.ui.components.panel.message.MessagePanel;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.components.panel.message.NotificationMessageController;
 import com.mercury.platform.ui.components.panel.message.MessagePanelStyle;
-import com.mercury.platform.ui.frame.titled.container.HistoryContainer;
+import com.mercury.platform.ui.frame.titled.TitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.event.ReloadMessageEvent;
 import com.mercury.platform.ui.misc.event.RepaintEvent;

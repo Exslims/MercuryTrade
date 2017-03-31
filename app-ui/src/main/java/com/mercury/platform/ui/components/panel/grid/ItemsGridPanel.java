@@ -94,7 +94,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
             if(stashTabsContainer.containsTab(message.getTabName())) {
                 stashTab = stashTabsContainer.getStashTab(message.getTabName());
             }else {
-                stashTab = new StashTab(message.getTabName(),false);
+                stashTab = new StashTab(message.getTabName(),false,true);
             }
             Optional<ItemCell> cellByCoordinates = getCellByCoordinates(stashTab, x, y);
             if(cellByCoordinates.isPresent()) {

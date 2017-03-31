@@ -42,10 +42,10 @@ public class CustomButtonSettings extends ConfigurationPanel{
         inputs.forEach(pair -> {
             buttons.add(new ResponseButton(
                     id,
-                    pair.title.getText(),
-                    pair.response.getText(),
                     pair.kick.isSelected(),
-                    pair.close.isSelected()));
+                    pair.close.isSelected(),
+                    pair.title.getText(),
+                    pair.response.getText()));
             id++;
         });
         ConfigManager.INSTANCE.saveButtonsConfig(buttons);

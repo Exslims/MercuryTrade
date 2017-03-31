@@ -11,6 +11,14 @@ import java.awt.*;
  */
 public class MercuryScrollBarUI extends BasicScrollBarUI {
     private final Dimension d = new Dimension();
+    private Color scrollColor;
+
+    public MercuryScrollBarUI(Color color) {
+        this.scrollColor = color;
+    }
+    public MercuryScrollBarUI() {
+        this.scrollColor = AppThemeColor.BUTTON;
+    }
 
     @Override
     protected JButton createDecreaseButton(int orientation) {
@@ -46,7 +54,7 @@ public class MercuryScrollBarUI extends BasicScrollBarUI {
         if (!sb.isEnabled()) {
             return;
         } else {
-            color = AppThemeColor.BUTTON;
+            color = scrollColor;
         }
         g2.setPaint(color);
         g2.fillRect(r.x, r.y, r.width, r.height);

@@ -24,6 +24,10 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
+            <groupId>net.jodah</groupId>
+            <artifactId>expiringmap</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.sun.jna</groupId>
             <artifactId>jna</artifactId>
         </dependency>

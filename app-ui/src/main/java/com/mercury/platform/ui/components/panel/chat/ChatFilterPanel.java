@@ -1,9 +1,12 @@
 package com.mercury.platform.ui.components.panel.chat;
 
+import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.event.RepaintEvent;
+import net.jodah.expiringmap.ExpiringMap;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -11,26 +14,29 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class ChatFilterPanel extends JPanel {
+    private Map<String,String> expiresMessages;
     private ComponentsFactory componentsFactory;
     private HtmlMessageBuilder messageBuilder;
-
-    private JScrollBar vBar;
-    private JPanel container;
     private JFrame owner;
-    public ChatFilterPanel(JFrame owner) {
-        this.owner = owner;
+    private JPanel container;
+    public ChatFilterPanel(JFrame frame) {
+        this.owner = frame;
         this.componentsFactory = new ComponentsFactory();
         this.messageBuilder = new HtmlMessageBuilder();
-
+        this.expiresMessages = ExpiringMap.builder()
+                .expiration(10, TimeUnit.SECONDS)
+                .build();
         container = new VerticalScrollContainer();
         container.setBackground(AppThemeColor.TRANSPARENT);
         container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
 
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(4,4,4,4),
+                BorderFactory.createEmptyBorder(2,2,2,0),
                 BorderFactory.createLineBorder(AppThemeColor.HEADER)
         ));
 
@@ -42,47 +48,58 @@ public class ChatFilterPanel extends JPanel {
         scrollPane.addMouseWheelListener(new MouseAdapter() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                owner.repaint();
+                EventRouter.UI.fireEvent(new RepaintEvent.RepaintChatFilter());
             }
         });
-        scrollPane.setPreferredSize(new Dimension(100,50));
 
         container.getParent().setBackground(AppThemeColor.TRANSPARENT);
-        vBar = scrollPane.getVerticalScrollBar();
+        JScrollBar vBar = scrollPane.getVerticalScrollBar();
         vBar.setBackground(AppThemeColor.SLIDE_BG);
         vBar.setUI(new MercuryScrollBarUI());
         vBar.setPreferredSize(new Dimension(15, Integer.MAX_VALUE));
         vBar.setUnitIncrement(3);
         vBar.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
-        vBar.addAdjustmentListener(e -> owner.repaint());
+        vBar.addAdjustmentListener(e -> {
+            EventRouter.UI.fireEvent(new RepaintEvent.RepaintChatFilter());
+        });
 
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.add(scrollPane);
     }
     public void addMessage(String stubMessage){
-        String nickname = StringUtils.substringBetween(stubMessage, "] $", ":");
-        if(nickname == null){
-            nickname = StringUtils.substringBetween(stubMessage, "] #", ":");
-        }
-        String message = StringUtils.substringAfter(stubMessage, nickname + ":");
-        nickname = StringUtils.deleteWhitespace(nickname);
-        if(nickname.contains(">")){
-            nickname = StringUtils.substringAfterLast(nickname, ">");
+        String message = StringUtils.substringAfter(stubMessage,"] $");
+        if(message.isEmpty()){
+            message = StringUtils.substringAfter(stubMessage,"] #");
         }
 
-        ChatMessagePanel chatMessagePanel = new ChatMessagePanel(
-                this.componentsFactory,
-                nickname,
-                messageBuilder.build(message));
-        container.add(chatMessagePanel);
-        trimContainer();
+        addMessageToFilter(message);
+        EventRouter.UI.fireEvent(new RepaintEvent.RepaintChatFilter());
+    }
+
+    private void addMessageToFilter(String message) {
+        if(!message.isEmpty()){
+            String nickname = StringUtils.substringBefore(message, ":");
+            String messageContent = StringUtils.substringAfter(message, nickname + ":");
+            nickname = StringUtils.deleteWhitespace(nickname);
+            if(nickname.contains(">")) {
+                nickname = StringUtils.substringAfterLast(nickname, ">");
+            }
+            if(!expiresMessages.containsValue(message)){
+                ChatMessagePanel chatMessagePanel = new ChatMessagePanel(
+                        this.componentsFactory,
+                        nickname,
+                        messageBuilder.build(messageContent));
+                container.add(chatMessagePanel);
+                trimContainer();
+                expiresMessages.put(nickname,message);
+                owner.pack();
+                container.scrollRectToVisible(new Rectangle(0,container.getHeight()-1,1,1));
+            }
+        }
     }
     private void trimContainer(){
         if(container.getComponentCount() > 20){
-            for (int i = 0; i < 5; i++) {
-                container.remove(0);
-            }
-            owner.pack();
+            container.remove(0);
         }
     }
     public void clear(){

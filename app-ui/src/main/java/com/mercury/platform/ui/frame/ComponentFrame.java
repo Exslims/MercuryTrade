@@ -52,6 +52,7 @@ public abstract class ComponentFrame extends OverlaidFrame{
         FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
         if(frameSettings != null) {
             this.setLocation(frameSettings.getFrameLocation());
+            this.setSize(frameSettings.getFrameSize());
             this.setMinimumSize(frameSettings.getFrameSize());
             this.setMaximumSize(frameSettings.getFrameSize());
         }
@@ -147,8 +148,8 @@ public abstract class ComponentFrame extends OverlaidFrame{
             if(hideAnimationEnable && !isMouseWithInFrame()) {
                 hideTimer.start();
             }
+            Dimension size = ComponentFrame.this.getSize();
             if(EResizeSpace){
-                Dimension size = ComponentFrame.this.getSize();
                 ComponentFrame.this.setMaximumSize(size);
                 ComponentFrame.this.setMinimumSize(size);
                 if(ComponentFrame.this.getClass().getSimpleName().equals("IncMessageFrame")){
@@ -157,8 +158,8 @@ public abstract class ComponentFrame extends OverlaidFrame{
                     configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(), size);
                 }
             }else if(SEResizeSpace){
-                ComponentFrame.this.setMinimumSize(ComponentFrame.this.getSize());
-                ComponentFrame.this.setMaximumSize(ComponentFrame.this.getSize());
+                ComponentFrame.this.setMinimumSize(size);
+                ComponentFrame.this.setMaximumSize(size);
                 configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(),ComponentFrame.this.getSize());
             }
             EResizeSpace = false;

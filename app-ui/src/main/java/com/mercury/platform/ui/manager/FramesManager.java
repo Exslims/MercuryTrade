@@ -21,6 +21,8 @@ import com.mercury.platform.ui.frame.titled.*;
 import com.mercury.platform.ui.frame.OverlaidFrame;
 import com.mercury.platform.ui.frame.setup.location.SetUpLocationCommander;
 import com.mercury.platform.ui.frame.other.SetUpLocationFrame;
+import com.mercury.platform.ui.frame.titled.chat.ChatFilterFrame;
+import com.mercury.platform.ui.frame.titled.container.HistoryFrame;
 import com.mercury.platform.ui.misc.note.Note;
 import com.mercury.platform.ui.misc.note.NotesLoader;
 
@@ -79,7 +81,7 @@ public class FramesManager implements HasEventHandlers{
             NotesFrame patchNotesFrame = new NotesFrame(patchNotes,NotesFrame.NotesType.PATCH);
             patchNotesFrame.init();
         }
-        framesMap.put(ChatScannerFrame.class,new ChatScannerFrame());
+        framesMap.put(ChatFilterFrame.class,new ChatFilterFrame());
         framesMap.put(UpdateReadyFrame.class,new UpdateReadyFrame());
         framesMap.put(TaskBarFrame.class,taskBarFrame);
         framesMap.put(SetUpLocationFrame.class,new SetUpLocationFrame());
@@ -172,9 +174,11 @@ public class FramesManager implements HasEventHandlers{
     public void restoreDefaultLocation(){
         framesMap.forEach((k,v) -> {
             FrameSettings settings = ConfigManager.INSTANCE.getDefaultFramesSettings().get(k.getSimpleName());
-            if(v instanceof MovableComponentFrame && !v.getClass().equals(ItemsGridFrame.class)){
+            if(!v.getClass().equals(ItemsGridFrame.class) && settings != null){
                 v.setLocation(settings.getFrameLocation());
-                ((MovableComponentFrame) v).onLocationChange(settings.getFrameLocation());
+                if(v instanceof MovableComponentFrame){
+                    ((MovableComponentFrame) v).onLocationChange(settings.getFrameLocation());
+                }
             }
         });
     }

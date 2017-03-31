@@ -33,6 +33,7 @@
         <json.simple.version>1.1.1</json.simple.version>
         <guava.version>21.0</guava.version>
         <lombok.version>1.16.8</lombok.version>
+        <expiringmap.version>0.5.8</expiringmap.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -43,6 +44,11 @@
                 <groupId>lc.kra.system</groupId>
                 <artifactId>system-hook</artifactId>
                 <version>${systemhook.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.jodah</groupId>
+                <artifactId>expiringmap</artifactId>
+                <version>${expiringmap.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.jna</groupId>

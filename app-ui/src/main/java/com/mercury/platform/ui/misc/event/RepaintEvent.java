@@ -14,4 +14,6 @@ public class RepaintEvent implements MercuryEvent{
     }
     public static class RepaintSettingFrame extends RepaintEvent {
     }
+    public static class RepaintChatFilter extends RepaintEvent {
+    }
 }
