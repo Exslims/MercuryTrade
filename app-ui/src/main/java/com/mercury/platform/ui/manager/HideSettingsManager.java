@@ -20,14 +20,14 @@ public class HideSettingsManager {
     public void registerFrame(ComponentFrame frame){
         frames.add(frame);
     }
-    public void apply(int decayTime, int minOpacity, int maxOpacity){
+    public void apply(int fadeTime, int minOpacity, int maxOpacity){
         ConfigManager.INSTANCE.setMinOpacity(minOpacity);
         ConfigManager.INSTANCE.setMaxOpacity(maxOpacity);
-        ConfigManager.INSTANCE.setDecayTime(decayTime);
+        ConfigManager.INSTANCE.setFadeTime(fadeTime);
 
         frames.forEach(frame -> {
-            if(decayTime > 0){
-                frame.enableHideEffect(decayTime,minOpacity,maxOpacity);
+            if(fadeTime > 0){
+                frame.enableHideEffect(fadeTime,minOpacity,maxOpacity);
             }else {
                 frame.disableHideEffect();
                 frame.setOpacity(maxOpacity/100f);

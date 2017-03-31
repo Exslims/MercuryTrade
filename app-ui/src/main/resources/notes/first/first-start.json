@@ -42,6 +42,12 @@
     "layout" : "HORIZONTAL"
   },
   {
+    "title" : "Minor feature: Stash Highlight",
+    "text" : "Each notification you receive is stored by MercuryTrade in a separate file. \n\nYou won't be losing potential trades due to client crashes or relogs anymore!",
+    "image" : "notes/first/3.png",
+    "layout" : "HORIZONTAL"
+  },
+  {
     "title" : "Minor feature: \"Do not Disturb\" mode",
     "text" : "\n\nActivate this mode if you don't want to see (and hear!) anything from the application for a while. MercuryTrade will continue working in hidden mode.",
     "image" : "notes/first/9.png",

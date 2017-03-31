@@ -41,9 +41,10 @@ public class ConfigManager {
     private Map<String,Object> defaultAppSettings;
 
     private WhisperNotifierStatus whisperNotifier = WhisperNotifierStatus.ALWAYS;
-    private int decayTime = 0;
     private int minOpacity = 100;
     private int maxOpacity = 100;
+    private int fadeTime = 0;
+
     private String gamePath = "";
     private String flowDirection = "DOWNWARDS";
     private String tradeMode = "DEFAULT";
@@ -75,7 +76,7 @@ public class ConfigManager {
         minimumFrameSize.put("CurrencySearchFrame",new Dimension(400,300));
 
         defaultAppSettings = new HashMap<>();
-        defaultAppSettings.put("decayTime",0);
+        defaultAppSettings.put("fadeTime",0);
         defaultAppSettings.put("minOpacity",100);
         defaultAppSettings.put("maxOpacity",100);
         defaultAppSettings.put("showOnStartUp",true);
@@ -118,7 +119,7 @@ public class ConfigManager {
                 cachedFramesSettings = getDefaultFramesSettings();
                 saveFrameSettings();
 
-                saveProperty("decayTime",String.valueOf(defaultAppSettings.get("decayTime")));
+                saveProperty("fadeTime",String.valueOf(defaultAppSettings.get("fadeTime")));
                 saveProperty("minOpacity",String.valueOf(defaultAppSettings.get("minOpacity")));
                 saveProperty("maxOpacity",String.valueOf(defaultAppSettings.get("maxOpacity")));
                 saveProperty("showOnStartUp",String.valueOf(defaultAppSettings.get("showOnStartUp")));
@@ -177,7 +178,7 @@ public class ConfigManager {
                 cachedFramesSettings.put((String) next.get("frameClassName"), settings);
             }
             whisperNotifier = WhisperNotifierStatus.valueOf(loadProperty("whisperNotifier"));
-            decayTime = Long.valueOf(loadProperty("decayTime")).intValue();
+            fadeTime = Long.valueOf(loadProperty("fadeTime")).intValue();
             minOpacity = Long.valueOf(loadProperty("minOpacity")).intValue();
             maxOpacity = Long.valueOf(loadProperty("maxOpacity")).intValue();
             showOnStartUp = Boolean.valueOf(loadProperty("showOnStartUp"));
@@ -370,14 +371,14 @@ public class ConfigManager {
     public WhisperNotifierStatus getWhisperNotifier() {
         return whisperNotifier;
     }
-    public int getDecayTime() {
-        return decayTime;
-    }
     public int getMinOpacity() {
         return minOpacity;
     }
     public int getMaxOpacity() {
         return maxOpacity;
+    }
+    public int getFadeTime() {
+        return fadeTime;
     }
     public String getGamePath(){
         return gamePath;
@@ -420,9 +421,9 @@ public class ConfigManager {
         saveProperty("dismissAfterKick", String.valueOf(this.dismissAfterKick));
     }
 
-    public void setDecayTime(int decayTime) {
-        this.decayTime = decayTime;
-        saveProperty("decayTime", String.valueOf(this.decayTime));
+    public void setFadeTime(int fadeTime) {
+        this.fadeTime = fadeTime;
+        saveProperty("fadeTime", String.valueOf(this.fadeTime));
     }
     public void setMinOpacity(int minOpacity) {
         this.minOpacity = minOpacity;

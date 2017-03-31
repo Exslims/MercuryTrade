@@ -49,7 +49,7 @@ public class GamePathChooser extends TitledComponentFrame {
 
         JPanel chooserPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
 
-        JTextField textField = componentsFactory.getTextField("Example: C:/Path of Exile");
+        JTextField textField = componentsFactory.getTextField("Example: \"C:/Path of Exile\". See Task Manager.");
         textField.setPreferredSize(new Dimension(450,26));
         textField.setMinimumSize(new Dimension(450,26));
         textField.addMouseListener(new MouseAdapter() {
@@ -113,7 +113,7 @@ public class GamePathChooser extends TitledComponentFrame {
                         timer.start();
                         logger.info("UI module was started.");
                     } else {
-                        statusLabel.setText("Wrong game path...");
+                        statusLabel.setText("Wrong game path!");
                         pack();
                     }
                 }

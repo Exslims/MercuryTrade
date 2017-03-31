@@ -4,7 +4,7 @@ public class TooltipConstants {
     //Shared
     public static final String CLOSE_BUTTON = "Close";
     //TaskBar tooltips
-    public static final String VISIBLE_MODE = "Do not Disturb. MercuryTrade will continue working in hidden mode: you will not see (or hear) notifications.";
+    public static final String VISIBLE_MODE = "Do not Disturb. MercuryTrade hides itself, but continues working in background.";
     public static final String TRADE_MODE = "SuperTradeMode. All notifications you receive will be unfolded.";
     public static final String CHAT_FILTER = "Chat Scanner. All chat messages with matching words will be displayed in a separate window.";
     public static final String HIDEOUT = "Travel to your hideout";

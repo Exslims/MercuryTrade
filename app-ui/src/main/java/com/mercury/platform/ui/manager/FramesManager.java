@@ -92,7 +92,7 @@ public class FramesManager implements HasEventHandlers{
             v.init();
         });
 
-        int decayTime = ConfigManager.INSTANCE.getDecayTime();
+        int decayTime = ConfigManager.INSTANCE.getFadeTime();
         int maxOpacity = ConfigManager.INSTANCE.getMaxOpacity();
         int minOpacity = ConfigManager.INSTANCE.getMinOpacity();
         framesMap.forEach((k,frame) -> {

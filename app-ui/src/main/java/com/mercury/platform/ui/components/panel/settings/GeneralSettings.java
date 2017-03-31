@@ -23,10 +23,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 
-public class GeneralSettings extends ConfigurationPanel{
+public class GeneralSettings extends ConfigurationPanel {
     private JSlider minSlider;
     private JSlider maxSlider;
-    private JComboBox secondsPicker;
+    private JSlider fadeTimeSlider;
+    //private JComboBox secondsPicker;
     private JComboBox notifierStatusPicker;
     private ComponentFrame owner;
     private JCheckBox checkEnable;
@@ -54,11 +55,34 @@ public class GeneralSettings extends ConfigurationPanel{
         checkEnable.setSelected(ConfigManager.INSTANCE.isCheckUpdateOnStartUp());
         checkEnable.setPreferredSize(elementsSize);
 
+
+        /*
         JLabel hideSettingsLabel = componentsFactory.getTextLabel("Fade time (seconds). 0 - Always show", FontStyle.REGULAR);
         secondsPicker = componentsFactory.getComboBox(new String[]{"0","1","2","3","4","5"});
         int decayTime = ConfigManager.INSTANCE.getDecayTime();
         secondsPicker.setSelectedIndex(decayTime);
         secondsPicker.setPreferredSize(elementsSize);
+        */
+
+        //
+
+        JPanel fadeTimeSettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
+        fadeTimeSettingsPanel.add(componentsFactory.getTextLabel("Notification fade time: ", FontStyle.REGULAR));
+        fadeTimeSettingsPanel.setBorder(BorderFactory.createEmptyBorder(0,-5,0,0));
+
+        JPanel fadeTimePanel = componentsFactory.getTransparentPanel(new FlowLayout());
+        JLabel fadeTimeField = componentsFactory.getTextLabel(ConfigManager.INSTANCE.getFadeTime() + " sec", FontStyle.REGULAR); //todo
+        fadeTimePanel.add(fadeTimeField);
+        fadeTimePanel.setPreferredSize(new Dimension(55,25));
+        fadeTimeSettingsPanel.add(fadeTimePanel);
+
+        fadeTimeSlider = componentsFactory.getSlider(0,60, ConfigManager.INSTANCE.getFadeTime());
+        fadeTimeSlider.addChangeListener(e -> {
+            fadeTimeField.setText(String.valueOf(fadeTimeSlider.getValue()) + " sec");
+            owner.repaint();
+        });
+        fadeTimeSlider.setPreferredSize(elementsSize);
+        //
 
         JPanel minOpacitySettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         minOpacitySettingsPanel.add(componentsFactory.getTextLabel("Min opacity: ", FontStyle.REGULAR));
@@ -142,8 +166,9 @@ public class GeneralSettings extends ConfigurationPanel{
 
         root.add(notifyLabel);
         root.add(wrapCellElement(checkEnable));
-        root.add(hideSettingsLabel);
-        root.add(wrapCellElement(secondsPicker));
+        root.add(fadeTimeSettingsPanel);
+        root.add(wrapCellElement(fadeTimeSlider));
+        //root.add(wrapCellElement(secondsPicker));
         root.add(minOpacitySettingsPanel);
         root.add(wrapCellElement(minSlider));
         root.add(maxOpacitySettingsPanel);
@@ -178,7 +203,7 @@ public class GeneralSettings extends ConfigurationPanel{
                 componentsFactory.getIconButton("app/open-tests.png",
                         30,
                         AppThemeColor.TRANSPARENT,
-                        "Open tests frame");
+                        "Test frames");
         openTests.addActionListener(action -> {
             FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
             FramesManager.INSTANCE.preShowFrame(TestCasesFrame.class);
@@ -196,16 +221,17 @@ public class GeneralSettings extends ConfigurationPanel{
     }
     @Override
     public boolean processAndSave() {
-        int timeToDelay = Integer.parseInt((String) secondsPicker.getSelectedItem());
+        //int timeToDelay = Integer.parseInt((String) secondsPicker.getSelectedItem());
         int minOpacity = minSlider.getValue();
         int maxOpacity = maxSlider.getValue();
+        int timeToDelay = fadeTimeSlider.getValue(); // ----
         HideSettingsManager.INSTANCE.apply(timeToDelay,minOpacity,maxOpacity);
         ConfigManager.INSTANCE.setWhisperNotifier(WhisperNotifierStatus.get(notifierStatusPicker.getSelectedIndex()));
         ConfigManager.INSTANCE.setCheckUpdateOnStartUp(checkEnable.isSelected());
-        if(ConfigManager.INSTANCE.isValidGamePath(gamePathField.getText())){
+        if (ConfigManager.INSTANCE.isValidGamePath(gamePathField.getText())){
             ConfigManager.INSTANCE.setGamePath(gamePathField.getText()+ File.separator);
             EventRouter.CORE.fireEvent(new ChangePOEFolderEvent());
-        }else {
+        } else {
             gamePathField.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(AppThemeColor.TEXT_IMPORTANT,1),
                     BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2)
@@ -234,7 +260,7 @@ public class GeneralSettings extends ConfigurationPanel{
     private class WrongGamePathListener extends MouseAdapter{
         @Override
         public void mouseEntered(MouseEvent e) {
-            EventRouter.UI.fireEvent(new ShowTooltipEvent("Wrong Path of Exile folder", MouseInfo.getPointerInfo().getLocation()));
+            EventRouter.UI.fireEvent(new ShowTooltipEvent("Wrong Path of Exile folder! Open Task Manager (CTRL + Shift + ESC) and check the path here!", MouseInfo.getPointerInfo().getLocation()));
         }
 
         @Override
