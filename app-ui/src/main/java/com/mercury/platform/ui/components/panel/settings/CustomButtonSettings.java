@@ -108,7 +108,7 @@ public class CustomButtonSettings extends ConfigurationPanel{
 
         setUpGBConstants(titleColumn,valueColumn,kickColumn,closeColumn,utilColumn);
 
-        JLabel titleLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,"Label11111111111111111111111111111");
+        JLabel titleLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,"Label");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         JLabel valueLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,"Response text");

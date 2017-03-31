@@ -1,18 +1,11 @@
 package com.mercury.platform.shared.events.custom;
 
 import com.mercury.platform.shared.events.MercuryEvent;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-/**
- * Created by Константин on 07.03.2017.
- */
+@Data
+@AllArgsConstructor
 public class AlertEvent implements MercuryEvent {
     private String message;
-
-    public AlertEvent(String message) {
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
-    }
 }

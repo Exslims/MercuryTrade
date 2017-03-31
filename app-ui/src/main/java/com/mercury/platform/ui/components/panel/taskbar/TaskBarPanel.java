@@ -146,10 +146,6 @@ public class TaskBarPanel extends JPanel implements HasUI{
                 }
             }
         });
-        this.add(pinButton);
-        this.add(Box.createRigidArea(new Dimension(3, 4)));
-        this.add(scaleButton);
-        this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(toHideOut);
         this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(visibleMode);
@@ -159,6 +155,10 @@ public class TaskBarPanel extends JPanel implements HasUI{
         this.add(historyButton);
         this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(itemGrid);
+        this.add(Box.createRigidArea(new Dimension(3, 4)));
+        this.add(pinButton);
+        this.add(Box.createRigidArea(new Dimension(3, 4)));
+        this.add(scaleButton);
         this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(settingsButton);
         this.add(Box.createRigidArea(new Dimension(3, 4)));

@@ -5,7 +5,9 @@ import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.event.PackEvent;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
+import com.mercury.platform.ui.misc.event.ScrollToTheEndEvent;
 import net.jodah.expiringmap.ExpiringMap;
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,10 +23,10 @@ public class ChatFilterPanel extends JPanel {
     private Map<String,String> expiresMessages;
     private ComponentsFactory componentsFactory;
     private HtmlMessageBuilder messageBuilder;
-    private JFrame owner;
+
+    private boolean scrollToBottom = true;
     private JPanel container;
-    public ChatFilterPanel(JFrame frame) {
-        this.owner = frame;
+    public ChatFilterPanel() {
         this.componentsFactory = new ComponentsFactory();
         this.messageBuilder = new HtmlMessageBuilder();
         this.expiresMessages = ExpiringMap.builder()
@@ -51,6 +53,9 @@ public class ChatFilterPanel extends JPanel {
                 EventRouter.UI.fireEvent(new RepaintEvent.RepaintChatFilter());
             }
         });
+        scrollPane.addMouseWheelListener(e -> {
+            EventRouter.UI.fireEvent(new ScrollToTheEndEvent(false));
+        });
 
         container.getParent().setBackground(AppThemeColor.TRANSPARENT);
         JScrollBar vBar = scrollPane.getVerticalScrollBar();
@@ -76,6 +81,13 @@ public class ChatFilterPanel extends JPanel {
         EventRouter.UI.fireEvent(new RepaintEvent.RepaintChatFilter());
     }
 
+    public void scrollToBottom(boolean value) {
+        this.scrollToBottom = value;
+        if (scrollToBottom) {
+            container.scrollRectToVisible(new Rectangle(0, container.getHeight() - 1, 1, 1));
+        }
+    }
+
     private void addMessageToFilter(String message) {
         if(!message.isEmpty()){
             String nickname = StringUtils.substringBefore(message, ":");
@@ -92,13 +104,15 @@ public class ChatFilterPanel extends JPanel {
                 container.add(chatMessagePanel);
                 trimContainer();
                 expiresMessages.put(nickname,message);
-                owner.pack();
-                container.scrollRectToVisible(new Rectangle(0,container.getHeight()-1,1,1));
+                EventRouter.UI.fireEvent(new PackEvent.PackChatFilter());
+                if(scrollToBottom) {
+                    container.scrollRectToVisible(new Rectangle(0, container.getHeight() - 1, 1, 1));
+                }
             }
         }
     }
     private void trimContainer(){
-        if(container.getComponentCount() > 20){
+        if(container.getComponentCount() > 30){
             container.remove(0);
         }
     }

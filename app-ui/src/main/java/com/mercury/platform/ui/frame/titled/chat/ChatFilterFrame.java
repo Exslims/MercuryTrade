@@ -12,7 +12,9 @@ import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.ui.components.panel.chat.ChatFilterPanel;
 import com.mercury.platform.ui.frame.titled.TitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.event.PackEvent;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
+import com.mercury.platform.ui.misc.event.ScrollToTheEndEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -21,7 +23,9 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ChatFilterFrame extends TitledComponentFrame{
     private ChatFilterSettingsFrame settingsFrame;
@@ -29,6 +33,7 @@ public class ChatFilterFrame extends TitledComponentFrame{
     private MessageInterceptor interceptor;
     private boolean soundEnable = false;
     private boolean scrollToBottom = true;
+    private JButton scrollEnd;
 
     public ChatFilterFrame() {
         super("MercuryTrade");
@@ -48,13 +53,27 @@ public class ChatFilterFrame extends TitledComponentFrame{
             }
         });
         this.settingsFrame.init();
-        this.msgContainer = new ChatFilterPanel(this);
+        this.msgContainer = new ChatFilterPanel();
         this.add(msgContainer,BorderLayout.CENTER);
         this.add(getNavigationPanel(),BorderLayout.LINE_END);
         this.pack();
     }
 
     private void performNewStrings(String[] strings){
+        List<String> contains = new ArrayList<>();
+        List<String> notContains = new ArrayList<>();
+
+        Arrays.stream(strings).forEach(str -> {
+            str = str.toLowerCase().trim();
+            if(!str.isEmpty()) {
+                if (str.contains("!")) {
+                    notContains.add(str.replace("!", ""));
+                } else {
+                    contains.add(str);
+                }
+            }
+        });
+
         msgContainer.setNewChunks(Arrays.asList(strings));
         if (interceptor != null) {
             EventRouter.CORE.fireEvent(new RemoveInterceptorEvent(interceptor));
@@ -67,22 +86,20 @@ public class ChatFilterFrame extends TitledComponentFrame{
                     EventRouter.CORE.fireEvent(new ChatFilterMessageEvent());
                 }
                 ChatFilterFrame.this.pack();
+                if(scrollToBottom){
+                    msgContainer.scrollToBottom(true);
+                }
             }
 
             @Override
             protected MessageFilter getFilter() {
                 return message -> {
-                    if(!message.contains("] $") && !message.contains("] #")){
+                    if (!message.contains("] $") && !message.contains("] #")) {
                         return false;
                     }
-                    message = StringUtils.substringAfter(message,":").toLowerCase();
-                    for (String chunk : strings) {
-                        chunk = chunk.toLowerCase();
-                        if(message.contains(chunk)){
-                            return true;
-                        }
-                    }
-                    return false;
+                    message = StringUtils.substringAfter(message, ":").toLowerCase();
+                    return notContains.stream().noneMatch(message::contains)
+                            && contains.stream().anyMatch(message::contains);
                 };
             }
         };
@@ -97,11 +114,17 @@ public class ChatFilterFrame extends TitledComponentFrame{
     @Override
     public void initHandlers() {
         EventRouter.UI.registerHandler(
-                RepaintEvent.RepaintChatFilter.class,event -> {
-//                    this.pack();
-                    this.repaint();
-                }
+                RepaintEvent.RepaintChatFilter.class,event -> this.repaint()
         );
+        EventRouter.UI.registerHandler(
+                PackEvent.PackChatFilter.class, event -> this.pack());
+        EventRouter.UI.registerHandler(ScrollToTheEndEvent.class, event -> {
+            this.scrollToBottom = ((ScrollToTheEndEvent)event).isScrollToEnd();
+            if(!this.scrollToBottom){
+                scrollEnd.setIcon(componentsFactory.getIcon("app/scroll-end-r.png", 18));
+                msgContainer.scrollToBottom(false);
+            }
+        });
     }
 
     private JPanel getNavigationPanel(){
@@ -149,19 +172,21 @@ public class ChatFilterFrame extends TitledComponentFrame{
             }
         });
 
-        JButton scrollEnd = componentsFactory.getIconButton(
+        scrollEnd = componentsFactory.getIconButton(
                 "app/scroll-end.png",
                 18,
                 AppThemeColor.TRANSPARENT,
-                "Enable sound notification.");
+                "Scroll to the end");
         scrollEnd.addActionListener(action -> {
             if (scrollToBottom) {
                 scrollEnd.setIcon(componentsFactory.getIcon("app/scroll-end-r.png", 18));
                 this.scrollToBottom = false;
+                msgContainer.scrollToBottom(false);
                 this.repaint();
             } else {
                 scrollEnd.setIcon(componentsFactory.getIcon("app/scroll-end.png", 18));
                 this.scrollToBottom = true;
+                msgContainer.scrollToBottom(true);
                 this.repaint();
             }
         });

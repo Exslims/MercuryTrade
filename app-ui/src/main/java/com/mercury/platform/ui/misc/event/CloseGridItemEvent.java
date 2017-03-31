@@ -2,19 +2,11 @@ package com.mercury.platform.ui.misc.event;
 
 import com.mercury.platform.shared.events.MercuryEvent;
 import com.mercury.platform.shared.pojo.ItemMessage;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
 public class CloseGridItemEvent implements MercuryEvent {
     private ItemMessage message;
-
-    public CloseGridItemEvent(ItemMessage message) {
-        this.message = message;
-    }
-
-    public ItemMessage getMessage() {
-        return message;
-    }
-
-    public void setMessage(ItemMessage message) {
-        this.message = message;
-    }
 }

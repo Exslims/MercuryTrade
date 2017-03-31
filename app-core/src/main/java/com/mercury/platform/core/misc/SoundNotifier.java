@@ -14,9 +14,6 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.util.Random;
 
-/**
- * Created by Константин on 08.12.2016.
- */
 public class SoundNotifier {
     private final Logger logger = LogManager.getLogger(SoundNotifier.class);
     private boolean dnd = false;
@@ -52,10 +49,9 @@ public class SoundNotifier {
             try (AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource(wavPath))) {
                 Clip clip = AudioSystem.getClip();
                 clip.open(stream);
-//                double gain = .5D;
-//                float db = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
-//                FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-//                gainControl.setValue(db);
+                FloatControl gainControl =
+                        (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                gainControl.setValue(-20.0f);
                 clip.start();
             } catch (Exception e) {
                 logger.error("Cannot start playing wav file: ",e);

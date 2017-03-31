@@ -2,18 +2,11 @@ package com.mercury.platform.shared.events.custom;
 
 import com.mercury.platform.core.utils.interceptor.MessageInterceptor;
 import com.mercury.platform.shared.events.MercuryEvent;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-/**
- * Created by Константин on 11.01.2017.
- */
+@Data
+@AllArgsConstructor
 public class AddInterceptorEvent implements MercuryEvent {
     private MessageInterceptor interceptor;
-
-    public AddInterceptorEvent(MessageInterceptor interceptor) {
-        this.interceptor = interceptor;
-    }
-
-    public MessageInterceptor getInterceptor() {
-        return interceptor;
-    }
 }

@@ -20,6 +20,7 @@ import java.util.List;
 /**
  * Application config manager, loads config files from %userprofile%/AppData/Local/MercuryTrader.
  */
+//todo generalization
 @SuppressWarnings("unchecked")
 public class ConfigManager {
     private Logger logger = LogManager.getLogger(ConfigManager.class);

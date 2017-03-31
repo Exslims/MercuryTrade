@@ -1,25 +1,13 @@
 package com.mercury.platform.ui.misc.event;
 
 import com.mercury.platform.shared.events.MercuryEvent;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-/**
- * Created by Константин on 24.03.2017.
- */
+@Data
+@AllArgsConstructor
 public class ScaleChangeEvent implements MercuryEvent{
     private float scale;
-
-    public ScaleChangeEvent(float scale) {
-        this.scale = scale;
-    }
-
-    public float getScale() {
-        return scale;
-    }
-
-    public void setScale(float scale) {
-        this.scale = scale;
-    }
-
     public static class NotificationScaleChangeEvent extends ScaleChangeEvent {
         public NotificationScaleChangeEvent(float scale) {
             super(scale);

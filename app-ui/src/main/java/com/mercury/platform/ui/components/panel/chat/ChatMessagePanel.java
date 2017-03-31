@@ -72,7 +72,7 @@ public class ChatMessagePanel extends JPanel implements HasUI{
                 TextAlignment.LEFTOP,
                 15f,
                 nickName);
-        nicknameLabel.setPreferredSize(new Dimension(90,nicknameLabel.getPreferredSize().height));
+        nicknameLabel.setPreferredSize(new Dimension(75,nicknameLabel.getPreferredSize().height));
         nicknameLabel.setBorder(null);
         invite.setBorder(null);
         openChat.setBorder(null);
@@ -84,7 +84,7 @@ public class ChatMessagePanel extends JPanel implements HasUI{
 
         miscPanel.add(operationsPanel,BorderLayout.LINE_START);
         miscPanel.add(nicknamePanel,BorderLayout.CENTER);
-        nicknamePanel.setMaximumSize(new Dimension(90,60));
+        nicknamePanel.setMaximumSize(new Dimension(75,30));
         JLabel messageLabel = new JLabel(message);
         messageLabel.setBackground(AppThemeColor.TRANSPARENT);
         messageLabel.setBorder(null);

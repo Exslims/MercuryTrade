@@ -83,6 +83,7 @@ public class MessageFileHandler implements HasEventHandlers {
     public void initHandlers() {
         EventRouter.CORE.registerHandler(AddInterceptorEvent.class, event -> {
             interceptors.add(((AddInterceptorEvent) event).getInterceptor());
+            lastMessageDate = new Date();
         });
         EventRouter.CORE.registerHandler(RemoveInterceptorEvent.class, event -> {
             interceptors.remove(((RemoveInterceptorEvent) event).getInterceptor());

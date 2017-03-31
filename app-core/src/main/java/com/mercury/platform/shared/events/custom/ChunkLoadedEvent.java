@@ -1,22 +1,11 @@
 package com.mercury.platform.shared.events.custom;
 
 import com.mercury.platform.shared.events.MercuryEvent;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-/**
- * Created by Константин on 07.03.2017.
- */
+@Data
+@AllArgsConstructor
 public class ChunkLoadedEvent implements MercuryEvent {
     private int percent;
-
-    public ChunkLoadedEvent(int percent) {
-        this.percent = percent;
-    }
-
-    public int getPercent() {
-        return percent;
-    }
-
-    public void setPercent(int percent) {
-        this.percent = percent;
-    }
 }
