@@ -82,13 +82,7 @@ Each notification you receive is stored in a separate file by **MercuryTrade**. 
   <img src="http://i.imgur.com/zD6kWOF.png"/>
 </p>
 
-**MercuryTrade** notifications have an **indication for when a person comes in or leaves your hideout** - that way you can offer a trade as soon as possible and keep track of all the people without even closing your stash. Especially useful for SuperTrade mode.
-
-
-Important to mention: in Path of Exile when you use your stash you can't click on party frames, because they're hidden behind the stash window. **MercuryTrade** solves this inconvenience as you can interact with the person through a related notification panel.
-
-#
-
+Set up words to look for (or not!) in chat. Extremely useful for when buying something specific from chat.
 
 &nbsp; *Minor feature:* **Stash Highlight**
 
