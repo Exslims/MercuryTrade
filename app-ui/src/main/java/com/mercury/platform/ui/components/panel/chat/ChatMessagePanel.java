@@ -32,7 +32,7 @@ public class ChatMessagePanel extends JPanel implements HasUI{
         this.message = message;
 
         this.componentsFactory = componentsFactory;
-        this.setBorder(BorderFactory.createEmptyBorder(2,4,2,2));
+        this.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
         this.setBackground(AppThemeColor.TRANSPARENT);
         createUI();
     }

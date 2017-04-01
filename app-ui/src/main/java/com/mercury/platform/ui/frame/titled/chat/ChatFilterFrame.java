@@ -2,10 +2,8 @@ package com.mercury.platform.ui.frame.titled.chat;
 
 import com.mercury.platform.core.utils.interceptor.MessageInterceptor;
 import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.AddInterceptorEvent;
-import com.mercury.platform.shared.events.custom.AddShowDelayEvent;
 import com.mercury.platform.shared.events.custom.ChatFilterMessageEvent;
 import com.mercury.platform.shared.events.custom.RemoveInterceptorEvent;
 import com.mercury.platform.shared.pojo.FrameSettings;
@@ -49,6 +47,7 @@ public class ChatFilterFrame extends TitledComponentFrame{
                 setPreferredSize(getSize());
             }
         });
+        this.hideButton.setIcon(componentsFactory.getIcon("app/hide.png",14));
         this.settingsFrame.init();
         this.msgContainer = new ChatFilterPanel();
         this.add(msgContainer,BorderLayout.CENTER);
@@ -80,9 +79,6 @@ public class ChatFilterFrame extends TitledComponentFrame{
             protected void process(String message) {
                 SwingUtilities.invokeLater(() -> {
                     msgContainer.addMessage(message);
-                    if(soundEnable){
-                        EventRouter.CORE.fireEvent(new ChatFilterMessageEvent());
-                    }
                     ChatFilterFrame.this.pack();
                     if(scrollToBottom){
                         msgContainer.scrollToBottom(true);
@@ -139,7 +135,7 @@ public class ChatFilterFrame extends TitledComponentFrame{
                 "app/edit.png",
                 17,
                 AppThemeColor.TRANSPARENT,
-                "");
+                "Chat Scanner settings");
         edit.addActionListener(
                 action -> this.settingsFrame.showAuxiliaryFrame(
                         new Point(this.getLocation().x+this.getSize().width/2,this.getLocation().y),
@@ -162,10 +158,12 @@ public class ChatFilterFrame extends TitledComponentFrame{
         sound.addActionListener(action -> {
             if (soundEnable) {
                 sound.setIcon(componentsFactory.getIcon("app/sound-disable.png", 18));
+                msgContainer.sound(false);
                 this.soundEnable = false;
                 this.repaint();
             } else {
                 sound.setIcon(componentsFactory.getIcon("app/sound-enable.png", 18));
+                msgContainer.sound(true);
                 this.soundEnable = true;
                 this.repaint();
             }

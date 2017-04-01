@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.components.panel.chat;
 
 import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.events.custom.ChatFilterMessageEvent;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
@@ -25,6 +26,7 @@ public class ChatFilterPanel extends JPanel {
     private HtmlMessageBuilder messageBuilder;
 
     private boolean scrollToBottom = true;
+    private boolean soundEnable = false;
     private JPanel container;
     public ChatFilterPanel() {
         this.componentsFactory = new ComponentsFactory();
@@ -88,6 +90,10 @@ public class ChatFilterPanel extends JPanel {
         }
     }
 
+    public void sound(boolean enable){
+        this.soundEnable = enable;
+    }
+
     private void addMessageToFilter(String message) {
         if(!message.isEmpty()){
             String nickname = StringUtils.substringBefore(message, ":");
@@ -105,6 +111,9 @@ public class ChatFilterPanel extends JPanel {
                 trimContainer();
                 expiresMessages.put(nickname,message);
                 EventRouter.UI.fireEvent(new PackEvent.PackChatFilter());
+                if(soundEnable){
+                    EventRouter.CORE.fireEvent(new ChatFilterMessageEvent());
+                }
                 if(scrollToBottom) {
                     container.scrollRectToVisible(new Rectangle(0, container.getHeight() - 1, 1, 1));
                 }

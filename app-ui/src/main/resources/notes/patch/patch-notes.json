@@ -1,9 +1,9 @@
 {
-  "version":"1.0.1.0",
+  "version":"1.0.1.1",
   "notes":[
   {
     "title" : "Update",
-    "text" : "- Added Scalability! Added a related icon to Taskbar.\n- Added Currency Rate display to Notification panel (currency.poe.trade support).\n- Added \"Still interested in ITEM for PRICE?\" button to Notification panel.\n- Added League name display to Notification panel.\n- Fixed reported bugs and issues you guys had.\n- Minor yet numerous improvements.\nIf you enjoy the app and it makes your life a bit happier consider supporting it!",
+    "text" : "- Introducing CHAT SCANNER.\nThis feature allows you to look for something specific in chat without paying much attention to it. You can set up what to look for and what to ignore. We expect you to fall in love with this feature as soon as you start doing League Challenges!\n- Added an option to remove League display from Notification header.\n- Updated component Fade Time behavior.\n- Fixed things, improved things.\n\nIf you like MercuryTrade so much it has already become your \"must have\" application consider supporting it!\nVisit our Discord channel if you seek help or have suggestions to offer!",
     "image" : "",
     "layout" : "VERTICAL"
   }
