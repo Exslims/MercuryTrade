@@ -75,16 +75,12 @@ If you've received multiple notifications before dismissing your current one, th
 
 Each notification you receive is stored in a separate file by **MercuryTrade**. History allows you to access that file in a useful way to interact with customers. Comes in handy if you want to reach a person you traded with some time ago or in case your client has crashed - your in-game chat will be lost, but History will not.
 
-
 #
 
-&nbsp; *Minor feature:* **Accessibility status**
+&nbsp; *Major feature:* **Chat scanner**
 <p align="center">
-  <img src="http://i.imgur.com/dTUrF7v.png"/>
+  <img src="http://i.imgur.com/zD6kWOF.png"/>
 </p>
-
-<p align="center"> <i>Name will change its color accordingly</i> </p>
-
 
 **MercuryTrade** notifications have an **indication for when a person comes in or leaves your hideout** - that way you can offer a trade as soon as possible and keep track of all the people without even closing your stash. Especially useful for SuperTrade mode.
 
@@ -92,6 +88,7 @@ Each notification you receive is stored in a separate file by **MercuryTrade**. 
 Important to mention: in Path of Exile when you use your stash you can't click on party frames, because they're hidden behind the stash window. **MercuryTrade** solves this inconvenience as you can interact with the person through a related notification panel.
 
 #
+
 
 &nbsp; *Minor feature:* **Stash Highlight**
 
@@ -112,16 +109,27 @@ Mercury can highlight the stash location of the item somebody's buying. You will
 <p align="center"> <i>Item Grid set up.</i> </p>
 
 
-
-
-
 #
 
+&nbsp; *Minor feature:* **Accessibility status**
+<p align="center">
+  <img src="http://i.imgur.com/dTUrF7v.png"/>
+</p>
+
+<p align="center"> <i>Name will change its color accordingly</i> </p>
+
+
+**MercuryTrade** notifications have an **indication for when a person comes in or leaves your hideout** - that way you can offer a trade as soon as possible and keep track of all the people without even closing your stash. Especially useful for SuperTrade mode.
+
+
+Important to mention: in Path of Exile when you use your stash you can't click on party frames, because they're hidden behind the stash window. **MercuryTrade** solves this inconvenience as you can interact with the person through a related notification panel.
+
+#
 
 &nbsp; *Minor feature:* **Do not Disturb**
 
 <p align="center">
-  <img src="http://i.imgur.com/Lh6lodD.png"/>
+  <img src="http://i.imgur.com/jEKVqd0.png"/>
 </p>
 
 <p align="center"> <i>DND on TaskBar panel</i> </p>
@@ -142,22 +150,27 @@ Upon launch you'll be greeted with a short overview of the application (identica
 **Task panel**:
 
 <p align="center">
-  <img src="http://i.imgur.com/LYl3Xi1.png"/>
+  <img src="http://i.imgur.com/SPMqNhC.png"/>
 </p>
 
-* (1) **Panel unlock**.
 
-* (2) **Travel to Hideout**.
+* (1) **Travel to Hideout**.
 
-* (3) **Do Not Disturb** mode button switch.
+* (2) **Do Not Disturb** mode button switch.
 
-* (4) **History** panel window.
+* (3) **Chat scanner**.
+
+* (4) **History**.
 
 * (5) **Item Grid** set up.
 
-* (6) **Settings**.
+* (6) **Panel unlock**.
+
+* (7) **Scale setting**.
+
+* (8) **Settings**.
   
-* (7) **Exit**.
+* (9) **Exit**.
 
 <br/>
 
