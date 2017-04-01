@@ -84,6 +84,8 @@ Each notification you receive is stored in a separate file by **MercuryTrade**. 
 
 Set up words to look for (or not!) in chat. Extremely useful for when buying something specific from chat.
 
+#
+
 &nbsp; *Minor feature:* **Stash Highlight**
 
 <p align="center">
