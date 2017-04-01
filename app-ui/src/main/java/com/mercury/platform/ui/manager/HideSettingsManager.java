@@ -32,6 +32,7 @@ public class HideSettingsManager {
                 frame.disableHideEffect();
                 frame.setOpacity(maxOpacity/100f);
             }
+
         });
     }
 }

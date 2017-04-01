@@ -191,7 +191,7 @@ public class NotesFrame extends TitledComponentFrame {
 
     @Override
     protected String getFrameTitle() {
-        return "Welcome to the MercuryTrade";
+        return "Welcome to MercuryTrade";
     }
 
     private class ContentPanel extends JPanel{

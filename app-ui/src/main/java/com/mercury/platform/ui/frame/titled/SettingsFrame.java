@@ -23,6 +23,7 @@ public class SettingsFrame extends TitledComponentFrame {
         setAlwaysOnTop(false);
         innerPanels = new ArrayList<>();
         processingHideEvent = false;
+        processHideEffect = false;
     }
 
     @Override
@@ -46,7 +47,7 @@ public class SettingsFrame extends TitledComponentFrame {
         tabbedPane.addTab("General",generalSettings);
         tabbedPane.addTab("Notification panel",cbSettings);
         tabbedPane.addTab("Task panel",taskBarSettings);
-//        tabbedPane.addTab("Help",new HelpPanel());
+       // tabbedPane.addTab("Help",new HelpPanel());
         tabbedPane.addTab("Support",new SupportPanel());
         tabbedPane.addTab("About",new AboutPanel());
 

@@ -43,20 +43,20 @@
   },
   {
     "title" : "Minor feature: Stash Highlight",
-    "text" : "Each notification you receive is stored by MercuryTrade in a separate file. \n\nYou won't be losing potential trades due to client crashes or relogs anymore!",
-    "image" : "notes/first/3.png",
-    "layout" : "HORIZONTAL"
+    "text" : "Mercury can highlight the stash location of the item somebody's buying. Takes 15 seconds to set up!",
+    "image" : "notes/first/stash_highlight.png",
+    "layout" : "VERTICAL"
+  },
+  {
+    "title" : "Major feature: Chat Scanner",
+    "text" : "Set up words to look for (or not!) in chat. Extremely useful for when buying something specific from chat.",
+    "image" : "notes/first/chat_scanner.png",
+    "layout" : "VERTICAL"
   },
   {
     "title" : "Minor feature: \"Do not Disturb\" mode",
     "text" : "\n\nActivate this mode if you don't want to see (and hear!) anything from the application for a while. MercuryTrade will continue working in hidden mode.",
     "image" : "notes/first/9.png",
-    "layout" : "VERTICAL"
-  },
-  {
-    "title" : "Settings",
-    "text" : "Some additional options for further customization.",
-    "image" : "notes/first/6.png",
     "layout" : "VERTICAL"
   },
   {

@@ -49,7 +49,7 @@ public class GamePathChooser extends TitledComponentFrame {
 
         JPanel chooserPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
 
-        JTextField textField = componentsFactory.getTextField("Example: \"C:/Path of Exile\". See Task Manager.");
+        JTextField textField = componentsFactory.getTextField("Example: \"C:/Path of Exile\"");
         textField.setPreferredSize(new Dimension(450,26));
         textField.setMinimumSize(new Dimension(450,26));
         textField.addMouseListener(new MouseAdapter() {
@@ -132,6 +132,6 @@ public class GamePathChooser extends TitledComponentFrame {
 
     @Override
     protected String getFrameTitle() {
-        return "Select game path";
+        return "Select game path (check task manager if not sure)";
     }
 }

@@ -149,7 +149,7 @@ public class ChatFilterFrame extends TitledComponentFrame{
                 "app/clear-history.png",
                 18,
                 AppThemeColor.TRANSPARENT,
-                "Clear All.");
+                "Clear all");
         clear.addActionListener(action -> {
             this.msgContainer.clear();
             this.pack();
@@ -159,7 +159,7 @@ public class ChatFilterFrame extends TitledComponentFrame{
                 "app/sound-disable.png",
                 18,
                 AppThemeColor.TRANSPARENT,
-                "Enable sound notification.");
+                "Sound alert");
         sound.addActionListener(action -> {
             if (soundEnable) {
                 sound.setIcon(componentsFactory.getIcon("app/sound-disable.png", 18));
@@ -176,7 +176,7 @@ public class ChatFilterFrame extends TitledComponentFrame{
                 "app/scroll-end.png",
                 18,
                 AppThemeColor.TRANSPARENT,
-                "Scroll to the end");
+                "Automatically scroll down");
         scrollEnd.addActionListener(action -> {
             if (scrollToBottom) {
                 scrollEnd.setIcon(componentsFactory.getIcon("app/scroll-end-r.png", 18));

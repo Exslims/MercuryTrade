@@ -67,21 +67,29 @@ public class GeneralSettings extends ConfigurationPanel {
         //
 
         JPanel fadeTimeSettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        fadeTimeSettingsPanel.add(componentsFactory.getTextLabel("Notification fade time: ", FontStyle.REGULAR));
+        fadeTimeSettingsPanel.add(componentsFactory.getTextLabel("Component fade out time: ", FontStyle.REGULAR));
         fadeTimeSettingsPanel.setBorder(BorderFactory.createEmptyBorder(0,-5,0,0));
 
         JPanel fadeTimePanel = componentsFactory.getTransparentPanel(new FlowLayout());
-        JLabel fadeTimeField = componentsFactory.getTextLabel(ConfigManager.INSTANCE.getFadeTime() + " sec", FontStyle.REGULAR); //todo
+        JLabel fadeTimeField = componentsFactory.getTextLabel(ConfigManager.INSTANCE.getFadeTime() + " sec", FontStyle.REGULAR);
         fadeTimePanel.add(fadeTimeField);
         fadeTimePanel.setPreferredSize(new Dimension(55,25));
         fadeTimeSettingsPanel.add(fadeTimePanel);
 
+        if (ConfigManager.INSTANCE.getFadeTime() == 0) {
+            fadeTimeField.setText("Never");
+        }
         fadeTimeSlider = componentsFactory.getSlider(0,60, ConfigManager.INSTANCE.getFadeTime());
         fadeTimeSlider.addChangeListener(e -> {
-            fadeTimeField.setText(String.valueOf(fadeTimeSlider.getValue()) + " sec");
+            if (fadeTimeSlider.getValue() == 0)
+                fadeTimeField.setText("Never");
+            else
+                fadeTimeField.setText(String.valueOf(fadeTimeSlider.getValue()) + " sec");
+
             owner.repaint();
         });
         fadeTimeSlider.setPreferredSize(elementsSize);
+
         //
 
         JPanel minOpacitySettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
@@ -224,7 +232,8 @@ public class GeneralSettings extends ConfigurationPanel {
         //int timeToDelay = Integer.parseInt((String) secondsPicker.getSelectedItem());
         int minOpacity = minSlider.getValue();
         int maxOpacity = maxSlider.getValue();
-        int timeToDelay = fadeTimeSlider.getValue(); // ----
+        int timeToDelay= fadeTimeSlider.getValue(); // ----
+        //System.out.println(fadeTimeSlider.getValue());
         HideSettingsManager.INSTANCE.apply(timeToDelay,minOpacity,maxOpacity);
         ConfigManager.INSTANCE.setWhisperNotifier(WhisperNotifierStatus.get(notifierStatusPicker.getSelectedIndex()));
         ConfigManager.INSTANCE.setCheckUpdateOnStartUp(checkEnable.isSelected());

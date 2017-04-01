@@ -78,7 +78,8 @@ public abstract class ComponentFrame extends OverlaidFrame{
             this.HIDE_DELAY = delay * 1000;
             this.minOpacity = minOpacity / 100f;
             this.maxOpacity = maxOpacity / 100f;
-            this.setOpacity(minOpacity / 100f);
+            //this.setOpacity(minOpacity / 100f);
+            this.setOpacity(maxOpacity / 100f);
             hideEffectListener = new HideEffectListener();
             initAnimationTimers();
             this.addMouseListener(hideEffectListener);
@@ -200,9 +201,11 @@ public abstract class ComponentFrame extends OverlaidFrame{
             }
         }
 
+        // Если я убираю !isMouseWithInFrame он 100% всегда фейдится, но он также фейдится если я маусовлю по кнопке
         @Override
         public void mouseExited(MouseEvent e) {
-            if(!isMouseWithInFrame() && !EResizeSpace){
+            if(!isMouseWithInFrame() && !EResizeSpace){ // NEEDS WORK
+                hideTimer.stop();
                 hideTimer.start();
             }
         }
