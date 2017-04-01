@@ -21,11 +21,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ChatFilterFrame extends TitledComponentFrame{
     private ChatFilterSettingsFrame settingsFrame;
@@ -81,14 +78,16 @@ public class ChatFilterFrame extends TitledComponentFrame{
         interceptor = new MessageInterceptor() {
             @Override
             protected void process(String message) {
-                msgContainer.addMessage(message);
-                if(soundEnable){
-                    EventRouter.CORE.fireEvent(new ChatFilterMessageEvent());
-                }
-                ChatFilterFrame.this.pack();
-                if(scrollToBottom){
-                    msgContainer.scrollToBottom(true);
-                }
+                SwingUtilities.invokeLater(() -> {
+                    msgContainer.addMessage(message);
+                    if(soundEnable){
+                        EventRouter.CORE.fireEvent(new ChatFilterMessageEvent());
+                    }
+                    ChatFilterFrame.this.pack();
+                    if(scrollToBottom){
+                        msgContainer.scrollToBottom(true);
+                    }
+                });
             }
 
             @Override
@@ -143,7 +142,7 @@ public class ChatFilterFrame extends TitledComponentFrame{
                 "");
         edit.addActionListener(
                 action -> this.settingsFrame.showAuxiliaryFrame(
-                        new Point(this.getLocation().x+this.getSize().width + 10,this.getLocation().y),
+                        new Point(this.getLocation().x+this.getSize().width/2,this.getLocation().y),
                         this.getPreferredSize().height));
         JButton clear = componentsFactory.getIconButton(
                 "app/clear-history.png",

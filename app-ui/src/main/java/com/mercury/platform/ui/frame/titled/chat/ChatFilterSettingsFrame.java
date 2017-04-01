@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.frame.titled.chat;
 
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.titled.TitledComponentFrame;
@@ -36,7 +37,7 @@ public class ChatFilterSettingsFrame extends TitledComponentFrame {
                 15f,
                 "Show messages containing the following words:");
         title.setBorder(BorderFactory.createEmptyBorder(2,0,6,0));
-        JTextArea words = componentsFactory.getSimpleTextAre("!wtb, wts, boss, rigwald, perandus, invasion");
+        JTextArea words = componentsFactory.getSimpleTextAre(ConfigManager.INSTANCE.getDefaultWords());
         words.setEditable(true);
         words.setCaretColor(AppThemeColor.TEXT_DEFAULT);
         words.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
@@ -46,7 +47,8 @@ public class ChatFilterSettingsFrame extends TitledComponentFrame {
         Dimension buttonSize = new Dimension(90, 24);
         JButton save = componentsFactory.getBorderedButton("Save");
         save.addActionListener(action -> {
-            String chunkStr = StringUtils.deleteWhitespace(words.getText());;
+            ConfigManager.INSTANCE.setDefaultWords(words.getText());
+            String chunkStr = StringUtils.deleteWhitespace(words.getText());
             String[] split = chunkStr.split(",");
 
             callback.onHide(split);

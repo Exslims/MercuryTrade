@@ -50,7 +50,10 @@ public class ItemInfoPanel extends JPanel implements HasUI{
         this.add(nicknamePanel,BorderLayout.CENTER);
 
         JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_ALPHA, "Close");
-        hideButton.addActionListener((action)-> controller.hidePanel());
+        hideButton.addActionListener((action)-> {
+            stashTab.setUndefined(false);
+            controller.hidePanel();
+        });
         this.add(hideButton,BorderLayout.LINE_END);
 
         JPanel tabInfoPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));

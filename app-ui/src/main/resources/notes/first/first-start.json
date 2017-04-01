@@ -42,15 +42,15 @@
     "layout" : "HORIZONTAL"
   },
   {
-    "title" : "Minor feature: Stash Highlight",
-    "text" : "Mercury can highlight the stash location of the item somebody's buying. Takes 15 seconds to set up!",
-    "image" : "notes/first/stash_highlight.png",
-    "layout" : "VERTICAL"
-  },
-  {
     "title" : "Major feature: Chat Scanner",
     "text" : "Set up words to look for (or not!) in chat. Extremely useful for when buying something specific from chat.",
     "image" : "notes/first/chat_scanner.png",
+    "layout" : "VERTICAL"
+  },
+  {
+    "title" : "Minor feature: Stash Highlight",
+    "text" : "Mercury can highlight the stash location of the item somebody's buying. Takes 15 seconds to set up!",
+    "image" : "notes/first/stash_highlight.png",
     "layout" : "VERTICAL"
   },
   {

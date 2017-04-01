@@ -27,6 +27,7 @@ public class CustomButtonSettings extends ConfigurationPanel{
     private JFrame owner;
     private JPanel buttonsTable;
     private JCheckBox dismissCheckBox;
+    private JCheckBox showLeagueCheckBox;
     private int id;
 
     public CustomButtonSettings(JFrame owner) {
@@ -50,6 +51,7 @@ public class CustomButtonSettings extends ConfigurationPanel{
         });
         ConfigManager.INSTANCE.saveButtonsConfig(buttons);
         ConfigManager.INSTANCE.setDismissAfterKick(dismissCheckBox.isSelected());
+        ConfigManager.INSTANCE.setShowLeague(showLeagueCheckBox.isSelected());
         EventRouter.UI.fireEvent(new CustomButtonsChangedEvent());
         return true;
     }
@@ -68,7 +70,8 @@ public class CustomButtonSettings extends ConfigurationPanel{
                 new EmptyBorder(3,5,3,5)));
 
         otherSettings.add(settingLabel,BorderLayout.PAGE_START);
-        otherSettings.add(getTopPanel(),BorderLayout.CENTER);
+        otherSettings.add(closeOnKickPanel(),BorderLayout.CENTER);
+//        otherSettings.add(showLeaguePanel(),BorderLayout.PAGE_END);
 
 
         JPanel responseButtons = componentsFactory.getTransparentPanel(new BorderLayout());
@@ -81,13 +84,20 @@ public class CustomButtonSettings extends ConfigurationPanel{
         verticalScrollContainer.add(otherSettings);
         verticalScrollContainer.add(responseButtons);
     }
-    private JPanel getTopPanel() {
-        JPanel topPanel = componentsFactory.getTransparentPanel(new BorderLayout());
-        topPanel.add(componentsFactory.getTextLabel("Close Notification panel on Kick:", FontStyle.REGULAR), BorderLayout.LINE_START);
+    private JPanel closeOnKickPanel() {
+        JPanel topPanel = componentsFactory.getTransparentPanel(new GridLayout(2,2));
+        topPanel.add(componentsFactory.getTextLabel("Close Notification panel on Kick:", FontStyle.REGULAR));
         dismissCheckBox = new JCheckBox();
         dismissCheckBox.setBackground(AppThemeColor.TRANSPARENT);
         dismissCheckBox.setSelected(ConfigManager.INSTANCE.isDismissAfterKick());
-        topPanel.add(dismissCheckBox, BorderLayout.CENTER);
+        topPanel.add(dismissCheckBox);
+
+        topPanel.add(componentsFactory.getTextLabel("Show league:", FontStyle.REGULAR));
+        showLeagueCheckBox = new JCheckBox();
+        showLeagueCheckBox.setBackground(AppThemeColor.TRANSPARENT);
+        showLeagueCheckBox.setSelected(ConfigManager.INSTANCE.isShowLeague());
+        topPanel.add(showLeagueCheckBox);
+
         topPanel.setBorder(new CompoundBorder(
                 BorderFactory.createMatteBorder(0,0,1,0,AppThemeColor.MSG_HEADER_BORDER),
                 BorderFactory.createEmptyBorder(3,0,3,0)));

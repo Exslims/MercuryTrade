@@ -51,7 +51,7 @@ public class SoundNotifier {
                 clip.open(stream);
                 FloatControl gainControl =
                         (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                gainControl.setValue(-20.0f);
+                gainControl.setValue(-5.0f);
                 clip.start();
             } catch (Exception e) {
                 logger.error("Cannot start playing wav file: ",e);

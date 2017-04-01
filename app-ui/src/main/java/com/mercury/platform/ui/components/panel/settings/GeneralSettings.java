@@ -229,11 +229,9 @@ public class GeneralSettings extends ConfigurationPanel {
     }
     @Override
     public boolean processAndSave() {
-        //int timeToDelay = Integer.parseInt((String) secondsPicker.getSelectedItem());
         int minOpacity = minSlider.getValue();
         int maxOpacity = maxSlider.getValue();
         int timeToDelay= fadeTimeSlider.getValue(); // ----
-        //System.out.println(fadeTimeSlider.getValue());
         HideSettingsManager.INSTANCE.apply(timeToDelay,minOpacity,maxOpacity);
         ConfigManager.INSTANCE.setWhisperNotifier(WhisperNotifierStatus.get(notifierStatusPicker.getSelectedIndex()));
         ConfigManager.INSTANCE.setCheckUpdateOnStartUp(checkEnable.isSelected());

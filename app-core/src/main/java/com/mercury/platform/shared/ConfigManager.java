@@ -5,6 +5,7 @@ import com.mercury.platform.shared.pojo.FrameSettings;
 import com.mercury.platform.shared.pojo.ResponseButton;
 import com.mercury.platform.shared.pojo.ScaleData;
 import com.mercury.platform.shared.pojo.StashTab;
+import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,24 +41,43 @@ public class ConfigManager {
     private Map<String,FrameSettings> defaultFramesSettings;
     private Map<String,Object> defaultAppSettings;
 
+    @Getter
     private WhisperNotifierStatus whisperNotifier = WhisperNotifierStatus.ALWAYS;
+    @Getter
     private int minOpacity = 100;
+    @Getter
     private int maxOpacity = 100;
+    @Getter
     private int fadeTime = 0;
 
+    @Getter
     private String gamePath = "";
+    @Getter
     private String flowDirection = "DOWNWARDS";
+    @Getter
     private String tradeMode = "DEFAULT";
+    @Getter
     private int limitMsgCount = 3;
+    @Getter
     private int expandedMsgCount = 2;
-
+    @Getter
     private boolean showPatchNotes = false;
+    @Getter
     private boolean showOnStartUp = true;
+    @Getter
     private boolean itemsGridEnable = true;
+    @Getter
     private boolean checkUpdateOnStartUp = true;
+    @Getter
     private boolean dismissAfterKick = false;
+    @Getter
+    private boolean showLeague = false;
+    @Getter
     private boolean inGameDnd = false;
+    @Getter
     private String dndResponseText = "Response text";
+    @Getter
+    private String defaultWords = "!wtb, uber, boss, perandus";
 
     public ConfigManager() {
         minimumFrameSize = new HashMap<>();
@@ -91,7 +111,9 @@ public class ConfigManager {
         defaultAppSettings.put("checkUpdateOnStartUp",true);
         defaultAppSettings.put("dismissAfterKick",false);
         defaultAppSettings.put("inGameDnd",false);
+        defaultAppSettings.put("showLeague",false);
         defaultAppSettings.put("dndResponseText","Response text");
+        defaultAppSettings.put("defaultWords","!wtb, uber, boss, perandus");
 
     }
 
@@ -135,7 +157,9 @@ public class ConfigManager {
                 saveProperty("dismissAfterKick", String.valueOf(defaultAppSettings.get("dismissAfterKick")));
                 saveProperty("inGameDnd", String.valueOf(defaultAppSettings.get("inGameDnd")));
                 saveProperty("dndResponseText", defaultAppSettings.get("dndResponseText"));
+                saveProperty("defaultWords", defaultAppSettings.get("defaultWords"));
                 saveProperty("scaleData", defaultAppSettings.get("scaleData"));
+                saveProperty("showLeague", defaultAppSettings.get("showLeague"));
 
             } catch (Exception e) {
                 logger.error(e);
@@ -192,7 +216,9 @@ public class ConfigManager {
             checkUpdateOnStartUp = Boolean.valueOf(loadProperty("checkUpdateOnStartUp"));
             dismissAfterKick = Boolean.valueOf(loadProperty("dismissAfterKick"));
             inGameDnd = Boolean.valueOf(loadProperty("inGameDnd"));
+            showLeague = Boolean.valueOf(loadProperty("showLeague"));
             dndResponseText = loadProperty("dndResponseText");
+            defaultWords = loadProperty("defaultWords");
         } catch (Exception e) {
             logger.error("Error in loadConfigFile: ",e);
         }
@@ -368,54 +394,11 @@ public class ConfigManager {
         return scaleData;
     }
 
-    public WhisperNotifierStatus getWhisperNotifier() {
-        return whisperNotifier;
-    }
-    public int getMinOpacity() {
-        return minOpacity;
-    }
-    public int getMaxOpacity() {
-        return maxOpacity;
-    }
-    public int getFadeTime() {
-        return fadeTime;
-    }
-    public String getGamePath(){
-        return gamePath;
-    }
-    public boolean isShowOnStartUp() {
-        return showOnStartUp;
-    }
-    public boolean isShowPatchNotes() {
-        return showPatchNotes;
-    }
-    public String getFlowDirection() {
-        return flowDirection;
-    }
-    public String getTradeMode() {
-        return tradeMode;
-    }
-    public int getLimitMsgCount() {
-        return limitMsgCount;
-    }
-    public int getExpandedMsgCount() {
-        return expandedMsgCount;
-    }
-    public boolean isItemsGridEnable() {
-        return itemsGridEnable;
-    }
-    public boolean isCheckUpdateOnStartUp() {
-        return checkUpdateOnStartUp;
-    }
+
     public void setCheckUpdateOnStartUp(boolean checkUpdateOnStartUp) {
         this.checkUpdateOnStartUp = checkUpdateOnStartUp;
         saveProperty("checkUpdateOnStartUp", String.valueOf(this.checkUpdateOnStartUp));
     }
-
-    public boolean isDismissAfterKick() {
-        return dismissAfterKick;
-    }
-
     public void setDismissAfterKick(boolean dismissAfterKick) {
         this.dismissAfterKick = dismissAfterKick;
         saveProperty("dismissAfterKick", String.valueOf(this.dismissAfterKick));
@@ -469,23 +452,23 @@ public class ConfigManager {
         this.itemsGridEnable = itemsGridEnable;
         saveProperty("itemsGridEnable",String.valueOf(this.itemsGridEnable));
     }
-
-    public boolean isInGameDnd() {
-        return inGameDnd;
-    }
-
     public void setInGameDnd(boolean inGameDnd) {
         this.inGameDnd = inGameDnd;
         saveProperty("inGameDnd",String.valueOf(this.inGameDnd));
     }
-
-    public String getDndResponseText() {
-        return dndResponseText;
-    }
-
     public void setDndResponseText(String dndResponseText) {
         this.dndResponseText = dndResponseText;
         saveProperty("dndResponseText",dndResponseText);
+    }
+
+    public void setShowLeague(boolean showLeague) {
+        this.showLeague = showLeague;
+        saveProperty("showLeague",String.valueOf(this.showLeague));
+    }
+
+    public void setDefaultWords(String defaultWords) {
+        this.defaultWords = defaultWords;
+        saveProperty("defaultWords",defaultWords);
     }
 
     private List<ResponseButton> getDefaultButtons(){

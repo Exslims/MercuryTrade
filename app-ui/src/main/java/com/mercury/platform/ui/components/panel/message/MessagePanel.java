@@ -322,21 +322,23 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
     private String getNicknameLabel(){
         String whisperNickname = message.getWhisperNickname();
         String result = whisperNickname + ":";
-        if(message.getLeague() != null) {
-            String league = message.getLeague().trim();
-            if (league.length() == 0) {
-                return result;
-            }
-            if (league.contains("Hardcore")) {
-                if (league.equals("Hardcore")) {
-                    result = "HC " + result;
-                } else {
-                    result = String.valueOf(league.split(" ")[1].charAt(0)) + "HC " + result;
+        if(ConfigManager.INSTANCE.isShowLeague()) {
+            if (message.getLeague() != null) {
+                String league = message.getLeague().trim();
+                if (league.length() == 0) {
+                    return result;
                 }
-            } else if (league.contains("Standard")) {
-                result = "Standard " + result;
-            } else {
-                result = String.valueOf(league.charAt(0)) + "SC " + result;
+                if (league.contains("Hardcore")) {
+                    if (league.equals("Hardcore")) {
+                        result = "HC " + result;
+                    } else {
+                        result = String.valueOf(league.split(" ")[1].charAt(0)) + "HC " + result;
+                    }
+                } else if (league.contains("Standard")) {
+                    result = "Standard " + result;
+                } else {
+                    result = String.valueOf(league.charAt(0)) + "SC " + result;
+                }
             }
         }
         return result;
