@@ -8,7 +8,7 @@ Download and Install Java: [https://java.com/download](https://java.com/download
 
 Download MercuryTrade.jar: [Latest release](https://github.com/Exslims/MercuryTrade/releases)
 
-Feedback and suggestions: [Link](https://github.com/Exslims/MercuryTrade/issues)
+Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issues) [Discord](https://discord.gg/aG9C8XJ)
 
 **ALTERNATIVE LAUNCHER**: MercuryTrade.**RAR**: [Latest release](https://github.com/Exslims/MercuryTrade/releases). Unpack and run the attached .exe as administrator! This is primarily for the people who have issues with buttons not working.
 
