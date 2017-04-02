@@ -111,7 +111,10 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
         });
         EventRouter.CORE.registerHandler(NewWhispersEvent.class, event -> {
             SwingUtilities.invokeLater(()-> {
-                addMessage(((NewWhispersEvent)event).getMessage());
+                Message message = ((NewWhispersEvent) event).getMessage();
+                if(!currentMessages.containsKey(message)) {
+                    addMessage(message);
+                }
             });
         });
         EventRouter.UI.registerHandler(CloseMessagePanelEvent.class, event -> {

@@ -11,6 +11,7 @@ public class StashTabsContainer {
     }
     public void addTab(StashTab tab){
         stashTabs.add(tab);
+        save();
     }
     public void save(){
         ConfigManager.INSTANCE.saveStashTabs(stashTabs);
