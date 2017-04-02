@@ -10,6 +10,8 @@ Download MercuryTrade.jar: [Latest release](https://github.com/Exslims/MercuryTr
 
 Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issues) [Discord](https://discord.gg/aG9C8XJ)
 
+I have a problem: [Troubleshooting](https://github.com/Exslims/MercuryTrade/wiki/Troubleshooting)
+
 **ALTERNATIVE LAUNCHER**: MercuryTrade.**RAR**: [Latest release](https://github.com/Exslims/MercuryTrade/releases). Unpack and run the attached .exe as administrator! This is primarily for the people who have issues with buttons not working.
 
 ---
