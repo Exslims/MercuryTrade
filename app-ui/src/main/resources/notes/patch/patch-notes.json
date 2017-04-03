@@ -3,7 +3,7 @@
   "notes":[
     {
       "title" : "Hotfix",
-      "text" : "- Fixed the issue where it wasn't possible to close a notification.\n- Fixed Item Grid setup not being saved correctly.\n\nThanks guys for all your feedback and support!",
+      "text" : "- Fixed the issue where it wasn't possible to close a notification.\n- Fixed Item Grid setup not being saved correctly.\n\nIf you have troubles updating please download directly from github.",
       "image" : "",
       "layout" : "VERTICAL"
     }
