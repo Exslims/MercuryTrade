@@ -1,8 +1,8 @@
 package com.mercury.platform.ui.components;
 
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.ButtonPressedEvent;
 import com.mercury.platform.shared.events.custom.HideTooltipEvent;
+import com.mercury.platform.shared.events.custom.SoundNotificationEvent;
 import com.mercury.platform.ui.misc.event.ShowTooltipEvent;
 import com.mercury.platform.ui.components.fields.style.MercuryComboBoxUI;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -83,7 +84,7 @@ public class ComponentsFactory{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    EventRouter.CORE.fireEvent(new ButtonPressedEvent());
+                    EventRouter.CORE.fireEvent(new SoundNotificationEvent.ClicksSoundNotificationEvent());
                 }
             }
         });
@@ -196,7 +197,7 @@ public class ComponentsFactory{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    EventRouter.CORE.fireEvent(new ButtonPressedEvent());
+                    EventRouter.CORE.fireEvent(new SoundNotificationEvent.ClicksSoundNotificationEvent());
                 }
             }
         });
@@ -475,6 +476,28 @@ public class ComponentsFactory{
         JSlider slider = new JSlider(JSlider.HORIZONTAL,min,max,value);
         slider.setMajorTickSpacing(10);
         slider.setMinorTickSpacing(1);
+        slider.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                slider.getParent().repaint();
+            }
+        });
+        slider.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                slider.getParent().repaint();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                slider.getParent().repaint();
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                slider.getParent().repaint();
+            }
+        });
         slider.setBackground(AppThemeColor.TRANSPARENT);
         return slider;
     }

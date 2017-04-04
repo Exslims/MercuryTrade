@@ -18,40 +18,42 @@ public class SoundNotifier {
     private final Logger logger = LogManager.getLogger(SoundNotifier.class);
     private boolean dnd = false;
     public SoundNotifier() {
-        EventRouter.CORE.registerHandler(WhisperNotificationEvent.class, event -> {
+        EventRouter.CORE.registerHandler(SoundNotificationEvent.WhisperSoundNotificationEvent.class, event -> {
             WhisperNotifierStatus status = ConfigManager.INSTANCE.getWhisperNotifier();
             if (status == WhisperNotifierStatus.ALWAYS ||
                     ((status == WhisperNotifierStatus.ALTAB) && (AppStarter.APP_STATUS == FrameStates.HIDE))) {
-                play("app/notification.wav");
+                play("app/notification.wav",((SoundNotificationEvent.WhisperSoundNotificationEvent)event).getDb());
             }
         });
         EventRouter.CORE.registerHandler(UpdateInfoEvent.class, event -> {
-            play("app/patch_tone.wav");
+            play("app/patch_tone.wav",0);
         });
-        EventRouter.CORE.registerHandler(ChatFilterMessageEvent.class, event -> {
-            play("app/chat-filter.wav");
+        EventRouter.CORE.registerHandler(SoundNotificationEvent.ChatScannerSoundNotificationEvent.class, event -> {
+            play("app/chat-filter.wav",((SoundNotificationEvent.ChatScannerSoundNotificationEvent)event).getDb());
         });
         EventRouter.CORE.registerHandler(DndModeEvent.class, event -> {
             this.dnd = ((DndModeEvent)event).isDnd();
         });
-        EventRouter.CORE.registerHandler(ButtonPressedEvent.class, event -> {
+        EventRouter.CORE.registerHandler(SoundNotificationEvent.ClicksSoundNotificationEvent.class, event -> {
             String[] clicks = {
                     "app/sounds/click1/button-pressed-10.wav",
                     "app/sounds/click1/button-pressed-20.wav",
                     "app/sounds/click1/button-pressed-30.wav"};
-            play(clicks[new Random().nextInt(3)]);
+            play(clicks[new Random().nextInt(3)],((SoundNotificationEvent.ClicksSoundNotificationEvent)event).getDb());
         });
     }
 
-    private void play(String wavPath){
+    private void play(String wavPath, float db){
         if(!dnd) {
             ClassLoader classLoader = getClass().getClassLoader();
             try (AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource(wavPath))) {
                 Clip clip = AudioSystem.getClip();
                 clip.open(stream);
-                FloatControl gainControl =
-                        (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                gainControl.setValue(-5.0f);
+                if(db != 0.0) {
+                    FloatControl gainControl =
+                            (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                    gainControl.setValue(db);
+                }
                 clip.start();
             } catch (Exception e) {
                 logger.error("Cannot start playing wav file: ",e);

@@ -43,8 +43,11 @@ public class SettingsFrame extends TitledComponentFrame {
         innerPanels.add(cbSettings);
         ConfigurationPanel taskBarSettings = new TaskBarSettingsPanel();
         innerPanels.add(taskBarSettings);
+        ConfigurationPanel soundSettings = new SoundSettingsPanel();
+        innerPanels.add(soundSettings);
 
         tabbedPane.addTab("General",generalSettings);
+        tabbedPane.addTab("Sound",soundSettings);
         tabbedPane.addTab("Notification panel",cbSettings);
         tabbedPane.addTab("Task panel",taskBarSettings);
 //        tabbedPane.addTab("Help",new HelpPanel());

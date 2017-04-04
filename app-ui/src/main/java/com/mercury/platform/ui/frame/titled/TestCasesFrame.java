@@ -214,7 +214,7 @@ public class TestCasesFrame extends TitledComponentFrame {
         button2.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.CORE.fireEvent(new WhisperNotificationEvent());
+                EventRouter.CORE.fireEvent(new SoundNotificationEvent.WhisperSoundNotificationEvent());
                 String nickname = nickNames.get(random.nextInt(nickNames.size()));
                 Message message = parser.parse(String.format(currencyTemplate,
                         nickname,

@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.components.panel.chat;
 
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.ChatFilterMessageEvent;
+import com.mercury.platform.shared.events.custom.SoundNotificationEvent;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
@@ -112,7 +112,7 @@ public class ChatFilterPanel extends JPanel {
                 expiresMessages.put(nickname,message);
                 EventRouter.UI.fireEvent(new PackEvent.PackChatFilter());
                 if(soundEnable){
-                    EventRouter.CORE.fireEvent(new ChatFilterMessageEvent());
+                    EventRouter.CORE.fireEvent(new SoundNotificationEvent.ChatScannerSoundNotificationEvent());
                 }
                 if(scrollToBottom) {
                     container.scrollRectToVisible(new Rectangle(0, container.getHeight() - 1, 1, 1));
