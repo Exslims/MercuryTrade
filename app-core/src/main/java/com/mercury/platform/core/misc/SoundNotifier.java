@@ -25,8 +25,8 @@ public class SoundNotifier {
                 play("app/notification.wav",((SoundNotificationEvent.WhisperSoundNotificationEvent)event).getDb());
             }
         });
-        EventRouter.CORE.registerHandler(UpdateInfoEvent.class, event -> {
-            play("app/patch_tone.wav",0);
+        EventRouter.CORE.registerHandler(SoundNotificationEvent.UpdateSoundNotificationEvent.class, event -> {
+            play("app/patch_tone.wav",((SoundNotificationEvent.UpdateSoundNotificationEvent)event).getDb());
         });
         EventRouter.CORE.registerHandler(SoundNotificationEvent.ChatScannerSoundNotificationEvent.class, event -> {
             play("app/chat-filter.wav",((SoundNotificationEvent.ChatScannerSoundNotificationEvent)event).getDb());

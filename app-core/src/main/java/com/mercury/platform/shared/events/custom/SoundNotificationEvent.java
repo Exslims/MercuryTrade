@@ -30,4 +30,10 @@ public class SoundNotificationEvent implements MercuryEvent {
             super(db);
         }
     }
+    @NoArgsConstructor
+    public static class UpdateSoundNotificationEvent extends SoundNotificationEvent {
+        public UpdateSoundNotificationEvent(Float db) {
+            super(db);
+        }
+    }
 }
