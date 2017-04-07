@@ -6,11 +6,9 @@ import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.HorizontalScrollContainer;
 import com.mercury.platform.ui.components.panel.grid.*;
-import com.mercury.platform.shared.pojo.ScaleData;
-import com.mercury.platform.ui.frame.ComponentFrame;
 import com.mercury.platform.ui.misc.event.*;
-import com.mercury.platform.shared.pojo.ItemMessage;
-import com.mercury.platform.shared.pojo.Message;
+import com.mercury.platform.shared.entity.ItemMessage;
+import com.mercury.platform.shared.entity.Message;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.manager.FramesManager;
@@ -22,7 +20,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Map;
 
-public class ItemsGridFrame extends MovableComponentFrame{
+public class ItemsGridFrame extends AbstractMovableComponentFrame {
     private ItemsGridPanel itemsGridPanel;
     private HorizontalScrollContainer tabsContainer;
     private StashTabsContainer stashTabsContainer;

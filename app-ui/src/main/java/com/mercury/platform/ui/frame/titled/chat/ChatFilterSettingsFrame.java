@@ -3,14 +3,14 @@ package com.mercury.platform.ui.frame.titled.chat;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.frame.titled.TitledComponentFrame;
+import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class ChatFilterSettingsFrame extends TitledComponentFrame {
+public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
     private ChatSettingsCallback callback;
 
     public ChatFilterSettingsFrame(ChatSettingsCallback callback) {

@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.frame.titled;
 
-import com.mercury.platform.ui.frame.ComponentFrame;
+import com.mercury.platform.ui.frame.AbstractComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -11,11 +11,11 @@ import java.awt.event.MouseEvent;
 /**
  * Created by Константин on 18.01.2017.
  */
-public abstract class TitledComponentFrame extends ComponentFrame {
+public abstract class AbstractTitledComponentFrame extends AbstractComponentFrame {
     protected JPanel miscPanel;
     protected JButton hideButton;
     private JLabel frameTitleLabel;
-    protected TitledComponentFrame(String title) {
+    protected AbstractTitledComponentFrame(String title) {
         super(title);
         miscPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     }
@@ -51,7 +51,7 @@ public abstract class TitledComponentFrame extends ComponentFrame {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if(SwingUtilities.isLeftMouseButton(e)) {
-                        TitledComponentFrame.this.setVisible(false);
+                        AbstractTitledComponentFrame.this.setVisible(false);
                     }
                 }
             });

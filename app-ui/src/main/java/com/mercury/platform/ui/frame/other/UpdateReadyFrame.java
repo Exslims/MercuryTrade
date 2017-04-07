@@ -2,14 +2,14 @@ package com.mercury.platform.ui.frame.other;
 
 import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.CheckOutPatchNotes;
 import com.mercury.platform.shared.events.custom.UpdateInfoEvent;
-import com.mercury.platform.shared.pojo.FrameSettings;
+import com.mercury.platform.shared.entity.FrameSettings;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -17,7 +17,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class UpdateReadyFrame extends OverlaidFrame {
+public class UpdateReadyFrame extends AbstractOverlaidFrame {
     public UpdateReadyFrame() {
         super("MercuryTrade");
     }
@@ -80,10 +80,10 @@ public class UpdateReadyFrame extends OverlaidFrame {
             if(deltaWidth < 0){
                 this.setLocation(tbLocation.x - Math.abs(deltaWidth), this.getLocation().y);
             }
-            if (!this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
+            if (!this.isVisible() && AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
                 this.setVisible(true);
             } else {
-                prevState = FrameStates.SHOW;
+                prevState = FrameVisibleState.SHOW;
             }
             pack();
         });

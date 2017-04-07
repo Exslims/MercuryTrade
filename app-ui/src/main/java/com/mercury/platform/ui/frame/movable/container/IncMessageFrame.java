@@ -2,11 +2,11 @@ package com.mercury.platform.ui.frame.movable.container;
 
 import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
-import com.mercury.platform.shared.pojo.ItemMessage;
-import com.mercury.platform.shared.pojo.Message;
+import com.mercury.platform.shared.entity.ItemMessage;
+import com.mercury.platform.shared.entity.Message;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -14,8 +14,8 @@ import com.mercury.platform.ui.components.panel.message.MessagePanel;
 import com.mercury.platform.ui.components.panel.message.MessagePanelController;
 import com.mercury.platform.ui.components.panel.message.NotificationMessageController;
 import com.mercury.platform.ui.components.panel.message.MessagePanelStyle;
-import com.mercury.platform.ui.frame.movable.MovableComponentFrame;
-import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.movable.AbstractMovableComponentFrame;
+import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.frame.setup.location.LocationState;
 import com.mercury.platform.ui.frame.setup.scale.ScaleState;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -31,7 +31,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class IncMessageFrame extends MovableComponentFrame implements MessagesContainer {
+public class IncMessageFrame extends AbstractMovableComponentFrame implements MessagesContainer {
     private Map<Message, MessagePanel> currentMessages;
     private boolean wasVisible;
     private FlowDirections flowDirections;
@@ -176,10 +176,10 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
                 new NotificationMessageController(message),
                 this.componentsFactory);
 
-        if (!dnd && !this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
+        if (!dnd && !this.isVisible() && AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
             this.setVisible(true);
         } else {
-            prevState = FrameStates.SHOW;
+            prevState = FrameVisibleState.SHOW;
         }
         if (flowDirections.equals(FlowDirections.UPWARDS)) {
             mainContainer.add(messagePanel, 1);
@@ -606,7 +606,7 @@ public class IncMessageFrame extends MovableComponentFrame implements MessagesCo
         return panel;
     }
 
-    private class ExpandAllFrame extends OverlaidFrame {
+    private class ExpandAllFrame extends AbstractOverlaidFrame {
         private int messageCount = 0;
         private JLabel msgCountLabel;
         private JButton expandButton;

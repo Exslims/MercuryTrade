@@ -13,7 +13,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class SettingsFrame extends TitledComponentFrame {
+public class SettingsFrame extends AbstractTitledComponentFrame {
     private List<ConfigurationPanel> innerPanels;
     private boolean successfullySaved = true;
     public SettingsFrame(){

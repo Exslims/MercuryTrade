@@ -1,11 +1,13 @@
 package com.mercury.platform.core.utils.interceptor;
 
+import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.NewWhispersEvent;
 import com.mercury.platform.shared.events.custom.SoundNotificationEvent;
-import com.mercury.platform.shared.pojo.Message;
+import com.mercury.platform.shared.entity.Message;
+import com.mercury.platform.shared.store.MercuryStore;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -19,6 +21,7 @@ public class IncTradeMessagesInterceptor extends MessageInterceptor {
         Message parsedMessage = messageParser.parse(StringUtils.substringAfter(message,"@"));
         if(parsedMessage != null) {
             EventRouter.CORE.fireEvent(new SoundNotificationEvent.WhisperSoundNotificationEvent());
+//            MercuryStore.INSTANCE.soundSubject.onNext(SoundType.MESSAGE);
             EventRouter.CORE.fireEvent(new NewWhispersEvent(parsedMessage));
         }
     }

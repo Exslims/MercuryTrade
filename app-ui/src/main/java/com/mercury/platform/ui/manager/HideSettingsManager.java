@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.manager;
 
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.ui.frame.ComponentFrame;
+import com.mercury.platform.ui.frame.AbstractComponentFrame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +12,12 @@ public class HideSettingsManager {
     }
     public static HideSettingsManager INSTANCE = HideSettingsManagerHolder.HOLDER_INSTANCE;
 
-    private List<ComponentFrame> frames;
+    private List<AbstractComponentFrame> frames;
 
     private HideSettingsManager() {
         frames = new ArrayList<>();
     }
-    public void registerFrame(ComponentFrame frame){
+    public void registerFrame(AbstractComponentFrame frame){
         frames.add(frame);
     }
     public void apply(int fadeTime, int minOpacity, int maxOpacity){

@@ -1,16 +1,16 @@
 package com.mercury.platform.ui.frame.other;
 
 import com.mercury.platform.core.AppStarter;
-import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.ChatCommandEvent;
 import com.mercury.platform.shared.events.custom.OutTradeMessageEvent;
-import com.mercury.platform.shared.pojo.CurrencyMessage;
-import com.mercury.platform.shared.pojo.ItemMessage;
-import com.mercury.platform.shared.pojo.Message;
+import com.mercury.platform.shared.entity.CurrencyMessage;
+import com.mercury.platform.shared.entity.ItemMessage;
+import com.mercury.platform.shared.entity.Message;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.frame.ComponentFrame;
+import com.mercury.platform.ui.frame.AbstractComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 
@@ -22,7 +22,7 @@ import java.awt.event.MouseEvent;
 /**
  * Created by Константин on 12.01.2017.
  */
-public class OutMessageFrame extends ComponentFrame {
+public class OutMessageFrame extends AbstractComponentFrame {
     public OutMessageFrame() {
         super("MercuryTrade");
     }
@@ -121,11 +121,11 @@ public class OutMessageFrame extends ComponentFrame {
     @Override
     public void initHandlers() {
         EventRouter.CORE.registerHandler(OutTradeMessageEvent.class, event -> {
-            if (!this.isVisible() && AppStarter.APP_STATUS == FrameStates.SHOW) {
+            if (!this.isVisible() && AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
                 this.setAlwaysOnTop(true);
                 this.setVisible(true);
             } else {
-                prevState = FrameStates.SHOW;
+                prevState = FrameVisibleState.SHOW;
             }
             Message message = ((OutTradeMessageEvent) event).getMessage();
             addNewMessage(message);

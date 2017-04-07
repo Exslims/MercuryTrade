@@ -6,7 +6,7 @@ import com.mercury.platform.shared.events.custom.HideTooltipEvent;
 import com.mercury.platform.ui.misc.event.ShowTooltipEvent;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -15,7 +15,7 @@ import java.awt.*;
 /**
  * Created by Константин on 17.01.2017.
  */
-public class TooltipFrame extends OverlaidFrame {
+public class TooltipFrame extends AbstractOverlaidFrame {
     private Timer tooltipTimer;
     public TooltipFrame() {
         super("MercuryTrade");

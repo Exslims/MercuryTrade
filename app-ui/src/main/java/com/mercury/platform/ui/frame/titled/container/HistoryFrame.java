@@ -6,14 +6,14 @@ import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.MercuryEvent;
 import com.mercury.platform.shared.events.custom.NewWhispersEvent;
-import com.mercury.platform.shared.pojo.FrameSettings;
-import com.mercury.platform.shared.pojo.Message;
+import com.mercury.platform.shared.entity.FrameSettings;
+import com.mercury.platform.shared.entity.Message;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.message.MessagePanel;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.components.panel.message.NotificationMessageController;
 import com.mercury.platform.ui.components.panel.message.MessagePanelStyle;
-import com.mercury.platform.ui.frame.titled.TitledComponentFrame;
+import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.event.ReloadMessageEvent;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
@@ -24,7 +24,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 
-public class HistoryFrame extends TitledComponentFrame implements HistoryContainer {
+public class HistoryFrame extends AbstractTitledComponentFrame implements HistoryContainer {
     private JPanel mainContainer;
     public HistoryFrame() {
         super("MercuryTrade");

@@ -1,4 +1,4 @@
-package com.mercury.platform.shared.pojo;
+package com.mercury.platform.shared.entity;
 
 import lombok.Data;
 

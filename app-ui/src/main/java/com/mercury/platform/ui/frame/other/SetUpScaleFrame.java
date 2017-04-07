@@ -4,10 +4,9 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.shared.pojo.ScaleData;
 import com.mercury.platform.ui.misc.event.SaveScaleEvent;
 import com.mercury.platform.ui.misc.event.ScaleChangeEvent;
 
@@ -17,7 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
 
-public class SetUpScaleFrame extends OverlaidFrame {
+public class SetUpScaleFrame extends AbstractOverlaidFrame {
     private Map<String,Float> scaleData;
     public SetUpScaleFrame() {
         super("MercuryTrade");

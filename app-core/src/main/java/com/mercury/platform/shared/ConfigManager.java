@@ -1,10 +1,9 @@
 package com.mercury.platform.shared;
 
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
-import com.mercury.platform.shared.pojo.FrameSettings;
-import com.mercury.platform.shared.pojo.ResponseButton;
-import com.mercury.platform.shared.pojo.ScaleData;
-import com.mercury.platform.shared.pojo.StashTab;
+import com.mercury.platform.shared.entity.FrameSettings;
+import com.mercury.platform.shared.entity.ResponseButton;
+import com.mercury.platform.shared.entity.StashTab;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -38,7 +37,6 @@ public class ConfigManager {
     private List<ResponseButton> cachedButtonsConfig;
     private Map<String, FrameSettings> cachedFramesSettings;
     private Map<String,Dimension> minimumFrameSize;
-    private Map<String,FrameSettings> defaultFramesSettings;
     private Map<String,Object> defaultAppSettings;
 
     @Getter
@@ -159,7 +157,7 @@ public class ConfigManager {
                 saveProperty("dndResponseText", defaultAppSettings.get("dndResponseText"));
                 saveProperty("defaultWords", defaultAppSettings.get("defaultWords"));
                 saveProperty("scaleData", defaultAppSettings.get("scaleData"));
-                saveProperty("showLeague", defaultAppSettings.get("showLeague"));
+                saveProperty("showLeague", String.valueOf(defaultAppSettings.get("showLeague")));
 
             } catch (Exception e) {
                 logger.error(e);
@@ -257,8 +255,9 @@ public class ConfigManager {
             }
         }catch (Exception e){
             logger.error("Error while loading property: " + key,e);
+            saveProperty(key,String.valueOf(defaultAppSettings.get(key)));
+            return String.valueOf(defaultAppSettings.get(key));
         }
-        return null;
     }
     private  <T> void saveProperty(String token, T object){
         JSONParser parser = new JSONParser();
@@ -275,7 +274,7 @@ public class ConfigManager {
             fileWriter.flush();
             fileWriter.close();
         } catch (Exception e) {
-            logger.error("Error in ConfigManager.saveProperty",e);
+            logger.error("Error in ConfigManager.saveProperty with \"" + token + "\" token.",e);
         }
 
     }
@@ -394,7 +393,6 @@ public class ConfigManager {
         return scaleData;
     }
 
-
     public void setCheckUpdateOnStartUp(boolean checkUpdateOnStartUp) {
         this.checkUpdateOnStartUp = checkUpdateOnStartUp;
         saveProperty("checkUpdateOnStartUp", String.valueOf(this.checkUpdateOnStartUp));
@@ -436,10 +434,6 @@ public class ConfigManager {
         this.flowDirection = flowDirection;
         saveProperty("flowDirection",flowDirection);
     }
-    public void setTradeMode(String tradeMode) {
-        this.tradeMode = tradeMode;
-        saveProperty("tradeMode",tradeMode);
-    }
     public void setLimitMsgCount(int limitMsgCount) {
         this.limitMsgCount = limitMsgCount;
         saveProperty("limitMsgCount",String.valueOf(this.limitMsgCount));
@@ -480,7 +474,7 @@ public class ConfigManager {
         return defaultButtons;
     }
     public Map<String,FrameSettings> getDefaultFramesSettings(){
-        defaultFramesSettings = new HashMap<>();
+        Map<String, FrameSettings> defaultFramesSettings = new HashMap<>();
         defaultFramesSettings.put("TaskBarFrame",new FrameSettings(new Point(400, 500),new Dimension(109,20)));
         defaultFramesSettings.put("IncMessageFrame",new FrameSettings(new Point(700, 600),new Dimension(315,0)));
         defaultFramesSettings.put("OutMessageFrame",new FrameSettings(new Point(200, 500),new Dimension(280,115)));

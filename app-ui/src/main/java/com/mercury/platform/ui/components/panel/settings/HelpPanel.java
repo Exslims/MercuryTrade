@@ -60,7 +60,7 @@ public class HelpPanel extends JPanel implements HasUI {
                     NotesLoader notesLoader = new NotesLoader();
                     java.util.List<Note> patchNotes = notesLoader.getPatchNotes();
                     if(patchNotes.size() != 0){
-                        NotesFrame patchNotesFrame = new NotesFrame(patchNotes,NotesFrame.NotesType.PATCH);
+                        NotesFrame patchNotesFrame = new NotesFrame(patchNotes, NotesFrame.NotesType.PATCH);
                         patchNotesFrame.init();
                         patchNotesFrame.showComponent();
                     }

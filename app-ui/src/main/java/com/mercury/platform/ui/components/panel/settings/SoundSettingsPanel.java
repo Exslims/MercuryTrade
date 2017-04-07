@@ -119,8 +119,11 @@ public class SoundSettingsPanel extends ConfigurationPanel {
                 case ItemEvent.SELECTED: {
                     if(notificationComboBox.getSelectedItem().equals("Browse")){
                         JFileChooser fileChooser = new JFileChooser();
-                        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("*.wav","wav"));
-
+                        fileChooser.setFileFilter(new FileNameExtensionFilter("*.wav","wav"));
+                        int returnVal = fileChooser.showOpenDialog(null);
+                        if(returnVal == JFileChooser.APPROVE_OPTION) {
+                            System.out.println(fileChooser.getSelectedFile().getPath());
+                        }
                     }
                     break;
                 }

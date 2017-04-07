@@ -2,7 +2,7 @@ package com.mercury.platform.ui.frame.other;
 
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.AlertEvent;
-import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent;
 /**
  * Created by Константин on 07.03.2017.
  */
-public class AlertFrame extends OverlaidFrame {
+public class AlertFrame extends AbstractOverlaidFrame {
     private JLabel messageLabel;
     public AlertFrame() {
         super("MercuryTrade");

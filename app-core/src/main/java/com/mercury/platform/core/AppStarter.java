@@ -4,7 +4,7 @@ import com.mercury.platform.core.misc.SoundNotifier;
 import com.mercury.platform.core.update.UpdateClientStarter;
 import com.mercury.platform.core.utils.error.ErrorHandler;
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.UpdateManager;
 import com.mercury.platform.shared.events.EventRouter;
@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
  */
 public class AppStarter {
     private static final Logger logger = LogManager.getLogger(AppStarter.class.getSimpleName());
-    public static FrameStates APP_STATUS = FrameStates.HIDE;
+    public static FrameVisibleState APP_STATUS = FrameVisibleState.HIDE;
     private User32 user32 = User32.INSTANCE;
     private boolean shutdown = false;
     private volatile int delay = 100;
@@ -40,6 +40,7 @@ public class AppStarter {
         UpdateClientStarter updateClientStarter = new UpdateClientStarter();
         executor.execute(updateClientStarter);
         HistoryManager.INSTANCE.load();
+        UpdateManager updateManager = new UpdateManager();
 
         EventRouter.CORE.registerHandler(UILoadedEvent.class, event -> {
             Timer timer = new Timer();
@@ -50,7 +51,7 @@ public class AppStarter {
                         timer.cancel();
                         updateClientStarter.shutdown();
                         if(updating){
-                            UpdateManager.INSTANCE.doUpdate();
+                            updateManager.doUpdate();
                         }
                         System.exit(0);
                     }
@@ -58,19 +59,19 @@ public class AppStarter {
                     PointerType hwnd = user32.GetForegroundWindow();
                     User32.INSTANCE.GetWindowTextA(hwnd, windowText, 512);
                     if(!Native.toString(windowText).equals("Path of Exile")){
-                        if(APP_STATUS == FrameStates.SHOW) {
-                            APP_STATUS = FrameStates.HIDE;
-                            EventRouter.CORE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.HIDE));
+                        if(APP_STATUS == FrameVisibleState.SHOW) {
+                            APP_STATUS = FrameVisibleState.HIDE;
+                            EventRouter.CORE.fireEvent(new ChangeFrameVisibleEvent(FrameVisibleState.HIDE));
                         }
                     }else{
-                        if(APP_STATUS == FrameStates.HIDE) {
+                        if(APP_STATUS == FrameVisibleState.HIDE) {
                             try {
                                 Thread.sleep(delay);
                                 delay = 100;
                             } catch (InterruptedException e) {
                             }
-                            APP_STATUS = FrameStates.SHOW;
-                            EventRouter.CORE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.SHOW));
+                            APP_STATUS = FrameVisibleState.SHOW;
+                            EventRouter.CORE.fireEvent(new ChangeFrameVisibleEvent(FrameVisibleState.SHOW));
                         }
                     }
                 }

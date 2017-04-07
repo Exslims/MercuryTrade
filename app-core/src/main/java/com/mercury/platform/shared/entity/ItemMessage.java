@@ -1,6 +1,5 @@
-package com.mercury.platform.shared.pojo;
+package com.mercury.platform.shared.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

@@ -4,7 +4,7 @@ import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.NotificationEvent;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.callback.TimelineCallback;
@@ -15,7 +15,7 @@ import java.awt.*;
 /**
  * Created by Константин on 29.12.2016.
  */
-public class NotificationFrame extends OverlaidFrame {
+public class NotificationFrame extends AbstractOverlaidFrame {
     private JLabel messageLabel;
     private Timeline showAnimation;
     public NotificationFrame() {

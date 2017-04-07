@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.frame.movable;
 
-import com.mercury.platform.ui.frame.ScalableComponentFrame;
+import com.mercury.platform.ui.frame.AbstractScalableComponentFrame;
 import com.mercury.platform.ui.frame.setup.location.LocationState;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -10,13 +10,13 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public abstract class MovableComponentFrame extends ScalableComponentFrame {
+public abstract class AbstractMovableComponentFrame extends AbstractScalableComponentFrame {
     private MovableFrameConstraints prevConstraints;
     private LocationState moveState = LocationState.DEFAULT;
     protected boolean locationWasChanged = false;
     protected boolean inMoveMode = false;
     protected boolean enableMouseOverBorder = true;
-    protected MovableComponentFrame(String title) {
+    protected AbstractMovableComponentFrame(String title) {
         super(title);
         mainContainer = this.getContentPane();
     }
@@ -101,15 +101,15 @@ public abstract class MovableComponentFrame extends ScalableComponentFrame {
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_MESSAGE, 1));
-                    MovableComponentFrame.this.repaint();
+                    AbstractMovableComponentFrame.this.repaint();
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    if (!MovableComponentFrame.this.getBounds().contains(e.getPoint())) {
+                    if (!AbstractMovableComponentFrame.this.getBounds().contains(e.getPoint())) {
                         getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
                     }
-                    MovableComponentFrame.this.repaint();
+                    AbstractMovableComponentFrame.this.repaint();
                 }
             });
         }

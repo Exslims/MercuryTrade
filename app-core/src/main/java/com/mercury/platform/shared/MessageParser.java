@@ -1,8 +1,8 @@
 package com.mercury.platform.shared;
 
-import com.mercury.platform.shared.pojo.CurrencyMessage;
-import com.mercury.platform.shared.pojo.ItemMessage;
-import com.mercury.platform.shared.pojo.Message;
+import com.mercury.platform.shared.entity.CurrencyMessage;
+import com.mercury.platform.shared.entity.ItemMessage;
+import com.mercury.platform.shared.entity.Message;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Matcher;

@@ -2,9 +2,11 @@ package com.mercury.platform.core.misc;
 
 import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
+import com.mercury.platform.shared.store.DataTransformers;
+import com.mercury.platform.shared.store.MercuryStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,10 +20,16 @@ public class SoundNotifier {
     private final Logger logger = LogManager.getLogger(SoundNotifier.class);
     private boolean dnd = false;
     public SoundNotifier() {
+
+        MercuryStore.INSTANCE.soundSubject.
+                compose(DataTransformers.transformSoundData())
+                .subscribe(
+                        data -> play(data.get("path"), Float.valueOf(data.get("db"))));
+
         EventRouter.CORE.registerHandler(SoundNotificationEvent.WhisperSoundNotificationEvent.class, event -> {
             WhisperNotifierStatus status = ConfigManager.INSTANCE.getWhisperNotifier();
             if (status == WhisperNotifierStatus.ALWAYS ||
-                    ((status == WhisperNotifierStatus.ALTAB) && (AppStarter.APP_STATUS == FrameStates.HIDE))) {
+                    ((status == WhisperNotifierStatus.ALTAB) && (AppStarter.APP_STATUS == FrameVisibleState.HIDE))) {
                 play("app/notification.wav",((SoundNotificationEvent.WhisperSoundNotificationEvent)event).getDb());
             }
         });

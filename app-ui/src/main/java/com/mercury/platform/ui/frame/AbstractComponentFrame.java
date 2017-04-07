@@ -1,7 +1,6 @@
 package com.mercury.platform.ui.frame;
 
-import com.mercury.platform.shared.pojo.FrameSettings;
-import com.mercury.platform.ui.frame.movable.TaskBarFrame;
+import com.mercury.platform.shared.entity.FrameSettings;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.manager.HideSettingsManager;
 import org.pushingpixels.trident.Timeline;
@@ -13,7 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-public abstract class ComponentFrame extends OverlaidFrame{
+public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
     private final int HIDE_TIME = 200;
     private final int SHOW_TIME = 150;
     private final int BORDER_THICKNESS = 1;
@@ -36,7 +35,7 @@ public abstract class ComponentFrame extends OverlaidFrame{
     protected boolean processEResize = true;
     protected boolean processHideEffect = true;
 
-    protected ComponentFrame(String title) {
+    protected AbstractComponentFrame(String title) {
         super(title);
     }
 
@@ -105,25 +104,25 @@ public abstract class ComponentFrame extends OverlaidFrame{
         configManager.saveFrameLocation(this.getClass().getSimpleName(),location);
     }
     protected void onFrameDragged(Point location){
-        ComponentFrame.this.setLocation(location);
+        AbstractComponentFrame.this.setLocation(location);
     }
 
     private class ResizeByWidthMouseMotionListener extends MouseMotionAdapter{
         @Override
         public void mouseDragged(MouseEvent e) {
             if(EResizeSpace) {
-                Point frameLocation = ComponentFrame.this.getLocation();
-                ComponentFrame.this.setSize(new Dimension(e.getLocationOnScreen().x - frameLocation.x, ComponentFrame.this.getHeight()));
+                Point frameLocation = AbstractComponentFrame.this.getLocation();
+                AbstractComponentFrame.this.setSize(new Dimension(e.getLocationOnScreen().x - frameLocation.x, AbstractComponentFrame.this.getHeight()));
             }else if(SEResizeSpace){
-                Point frameLocation = ComponentFrame.this.getLocation();
-                ComponentFrame.this.setSize(new Dimension(e.getLocationOnScreen().x - frameLocation.x, e.getLocationOnScreen().y - frameLocation.y));
+                Point frameLocation = AbstractComponentFrame.this.getLocation();
+                AbstractComponentFrame.this.setSize(new Dimension(e.getLocationOnScreen().x - frameLocation.x, e.getLocationOnScreen().y - frameLocation.y));
             }
         }
         @Override
         public void mouseMoved(MouseEvent e) {
-            int frameWidth = ComponentFrame.this.getWidth();
-            int frameHeight = ComponentFrame.this.getHeight();
-            Point frameLocation = ComponentFrame.this.getLocation();
+            int frameWidth = AbstractComponentFrame.this.getWidth();
+            int frameHeight = AbstractComponentFrame.this.getHeight();
+            Point frameLocation = AbstractComponentFrame.this.getLocation();
             Rectangle ERect = new Rectangle(
                     frameLocation.x + frameWidth - (BORDER_THICKNESS + 8),
                     frameLocation.y,BORDER_THICKNESS+8,frameHeight);
@@ -133,18 +132,18 @@ public abstract class ComponentFrame extends OverlaidFrame{
 
             if(processEResize && ERect.getBounds().contains(e.getLocationOnScreen())) {
                 if(processSEResize && SERect.getBounds().contains(e.getLocationOnScreen())){
-                    ComponentFrame.this.setCursor(new Cursor(Cursor.SE_RESIZE_CURSOR));
+                    AbstractComponentFrame.this.setCursor(new Cursor(Cursor.SE_RESIZE_CURSOR));
                     SEResizeSpace = true;
                     EResizeSpace = false;
                 }else {
-                    ComponentFrame.this.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
+                    AbstractComponentFrame.this.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
                     EResizeSpace = true;
                     SEResizeSpace = false;
                 }
             }else {
                 EResizeSpace = false;
                 SEResizeSpace = false;
-                ComponentFrame.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                AbstractComponentFrame.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         }
     }
@@ -154,19 +153,19 @@ public abstract class ComponentFrame extends OverlaidFrame{
             if(hideAnimationEnable && !isMouseWithInFrame()) {
                 hideTimer.start();
             }
-            Dimension size = ComponentFrame.this.getSize();
+            Dimension size = AbstractComponentFrame.this.getSize();
             if(EResizeSpace){
-                ComponentFrame.this.setMaximumSize(size);
-                ComponentFrame.this.setMinimumSize(size);
-                if(ComponentFrame.this.getClass().getSimpleName().equals("IncMessageFrame")){
-                    configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(),new Dimension(size.width,0));
+                AbstractComponentFrame.this.setMaximumSize(size);
+                AbstractComponentFrame.this.setMinimumSize(size);
+                if(AbstractComponentFrame.this.getClass().getSimpleName().equals("IncMessageFrame")){
+                    configManager.saveFrameSize(AbstractComponentFrame.this.getClass().getSimpleName(),new Dimension(size.width,0));
                 }else {
-                    configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(), size);
+                    configManager.saveFrameSize(AbstractComponentFrame.this.getClass().getSimpleName(), size);
                 }
             }else if(SEResizeSpace){
-                ComponentFrame.this.setMinimumSize(size);
-                ComponentFrame.this.setMaximumSize(size);
-                configManager.saveFrameSize(ComponentFrame.this.getClass().getSimpleName(),ComponentFrame.this.getSize());
+                AbstractComponentFrame.this.setMinimumSize(size);
+                AbstractComponentFrame.this.setMaximumSize(size);
+                configManager.saveFrameSize(AbstractComponentFrame.this.getClass().getSimpleName(),AbstractComponentFrame.this.getSize());
             }
             EResizeSpace = false;
             SEResizeSpace = false;
@@ -174,14 +173,14 @@ public abstract class ComponentFrame extends OverlaidFrame{
 
         @Override
         public void mouseExited(MouseEvent e) {
-            ComponentFrame.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            AbstractComponentFrame.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
             if(EResizeSpace || SEResizeSpace) {
-                Dimension size = configManager.getMinimumFrameSize(ComponentFrame.this.getClass().getSimpleName());
-                ComponentFrame.this.setMinimumSize(size);
+                Dimension size = configManager.getMinimumFrameSize(AbstractComponentFrame.this.getClass().getSimpleName());
+                AbstractComponentFrame.this.setMinimumSize(size);
             }
         }
     }
@@ -199,9 +198,9 @@ public abstract class ComponentFrame extends OverlaidFrame{
         }
         @Override
         public void mouseEntered(MouseEvent e) {
-            ComponentFrame.this.repaint();
+            AbstractComponentFrame.this.repaint();
             hideTimer.stop();
-            if(ComponentFrame.this.getOpacity() < maxOpacity) {
+            if(AbstractComponentFrame.this.getOpacity() < maxOpacity) {
                 showAnimation.play();
             }
         }
@@ -220,7 +219,7 @@ public abstract class ComponentFrame extends OverlaidFrame{
     public class DraggedFrameMotionListener extends MouseAdapter {
         @Override
         public void mouseDragged(MouseEvent e) {
-            e.translatePoint(ComponentFrame.this.getLocation().x - x,ComponentFrame.this.getLocation().y - y);
+            e.translatePoint(AbstractComponentFrame.this.getLocation().x - x,AbstractComponentFrame.this.getLocation().y - y);
             onFrameDragged(new Point(e.getX(),e.getY()));
         }
     }

@@ -3,8 +3,8 @@ package com.mercury.platform.ui.components.panel.message;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.ChatCommandEvent;
 import com.mercury.platform.shared.events.custom.OpenChatEvent;
-import com.mercury.platform.shared.pojo.ItemMessage;
-import com.mercury.platform.shared.pojo.Message;
+import com.mercury.platform.shared.entity.ItemMessage;
+import com.mercury.platform.shared.entity.Message;
 import com.mercury.platform.ui.misc.event.*;
 import lombok.NonNull;
 import org.apache.logging.log4j.LogManager;
@@ -13,10 +13,8 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
+
 //todo proxy
 public class NotificationMessageController implements MessagePanelController {
     private static final Logger log = LogManager.getLogger(NotificationMessageController.class);

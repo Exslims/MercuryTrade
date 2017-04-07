@@ -5,9 +5,9 @@ import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.AddInterceptorEvent;
 import com.mercury.platform.shared.events.custom.RemoveInterceptorEvent;
-import com.mercury.platform.shared.pojo.FrameSettings;
+import com.mercury.platform.shared.entity.FrameSettings;
 import com.mercury.platform.ui.components.panel.chat.ChatFilterPanel;
-import com.mercury.platform.ui.frame.titled.TitledComponentFrame;
+import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.event.PackEvent;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
@@ -21,7 +21,7 @@ import java.awt.event.ComponentEvent;
 import java.util.*;
 import java.util.List;
 
-public class ChatFilterFrame extends TitledComponentFrame{
+public class ChatFilterFrame extends AbstractTitledComponentFrame {
     private ChatFilterSettingsFrame settingsFrame;
     private ChatFilterPanel msgContainer;
     private MessageInterceptor interceptor;

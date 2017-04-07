@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.frame.other;
 
-import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class SetUpLocationFrame extends OverlaidFrame {
+public class SetUpLocationFrame extends AbstractOverlaidFrame {
     public SetUpLocationFrame() {
         super("MercuryTrade");
     }

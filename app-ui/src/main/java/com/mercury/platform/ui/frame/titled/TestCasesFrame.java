@@ -3,8 +3,7 @@ package com.mercury.platform.ui.frame.titled;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
-import com.mercury.platform.shared.pojo.Message;
-import com.mercury.platform.ui.frame.titled.TitledComponentFrame;
+import com.mercury.platform.shared.entity.Message;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -15,7 +14,7 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
-public class TestCasesFrame extends TitledComponentFrame {
+public class TestCasesFrame extends AbstractTitledComponentFrame {
     private List<String> items;
     private List<String> currency;
     private List<String> nickNames;
