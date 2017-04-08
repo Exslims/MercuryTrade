@@ -20,7 +20,7 @@ public class FramesConfigurationService extends BaseConfigurationService<FrameSe
     }
 
     @Override
-    public void save(FrameSettings entity, String key) {
+    public void save() {
 
     }
 }

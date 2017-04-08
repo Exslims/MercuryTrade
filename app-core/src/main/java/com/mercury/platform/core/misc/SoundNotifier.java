@@ -21,13 +21,13 @@ public class SoundNotifier {
     private boolean dnd = false;
     public SoundNotifier() {
 
-        MercuryStore.INSTANCE.soundSubject
-                .compose(DataTransformers.transformSoundData())
-                .subscribe(
-                        data -> play(data.getWavPath(), data.getDb()));
-        MercuryStore.INSTANCE.soundSettingsSubject
-                .subscribe(
-                    data -> play(data.getWavPath(), data.getDb()));
+//        MercuryStore.INSTANCE.soundSubject
+//                .compose(DataTransformers.transformSoundData())
+//                .subscribe(
+//                        data -> play(data.getWavPath(), data.getDb()));
+//        MercuryStore.INSTANCE.soundSettingsSubject
+//                .subscribe(
+//                    data -> play(data.getWavPath(), data.getDb()));
 
         EventRouter.CORE.registerHandler(SoundNotificationEvent.WhisperSoundNotificationEvent.class, event -> {
             WhisperNotifierStatus status = ConfigManager.INSTANCE.getWhisperNotifier();
@@ -44,13 +44,6 @@ public class SoundNotifier {
         });
         EventRouter.CORE.registerHandler(DndModeEvent.class, event -> {
             this.dnd = ((DndModeEvent)event).isDnd();
-        });
-        EventRouter.CORE.registerHandler(SoundNotificationEvent.ClicksSoundNotificationEvent.class, event -> {
-            String[] clicks = {
-                    "app/sounds/click1/button-pressed-10.wav",
-                    "app/sounds/click1/button-pressed-20.wav",
-                    "app/sounds/click1/button-pressed-30.wav"};
-            play(clicks[new Random().nextInt(3)],((SoundNotificationEvent.ClicksSoundNotificationEvent)event).getDb());
         });
     }
 

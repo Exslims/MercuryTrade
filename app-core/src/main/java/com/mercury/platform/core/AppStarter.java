@@ -7,6 +7,9 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.UpdateManager;
+import com.mercury.platform.shared.config.BaseConfigManager;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.MercuryDataSource;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.sun.jna.Native;
@@ -19,9 +22,6 @@ import java.util.TimerTask;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-/**
- * Created by Константин on 31.12.2016.
- */
 public class AppStarter {
     private static final Logger logger = LogManager.getLogger(AppStarter.class.getSimpleName());
     public static FrameVisibleState APP_STATUS = FrameVisibleState.HIDE;
@@ -31,6 +31,10 @@ public class AppStarter {
     private boolean updating = false;
 
     public void startApplication(){
+//        BaseConfigManager configuration = new BaseConfigManager(new MercuryDataSource());
+//        configuration.load();
+//        Configuration.set(configuration);
+
         ConfigManager.INSTANCE.load();
         new SoundNotifier();
         new ChatHelper();

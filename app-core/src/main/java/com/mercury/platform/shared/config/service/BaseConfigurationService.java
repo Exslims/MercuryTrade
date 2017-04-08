@@ -1,13 +1,15 @@
 package com.mercury.platform.shared.config.service;
 
 import com.mercury.platform.shared.config.DataSource;
+import com.mercury.platform.shared.config.JSONHelper;
 
-/**
- * Created by Константин on 08.04.2017.
- */
+
 public abstract class BaseConfigurationService<T,K> implements ConfigurationService<T,K>{
-    private DataSource dataSource;
+    protected DataSource dataSource;
+    protected JSONHelper jsonHelper;
+
     protected BaseConfigurationService(DataSource dataSource){
         this.dataSource = dataSource;
+        this.jsonHelper = new JSONHelper(dataSource);
     }
 }

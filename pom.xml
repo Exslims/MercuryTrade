@@ -36,6 +36,7 @@
         <expiringmap.version>0.5.8</expiringmap.version>
         <rxjava.version>1.2.9</rxjava.version>
         <fastjson.version>1.2.24</fastjson.version>
+        <jackson.version>2.8.7</jackson.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -133,9 +134,9 @@
                 <version>${rxjava.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${fastjson.version}</version>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.8.0</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
