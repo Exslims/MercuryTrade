@@ -475,19 +475,19 @@ public class ConfigManager {
     }
     public Map<String,FrameSettings> getDefaultFramesSettings(){
         Map<String, FrameSettings> defaultFramesSettings = new HashMap<>();
-//        defaultFramesSettings.put("TaskBarFrame",new FrameSettings(new Point(400, 500),new Dimension(109,20)));
-//        defaultFramesSettings.put("IncMessageFrame",new FrameSettings(new Point(700, 600),new Dimension(315,0)));
-//        defaultFramesSettings.put("OutMessageFrame",new FrameSettings(new Point(200, 500),new Dimension(280,115)));
-//        defaultFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(1400, 500),new Dimension(400,100)));
-//        defaultFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(540,500)));
-//        defaultFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 500),new Dimension(280,400)));
-//        defaultFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
-//        defaultFramesSettings.put("ChatFilterFrame",new FrameSettings(new Point(400, 600),new Dimension(500,300)));
-//        defaultFramesSettings.put("ItemsGridFrame",new FrameSettings(new Point(12, 79),new Dimension(641,718)));
-//        defaultFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,100)));
-//        defaultFramesSettings.put("ChatFilterSettingsFrame",new FrameSettings(new Point(400, 600),new Dimension(320,200)));
-//        defaultFramesSettings.put("GamePathChooser",new FrameSettings(new Point(400, 600),new Dimension(520,30)));
-//        defaultFramesSettings.put("CurrencySearchFrame",new FrameSettings(new Point(400, 600),new Dimension(400,300)));
+        defaultFramesSettings.put("TaskBarFrame",new FrameSettings(new Point(400, 500),new Dimension(109,20)));
+        defaultFramesSettings.put("IncMessageFrame",new FrameSettings(new Point(700, 600),new Dimension(315,0)));
+        defaultFramesSettings.put("OutMessageFrame",new FrameSettings(new Point(200, 500),new Dimension(280,115)));
+        defaultFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(1400, 500),new Dimension(400,100)));
+        defaultFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(540,500)));
+        defaultFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 500),new Dimension(280,400)));
+        defaultFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
+        defaultFramesSettings.put("ChatFilterFrame",new FrameSettings(new Point(400, 600),new Dimension(500,300)));
+        defaultFramesSettings.put("ItemsGridFrame",new FrameSettings(new Point(12, 79),new Dimension(641,718)));
+        defaultFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,100)));
+        defaultFramesSettings.put("ChatFilterSettingsFrame",new FrameSettings(new Point(400, 600),new Dimension(320,200)));
+        defaultFramesSettings.put("GamePathChooser",new FrameSettings(new Point(400, 600),new Dimension(520,30)));
+        defaultFramesSettings.put("CurrencySearchFrame",new FrameSettings(new Point(400, 600),new Dimension(400,300)));
         return defaultFramesSettings;
     }
     public Dimension getMinimumFrameSize(String frameName){

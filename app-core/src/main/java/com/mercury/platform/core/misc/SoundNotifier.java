@@ -24,10 +24,10 @@ public class SoundNotifier {
         MercuryStore.INSTANCE.soundSubject
                 .compose(DataTransformers.transformSoundData())
                 .subscribe(
-                        data -> play(data.get("path"), Float.valueOf(data.get("db"))));
+                        data -> play(data.getWavPath(), data.getDb()));
         MercuryStore.INSTANCE.soundSettingsSubject
                 .subscribe(
-                    data -> play(data.get("path"), Float.valueOf(data.get("db"))));
+                    data -> play(data.getWavPath(), data.getDb()));
 
         EventRouter.CORE.registerHandler(SoundNotificationEvent.WhisperSoundNotificationEvent.class, event -> {
             WhisperNotifierStatus status = ConfigManager.INSTANCE.getWhisperNotifier();

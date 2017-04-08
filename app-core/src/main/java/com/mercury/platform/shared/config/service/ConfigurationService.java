@@ -1,4 +1,4 @@
-package com.mercury.platform.shared.config;
+package com.mercury.platform.shared.config.service;
 
 
 public interface ConfigurationService<T, K> {
