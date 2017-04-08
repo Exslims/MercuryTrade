@@ -21,10 +21,13 @@ public class SoundNotifier {
     private boolean dnd = false;
     public SoundNotifier() {
 
-        MercuryStore.INSTANCE.soundSubject.
-                compose(DataTransformers.transformSoundData())
+        MercuryStore.INSTANCE.soundSubject
+                .compose(DataTransformers.transformSoundData())
                 .subscribe(
                         data -> play(data.get("path"), Float.valueOf(data.get("db"))));
+        MercuryStore.INSTANCE.soundSettingsSubject
+                .subscribe(
+                    data -> play(data.get("path"), Float.valueOf(data.get("db"))));
 
         EventRouter.CORE.registerHandler(SoundNotificationEvent.WhisperSoundNotificationEvent.class, event -> {
             WhisperNotifierStatus status = ConfigManager.INSTANCE.getWhisperNotifier();
