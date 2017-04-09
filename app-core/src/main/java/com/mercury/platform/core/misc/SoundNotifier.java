@@ -5,8 +5,6 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
-import com.mercury.platform.shared.store.DataTransformers;
-import com.mercury.platform.shared.store.MercuryStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -44,6 +42,13 @@ public class SoundNotifier {
         });
         EventRouter.CORE.registerHandler(DndModeEvent.class, event -> {
             this.dnd = ((DndModeEvent)event).isDnd();
+        });
+        EventRouter.CORE.registerHandler(SoundNotificationEvent.ClicksSoundNotificationEvent.class, event -> {
+            String[] clicks = {
+                    "app/sounds/click1/button-pressed-10.wav",
+                    "app/sounds/click1/button-pressed-20.wav",
+                    "app/sounds/click1/button-pressed-30.wav"};
+            play(clicks[new Random().nextInt(3)],((SoundNotificationEvent.ClicksSoundNotificationEvent)event).getDb());
         });
     }
 

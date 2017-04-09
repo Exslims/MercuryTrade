@@ -31,9 +31,9 @@ public class AppStarter {
     private boolean updating = false;
 
     public void startApplication(){
-//        BaseConfigManager configuration = new BaseConfigManager(new MercuryDataSource());
-//        configuration.load();
-//        Configuration.set(configuration);
+        BaseConfigManager configuration = new BaseConfigManager(new MercuryDataSource());
+        configuration.load();
+        Configuration.set(configuration);
 
         ConfigManager.INSTANCE.load();
         new SoundNotifier();
