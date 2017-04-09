@@ -26,11 +26,11 @@ public class BaseConfigManager implements ConfigManager {
         this.soundConfigurationService = new SoundConfigurationService(dataSource);
     }
     @Override
-    public ConfigurationService<FrameSettings,String> framesConfigurationService() {
+    public ConfigurationService<FrameSettings,String> framesConfiguration() {
         return framesConfigurationService;
     }
     @Override
-    public ConfigurationService<SoundDescriptor,String> soundConfigurationService() {
+    public ConfigurationService<SoundDescriptor,String> soundConfiguration() {
         return soundConfigurationService;
     }
     public void load(){

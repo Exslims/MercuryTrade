@@ -13,4 +13,5 @@ public class MercuryStore {
 
     public final PublishSubject<SoundType> soundSubject = PublishSubject.create();
     public final PublishSubject<SoundDescriptor> soundSettingsSubject = PublishSubject.create();
+    public final PublishSubject<Boolean> dndSubject = PublishSubject.create();
 }

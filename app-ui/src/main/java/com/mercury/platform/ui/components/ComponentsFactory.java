@@ -1,8 +1,10 @@
 package com.mercury.platform.ui.components;
 
+import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.HideTooltipEvent;
 import com.mercury.platform.shared.events.custom.SoundNotificationEvent;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.misc.event.ShowTooltipEvent;
 import com.mercury.platform.ui.components.fields.style.MercuryComboBoxUI;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -84,7 +86,7 @@ public class ComponentsFactory{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    EventRouter.CORE.fireEvent(new SoundNotificationEvent.ClicksSoundNotificationEvent());
+                    MercuryStore.INSTANCE.soundSubject.onNext(SoundType.CLICKS);
                 }
             }
         });
@@ -197,7 +199,7 @@ public class ComponentsFactory{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    EventRouter.CORE.fireEvent(new SoundNotificationEvent.ClicksSoundNotificationEvent());
+                    MercuryStore.INSTANCE.soundSubject.onNext(SoundType.CLICKS);
                 }
             }
         });

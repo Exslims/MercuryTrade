@@ -8,6 +8,7 @@ import java.util.*;
 
 
 public class SoundConfigurationService extends BaseConfigurationService<SoundDescriptor,String> {
+    private static final String OBJECT_KEY = "sound";
     private Map<String,SoundDescriptor> data;
     public SoundConfigurationService(DataSource dataSource) {
         super(dataSource);
@@ -16,11 +17,10 @@ public class SoundConfigurationService extends BaseConfigurationService<SoundDes
 
     @Override
     public void load(){
-        this.data = jsonHelper.readMapData("sound", new TypeToken<Map<String, SoundDescriptor>>() {});
+        this.data = jsonHelper.readMapData(OBJECT_KEY, new TypeToken<Map<String, SoundDescriptor>>() {});
         if(data == null) {
             toDefault();
         }
-        System.out.println(this.data);
     }
 
     @Override
@@ -30,12 +30,13 @@ public class SoundConfigurationService extends BaseConfigurationService<SoundDes
 
     @Override
     public void save() {
-//        jsonHelper.writeMapObject(new KeyData<>("sound",this.data));
+        jsonHelper.writeMapObject(OBJECT_KEY,this.data);
     }
 
     private void toDefault(){
         Map<String, SoundDescriptor> defaultSt = getDefault();
-        jsonHelper.writeMapObject("sound",defaultSt);
+        this.data = defaultSt;
+        jsonHelper.writeMapObject(OBJECT_KEY,defaultSt);
     }
     private Map<String,SoundDescriptor> getDefault(){
         Map<String,SoundDescriptor> defaultSettings = new HashMap<>();

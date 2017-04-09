@@ -32,15 +32,24 @@ public class JSONHelper {
         }catch (IOException e){
             logger.error(e);
             return null;
+        }catch (IllegalStateException e1) {
+            return null;
         }
     }
     public void writeMapObject(String key, Map<?,?> object){
         try {
             Gson gson = new GsonBuilder().enableComplexMapKeySerialization().setPrettyPrinting().create();
-            try(JsonWriter reader = new JsonWriter(new FileWriter(dataSource.getConfigurationFilePath()))) {
+            JsonParser jsonParser = new JsonParser();
+
+            try(JsonWriter writer = new JsonWriter(new FileWriter(dataSource.getConfigurationFilePath()));
+                JsonReader reader = new JsonReader(new FileReader(dataSource.getConfigurationFilePath()))) {
+//                JsonElement jsonElement = jsonParser.parse(reader)
+//                        .getAsJsonObject()
+//                        .get(key);
+//                jsonElement.ad
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.add(key,gson.toJsonTree(object));
-                gson.toJson(jsonObject,reader);
+                gson.toJson(jsonObject,writer);
             }
         }catch (IOException e){
             logger.error(e);

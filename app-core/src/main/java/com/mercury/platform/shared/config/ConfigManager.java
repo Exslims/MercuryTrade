@@ -6,6 +6,6 @@ import com.mercury.platform.shared.entity.SoundDescriptor;
 
 
 public interface ConfigManager {
-    ConfigurationService<FrameSettings,String> framesConfigurationService();
-    ConfigurationService<SoundDescriptor,String> soundConfigurationService();
+    ConfigurationService<FrameSettings,String> framesConfiguration();
+    ConfigurationService<SoundDescriptor,String> soundConfiguration();
 }

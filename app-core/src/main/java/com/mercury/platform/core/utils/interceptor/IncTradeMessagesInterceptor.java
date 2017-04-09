@@ -20,8 +20,7 @@ public class IncTradeMessagesInterceptor extends MessageInterceptor {
     protected void process(String message) {
         Message parsedMessage = messageParser.parse(StringUtils.substringAfter(message,"@"));
         if(parsedMessage != null) {
-            EventRouter.CORE.fireEvent(new SoundNotificationEvent.WhisperSoundNotificationEvent());
-//            MercuryStore.INSTANCE.soundSubject.onNext(SoundType.MESSAGE);
+            MercuryStore.INSTANCE.soundSubject.onNext(SoundType.MESSAGE);
             EventRouter.CORE.fireEvent(new NewWhispersEvent(parsedMessage));
         }
     }
