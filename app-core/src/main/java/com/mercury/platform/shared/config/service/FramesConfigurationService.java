@@ -3,6 +3,8 @@ package com.mercury.platform.shared.config.service;
 import com.mercury.platform.shared.config.DataSource;
 import com.mercury.platform.shared.entity.FrameSettings;
 
+import java.util.Map;
+
 
 public class FramesConfigurationService extends BaseConfigurationService<FrameSettings,String> {
     public FramesConfigurationService(DataSource dataSource) {
@@ -16,6 +18,11 @@ public class FramesConfigurationService extends BaseConfigurationService<FrameSe
 
     @Override
     public FrameSettings get(String key) {
+        return null;
+    }
+
+    @Override
+    public Map<String, FrameSettings> getMap() {
         return null;
     }
 

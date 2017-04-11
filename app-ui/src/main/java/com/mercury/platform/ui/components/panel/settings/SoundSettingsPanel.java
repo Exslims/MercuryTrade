@@ -1,7 +1,8 @@
 package com.mercury.platform.ui.components.panel.settings;
 
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.SoundNotificationEvent;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.entity.SoundDescriptor;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -11,14 +12,26 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SoundSettingsPanel extends ConfigurationPanel {
+    private Map<String,String> wavPaths;
+
+    private JSlider notificationSlider;
+    private JSlider chatScannerSlider;
+    private JSlider clicksSlider;
+    private JSlider updateSlider;
 
     public SoundSettingsPanel() {
         super();
+        this.wavPaths = new HashMap<>();
+        this.wavPaths.put("notification","app/notification.wav");
+        this.wavPaths.put("chat_scanner","app/chat-filter.wav");
+        this.wavPaths.put("clicks","app/sounds/click1/button-pressed-10.wav");
+        this.wavPaths.put("update","app/patch_tone.wav");
         this.createUI();
     }
 
@@ -29,6 +42,8 @@ public class SoundSettingsPanel extends ConfigurationPanel {
     }
 
     private JPanel getVolumePanel(){
+        Map<String, SoundDescriptor> map = Configuration.get().soundConfiguration().getMap();
+
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
 
         JLabel volumeLabel = componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_DEFAULT, TextAlignment.LEFTOP, 17f, "Volume");
@@ -44,44 +59,48 @@ public class SoundSettingsPanel extends ConfigurationPanel {
                 BorderFactory.createMatteBorder(0,0,1,0,AppThemeColor.MSG_HEADER_BORDER),
                 BorderFactory.createEmptyBorder(3,0,3,0)));
 
-        JSlider notificationSlider = componentsFactory.getSlider(-40, 6, 0);
+        notificationSlider = componentsFactory.getSlider(-40, 6,
+                map.get("notification").getDb().intValue() == -80? -40: map.get("notification").getDb().intValue());
         notificationSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                EventRouter.CORE.fireEvent(
-                        new SoundNotificationEvent.WhisperSoundNotificationEvent(
-                                notificationSlider.getValue() == -40 ? -80f : (float)notificationSlider.getValue())
-                );
+                MercuryStore.INSTANCE.soundSettingsSubject.onNext(new SoundDescriptor(
+                        wavPaths.get("notification"),
+                        notificationSlider.getValue() == -40 ? -80f : (float)notificationSlider.getValue()
+                ));
             }
         });
-        JSlider chatScannerSlider = componentsFactory.getSlider(-40, 6, 0);
+        chatScannerSlider = componentsFactory.getSlider(-40, 6,
+                map.get("chat_scanner").getDb().intValue() == -80? -40: map.get("chat_scanner").getDb().intValue());
         chatScannerSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                EventRouter.CORE.fireEvent(
-                        new SoundNotificationEvent.ChatScannerSoundNotificationEvent(
-                                chatScannerSlider.getValue() == -40 ? -80f : (float)chatScannerSlider.getValue())
-                );
+                MercuryStore.INSTANCE.soundSettingsSubject.onNext(new SoundDescriptor(
+                        wavPaths.get("chat_scanner"),
+                        chatScannerSlider.getValue() == -40 ? -80f : (float)chatScannerSlider.getValue()
+                ));
             }
         });
-        JSlider clicksSlider = componentsFactory.getSlider(-40, 6, 0);
+        clicksSlider = componentsFactory.getSlider(-40, 6,
+                map.get("clicks").getDb().intValue() == -80? -40: map.get("clicks").getDb().intValue());
         clicksSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                EventRouter.CORE.fireEvent(
-                        new SoundNotificationEvent.ClicksSoundNotificationEvent(
-                                clicksSlider.getValue() == -40 ? -80f : (float)clicksSlider.getValue())
-                );
+                MercuryStore.INSTANCE.soundSettingsSubject.onNext(new SoundDescriptor(
+                        wavPaths.get("clicks"),
+                        clicksSlider.getValue() == -40 ? -80f : (float)clicksSlider.getValue()
+                ));
             }
         });
-        JSlider update = componentsFactory.getSlider(-40, 6, 0);
-        update.addMouseListener(new MouseAdapter() {
+        updateSlider = componentsFactory.getSlider(-40, 6,
+                map.get("update").getDb().intValue() == -80? -40: map.get("update").getDb().intValue());
+        updateSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                EventRouter.CORE.fireEvent(
-                        new SoundNotificationEvent.UpdateSoundNotificationEvent(
-                                clicksSlider.getValue() == -40 ? -80f : (float)update.getValue())
-                );
+                MercuryStore.INSTANCE.soundSettingsSubject.onNext(new SoundDescriptor(
+                        wavPaths.get("update"),
+                        updateSlider.getValue() == -40 ? -80f : (float)updateSlider.getValue()
+                ));
             }
         });
         container.add(componentsFactory.getTextLabel("Notification:",FontStyle.REGULAR));
@@ -91,7 +110,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
         container.add(componentsFactory.getTextLabel("Clicks",FontStyle.REGULAR));
         container.add(clicksSlider);
         container.add(componentsFactory.getTextLabel("Update notification",FontStyle.REGULAR));
-        container.add(update);
+        container.add(updateSlider);
 
         root.add(volumeLabel,BorderLayout.PAGE_START);
         root.add(container,BorderLayout.CENTER);
@@ -147,11 +166,29 @@ public class SoundSettingsPanel extends ConfigurationPanel {
 
     @Override
     public boolean processAndSave() {
+        Map<String, SoundDescriptor> map = Configuration.get().soundConfiguration().getMap();
+        map.get("notification")
+                .setDb(notificationSlider.getValue() == -40 ? -80f : (float)notificationSlider.getValue());
+        map.get("chat_scanner")
+                .setDb(chatScannerSlider.getValue() == -40 ? -80f : (float)chatScannerSlider.getValue());
+        map.get("clicks")
+                .setDb(clicksSlider.getValue() == -40 ? -80f : (float)clicksSlider.getValue());
+        map.get("update")
+                .setDb(updateSlider.getValue() == -40 ? -80f : (float)updateSlider.getValue());
+        Configuration.get().soundConfiguration().save();
         return true;
     }
 
     @Override
     public void restore() {
-
+        Map<String, SoundDescriptor> map = Configuration.get().soundConfiguration().getMap();
+        notificationSlider.setValue(
+                map.get("notification").getDb().intValue() == -80? -40: map.get("notification").getDb().intValue());
+        chatScannerSlider.setValue(
+                map.get("chat_scanner").getDb().intValue() == -80? -40: map.get("chat_scanner").getDb().intValue());
+        clicksSlider.setValue(
+                map.get("clicks").getDb().intValue() == -80? -40: map.get("clicks").getDb().intValue());
+        updateSlider.setValue(
+                map.get("update").getDb().intValue() == -80? -40: map.get("update").getDb().intValue());
     }
 }

@@ -29,6 +29,11 @@ public class SoundConfigurationService extends BaseConfigurationService<SoundDes
     }
 
     @Override
+    public Map<String, SoundDescriptor> getMap() {
+        return this.data;
+    }
+
+    @Override
     public void save() {
         jsonHelper.writeMapObject(OBJECT_KEY,this.data);
     }

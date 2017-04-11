@@ -39,14 +39,8 @@ public class JSONHelper {
     public void writeMapObject(String key, Map<?,?> object){
         try {
             Gson gson = new GsonBuilder().enableComplexMapKeySerialization().setPrettyPrinting().create();
-            JsonParser jsonParser = new JsonParser();
 
-            try(JsonWriter writer = new JsonWriter(new FileWriter(dataSource.getConfigurationFilePath()));
-                JsonReader reader = new JsonReader(new FileReader(dataSource.getConfigurationFilePath()))) {
-//                JsonElement jsonElement = jsonParser.parse(reader)
-//                        .getAsJsonObject()
-//                        .get(key);
-//                jsonElement.ad
+            try(JsonWriter writer = new JsonWriter(new FileWriter(dataSource.getConfigurationFilePath()))) {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.add(key,gson.toJsonTree(object));
                 gson.toJson(jsonObject,writer);
