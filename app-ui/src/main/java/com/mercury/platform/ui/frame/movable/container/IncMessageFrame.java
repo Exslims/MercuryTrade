@@ -7,6 +7,7 @@ import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.entity.ItemMessage;
 import com.mercury.platform.shared.entity.Message;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -94,8 +95,8 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
 
     @Override
     public void initHandlers() {
-        EventRouter.CORE.registerHandler(DndModeEvent.class, event -> {
-            this.dnd = ((DndModeEvent)event).isDnd();
+        MercuryStore.INSTANCE.dndSubject.subscribe(state -> {
+            this.dnd = state;
             if(dnd){
                 this.setVisible(false);
                 expandAllFrame.setVisible(false);
@@ -109,9 +110,8 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
                 setUpExpandButton();
             }
         });
-        EventRouter.CORE.registerHandler(NewWhispersEvent.class, event -> {
+        MercuryStore.INSTANCE.messageSubject.subscribe(message -> {
             SwingUtilities.invokeLater(()-> {
-                Message message = ((NewWhispersEvent) event).getMessage();
                 if(!currentMessages.containsKey(message)) {
                     addMessage(message);
                 }

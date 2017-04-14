@@ -3,11 +3,11 @@ package com.mercury.platform.ui.frame.other;
 import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.ChatCommandEvent;
 import com.mercury.platform.shared.events.custom.OutTradeMessageEvent;
 import com.mercury.platform.shared.entity.CurrencyMessage;
 import com.mercury.platform.shared.entity.ItemMessage;
 import com.mercury.platform.shared.entity.Message;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.AbstractComponentFrame;
@@ -66,7 +66,7 @@ public class OutMessageFrame extends AbstractComponentFrame {
         hoIn.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.CORE.fireEvent(new ChatCommandEvent("/hideout " + message.getWhisperNickname()));
+                MercuryStore.INSTANCE.chatCommandSubject.onNext("/hideout " + message.getWhisperNickname());
             }
         });
         miscPanel.add(hoIn);
@@ -74,7 +74,7 @@ public class OutMessageFrame extends AbstractComponentFrame {
         hoOut.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.CORE.fireEvent(new ChatCommandEvent("/hideout"));
+                MercuryStore.INSTANCE.chatCommandSubject.onNext("/hideout");
             }
         });
         miscPanel.add(hoOut);

@@ -4,10 +4,9 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.MercuryEvent;
-import com.mercury.platform.shared.events.custom.NewWhispersEvent;
 import com.mercury.platform.shared.entity.FrameSettings;
 import com.mercury.platform.shared.entity.Message;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.message.MessagePanel;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
@@ -126,20 +125,17 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
 
     @Override
     public void initHandlers() {
-        EventRouter.CORE.registerHandler(NewWhispersEvent.class, (MercuryEvent event) -> {
-            SwingUtilities.invokeLater(()-> {
-                Message message = ((NewWhispersEvent) event).getMessage();
-                HistoryManager.INSTANCE.add(message);
-                MessagePanel messagePanel = new MessagePanel(
-                        message,
-                        MessagePanelStyle.HISTORY,
-                        new NotificationMessageController(message),
-                        this.componentsFactory);
-                mainContainer.add(messagePanel);
-                trimContainer();
-                this.pack();
-            });
-        });
+        MercuryStore.INSTANCE.messageSubject.subscribe(message -> SwingUtilities.invokeLater(()-> {
+            HistoryManager.INSTANCE.add(message);
+            MessagePanel messagePanel = new MessagePanel(
+                    message,
+                    MessagePanelStyle.HISTORY,
+                    new NotificationMessageController(message),
+                    this.componentsFactory);
+            mainContainer.add(messagePanel);
+            trimContainer();
+            this.pack();
+        }));
         EventRouter.UI.registerHandler(ReloadMessageEvent.class,event -> {
             onReloadMessage(((ReloadMessageEvent)event).getPanel());
         });

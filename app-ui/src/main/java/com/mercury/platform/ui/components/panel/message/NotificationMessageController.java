@@ -1,10 +1,9 @@
 package com.mercury.platform.ui.components.panel.message;
 
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.ChatCommandEvent;
-import com.mercury.platform.shared.events.custom.OpenChatEvent;
 import com.mercury.platform.shared.entity.ItemMessage;
 import com.mercury.platform.shared.entity.Message;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.misc.event.*;
 import lombok.NonNull;
 import org.apache.logging.log4j.LogManager;
@@ -25,30 +24,29 @@ public class NotificationMessageController implements MessagePanelController {
     }
     @Override
     public void performInvite() {
-        EventRouter.CORE.fireEvent(new ChatCommandEvent("/invite " + message.getWhisperNickname()));
+        MercuryStore.INSTANCE.chatCommandSubject.onNext("/invite " + message.getWhisperNickname());
         showITH();
     }
 
     @Override
     public void performKick() {
-        EventRouter.CORE.fireEvent(new ChatCommandEvent("/kick " + message.getWhisperNickname()));
+        MercuryStore.INSTANCE.chatCommandSubject.onNext("/kick " + message.getWhisperNickname());
 
     }
 
     @Override
     public void performOfferTrade() {
-        EventRouter.CORE.fireEvent(new ChatCommandEvent("/tradewith " + message.getWhisperNickname()));
+        MercuryStore.INSTANCE.chatCommandSubject.onNext("/tradewith " + message.getWhisperNickname());
     }
 
     @Override
     public void performOpenChat() {
-        EventRouter.CORE.fireEvent(new OpenChatEvent(message.getWhisperNickname()));
+        MercuryStore.INSTANCE.openChatSubject.onNext(message.getWhisperNickname());
     }
 
     @Override
     public void performResponse(@NonNull String responseText) {
-
-        EventRouter.CORE.fireEvent(new ChatCommandEvent("@" + message.getWhisperNickname() + " " + responseText));
+        MercuryStore.INSTANCE.chatCommandSubject.onNext("@" + message.getWhisperNickname() + " " + responseText);
     }
 
     @Override

@@ -81,7 +81,7 @@ public class ConfigManager {
     public ConfigManager() {
         minimumFrameSize = new HashMap<>();
         minimumFrameSize.put("TaskBarFrame",new Dimension(109,20));
-        minimumFrameSize.put("IncMessageFrame",new Dimension(315,10));
+        minimumFrameSize.put("IncMessageFrame",new Dimension(360,10));
         minimumFrameSize.put("OutMessageFrame",new Dimension(280,115));
         minimumFrameSize.put("TestCasesFrame",new Dimension(400,100));
         minimumFrameSize.put("SettingsFrame",new Dimension(540,400));

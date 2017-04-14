@@ -5,7 +5,6 @@ import com.mercury.platform.core.update.core.holder.ApplicationHolder;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.AlertEvent;
 import com.mercury.platform.shared.events.custom.ShowPatchNotesEvent;
-import com.mercury.platform.shared.events.custom.SoundNotificationEvent;
 import com.mercury.platform.shared.events.custom.UpdateInfoEvent;
 import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.update.AlreadyLatestUpdateMessage;

@@ -59,8 +59,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
                 BorderFactory.createMatteBorder(0,0,1,0,AppThemeColor.MSG_HEADER_BORDER),
                 BorderFactory.createEmptyBorder(3,0,3,0)));
 
-        notificationSlider = componentsFactory.getSlider(-40, 6,
-                map.get("notification").getDb().intValue() == -80? -40: map.get("notification").getDb().intValue());
+        notificationSlider = componentsFactory.getSlider(-40, 6, map.get("notification").getDb().intValue());
         notificationSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -70,8 +69,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
                 ));
             }
         });
-        chatScannerSlider = componentsFactory.getSlider(-40, 6,
-                map.get("chat_scanner").getDb().intValue() == -80? -40: map.get("chat_scanner").getDb().intValue());
+        chatScannerSlider = componentsFactory.getSlider(-40, 6, map.get("chat_scanner").getDb().intValue());
         chatScannerSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -81,8 +79,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
                 ));
             }
         });
-        clicksSlider = componentsFactory.getSlider(-40, 6,
-                map.get("clicks").getDb().intValue() == -80? -40: map.get("clicks").getDb().intValue());
+        clicksSlider = componentsFactory.getSlider(-40, 6, map.get("clicks").getDb().intValue());
         clicksSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -92,8 +89,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
                 ));
             }
         });
-        updateSlider = componentsFactory.getSlider(-40, 6,
-                map.get("update").getDb().intValue() == -80? -40: map.get("update").getDb().intValue());
+        updateSlider = componentsFactory.getSlider(-40, 6, map.get("update").getDb().intValue());
         updateSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -168,13 +164,13 @@ public class SoundSettingsPanel extends ConfigurationPanel {
     public boolean processAndSave() {
         Map<String, SoundDescriptor> map = Configuration.get().soundConfiguration().getMap();
         map.get("notification")
-                .setDb(notificationSlider.getValue() == -40 ? -80f : (float)notificationSlider.getValue());
+                .setDb((float)notificationSlider.getValue());
         map.get("chat_scanner")
-                .setDb(chatScannerSlider.getValue() == -40 ? -80f : (float)chatScannerSlider.getValue());
+                .setDb((float)chatScannerSlider.getValue());
         map.get("clicks")
-                .setDb(clicksSlider.getValue() == -40 ? -80f : (float)clicksSlider.getValue());
+                .setDb((float)clicksSlider.getValue());
         map.get("update")
-                .setDb(updateSlider.getValue() == -40 ? -80f : (float)updateSlider.getValue());
+                .setDb((float)updateSlider.getValue());
         Configuration.get().soundConfiguration().save();
         return true;
     }
@@ -183,12 +179,12 @@ public class SoundSettingsPanel extends ConfigurationPanel {
     public void restore() {
         Map<String, SoundDescriptor> map = Configuration.get().soundConfiguration().getMap();
         notificationSlider.setValue(
-                map.get("notification").getDb().intValue() == -80? -40: map.get("notification").getDb().intValue());
+                map.get("notification").getDb().intValue());
         chatScannerSlider.setValue(
-                map.get("chat_scanner").getDb().intValue() == -80? -40: map.get("chat_scanner").getDb().intValue());
+                map.get("chat_scanner").getDb().intValue());
         clicksSlider.setValue(
-                map.get("clicks").getDb().intValue() == -80? -40: map.get("clicks").getDb().intValue());
+                map.get("clicks").getDb().intValue());
         updateSlider.setValue(
-                map.get("update").getDb().intValue() == -80? -40: map.get("update").getDb().intValue());
+                map.get("update").getDb().intValue());
     }
 }

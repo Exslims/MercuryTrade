@@ -1,9 +1,11 @@
 package com.mercury.platform.ui.frame.titled;
 
+import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.entity.Message;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -176,7 +178,7 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
                         random.nextInt(12) + 1,
                         offer.get(random.nextInt(offer.size()))
                 ));
-                EventRouter.CORE.fireEvent(new NewWhispersEvent(message));
+                MercuryStore.INSTANCE.messageSubject.onNext(message);
             }
         });
         testPanel.add(button,buttonColumn);
@@ -198,7 +200,7 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
                         leagues.get(random.nextInt(leagues.size())),
                         offer.get(random.nextInt(offer.size()))
                 ));
-                EventRouter.CORE.fireEvent(new NewWhispersEvent(message));
+                MercuryStore.INSTANCE.messageSubject.onNext(message);
             }
         });
         testPanel.add(button1,buttonColumn);
@@ -213,7 +215,6 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
         button2.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.CORE.fireEvent(new SoundNotificationEvent.WhisperSoundNotificationEvent());
                 String nickname = nickNames.get(random.nextInt(nickNames.size()));
                 Message message = parser.parse(String.format(currencyTemplate,
                         nickname,
@@ -224,7 +225,8 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
                         leagues.get(random.nextInt(leagues.size())),
                         offer.get(random.nextInt(offer.size()))
                 ));
-                EventRouter.CORE.fireEvent(new NewWhispersEvent(message));
+                MercuryStore.INSTANCE.messageSubject.onNext(message);
+                MercuryStore.INSTANCE.soundSubject.onNext(SoundType.MESSAGE);
 
                 Timer joinedTimer = new Timer(1000,null);
                 joinedTimer.addActionListener(e1 -> {

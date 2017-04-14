@@ -236,7 +236,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
         Double currForSaleCount = message.getCurrForSaleCount();
         Double curCount = message.getCurCount();
         double rate = curCount / currForSaleCount;
-        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        DecimalFormat decimalFormat = new DecimalFormat("#.####");
         JPanel ratePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         ratePanel.add(componentsFactory.
                 getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 18f, null,"("));

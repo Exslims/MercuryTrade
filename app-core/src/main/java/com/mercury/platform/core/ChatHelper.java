@@ -2,10 +2,7 @@ package com.mercury.platform.core;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HasEventHandlers;
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.ChatCommandEvent;
-import com.mercury.platform.shared.events.custom.DndModeEvent;
-import com.mercury.platform.shared.events.custom.OpenChatEvent;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.sun.jna.Native;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -105,16 +102,11 @@ public class ChatHelper implements HasEventHandlers {
 
     @Override
     public void initHandlers() {
-        EventRouter.CORE.registerHandler(ChatCommandEvent.class, event
-                -> executeMessage(((ChatCommandEvent)event).getMessage()));
-
-        EventRouter.CORE.registerHandler(OpenChatEvent.class, event -> {
-            openChat(((OpenChatEvent) event).getWhisper());
-        });
-        EventRouter.CORE.registerHandler(DndModeEvent.class, event -> {
-            boolean dnd = ((DndModeEvent) event).isDnd();
+        MercuryStore.INSTANCE.chatCommandSubject.subscribe(this::executeMessage);
+        MercuryStore.INSTANCE.openChatSubject.subscribe(this::openChat);
+        MercuryStore.INSTANCE.dndSubject.subscribe(state -> {
             if(ConfigManager.INSTANCE.isInGameDnd()){
-                if(dnd) {
+                if(state) {
                     executeMessage("/dnd " + ConfigManager.INSTANCE.getDndResponseText());
                 }else {
                     executeMessage("/dnd");

@@ -2,7 +2,6 @@ package com.mercury.platform.ui.components.panel.chat;
 
 import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.SoundNotificationEvent;
 import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;

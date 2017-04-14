@@ -1,8 +1,7 @@
 package com.mercury.platform.ui.components.panel.chat;
 
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.ChatCommandEvent;
-import com.mercury.platform.shared.events.custom.OpenChatEvent;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -51,7 +50,7 @@ public class ChatMessagePanel extends JPanel implements HasUI{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    EventRouter.CORE.fireEvent(new ChatCommandEvent("/invite " + nickName));
+                    MercuryStore.INSTANCE.chatCommandSubject.onNext("/invite " + nickName);
                 }
             }
         });
@@ -60,7 +59,7 @@ public class ChatMessagePanel extends JPanel implements HasUI{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    EventRouter.CORE.fireEvent(new OpenChatEvent(nickName));
+                    MercuryStore.INSTANCE.openChatSubject.onNext(nickName);
                 }
             }
         });

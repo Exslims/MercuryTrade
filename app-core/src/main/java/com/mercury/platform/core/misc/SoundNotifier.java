@@ -21,14 +21,12 @@ public class SoundNotifier {
                 .subscribe(data -> play(data.getWavPath(), data.getDb()));
         MercuryStore.INSTANCE.soundSettingsSubject
                 .subscribe(data -> play(data.getWavPath(), data.getDb()));
-        MercuryStore.INSTANCE.dndSubject.subscribe(value -> {
-            this.dnd = value;
-        });
-        EventRouter.CORE.registerHandler(DndModeEvent.class, event -> this.dnd = ((DndModeEvent)event).isDnd());
+        MercuryStore.INSTANCE.dndSubject
+                .subscribe(value -> this.dnd = value);
     }
 
     private void play(String wavPath, float db){
-        if(!dnd) {
+        if(!dnd && db > -40) {
             ClassLoader classLoader = getClass().getClassLoader();
             try (AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource(wavPath))) {
                 Clip clip = AudioSystem.getClip();

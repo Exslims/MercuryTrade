@@ -3,9 +3,8 @@ package com.mercury.platform.ui.frame.titled.chat;
 import com.mercury.platform.core.utils.interceptor.MessageInterceptor;
 import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.AddInterceptorEvent;
-import com.mercury.platform.shared.events.custom.RemoveInterceptorEvent;
 import com.mercury.platform.shared.entity.FrameSettings;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.panel.chat.ChatFilterPanel;
 import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -71,7 +70,7 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
 
         msgContainer.setNewChunks(Arrays.asList(strings));
         if (interceptor != null) {
-            EventRouter.CORE.fireEvent(new RemoveInterceptorEvent(interceptor));
+            MercuryStore.INSTANCE.removeInterceptorSubject.onNext(interceptor);
         }
         interceptor = new MessageInterceptor() {
             @Override
@@ -97,7 +96,7 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
                 };
             }
         };
-        EventRouter.CORE.fireEvent(new AddInterceptorEvent(interceptor));
+        MercuryStore.INSTANCE.addInterceptorSubject.onNext(interceptor);
     }
 
     @Override
