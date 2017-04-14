@@ -22,6 +22,7 @@ import java.util.List;
  */
 //todo generalization
 @SuppressWarnings("unchecked")
+@Deprecated
 public class ConfigManager {
     private Logger logger = LogManager.getLogger(ConfigManager.class);
 

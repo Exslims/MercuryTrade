@@ -3,9 +3,7 @@ package com.mercury.platform.ui.frame;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.HasEventHandlers;
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.MercuryEventHandler;
-import com.mercury.platform.shared.events.custom.ChangeFrameVisibleEvent;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -42,37 +40,34 @@ public abstract class AbstractOverlaidFrame extends JFrame implements HasEventHa
             }
         });
 
-        EventRouter.CORE.registerHandler(ChangeFrameVisibleEvent.class, new MercuryEventHandler<ChangeFrameVisibleEvent>() {
-            @Override
-            public void handle(ChangeFrameVisibleEvent event) {
-                if(!SwingUtilities.isEventDispatchThread()) {
-                    SwingUtilities.invokeLater(()-> changeVisible(event.getStates()));
-                }else {
-                    changeVisible(event.getStates());
-                }
-            }
-            private void changeVisible(FrameVisibleState state){
-                if (processingHideEvent) {
-                    switch (state) {
-                        case SHOW: {
-                            if (prevState.equals(FrameVisibleState.SHOW)) {
-                                showComponent();
-                            }
-                        }
-                        break;
-                        case HIDE: {
-                            if (AbstractOverlaidFrame.this.isVisible()) {
-                                prevState = FrameVisibleState.SHOW;
-                            }else {
-                                prevState = FrameVisibleState.HIDE;
-                            }
-                            hideComponent();
-                        }
-                        break;
-                    }
-                }
+        MercuryStore.INSTANCE.frameVisibleSubject.subscribe(state -> {
+            if(!SwingUtilities.isEventDispatchThread()) {
+                SwingUtilities.invokeLater(()-> changeVisible(state));
+            }else {
+                changeVisible(state);
             }
         });
+    }
+    private void changeVisible(FrameVisibleState state){
+        if (processingHideEvent) {
+            switch (state) {
+                case SHOW: {
+                    if (prevState.equals(FrameVisibleState.SHOW)) {
+                        showComponent();
+                    }
+                }
+                break;
+                case HIDE: {
+                    if (AbstractOverlaidFrame.this.isVisible()) {
+                        prevState = FrameVisibleState.SHOW;
+                    }else {
+                        prevState = FrameVisibleState.HIDE;
+                    }
+                    hideComponent();
+                }
+                break;
+            }
+        }
     }
     public void init(){
         this.layout = getFrameLayout();

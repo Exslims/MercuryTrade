@@ -43,7 +43,7 @@ public class BaseConfigManager implements ConfigManager {
             this.framesConfigurationService.load();
             this.soundConfigurationService.load();
         }catch (IOException e) {
-            logger.error("Error while created file:{}",dataSource.getConfigurationFilePath(),e);
+            logger.error("Error while processing file:{}",dataSource.getConfigurationFilePath(),e);
         }
     }
 }

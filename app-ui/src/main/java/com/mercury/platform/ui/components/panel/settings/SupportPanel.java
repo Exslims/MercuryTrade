@@ -52,7 +52,7 @@ public class SupportPanel extends JPanel implements HasUI{
             @Override
             public void mousePressed(MouseEvent e) {
                 try {
-                    Desktop.getDesktop().browse(new URI("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HJVSYP4YR7V88&lc=US&item_name=MercuryTrade&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"));
+                    Desktop.getDesktop().browse(new URI("https://www.paypal.me/mercurytrade"));
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
@@ -102,7 +102,7 @@ public class SupportPanel extends JPanel implements HasUI{
         getDonations().forEach(pair -> {
             JPanel item = componentsFactory.getTransparentPanel(new BorderLayout());
             item.add(componentsFactory.getTextLabel(pair.name, FontStyle.REGULAR),BorderLayout.CENTER);
-            item.add(componentsFactory.getTextLabel(pair.value.intValue() + "$", FontStyle.REGULAR),BorderLayout.LINE_END);
+//            item.add(componentsFactory.getTextLabel(pair.value.intValue() + "$", FontStyle.REGULAR),BorderLayout.LINE_END);
             donationsList.add(item);
         });
 
@@ -111,13 +111,8 @@ public class SupportPanel extends JPanel implements HasUI{
     }
     private List<DonationPair> getDonations(){
         List<DonationPair> donations = new ArrayList<>();
-        donations.add(new DonationPair("Anonymus",15d));
-        donations.add(new DonationPair("Anonymus",10d));
-        donations.add(new DonationPair("Anonymus",10d));
-        donations.add(new DonationPair("Anonymus",10d));
-        donations.add(new DonationPair("Anonymus",5d));
-        donations.add(new DonationPair("Anonymus",5d));
-        donations.add(new DonationPair("Anonymus",2d));
+        donations.add(new DonationPair("StubenZocker",0d));
+        donations.add(new DonationPair("x8 Anonymus",0d));
         return donations;
     }
 

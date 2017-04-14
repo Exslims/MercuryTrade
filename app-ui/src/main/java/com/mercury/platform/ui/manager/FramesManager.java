@@ -7,8 +7,8 @@ import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.ShowPatchNotesEvent;
 import com.mercury.platform.shared.events.custom.ShutDownForUpdateEvent;
 import com.mercury.platform.shared.events.custom.ShutdownApplication;
-import com.mercury.platform.shared.events.custom.UILoadedEvent;
 import com.mercury.platform.shared.entity.FrameSettings;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.frame.AbstractComponentFrame;
 import com.mercury.platform.ui.frame.AbstractScalableComponentFrame;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
@@ -106,7 +106,7 @@ public class FramesManager implements HasEventHandlers{
             }
         });
         initHandlers();
-        EventRouter.CORE.fireEvent(new UILoadedEvent());
+        MercuryStore.INSTANCE.uiLoadedSubject.onNext(true);
     }
     @Override
     public void initHandlers() {

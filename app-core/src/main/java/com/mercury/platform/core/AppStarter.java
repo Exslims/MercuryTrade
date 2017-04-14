@@ -12,6 +12,7 @@ import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.MercuryDataSource;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.sun.jna.Native;
 import com.sun.jna.PointerType;
 import org.apache.logging.log4j.LogManager;
@@ -46,7 +47,7 @@ public class AppStarter {
         HistoryManager.INSTANCE.load();
         UpdateManager updateManager = new UpdateManager();
 
-        EventRouter.CORE.registerHandler(UILoadedEvent.class, event -> {
+        MercuryStore.INSTANCE.uiLoadedSubject.subscribe(state -> {
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
@@ -65,7 +66,7 @@ public class AppStarter {
                     if(!Native.toString(windowText).equals("Path of Exile")){
                         if(APP_STATUS == FrameVisibleState.SHOW) {
                             APP_STATUS = FrameVisibleState.HIDE;
-                            EventRouter.CORE.fireEvent(new ChangeFrameVisibleEvent(FrameVisibleState.HIDE));
+                            MercuryStore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.HIDE);
                         }
                     }else{
                         if(APP_STATUS == FrameVisibleState.HIDE) {
@@ -75,7 +76,7 @@ public class AppStarter {
                             } catch (InterruptedException e) {
                             }
                             APP_STATUS = FrameVisibleState.SHOW;
-                            EventRouter.CORE.fireEvent(new ChangeFrameVisibleEvent(FrameVisibleState.SHOW));
+                            MercuryStore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
                         }
                     }
                 }
