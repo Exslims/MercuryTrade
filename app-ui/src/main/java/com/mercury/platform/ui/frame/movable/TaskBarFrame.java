@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.frame.movable;
 
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -10,7 +10,6 @@ import com.mercury.platform.ui.components.panel.taskbar.MercuryTaskBarController
 import com.mercury.platform.ui.components.panel.taskbar.TaskBarController;
 import com.mercury.platform.ui.components.panel.taskbar.TaskBarPanel;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.shared.pojo.ScaleData;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
 import com.mercury.platform.ui.misc.event.ScaleChangeEvent;
 import org.pushingpixels.trident.Timeline;
@@ -21,7 +20,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Map;
 
-public class TaskBarFrame extends MovableComponentFrame{
+public class TaskBarFrame extends AbstractMovableComponentFrame {
     private Timeline collapseAnimation;
     private int MIN_WIDTH;
     private int MAX_WIDTH;
@@ -34,7 +33,7 @@ public class TaskBarFrame extends MovableComponentFrame{
         stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("taskbar"));
         processEResize = false;
         processSEResize = false;
-        prevState = FrameStates.SHOW;
+        prevState = FrameVisibleState.SHOW;
     }
 
     @Override

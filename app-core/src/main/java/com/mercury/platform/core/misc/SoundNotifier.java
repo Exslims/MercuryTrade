@@ -1,10 +1,9 @@
 package com.mercury.platform.core.misc;
 
-import com.mercury.platform.core.AppStarter;
-import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.FrameStates;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
+import com.mercury.platform.shared.store.DataTransformers;
+import com.mercury.platform.shared.store.MercuryStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,46 +11,31 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import java.util.Random;
 
 public class SoundNotifier {
     private final Logger logger = LogManager.getLogger(SoundNotifier.class);
     private boolean dnd = false;
     public SoundNotifier() {
-        EventRouter.CORE.registerHandler(WhisperNotificationEvent.class, event -> {
-            WhisperNotifierStatus status = ConfigManager.INSTANCE.getWhisperNotifier();
-            if (status == WhisperNotifierStatus.ALWAYS ||
-                    ((status == WhisperNotifierStatus.ALTAB) && (AppStarter.APP_STATUS == FrameStates.HIDE))) {
-                play("app/notification.wav");
-            }
-        });
-        EventRouter.CORE.registerHandler(UpdateInfoEvent.class, event -> {
-            play("app/patch_tone.wav");
-        });
-        EventRouter.CORE.registerHandler(ChatFilterMessageEvent.class, event -> {
-            play("app/chat-filter.wav");
-        });
-        EventRouter.CORE.registerHandler(DndModeEvent.class, event -> {
-            this.dnd = ((DndModeEvent)event).isDnd();
-        });
-        EventRouter.CORE.registerHandler(ButtonPressedEvent.class, event -> {
-            String[] clicks = {
-                    "app/sounds/click1/button-pressed-10.wav",
-                    "app/sounds/click1/button-pressed-20.wav",
-                    "app/sounds/click1/button-pressed-30.wav"};
-            play(clicks[new Random().nextInt(3)]);
-        });
+        MercuryStore.INSTANCE.soundSubject
+                .compose(DataTransformers.transformSoundData())
+                .subscribe(data -> play(data.getWavPath(), data.getDb()));
+        MercuryStore.INSTANCE.soundSettingsSubject
+                .subscribe(data -> play(data.getWavPath(), data.getDb()));
+        MercuryStore.INSTANCE.dndSubject
+                .subscribe(value -> this.dnd = value);
     }
 
-    private void play(String wavPath){
-        if(!dnd) {
+    private void play(String wavPath, float db){
+        if(!dnd && db > -40) {
             ClassLoader classLoader = getClass().getClassLoader();
             try (AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource(wavPath))) {
                 Clip clip = AudioSystem.getClip();
                 clip.open(stream);
-                FloatControl gainControl =
-                        (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                gainControl.setValue(-5.0f);
+                if(db != 0.0) {
+                    FloatControl gainControl =
+                            (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                    gainControl.setValue(db);
+                }
                 clip.start();
             } catch (Exception e) {
                 logger.error("Cannot start playing wav file: ",e);

@@ -17,11 +17,10 @@ public class HtmlMessageBuilder {
      * @param message source message
      * @return html equivalent
      */
-    //<html><font color=red>RED</font> - <font color=navy>Navy</font></html>
     public String build(String message) {
         List<String> resultStrs = new ArrayList<>();
         resultStrs.add("<html>");
-        String[] words = message.split("((?<= )|(?= )|(?<=\\.)|(?=\\.)|(?<=,)|(?<=\\?)|(?=\\?)|(?=,)|(?<=!)|(?=!)|(?<=/)|(?=/)|(?<=>)|(?=>))");
+        String[] words = message.split("((?<=\\s)|(?=\\s)|(?<=\\.)|(?=\\.)|(?<=,)|(?<=\\?)|(?=\\?)|(?=,)|(?<=!)|(?=!)|(?<=/)|(?=/)|(?<=>)|(?=>))");
         Arrays.stream(words).forEach(word -> {
             if(chunkStrings.stream().noneMatch(word::equalsIgnoreCase)){
                 resultStrs.add(word);

@@ -1,14 +1,14 @@
 package com.mercury.platform.ui.frame.titled;
 
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.ChunkLoadedEvent;
 import com.mercury.platform.shared.events.custom.StartUpdateEvent;
 import com.mercury.platform.shared.events.custom.UpdateReadyEvent;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -21,7 +21,7 @@ import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.util.List;
 
-public class NotesFrame extends TitledComponentFrame {
+public class NotesFrame extends AbstractTitledComponentFrame {
     private List<Note> currentNotes;
     private ContentPanel contentPanel;
     private NotesType type;
@@ -40,10 +40,10 @@ public class NotesFrame extends TitledComponentFrame {
         if(type.equals(NotesType.INFO)) {
             boolean showOnStartUp = ConfigManager.INSTANCE.isShowOnStartUp();
             if (showOnStartUp) {
-                prevState = FrameStates.SHOW;
+                prevState = FrameVisibleState.SHOW;
             } else {
                 this.setVisible(false);
-                prevState = FrameStates.HIDE;
+                prevState = FrameVisibleState.HIDE;
             }
         }
     }
@@ -156,7 +156,7 @@ public class NotesFrame extends TitledComponentFrame {
                         ConfigManager.INSTANCE.setShowOnStartUp(showOnStartUp.isSelected());
                         FramesManager.INSTANCE.enableMovementExclude(ItemsGridFrame.class);
                     }
-                    prevState = FrameStates.HIDE;
+                    prevState = FrameVisibleState.HIDE;
                 }
             }
         });
@@ -214,7 +214,7 @@ public class NotesFrame extends TitledComponentFrame {
             innerContent.setPreferredSize(new Dimension(530,270));
 
             JLabel image = componentsFactory.getIconLabel(note.getImagePath());
-            JTextArea textArea = componentsFactory.getSimpleTextAre(note.getText());
+            JTextArea textArea = componentsFactory.getSimpleTextArea(note.getText());
             switch (note.getLayout()){
                 case VERTICAL:{
                     innerContent.setLayout(new BoxLayout(innerContent,BoxLayout.Y_AXIS));
@@ -260,7 +260,7 @@ public class NotesFrame extends TitledComponentFrame {
         INFO,
         PATCH
     }
-    private class ProgressBarFrame extends OverlaidFrame {
+    private class ProgressBarFrame extends AbstractOverlaidFrame {
         private JProgressBar progressBar;
         private JLabel percentLabel;
         private int percent;

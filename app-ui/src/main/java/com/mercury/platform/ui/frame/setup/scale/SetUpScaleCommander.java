@@ -1,10 +1,10 @@
 package com.mercury.platform.ui.frame.setup.scale;
 
 
-import com.mercury.platform.ui.frame.ScalableComponentFrame;
+import com.mercury.platform.ui.frame.AbstractScalableComponentFrame;
 import com.mercury.platform.ui.frame.setup.SetUpCommander;
 
-public class SetUpScaleCommander extends SetUpCommander<ScalableComponentFrame>{
+public class SetUpScaleCommander extends SetUpCommander<AbstractScalableComponentFrame>{
     public SetUpScaleCommander() {
         super();
     }

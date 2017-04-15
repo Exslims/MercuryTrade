@@ -3,15 +3,16 @@ package com.mercury.platform.ui.frame.titled.chat;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.frame.titled.TitledComponentFrame;
+import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class ChatFilterSettingsFrame extends TitledComponentFrame {
+public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
     private ChatSettingsCallback callback;
+    private JTextField quickResponseField;
 
     public ChatFilterSettingsFrame(ChatSettingsCallback callback) {
         super("MercuryTrade");
@@ -37,7 +38,7 @@ public class ChatFilterSettingsFrame extends TitledComponentFrame {
                 15f,
                 "Show messages containing the following words:");
         title.setBorder(BorderFactory.createEmptyBorder(2,0,6,0));
-        JTextArea words = componentsFactory.getSimpleTextAre(ConfigManager.INSTANCE.getDefaultWords());
+        JTextArea words = componentsFactory.getSimpleTextArea(ConfigManager.INSTANCE.getDefaultWords());
         words.setEditable(true);
         words.setCaretColor(AppThemeColor.TEXT_DEFAULT);
         words.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
@@ -48,6 +49,8 @@ public class ChatFilterSettingsFrame extends TitledComponentFrame {
         JButton save = componentsFactory.getBorderedButton("Save");
         save.addActionListener(action -> {
             ConfigManager.INSTANCE.setDefaultWords(words.getText());
+            ConfigManager.INSTANCE.setQuickResponse(quickResponseField.getText());
+
             String chunkStr = StringUtils.deleteWhitespace(words.getText());
             String[] split = chunkStr.split(",");
 
@@ -73,9 +76,34 @@ public class ChatFilterSettingsFrame extends TitledComponentFrame {
 
         root.add(setupArea,BorderLayout.CENTER);
         root.add(getMemo(),BorderLayout.LINE_END);
-        root.add(navBar,BorderLayout.PAGE_END);
+
+        JPanel padding = componentsFactory.getTransparentPanel(new BorderLayout());
+        padding.setBorder(BorderFactory.createEmptyBorder(0,4,4,4));
+        padding.add(getResponsePanel(),BorderLayout.CENTER);
+        root.add(padding,BorderLayout.PAGE_END);
         this.add(root,BorderLayout.CENTER);
+        this.add(navBar,BorderLayout.PAGE_END);
         this.pack();
+    }
+    private JPanel getResponsePanel(){
+        JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
+        JPanel setupArea = componentsFactory.getTransparentPanel(new BorderLayout());
+        setupArea.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+
+        root.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
+        root.setBackground(AppThemeColor.SLIDE_BG);
+
+        JButton quickResponse = componentsFactory.getIconButton("app/chat_scanner_response.png", 18f, AppThemeColor.SLIDE_BG, "Quick response");
+        quickResponseField = componentsFactory.getTextField(ConfigManager.INSTANCE.getQuickResponse(),FontStyle.REGULAR,16f);
+        quickResponseField.setBackground(AppThemeColor.SLIDE_BG);
+        quickResponseField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.HEADER,1),
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,3)
+        ));
+        setupArea.add(quickResponse,BorderLayout.LINE_START);
+        setupArea.add(quickResponseField,BorderLayout.CENTER);
+        root.add(setupArea,BorderLayout.CENTER);
+        return root;
     }
 
     private JPanel getMemo(){

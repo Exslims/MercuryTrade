@@ -3,7 +3,7 @@ package com.mercury.platform.ui.components.panel.settings;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.CustomButtonsChangedEvent;
-import com.mercury.platform.shared.pojo.ResponseButton;
+import com.mercury.platform.shared.entity.ResponseButton;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;

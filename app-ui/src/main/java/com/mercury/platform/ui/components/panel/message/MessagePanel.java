@@ -5,10 +5,10 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
-import com.mercury.platform.shared.pojo.CurrencyMessage;
-import com.mercury.platform.shared.pojo.ItemMessage;
-import com.mercury.platform.shared.pojo.Message;
-import com.mercury.platform.shared.pojo.ResponseButton;
+import com.mercury.platform.shared.entity.CurrencyMessage;
+import com.mercury.platform.shared.entity.ItemMessage;
+import com.mercury.platform.shared.entity.Message;
+import com.mercury.platform.shared.entity.ResponseButton;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -236,7 +236,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
         Double currForSaleCount = message.getCurrForSaleCount();
         Double curCount = message.getCurCount();
         double rate = curCount / currForSaleCount;
-        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        DecimalFormat decimalFormat = new DecimalFormat("#.####");
         JPanel ratePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         ratePanel.add(componentsFactory.
                 getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 18f, null,"("));

@@ -1,8 +1,8 @@
 package com.mercury.platform.ui.components.panel.grid;
 
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.pojo.ItemMessage;
-import com.mercury.platform.shared.pojo.StashTab;
+import com.mercury.platform.shared.entity.ItemMessage;
+import com.mercury.platform.shared.entity.StashTab;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.AppThemeColor;

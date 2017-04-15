@@ -1,21 +1,24 @@
 package com.mercury.platform.ui.frame.titled;
 
+import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
-import com.mercury.platform.shared.pojo.Message;
-import com.mercury.platform.ui.frame.titled.TitledComponentFrame;
+import com.mercury.platform.shared.entity.Message;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
-public class TestCasesFrame extends TitledComponentFrame {
+public class TestCasesFrame extends AbstractTitledComponentFrame {
     private List<String> items;
     private List<String> currency;
     private List<String> nickNames;
@@ -31,7 +34,6 @@ public class TestCasesFrame extends TitledComponentFrame {
         nickNames = new ArrayList<>();
         offer = new ArrayList<>();
         leagues = new ArrayList<>();
-
         items.add("Wondertrap Velvet Slippers");
         items.add("Rain of Arrows");
         items.add("Dreadarc Cleaver");
@@ -177,7 +179,7 @@ public class TestCasesFrame extends TitledComponentFrame {
                         random.nextInt(12) + 1,
                         offer.get(random.nextInt(offer.size()))
                 ));
-                EventRouter.CORE.fireEvent(new NewWhispersEvent(message));
+                MercuryStore.INSTANCE.messageSubject.onNext(message);
             }
         });
         testPanel.add(button,buttonColumn);
@@ -199,7 +201,7 @@ public class TestCasesFrame extends TitledComponentFrame {
                         leagues.get(random.nextInt(leagues.size())),
                         offer.get(random.nextInt(offer.size()))
                 ));
-                EventRouter.CORE.fireEvent(new NewWhispersEvent(message));
+                MercuryStore.INSTANCE.messageSubject.onNext(message);
             }
         });
         testPanel.add(button1,buttonColumn);
@@ -214,7 +216,6 @@ public class TestCasesFrame extends TitledComponentFrame {
         button2.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                EventRouter.CORE.fireEvent(new WhisperNotificationEvent());
                 String nickname = nickNames.get(random.nextInt(nickNames.size()));
                 Message message = parser.parse(String.format(currencyTemplate,
                         nickname,
@@ -225,7 +226,8 @@ public class TestCasesFrame extends TitledComponentFrame {
                         leagues.get(random.nextInt(leagues.size())),
                         offer.get(random.nextInt(offer.size()))
                 ));
-                EventRouter.CORE.fireEvent(new NewWhispersEvent(message));
+                MercuryStore.INSTANCE.messageSubject.onNext(message);
+                MercuryStore.INSTANCE.soundSubject.onNext(SoundType.MESSAGE);
 
                 Timer joinedTimer = new Timer(1000,null);
                 joinedTimer.addActionListener(e1 -> {

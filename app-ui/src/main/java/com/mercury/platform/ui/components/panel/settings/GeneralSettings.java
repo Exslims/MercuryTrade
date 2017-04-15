@@ -6,7 +6,7 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
-import com.mercury.platform.ui.frame.ComponentFrame;
+import com.mercury.platform.ui.frame.AbstractComponentFrame;
 import com.mercury.platform.ui.frame.titled.NotesFrame;
 import com.mercury.platform.ui.frame.titled.SettingsFrame;
 import com.mercury.platform.ui.frame.titled.TestCasesFrame;
@@ -29,11 +29,11 @@ public class GeneralSettings extends ConfigurationPanel {
     private JSlider fadeTimeSlider;
     //private JComboBox secondsPicker;
     private JComboBox notifierStatusPicker;
-    private ComponentFrame owner;
+    private AbstractComponentFrame owner;
     private JCheckBox checkEnable;
     private JTextField gamePathField;
     private WrongGamePathListener poeFolderTooltipListener;
-    public GeneralSettings(ComponentFrame owner) {
+    public GeneralSettings(AbstractComponentFrame owner) {
         super();
         this.owner = owner;
         createUI();
@@ -211,7 +211,7 @@ public class GeneralSettings extends ConfigurationPanel {
                 componentsFactory.getIconButton("app/open-tests.png",
                         30,
                         AppThemeColor.TRANSPARENT,
-                        "Test frames");
+                        "Open tests");
         openTests.addActionListener(action -> {
             FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
             FramesManager.INSTANCE.preShowFrame(TestCasesFrame.class);

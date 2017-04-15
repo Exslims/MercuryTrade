@@ -1,9 +1,8 @@
 package com.mercury.platform.ui.components.panel.taskbar;
 
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.ChatCommandEvent;
-import com.mercury.platform.shared.events.custom.DndModeEvent;
 import com.mercury.platform.shared.events.custom.NotificationEvent;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
 import com.mercury.platform.ui.frame.titled.chat.ChatFilterFrame;
 import com.mercury.platform.ui.frame.titled.container.HistoryFrame;
@@ -16,14 +15,14 @@ public class MercuryTaskBarController implements TaskBarController {
     public void enableDND() {
         EventRouter.UI.fireEvent(new RepaintEvent.RepaintTaskBar());
         EventRouter.UI.fireEvent(new NotificationEvent("DND on"));
-        EventRouter.CORE.fireEvent(new DndModeEvent(true));
+        MercuryStore.INSTANCE.dndSubject.onNext(true);
     }
 
     @Override
     public void disableDND() {
         EventRouter.UI.fireEvent(new RepaintEvent.RepaintTaskBar());
         EventRouter.UI.fireEvent(new NotificationEvent("DND off"));
-        EventRouter.CORE.fireEvent(new DndModeEvent(false));
+        MercuryStore.INSTANCE.dndSubject.onNext(false);
     }
 
     @Override
@@ -33,7 +32,7 @@ public class MercuryTaskBarController implements TaskBarController {
 
     @Override
     public void performHideout() {
-        EventRouter.CORE.fireEvent(new ChatCommandEvent("/hideout"));
+        MercuryStore.INSTANCE.chatCommandSubject.onNext("/hideout");
     }
 
     @Override

@@ -1,11 +1,10 @@
 package com.mercury.platform.ui.frame.movable;
 
-import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.shared.pojo.ScaleData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,13 +13,13 @@ import java.util.Map;
 /**
  * Created by Константин on 02.03.2017.
  */
-public class CurrencySearchFrame extends MovableComponentFrame {
+public class CurrencySearchFrame extends AbstractMovableComponentFrame {
     private JPanel setUpPanel;
     private JPanel loadingPanel;
     private JPanel resultPanel;
     public CurrencySearchFrame() {
         super("MT-CurrencySearchFrame");
-        prevState = FrameStates.SHOW;
+        prevState = FrameVisibleState.SHOW;
     }
 
     @Override

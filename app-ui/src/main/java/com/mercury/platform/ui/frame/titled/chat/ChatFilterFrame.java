@@ -2,13 +2,13 @@ package com.mercury.platform.ui.frame.titled.chat;
 
 import com.mercury.platform.core.utils.interceptor.MessageInterceptor;
 import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.AddInterceptorEvent;
-import com.mercury.platform.shared.events.custom.ChatFilterMessageEvent;
-import com.mercury.platform.shared.events.custom.RemoveInterceptorEvent;
-import com.mercury.platform.shared.pojo.FrameSettings;
+import com.mercury.platform.shared.entity.FrameSettings;
+import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.chat.ChatFilterPanel;
-import com.mercury.platform.ui.frame.titled.TitledComponentFrame;
+import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.event.PackEvent;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
@@ -22,19 +22,25 @@ import java.awt.event.ComponentEvent;
 import java.util.*;
 import java.util.List;
 
-public class ChatFilterFrame extends TitledComponentFrame{
+public class ChatFilterFrame extends AbstractTitledComponentFrame {
     private ChatFilterSettingsFrame settingsFrame;
     private ChatFilterPanel msgContainer;
     private MessageInterceptor interceptor;
+    private JPanel toolbar;
     private boolean soundEnable = false;
     private boolean scrollToBottom = true;
+    private boolean chatEnable = false;
     private JButton scrollEnd;
 
     public ChatFilterFrame() {
         super("MercuryTrade");
         FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
         this.setPreferredSize(frameSettings.getFrameSize());
-        this.settingsFrame = new ChatFilterSettingsFrame(this::performNewStrings);
+        this.settingsFrame = new ChatFilterSettingsFrame(strings -> {
+            if(chatEnable){
+                performNewStrings(strings);
+            }
+        });
     }
 
     @Override
@@ -48,13 +54,73 @@ public class ChatFilterFrame extends TitledComponentFrame{
             }
         });
         this.hideButton.setIcon(componentsFactory.getIcon("app/hide.png",14));
+        this.hideButton.setBorder(BorderFactory.createEmptyBorder(0,2,0,2));
+        this.headerPanel.add(getMenuButton(),BorderLayout.LINE_START);
+        this.miscPanel.add(getEnableButton(),0);
+//        this.miscPanel.add(getMinimizeButton(),1);
+        this.miscPanel.setBorder(BorderFactory.createEmptyBorder(-4,0,0,0));
         this.settingsFrame.init();
         this.msgContainer = new ChatFilterPanel();
+        this.toolbar = getToolbar();
+        toolbar.setVisible(false);
+        this.add(toolbar,BorderLayout.LINE_START);
         this.add(msgContainer,BorderLayout.CENTER);
-        this.add(getNavigationPanel(),BorderLayout.LINE_END);
         this.pack();
     }
 
+    private JButton getEnableButton() {
+        JButton enableButton = componentsFactory.getBorderedButton("Start");
+        enableButton.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
+                BorderFactory.createMatteBorder(1,5,1,5,AppThemeColor.TRANSPARENT)
+        ));
+        enableButton.setFont(componentsFactory.getFont(FontStyle.BOLD,16f));
+        enableButton.setPreferredSize(new Dimension(90,23));
+        enableButton.setBackground(AppThemeColor.TRANSPARENT);
+        enableButton.setForeground(AppThemeColor.TEXT_SUCCESS);
+
+        componentsFactory.setUpToggleCallbacks(enableButton,
+                () -> {
+                    chatEnable = false;
+                    if (interceptor != null) {
+                        MercuryStore.INSTANCE.removeInterceptorSubject.onNext(interceptor);
+                    }
+                    enableButton.setText("Start");
+                    enableButton.setForeground(AppThemeColor.TEXT_SUCCESS);
+                    repaint();
+                },
+                () -> {
+                    chatEnable = true;
+                    String chunkStr = StringUtils.deleteWhitespace(ConfigManager.INSTANCE.getDefaultWords());
+                    String[] split = chunkStr.split(",");
+                    performNewStrings(split);
+                    enableButton.setText("Stop");
+                    enableButton.setForeground(AppThemeColor.TEXT_IMPORTANT);
+                    repaint();
+                }, false);
+        return enableButton;
+    }
+    private JButton getMinimizeButton() {
+        JButton minimizer = componentsFactory.getIconButton("app/minimize.png", 14, AppThemeColor.FRAME_ALPHA, "");
+        minimizer.addActionListener(action -> {
+            //todo
+        });
+        return minimizer;
+    }
+    private JButton getMenuButton() {
+        JButton menu = componentsFactory.getIconButton("app/menu.png", 18, AppThemeColor.FRAME_ALPHA, "Menu");
+        menu.setBorder(BorderFactory.createEmptyBorder(4,6,4,4));
+        componentsFactory.setUpToggleCallbacks(menu,
+                () -> {
+                    this.toolbar.setVisible(true);
+                    repaint();
+                },
+                () -> {
+                    this.toolbar.setVisible(false);
+                    repaint();
+                }, true);
+        return menu;
+    }
     private void performNewStrings(String[] strings){
         List<String> contains = new ArrayList<>();
         List<String> notContains = new ArrayList<>();
@@ -72,7 +138,7 @@ public class ChatFilterFrame extends TitledComponentFrame{
 
         msgContainer.setNewChunks(Arrays.asList(strings));
         if (interceptor != null) {
-            EventRouter.CORE.fireEvent(new RemoveInterceptorEvent(interceptor));
+            MercuryStore.INSTANCE.removeInterceptorSubject.onNext(interceptor);
         }
         interceptor = new MessageInterceptor() {
             @Override
@@ -98,7 +164,7 @@ public class ChatFilterFrame extends TitledComponentFrame{
                 };
             }
         };
-        EventRouter.CORE.fireEvent(new AddInterceptorEvent(interceptor));
+        MercuryStore.INSTANCE.addInterceptorSubject.onNext(interceptor);
     }
 
     @Override
@@ -122,7 +188,7 @@ public class ChatFilterFrame extends TitledComponentFrame{
         });
     }
 
-    private JPanel getNavigationPanel(){
+    private JPanel getToolbar(){
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
         root.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
 
@@ -138,7 +204,7 @@ public class ChatFilterFrame extends TitledComponentFrame{
                 "Chat Scanner settings");
         edit.addActionListener(
                 action -> this.settingsFrame.showAuxiliaryFrame(
-                        new Point(this.getLocation().x+this.getSize().width/2,this.getLocation().y),
+                        new Point(this.getLocation().x,this.getLocation().y),
                         this.getPreferredSize().height));
         JButton clear = componentsFactory.getIconButton(
                 "app/clear-history.png",

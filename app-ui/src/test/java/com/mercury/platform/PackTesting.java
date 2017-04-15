@@ -1,17 +1,12 @@
 package com.mercury.platform;
 
-import com.mercury.platform.core.User32;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.sun.jna.Native;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- * Created by Константин on 23.12.2016.
- */
 public class PackTesting {
     private static void createAndShowGUI() {
         final JFrame frame = new JFrame("HelloWorldSwing");
@@ -19,10 +14,9 @@ public class PackTesting {
         frame.setMinimumSize(new Dimension(400,400));
         frame.setMaximumSize(new Dimension(400,400));
         frame.setLocationRelativeTo(null);
-        frame.setFocusable(false);
-        frame.setFocusableWindowState(false);
         frame.setLayout(new BoxLayout(frame.getContentPane(),BoxLayout.Y_AXIS));
-
+        frame.setType(Window.Type.UTILITY);
+        frame.setUndecorated(true);
         JPanel buffer = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buffer.setMinimumSize(new Dimension(Integer.MAX_VALUE,Integer.MAX_VALUE));
         buffer.setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_IMPORTANT));
@@ -41,6 +35,7 @@ public class PackTesting {
             }
         });
         frame.add(buffer);
+        frame.add(new JTextField());
         frame.add(button);
         frame.setVisible(true);
         frame.pack();

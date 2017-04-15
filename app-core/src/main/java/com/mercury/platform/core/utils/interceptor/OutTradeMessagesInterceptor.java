@@ -4,7 +4,7 @@ import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.OutTradeMessageEvent;
-import com.mercury.platform.shared.pojo.Message;
+import com.mercury.platform.shared.entity.Message;
 
 /**
  * Created by Константин on 12.01.2017.

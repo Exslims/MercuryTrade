@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.components.panel.grid;
 
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.pojo.StashTab;
+import com.mercury.platform.shared.entity.StashTab;
 
 import java.util.List;
 public class StashTabsContainer {

@@ -1,24 +1,24 @@
 package com.mercury.platform.ui.manager;
 
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.ShowPatchNotesEvent;
 import com.mercury.platform.shared.events.custom.ShutDownForUpdateEvent;
 import com.mercury.platform.shared.events.custom.ShutdownApplication;
-import com.mercury.platform.shared.events.custom.UILoadedEvent;
-import com.mercury.platform.shared.pojo.FrameSettings;
-import com.mercury.platform.ui.frame.ScalableComponentFrame;
-import com.mercury.platform.ui.frame.other.*;
-import com.mercury.platform.ui.frame.ComponentFrame;
-import com.mercury.platform.ui.frame.movable.container.IncMessageFrame;
+import com.mercury.platform.shared.entity.FrameSettings;
+import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.ui.frame.AbstractComponentFrame;
+import com.mercury.platform.ui.frame.AbstractScalableComponentFrame;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
-import com.mercury.platform.ui.frame.movable.MovableComponentFrame;
+import com.mercury.platform.ui.frame.movable.AbstractMovableComponentFrame;
+import com.mercury.platform.ui.frame.movable.container.IncMessageFrame;
+import com.mercury.platform.ui.frame.other.*;
 import com.mercury.platform.ui.frame.movable.TaskBarFrame;
 import com.mercury.platform.ui.frame.setup.scale.SetUpScaleCommander;
 import com.mercury.platform.ui.frame.titled.*;
-import com.mercury.platform.ui.frame.OverlaidFrame;
+import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.frame.setup.location.SetUpLocationCommander;
 import com.mercury.platform.ui.frame.other.SetUpLocationFrame;
 import com.mercury.platform.ui.frame.titled.chat.ChatFilterFrame;
@@ -40,7 +40,7 @@ public class FramesManager implements HasEventHandlers{
     }
     public static FramesManager INSTANCE = FramesManagerHolder.HOLDER_INSTANCE;
 
-    private Map<Class,OverlaidFrame> framesMap;
+    private Map<Class,AbstractOverlaidFrame> framesMap;
     private SetUpLocationCommander locationCommander;
     private SetUpScaleCommander scaleCommander;
 
@@ -52,18 +52,18 @@ public class FramesManager implements HasEventHandlers{
     public void start(){
         createTrayIcon();
 
-        OverlaidFrame incMessageFrame = new IncMessageFrame();
+        AbstractOverlaidFrame incMessageFrame = new IncMessageFrame();
         framesMap.put(IncMessageFrame.class,incMessageFrame);
-        OverlaidFrame taskBarFrame = new TaskBarFrame();
-        OverlaidFrame itemsMeshFrame = new ItemsGridFrame();
+        AbstractOverlaidFrame taskBarFrame = new TaskBarFrame();
+        AbstractOverlaidFrame itemsMeshFrame = new ItemsGridFrame();
         framesMap.put(ItemsGridFrame.class,itemsMeshFrame);
-        locationCommander.addFrame((MovableComponentFrame) incMessageFrame);
-        locationCommander.addFrame((MovableComponentFrame) taskBarFrame);
-        locationCommander.addFrame((MovableComponentFrame) itemsMeshFrame);
+        locationCommander.addFrame((AbstractMovableComponentFrame) incMessageFrame);
+        locationCommander.addFrame((AbstractMovableComponentFrame) taskBarFrame);
+        locationCommander.addFrame((AbstractMovableComponentFrame) itemsMeshFrame);
 
-        scaleCommander.addFrame((ScalableComponentFrame) incMessageFrame);
-        scaleCommander.addFrame((ScalableComponentFrame) taskBarFrame);
-        scaleCommander.addFrame((ScalableComponentFrame) itemsMeshFrame);
+        scaleCommander.addFrame((AbstractScalableComponentFrame) incMessageFrame);
+        scaleCommander.addFrame((AbstractScalableComponentFrame) taskBarFrame);
+        scaleCommander.addFrame((AbstractScalableComponentFrame) itemsMeshFrame);
 
         NotesLoader notesLoader = new NotesLoader();
 
@@ -78,7 +78,7 @@ public class FramesManager implements HasEventHandlers{
         framesMap.put(MercuryLoadingFrame.class,new MercuryLoadingFrame());
         List<Note> patchNotes = notesLoader.getPatchNotes();
         if(ConfigManager.INSTANCE.isShowPatchNotes() && patchNotes.size() != 0){
-            NotesFrame patchNotesFrame = new NotesFrame(patchNotes,NotesFrame.NotesType.PATCH);
+            NotesFrame patchNotesFrame = new NotesFrame(patchNotes, NotesFrame.NotesType.PATCH);
             patchNotesFrame.init();
         }
         framesMap.put(ChatFilterFrame.class,new ChatFilterFrame());
@@ -96,17 +96,17 @@ public class FramesManager implements HasEventHandlers{
         int maxOpacity = ConfigManager.INSTANCE.getMaxOpacity();
         int minOpacity = ConfigManager.INSTANCE.getMinOpacity();
         framesMap.forEach((k,frame) -> {
-            if(frame instanceof ComponentFrame) {
+            if(frame instanceof AbstractComponentFrame) {
                 if (decayTime > 0) {
-                    ((ComponentFrame)frame).enableHideEffect(decayTime, minOpacity, maxOpacity);
+                    ((AbstractComponentFrame)frame).enableHideEffect(decayTime, minOpacity, maxOpacity);
                 } else {
-                    ((ComponentFrame)frame).disableHideEffect();
+                    ((AbstractComponentFrame)frame).disableHideEffect();
                     frame.setOpacity(maxOpacity / 100f);
                 }
             }
         });
         initHandlers();
-        EventRouter.CORE.fireEvent(new UILoadedEvent());
+        MercuryStore.INSTANCE.uiLoadedSubject.onNext(true);
     }
     @Override
     public void initHandlers() {
@@ -114,7 +114,7 @@ public class FramesManager implements HasEventHandlers{
             String patchNotes = ((ShowPatchNotesEvent) handler).getPatchNotes();
             NotesLoader notesLoader = new NotesLoader();
             List<Note> notes = notesLoader.getPatchNotesFromString(patchNotes);
-            NotesFrame patchNotesFrame = new NotesFrame(notes,NotesFrame.NotesType.PATCH);
+            NotesFrame patchNotesFrame = new NotesFrame(notes, NotesFrame.NotesType.PATCH);
             patchNotesFrame.init();
             patchNotesFrame.setFrameTitle("MercuryTrade v" + notesLoader.getVersionFrom(patchNotes));
             patchNotesFrame.showComponent();
@@ -136,13 +136,13 @@ public class FramesManager implements HasEventHandlers{
         framesMap.get(frameClass).showComponent();
     }
     public void preShowFrame(Class frameClass){
-        framesMap.get(frameClass).setPrevState(FrameStates.SHOW);
+        framesMap.get(frameClass).setPrevState(FrameVisibleState.SHOW);
     }
     public void hideFrame(Class frameClass){
         framesMap.get(frameClass).hideComponent();
     }
     public void hideOrShowFrame(Class frameClass){
-        OverlaidFrame frame = framesMap.get(frameClass);
+        AbstractOverlaidFrame frame = framesMap.get(frameClass);
         if(frame != null && frame.isVisible()){
             hideFrame(frameClass);
         }else {
@@ -176,8 +176,8 @@ public class FramesManager implements HasEventHandlers{
             FrameSettings settings = ConfigManager.INSTANCE.getDefaultFramesSettings().get(k.getSimpleName());
             if(!v.getClass().equals(ItemsGridFrame.class) && settings != null){
                 v.setLocation(settings.getFrameLocation());
-                if(v instanceof MovableComponentFrame){
-                    ((MovableComponentFrame) v).onLocationChange(settings.getFrameLocation());
+                if(v instanceof AbstractMovableComponentFrame){
+                    ((AbstractMovableComponentFrame) v).onLocationChange(settings.getFrameLocation());
                 }
             }
         });

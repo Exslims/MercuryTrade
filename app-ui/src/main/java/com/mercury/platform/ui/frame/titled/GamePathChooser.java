@@ -13,7 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
-public class GamePathChooser extends TitledComponentFrame {
+public class GamePathChooser extends AbstractTitledComponentFrame {
     private final Logger logger = LogManager.getLogger(GamePathChooser.class.getSimpleName());
     private JLabel statusLabel;
     private String gamePath;

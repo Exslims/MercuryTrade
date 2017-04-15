@@ -4,13 +4,18 @@ import com.mercury.platform.core.misc.SoundNotifier;
 import com.mercury.platform.core.update.UpdateClientStarter;
 import com.mercury.platform.core.utils.error.ErrorHandler;
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.FrameStates;
+import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.UpdateManager;
+import com.mercury.platform.shared.config.BaseConfigManager;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.MercuryDataSource;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.sun.jna.Native;
 import com.sun.jna.PointerType;
+import com.sun.jna.platform.win32.WinDef;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,18 +24,20 @@ import java.util.TimerTask;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-/**
- * Created by Константин on 31.12.2016.
- */
 public class AppStarter {
     private static final Logger logger = LogManager.getLogger(AppStarter.class.getSimpleName());
-    public static FrameStates APP_STATUS = FrameStates.HIDE;
+    public static FrameVisibleState APP_STATUS = FrameVisibleState.HIDE;
+    public static WinDef.HWND poeWindow;
     private User32 user32 = User32.INSTANCE;
     private boolean shutdown = false;
     private volatile int delay = 100;
     private boolean updating = false;
 
     public void startApplication(){
+        BaseConfigManager configuration = new BaseConfigManager(new MercuryDataSource());
+        configuration.load();
+        Configuration.set(configuration);
+
         ConfigManager.INSTANCE.load();
         new SoundNotifier();
         new ChatHelper();
@@ -40,8 +47,9 @@ public class AppStarter {
         UpdateClientStarter updateClientStarter = new UpdateClientStarter();
         executor.execute(updateClientStarter);
         HistoryManager.INSTANCE.load();
+        UpdateManager updateManager = new UpdateManager();
 
-        EventRouter.CORE.registerHandler(UILoadedEvent.class, event -> {
+        MercuryStore.INSTANCE.uiLoadedSubject.subscribe(state -> {
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
@@ -50,27 +58,28 @@ public class AppStarter {
                         timer.cancel();
                         updateClientStarter.shutdown();
                         if(updating){
-                            UpdateManager.INSTANCE.doUpdate();
+                            updateManager.doUpdate();
                         }
                         System.exit(0);
                     }
-                    byte[] windowText = new byte[512];
-                    PointerType hwnd = user32.GetForegroundWindow();
-                    User32.INSTANCE.GetWindowTextA(hwnd, windowText, 512);
-                    if(!Native.toString(windowText).equals("Path of Exile")){
-                        if(APP_STATUS == FrameStates.SHOW) {
-                            APP_STATUS = FrameStates.HIDE;
-                            EventRouter.CORE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.HIDE));
+                    byte[] className = new byte[512];
+                    WinDef.HWND hwnd = user32.GetForegroundWindow();
+                    User32.INSTANCE.GetClassNameA(hwnd, className, 512);
+                    if(!Native.toString(className).equals("POEWindowClass")){
+                        if(APP_STATUS == FrameVisibleState.SHOW) {
+                            APP_STATUS = FrameVisibleState.HIDE;
+                            MercuryStore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.HIDE);
                         }
                     }else{
-                        if(APP_STATUS == FrameStates.HIDE) {
+                        poeWindow = hwnd;
+                        if(APP_STATUS == FrameVisibleState.HIDE) {
                             try {
                                 Thread.sleep(delay);
                                 delay = 100;
                             } catch (InterruptedException e) {
                             }
-                            APP_STATUS = FrameStates.SHOW;
-                            EventRouter.CORE.fireEvent(new ChangeFrameVisibleEvent(FrameStates.SHOW));
+                            APP_STATUS = FrameVisibleState.SHOW;
+                            MercuryStore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
                         }
                     }
                 }

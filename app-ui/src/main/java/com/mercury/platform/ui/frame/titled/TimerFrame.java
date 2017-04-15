@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent;
 /**
  * Created by Константин on 06.01.2017.
  */
-public class TimerFrame extends TitledComponentFrame {
+public class TimerFrame extends AbstractTitledComponentFrame {
     private Timer timeAgo;
     private JLabel timeLabel;
     private int seconds = 0;
