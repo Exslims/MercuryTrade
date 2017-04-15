@@ -58,7 +58,7 @@ public class SupportPanel extends JPanel implements HasUI{
                 }
             }
         });
-        JTextArea donateText = componentsFactory.getSimpleTextAre("We aimed to create a convenience tool in form of an easy-to-use application, primarily for trading purposes. If MercuryTrade successfully managed to save your time or improve your experience, you can thank us by donating and telling your friends.");
+        JTextArea donateText = componentsFactory.getSimpleTextArea("We aimed to create a convenience tool in form of an easy-to-use application, primarily for trading purposes. If MercuryTrade successfully managed to save your time or improve your experience, you can thank us by donating and telling your friends.");
         donateText.setPreferredSize(new Dimension(300,150));
         JPanel donateTextPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         JPanel donateButtonPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));

@@ -376,6 +376,7 @@ public class ComponentsFactory{
             textField.setFont(getSelectedFont(style).deriveFont(scale*fontSize));
         }
         textField.setForeground(AppThemeColor.TEXT_DEFAULT);
+        textField.setCaretColor(AppThemeColor.TEXT_DEFAULT);
         textField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TEXT_DEFAULT,1),
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,3)
@@ -541,7 +542,7 @@ public class ComponentsFactory{
     public Dimension convertSize(Dimension initialSize){
         return new Dimension((int)(initialSize.width * scale),(int)(initialSize.height*scale));
     }
-    public JTextArea getSimpleTextAre(String text){
+    public JTextArea getSimpleTextArea(String text){
         JTextArea area = new JTextArea(text);
         area.setEditable(false);
         area.setWrapStyleWord(true);

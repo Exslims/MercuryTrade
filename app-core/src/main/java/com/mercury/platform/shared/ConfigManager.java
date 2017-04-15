@@ -77,6 +77,8 @@ public class ConfigManager {
     private String dndResponseText = "Response text";
     @Getter
     private String defaultWords = "!wtb, uber, boss, perandus";
+    @Getter
+    private String quickResponse = "invite me pls";
 
     public ConfigManager() {
         minimumFrameSize = new HashMap<>();
@@ -87,7 +89,7 @@ public class ConfigManager {
         minimumFrameSize.put("SettingsFrame",new Dimension(540,400));
         minimumFrameSize.put("HistoryFrame",new Dimension(280,400));
         minimumFrameSize.put("TimerFrame",new Dimension(240,102));
-        minimumFrameSize.put("ChatFilterFrame",new Dimension(400,200));
+        minimumFrameSize.put("ChatFilterFrame",new Dimension(400,100));
         minimumFrameSize.put("ItemsGridFrame",new Dimension(150,150));
         minimumFrameSize.put("NotesFrame",new Dimension(540,100));
         minimumFrameSize.put("ChatFilterSettingsFrame",new Dimension(300,200));
@@ -113,6 +115,7 @@ public class ConfigManager {
         defaultAppSettings.put("showLeague",false);
         defaultAppSettings.put("dndResponseText","Response text");
         defaultAppSettings.put("defaultWords","!wtb, uber, boss, perandus");
+        defaultAppSettings.put("quickResponse","invite me pls");
 
     }
 
@@ -157,6 +160,7 @@ public class ConfigManager {
                 saveProperty("inGameDnd", String.valueOf(defaultAppSettings.get("inGameDnd")));
                 saveProperty("dndResponseText", defaultAppSettings.get("dndResponseText"));
                 saveProperty("defaultWords", defaultAppSettings.get("defaultWords"));
+                saveProperty("quickResponse", defaultAppSettings.get("quickResponse"));
                 saveProperty("scaleData", defaultAppSettings.get("scaleData"));
                 saveProperty("showLeague", String.valueOf(defaultAppSettings.get("showLeague")));
 
@@ -218,6 +222,7 @@ public class ConfigManager {
             showLeague = Boolean.valueOf(loadProperty("showLeague"));
             dndResponseText = loadProperty("dndResponseText");
             defaultWords = loadProperty("defaultWords");
+            quickResponse = loadProperty("quickResponse");
         } catch (Exception e) {
             logger.error("Error in loadConfigFile: ",e);
         }
@@ -464,6 +469,10 @@ public class ConfigManager {
     public void setDefaultWords(String defaultWords) {
         this.defaultWords = defaultWords;
         saveProperty("defaultWords",defaultWords);
+    }
+    public void setQuickResponse(String quickResponse) {
+        this.quickResponse = quickResponse;
+        saveProperty("quickResponse",quickResponse);
     }
 
     private List<ResponseButton> getDefaultButtons(){

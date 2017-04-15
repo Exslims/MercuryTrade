@@ -116,45 +116,45 @@ public class SoundSettingsPanel extends ConfigurationPanel {
     private JPanel getSoundPickerPanel(){
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
 
-        JLabel soundLabel = componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_DEFAULT, TextAlignment.LEFTOP, 17f, "Sound");
+        JLabel soundLabel = componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_DEFAULT, TextAlignment.LEFTOP, 17f, "Sound (in next update)");
         soundLabel.setBorder(
                 new CompoundBorder(
                         BorderFactory.createMatteBorder(0,0,1,0,AppThemeColor.MSG_HEADER_BORDER),
                         BorderFactory.createEmptyBorder(3,5,3,5)));
 
-        JPanel container = componentsFactory.getTransparentPanel(new GridLayout(2, 2,0,1));
-        container.setBackground(AppThemeColor.SETTINGS_BG);
-        container.setBorder(new CompoundBorder(
-                BorderFactory.createMatteBorder(0,0,1,0,AppThemeColor.MSG_HEADER_BORDER),
-                BorderFactory.createEmptyBorder(3,0,3,0)));
-
-        JComboBox notificationComboBox = componentsFactory.getComboBox(new String[]{"Mercury Notification", "Mercury Chat Scanner", "Browse"});
-        notificationComboBox.addItemListener(e -> {
-            switch (e.getStateChange()){
-                case ItemEvent.SELECTED: {
-                    if(notificationComboBox.getSelectedItem().equals("Browse")){
-                        JFileChooser fileChooser = new JFileChooser();
-                        fileChooser.setFileFilter(new FileNameExtensionFilter("*.wav","wav"));
-                        int returnVal = fileChooser.showOpenDialog(null);
-                        if(returnVal == JFileChooser.APPROVE_OPTION) {
-                            System.out.println(fileChooser.getSelectedFile().getPath());
-                        }
-                    }
-                    break;
-                }
-            }
-        });
-
-
-        JComboBox chatScannerComboBox = componentsFactory.getComboBox(new String[]{"Mercury Notification", "Mercury Chat Scanner", "Browse"});
-
-
-        container.add(componentsFactory.getTextLabel("Notification:",FontStyle.REGULAR));
-        container.add(notificationComboBox);
-        container.add(componentsFactory.getTextLabel("Chat Scanner",FontStyle.REGULAR));
-        container.add(chatScannerComboBox);
+//        JPanel container = componentsFactory.getTransparentPanel(new GridLayout(2, 2,0,1));
+//        container.setBackground(AppThemeColor.SETTINGS_BG);
+//        container.setBorder(new CompoundBorder(
+//                BorderFactory.createMatteBorder(0,0,1,0,AppThemeColor.MSG_HEADER_BORDER),
+//                BorderFactory.createEmptyBorder(3,0,3,0)));
+//
+//        JComboBox notificationComboBox = componentsFactory.getComboBox(new String[]{"Mercury Notification", "Mercury Chat Scanner", "Browse"});
+//        notificationComboBox.addItemListener(e -> {
+//            switch (e.getStateChange()){
+//                case ItemEvent.SELECTED: {
+//                    if(notificationComboBox.getSelectedItem().equals("Browse")){
+//                        JFileChooser fileChooser = new JFileChooser();
+//                        fileChooser.setFileFilter(new FileNameExtensionFilter("*.wav","wav"));
+//                        int returnVal = fileChooser.showOpenDialog(null);
+//                        if(returnVal == JFileChooser.APPROVE_OPTION) {
+//                            System.out.println(fileChooser.getSelectedFile().getPath());
+//                        }
+//                    }
+//                    break;
+//                }
+//            }
+//        });
+//
+//
+//        JComboBox chatScannerComboBox = componentsFactory.getComboBox(new String[]{"Mercury Notification", "Mercury Chat Scanner", "Browse"});
+//
+//
+//        container.add(componentsFactory.getTextLabel("Notification:",FontStyle.REGULAR));
+//        container.add(notificationComboBox);
+//        container.add(componentsFactory.getTextLabel("Chat Scanner",FontStyle.REGULAR));
+//        container.add(chatScannerComboBox);
         root.add(soundLabel,BorderLayout.PAGE_START);
-        root.add(container,BorderLayout.CENTER);
+//        root.add(container,BorderLayout.CENTER);
 
         return root;
     }

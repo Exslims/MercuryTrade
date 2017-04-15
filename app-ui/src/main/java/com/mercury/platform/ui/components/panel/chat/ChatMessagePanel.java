@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.components.panel.chat;
 
-import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -45,12 +45,12 @@ public class ChatMessagePanel extends JPanel implements HasUI{
         JPanel miscPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         JPanel operationsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
 
-        JButton invite = componentsFactory.getIconButton("app/invite.png", 16, AppThemeColor.SLIDE_BG, TooltipConstants.INVITE);
-        invite.addMouseListener(new MouseAdapter() {
+        JButton quickResponse = componentsFactory.getIconButton("app/chat_scanner_response.png", 17, AppThemeColor.SLIDE_BG, "Quick response");
+        quickResponse.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    MercuryStore.INSTANCE.chatCommandSubject.onNext("/invite " + nickName);
+                    MercuryStore.INSTANCE.chatCommandSubject.onNext("@" + nickName + " " + ConfigManager.INSTANCE.getQuickResponse());
                 }
             }
         });
@@ -73,9 +73,9 @@ public class ChatMessagePanel extends JPanel implements HasUI{
                 nickName);
         nicknameLabel.setPreferredSize(new Dimension(75,nicknameLabel.getPreferredSize().height));
         nicknameLabel.setBorder(null);
-        invite.setBorder(null);
+        quickResponse.setBorder(null);
         openChat.setBorder(null);
-        operationsPanel.add(invite);
+        operationsPanel.add(quickResponse);
         operationsPanel.add(openChat);
 
         JPanel nicknamePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));

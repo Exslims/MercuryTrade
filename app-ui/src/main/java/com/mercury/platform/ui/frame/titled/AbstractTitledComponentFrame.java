@@ -8,16 +8,14 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- * Created by Константин on 18.01.2017.
- */
 public abstract class AbstractTitledComponentFrame extends AbstractComponentFrame {
     protected JPanel miscPanel;
     protected JButton hideButton;
+    protected JPanel headerPanel;
     private JLabel frameTitleLabel;
     protected AbstractTitledComponentFrame(String title) {
         super(title);
-        miscPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        miscPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     }
 
     @Override
@@ -28,7 +26,7 @@ public abstract class AbstractTitledComponentFrame extends AbstractComponentFram
 
     private void initHeaderPanel(){
         if(layout instanceof BorderLayout) {
-            JPanel headerPanel = new JPanel(new BorderLayout());
+            headerPanel = new JPanel(new BorderLayout());
             headerPanel.setBackground(AppThemeColor.HEADER);
             headerPanel.setPreferredSize(new Dimension(100,26));
             headerPanel.setBorder(BorderFactory.createMatteBorder(0,0,1,0,AppThemeColor.MSG_HEADER_BORDER));

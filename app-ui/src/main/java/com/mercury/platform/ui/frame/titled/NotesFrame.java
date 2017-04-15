@@ -214,7 +214,7 @@ public class NotesFrame extends AbstractTitledComponentFrame {
             innerContent.setPreferredSize(new Dimension(530,270));
 
             JLabel image = componentsFactory.getIconLabel(note.getImagePath());
-            JTextArea textArea = componentsFactory.getSimpleTextAre(note.getText());
+            JTextArea textArea = componentsFactory.getSimpleTextArea(note.getText());
             switch (note.getLayout()){
                 case VERTICAL:{
                     innerContent.setLayout(new BoxLayout(innerContent,BoxLayout.Y_AXIS));

@@ -39,7 +39,7 @@ public class TooltipFrame extends AbstractOverlaidFrame {
                 JLabel tooltipLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, TextAlignment.LEFTOP,16f,tooltip);
                 this.add(tooltipLabel,BorderLayout.CENTER);
             }else {
-                JTextArea tooltipArea = componentsFactory.getSimpleTextAre("");
+                JTextArea tooltipArea = componentsFactory.getSimpleTextArea("");
                 this.add(tooltipArea,BorderLayout.CENTER);
                 tooltipArea.setText(tooltip);
                 if(tooltip.toCharArray().length < 120){
