@@ -3,20 +3,13 @@ package com.mercury.platform.core;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.store.MercuryStore;
-import com.sun.jna.Native;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
-import java.util.*;
-import java.util.List;
 
 public class ChatHelper implements HasEventHandlers {
-    private final Logger logger = LogManager.getLogger(ChatHelper.class.getSimpleName());
-    private User32 user32 = User32.INSTANCE;
     private Robot robot;
 
     public ChatHelper() {
@@ -32,8 +25,6 @@ public class ChatHelper implements HasEventHandlers {
         StringSelection selection = new StringSelection(message);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(selection, null);
-
-        gameToFront();
 
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.keyRelease(KeyEvent.VK_ENTER);
@@ -54,8 +45,6 @@ public class ChatHelper implements HasEventHandlers {
         robot.keyRelease(KeyEvent.VK_ENTER);
     }
     private void openChat(String whisper) {
-        gameToFront();
-
         StringSelection selection = new StringSelection("@" + whisper);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(selection, selection);
@@ -77,27 +66,6 @@ public class ChatHelper implements HasEventHandlers {
         robot.keyRelease(KeyEvent.VK_CONTROL);
         robot.keyPress(KeyEvent.VK_SPACE);
         robot.keyRelease(KeyEvent.VK_SPACE);
-    }
-    /**
-     * NEED REFACTORING
-     */
-    private void gameToFront(){
-        List<String> titles = new ArrayList<>();
-        titles.add("Path of Exile");
-        user32.EnumWindows((hWnd, arg1) -> {
-                byte[] windowText = new byte[512];
-                user32.GetWindowTextA(hWnd, windowText, 512);
-                String wText = Native.toString(windowText);
-
-                if (wText.isEmpty()) {
-                    return true;
-                }
-                if (titles.contains(wText)) {
-                    user32.SetForegroundWindow(hWnd);
-                    return false;
-                }
-                return true;
-            }, null);
     }
 
     @Override
