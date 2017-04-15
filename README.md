@@ -14,7 +14,7 @@ Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issue
 
 I have a problem: [Troubleshooting](https://github.com/Exslims/MercuryTrade/wiki/Troubleshooting)
 
-**ALTERNATIVE LAUNCHER**: MercuryTrade.**RAR**: [Latest release](https://github.com/Exslims/MercuryTrade/releases). Unpack and run the attached .exe as administrator! This is primarily for the people who have issues with buttons not working.
+**ALTERNATIVE LAUNCHER**: MercuryTrade.**RAR**: [Latest release](https://github.com/Exslims/MercuryTrade/releases). Unpack and run the attached .exe as administrator! Try this launcher when something is not working.
 
 ---
  <p align="center">
