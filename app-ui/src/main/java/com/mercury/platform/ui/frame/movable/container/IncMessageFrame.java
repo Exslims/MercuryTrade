@@ -110,13 +110,11 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
                 setUpExpandButton();
             }
         });
-        MercuryStore.INSTANCE.messageSubject.subscribe(message -> {
-            SwingUtilities.invokeLater(()-> {
-                if(!currentMessages.containsKey(message)) {
-                    addMessage(message);
-                }
-            });
-        });
+        MercuryStore.INSTANCE.messageSubject.subscribe(message -> SwingUtilities.invokeLater(()-> {
+            if(!currentMessages.containsKey(message)) {
+                addMessage(message);
+            }
+        }));
         EventRouter.UI.registerHandler(CloseMessagePanelEvent.class, event -> {
             Message message = ((CloseMessagePanelEvent) event).getMessage();
             MessagePanel panel = currentMessages.get(message);
@@ -197,7 +195,9 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
                     messagePanel.setVisible(false);
                 }
                 if (mainContainer.getComponentCount() > limitMsgCount) {
-                    setUpExpandButton();
+                    if(AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
+                        setUpExpandButton();
+                    }
                     expandAllFrame.incMessageCount();
                 }
                 break;
@@ -207,11 +207,21 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
                     messagePanel.setVisible(false);
                 }
                 if (mainContainer.getComponentCount() > (limitMsgCount + 1)) {
-                    setUpExpandButton();
+                    if(AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
+                        setUpExpandButton();
+                    }
                     expandAllFrame.incMessageCount();
                 }
                 break;
             }
+        }
+    }
+
+    @Override
+    protected void changeVisible(FrameVisibleState state) {
+        super.changeVisible(state);
+        if(state.equals(FrameVisibleState.SHOW)) {
+            setUpExpandButton();
         }
     }
 
@@ -318,9 +328,8 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
 
     private void onLimitCountChange(){
         expandAllFrame.resetMessageCount();
-        Arrays.stream(mainContainer.getComponents()).forEach(component -> {
-            component.setVisible(true);
-        });
+        Arrays.stream(mainContainer.getComponents())
+                .forEach(component -> component.setVisible(true));
         switch (flowDirections){
             case DOWNWARDS:{
                 Component[] components = mainContainer.getComponents();

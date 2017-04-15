@@ -211,7 +211,7 @@ public class GeneralSettings extends ConfigurationPanel {
                 componentsFactory.getIconButton("app/open-tests.png",
                         30,
                         AppThemeColor.TRANSPARENT,
-                        "Test frames");
+                        "Open tests");
         openTests.addActionListener(action -> {
             FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
             FramesManager.INSTANCE.preShowFrame(TestCasesFrame.class);

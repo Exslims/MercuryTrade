@@ -48,7 +48,7 @@ public abstract class AbstractOverlaidFrame extends JFrame implements HasEventHa
             }
         });
     }
-    private void changeVisible(FrameVisibleState state){
+    protected void changeVisible(FrameVisibleState state){
         if (processingHideEvent) {
             switch (state) {
                 case SHOW: {

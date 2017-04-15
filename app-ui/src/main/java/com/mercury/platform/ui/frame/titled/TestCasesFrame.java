@@ -11,6 +11,8 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
@@ -32,7 +34,6 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
         nickNames = new ArrayList<>();
         offer = new ArrayList<>();
         leagues = new ArrayList<>();
-
         items.add("Wondertrap Velvet Slippers");
         items.add("Rain of Arrows");
         items.add("Dreadarc Cleaver");

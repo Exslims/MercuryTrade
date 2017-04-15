@@ -68,7 +68,7 @@ public class ConfigManager {
     @Getter
     private boolean checkUpdateOnStartUp = true;
     @Getter
-    private boolean dismissAfterKick = false;
+    private boolean dismissAfterKick = true;
     @Getter
     private boolean showLeague = false;
     @Getter
