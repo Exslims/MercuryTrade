@@ -1,8 +1,8 @@
 package com.mercury.platform.shared.config;
 
-import com.mercury.platform.shared.config.service.ConfigurationService;
-import com.mercury.platform.shared.config.service.FramesConfigurationService;
-import com.mercury.platform.shared.config.service.SoundConfigurationService;
+import com.mercury.platform.shared.config.configration.ConfigurationService;
+import com.mercury.platform.shared.config.configration.FramesConfigurationService;
+import com.mercury.platform.shared.config.configration.SoundConfigurationService;
 import com.mercury.platform.shared.entity.FrameSettings;
 import com.mercury.platform.shared.entity.SoundDescriptor;
 import org.apache.logging.log4j.LogManager;

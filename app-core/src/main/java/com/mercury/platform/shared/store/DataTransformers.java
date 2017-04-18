@@ -6,7 +6,7 @@ import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.Configuration;
-import com.mercury.platform.shared.config.service.ConfigurationService;
+import com.mercury.platform.shared.config.configration.ConfigurationService;
 import com.mercury.platform.shared.entity.SoundDescriptor;
 import rx.Observable;
 
