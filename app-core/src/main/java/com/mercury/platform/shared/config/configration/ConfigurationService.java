@@ -1,12 +1,8 @@
 package com.mercury.platform.shared.config.configration;
 
-
 import java.io.IOException;
-import java.util.Map;
 
-public interface ConfigurationService<T, K> {
+public interface ConfigurationService {
     void load() throws IOException;
-    T get(K key);
-    Map<K,T> getMap();
     void save();
 }
