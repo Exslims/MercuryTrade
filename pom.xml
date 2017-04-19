@@ -21,7 +21,6 @@
         <project.version>1.0.0.5</project.version>
 
         <systemhook.version>2.5</systemhook.version>
-        <jna.version>3.0.9</jna.version>
         <devjna.version>3.4.0</devjna.version>
         <commonsio.version>2.5</commonsio.version>
         <junit.version>4.12</junit.version>
@@ -54,9 +53,9 @@
                 <version>${expiringmap.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.sun.jna</groupId>
+                <groupId>net.java.dev.jna</groupId>
                 <artifactId>jna</artifactId>
-                <version>${jna.version}</version>
+                <version>${devjna.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.java.dev.jna</groupId>

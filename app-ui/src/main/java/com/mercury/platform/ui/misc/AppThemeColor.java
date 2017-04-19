@@ -13,6 +13,7 @@ public class AppThemeColor {
     public static final Color TEXT_MISC = new Color(219,158,54);
     public static final Color TEXT_NICKNAME = new Color(255,211,78);
     public static final Color TEXT_IMPORTANT = new Color(224,86,60);
+    public static final Color TEXT_IMPORTANT_1 = new Color(224,86,60,100);
     public static final Color TEXT_SUCCESS = new Color(111, 173, 39);
     public static final Color TEXT_DISABLE = new Color(126,130,122);
     public static final Color BORDER = new Color(22,126,138);

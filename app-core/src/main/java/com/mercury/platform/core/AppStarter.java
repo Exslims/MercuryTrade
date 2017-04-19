@@ -9,12 +9,11 @@ import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.UpdateManager;
 import com.mercury.platform.shared.config.BaseConfigManager;
 import com.mercury.platform.shared.config.Configuration;
-import com.mercury.platform.shared.config.MercuryDataSource;
+import com.mercury.platform.shared.config.MercuryConfigurationSource;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.store.MercuryStore;
 import com.sun.jna.Native;
-import com.sun.jna.PointerType;
 import com.sun.jna.platform.win32.WinDef;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,7 +33,7 @@ public class AppStarter {
     private boolean updating = false;
 
     public void startApplication(){
-        BaseConfigManager configuration = new BaseConfigManager(new MercuryDataSource());
+        BaseConfigManager configuration = new BaseConfigManager(new MercuryConfigurationSource());
         configuration.load();
         Configuration.set(configuration);
 

@@ -1,17 +1,18 @@
 package com.mercury.platform.shared.config.configration.impl;
 
 import com.google.gson.reflect.TypeToken;
-import com.mercury.platform.shared.config.DataSource;
-import com.mercury.platform.shared.config.configration.BaseKeyValueConfigurationService;
+import com.mercury.platform.shared.config.ConfigurationSource;
+import com.mercury.platform.shared.config.configration.BaseConfigurationService;
+import com.mercury.platform.shared.config.configration.KeyValueConfigurationService;
 import com.mercury.platform.shared.entity.SoundDescriptor;
 
 import java.util.*;
 
 
-public class SoundConfigurationService extends BaseKeyValueConfigurationService<SoundDescriptor,String> {
+public class SoundConfigurationService extends BaseConfigurationService implements KeyValueConfigurationService<SoundDescriptor,String> {
     private static final String OBJECT_KEY = "sound";
     private Map<String,SoundDescriptor> data;
-    public SoundConfigurationService(DataSource dataSource) {
+    public SoundConfigurationService(ConfigurationSource dataSource) {
         super(dataSource);
         this.data = new HashMap<>();
     }
