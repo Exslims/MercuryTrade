@@ -1,4 +1,4 @@
-package com.mercury.platform.shared.config.service;
+package com.mercury.platform.shared.config.configration;
 
 import com.google.gson.reflect.TypeToken;
 import com.mercury.platform.shared.config.DataSource;

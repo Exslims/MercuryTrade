@@ -1,9 +1,9 @@
 {
-  "version":"1.0.1.2",
+  "version":"1.0.1.3",
   "notes":[
     {
-      "title" : "Hotfix",
-      "text" : "- Fixed the issue where it wasn't possible to close a notification.\n- Fixed Item Grid setup not being saved correctly.\n\nIf you have troubles updating please download directly from github.",
+      "title" : "Update",
+      "text" : "- Added sound volume sliders.\n- Updated Chat Scanner with requested features.\n- Updated Support tab.\n- Fixed the bug with notifications not displaying after some time.\n- Fixed the bug related to having too many notificatons.\n\nIf you love MercuryTrade so much it has become your favourite application to play the game - show your appreciation by supporting it!\nIf you have troubles updating please download directly from github. Thanks!",
       "image" : "",
       "layout" : "VERTICAL"
     }

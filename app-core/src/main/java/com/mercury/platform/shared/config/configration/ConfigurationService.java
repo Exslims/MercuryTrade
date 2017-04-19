@@ -1,4 +1,4 @@
-package com.mercury.platform.shared.config.service;
+package com.mercury.platform.shared.config.configration;
 
 
 import java.io.IOException;

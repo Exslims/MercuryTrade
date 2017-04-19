@@ -22,7 +22,7 @@
 
         <systemhook.version>2.5</systemhook.version>
         <jna.version>3.0.9</jna.version>
-        <devjna.version>3.5.0</devjna.version>
+        <devjna.version>3.4.0</devjna.version>
         <commonsio.version>2.5</commonsio.version>
         <junit.version>4.12</junit.version>
         <commonlang3.version>3.0</commonlang3.version>
