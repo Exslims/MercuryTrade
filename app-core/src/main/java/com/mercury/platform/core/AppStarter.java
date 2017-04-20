@@ -9,7 +9,7 @@ import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.UpdateManager;
 import com.mercury.platform.shared.config.BaseConfigManager;
 import com.mercury.platform.shared.config.Configuration;
-import com.mercury.platform.shared.config.MercuryDataSource;
+import com.mercury.platform.shared.config.MercuryConfigurationSource;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.store.MercuryStore;
@@ -35,7 +35,7 @@ public class AppStarter {
     private final int EVENT_SYSTEM_FOREGROUND = 0x0003;
 
     public void startApplication(){
-        BaseConfigManager configuration = new BaseConfigManager(new MercuryDataSource());
+        BaseConfigManager configuration = new BaseConfigManager(new MercuryConfigurationSource());
         configuration.load();
         Configuration.set(configuration);
 

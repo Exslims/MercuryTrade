@@ -1,10 +1,13 @@
 package com.mercury.platform.shared.config;
 
-import com.mercury.platform.shared.config.configration.ConfigurationService;
-import com.mercury.platform.shared.config.configration.FramesConfigurationService;
-import com.mercury.platform.shared.config.configration.SoundConfigurationService;
+import com.mercury.platform.shared.config.configration.KeyValueConfigurationService;
+import com.mercury.platform.shared.config.configration.ListConfigurationService;
+import com.mercury.platform.shared.config.configration.impl.FramesConfigurationService;
+import com.mercury.platform.shared.config.configration.impl.SoundConfigurationService;
+import com.mercury.platform.shared.config.configration.impl.atr.AtrConfigurationService;
 import com.mercury.platform.shared.entity.FrameSettings;
 import com.mercury.platform.shared.entity.SoundDescriptor;
+import com.mercury.platform.shared.entity.atr.AtrGroupSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,24 +18,31 @@ import java.io.IOException;
 public class BaseConfigManager implements ConfigManager {
     private Logger logger = LogManager.getLogger(BaseConfigManager.class.getSimpleName());
 
-    private DataSource dataSource;
-    private ConfigurationService<FrameSettings,String> framesConfigurationService;
-    private ConfigurationService<SoundDescriptor,String> soundConfigurationService;
+    private ConfigurationSource dataSource;
+    private KeyValueConfigurationService<FrameSettings,String> framesConfigurationService;
+    private KeyValueConfigurationService<SoundDescriptor,String> soundConfigurationService;
+    private ListConfigurationService<AtrGroupSettings> atrGroupConfiguration;
 
-    public BaseConfigManager(DataSource dataSource){
+    public BaseConfigManager(ConfigurationSource dataSource){
         this.dataSource = dataSource;
 
         this.framesConfigurationService = new FramesConfigurationService(dataSource);
         this.soundConfigurationService = new SoundConfigurationService(dataSource);
+        this.atrGroupConfiguration = new AtrConfigurationService(dataSource);
     }
     @Override
-    public ConfigurationService<FrameSettings,String> framesConfiguration() {
+    public KeyValueConfigurationService<FrameSettings,String> framesConfiguration() {
         return framesConfigurationService;
     }
     @Override
-    public ConfigurationService<SoundDescriptor,String> soundConfiguration() {
+    public KeyValueConfigurationService<SoundDescriptor,String> soundConfiguration() {
         return soundConfigurationService;
     }
+    @Override
+    public ListConfigurationService<AtrGroupSettings> atrGroupConfiguration() {
+        return atrGroupConfiguration;
+    }
+
     public void load(){
         try {
             File file = new File(dataSource.getConfigurationFilePath());
@@ -42,6 +52,7 @@ public class BaseConfigManager implements ConfigManager {
             }
             this.framesConfigurationService.load();
             this.soundConfigurationService.load();
+            this.atrGroupConfiguration.load();
         }catch (IOException e) {
             logger.error("Error while processing file:{}",dataSource.getConfigurationFilePath(),e);
         }

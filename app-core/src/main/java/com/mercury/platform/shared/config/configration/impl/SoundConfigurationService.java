@@ -1,16 +1,18 @@
-package com.mercury.platform.shared.config.configration;
+package com.mercury.platform.shared.config.configration.impl;
 
 import com.google.gson.reflect.TypeToken;
-import com.mercury.platform.shared.config.DataSource;
+import com.mercury.platform.shared.config.ConfigurationSource;
+import com.mercury.platform.shared.config.configration.BaseConfigurationService;
+import com.mercury.platform.shared.config.configration.KeyValueConfigurationService;
 import com.mercury.platform.shared.entity.SoundDescriptor;
 
 import java.util.*;
 
 
-public class SoundConfigurationService extends BaseConfigurationService<SoundDescriptor,String> {
+public class SoundConfigurationService extends BaseConfigurationService implements KeyValueConfigurationService<SoundDescriptor,String> {
     private static final String OBJECT_KEY = "sound";
     private Map<String,SoundDescriptor> data;
-    public SoundConfigurationService(DataSource dataSource) {
+    public SoundConfigurationService(ConfigurationSource dataSource) {
         super(dataSource);
         this.data = new HashMap<>();
     }
@@ -25,7 +27,7 @@ public class SoundConfigurationService extends BaseConfigurationService<SoundDes
 
     @Override
     public SoundDescriptor get(String key) {
-        return this.data.computeIfAbsent(key, k -> getDefault().get(key));
+        return this.data.computeIfAbsent(key, k -> getDefaultMap().get(key));
     }
 
     @Override
@@ -39,11 +41,11 @@ public class SoundConfigurationService extends BaseConfigurationService<SoundDes
     }
 
     private void toDefault(){
-        Map<String, SoundDescriptor> defaultSt = getDefault();
+        Map<String, SoundDescriptor> defaultSt = getDefaultMap();
         this.data = defaultSt;
         jsonHelper.writeMapObject(OBJECT_KEY,defaultSt);
     }
-    private Map<String,SoundDescriptor> getDefault(){
+    private Map<String,SoundDescriptor> getDefaultMap(){
         Map<String,SoundDescriptor> defaultSettings = new HashMap<>();
         defaultSettings.put("notification",new SoundDescriptor("app/notification.wav",0f));
         defaultSettings.put("chat_scanner",new SoundDescriptor("app/chat-filter.wav",0f));
@@ -51,5 +53,10 @@ public class SoundConfigurationService extends BaseConfigurationService<SoundDes
         defaultSettings.put("update",new SoundDescriptor("default",0f));
         return defaultSettings;
 
+    }
+
+    @Override
+    public SoundDescriptor getDefault() {
+        return new SoundDescriptor("app/notification.wav",0f);
     }
 }

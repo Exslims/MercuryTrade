@@ -13,9 +13,9 @@ import java.util.Map;
 
 public class JSONHelper {
     private Logger logger = LogManager.getLogger(JSONHelper.class.getSimpleName());
-    private DataSource dataSource;
+    private ConfigurationSource dataSource;
 
-    public JSONHelper(DataSource dataSource){
+    public JSONHelper(ConfigurationSource dataSource){
         this.dataSource = dataSource;
     }
     public <T> T readMapData(String key,TypeToken<T> typeToken){

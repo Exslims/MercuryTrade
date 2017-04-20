@@ -6,7 +6,7 @@ import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.Configuration;
-import com.mercury.platform.shared.config.configration.ConfigurationService;
+import com.mercury.platform.shared.config.configration.KeyValueConfigurationService;
 import com.mercury.platform.shared.entity.SoundDescriptor;
 import rx.Observable;
 
@@ -14,7 +14,7 @@ import java.util.Random;
 
 
 public class DataTransformers {
-    private static final ConfigurationService<SoundDescriptor, String> soundService = Configuration.get().soundConfiguration();
+    private static final KeyValueConfigurationService<SoundDescriptor, String> soundService = Configuration.get().soundConfiguration();
     public static Observable.Transformer<SoundType, SoundDescriptor> transformSoundData() {
         String[] clicks = {
                 "app/sounds/click1/button-pressed-10.wav",

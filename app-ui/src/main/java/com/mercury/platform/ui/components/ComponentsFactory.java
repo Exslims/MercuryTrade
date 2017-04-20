@@ -11,7 +11,8 @@ import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.misc.ToggleCallback;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
@@ -30,7 +31,7 @@ import java.io.IOException;
  * Factory for each element which uses in application
  */
 public class ComponentsFactory{
-    private final static Logger log = Logger.getLogger(ComponentsFactory.class);
+    private final static Logger log = LogManager.getLogger(ComponentsFactory.class);
 
     private Font BOLD_FONT;
     private Font ITALIC_FONT;
