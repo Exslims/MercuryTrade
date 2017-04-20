@@ -14,22 +14,25 @@ import java.awt.*;
  */
 public class TestOpaque {
     public static void main(String[] args) {
-        Window w = new Window(null);
-
-        w.add(new JComponent() {
-            /**
-             * This will draw a black cross on screen.
-             */
-            protected void paintComponent(Graphics g) {
-                g.setColor(Color.BLACK);
-                g.fillRect(0, getHeight() / 2 - 10, getWidth(), 20);
-                g.fillRect(getWidth() / 2 - 10, 0, 20, getHeight());
-            }
-
-            public Dimension getPreferredSize() {
-                return new Dimension(100, 100);
-            }
-        });
+        JDialog w = new JDialog();
+        w.setPreferredSize(new Dimension(100,200));
+        w.setUndecorated(true);
+//        w.setFocusableWindowState(false);
+        w.add(new JTextField("Test"));
+//        w.add(new JComponent() {
+//            /**
+//             * This will draw a black cross on screen.
+//             */
+//            protected void paintComponent(Graphics g) {
+//                g.setColor(Color.BLACK);
+//                g.fillRect(0, getHeight() / 2 - 10, getWidth(), 20);
+//                g.fillRect(getWidth() / 2 - 10, 0, 20, getHeight());
+//            }
+//
+//            public Dimension getPreferredSize() {
+//                return new Dimension(100, 100);
+//            }
+//        });
         w.pack();
         w.setLocationRelativeTo(null);
         w.setVisible(true);
@@ -38,14 +41,15 @@ public class TestOpaque {
          * This sets the background of the window to be transparent.
          */
         AWTUtilities.setWindowOpaque(w, false);
-        AWTUtilities.setWindowOpacity(w, 0.5f);
+//        AWTUtilities.setWindowOpacity(w, 0.5f);
         setTransparent(w);
     }
 
     private static void setTransparent(Component w) {
         WinDef.HWND hwnd = getHWnd(w);
         int wl = User32.INSTANCE.GetWindowLong(hwnd, WinUser.GWL_EXSTYLE);
-        wl = wl | WinUser.WS_EX_LAYERED | WinUser.WS_EX_TRANSPARENT;
+//        wl = wl | WinUser.WS_EX_LAYERED | WinUser.WS_EX_TRANSPARENT;
+//        wl = wl | WinUser.WS_EX_LAYERED | WinUser.WS_EX_TRANSPARENT;
         User32.INSTANCE.SetWindowLong(hwnd, WinUser.GWL_EXSTYLE, wl);
     }
 
