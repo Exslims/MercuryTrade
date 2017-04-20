@@ -4,10 +4,10 @@ import com.mercury.platform.shared.config.configration.KeyValueConfigurationServ
 import com.mercury.platform.shared.config.configration.ListConfigurationService;
 import com.mercury.platform.shared.config.configration.impl.FramesConfigurationService;
 import com.mercury.platform.shared.config.configration.impl.SoundConfigurationService;
-import com.mercury.platform.shared.config.configration.impl.atr.AtrConfigurationService;
+import com.mercury.platform.shared.config.configration.impl.adr.AdrConfigurationService;
 import com.mercury.platform.shared.entity.FrameSettings;
 import com.mercury.platform.shared.entity.SoundDescriptor;
-import com.mercury.platform.shared.entity.atr.AtrGroupSettings;
+import com.mercury.platform.shared.entity.adr.AdrGroupSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,14 +21,14 @@ public class BaseConfigManager implements ConfigManager {
     private ConfigurationSource dataSource;
     private KeyValueConfigurationService<FrameSettings,String> framesConfigurationService;
     private KeyValueConfigurationService<SoundDescriptor,String> soundConfigurationService;
-    private ListConfigurationService<AtrGroupSettings> atrGroupConfiguration;
+    private ListConfigurationService<AdrGroupSettings> adrGroupConfiguration;
 
     public BaseConfigManager(ConfigurationSource dataSource){
         this.dataSource = dataSource;
 
         this.framesConfigurationService = new FramesConfigurationService(dataSource);
         this.soundConfigurationService = new SoundConfigurationService(dataSource);
-        this.atrGroupConfiguration = new AtrConfigurationService(dataSource);
+        this.adrGroupConfiguration = new AdrConfigurationService(dataSource);
     }
     @Override
     public KeyValueConfigurationService<FrameSettings,String> framesConfiguration() {
@@ -39,8 +39,8 @@ public class BaseConfigManager implements ConfigManager {
         return soundConfigurationService;
     }
     @Override
-    public ListConfigurationService<AtrGroupSettings> atrGroupConfiguration() {
-        return atrGroupConfiguration;
+    public ListConfigurationService<AdrGroupSettings> adrGroupConfiguration() {
+        return adrGroupConfiguration;
     }
 
     public void load(){
@@ -52,7 +52,7 @@ public class BaseConfigManager implements ConfigManager {
             }
             this.framesConfigurationService.load();
             this.soundConfigurationService.load();
-            this.atrGroupConfiguration.load();
+            this.adrGroupConfiguration.load();
         }catch (IOException e) {
             logger.error("Error while processing file:{}",dataSource.getConfigurationFilePath(),e);
         }

@@ -11,6 +11,8 @@ import com.mercury.platform.ui.manager.FramesManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.swing.*;
+
 public class AppMain {
     private static final Logger logger = LogManager.getLogger(AppMain.class.getSimpleName());
     public static void main(String[] args) {

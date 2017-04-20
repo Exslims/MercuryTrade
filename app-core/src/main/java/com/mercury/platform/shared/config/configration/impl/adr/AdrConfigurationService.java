@@ -1,22 +1,22 @@
-package com.mercury.platform.shared.config.configration.impl.atr;
+package com.mercury.platform.shared.config.configration.impl.adr;
 
 
 import com.mercury.platform.shared.config.ConfigurationSource;
 import com.mercury.platform.shared.config.configration.BaseConfigurationService;
 import com.mercury.platform.shared.config.configration.ListConfigurationService;
 import com.mercury.platform.shared.entity.FrameSettings;
-import com.mercury.platform.shared.entity.atr.AtrGroupSettings;
+import com.mercury.platform.shared.entity.adr.AdrGroupSettings;
 
 import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
-public class AtrConfigurationService extends BaseConfigurationService implements ListConfigurationService<AtrGroupSettings>{
-    public AtrConfigurationService(ConfigurationSource dataSource) {
+public class AdrConfigurationService extends BaseConfigurationService implements ListConfigurationService<AdrGroupSettings>{
+    public AdrConfigurationService(ConfigurationSource dataSource) {
         super(dataSource);
     }
     @Override
-    public List<AtrGroupSettings> getEntities() {
+    public List<AdrGroupSettings> getEntities() {
         return null;
     }
 
@@ -31,8 +31,8 @@ public class AtrConfigurationService extends BaseConfigurationService implements
     }
 
     @Override
-    public AtrGroupSettings getDefault() {
-        return new AtrGroupSettings(
+    public AdrGroupSettings getDefault() {
+        return new AdrGroupSettings(
                 new FrameSettings(new Point(500,500),new Dimension(90,400)),1f,1f);
     }
 }

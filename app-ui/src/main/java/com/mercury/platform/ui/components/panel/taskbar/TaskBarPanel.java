@@ -146,6 +146,7 @@ public class TaskBarPanel extends JPanel implements HasUI{
                 }
             }
         });
+
         this.add(toHideOut);
         this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(visibleMode);

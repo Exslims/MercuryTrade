@@ -1,19 +1,19 @@
-package com.mercury.platform.ui.frame.atr;
+package com.mercury.platform.ui.frame.adr;
 
 
-import com.mercury.platform.shared.entity.atr.AtrGroupSettings;
+import com.mercury.platform.shared.entity.adr.AdrGroupSettings;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import lombok.Getter;
 
 import java.awt.*;
 
-public class AtrGroupFrame extends AbstractOverlaidFrame{
+public class AdrGroupFrame extends AbstractOverlaidFrame{
     @Getter
-    private AtrGroupSettings atrGroupSettings;
+    private AdrGroupSettings adrGroupSettings;
 
-    public AtrGroupFrame(AtrGroupSettings settings) {
+    public AdrGroupFrame(AdrGroupSettings settings) {
         super("MercuryTrade");
-        this.atrGroupSettings = settings;
+        this.adrGroupSettings = settings;
     }
 
     @Override

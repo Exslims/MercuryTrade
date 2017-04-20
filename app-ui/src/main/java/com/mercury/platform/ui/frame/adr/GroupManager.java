@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.frame.atr;
+package com.mercury.platform.ui.frame.adr;
 
 /**
  * Created by Константин on 19.04.2017.
