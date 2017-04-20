@@ -83,6 +83,7 @@ public abstract class AbstractOverlaidFrame extends JFrame implements HasEventHa
         return this.getBounds().contains(MouseInfo.getPointerInfo().getLocation());
     }
     public void showComponent(){
+        this.setAlwaysOnTop(true);
         this.setVisible(true);
     }
     public void hideComponent(){

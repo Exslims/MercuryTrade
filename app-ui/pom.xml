@@ -28,7 +28,7 @@
             <artifactId>expiringmap</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sun.jna</groupId>
+            <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
         </dependency>
         <dependency>
@@ -62,7 +62,7 @@
         </dependency>
         <dependency>
             <groupId>net.java.dev.jna</groupId>
-            <artifactId>platform</artifactId>
+            <artifactId>jna-platform</artifactId>
         </dependency>
     </dependencies>
     <build>

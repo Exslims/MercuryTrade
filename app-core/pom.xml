@@ -19,12 +19,12 @@
             <artifactId>app-shared</artifactId>
             <version>1.0.0.5</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>lc.kra.system</groupId>-->
+            <!--<artifactId>system-hook</artifactId>-->
+        <!--</dependency>-->
         <dependency>
-            <groupId>lc.kra.system</groupId>
-            <artifactId>system-hook</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.jna</groupId>
+            <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
         </dependency>
         <dependency>
@@ -33,7 +33,7 @@
         </dependency>
         <dependency>
             <groupId>net.java.dev.jna</groupId>
-            <artifactId>platform</artifactId>
+            <artifactId>jna-platform</artifactId>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>

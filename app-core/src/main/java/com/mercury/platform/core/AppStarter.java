@@ -14,7 +14,7 @@ import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.store.MercuryStore;
 import com.sun.jna.Native;
-import com.sun.jna.PointerType;
+import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,10 +28,11 @@ public class AppStarter {
     private static final Logger logger = LogManager.getLogger(AppStarter.class.getSimpleName());
     public static FrameVisibleState APP_STATUS = FrameVisibleState.HIDE;
     public static WinDef.HWND poeWindow;
-    private User32 user32 = User32.INSTANCE;
     private boolean shutdown = false;
     private volatile int delay = 100;
     private boolean updating = false;
+
+    private final int EVENT_SYSTEM_FOREGROUND = 0x0003;
 
     public void startApplication(){
         BaseConfigManager configuration = new BaseConfigManager(new MercuryDataSource());
@@ -49,7 +50,7 @@ public class AppStarter {
         HistoryManager.INSTANCE.load();
         UpdateManager updateManager = new UpdateManager();
 
-        MercuryStore.INSTANCE.uiLoadedSubject.subscribe(state -> {
+        MercuryStore.INSTANCE.uiLoadedSubject.subscribe((Boolean state) -> {
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
@@ -62,9 +63,10 @@ public class AppStarter {
                         }
                         System.exit(0);
                     }
-                    byte[] className = new byte[512];
-                    WinDef.HWND hwnd = user32.GetForegroundWindow();
-                    User32.INSTANCE.GetClassNameA(hwnd, className, 512);
+                    char[] className = new char[512];
+                    WinDef.HWND hwnd = User32.INSTANCE.GetForegroundWindow();
+
+                    User32.INSTANCE.GetClassName(hwnd, className, 512);
                     if(!Native.toString(className).equals("POEWindowClass")){
                         if(APP_STATUS == FrameVisibleState.SHOW) {
                             APP_STATUS = FrameVisibleState.HIDE;
@@ -83,7 +85,7 @@ public class AppStarter {
                         }
                     }
                 }
-            },0,50);
+            },0,300);
         });
         EventRouter.CORE.registerHandler(AddShowDelayEvent.class, event -> {
             delay = 300;
