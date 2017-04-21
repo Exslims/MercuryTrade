@@ -83,7 +83,7 @@ Each notification you receive is stored in a separate file by **MercuryTrade**. 
 
 &nbsp; *Major feature:* **Chat scanner**
 <p align="center">
-  <img src="http://i.imgur.com/zD6kWOF.png"/>
+  <img src="http://i.imgur.com/4IRGeWG.png"/>
 </p>
 
 Set up words to look for (or not!) in chat. Extremely useful for when buying something specific from chat.
