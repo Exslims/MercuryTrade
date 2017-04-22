@@ -8,10 +8,14 @@ import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
 public class FileMonitor {
+    private Logger logger = LogManager.getLogger(FileMonitor.class.getSimpleName());
+
     private static final long POLLING_INTERVAL = 350;
     private MessageFileHandler fileHandler;
     private FileAlterationMonitor monitor;
@@ -21,7 +25,7 @@ public class FileMonitor {
                 try {
                     monitor.stop();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error("Error in FileMonitor: ", e);
                 }
                 start();
             }

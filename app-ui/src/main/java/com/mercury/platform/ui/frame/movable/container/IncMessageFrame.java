@@ -22,6 +22,8 @@ import com.mercury.platform.ui.frame.setup.scale.ScaleState;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import com.mercury.platform.ui.misc.event.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -33,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class IncMessageFrame extends AbstractMovableComponentFrame implements MessagesContainer {
+    private static final Logger logger = LogManager.getLogger(IncMessageFrame.class.getSimpleName());
     private Map<Message, MessagePanel> currentMessages;
     private boolean wasVisible;
     private FlowDirections flowDirections;
@@ -165,17 +168,15 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
     }
 
     private void addMessage(Message message){
-        MessagePanel messagePanel;
         MessagePanelStyle style = flowDirections.equals(FlowDirections.DOWNWARDS)?
                 MessagePanelStyle.DOWNWARDS_SMALL: MessagePanelStyle.UPWARDS_SMALL;
-        messagePanel = new MessagePanel(
+        MessagePanel messagePanel = new MessagePanel(
                 message,
                 style,
                 new NotificationMessageController(message),
                 this.componentsFactory);
-
         if (!dnd && !this.isVisible() && AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
-            this.setVisible(true);
+            this.showComponent();
         } else {
             prevState = FrameVisibleState.SHOW;
         }

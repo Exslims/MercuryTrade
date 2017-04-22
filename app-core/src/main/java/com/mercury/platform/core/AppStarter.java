@@ -27,12 +27,9 @@ import java.util.concurrent.Executors;
 public class AppStarter {
     private static final Logger logger = LogManager.getLogger(AppStarter.class.getSimpleName());
     public static FrameVisibleState APP_STATUS = FrameVisibleState.HIDE;
-    public static WinDef.HWND poeWindow;
     private boolean shutdown = false;
     private volatile int delay = 100;
     private boolean updating = false;
-
-    private final int EVENT_SYSTEM_FOREGROUND = 0x0003;
 
     public void startApplication(){
         BaseConfigManager configuration = new BaseConfigManager(new MercuryConfigurationSource());
@@ -73,12 +70,12 @@ public class AppStarter {
                             MercuryStore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.HIDE);
                         }
                     }else{
-                        poeWindow = hwnd;
                         if(APP_STATUS == FrameVisibleState.HIDE) {
                             try {
                                 Thread.sleep(delay);
                                 delay = 100;
                             } catch (InterruptedException e) {
+                                logger.error(e);
                             }
                             APP_STATUS = FrameVisibleState.SHOW;
                             MercuryStore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.SHOW);

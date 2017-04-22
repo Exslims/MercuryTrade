@@ -95,6 +95,7 @@ public class ConfigManager {
         minimumFrameSize.put("ChatFilterSettingsFrame",new Dimension(300,200));
         minimumFrameSize.put("GamePathChooser",new Dimension(600,30));
         minimumFrameSize.put("CurrencySearchFrame",new Dimension(400,300));
+        minimumFrameSize.put("AdrManagerFrame",new Dimension(400,300));
 
         defaultAppSettings = new HashMap<>();
         defaultAppSettings.put("fadeTime",0);
@@ -498,6 +499,7 @@ public class ConfigManager {
         defaultFramesSettings.put("ChatFilterSettingsFrame",new FrameSettings(new Point(400, 600),new Dimension(320,200)));
         defaultFramesSettings.put("GamePathChooser",new FrameSettings(new Point(400, 600),new Dimension(520,30)));
         defaultFramesSettings.put("CurrencySearchFrame",new FrameSettings(new Point(400, 600),new Dimension(400,300)));
+        defaultFramesSettings.put("AdrManagerFrame",new FrameSettings(new Point(400, 600),new Dimension(400,300)));
         return defaultFramesSettings;
     }
     public Dimension getMinimumFrameSize(String frameName){

@@ -16,6 +16,8 @@ import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -33,6 +35,8 @@ import java.util.List;
 
 
 public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
+    private static final Logger logger = LogManager.getLogger(MessagePanel.class.getSimpleName());
+
     private ComponentsFactory componentsFactory;
     private MessagePanelController controller;
     private MessagePanelStyle style;
@@ -80,12 +84,17 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
     }
     private void init(){
         this.removeAll();
+        logger.debug("9");
         this.whisperPanel = getWhisperPanel();
+        logger.debug("10");
         this.messagePanel = getFormattedMessagePanel();
+        logger.debug("11");
         this.customButtonsPanel = getButtonsPanel();
+        logger.debug("12");
         whisperPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 0, 1, 0, AppThemeColor.MSG_HEADER_BORDER),
                 BorderFactory.createEmptyBorder(-6, 0, -6, 0)));
+        logger.debug("13");
         if(style.equals(MessagePanelStyle.DOWNWARDS_SMALL) ||
                 style.equals(MessagePanelStyle.HISTORY) || style.equals(MessagePanelStyle.SP_MODE)) {
             this.add(whisperPanel,BorderLayout.PAGE_START);
@@ -96,6 +105,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
             this.add(messagePanel,BorderLayout.CENTER);
             this.add(whisperPanel,BorderLayout.PAGE_END);
         }
+        logger.debug("14");
         switch (style){
             case DOWNWARDS_SMALL:{
                 messagePanel.setVisible(expanded);
@@ -117,7 +127,9 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
                 customButtonsPanel.setVisible(true);
             }
         }
+        logger.debug("15");
         this.repaint();
+        logger.debug("16");
     }
 
     private JPanel getFormattedMessagePanel(){
@@ -468,30 +480,26 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
     @Override
     public void initHandlers() {
         EventRouter.CORE.registerHandler(PlayerJoinEvent.class, event -> {
-            SwingUtilities.invokeLater(()-> {
-                String nickName = ((PlayerJoinEvent) event).getNickName();
-                if(nickName.equals(whisper)){
-                    whisperLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
-                    cachedWhisperColor = AppThemeColor.TEXT_SUCCESS;
-                    if(!style.equals(MessagePanelStyle.HISTORY)) {
-                        tradeButton.setEnabled(true);
-                    }
-                    EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
+            String nickName = ((PlayerJoinEvent) event).getNickName();
+            if(nickName.equals(whisper)){
+                whisperLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
+                cachedWhisperColor = AppThemeColor.TEXT_SUCCESS;
+                if(!style.equals(MessagePanelStyle.HISTORY)) {
+                    tradeButton.setEnabled(true);
                 }
-            });
+                EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
+            }
         });
         EventRouter.CORE.registerHandler(PlayerLeftEvent.class, event -> {
-            SwingUtilities.invokeLater(()-> {
-                String nickName = ((PlayerLeftEvent) event).getNickName();
-                if (nickName.equals(whisper)) {
-                    whisperLabel.setForeground(AppThemeColor.TEXT_DISABLE);
-                    cachedWhisperColor = AppThemeColor.TEXT_DISABLE;
-                    if (!style.equals(MessagePanelStyle.HISTORY)) {
-                        tradeButton.setEnabled(false);
-                    }
-                    EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
+            String nickName = ((PlayerLeftEvent) event).getNickName();
+            if (nickName.equals(whisper)) {
+                whisperLabel.setForeground(AppThemeColor.TEXT_DISABLE);
+                cachedWhisperColor = AppThemeColor.TEXT_DISABLE;
+                if (!style.equals(MessagePanelStyle.HISTORY)) {
+                    tradeButton.setEnabled(false);
                 }
-            });
+                EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
+            }
         });
         EventRouter.UI.registerHandler(CustomButtonsChangedEvent.class, event -> {
             this.customButtonsPanel.removeAll();

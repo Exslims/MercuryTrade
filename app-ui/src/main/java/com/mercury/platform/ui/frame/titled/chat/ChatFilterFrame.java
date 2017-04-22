@@ -143,13 +143,11 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
         interceptor = new MessageInterceptor() {
             @Override
             protected void process(String message) {
-                SwingUtilities.invokeLater(() -> {
-                    msgContainer.addMessage(message);
-                    ChatFilterFrame.this.pack();
-                    if(scrollToBottom){
-                        msgContainer.scrollToBottom(true);
-                    }
-                });
+                msgContainer.addMessage(message);
+                ChatFilterFrame.this.pack();
+                if(scrollToBottom){
+                    msgContainer.scrollToBottom(true);
+                }
             }
 
             @Override

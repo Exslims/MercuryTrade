@@ -11,11 +11,12 @@ import com.mercury.platform.ui.manager.FramesManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.swing.*;
+import java.awt.*;
 
 public class AppMain {
     private static final Logger logger = LogManager.getLogger(AppMain.class.getSimpleName());
     public static void main(String[] args) {
+        System.setProperty("sun.java2d.d3d","false");
         MercuryLoadingFrame mercuryLoadingFrame = new MercuryLoadingFrame();
         mercuryLoadingFrame.init();
         mercuryLoadingFrame.showComponent();
@@ -25,7 +26,7 @@ public class AppMain {
             MercuryStore.INSTANCE.appLoadingSubject.onNext(false);
             GamePathChooser gamePathChooser = new GamePathChooser();
             gamePathChooser.init();
-        }else{
+        }else {
             new FileMonitor().start();
             FramesManager.INSTANCE.start();
             MercuryStore.INSTANCE.appLoadingSubject.onNext(false);

@@ -38,7 +38,7 @@ public class PackTesting {
         frame.pack();
     }
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
+        EventQueue.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI();
             }

@@ -70,6 +70,14 @@ public class TaskBarPanel extends JPanel implements HasUI{
             this.controller.performHideout();
             this.repaint();
         });
+        JButton adr = componentsFactory.getIconButton(
+                "app/settings.png",
+                24,
+                AppThemeColor.FRAME_ALPHA,
+                TooltipConstants.HIDEOUT);
+        adr.addActionListener(action -> {
+            this.repaint();
+        });
 
         JButton chatFilter = componentsFactory.getIconButton(
                 "app/chat-filter.png",
@@ -147,6 +155,8 @@ public class TaskBarPanel extends JPanel implements HasUI{
             }
         });
 
+//        this.add(adr);
+//        this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(toHideOut);
         this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(visibleMode);
