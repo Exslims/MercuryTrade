@@ -28,7 +28,6 @@ public class PackTesting {
                 JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
                 panel.setMaximumSize(new Dimension(Integer.MAX_VALUE,100));
                 panel.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER));
-                panel.setBackground(AppThemeColor.TEXT_IMPORTANT_1);
                 frame.add(panel);
                 frame.pack();
             }

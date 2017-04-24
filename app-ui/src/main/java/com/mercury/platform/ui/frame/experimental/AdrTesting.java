@@ -1,13 +1,22 @@
-package com.mercury.platform.shared;
+package com.mercury.platform.ui.frame.experimental;
 
+import com.mercury.platform.ui.components.ComponentsFactory;
+import com.mercury.platform.ui.components.fields.font.FontStyle;
+import com.mercury.platform.ui.misc.AppThemeColor;
+import sun.swing.SwingUtilities2;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.util.Random;
 
 public class AdrTesting extends JPanel {
@@ -15,21 +24,23 @@ public class AdrTesting extends JPanel {
         @Override public void updateUI() {
             super.updateUI();
             setUI(new ProgressCircleUI());
-            setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
+            setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         }
     };
     protected final JProgressBar progress2 = new JProgressBar() {
         @Override public void updateUI() {
             super.updateUI();
             setUI(new ProgressCircleUI());
-            setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
+            setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         }
     };
     public AdrTesting() {
         super(new BorderLayout());
-        progress1.setForeground(new Color(0xAAFFAAAA));
         progress2.setStringPainted(true);
-        progress2.setFont(progress2.getFont().deriveFont(24f));
+        progress1.setBackground(AppThemeColor.TRANSPARENT);
+        progress1.setBorder(null);
+        progress2.setFont(new ComponentsFactory().getFont(FontStyle.BOLD,82));
+        progress2.setForeground(AppThemeColor.TEXT_DEFAULT);
 
         JSlider slider = new JSlider();
         slider.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
@@ -51,6 +62,7 @@ public class AdrTesting extends JPanel {
         });
 
         JPanel p = new JPanel(new GridLayout(1, 2));
+        p.setBackground(AppThemeColor.TRANSPARENT);
         p.add(progress1);
         p.add(progress2);
 
@@ -67,15 +79,11 @@ public class AdrTesting extends JPanel {
         });
     }
     public static void createAndShowGUI() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException
-                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new AdrTesting());
+        frame.setUndecorated(true);
+        frame.setBackground(AppThemeColor.FRAME);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -89,6 +97,25 @@ class ProgressCircleUI extends BasicProgressBarUI {
         d.setSize(v, v);
         return d;
     }
+
+    @Override
+    protected void paintString(Graphics g, int x, int y, int width, int height, int amountFull, Insets b) {
+        Graphics2D g2 = (Graphics2D)g;
+        String progressString = String.valueOf(progressBar.getValue());
+        g2.setFont(progressBar.getFont());
+        Point renderLocation = getStringPlacement(g2, progressString,
+                x, y, width, height);
+        Rectangle oldClip = g2.getClipBounds();
+        g2.setColor(getSelectionForeground());
+        SwingUtilities2.drawString(progressBar, g2, progressString,
+                renderLocation.x, renderLocation.y);
+        g2.setColor(getSelectionForeground());
+        g2.clipRect(width, y, amountFull, height);
+        SwingUtilities2.drawString(progressBar, g2, progressString,
+                renderLocation.x, renderLocation.y);
+        g2.setClip(oldClip);
+    }
+
     @Override public void paint(Graphics g, JComponent c) {
         //public void paintDeterminate(Graphics g, JComponent c) {
         Insets b = progressBar.getInsets(); // area for border
@@ -102,37 +129,32 @@ class ProgressCircleUI extends BasicProgressBarUI {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         double degree = 360 * progressBar.getPercentComplete();
-        double sz = Math.min(barRectWidth, barRectHeight);
-        double cx = b.left + barRectWidth  * .5;
-        double cy = b.top  + barRectHeight * .5;
-        double or = sz * .5;
-        //double ir = or - 20;
-        double ir = or * .5; //.8;
-        Shape inner  = new Ellipse2D.Double(cx - ir, cy - ir, ir * 2, ir * 2);
-        Shape outer  = new Ellipse2D.Double(cx - or, cy - or, sz, sz);
-        Shape sector = new Arc2D.Double(cx - or, cy - or, sz, sz, 90 - degree, degree, Arc2D.PIE);
+        double sz = Math.max(barRectWidth, barRectHeight);
+        Shape outer  = new Rectangle2D.Double(0, 0, sz, sz);
+        Shape sector = new Arc2D.Double(-sz, -sz, sz *3, sz *3, 90 - degree, degree, Arc2D.PIE);
 
         Area foreground = new Area(sector);
         Area background = new Area(outer);
-        Area hole = new Area(inner);
 
-        foreground.subtract(hole);
-        background.subtract(hole);
+        foreground.intersect(background);
 
-        // draw the track
-        g2.setPaint(new Color(0xDDDDDD));
+        g2.setPaint(new Color(0x505050));
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.7f));
         g2.fill(background);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+        try {
+            BufferedImage read = ImageIO.read(getClass().getClassLoader().getResource("app/adr/vessel_vinktar.png"));
+            g2.drawImage(read,0,0,(int)sz,(int)sz,null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        // draw the circular sector
-        //AffineTransform at = AffineTransform.getScaleInstance(-1.0, 1.0);
-        //at.translate(-(barRectWidth + b.left * 2), 0);
-        //AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(degree), cx, cy);
-        //g2.fill(at.createTransformedShape(area));
-        g2.setPaint(progressBar.getForeground());
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.7f));
         g2.fill(foreground);
+
         g2.dispose();
 
-        // Deal with possible text painting
+//        // Deal with possible text painting
         if (progressBar.isStringPainted()) {
             paintString(g, b.left, b.top, barRectWidth, barRectHeight, 0, b);
         }
@@ -143,7 +165,7 @@ class Task extends SwingWorker<String, Void> {
     private final Random rnd = new Random();
     @Override public String doInBackground() {
         int current = 0;
-        int lengthOfTask = 100;
+        int lengthOfTask = 200;
         while (current <= lengthOfTask && !isCancelled()) {
             try { // dummy task
                 Thread.sleep(rnd.nextInt(50) + 1);

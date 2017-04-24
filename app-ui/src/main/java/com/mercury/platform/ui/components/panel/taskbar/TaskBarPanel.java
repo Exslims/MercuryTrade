@@ -2,6 +2,7 @@ package com.mercury.platform.ui.components.panel.taskbar;
 
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
+import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import lombok.NonNull;
@@ -76,6 +77,7 @@ public class TaskBarPanel extends JPanel implements HasUI{
                 AppThemeColor.FRAME_ALPHA,
                 TooltipConstants.HIDEOUT);
         adr.addActionListener(action -> {
+            FramesManager.INSTANCE.performAdr();
             this.repaint();
         });
 
@@ -155,8 +157,8 @@ public class TaskBarPanel extends JPanel implements HasUI{
             }
         });
 
-//        this.add(adr);
-//        this.add(Box.createRigidArea(new Dimension(3, 4)));
+        this.add(adr);
+        this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(toHideOut);
         this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(visibleMode);

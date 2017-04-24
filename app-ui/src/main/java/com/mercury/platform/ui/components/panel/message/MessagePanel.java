@@ -84,17 +84,12 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
     }
     private void init(){
         this.removeAll();
-        logger.debug("9");
         this.whisperPanel = getWhisperPanel();
-        logger.debug("10");
         this.messagePanel = getFormattedMessagePanel();
-        logger.debug("11");
         this.customButtonsPanel = getButtonsPanel();
-        logger.debug("12");
         whisperPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 0, 1, 0, AppThemeColor.MSG_HEADER_BORDER),
                 BorderFactory.createEmptyBorder(-6, 0, -6, 0)));
-        logger.debug("13");
         if(style.equals(MessagePanelStyle.DOWNWARDS_SMALL) ||
                 style.equals(MessagePanelStyle.HISTORY) || style.equals(MessagePanelStyle.SP_MODE)) {
             this.add(whisperPanel,BorderLayout.PAGE_START);
@@ -105,7 +100,6 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
             this.add(messagePanel,BorderLayout.CENTER);
             this.add(whisperPanel,BorderLayout.PAGE_END);
         }
-        logger.debug("14");
         switch (style){
             case DOWNWARDS_SMALL:{
                 messagePanel.setVisible(expanded);
@@ -127,9 +121,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
                 customButtonsPanel.setVisible(true);
             }
         }
-        logger.debug("15");
         this.repaint();
-        logger.debug("16");
     }
 
     private JPanel getFormattedMessagePanel(){

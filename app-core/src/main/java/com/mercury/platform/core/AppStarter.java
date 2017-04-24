@@ -82,7 +82,7 @@ public class AppStarter {
                         }
                     }
                 }
-            },0,300);
+            },0,150);
         });
         EventRouter.CORE.registerHandler(AddShowDelayEvent.class, event -> {
             delay = 300;

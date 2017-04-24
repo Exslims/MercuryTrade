@@ -11,11 +11,13 @@ import com.mercury.platform.shared.entity.FrameSettings;
 import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.frame.AbstractComponentFrame;
 import com.mercury.platform.ui.frame.AbstractScalableComponentFrame;
+import com.mercury.platform.ui.frame.adr.AdrManagerFrame;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
 import com.mercury.platform.ui.frame.movable.AbstractMovableComponentFrame;
 import com.mercury.platform.ui.frame.movable.container.IncMessageFrame;
 import com.mercury.platform.ui.frame.other.*;
 import com.mercury.platform.ui.frame.movable.TaskBarFrame;
+import com.mercury.platform.ui.frame.setup.adr.AdrState;
 import com.mercury.platform.ui.frame.setup.scale.SetUpScaleCommander;
 import com.mercury.platform.ui.frame.titled.*;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
@@ -34,7 +36,6 @@ import java.util.*;
 import java.util.List;
 
 public class FramesManager implements HasEventHandlers{
-
     private static class FramesManagerHolder {
         static final FramesManager HOLDER_INSTANCE = new FramesManager();
     }
@@ -43,11 +44,13 @@ public class FramesManager implements HasEventHandlers{
     private Map<Class,AbstractOverlaidFrame> framesMap;
     private SetUpLocationCommander locationCommander;
     private SetUpScaleCommander scaleCommander;
+    private AdrManager adrManager;
 
     private FramesManager() {
         framesMap = new HashMap<>();
         locationCommander = new SetUpLocationCommander();
         scaleCommander = new SetUpScaleCommander();
+        adrManager = new AdrManager();
     }
     public void start(){
         createTrayIcon();
@@ -88,9 +91,7 @@ public class FramesManager implements HasEventHandlers{
         framesMap.put(SetUpScaleFrame.class,new SetUpScaleFrame());
         framesMap.put(AlertFrame.class,new AlertFrame());
 
-        framesMap.forEach((k,v)->{
-            v.init();
-        });
+        framesMap.forEach((k,v)-> v.init());
 
         int decayTime = ConfigManager.INSTANCE.getFadeTime();
         int maxOpacity = ConfigManager.INSTANCE.getMaxOpacity();
@@ -106,6 +107,7 @@ public class FramesManager implements HasEventHandlers{
             }
         });
         initHandlers();
+        adrManager.load();
         MercuryStore.INSTANCE.uiLoadedSubject.onNext(true);
     }
     @Override
@@ -170,6 +172,13 @@ public class FramesManager implements HasEventHandlers{
     public void disableScale(){
         hideFrame(SetUpScaleFrame.class);
         scaleCommander.endUpAll();
+    }
+    public void performAdr() {
+        if(this.adrManager.getState().equals(AdrState.DEFAULT)) {
+            this.adrManager.enableSettings();
+        }else {
+            this.adrManager.disableSettings();
+        }
     }
     public void restoreDefaultLocation(){
         framesMap.forEach((k,v) -> {
