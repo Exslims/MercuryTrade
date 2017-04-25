@@ -26,7 +26,7 @@ public class AdrConfigurationService extends BaseConfigurationService implements
                                 new AdrCellDescriptor("Arctic_Armour_skill_icon",new Dimension(64,64),8f),
                                 new AdrCellDescriptor("Blood_Rage_skill_icon",new Dimension(64,64),5f),
                                 new AdrCellDescriptor("Phase_Run_skill_icon",new Dimension(64,64),6f),
-                                new AdrCellDescriptor("vessel_vinktar",new Dimension(64,64),4f)),
+                                new AdrCellDescriptor("Granite_Flask",new Dimension(64,64),4f)),
                         1f,1f)
         );
     }

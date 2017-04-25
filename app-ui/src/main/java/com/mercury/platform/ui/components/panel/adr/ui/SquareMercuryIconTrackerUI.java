@@ -58,7 +58,7 @@ public class SquareMercuryIconTrackerUI extends BasicMercuryIconTrackerUI{
 
         g2.dispose();
         if (progressBar.isStringPainted()) {
-            paintString(g, b.left, b.top, barRectWidth, barRectHeight, 0, b);
+            paintString(g, 0, 0, barRectWidth, barRectHeight, 0, b);
         }
     }
 }

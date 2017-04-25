@@ -49,7 +49,7 @@ public abstract class AbstractTitledComponentFrame extends AbstractComponentFram
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if(SwingUtilities.isLeftMouseButton(e)) {
-                        AbstractTitledComponentFrame.this.setVisible(false);
+                        hideComponent();
                     }
                 }
             });

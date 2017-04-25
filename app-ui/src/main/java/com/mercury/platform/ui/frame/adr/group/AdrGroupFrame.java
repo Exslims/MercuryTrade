@@ -123,22 +123,28 @@ public class AdrGroupFrame extends AbstractAdrFrame {
     public class DraggedFrameMotionListener extends MouseAdapter {
         @Override
         public void mouseDragged(MouseEvent e) {
-            e.translatePoint(AdrGroupFrame.this.getLocation().x - x,AdrGroupFrame.this.getLocation().y - y);
-            AdrGroupFrame.this.setLocation(e.getPoint());
+            if(SwingUtilities.isLeftMouseButton(e)) {
+                e.translatePoint(AdrGroupFrame.this.getLocation().x - x, AdrGroupFrame.this.getLocation().y - y);
+                AdrGroupFrame.this.setLocation(e.getPoint());
+            }
         }
     }
     public class DraggedFrameMouseListener extends MouseAdapter{
         @Override
         public void mousePressed(MouseEvent e) {
-            x = e.getX();
-            y = e.getY();
+            if(SwingUtilities.isLeftMouseButton(e)) {
+                x = e.getX();
+                y = e.getY();
+            }
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-            if(getLocationOnScreen().y + getSize().height > dimension.height){
-                setLocation(getLocationOnScreen().x, dimension.height - getSize().height);
+            if(SwingUtilities.isLeftMouseButton(e)) {
+                Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+                if (getLocationOnScreen().y + getSize().height > dimension.height) {
+                    setLocation(getLocationOnScreen().x, dimension.height - getSize().height);
+                }
             }
         }
     }
