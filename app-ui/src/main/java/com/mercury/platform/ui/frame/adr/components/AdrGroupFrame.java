@@ -1,8 +1,7 @@
-package com.mercury.platform.ui.frame.adr.group;
+package com.mercury.platform.ui.frame.adr.components;
 
 import com.mercury.platform.shared.entity.adr.AdrGroupDescriptor;
 import com.mercury.platform.ui.components.panel.adr.group.AdrGroupCellPanel;
-import com.mercury.platform.ui.frame.adr.AbstractAdrFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import lombok.NonNull;
 

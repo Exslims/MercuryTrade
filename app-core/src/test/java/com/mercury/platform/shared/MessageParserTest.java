@@ -1,7 +1,7 @@
 package com.mercury.platform.shared;
 
-import com.mercury.platform.shared.entity.CurrencyMessage;
-import com.mercury.platform.shared.entity.ItemMessage;
+import com.mercury.platform.shared.entity.message.CurrencyMessage;
+import com.mercury.platform.shared.entity.message.ItemMessage;
 import org.junit.Before;
 import org.junit.Test;
 

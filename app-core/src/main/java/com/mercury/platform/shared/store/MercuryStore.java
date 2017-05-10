@@ -3,7 +3,7 @@ package com.mercury.platform.shared.store;
 import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.core.utils.interceptor.MessageInterceptor;
 import com.mercury.platform.shared.FrameVisibleState;
-import com.mercury.platform.shared.entity.Message;
+import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.shared.entity.SoundDescriptor;
 import rx.subjects.PublishSubject;
 

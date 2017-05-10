@@ -1,4 +1,4 @@
-package com.mercury.platform.shared.entity;
+package com.mercury.platform.shared.entity.message;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

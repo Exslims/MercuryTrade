@@ -8,6 +8,7 @@ import com.mercury.platform.shared.config.configration.impl.adr.AdrConfiguration
 import com.mercury.platform.shared.entity.FrameSettings;
 import com.mercury.platform.shared.entity.SoundDescriptor;
 import com.mercury.platform.shared.entity.adr.AdrGroupDescriptor;
+import com.mercury.platform.shared.entity.adr.AdrProfile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,7 +22,7 @@ public class BaseConfigManager implements ConfigManager {
     private ConfigurationSource dataSource;
     private KeyValueConfigurationService<FrameSettings,String> framesConfigurationService;
     private KeyValueConfigurationService<SoundDescriptor,String> soundConfigurationService;
-    private ListConfigurationService<AdrGroupDescriptor> adrGroupConfiguration;
+    private ListConfigurationService<AdrProfile> adrGroupConfiguration;
 
     public BaseConfigManager(ConfigurationSource dataSource){
         this.dataSource = dataSource;
@@ -39,7 +40,7 @@ public class BaseConfigManager implements ConfigManager {
         return soundConfigurationService;
     }
     @Override
-    public ListConfigurationService<AdrGroupDescriptor> adrGroupConfiguration() {
+    public ListConfigurationService<AdrProfile> adrGroupConfiguration() {
         return adrGroupConfiguration;
     }
 

@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.frame.adr;
+package com.mercury.platform.ui.frame.adr.components;
 
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;

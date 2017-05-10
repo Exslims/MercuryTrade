@@ -4,15 +4,13 @@ import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
-import com.mercury.platform.shared.entity.Message;
+import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;

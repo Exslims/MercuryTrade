@@ -1,8 +1,8 @@
 package com.mercury.platform.ui.components.panel.message;
 
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.entity.ItemMessage;
-import com.mercury.platform.shared.entity.Message;
+import com.mercury.platform.shared.entity.message.ItemMessage;
+import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.misc.event.*;
 import lombok.NonNull;

@@ -1,6 +1,7 @@
-package com.mercury.platform.ui.components.panel.adr.ui;
+package com.mercury.platform.ui.components.panel.adr.ui.icon;
 
 
+import com.mercury.platform.ui.components.panel.adr.ui.BasicMercuryIconTrackerUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +15,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class SquareMercuryIconTrackerUI extends BasicMercuryIconTrackerUI{
+public class SquareMercuryIconTrackerUI extends BasicMercuryIconTrackerUI {
     public SquareMercuryIconTrackerUI(String iconPath) {
         super(iconPath);
     }

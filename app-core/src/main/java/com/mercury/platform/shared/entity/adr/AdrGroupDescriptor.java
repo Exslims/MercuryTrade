@@ -1,15 +1,15 @@
 package com.mercury.platform.shared.entity.adr;
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.awt.*;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-@AllArgsConstructor
-public class AdrGroupDescriptor {
-    private Point location;
-    private List<AdrCellDescriptor> cells;
-    private float opacity;
-    private float scale;
+public class AdrGroupDescriptor extends AdrComponentDescriptor{
+    private Point location = new Point(400,400);
+    private Dimension iconSize = new Dimension(64,64);
+    private List<AdrIconDescriptor> cells;
 }

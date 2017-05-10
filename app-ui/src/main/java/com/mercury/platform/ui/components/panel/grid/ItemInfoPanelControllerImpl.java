@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.components.panel.grid;
 
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.entity.ItemMessage;
+import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.ui.misc.event.CloseGridItemEvent;
 import com.mercury.platform.ui.misc.event.ItemCellStateChangedEvent;
 import lombok.NonNull;

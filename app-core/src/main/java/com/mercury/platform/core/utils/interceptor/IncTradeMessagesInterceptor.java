@@ -3,7 +3,7 @@ package com.mercury.platform.core.utils.interceptor;
 import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
 import com.mercury.platform.shared.MessageParser;
-import com.mercury.platform.shared.entity.Message;
+import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.shared.store.MercuryStore;
 import org.apache.commons.lang3.StringUtils;
 
