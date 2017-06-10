@@ -10,11 +10,12 @@ Download and Install Java: [https://java.com/download](https://java.com/download
 
 Download MercuryTrade.jar: [Latest release](https://github.com/Exslims/MercuryTrade/releases)
 
-Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issues) [Discord](https://discord.gg/aG9C8XJ)
+**ALTERNATIVE LAUNCHER**: MercuryTrade.**RAR**: [Latest release](https://github.com/Exslims/MercuryTrade/releases). Unpack and run the attached .exe as administrator! Try this launcher when **something is not working**.
 
 I have a problem: [Troubleshooting](https://github.com/Exslims/MercuryTrade/wiki/Troubleshooting)
 
-**ALTERNATIVE LAUNCHER**: MercuryTrade.**RAR**: [Latest release](https://github.com/Exslims/MercuryTrade/releases). Unpack and run the attached .exe as administrator! Try this launcher when something is not working.
+Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issues) [Discord](https://discord.gg/aG9C8XJ)
+
 
 ---
  <p align="center">
@@ -83,7 +84,7 @@ Each notification you receive is stored in a separate file by **MercuryTrade**. 
 
 &nbsp; *Major feature:* **Chat scanner**
 <p align="center">
-  <img src="http://i.imgur.com/zD6kWOF.png"/>
+  <img src="http://i.imgur.com/4IRGeWG.png"/>
 </p>
 
 Set up words to look for (or not!) in chat. Extremely useful for when buying something specific from chat.
