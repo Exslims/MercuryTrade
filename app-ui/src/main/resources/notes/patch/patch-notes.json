@@ -1,9 +1,9 @@
 {
-  "version":"1.0.1.3",
+  "version":"1.0.1.4",
   "notes":[
     {
       "title" : "Update",
-      "text" : "- Added sound volume sliders.\n- Updated Chat Scanner with requested features.\n- Updated Support tab.\n- Fixed the bug with notifications not displaying after some time.\n- Fixed the bug related to having too many notificatons.\n\nIf you love MercuryTrade so much it has become your favourite application to play the game - show your appreciation by supporting it!\nIf you have troubles updating please download directly from github. Thanks!",
+      "text" : "- MercuryTrade now has 3.0 Beta support!\nThank you for staying with us, closer to Fall of Oriath release MT will have a huge update with unique features, stay tuned!",
       "image" : "",
       "layout" : "VERTICAL"
     }
