@@ -6,9 +6,6 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 
-/**
- * Created by Константин on 28.12.2016.
- */
 public class MercuryScrollBarUI extends BasicScrollBarUI {
     private final Dimension d = new Dimension();
     private Color scrollColor;
