@@ -5,6 +5,7 @@ import com.mercury.platform.core.update.core.holder.ApplicationHolder;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.custom.*;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.frame.AbstractComponentFrame;
 import com.mercury.platform.ui.frame.titled.NotesFrame;
@@ -14,7 +15,6 @@ import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.manager.HideSettingsManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
-import com.mercury.platform.ui.misc.event.ShowTooltipEvent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -237,7 +237,7 @@ public class GeneralSettings extends ConfigurationPanel {
         ConfigManager.INSTANCE.setCheckUpdateOnStartUp(checkEnable.isSelected());
         if (ConfigManager.INSTANCE.isValidGamePath(gamePathField.getText())){
             ConfigManager.INSTANCE.setGamePath(gamePathField.getText()+ File.separator);
-            EventRouter.CORE.fireEvent(new ChangePOEFolderEvent());
+            MercuryStore.INSTANCE.poeFolderChangedSubject.onNext(true);
         } else {
             gamePathField.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(AppThemeColor.TEXT_IMPORTANT,1),
@@ -267,17 +267,18 @@ public class GeneralSettings extends ConfigurationPanel {
     private class WrongGamePathListener extends MouseAdapter{
         @Override
         public void mouseEntered(MouseEvent e) {
-            EventRouter.UI.fireEvent(new ShowTooltipEvent("Wrong Path of Exile folder! Open Task Manager (CTRL + Shift + ESC) and check the path here!", MouseInfo.getPointerInfo().getLocation()));
+            MercuryStore.INSTANCE.tooltipSubject.onNext(
+                    "Wrong Path of Exile folder! Open Task Manager (CTRL + Shift + ESC) and check the path here!");
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-            EventRouter.UI.fireEvent(new HideTooltipEvent());
+            MercuryStore.INSTANCE.tooltipSubject.onNext(null);
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-            EventRouter.UI.fireEvent(new HideTooltipEvent());
+            MercuryStore.INSTANCE.tooltipSubject.onNext(null);
         }
     }
 }

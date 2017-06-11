@@ -2,7 +2,7 @@ package com.mercury.platform.ui.frame.titled;
 
 
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.AddShowDelayEvent;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.fields.MercuryTabbedPane;
 import com.mercury.platform.ui.components.panel.settings.*;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -103,6 +103,6 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
     @Override
     public void hideComponent() {
         super.hideComponent();
-        EventRouter.CORE.fireEvent(new AddShowDelayEvent());
+        MercuryStore.INSTANCE.showingDelaySubject.onNext(true);
     }
 }

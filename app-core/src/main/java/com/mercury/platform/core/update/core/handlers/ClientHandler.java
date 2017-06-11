@@ -8,6 +8,7 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.events.MercuryEventHandler;
 import com.mercury.platform.shared.events.custom.*;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.update.UpdateDescriptor;
 import com.mercury.platform.update.UpdateType;
 import io.netty.channel.ChannelHandlerContext;
@@ -27,7 +28,6 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
     private volatile int length;
     private volatile int percentDelta;
     private ResponseDispatcher responseDispatcher;
-    private MercuryEventHandler<CheckOutPatchNotes> checkOutPatchNotesHandler;
     private MercuryEventHandler<StartUpdateEvent> startUpdateEventHandler;
 
     private ChannelHandlerContext context;
@@ -35,7 +35,6 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
         chunks = new byte[0];
         responseDispatcher = new ResponseDispatcher();
 
-        checkOutPatchNotesHandler = event -> checkOutPatchNotes();
         startUpdateEventHandler = event -> getLatestUpdate();
     }
 
@@ -49,7 +48,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
         if (object instanceof byte[]) {
             byte[] bytes = (byte[]) object;
             chunks = Bytes.concat(chunks,bytes);
-            EventRouter.CORE.fireEvent(new ChunkLoadedEvent(percentDelta));
+            MercuryStore.INSTANCE.chunkLoadedSubject.onNext(percentDelta);
             if (chunks.length == length) {
                 UpdateReceivedEvent event = new UpdateReceivedEvent(chunks);
                 UpdaterClientEventBus.getInstance().post(event);
@@ -70,7 +69,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
                 Integer version = ApplicationHolder.getInstance().getVersion();
                 context.channel().writeAndFlush(new UpdateDescriptor(UpdateType.REQUEST_INFO, version));
             }
-            EventRouter.CORE.registerHandler(CheckOutPatchNotes.class, checkOutPatchNotesHandler);
+            MercuryStore.INSTANCE.checkOutPatchSubject.subscribe(state -> this.checkOutPatchNotes());
             EventRouter.CORE.registerHandler(StartUpdateEvent.class, startUpdateEventHandler);
         }
     }
@@ -93,15 +92,10 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void channelInactive(ChannelHandlerContext context) throws Exception {
         LOGGER.info("Channel is inactive");
-        EventRouter.CORE.unregisterHandler(CheckOutPatchNotes.class, checkOutPatchNotesHandler);
-        EventRouter.CORE.unregisterHandler(StartUpdateEvent.class, startUpdateEventHandler);
-
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext context, Throwable cause) throws Exception {
-        EventRouter.CORE.unregisterHandler(CheckOutPatchNotes.class, checkOutPatchNotesHandler);
-        EventRouter.CORE.unregisterHandler(StartUpdateEvent.class, startUpdateEventHandler);
         LOGGER.error(cause);
     }
 

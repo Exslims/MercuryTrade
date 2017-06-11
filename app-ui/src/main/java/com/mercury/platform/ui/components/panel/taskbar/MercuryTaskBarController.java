@@ -1,7 +1,6 @@
 package com.mercury.platform.ui.components.panel.taskbar;
 
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.NotificationEvent;
 import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
 import com.mercury.platform.ui.frame.titled.chat.ChatFilterFrame;
@@ -14,14 +13,14 @@ public class MercuryTaskBarController implements TaskBarController {
     @Override
     public void enableDND() {
         EventRouter.UI.fireEvent(new RepaintEvent.RepaintTaskBar());
-        EventRouter.UI.fireEvent(new NotificationEvent("DND on"));
+        MercuryStore.INSTANCE.notificationSubject.onNext("DND on");
         MercuryStore.INSTANCE.dndSubject.onNext(true);
     }
 
     @Override
     public void disableDND() {
         EventRouter.UI.fireEvent(new RepaintEvent.RepaintTaskBar());
-        EventRouter.UI.fireEvent(new NotificationEvent("DND off"));
+        MercuryStore.INSTANCE.notificationSubject.onNext("DND off");
         MercuryStore.INSTANCE.dndSubject.onNext(false);
     }
 

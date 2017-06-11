@@ -3,7 +3,6 @@ package com.mercury.platform.core.update.core.handlers;
 import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.core.update.core.holder.ApplicationHolder;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.AlertEvent;
 import com.mercury.platform.shared.events.custom.ShowPatchNotesEvent;
 import com.mercury.platform.shared.events.custom.UpdateInfoEvent;
 import com.mercury.platform.shared.store.MercuryStore;
@@ -11,9 +10,6 @@ import com.mercury.platform.update.AlreadyLatestUpdateMessage;
 import com.mercury.platform.update.PatchNotesDescriptor;
 import com.mercury.platform.update.UpdateDescriptor;
 
-/**
- * Need refactoring
- */
 public class ResponseDispatcher {
     public void process(Object object){
         if (object instanceof PatchNotesDescriptor) {
@@ -28,7 +24,7 @@ public class ResponseDispatcher {
             if(ApplicationHolder.getInstance().isManualRequest()) {
                 ApplicationHolder.getInstance().setManualRequest(false);
                 String message = ((AlreadyLatestUpdateMessage) object).getMessage();
-                EventRouter.CORE.fireEvent(new AlertEvent(message));
+                MercuryStore.INSTANCE.stringAlertSubject.onNext(message);
             }
         }
     }

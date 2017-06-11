@@ -1,9 +1,7 @@
 package com.mercury.platform.ui.frame.other;
 
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.HideTooltipEvent;
-import com.mercury.platform.ui.misc.event.ShowTooltipEvent;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
@@ -31,46 +29,46 @@ public class TooltipFrame extends AbstractOverlaidFrame {
     }
     @Override
     public void initHandlers() {
-        EventRouter.UI.registerHandler(ShowTooltipEvent.class, event -> {
-            getContentPane().removeAll();
-            this.setPreferredSize(null);
-            String tooltip = ((ShowTooltipEvent) event).getTooltip();
-            if(tooltip.toCharArray().length < 85){
-                JLabel tooltipLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, TextAlignment.LEFTOP,16f,tooltip);
-                this.add(tooltipLabel,BorderLayout.CENTER);
-            }else {
-                JTextArea tooltipArea = componentsFactory.getSimpleTextArea("");
-                this.add(tooltipArea,BorderLayout.CENTER);
-                tooltipArea.setText(tooltip);
-                if(tooltip.toCharArray().length < 120){
-                    if(tooltip.toCharArray().length < 85){
-                        this.setPreferredSize(new Dimension(320, 55));
+        MercuryStore.INSTANCE.tooltipSubject.subscribe(tooltip -> {
+            if(tooltip != null){
+                this.getContentPane().removeAll();
+                this.setPreferredSize(null);
+                if(tooltip.toCharArray().length < 85){
+                    JLabel tooltipLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, TextAlignment.LEFTOP,16f,tooltip);
+                    this.add(tooltipLabel,BorderLayout.CENTER);
+                }else {
+                    JTextArea tooltipArea = componentsFactory.getSimpleTextArea("");
+                    this.add(tooltipArea,BorderLayout.CENTER);
+                    tooltipArea.setText(tooltip);
+                    if(tooltip.toCharArray().length < 120){
+                        if(tooltip.toCharArray().length < 85){
+                            this.setPreferredSize(new Dimension(320, 55));
+                        }else {
+                            this.setPreferredSize(new Dimension(320, 75));
+                        }
                     }else {
-                        this.setPreferredSize(new Dimension(320, 75));
+                        this.setPreferredSize(new Dimension(320, 145));
                     }
-                }else {
-                    this.setPreferredSize(new Dimension(320, 145));
                 }
-            }
-            this.pack();
-            this.repaint();
-            tooltipTimer = new Timer(500, e -> {
-                Point cursorPoint = MouseInfo.getPointerInfo().getLocation();
-                Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-                if(cursorPoint.y + this.getPreferredSize().height > dim.height){
-                    this.setLocation(cursorPoint.x + 4,cursorPoint.y - this.getPreferredSize().height);
-                }else {
-                    this.setLocation(new Point(cursorPoint.x + 4,cursorPoint.y));
+                this.pack();
+                this.repaint();
+                this.tooltipTimer = new Timer(500, e -> {
+                    Point cursorPoint = MouseInfo.getPointerInfo().getLocation();
+                    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+                    if(cursorPoint.y + this.getPreferredSize().height > dim.height){
+                        this.setLocation(cursorPoint.x + 4,cursorPoint.y - this.getPreferredSize().height);
+                    }else {
+                        this.setLocation(new Point(cursorPoint.x + 4,cursorPoint.y));
+                    }
+                    this.tooltipTimer.stop();
+                    setVisible(true);
+                });
+                this.tooltipTimer.start();
+            }else {
+                if(tooltipTimer != null) {
+                    this.tooltipTimer.stop();
+                    this.setVisible(false);
                 }
-                tooltipTimer.stop();
-                setVisible(true);
-            });
-            tooltipTimer.start();
-        });
-        EventRouter.UI.registerHandler(HideTooltipEvent.class, event -> {
-            if(tooltipTimer != null) {
-                tooltipTimer.stop();
-                setVisible(false);
             }
         });
     }

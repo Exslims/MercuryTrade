@@ -1,15 +1,15 @@
 package com.mercury.platform.ui.components;
 
 import com.mercury.platform.core.misc.SoundType;
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.HideTooltipEvent;
 import com.mercury.platform.shared.store.MercuryStore;
-import com.mercury.platform.ui.misc.event.ShowTooltipEvent;
 import com.mercury.platform.ui.components.fields.style.MercuryComboBoxUI;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.misc.ToggleCallback;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -178,22 +178,7 @@ public class ComponentsFactory{
             }
         });
         if(tooltip.length() > 0) {
-            button.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    EventRouter.UI.fireEvent(new ShowTooltipEvent(tooltip, MouseInfo.getPointerInfo().getLocation()));
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    EventRouter.UI.fireEvent(new HideTooltipEvent());
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    EventRouter.UI.fireEvent(new HideTooltipEvent());
-                }
-            });
+            button.addMouseListener(new TooltipMouseListener(tooltip));
         }
         button.addMouseListener(new MouseAdapter() {
             @Override
@@ -337,22 +322,7 @@ public class ComponentsFactory{
         } catch (Exception e) {
             return getTextLabel(StringUtils.substringBetween(iconPath,"/","."));
         }
-        iconLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                EventRouter.UI.fireEvent(new ShowTooltipEvent(tooltip, MouseInfo.getPointerInfo().getLocation()));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                EventRouter.UI.fireEvent(new HideTooltipEvent());
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                EventRouter.UI.fireEvent(new HideTooltipEvent());
-            }
-        });
+        iconLabel.addMouseListener(new TooltipMouseListener(tooltip));
         return iconLabel;
     }
     public JLabel getIconLabel(String iconPath){
@@ -389,22 +359,7 @@ public class ComponentsFactory{
     public JCheckBox getCheckBox(String tooltip){
         JCheckBox checkBox = new JCheckBox();
         checkBox.setBackground(AppThemeColor.TRANSPARENT);
-        checkBox.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                EventRouter.UI.fireEvent(new ShowTooltipEvent(tooltip, MouseInfo.getPointerInfo().getLocation()));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                EventRouter.UI.fireEvent(new HideTooltipEvent());
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                EventRouter.UI.fireEvent(new HideTooltipEvent());
-            }
-        });
+        checkBox.addMouseListener(new TooltipMouseListener(tooltip));
         return checkBox;
     }
     public Font getFontByLang(String text,FontStyle style){
@@ -588,5 +543,26 @@ public class ComponentsFactory{
     }
     private boolean matches(char c) {
         return c <= '\u007f';
+    }
+
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    @AllArgsConstructor
+    private class TooltipMouseListener extends MouseAdapter {
+        private String tooltip;
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            MercuryStore.INSTANCE.tooltipSubject.onNext(tooltip);
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            MercuryStore.INSTANCE.tooltipSubject.onNext(null);
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            MercuryStore.INSTANCE.tooltipSubject.onNext(null);
+        }
     }
 }

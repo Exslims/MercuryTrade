@@ -777,12 +777,12 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
                     infoLabel.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseEntered(MouseEvent e) {
-                            EventRouter.UI.fireEvent(new ShowTooltipEvent(TooltipConstants.NOTIFICATION_SETTINGS, MouseInfo.getPointerInfo().getLocation()));
+                            MercuryStore.INSTANCE.tooltipSubject.onNext(TooltipConstants.NOTIFICATION_SETTINGS);
                         }
 
                         @Override
                         public void mouseExited(MouseEvent e) {
-                            EventRouter.UI.fireEvent(new HideTooltipEvent());
+                            MercuryStore.INSTANCE.tooltipSubject.onNext(null);
                         }
                     });
                     panel.add(infoLabel,BorderLayout.CENTER);

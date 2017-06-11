@@ -3,9 +3,9 @@ package com.mercury.platform.ui.frame.titled;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.ChunkLoadedEvent;
 import com.mercury.platform.shared.events.custom.StartUpdateEvent;
 import com.mercury.platform.shared.events.custom.UpdateReadyEvent;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
@@ -311,15 +311,12 @@ public class NotesFrame extends AbstractTitledComponentFrame {
 
         @Override
         public void initHandlers() {
-            EventRouter.CORE.registerHandler(ChunkLoadedEvent.class, event -> {
-                SwingUtilities.invokeLater(() -> {
-                    int addedPercent = ((ChunkLoadedEvent) event).getPercent();
-                    this.percent += addedPercent;
-                    percentLabel.setText(String.valueOf(percent) + "%");
-                    this.repaint();
-                    this.pack();
-                });
-            });
+            MercuryStore.INSTANCE.chunkLoadedSubject.subscribe(percentDelta -> SwingUtilities.invokeLater(() -> {
+                this.percent += percentDelta;
+                this.percentLabel.setText(String.valueOf(percent) + "%");
+                this.repaint();
+                this.pack();
+            }));
             EventRouter.CORE.registerHandler(UpdateReadyEvent.class, event -> {
                 percentLabel.setText("100%");
                 restart.setEnabled(true);

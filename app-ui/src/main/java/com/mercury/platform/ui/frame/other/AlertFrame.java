@@ -1,7 +1,6 @@
 package com.mercury.platform.ui.frame.other;
 
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.AlertEvent;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -10,9 +9,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- * Created by Константин on 07.03.2017.
- */
 public class AlertFrame extends AbstractOverlaidFrame {
     private JLabel messageLabel;
     public AlertFrame() {
@@ -42,8 +38,7 @@ public class AlertFrame extends AbstractOverlaidFrame {
 
     @Override
     public void initHandlers() {
-        EventRouter.CORE.registerHandler(AlertEvent.class, event -> {
-            String message = ((AlertEvent) event).getMessage();
+        MercuryStore.INSTANCE.stringAlertSubject.subscribe(message -> {
             messageLabel.setText(message);
             this.repaint();
             this.pack();

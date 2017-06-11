@@ -4,9 +4,8 @@ import com.mercury.platform.core.update.bus.UpdaterClientEventBus;
 import com.mercury.platform.core.update.bus.handlers.UpdateEventHandler;
 import com.mercury.platform.core.update.core.holder.ApplicationHolder;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.AlertEvent;
-import com.mercury.platform.shared.events.custom.CheckOutPatchNotes;
 import com.mercury.platform.shared.events.custom.RequestPatchNotesEvent;
+import com.mercury.platform.shared.store.MercuryStore;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -40,9 +39,9 @@ public class UpdaterClient {
         EventRouter.CORE.registerHandler(RequestPatchNotesEvent.class, event -> {
             if(!connectionEstablished){
                 ApplicationHolder.getInstance().setManualRequest(false);
-                EventRouter.CORE.fireEvent(new AlertEvent("Server is currently down, please try again later."));
+                MercuryStore.INSTANCE.stringAlertSubject.onNext("Server is currently down, please try again later.");
             }else {
-                EventRouter.CORE.fireEvent(new CheckOutPatchNotes());
+                MercuryStore.INSTANCE.checkOutPatchSubject.onNext(true);
             }
         });
     }

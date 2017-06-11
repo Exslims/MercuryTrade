@@ -25,4 +25,12 @@ public class MercuryStore {
     public final PublishSubject<String> openChatSubject = PublishSubject.create();
     public final PublishSubject<Message> messageSubject = PublishSubject.create();
     public final PublishSubject<Boolean> appLoadingSubject = PublishSubject.create();
+    public final PublishSubject<Boolean> showingDelaySubject = PublishSubject.create();
+    public final PublishSubject<String> stringAlertSubject = PublishSubject.create();
+    public final PublishSubject<Boolean> poeFolderChangedSubject = PublishSubject.create();
+    public final PublishSubject<Boolean> checkOutPatchSubject = PublishSubject.create();
+    public final PublishSubject<Integer> chunkLoadedSubject = PublishSubject.create();
+    public final PublishSubject<Boolean> buttonsChangedSubject = PublishSubject.create();
+    public final PublishSubject<String> tooltipSubject = PublishSubject.create();
+    public final PublishSubject<String> notificationSubject = PublishSubject.create();
 }

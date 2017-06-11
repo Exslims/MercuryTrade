@@ -4,9 +4,9 @@ import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.CheckOutPatchNotes;
 import com.mercury.platform.shared.events.custom.UpdateInfoEvent;
 import com.mercury.platform.shared.entity.FrameSettings;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
@@ -34,7 +34,12 @@ public class UpdateReadyFrame extends AbstractOverlaidFrame {
     private JPanel getUpdatePanel(){
         JPanel panel = componentsFactory.getTransparentPanel();
         panel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        JLabel label = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, TextAlignment.LEFTOP,16f,"New version available:");
+        JLabel label = componentsFactory.getTextLabel(
+                FontStyle.BOLD,
+                AppThemeColor.TEXT_DEFAULT,
+                TextAlignment.LEFTOP,
+                16f,
+                "New version available:");
         label.setBorder(null);
         Dimension dimension = new Dimension(80, 26);
         JButton showInfo = componentsFactory.getBorderedButton("Show info");
@@ -42,7 +47,7 @@ public class UpdateReadyFrame extends AbstractOverlaidFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 setVisible(false);
-                EventRouter.CORE.fireEvent(new CheckOutPatchNotes());
+                MercuryStore.INSTANCE.checkOutPatchSubject.onNext(true);
             }
         });
         JButton dismiss = componentsFactory.getButton(

@@ -64,29 +64,31 @@ public class AppStarter {
                     WinDef.HWND hwnd = User32.INSTANCE.GetForegroundWindow();
 
                     User32.INSTANCE.GetClassName(hwnd, className, 512);
-                    if(!Native.toString(className).equals("POEWindowClass")){
-                        if(APP_STATUS == FrameVisibleState.SHOW) {
-                            APP_STATUS = FrameVisibleState.HIDE;
-                            MercuryStore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.HIDE);
-                        }
-                    }else{
-                        if(APP_STATUS == FrameVisibleState.HIDE) {
-                            try {
-                                Thread.sleep(delay);
-                                delay = 100;
-                            } catch (InterruptedException e) {
-                                logger.error(e);
-                            }
-                            APP_STATUS = FrameVisibleState.SHOW;
-                            MercuryStore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
-                        }
-                    }
+
+                    APP_STATUS = FrameVisibleState.SHOW;
+                    MercuryStore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
+
+//                    if(!Native.toString(className).equals("POEWindowClass")){
+//                        if(APP_STATUS == FrameVisibleState.SHOW) {
+//                            APP_STATUS = FrameVisibleState.HIDE;
+//                            MercuryStore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.HIDE);
+//                        }
+//                    }else{
+//                        if(APP_STATUS == FrameVisibleState.HIDE) {
+//                            try {
+//                                Thread.sleep(delay);
+//                                delay = 100;
+//                            } catch (InterruptedException e) {
+//                                logger.error(e);
+//                            }
+//                            APP_STATUS = FrameVisibleState.SHOW;
+//                            MercuryStore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
+//                        }
+//                    }
                 }
             },0,150);
         });
-        EventRouter.CORE.registerHandler(AddShowDelayEvent.class, event -> {
-            delay = 300;
-        });
+        MercuryStore.INSTANCE.showingDelaySubject.subscribe(state -> this.delay = 300);
         EventRouter.CORE.registerHandler(ShutdownApplication.class, event -> {
             shutdown = true;
         });

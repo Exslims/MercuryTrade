@@ -2,8 +2,7 @@ package com.mercury.platform.core.utils;
 
 
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.ChangePOEFolderEvent;
+import com.mercury.platform.shared.store.MercuryStore;
 import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
@@ -20,7 +19,7 @@ public class FileMonitor {
     private MessageFileHandler fileHandler;
     private FileAlterationMonitor monitor;
     public FileMonitor(){
-        EventRouter.CORE.registerHandler(ChangePOEFolderEvent.class, event -> {
+        MercuryStore.INSTANCE.poeFolderChangedSubject.subscribe(state -> {
             if(monitor != null){
                 try {
                     monitor.stop();

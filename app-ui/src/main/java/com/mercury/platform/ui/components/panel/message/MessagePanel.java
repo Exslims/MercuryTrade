@@ -9,6 +9,7 @@ import com.mercury.platform.shared.entity.message.CurrencyMessage;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.shared.entity.ResponseButton;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -493,7 +494,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
                 EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
             }
         });
-        EventRouter.UI.registerHandler(CustomButtonsChangedEvent.class, event -> {
+        MercuryStore.INSTANCE.buttonsChangedSubject.subscribe(state -> {
             this.customButtonsPanel.removeAll();
             initResponseButtons(customButtonsPanel);
             EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
