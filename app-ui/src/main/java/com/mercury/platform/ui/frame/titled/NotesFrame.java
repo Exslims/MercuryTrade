@@ -2,9 +2,6 @@ package com.mercury.platform.ui.frame.titled;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.StartUpdateEvent;
-import com.mercury.platform.shared.events.custom.UpdateReadyEvent;
 import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -84,7 +81,7 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         download.addActionListener(action -> {
             download.setEnabled(false);
             progressBarFrame.setVisible(true);
-            EventRouter.CORE.fireEvent(new StartUpdateEvent());
+            MercuryStore.INSTANCE.startUpdateSubject.onNext(true);
         });
         JButton gitHub = componentsFactory.getBorderedButton("GitHub");
         gitHub.addActionListener(action -> {
@@ -317,10 +314,10 @@ public class NotesFrame extends AbstractTitledComponentFrame {
                 this.repaint();
                 this.pack();
             }));
-            EventRouter.CORE.registerHandler(UpdateReadyEvent.class, event -> {
-                percentLabel.setText("100%");
-                restart.setEnabled(true);
-                progressBar.setIndeterminate(false);
+            MercuryStore.INSTANCE.updateReadySubject.subscribe(state -> {
+                this.percentLabel.setText("100%");
+                this.restart.setEnabled(true);
+                this.progressBar.setIndeterminate(false);
                 this.repaint();
             });
         }

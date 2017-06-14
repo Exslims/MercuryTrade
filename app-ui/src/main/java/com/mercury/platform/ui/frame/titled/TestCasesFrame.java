@@ -2,8 +2,6 @@ package com.mercury.platform.ui.frame.titled;
 
 import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.shared.MessageParser;
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -229,14 +227,14 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
 
                 Timer joinedTimer = new Timer(1000,null);
                 joinedTimer.addActionListener(e1 -> {
-                    EventRouter.CORE.fireEvent(new PlayerJoinEvent(nickname));
+                    MercuryStore.INSTANCE.playerJoinSubject.onNext(nickname);
                     joinedTimer.stop();
                 });
                 joinedTimer.start();
 
                 Timer leftTimer = new Timer(2000,null);
                 leftTimer.addActionListener(e1 -> {
-                    EventRouter.CORE.fireEvent(new PlayerLeftEvent(nickname));
+                    MercuryStore.INSTANCE.playerLeftSubject.onNext(nickname);
                     leftTimer.stop();
                 });
                 leftTimer.start();

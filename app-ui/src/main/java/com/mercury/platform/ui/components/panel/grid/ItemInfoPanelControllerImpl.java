@@ -2,7 +2,7 @@ package com.mercury.platform.ui.components.panel.grid;
 
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.entity.message.ItemMessage;
-import com.mercury.platform.ui.misc.event.CloseGridItemEvent;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.misc.event.ItemCellStateChangedEvent;
 import lombok.NonNull;
 
@@ -14,7 +14,7 @@ public class ItemInfoPanelControllerImpl implements ItemInfoPanelController {
     }
     @Override
     public void hidePanel() {
-        EventRouter.UI.fireEvent(new CloseGridItemEvent(message));
+        MercuryStore.INSTANCE.closeGridItemSubject.onNext(message);
     }
 
     @Override

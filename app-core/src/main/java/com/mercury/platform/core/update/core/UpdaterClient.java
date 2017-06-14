@@ -3,8 +3,6 @@ package com.mercury.platform.core.update.core;
 import com.mercury.platform.core.update.bus.UpdaterClientEventBus;
 import com.mercury.platform.core.update.bus.handlers.UpdateEventHandler;
 import com.mercury.platform.core.update.core.holder.ApplicationHolder;
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.RequestPatchNotesEvent;
 import com.mercury.platform.shared.store.MercuryStore;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -36,7 +34,7 @@ public class UpdaterClient {
         ApplicationHolder.getInstance().setVersion(Integer.valueOf(version));
         connectionEstablished = false;
 
-        EventRouter.CORE.registerHandler(RequestPatchNotesEvent.class, event -> {
+        MercuryStore.INSTANCE.requestPatchSubject.subscribe(state -> {
             if(!connectionEstablished){
                 ApplicationHolder.getInstance().setManualRequest(false);
                 MercuryStore.INSTANCE.stringAlertSubject.onNext("Server is currently down, please try again later.");

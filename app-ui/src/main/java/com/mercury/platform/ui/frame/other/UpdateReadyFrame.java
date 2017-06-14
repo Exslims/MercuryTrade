@@ -3,8 +3,6 @@ package com.mercury.platform.ui.frame.other;
 import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.UpdateInfoEvent;
 import com.mercury.platform.shared.entity.FrameSettings;
 import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -72,7 +70,7 @@ public class UpdateReadyFrame extends AbstractOverlaidFrame {
 
     @Override
     public void initHandlers() {
-        EventRouter.CORE.registerHandler(UpdateInfoEvent.class, event -> {
+        MercuryStore.INSTANCE.updateInfoSubject.subscribe(version -> {
             FrameSettings tbSettings = ConfigManager.INSTANCE.getFrameSettings("TaskBarFrame");
             Point tbLocation = tbSettings.getFrameLocation();
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -88,9 +86,9 @@ public class UpdateReadyFrame extends AbstractOverlaidFrame {
             if (!this.isVisible() && AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
                 this.setVisible(true);
             } else {
-                prevState = FrameVisibleState.SHOW;
+                this.prevState = FrameVisibleState.SHOW;
             }
-            pack();
+            this.pack();
         });
     }
 

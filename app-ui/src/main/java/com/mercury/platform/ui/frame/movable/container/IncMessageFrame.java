@@ -4,7 +4,6 @@ import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.shared.store.MercuryStore;
@@ -118,49 +117,48 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
                 addMessage(message);
             }
         }));
-        EventRouter.UI.registerHandler(CloseMessagePanelEvent.class, event -> {
-            Message message = ((CloseMessagePanelEvent) event).getMessage();
+        MercuryStore.INSTANCE.closeMessagePanelSubject.subscribe(message -> {
             MessagePanel panel = currentMessages.get(message);
-            if(panel.isExpanded()){
-                currentExpandedMsgCount--;
+            if (panel.isExpanded()) {
+                this.currentExpandedMsgCount--;
             }
             this.remove(panel);
-            currentMessages.remove(message);
-            switch (flowDirections){
-                case DOWNWARDS:{
-                    if(mainContainer.getComponentCount() == 0){
+            this.currentMessages.remove(message);
+            switch (flowDirections) {
+                case DOWNWARDS: {
+                    if (mainContainer.getComponentCount() == 0) {
                         this.setVisible(false);
-                    }else if(mainContainer.getComponentCount() == limitMsgCount){
-                        mainContainer.getComponent((limitMsgCount - 1)).setVisible(true);
-                        expandAllFrame.decMessageCount();
-                        expandAllFrame.setVisible(false);
-                        expanded = false;
-                    }else if(mainContainer.getComponentCount() > limitMsgCount) {
-                        mainContainer.getComponent((limitMsgCount - 1)).setVisible(true);
-                        expandAllFrame.decMessageCount();
+                    } else if (mainContainer.getComponentCount() == limitMsgCount) {
+                        this.mainContainer.getComponent((limitMsgCount - 1)).setVisible(true);
+                        this.expandAllFrame.decMessageCount();
+                        this.expandAllFrame.setVisible(false);
+                        this.expanded = false;
+                    } else if (mainContainer.getComponentCount() > limitMsgCount) {
+                        this.mainContainer.getComponent((limitMsgCount - 1)).setVisible(true);
+                        this.expandAllFrame.decMessageCount();
                     }
                     break;
                 }
-                case UPWARDS:{
-                    if(mainContainer.getComponentCount() == 1){
+                case UPWARDS: {
+                    if (mainContainer.getComponentCount() == 1) {
                         this.setVisible(false);
-                    }else if(mainContainer.getComponentCount() == (limitMsgCount + 1)){
-                        mainContainer.getComponent(mainContainer.getComponentCount() - limitMsgCount).setVisible(true);
-                        expandAllFrame.decMessageCount();
-                        expandAllFrame.setVisible(false);
-                        expanded = false;
-                    }else if(mainContainer.getComponentCount() > (limitMsgCount + 1)) {
-                        mainContainer.getComponent(mainContainer.getComponentCount() - limitMsgCount).setVisible(true);
-                        expandAllFrame.decMessageCount();
+                    } else if (mainContainer.getComponentCount() == (limitMsgCount + 1)) {
+                        this.mainContainer.getComponent(mainContainer.getComponentCount() - limitMsgCount).setVisible(true);
+                        this.expandAllFrame.decMessageCount();
+                        this.expandAllFrame.setVisible(false);
+                        this.expanded = false;
+                    } else if (mainContainer.getComponentCount() > (limitMsgCount + 1)) {
+                        this.mainContainer.getComponent(mainContainer.getComponentCount() - limitMsgCount).setVisible(true);
+                        this.expandAllFrame.decMessageCount();
                     }
                     break;
                 }
             }
             this.pack();
-            setUpExpandButton();
+            this.setUpExpandButton();
         });
         EventRouter.UI.registerHandler(ExpandMessageEvent.class, event -> onExpandMessage());
-        EventRouter.UI.registerHandler(CollapseMessageEvent.class, event -> onCollapseMessage());
+        MercuryStore.INSTANCE.collapseMessagePanelSubject.subscribe(state -> this.onCollapseMessage());
         EventRouter.UI.registerHandler(RepaintEvent.RepaintMessageFrame.class, event -> {
             IncMessageFrame.this.revalidate();
             IncMessageFrame.this.repaint();

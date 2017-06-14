@@ -2,8 +2,6 @@ package com.mercury.platform.ui.frame.other;
 
 import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.FrameVisibleState;
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.OutTradeMessageEvent;
 import com.mercury.platform.shared.entity.message.CurrencyMessage;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.shared.entity.message.Message;
@@ -120,14 +118,13 @@ public class OutMessageFrame extends AbstractComponentFrame {
     }
     @Override
     public void initHandlers() {
-        EventRouter.CORE.registerHandler(OutTradeMessageEvent.class, event -> {
+        MercuryStore.INSTANCE.outMessageSubject.subscribe(message -> {
             if (!this.isVisible() && AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
                 this.setAlwaysOnTop(true);
                 this.setVisible(true);
             } else {
                 prevState = FrameVisibleState.SHOW;
             }
-            Message message = ((OutTradeMessageEvent) event).getMessage();
             addNewMessage(message);
         });
     }

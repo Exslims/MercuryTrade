@@ -205,7 +205,7 @@ public class GeneralSettings extends ConfigurationPanel {
                         "Check for updates");
         checkUpdates.addActionListener(action -> {
             ApplicationHolder.getInstance().setManualRequest(true);
-            EventRouter.CORE.fireEvent(new RequestPatchNotesEvent());
+            MercuryStore.INSTANCE.requestPatchSubject.onNext(true);
         });
         JButton openTests =
                 componentsFactory.getIconButton("app/open-tests.png",

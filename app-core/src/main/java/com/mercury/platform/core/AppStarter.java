@@ -89,12 +89,10 @@ public class AppStarter {
             },0,150);
         });
         MercuryStore.INSTANCE.showingDelaySubject.subscribe(state -> this.delay = 300);
-        EventRouter.CORE.registerHandler(ShutdownApplication.class, event -> {
-            shutdown = true;
-        });
-        EventRouter.CORE.registerHandler(ShutDownForUpdateEvent.class, event -> {
-            shutdown = true;
-            updating = true;
+        MercuryStore.INSTANCE.shutdownAppSubject.subscribe(state -> this.shutdown = true);
+        MercuryStore.INSTANCE.shutdownForUpdateSubject.subscribe(state -> {
+            this.updating = true;
+            this.shutdown = true;
         });
     }
 }

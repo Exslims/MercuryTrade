@@ -4,8 +4,7 @@ package com.mercury.platform.core.update;
 import com.mercury.platform.core.MercuryConstants;
 import com.mercury.platform.core.update.core.UpdaterClient;
 import com.mercury.platform.core.update.core.holder.ApplicationHolder;
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.UpdateReadyEvent;
+import com.mercury.platform.shared.store.MercuryStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,7 +27,7 @@ public class UpdateClientStarter implements Runnable{
         updaterClient.registerListener(handler -> {
             Files.write(Paths.get(JARS_FILE_PATH + "\\MercuryTrade.jar") , handler.getBytes() , StandardOpenOption.CREATE);
             setMercuryVersion(getIncrementedVersion(MercuryConstants.APP_VERSION));
-            EventRouter.CORE.fireEvent(new UpdateReadyEvent());
+            MercuryStore.INSTANCE.updateReadySubject.onNext(true);
         });
         try {
             updaterClient.start();

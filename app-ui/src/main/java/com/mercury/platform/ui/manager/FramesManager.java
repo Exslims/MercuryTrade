@@ -3,10 +3,6 @@ package com.mercury.platform.ui.manager;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.HasEventHandlers;
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.ShowPatchNotesEvent;
-import com.mercury.platform.shared.events.custom.ShutDownForUpdateEvent;
-import com.mercury.platform.shared.events.custom.ShutdownApplication;
 import com.mercury.platform.shared.entity.FrameSettings;
 import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.frame.AbstractComponentFrame;
@@ -112,27 +108,22 @@ public class FramesManager implements HasEventHandlers{
     }
     @Override
     public void initHandlers() {
-        EventRouter.CORE.registerHandler(ShowPatchNotesEvent.class, handler -> {
-            String patchNotes = ((ShowPatchNotesEvent) handler).getPatchNotes();
+        MercuryStore.INSTANCE.showPatchNotesSubject.subscribe(json -> {
             NotesLoader notesLoader = new NotesLoader();
-            List<Note> notes = notesLoader.getPatchNotesFromString(patchNotes);
+            List<Note> notes = notesLoader.getPatchNotesFromString(json);
             NotesFrame patchNotesFrame = new NotesFrame(notes, NotesFrame.NotesType.PATCH);
             patchNotesFrame.init();
-            patchNotesFrame.setFrameTitle("MercuryTrade v" + notesLoader.getVersionFrom(patchNotes));
+            patchNotesFrame.setFrameTitle("MercuryTrade v" + notesLoader.getVersionFrom(json));
             patchNotesFrame.showComponent();
         });
     }
     public void exit() {
-        framesMap.forEach((k,v) -> {
-            v.setVisible(false);
-            EventRouter.CORE.fireEvent(new ShutdownApplication());
-        });
+        framesMap.forEach((k,v) -> v.setVisible(false));
+        MercuryStore.INSTANCE.shutdownAppSubject.onNext(true);
     }
     public void exitForUpdate() {
-        framesMap.forEach((k,v) -> {
-            v.setVisible(false);
-            EventRouter.CORE.fireEvent(new ShutDownForUpdateEvent());
-        });
+        framesMap.forEach((k,v) -> v.setVisible(false));
+        MercuryStore.INSTANCE.shutdownForUpdateSubject.onNext(true);
     }
     public void showFrame(Class frameClass){
         framesMap.get(frameClass).showComponent();

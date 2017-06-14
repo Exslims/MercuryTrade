@@ -18,10 +18,8 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
-/**
- * Created by Константин on 05.01.2017.
- */
-public class CustomButtonSettings extends ConfigurationPanel{
+
+public class NotificationPanelSettings extends ConfigurationPanel{
     private List<ValuePair> inputs;
     private JFrame owner;
     private JPanel buttonsTable;
@@ -29,7 +27,7 @@ public class CustomButtonSettings extends ConfigurationPanel{
     private JCheckBox showLeagueCheckBox;
     private int id;
 
-    public CustomButtonSettings(JFrame owner) {
+    public NotificationPanelSettings(JFrame owner) {
         super();
         this.owner = owner;
         createUI();

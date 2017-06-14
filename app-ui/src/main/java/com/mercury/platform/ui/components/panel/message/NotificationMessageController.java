@@ -71,7 +71,7 @@ public class NotificationMessageController implements MessagePanelController {
 
     @Override
     public void collapseMessage() {
-        EventRouter.UI.fireEvent(new CollapseMessageEvent());
+        MercuryStore.INSTANCE.collapseMessagePanelSubject.onNext(true);
     }
 
     @Override
@@ -88,22 +88,10 @@ public class NotificationMessageController implements MessagePanelController {
         timer.setRepeats(false);
         timer.start();
     }
-//    private void storeClipboard(){
-//        try {
-//            storedClipboard = (String) Toolkit.getDefaultToolkit()
-//                    .getSystemClipboard().getData(DataFlavor.stringFlavor);
-//        } catch (Exception e) {
-//            log.error(e);
-//        }
-//    }
-//    private void restoreClipboard(){
-//        StringSelection selection = new StringSelection(storedClipboard);
-//        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-//        clipboard.setContents(selection, null);
-//    }
+
     private void closeMessagePanel(){
         Timer timer = new Timer(30, action -> {
-            EventRouter.UI.fireEvent(new CloseMessagePanelEvent(message));
+            MercuryStore.INSTANCE.closeMessagePanelSubject.onNext(message);
         });
         timer.setRepeats(false);
         timer.start();

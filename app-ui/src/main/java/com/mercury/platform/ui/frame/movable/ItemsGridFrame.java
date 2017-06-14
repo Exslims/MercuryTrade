@@ -2,6 +2,7 @@ package com.mercury.platform.ui.frame.movable;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.HorizontalScrollContainer;
@@ -56,22 +57,21 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
                 this.pack();
             }
         });
-        EventRouter.UI.registerHandler(CloseMessagePanelEvent.class, event -> {
-            Message message = ((CloseMessagePanelEvent) event).getMessage();
+        MercuryStore.INSTANCE.closeMessagePanelSubject.subscribe(message -> {
             if(message instanceof ItemMessage) {
-                itemsGridPanel.remove((ItemMessage) message);
+                this.itemsGridPanel.remove((ItemMessage) message);
                 if (itemsGridPanel.getActiveTabsCount() == 0) {
                     this.setVisible(false);
                 }
             }
         });
-        EventRouter.UI.registerHandler(CloseGridItemEvent.class, event -> {
-            itemsGridPanel.remove(((CloseGridItemEvent) event).getMessage());
-        });
+        MercuryStore.INSTANCE.closeGridItemSubject.subscribe(
+                message -> itemsGridPanel.remove(message));
         EventRouter.UI.registerHandler(RepaintEvent.RepaintItemGrid.class, event -> {
             this.revalidate();
             this.repaint();
         });
+        MercuryStore.INSTANCE.dismissTabInfoPanelSubject.subscribe()
         EventRouter.UI.registerHandler(DismissStashTabInfoEvent.class,event -> {
             TabInfoPanel tabInfoPanel = ((DismissStashTabInfoEvent) event).getTabInfoPanel();
             tabsContainer.remove(tabInfoPanel);

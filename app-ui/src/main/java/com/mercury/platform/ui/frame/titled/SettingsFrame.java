@@ -39,7 +39,7 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
 
         ConfigurationPanel generalSettings = new GeneralSettings(this);
         innerPanels.add(generalSettings);
-        ConfigurationPanel cbSettings = new CustomButtonSettings(this);
+        ConfigurationPanel cbSettings = new NotificationPanelSettings(this);
         innerPanels.add(cbSettings);
         ConfigurationPanel taskBarSettings = new TaskBarSettingsPanel();
         innerPanels.add(taskBarSettings);

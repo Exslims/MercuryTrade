@@ -28,14 +28,11 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
     private volatile int length;
     private volatile int percentDelta;
     private ResponseDispatcher responseDispatcher;
-    private MercuryEventHandler<StartUpdateEvent> startUpdateEventHandler;
 
     private ChannelHandlerContext context;
     public ClientHandler() {
         chunks = new byte[0];
         responseDispatcher = new ResponseDispatcher();
-
-        startUpdateEventHandler = event -> getLatestUpdate();
     }
 
     @Override
@@ -70,7 +67,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
                 context.channel().writeAndFlush(new UpdateDescriptor(UpdateType.REQUEST_INFO, version));
             }
             MercuryStore.INSTANCE.checkOutPatchSubject.subscribe(state -> this.checkOutPatchNotes());
-            EventRouter.CORE.registerHandler(StartUpdateEvent.class, startUpdateEventHandler);
+            MercuryStore.INSTANCE.startUpdateSubject.subscribe(state -> this.getLatestUpdate());
         }
     }
     private void checkOutPatchNotes(){

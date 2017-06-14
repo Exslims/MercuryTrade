@@ -4,7 +4,6 @@ package com.mercury.platform.ui.components.panel.message;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.entity.message.CurrencyMessage;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.shared.entity.message.Message;
@@ -472,9 +471,8 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
     }
     @Override
     public void initHandlers() {
-        EventRouter.CORE.registerHandler(PlayerJoinEvent.class, event -> {
-            String nickName = ((PlayerJoinEvent) event).getNickName();
-            if(nickName.equals(whisper)){
+        MercuryStore.INSTANCE.playerJoinSubject.subscribe(nickname -> {
+            if(nickname.equals(whisper)){
                 whisperLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
                 cachedWhisperColor = AppThemeColor.TEXT_SUCCESS;
                 if(!style.equals(MessagePanelStyle.HISTORY)) {
@@ -483,9 +481,8 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
                 EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
             }
         });
-        EventRouter.CORE.registerHandler(PlayerLeftEvent.class, event -> {
-            String nickName = ((PlayerLeftEvent) event).getNickName();
-            if (nickName.equals(whisper)) {
+        MercuryStore.INSTANCE.playerLeftSubject.subscribe(nickname -> {
+            if (nickname.equals(whisper)) {
                 whisperLabel.setForeground(AppThemeColor.TEXT_DISABLE);
                 cachedWhisperColor = AppThemeColor.TEXT_DISABLE;
                 if (!style.equals(MessagePanelStyle.HISTORY)) {
