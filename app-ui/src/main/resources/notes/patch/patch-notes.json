@@ -1,9 +1,9 @@
 {
-  "version":"1.0.1.4",
+  "version":"1.0.1.5",
   "notes":[
     {
       "title" : "Update",
-      "text" : "- MercuryTrade now has 3.0 Beta support!\nThank you for staying with us, closer to Fall of Oriath release MT will have a huge update with unique features, stay tuned!",
+      "text" : "- Minor improvements before major update \n- Added 1 Week Race Event",
       "image" : "",
       "layout" : "VERTICAL"
     }

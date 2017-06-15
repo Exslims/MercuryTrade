@@ -132,6 +132,8 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
         leagues.add("Hardcore");
         leagues.add("Beta Standard");
         leagues.add("Beta Hardcore");
+        leagues.add("1 Week Legacy (JRE055)");
+        leagues.add("1 Week Legacy HC (JRE055)");
     }
 
     @Override
