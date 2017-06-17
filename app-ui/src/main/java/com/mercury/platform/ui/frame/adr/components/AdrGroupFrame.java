@@ -75,7 +75,7 @@ public class AdrGroupFrame extends AbstractAdrFrame {
         };
     }
     @Override
-    public void initHandlers() {
+    public void subscribe() {
 
     }
 

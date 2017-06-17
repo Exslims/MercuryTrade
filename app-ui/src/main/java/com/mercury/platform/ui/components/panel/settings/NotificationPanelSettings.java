@@ -5,7 +5,9 @@ import com.mercury.platform.shared.entity.ResponseButton;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
+import com.mercury.platform.ui.frame.titled.SettingsFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -21,16 +23,14 @@ import java.util.List;
 
 public class NotificationPanelSettings extends ConfigurationPanel{
     private List<ValuePair> inputs;
-    private JFrame owner;
     private JPanel buttonsTable;
     private JCheckBox dismissCheckBox;
     private JCheckBox showLeagueCheckBox;
     private int id;
 
-    public NotificationPanelSettings(JFrame owner) {
+    public NotificationPanelSettings() {
         super();
-        this.owner = owner;
-        createUI();
+        this.createUI();
     }
 
     @Override
@@ -68,7 +68,6 @@ public class NotificationPanelSettings extends ConfigurationPanel{
 
         otherSettings.add(settingLabel,BorderLayout.PAGE_START);
         otherSettings.add(closeOnKickPanel(),BorderLayout.CENTER);
-//        otherSettings.add(showLeaguePanel(),BorderLayout.PAGE_END);
 
 
         JPanel responseButtons = componentsFactory.getTransparentPanel(new BorderLayout());
@@ -147,7 +146,7 @@ public class NotificationPanelSettings extends ConfigurationPanel{
                         addNewRow("expl", "example",false,false, titleColumn, valueColumn,kickColumn,closeColumn, utilColumn);
                         buttonsTable.add(addNew, utilColumn);
 
-                        owner.pack();
+                        MercuryStoreUI.INSTANCE.packSubject.onNext(SettingsFrame.class);
                     }
                 }
             }
@@ -208,7 +207,7 @@ public class NotificationPanelSettings extends ConfigurationPanel{
                     buttonsTable.remove(closeWrapper);
                     buttonsTable.remove(remove);
 
-                    owner.pack();
+                    MercuryStoreUI.INSTANCE.packSubject.onNext(SettingsFrame.class);
                 }
             }
         });

@@ -139,7 +139,7 @@ public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
     }
 
     @Override
-    public void initHandlers() {
+    public void subscribe() {
 
     }
 

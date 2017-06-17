@@ -2,7 +2,7 @@ package com.mercury.platform.ui.manager;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
-import com.mercury.platform.shared.HasEventHandlers;
+import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.entity.FrameSettings;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.frame.AbstractComponentFrame;
@@ -20,6 +20,7 @@ import com.mercury.platform.ui.frame.setup.location.SetUpLocationCommander;
 import com.mercury.platform.ui.frame.other.SetUpLocationFrame;
 import com.mercury.platform.ui.frame.titled.chat.ChatFilterFrame;
 import com.mercury.platform.ui.frame.titled.container.HistoryFrame;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.note.Note;
 import com.mercury.platform.ui.misc.note.NotesLoader;
 
@@ -30,7 +31,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-public class FramesManager implements HasEventHandlers{
+public class FramesManager implements AsSubscriber {
     private static class FramesManagerHolder {
         static final FramesManager HOLDER_INSTANCE = new FramesManager();
     }
@@ -101,12 +102,12 @@ public class FramesManager implements HasEventHandlers{
                 }
             }
         });
-        initHandlers();
+        subscribe();
         adrManager.load();
         MercuryStoreCore.INSTANCE.uiLoadedSubject.onNext(true);
     }
     @Override
-    public void initHandlers() {
+    public void subscribe() {
         MercuryStoreCore.INSTANCE.showPatchNotesSubject.subscribe(json -> {
             NotesLoader notesLoader = new NotesLoader();
             List<Note> notes = notesLoader.getPatchNotesFromString(json);
@@ -115,6 +116,8 @@ public class FramesManager implements HasEventHandlers{
             patchNotesFrame.setFrameTitle("MercuryTrade v" + notesLoader.getVersionFrom(json));
             patchNotesFrame.showComponent();
         });
+        MercuryStoreUI.INSTANCE.packSubject.subscribe(className -> this.framesMap.get(className).pack());
+        MercuryStoreUI.INSTANCE.repaintSubject.subscribe(className -> this.framesMap.get(className).repaint());
     }
     public void exit() {
         framesMap.forEach((k,v) -> v.setVisible(false));

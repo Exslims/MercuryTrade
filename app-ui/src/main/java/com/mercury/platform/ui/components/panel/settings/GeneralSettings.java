@@ -3,17 +3,15 @@ package com.mercury.platform.ui.components.panel.settings;
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import com.mercury.platform.core.update.core.holder.ApplicationHolder;
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
-import com.mercury.platform.ui.frame.AbstractComponentFrame;
 import com.mercury.platform.ui.frame.titled.NotesFrame;
 import com.mercury.platform.ui.frame.titled.SettingsFrame;
 import com.mercury.platform.ui.frame.titled.TestCasesFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.manager.HideSettingsManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.event.RepaintEvent;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,16 +24,13 @@ public class GeneralSettings extends ConfigurationPanel {
     private JSlider minSlider;
     private JSlider maxSlider;
     private JSlider fadeTimeSlider;
-    //private JComboBox secondsPicker;
     private JComboBox notifierStatusPicker;
-    private AbstractComponentFrame owner;
     private JCheckBox checkEnable;
     private JTextField gamePathField;
     private WrongGamePathListener poeFolderTooltipListener;
-    public GeneralSettings(AbstractComponentFrame owner) {
+    public GeneralSettings() {
         super();
-        this.owner = owner;
-        createUI();
+        this.createUI();
     }
 
     @Override
@@ -53,17 +48,6 @@ public class GeneralSettings extends ConfigurationPanel {
         checkEnable.setBackground(AppThemeColor.TRANSPARENT);
         checkEnable.setSelected(ConfigManager.INSTANCE.isCheckUpdateOnStartUp());
         checkEnable.setPreferredSize(elementsSize);
-
-
-        /*
-        JLabel hideSettingsLabel = componentsFactory.getTextLabel("Fade time (seconds). 0 - Always show", FontStyle.REGULAR);
-        secondsPicker = componentsFactory.getComboBox(new String[]{"0","1","2","3","4","5"});
-        int decayTime = ConfigManager.INSTANCE.getDecayTime();
-        secondsPicker.setSelectedIndex(decayTime);
-        secondsPicker.setPreferredSize(elementsSize);
-        */
-
-        //
 
         JPanel fadeTimeSettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         fadeTimeSettingsPanel.add(componentsFactory.getTextLabel("Component fade out time: ", FontStyle.REGULAR));
@@ -85,7 +69,7 @@ public class GeneralSettings extends ConfigurationPanel {
             else
                 fadeTimeField.setText(String.valueOf(fadeTimeSlider.getValue()) + " sec");
 
-            owner.repaint();
+            MercuryStoreUI.INSTANCE.repaintSubject.onNext(SettingsFrame.class);
         });
         fadeTimeSlider.setPreferredSize(elementsSize);
 
@@ -105,7 +89,7 @@ public class GeneralSettings extends ConfigurationPanel {
         minSlider.addChangeListener(e -> {
             if(!(minSlider.getValue() > maxSlider.getValue())) {
                 minValueField.setText(String.valueOf(minSlider.getValue()) + "%");
-                owner.repaint();
+                MercuryStoreUI.INSTANCE.repaintSubject.onNext(SettingsFrame.class);
             }else {
                 minSlider.setValue(minSlider.getValue()-1);
             }
@@ -123,7 +107,6 @@ public class GeneralSettings extends ConfigurationPanel {
         maxSlider = componentsFactory.getSlider(20,100,ConfigManager.INSTANCE.getMaxOpacity());
         maxSlider.addChangeListener(e -> {
             maxValueField.setText(String.valueOf(maxSlider.getValue()) + "%");
-            owner.setOpacity(maxSlider.getValue()/100.0f);
         });
         maxSlider.setPreferredSize(elementsSize);
         maxSlider.addMouseListener(new MouseAdapter() {
@@ -218,7 +201,7 @@ public class GeneralSettings extends ConfigurationPanel {
         root.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                EventRouter.UI.fireEvent(new RepaintEvent.RepaintSettingFrame());
+                MercuryStoreUI.INSTANCE.repaintSubject.onNext(SettingsFrame.class);
             }
         });
         root.add(openTutorial);
@@ -253,9 +236,8 @@ public class GeneralSettings extends ConfigurationPanel {
 
     @Override
     public void restore() {
-        verticalScrollContainer.removeAll();
+        this.verticalScrollContainer.removeAll();
         this.createUI();
-        owner.setOpacity(maxSlider.getValue()/100.0f);
     }
     private JPanel wrapCellElement(Component component){
         JPanel panel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));

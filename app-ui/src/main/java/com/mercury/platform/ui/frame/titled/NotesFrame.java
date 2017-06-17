@@ -182,7 +182,7 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         return navBar;
     }
     @Override
-    public void initHandlers() {
+    public void subscribe() {
 
     }
 
@@ -307,7 +307,7 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         }
 
         @Override
-        public void initHandlers() {
+        public void subscribe() {
             MercuryStoreCore.INSTANCE.chunkLoadedSubject.subscribe(percentDelta -> SwingUtilities.invokeLater(() -> {
                 this.percent += percentDelta;
                 this.percentLabel.setText(String.valueOf(percent) + "%");

@@ -1,13 +1,13 @@
 package com.mercury.platform.ui.components.panel.grid;
 
-import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.entity.StashTab;
+import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.event.RepaintEvent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -94,7 +94,7 @@ public class ItemInfoPanel extends JPanel implements HasUI{
                 timer.addActionListener(action -> {
                     timer.stop();
                     cell.setBorder(null);
-                    EventRouter.UI.fireEvent(new RepaintEvent.RepaintItemGrid());
+                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(ItemsGridFrame.class);
                 });
                 timer.start();
             }

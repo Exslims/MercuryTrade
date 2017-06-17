@@ -3,7 +3,6 @@ package com.mercury.platform.ui.frame.titled.chat;
 import com.mercury.platform.core.utils.interceptor.MessageInterceptor;
 import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.entity.FrameSettings;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -11,8 +10,6 @@ import com.mercury.platform.ui.components.panel.chat.ChatFilterPanel;
 import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
-import com.mercury.platform.ui.misc.event.PackEvent;
-import com.mercury.platform.ui.misc.event.RepaintEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -171,12 +168,7 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
     }
 
     @Override
-    public void initHandlers() {
-        EventRouter.UI.registerHandler(
-                RepaintEvent.RepaintChatFilter.class,event -> this.repaint()
-        );
-        EventRouter.UI.registerHandler(
-                PackEvent.PackChatFilter.class, event -> this.pack());
+    public void subscribe() {
         MercuryStoreUI.INSTANCE.scrollToEndSubject.subscribe(value -> {
             this.scrollToBottom = value;
             if (!this.scrollToBottom) {

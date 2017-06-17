@@ -45,7 +45,7 @@ public class NotificationFrame extends AbstractOverlaidFrame {
     }
 
     @Override
-    public void initHandlers() {
+    public void subscribe() {
         MercuryStoreCore.INSTANCE.notificationSubject.subscribe(message -> {
             messageLabel.setText(message);
             this.pack();

@@ -1,7 +1,7 @@
 package com.mercury.platform.core;
 
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.HasEventHandlers;
+import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 
 import java.awt.*;
@@ -9,11 +9,11 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 
-public class ChatHelper implements HasEventHandlers {
+public class ChatHelper implements AsSubscriber {
     private Robot robot;
 
     public ChatHelper() {
-        initHandlers();
+        subscribe();
         try {
             robot = new Robot();
         } catch (AWTException e) {
@@ -69,7 +69,7 @@ public class ChatHelper implements HasEventHandlers {
     }
 
     @Override
-    public void initHandlers() {
+    public void subscribe() {
         MercuryStoreCore.INSTANCE.chatCommandSubject.subscribe(this::executeMessage);
         MercuryStoreCore.INSTANCE.openChatSubject.subscribe(this::openChat);
         MercuryStoreCore.INSTANCE.dndSubject.subscribe(state -> {

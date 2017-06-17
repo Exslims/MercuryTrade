@@ -174,7 +174,7 @@ public class SetUpScaleFrame extends AbstractOverlaidFrame {
     }
 
     @Override
-    public void initHandlers() {
+    public void subscribe() {
 
     }
 

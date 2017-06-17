@@ -1,12 +1,10 @@
 package com.mercury.platform.ui.frame.titled;
 
 
-import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.MercuryTabbedPane;
 import com.mercury.platform.ui.components.panel.settings.*;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.event.RepaintEvent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,9 +35,9 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
 
         MercuryTabbedPane tabbedPane = new MercuryTabbedPane(this);
 
-        ConfigurationPanel generalSettings = new GeneralSettings(this);
+        ConfigurationPanel generalSettings = new GeneralSettings();
         innerPanels.add(generalSettings);
-        ConfigurationPanel cbSettings = new NotificationPanelSettings(this);
+        ConfigurationPanel cbSettings = new NotificationPanelSettings();
         innerPanels.add(cbSettings);
         ConfigurationPanel taskBarSettings = new TaskBarSettingsPanel();
         innerPanels.add(taskBarSettings);
@@ -89,10 +87,7 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
     }
 
     @Override
-    public void initHandlers() {
-        EventRouter.UI.registerHandler(RepaintEvent.RepaintSettingFrame.class,event -> {
-            this.repaint();
-        });
+    public void subscribe() {
     }
 
     @Override

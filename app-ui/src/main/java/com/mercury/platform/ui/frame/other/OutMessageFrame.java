@@ -117,7 +117,7 @@ public class OutMessageFrame extends AbstractComponentFrame {
         return curPanel;
     }
     @Override
-    public void initHandlers() {
+    public void subscribe() {
         MercuryStoreCore.INSTANCE.outMessageSubject.subscribe(message -> {
             if (!this.isVisible() && AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
                 this.setAlwaysOnTop(true);

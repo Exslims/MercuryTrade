@@ -287,7 +287,7 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
     }
 
     @Override
-    public void initHandlers() {
+    public void subscribe() {
 
     }
 }

@@ -126,7 +126,7 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
 
 
     @Override
-    public void initHandlers() {
+    public void subscribe() {
 
     }
 

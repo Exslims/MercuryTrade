@@ -28,7 +28,7 @@ public class TooltipFrame extends AbstractOverlaidFrame {
         this.componentsFactory.setScale(1.1f);
     }
     @Override
-    public void initHandlers() {
+    public void subscribe() {
         MercuryStoreCore.INSTANCE.tooltipSubject.subscribe(tooltip -> {
             if(tooltip != null){
                 this.getContentPane().removeAll();

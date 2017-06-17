@@ -1,12 +1,12 @@
 package com.mercury.platform.ui.components.panel.grid;
 
-import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.shared.entity.StashTab;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
+import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.event.RepaintEvent;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.NonNull;
 
 import javax.swing.*;
@@ -104,7 +104,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
                 }
                 navBar.add(cellHeader);
                 tabButtons.put(nickname + message.getTabName(), cellHeader);
-                EventRouter.UI.fireEvent(new RepaintEvent.RepaintItemGrid());
+                MercuryStoreUI.INSTANCE.repaintSubject.onNext(ItemsGridFrame.class);
             }
         }
     }
@@ -117,7 +117,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
         int y = itemCell.getY();
         Optional<ItemCell> cellByCoordinates = getCellByCoordinates(itemInfoPanel.getStashTab(), x, y);
         cellByCoordinates.ifPresent(itemCell1 -> itemInfoPanel.setCell(itemCell1.getCell()));
-        EventRouter.UI.fireEvent(new RepaintEvent.RepaintItemGrid());
+        MercuryStoreUI.INSTANCE.repaintSubject.onNext(ItemsGridFrame.class);
     }
     public int getActiveTabsCount(){
         return navBar.getComponentCount();
@@ -170,7 +170,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
                     remove(((BorderLayout)getLayout()).getLayoutComponent(BorderLayout.CENTER));
                     add(defaultGrid,BorderLayout.CENTER);
                 }
-                EventRouter.UI.fireEvent(new RepaintEvent.RepaintItemGrid());
+                MercuryStoreUI.INSTANCE.repaintSubject.onNext(ItemsGridFrame.class);
             }
         });
         return itemInfoPanel;
@@ -197,7 +197,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
                 repaint();
             });
             tabButtons.remove(nickname + message.getTabName());
-            EventRouter.UI.fireEvent(new RepaintEvent.RepaintItemGrid());
+            MercuryStoreUI.INSTANCE.repaintSubject.onNext(ItemsGridFrame.class);
         }
     }
 }

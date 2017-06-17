@@ -1,13 +1,13 @@
 package com.mercury.platform.ui.components.panel.settings;
 
-import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
+import com.mercury.platform.ui.frame.titled.SettingsFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.event.RepaintEvent;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +24,7 @@ public class SupportPanel extends JPanel implements HasUI{
         super();
         componentsFactory = new ComponentsFactory();
         this.setBackground(AppThemeColor.SLIDE_BG);
-        createUI();
+        this.createUI();
     }
 
     @Override
@@ -87,7 +87,7 @@ public class SupportPanel extends JPanel implements HasUI{
         scrollPane.addMouseWheelListener(new MouseAdapter() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                EventRouter.UI.fireEvent(new RepaintEvent.RepaintSettingFrame());
+                MercuryStoreUI.INSTANCE.repaintSubject.onNext(SettingsFrame.class);
             }
         });
         JScrollBar vBar = scrollPane.getVerticalScrollBar();

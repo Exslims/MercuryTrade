@@ -2,8 +2,7 @@ package com.mercury.platform.ui.components.panel.message;
 
 
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.HasEventHandlers;
-import com.mercury.platform.shared.events.EventRouter;
+import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.entity.message.CurrencyMessage;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.shared.entity.message.Message;
@@ -13,9 +12,10 @@ import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
+import com.mercury.platform.ui.frame.movable.container.IncMessageFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
-import com.mercury.platform.ui.misc.event.RepaintEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,7 +34,7 @@ import java.util.*;
 import java.util.List;
 
 
-public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
+public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
     private static final Logger logger = LogManager.getLogger(MessagePanel.class.getSimpleName());
 
     private ComponentsFactory componentsFactory;
@@ -78,7 +78,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,1),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1)));
         init();
-        initHandlers();
+        subscribe();
         setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
         setMinimumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
     }
@@ -152,7 +152,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
+                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(IncMessageFrame.class);
                 }
 
                 @Override
@@ -160,13 +160,13 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
                     itemButton.setBorder(new CompoundBorder(
                             BorderFactory.createMatteBorder(0,1,0,1,AppThemeColor.BORDER),
                             BorderFactory.createEmptyBorder(0,3,0,1)));
-                    EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
+                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(IncMessageFrame.class);
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     itemButton.setBorder(BorderFactory.createEmptyBorder(0,4,0,2));
-                    EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
+                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(IncMessageFrame.class);
                 }
             });
             tradePanel.add(itemButton,BorderLayout.CENTER);
@@ -377,7 +377,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
                         labelText = day + "d " + hours + "h " + minute + "m";
                     }
                     timeLabel.setText(labelText);
-                    EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
+                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(IncMessageFrame.class);
                 }
             });
             timeAgo.start();
@@ -470,7 +470,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
         return panel;
     }
     @Override
-    public void initHandlers() {
+    public void subscribe() {
         MercuryStoreCore.INSTANCE.playerJoinSubject.subscribe(nickname -> {
             if(nickname.equals(whisper)){
                 whisperLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
@@ -478,7 +478,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
                 if(!style.equals(MessagePanelStyle.HISTORY)) {
                     tradeButton.setEnabled(true);
                 }
-                EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
+                MercuryStoreUI.INSTANCE.repaintSubject.onNext(IncMessageFrame.class);
             }
         });
         MercuryStoreCore.INSTANCE.playerLeftSubject.subscribe(nickname -> {
@@ -488,13 +488,13 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
                 if (!style.equals(MessagePanelStyle.HISTORY)) {
                     tradeButton.setEnabled(false);
                 }
-                EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
+                MercuryStoreUI.INSTANCE.repaintSubject.onNext(IncMessageFrame.class);
             }
         });
         MercuryStoreCore.INSTANCE.buttonsChangedSubject.subscribe(state -> {
             this.customButtonsPanel.removeAll();
             initResponseButtons(customButtonsPanel);
-            EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
+            MercuryStoreUI.INSTANCE.repaintSubject.onNext(IncMessageFrame.class);
         });
     }
     private void initResponseButtons(JPanel panel){

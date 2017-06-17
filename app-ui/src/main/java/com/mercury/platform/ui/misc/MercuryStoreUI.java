@@ -31,4 +31,6 @@ public class MercuryStoreUI {
 
     public final PublishSubject<Boolean> scrollToEndSubject = PublishSubject.create();
     public final PublishSubject<ItemMessage> showItemGridSubject = PublishSubject.create();
+    public final PublishSubject<Class<?>> packSubject = PublishSubject.create();
+    public final PublishSubject<Class<?>> repaintSubject = PublishSubject.create();
 }

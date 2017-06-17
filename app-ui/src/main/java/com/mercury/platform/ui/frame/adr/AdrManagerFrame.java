@@ -75,7 +75,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
     }
 
     @Override
-    public void initHandlers() {
+    public void subscribe() {
     }
 
     @Override

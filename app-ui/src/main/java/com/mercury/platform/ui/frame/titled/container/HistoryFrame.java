@@ -3,7 +3,6 @@ package com.mercury.platform.ui.frame.titled.container;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.MessageParser;
-import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.entity.FrameSettings;
 import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.shared.store.MercuryStoreCore;
@@ -15,7 +14,6 @@ import com.mercury.platform.ui.components.panel.message.MessagePanelStyle;
 import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
-import com.mercury.platform.ui.misc.event.RepaintEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.swing.*;
@@ -124,7 +122,7 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
     }
 
     @Override
-    public void initHandlers() {
+    public void subscribe() {
         MercuryStoreCore.INSTANCE.messageSubject.subscribe(message -> SwingUtilities.invokeLater(()-> {
             HistoryManager.INSTANCE.add(message);
             MessagePanel messagePanel = new MessagePanel(
@@ -137,10 +135,6 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
             this.pack();
         }));
         MercuryStoreUI.INSTANCE.reloadMessageSubject.subscribe(this::onReloadMessage);
-        EventRouter.UI.registerHandler(RepaintEvent.RepaintMessageFrame.class, event -> {
-            this.revalidate();
-            this.repaint();
-        });
     }
     private void trimContainer(){
         if(mainContainer.getComponentCount() > 40){

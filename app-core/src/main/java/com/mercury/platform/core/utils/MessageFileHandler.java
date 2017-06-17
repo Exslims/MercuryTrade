@@ -1,7 +1,7 @@
 package com.mercury.platform.core.utils;
 
 import com.mercury.platform.core.utils.interceptor.*;
-import com.mercury.platform.shared.HasEventHandlers;
+import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -12,7 +12,7 @@ import java.io.RandomAccessFile;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MessageFileHandler implements HasEventHandlers {
+public class MessageFileHandler implements AsSubscriber {
     private final Logger logger = LogManager.getLogger(MessageFileHandler.class);
     private String logFilePath;
     private Date lastMessageDate = new Date();
@@ -28,7 +28,7 @@ public class MessageFileHandler implements HasEventHandlers {
         interceptors.add(new PlayerJoinInterceptor());
         interceptors.add(new PlayerLeftInterceptor());
 
-        initHandlers();
+        subscribe();
     }
 
     public void parse() {
@@ -79,7 +79,7 @@ public class MessageFileHandler implements HasEventHandlers {
     }
 
     @Override
-    public void initHandlers() {
+    public void subscribe() {
         MercuryStoreCore.INSTANCE.addInterceptorSubject.subscribe(interceptor -> {
             interceptors.add(interceptor);
             lastMessageDate = new Date();

@@ -2,7 +2,6 @@ package com.mercury.platform.ui.frame.movable;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
-import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -11,7 +10,6 @@ import com.mercury.platform.ui.components.panel.taskbar.TaskBarController;
 import com.mercury.platform.ui.components.panel.taskbar.TaskBarPanel;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
-import com.mercury.platform.ui.misc.event.RepaintEvent;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.ease.Spline;
 
@@ -80,11 +78,7 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
     }
 
     @Override
-    public void initHandlers() {
-        EventRouter.UI.registerHandler(RepaintEvent.RepaintTaskBar.class, event -> {
-            TaskBarFrame.this.revalidate();
-            TaskBarFrame.this.repaint();
-        });
+    public void subscribe() {
     }
     private void initCollapseAnimations(String state){
         collapseAnimation = new Timeline(this);

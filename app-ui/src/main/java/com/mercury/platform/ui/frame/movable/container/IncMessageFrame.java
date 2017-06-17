@@ -3,7 +3,6 @@ package com.mercury.platform.ui.frame.movable.container;
 import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
-import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.shared.store.MercuryStoreCore;
@@ -21,7 +20,6 @@ import com.mercury.platform.ui.frame.setup.scale.ScaleState;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
-import com.mercury.platform.ui.misc.event.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -97,7 +95,7 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
     }
 
     @Override
-    public void initHandlers() {
+    public void subscribe() {
         MercuryStoreCore.INSTANCE.dndSubject.subscribe(state -> {
             this.dnd = state;
             if(dnd){
@@ -160,10 +158,6 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
         });
         MercuryStoreUI.INSTANCE.expandMessageSubject.subscribe(state -> this.onExpandMessage());
         MercuryStoreUI.INSTANCE.collapseMessageSubject.subscribe(state -> this.onCollapseMessage());
-        EventRouter.UI.registerHandler(RepaintEvent.RepaintMessageFrame.class, event -> {
-            IncMessageFrame.this.revalidate();
-            IncMessageFrame.this.repaint();
-        });
     }
 
     private void addMessage(Message message){
@@ -745,7 +739,7 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
             this.pack();
         }
         @Override
-        public void initHandlers() {
+        public void subscribe() {
 
         }
 

@@ -76,7 +76,7 @@ public class CurrencySearchFrame extends AbstractMovableComponentFrame {
     }
 
     @Override
-    public void initHandlers() {
+    public void subscribe() {
 
     }
 

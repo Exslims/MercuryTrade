@@ -1,25 +1,25 @@
 package com.mercury.platform.ui.components.panel.taskbar;
 
-import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
+import com.mercury.platform.ui.frame.movable.TaskBarFrame;
 import com.mercury.platform.ui.frame.titled.chat.ChatFilterFrame;
 import com.mercury.platform.ui.frame.titled.container.HistoryFrame;
 import com.mercury.platform.ui.frame.titled.SettingsFrame;
 import com.mercury.platform.ui.manager.FramesManager;
-import com.mercury.platform.ui.misc.event.RepaintEvent;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 public class MercuryTaskBarController implements TaskBarController {
     @Override
     public void enableDND() {
-        EventRouter.UI.fireEvent(new RepaintEvent.RepaintTaskBar());
+        MercuryStoreUI.INSTANCE.repaintSubject.onNext(TaskBarFrame.class);
         MercuryStoreCore.INSTANCE.notificationSubject.onNext("DND on");
         MercuryStoreCore.INSTANCE.dndSubject.onNext(true);
     }
 
     @Override
     public void disableDND() {
-        EventRouter.UI.fireEvent(new RepaintEvent.RepaintTaskBar());
+        MercuryStoreUI.INSTANCE.repaintSubject.onNext(TaskBarFrame.class);
         MercuryStoreCore.INSTANCE.notificationSubject.onNext("DND off");
         MercuryStoreCore.INSTANCE.dndSubject.onNext(false);
     }

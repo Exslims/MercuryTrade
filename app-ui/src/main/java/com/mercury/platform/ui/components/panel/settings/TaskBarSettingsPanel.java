@@ -9,16 +9,13 @@ import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
 
-/**
- * Created by Константин on 09.03.2017.
- */
 public class TaskBarSettingsPanel extends ConfigurationPanel{
     private JTextField responseField;
     private JCheckBox enableInGameDND;
 
     public TaskBarSettingsPanel() {
         super();
-        createUI();
+        this.createUI();
     }
     @Override
     public void createUI() {
@@ -64,8 +61,8 @@ public class TaskBarSettingsPanel extends ConfigurationPanel{
     }
     @Override
     public void restore() {
-        verticalScrollContainer.removeAll();
-        createUI();
+        this.verticalScrollContainer.removeAll();
+        this.createUI();
     }
 
     @Override

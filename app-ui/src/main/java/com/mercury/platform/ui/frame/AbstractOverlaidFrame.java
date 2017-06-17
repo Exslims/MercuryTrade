@@ -2,7 +2,7 @@ package com.mercury.platform.ui.frame;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
-import com.mercury.platform.shared.HasEventHandlers;
+import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -14,7 +14,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public abstract class AbstractOverlaidFrame extends JFrame implements HasEventHandlers{
+public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscriber {
     private final Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
     protected FrameVisibleState prevState;
     protected boolean processingHideEvent = true;
@@ -70,7 +70,7 @@ public abstract class AbstractOverlaidFrame extends JFrame implements HasEventHa
         this.layout = getFrameLayout();
         setLayout(layout);
         initialize();
-        initHandlers();
+        subscribe();
     }
 
     protected abstract LayoutManager getFrameLayout();

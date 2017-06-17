@@ -1,15 +1,13 @@
 package com.mercury.platform.ui.components.panel.chat;
 
 import com.mercury.platform.core.misc.SoundType;
-import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
+import com.mercury.platform.ui.frame.titled.chat.ChatFilterFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
-import com.mercury.platform.ui.misc.event.PackEvent;
-import com.mercury.platform.ui.misc.event.RepaintEvent;
 import net.jodah.expiringmap.ExpiringMap;
 import org.apache.commons.lang3.StringUtils;
 
@@ -53,7 +51,7 @@ public class ChatFilterPanel extends JPanel {
         scrollPane.addMouseWheelListener(new MouseAdapter() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                EventRouter.UI.fireEvent(new RepaintEvent.RepaintChatFilter());
+                MercuryStoreUI.INSTANCE.repaintSubject.onNext(ChatFilterFrame.class);
             }
         });
         scrollPane.addMouseWheelListener(e -> MercuryStoreUI.INSTANCE.scrollToEndSubject.onNext(false));
@@ -66,7 +64,7 @@ public class ChatFilterPanel extends JPanel {
         vBar.setUnitIncrement(3);
         vBar.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
         vBar.addAdjustmentListener(e -> {
-            EventRouter.UI.fireEvent(new RepaintEvent.RepaintChatFilter());
+            MercuryStoreUI.INSTANCE.repaintSubject.onNext(ChatFilterFrame.class);
         });
 
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
@@ -78,8 +76,8 @@ public class ChatFilterPanel extends JPanel {
             message = StringUtils.substringAfter(stubMessage,"] #");
         }
 
-        addMessageToFilter(message);
-        EventRouter.UI.fireEvent(new RepaintEvent.RepaintChatFilter());
+        this.addMessageToFilter(message);
+        MercuryStoreUI.INSTANCE.repaintSubject.onNext(ChatFilterFrame.class);
     }
 
     public void scrollToBottom(boolean value) {
@@ -109,7 +107,7 @@ public class ChatFilterPanel extends JPanel {
                 container.add(chatMessagePanel);
                 trimContainer();
                 expiresMessages.put(nickname,message);
-                EventRouter.UI.fireEvent(new PackEvent.PackChatFilter());
+                MercuryStoreUI.INSTANCE.packSubject.onNext(ChatFilterFrame.class);
                 if(soundEnable){
                     MercuryStoreCore.INSTANCE.soundSubject.onNext(SoundType.CHAT_SCANNER);
                 }

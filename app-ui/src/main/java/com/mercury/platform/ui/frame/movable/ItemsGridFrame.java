@@ -1,13 +1,11 @@
 package com.mercury.platform.ui.frame.movable;
 
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.HorizontalScrollContainer;
 import com.mercury.platform.ui.components.panel.grid.*;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
-import com.mercury.platform.ui.misc.event.*;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -45,7 +43,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
     }
 
     @Override
-    public void initHandlers() {
+    public void subscribe() {
         MercuryStoreUI.INSTANCE.showItemGridSubject.subscribe(message -> {
             if(this.configManager.isItemsGridEnable()) {
                 if (itemsGridPanel.getActiveTabsCount() == 0) {
@@ -65,10 +63,6 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         });
         MercuryStoreUI.INSTANCE.closeGridItemSubject.subscribe(
                 message -> itemsGridPanel.remove(message));
-        EventRouter.UI.registerHandler(RepaintEvent.RepaintItemGrid.class, event -> {
-            this.revalidate();
-            this.repaint();
-        });
         MercuryStoreUI.INSTANCE.dismissTabInfoPanelSubject.subscribe(tabInfoPanel -> {
             tabsContainer.remove(tabInfoPanel);
             stashTabsContainer.removeTab(tabInfoPanel.getStashTab());
