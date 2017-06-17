@@ -1,9 +1,7 @@
 package com.mercury.platform.core.misc;
 
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.*;
 import com.mercury.platform.shared.store.DataTransformers;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,12 +14,12 @@ public class SoundNotifier {
     private final Logger logger = LogManager.getLogger(SoundNotifier.class);
     private boolean dnd = false;
     public SoundNotifier() {
-        MercuryStore.INSTANCE.soundSubject
+        MercuryStoreCore.INSTANCE.soundSubject
                 .compose(DataTransformers.transformSoundData())
                 .subscribe(data -> play(data.getWavPath(), data.getDb()));
-        MercuryStore.INSTANCE.soundSettingsSubject
+        MercuryStoreCore.INSTANCE.soundSettingsSubject
                 .subscribe(data -> play(data.getWavPath(), data.getDb()));
-        MercuryStore.INSTANCE.dndSubject
+        MercuryStoreCore.INSTANCE.dndSubject
                 .subscribe(value -> this.dnd = value);
     }
 

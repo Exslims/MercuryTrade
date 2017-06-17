@@ -1,9 +1,7 @@
 package com.mercury.platform.ui.components.panel.grid;
 
-import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.entity.message.ItemMessage;
-import com.mercury.platform.shared.store.MercuryStore;
-import com.mercury.platform.ui.misc.event.ItemCellStateChangedEvent;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.NonNull;
 
 
@@ -14,11 +12,11 @@ public class ItemInfoPanelControllerImpl implements ItemInfoPanelController {
     }
     @Override
     public void hidePanel() {
-        MercuryStore.INSTANCE.closeGridItemSubject.onNext(message);
+        MercuryStoreUI.INSTANCE.closeGridItemSubject.onNext(message);
     }
 
     @Override
     public void changeTabType(@NonNull ItemInfoPanel panel) {
-        EventRouter.UI.fireEvent(new ItemCellStateChangedEvent(panel));
+        MercuryStoreUI.INSTANCE.itemCellStateSubject.onNext(panel);
     }
 }

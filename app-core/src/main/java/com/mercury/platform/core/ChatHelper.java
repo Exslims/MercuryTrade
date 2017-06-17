@@ -2,7 +2,7 @@ package com.mercury.platform.core;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HasEventHandlers;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -70,9 +70,9 @@ public class ChatHelper implements HasEventHandlers {
 
     @Override
     public void initHandlers() {
-        MercuryStore.INSTANCE.chatCommandSubject.subscribe(this::executeMessage);
-        MercuryStore.INSTANCE.openChatSubject.subscribe(this::openChat);
-        MercuryStore.INSTANCE.dndSubject.subscribe(state -> {
+        MercuryStoreCore.INSTANCE.chatCommandSubject.subscribe(this::executeMessage);
+        MercuryStoreCore.INSTANCE.openChatSubject.subscribe(this::openChat);
+        MercuryStoreCore.INSTANCE.dndSubject.subscribe(state -> {
             if(ConfigManager.INSTANCE.isInGameDnd()){
                 if(state) {
                     executeMessage("/dnd " + ConfigManager.INSTANCE.getDndResponseText());

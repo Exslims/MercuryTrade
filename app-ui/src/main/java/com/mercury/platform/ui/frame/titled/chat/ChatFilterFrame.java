@@ -5,14 +5,14 @@ import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.entity.FrameSettings;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.chat.ChatFilterPanel;
 import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.event.PackEvent;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
-import com.mercury.platform.ui.misc.event.ScrollToTheEndEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -83,7 +83,7 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
                 () -> {
                     chatEnable = false;
                     if (interceptor != null) {
-                        MercuryStore.INSTANCE.removeInterceptorSubject.onNext(interceptor);
+                        MercuryStoreCore.INSTANCE.removeInterceptorSubject.onNext(interceptor);
                     }
                     enableButton.setText("Start");
                     enableButton.setForeground(AppThemeColor.TEXT_SUCCESS);
@@ -138,7 +138,7 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
 
         msgContainer.setNewChunks(Arrays.asList(strings));
         if (interceptor != null) {
-            MercuryStore.INSTANCE.removeInterceptorSubject.onNext(interceptor);
+            MercuryStoreCore.INSTANCE.removeInterceptorSubject.onNext(interceptor);
         }
         interceptor = new MessageInterceptor() {
             @Override
@@ -162,7 +162,7 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
                 };
             }
         };
-        MercuryStore.INSTANCE.addInterceptorSubject.onNext(interceptor);
+        MercuryStoreCore.INSTANCE.addInterceptorSubject.onNext(interceptor);
     }
 
     @Override
@@ -177,9 +177,9 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
         );
         EventRouter.UI.registerHandler(
                 PackEvent.PackChatFilter.class, event -> this.pack());
-        EventRouter.UI.registerHandler(ScrollToTheEndEvent.class, event -> {
-            this.scrollToBottom = ((ScrollToTheEndEvent)event).isScrollToEnd();
-            if(!this.scrollToBottom){
+        MercuryStoreUI.INSTANCE.scrollToEndSubject.subscribe(value -> {
+            this.scrollToBottom = value;
+            if (!this.scrollToBottom) {
                 scrollEnd.setIcon(componentsFactory.getIcon("app/scroll-end-r.png", 18));
                 msgContainer.scrollToBottom(false);
             }

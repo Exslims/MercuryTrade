@@ -1,11 +1,9 @@
 package com.mercury.platform.ui.frame;
 
-import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.frame.setup.scale.ScaleState;
-import com.mercury.platform.ui.misc.event.SaveScaleEvent;
-import com.mercury.platform.ui.misc.event.ScaleChangeEvent;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,16 +19,10 @@ public abstract class AbstractScalableComponentFrame extends AbstractComponentFr
 
     protected AbstractScalableComponentFrame(String title) {
         super(title);
-        mainContainer = this.getContentPane();
-        stubComponentsFactory = new ComponentsFactory();
-
-        EventRouter.UI.registerHandler(ScaleChangeEvent.class, event -> {
-            float scale = ((ScaleChangeEvent) event).getScale();
-            changeScale(scale);
-        });
-        EventRouter.UI.registerHandler(SaveScaleEvent.class,
-                event -> performScaling(((SaveScaleEvent) event).getScaleData()));
-        registerDirectScaleHandler();
+        this.mainContainer = this.getContentPane();
+        this.stubComponentsFactory = new ComponentsFactory();
+        MercuryStoreUI.INSTANCE.saveScaleSubject.subscribe(this::performScaling);
+        this.registerDirectScaleHandler();
     }
 
 

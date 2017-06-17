@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.components;
 
 import com.mercury.platform.core.misc.SoundType;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.style.MercuryComboBoxUI;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -86,7 +86,7 @@ public class ComponentsFactory{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    MercuryStore.INSTANCE.soundSubject.onNext(SoundType.CLICKS);
+                    MercuryStoreCore.INSTANCE.soundSubject.onNext(SoundType.CLICKS);
                 }
             }
         });
@@ -184,7 +184,7 @@ public class ComponentsFactory{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    MercuryStore.INSTANCE.soundSubject.onNext(SoundType.CLICKS);
+                    MercuryStoreCore.INSTANCE.soundSubject.onNext(SoundType.CLICKS);
                 }
             }
         });
@@ -552,17 +552,17 @@ public class ComponentsFactory{
         private String tooltip;
         @Override
         public void mouseEntered(MouseEvent e) {
-            MercuryStore.INSTANCE.tooltipSubject.onNext(tooltip);
+            MercuryStoreCore.INSTANCE.tooltipSubject.onNext(tooltip);
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-            MercuryStore.INSTANCE.tooltipSubject.onNext(null);
+            MercuryStoreCore.INSTANCE.tooltipSubject.onNext(null);
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-            MercuryStore.INSTANCE.tooltipSubject.onNext(null);
+            MercuryStoreCore.INSTANCE.tooltipSubject.onNext(null);
         }
     }
 }

@@ -2,14 +2,13 @@ package com.mercury.platform.ui.frame.movable;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.store.MercuryStore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.HorizontalScrollContainer;
 import com.mercury.platform.ui.components.panel.grid.*;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.event.*;
 import com.mercury.platform.shared.entity.message.ItemMessage;
-import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.manager.FramesManager;
@@ -47,17 +46,16 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
 
     @Override
     public void initHandlers() {
-        EventRouter.UI.registerHandler(ShowItemGridEvent.class, event -> {
-            if(configManager.isItemsGridEnable()) {
-                ItemMessage message = ((ShowItemGridEvent) event).getMessage();
+        MercuryStoreUI.INSTANCE.showItemGridSubject.subscribe(message -> {
+            if(this.configManager.isItemsGridEnable()) {
                 if (itemsGridPanel.getActiveTabsCount() == 0) {
                     this.setVisible(true);
                 }
-                itemsGridPanel.add(message,null);
+                this.itemsGridPanel.add(message,null);
                 this.pack();
             }
         });
-        MercuryStore.INSTANCE.closeMessagePanelSubject.subscribe(message -> {
+        MercuryStoreUI.INSTANCE.closeMessage.subscribe(message -> {
             if(message instanceof ItemMessage) {
                 this.itemsGridPanel.remove((ItemMessage) message);
                 if (itemsGridPanel.getActiveTabsCount() == 0) {
@@ -65,23 +63,20 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
                 }
             }
         });
-        MercuryStore.INSTANCE.closeGridItemSubject.subscribe(
+        MercuryStoreUI.INSTANCE.closeGridItemSubject.subscribe(
                 message -> itemsGridPanel.remove(message));
         EventRouter.UI.registerHandler(RepaintEvent.RepaintItemGrid.class, event -> {
             this.revalidate();
             this.repaint();
         });
-        MercuryStore.INSTANCE.dismissTabInfoPanelSubject.subscribe()
-        EventRouter.UI.registerHandler(DismissStashTabInfoEvent.class,event -> {
-            TabInfoPanel tabInfoPanel = ((DismissStashTabInfoEvent) event).getTabInfoPanel();
+        MercuryStoreUI.INSTANCE.dismissTabInfoPanelSubject.subscribe(tabInfoPanel -> {
             tabsContainer.remove(tabInfoPanel);
             stashTabsContainer.removeTab(tabInfoPanel.getStashTab());
             this.repaint();
             this.pack();
         });
-        EventRouter.UI.registerHandler(ItemCellStateChangedEvent.class, event -> {
-            ItemInfoPanel itemInfoPanel = ((ItemCellStateChangedEvent) event).getItemInfoPanel();
-            itemsGridPanel.changeTabType(itemInfoPanel);
+        MercuryStoreUI.INSTANCE.itemCellStateSubject.subscribe(item -> {
+            itemsGridPanel.changeTabType(item);
             this.pack();
         });
     }
@@ -249,9 +244,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
 
     @Override
     protected void registerDirectScaleHandler() {
-        EventRouter.UI.registerHandler(ScaleChangeEvent.ItemPanelScaleChangeEvent.class,event -> {
-            changeScale(((ScaleChangeEvent.ItemPanelScaleChangeEvent)event).getScale());
-        });
+        MercuryStoreUI.INSTANCE.itemPanelScaleSubject.subscribe(this::changeScale);
     }
 
     @Override

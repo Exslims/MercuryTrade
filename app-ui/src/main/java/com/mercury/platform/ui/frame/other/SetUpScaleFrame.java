@@ -1,14 +1,12 @@
 package com.mercury.platform.ui.frame.other;
 
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.event.SaveScaleEvent;
-import com.mercury.platform.ui.misc.event.ScaleChangeEvent;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,7 +61,7 @@ public class SetUpScaleFrame extends AbstractOverlaidFrame {
             public void mousePressed(MouseEvent e) {
                 FramesManager.INSTANCE.disableScale();
                 ConfigManager.INSTANCE.saveScaleData(scaleData);
-                EventRouter.UI.fireEvent(new SaveScaleEvent(scaleData));
+                MercuryStoreUI.INSTANCE.saveScaleSubject.onNext(scaleData);
             }
         });
         save.setPreferredSize(new Dimension(100, 26));
@@ -104,7 +102,7 @@ public class SetUpScaleFrame extends AbstractOverlaidFrame {
                     prevValue = notificationSlider.getValue();
                     notificationValue.setText(String.valueOf(notificationSlider.getValue() * 10)+ "%");
                     scaleData.put("notification",notificationSlider.getValue()/10f);
-                    EventRouter.UI.fireEvent(new ScaleChangeEvent.NotificationScaleChangeEvent(notificationSlider.getValue()/10f));
+                    MercuryStoreUI.INSTANCE.notificationScaleSubject.onNext(notificationSlider.getValue()/10f);
                     repaint();
                 }
             }
@@ -134,7 +132,7 @@ public class SetUpScaleFrame extends AbstractOverlaidFrame {
                     prevValue = taskBarSlider.getValue();
                     taskBarValue.setText(String.valueOf(taskBarSlider.getValue() * 10)+ "%");
                     scaleData.put("taskbar",taskBarSlider.getValue()/10f);
-                    EventRouter.UI.fireEvent(new ScaleChangeEvent.TaskBarScaleChangeEvent(taskBarSlider.getValue()/10f));
+                    MercuryStoreUI.INSTANCE.taskBarScaleSubject.onNext(taskBarSlider.getValue()/10f);
                     repaint();
                 }
             }
@@ -163,7 +161,7 @@ public class SetUpScaleFrame extends AbstractOverlaidFrame {
                     prevValue = itemInfoSlider.getValue();
                     itemInfoValue.setText(String.valueOf(itemInfoSlider.getValue() * 10)+ "%");
                     scaleData.put("itemcell",itemInfoSlider.getValue()/10f);
-                    EventRouter.UI.fireEvent(new ScaleChangeEvent.ItemPanelScaleChangeEvent(itemInfoSlider.getValue()/10f));
+                    MercuryStoreUI.INSTANCE.itemPanelScaleSubject.onNext(itemInfoSlider.getValue()/10f);
                     repaint();
                 }
             }

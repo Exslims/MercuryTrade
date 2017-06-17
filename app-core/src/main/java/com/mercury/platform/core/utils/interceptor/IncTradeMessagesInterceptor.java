@@ -4,7 +4,7 @@ import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.entity.message.Message;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.commons.lang3.StringUtils;
 
 public class IncTradeMessagesInterceptor extends MessageInterceptor {
@@ -14,8 +14,8 @@ public class IncTradeMessagesInterceptor extends MessageInterceptor {
     protected void process(String message) {
         Message parsedMessage = messageParser.parse(StringUtils.substringAfter(message,"@"));
         if(parsedMessage != null) {
-            MercuryStore.INSTANCE.soundSubject.onNext(SoundType.MESSAGE);
-            MercuryStore.INSTANCE.messageSubject.onNext(parsedMessage);
+            MercuryStoreCore.INSTANCE.soundSubject.onNext(SoundType.MESSAGE);
+            MercuryStoreCore.INSTANCE.messageSubject.onNext(parsedMessage);
         }
     }
 

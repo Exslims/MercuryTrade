@@ -10,8 +10,8 @@ import com.mercury.platform.ui.components.panel.taskbar.MercuryTaskBarController
 import com.mercury.platform.ui.components.panel.taskbar.TaskBarController;
 import com.mercury.platform.ui.components.panel.taskbar.TaskBarPanel;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
-import com.mercury.platform.ui.misc.event.ScaleChangeEvent;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.ease.Spline;
 
@@ -134,9 +134,7 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
 
     @Override
     protected void registerDirectScaleHandler() {
-        EventRouter.UI.registerHandler(ScaleChangeEvent.TaskBarScaleChangeEvent.class,event -> {
-            changeScale(((ScaleChangeEvent.TaskBarScaleChangeEvent)event).getScale());
-        });
+        MercuryStoreUI.INSTANCE.taskBarScaleSubject.subscribe(this::changeScale);
     }
 
     @Override

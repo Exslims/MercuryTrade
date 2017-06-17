@@ -2,9 +2,7 @@ package com.mercury.platform.core.utils;
 
 import com.mercury.platform.core.utils.interceptor.*;
 import com.mercury.platform.shared.HasEventHandlers;
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.*;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -82,11 +80,11 @@ public class MessageFileHandler implements HasEventHandlers {
 
     @Override
     public void initHandlers() {
-        MercuryStore.INSTANCE.addInterceptorSubject.subscribe(interceptor -> {
+        MercuryStoreCore.INSTANCE.addInterceptorSubject.subscribe(interceptor -> {
             interceptors.add(interceptor);
             lastMessageDate = new Date();
         });
-        MercuryStore.INSTANCE.removeInterceptorSubject.subscribe(interceptor -> {
+        MercuryStoreCore.INSTANCE.removeInterceptorSubject.subscribe(interceptor -> {
             interceptors.remove(interceptor);
         });
     }

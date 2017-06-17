@@ -1,7 +1,6 @@
 package com.mercury.platform.ui.frame.other;
 
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
@@ -47,7 +46,7 @@ public class NotificationFrame extends AbstractOverlaidFrame {
 
     @Override
     public void initHandlers() {
-        MercuryStore.INSTANCE.notificationSubject.subscribe(message -> {
+        MercuryStoreCore.INSTANCE.notificationSubject.subscribe(message -> {
             messageLabel.setText(message);
             this.pack();
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

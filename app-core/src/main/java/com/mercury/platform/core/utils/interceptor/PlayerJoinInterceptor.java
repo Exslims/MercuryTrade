@@ -1,13 +1,13 @@
 package com.mercury.platform.core.utils.interceptor;
 
 import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.commons.lang3.StringUtils;
 
 public class PlayerJoinInterceptor extends MessageInterceptor {
     @Override
     protected void process(String message) {
-        MercuryStore.INSTANCE.playerJoinSubject.onNext(StringUtils.substringBetween(message," : ", " has joined the area."));
+        MercuryStoreCore.INSTANCE.playerJoinSubject.onNext(StringUtils.substringBetween(message," : ", " has joined the area."));
     }
 
     @Override

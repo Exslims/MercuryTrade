@@ -6,7 +6,7 @@ import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.entity.FrameSettings;
 import com.mercury.platform.shared.entity.message.Message;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.message.MessagePanel;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
@@ -14,7 +14,7 @@ import com.mercury.platform.ui.components.panel.message.NotificationMessageContr
 import com.mercury.platform.ui.components.panel.message.MessagePanelStyle;
 import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.event.ReloadMessageEvent;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -125,7 +125,7 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
 
     @Override
     public void initHandlers() {
-        MercuryStore.INSTANCE.messageSubject.subscribe(message -> SwingUtilities.invokeLater(()-> {
+        MercuryStoreCore.INSTANCE.messageSubject.subscribe(message -> SwingUtilities.invokeLater(()-> {
             HistoryManager.INSTANCE.add(message);
             MessagePanel messagePanel = new MessagePanel(
                     message,
@@ -136,9 +136,7 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
             trimContainer();
             this.pack();
         }));
-        EventRouter.UI.registerHandler(ReloadMessageEvent.class,event -> {
-            onReloadMessage(((ReloadMessageEvent)event).getPanel());
-        });
+        MercuryStoreUI.INSTANCE.reloadMessageSubject.subscribe(this::onReloadMessage);
         EventRouter.UI.registerHandler(RepaintEvent.RepaintMessageFrame.class, event -> {
             this.revalidate();
             this.repaint();

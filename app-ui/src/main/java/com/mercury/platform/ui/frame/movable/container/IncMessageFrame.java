@@ -6,7 +6,7 @@ import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.shared.entity.message.Message;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -19,6 +19,7 @@ import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.frame.setup.location.LocationState;
 import com.mercury.platform.ui.frame.setup.scale.ScaleState;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import com.mercury.platform.ui.misc.event.*;
 import org.apache.logging.log4j.LogManager;
@@ -97,7 +98,7 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
 
     @Override
     public void initHandlers() {
-        MercuryStore.INSTANCE.dndSubject.subscribe(state -> {
+        MercuryStoreCore.INSTANCE.dndSubject.subscribe(state -> {
             this.dnd = state;
             if(dnd){
                 this.setVisible(false);
@@ -112,12 +113,12 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
                 setUpExpandButton();
             }
         });
-        MercuryStore.INSTANCE.messageSubject.subscribe(message -> SwingUtilities.invokeLater(()-> {
+        MercuryStoreCore.INSTANCE.messageSubject.subscribe(message -> SwingUtilities.invokeLater(()-> {
             if(!currentMessages.containsKey(message)) {
                 addMessage(message);
             }
         }));
-        MercuryStore.INSTANCE.closeMessagePanelSubject.subscribe(message -> {
+        MercuryStoreUI.INSTANCE.closeMessage.subscribe(message -> {
             MessagePanel panel = currentMessages.get(message);
             if (panel.isExpanded()) {
                 this.currentExpandedMsgCount--;
@@ -157,8 +158,8 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
             this.pack();
             this.setUpExpandButton();
         });
-        EventRouter.UI.registerHandler(ExpandMessageEvent.class, event -> onExpandMessage());
-        MercuryStore.INSTANCE.collapseMessagePanelSubject.subscribe(state -> this.onCollapseMessage());
+        MercuryStoreUI.INSTANCE.expandMessageSubject.subscribe(state -> this.onExpandMessage());
+        MercuryStoreUI.INSTANCE.collapseMessageSubject.subscribe(state -> this.onCollapseMessage());
         EventRouter.UI.registerHandler(RepaintEvent.RepaintMessageFrame.class, event -> {
             IncMessageFrame.this.revalidate();
             IncMessageFrame.this.repaint();
@@ -564,9 +565,7 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
 
     @Override
     protected void registerDirectScaleHandler() {
-        EventRouter.UI.registerHandler(ScaleChangeEvent.NotificationScaleChangeEvent.class, event -> {
-            changeScale(((ScaleChangeEvent.NotificationScaleChangeEvent)event).getScale());
-        });
+        MercuryStoreUI.INSTANCE.notificationScaleSubject.subscribe(this::changeScale);
     }
 
     @Override
@@ -775,12 +774,12 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
                     infoLabel.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseEntered(MouseEvent e) {
-                            MercuryStore.INSTANCE.tooltipSubject.onNext(TooltipConstants.NOTIFICATION_SETTINGS);
+                            MercuryStoreCore.INSTANCE.tooltipSubject.onNext(TooltipConstants.NOTIFICATION_SETTINGS);
                         }
 
                         @Override
                         public void mouseExited(MouseEvent e) {
-                            MercuryStore.INSTANCE.tooltipSubject.onNext(null);
+                            MercuryStoreCore.INSTANCE.tooltipSubject.onNext(null);
                         }
                     });
                     panel.add(infoLabel,BorderLayout.CENTER);

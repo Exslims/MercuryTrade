@@ -1,12 +1,11 @@
 package com.mercury.platform.ui.components.panel.grid;
 
-import com.mercury.platform.shared.events.EventRouter;
 import com.mercury.platform.shared.entity.StashTab;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.event.DismissStashTabInfoEvent;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.NonNull;
 
 import javax.swing.*;
@@ -29,7 +28,7 @@ public class TabInfoPanel extends JPanel implements HasUI{
         JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_ALPHA, "Dismiss");
         hideButton.addActionListener((action)->{
             stashTab.setUndefined(true);
-            EventRouter.UI.fireEvent(new DismissStashTabInfoEvent(this));
+            MercuryStoreUI.INSTANCE.dismissTabInfoPanelSubject.onNext(this);
         });
         JPanel tabInfoPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel tabLabel = componentsFactory.getTextLabel(stashTab.getTitle());

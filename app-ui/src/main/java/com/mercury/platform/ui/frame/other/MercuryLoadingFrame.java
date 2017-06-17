@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.frame.other;
 
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.pushingpixels.trident.Timeline;
@@ -51,7 +51,7 @@ public class MercuryLoadingFrame extends AbstractOverlaidFrame {
 
     @Override
     public void initHandlers() {
-        MercuryStore.INSTANCE.appLoadingSubject
+        MercuryStoreCore.INSTANCE.appLoadingSubject
                 .subscribe(state -> hideAnimation.play());
     }
 

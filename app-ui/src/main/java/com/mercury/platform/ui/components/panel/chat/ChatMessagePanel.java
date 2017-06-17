@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.components.panel.chat;
 
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -50,7 +50,7 @@ public class ChatMessagePanel extends JPanel implements HasUI{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    MercuryStore.INSTANCE.chatCommandSubject.onNext("@" + nickName + " " + ConfigManager.INSTANCE.getQuickResponse());
+                    MercuryStoreCore.INSTANCE.chatCommandSubject.onNext("@" + nickName + " " + ConfigManager.INSTANCE.getQuickResponse());
                 }
             }
         });
@@ -59,7 +59,7 @@ public class ChatMessagePanel extends JPanel implements HasUI{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    MercuryStore.INSTANCE.openChatSubject.onNext(nickName);
+                    MercuryStoreCore.INSTANCE.openChatSubject.onNext(nickName);
                 }
             }
         });

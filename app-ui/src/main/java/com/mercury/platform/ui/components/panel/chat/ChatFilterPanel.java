@@ -2,14 +2,14 @@ package com.mercury.platform.ui.components.panel.chat;
 
 import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.event.PackEvent;
 import com.mercury.platform.ui.misc.event.RepaintEvent;
-import com.mercury.platform.ui.misc.event.ScrollToTheEndEvent;
 import net.jodah.expiringmap.ExpiringMap;
 import org.apache.commons.lang3.StringUtils;
 
@@ -56,9 +56,7 @@ public class ChatFilterPanel extends JPanel {
                 EventRouter.UI.fireEvent(new RepaintEvent.RepaintChatFilter());
             }
         });
-        scrollPane.addMouseWheelListener(e -> {
-            EventRouter.UI.fireEvent(new ScrollToTheEndEvent(false));
-        });
+        scrollPane.addMouseWheelListener(e -> MercuryStoreUI.INSTANCE.scrollToEndSubject.onNext(false));
 
         container.getParent().setBackground(AppThemeColor.TRANSPARENT);
         JScrollBar vBar = scrollPane.getVerticalScrollBar();
@@ -113,7 +111,7 @@ public class ChatFilterPanel extends JPanel {
                 expiresMessages.put(nickname,message);
                 EventRouter.UI.fireEvent(new PackEvent.PackChatFilter());
                 if(soundEnable){
-                    MercuryStore.INSTANCE.soundSubject.onNext(SoundType.CHAT_SCANNER);
+                    MercuryStoreCore.INSTANCE.soundSubject.onNext(SoundType.CHAT_SCANNER);
                 }
                 if(scrollToBottom) {
                     container.scrollRectToVisible(new Rectangle(0, container.getHeight() - 1, 1, 1));

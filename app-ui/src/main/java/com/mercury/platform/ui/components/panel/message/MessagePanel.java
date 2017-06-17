@@ -8,7 +8,7 @@ import com.mercury.platform.shared.entity.message.CurrencyMessage;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.shared.entity.ResponseButton;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -471,7 +471,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
     }
     @Override
     public void initHandlers() {
-        MercuryStore.INSTANCE.playerJoinSubject.subscribe(nickname -> {
+        MercuryStoreCore.INSTANCE.playerJoinSubject.subscribe(nickname -> {
             if(nickname.equals(whisper)){
                 whisperLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
                 cachedWhisperColor = AppThemeColor.TEXT_SUCCESS;
@@ -481,7 +481,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
                 EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
             }
         });
-        MercuryStore.INSTANCE.playerLeftSubject.subscribe(nickname -> {
+        MercuryStoreCore.INSTANCE.playerLeftSubject.subscribe(nickname -> {
             if (nickname.equals(whisper)) {
                 whisperLabel.setForeground(AppThemeColor.TEXT_DISABLE);
                 cachedWhisperColor = AppThemeColor.TEXT_DISABLE;
@@ -491,7 +491,7 @@ public class MessagePanel extends JPanel implements HasEventHandlers, HasUI{
                 EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());
             }
         });
-        MercuryStore.INSTANCE.buttonsChangedSubject.subscribe(state -> {
+        MercuryStoreCore.INSTANCE.buttonsChangedSubject.subscribe(state -> {
             this.customButtonsPanel.removeAll();
             initResponseButtons(customButtonsPanel);
             EventRouter.UI.fireEvent(new RepaintEvent.RepaintMessageFrame());

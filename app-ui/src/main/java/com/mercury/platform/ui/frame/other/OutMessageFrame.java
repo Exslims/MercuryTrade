@@ -5,7 +5,7 @@ import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.entity.message.CurrencyMessage;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.shared.entity.message.Message;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.AbstractComponentFrame;
@@ -64,7 +64,7 @@ public class OutMessageFrame extends AbstractComponentFrame {
         hoIn.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                MercuryStore.INSTANCE.chatCommandSubject.onNext("/hideout " + message.getWhisperNickname());
+                MercuryStoreCore.INSTANCE.chatCommandSubject.onNext("/hideout " + message.getWhisperNickname());
             }
         });
         miscPanel.add(hoIn);
@@ -72,7 +72,7 @@ public class OutMessageFrame extends AbstractComponentFrame {
         hoOut.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                MercuryStore.INSTANCE.chatCommandSubject.onNext("/hideout");
+                MercuryStoreCore.INSTANCE.chatCommandSubject.onNext("/hideout");
             }
         });
         miscPanel.add(hoOut);
@@ -118,7 +118,7 @@ public class OutMessageFrame extends AbstractComponentFrame {
     }
     @Override
     public void initHandlers() {
-        MercuryStore.INSTANCE.outMessageSubject.subscribe(message -> {
+        MercuryStoreCore.INSTANCE.outMessageSubject.subscribe(message -> {
             if (!this.isVisible() && AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
                 this.setAlwaysOnTop(true);
                 this.setVisible(true);

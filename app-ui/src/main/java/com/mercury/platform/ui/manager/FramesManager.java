@@ -4,10 +4,9 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.HasEventHandlers;
 import com.mercury.platform.shared.entity.FrameSettings;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.frame.AbstractComponentFrame;
 import com.mercury.platform.ui.frame.AbstractScalableComponentFrame;
-import com.mercury.platform.ui.frame.adr.AdrManagerFrame;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
 import com.mercury.platform.ui.frame.movable.AbstractMovableComponentFrame;
 import com.mercury.platform.ui.frame.movable.container.IncMessageFrame;
@@ -104,11 +103,11 @@ public class FramesManager implements HasEventHandlers{
         });
         initHandlers();
         adrManager.load();
-        MercuryStore.INSTANCE.uiLoadedSubject.onNext(true);
+        MercuryStoreCore.INSTANCE.uiLoadedSubject.onNext(true);
     }
     @Override
     public void initHandlers() {
-        MercuryStore.INSTANCE.showPatchNotesSubject.subscribe(json -> {
+        MercuryStoreCore.INSTANCE.showPatchNotesSubject.subscribe(json -> {
             NotesLoader notesLoader = new NotesLoader();
             List<Note> notes = notesLoader.getPatchNotesFromString(json);
             NotesFrame patchNotesFrame = new NotesFrame(notes, NotesFrame.NotesType.PATCH);
@@ -119,11 +118,11 @@ public class FramesManager implements HasEventHandlers{
     }
     public void exit() {
         framesMap.forEach((k,v) -> v.setVisible(false));
-        MercuryStore.INSTANCE.shutdownAppSubject.onNext(true);
+        MercuryStoreCore.INSTANCE.shutdownAppSubject.onNext(true);
     }
     public void exitForUpdate() {
         framesMap.forEach((k,v) -> v.setVisible(false));
-        MercuryStore.INSTANCE.shutdownForUpdateSubject.onNext(true);
+        MercuryStoreCore.INSTANCE.shutdownForUpdateSubject.onNext(true);
     }
     public void showFrame(Class frameClass){
         framesMap.get(frameClass).showComponent();

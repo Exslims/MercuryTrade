@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.components.panel.settings;
 
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.frame.titled.NotesFrame;
@@ -68,7 +68,7 @@ public class HelpPanel extends JPanel implements HasUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)){
-                    MercuryStore.INSTANCE.updateInfoSubject.onNext(123);
+                    MercuryStoreCore.INSTANCE.updateInfoSubject.onNext(123);
                     FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
                 }
             }

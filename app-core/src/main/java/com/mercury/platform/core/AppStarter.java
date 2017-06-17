@@ -10,10 +10,7 @@ import com.mercury.platform.shared.UpdateManager;
 import com.mercury.platform.shared.config.BaseConfigManager;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.MercuryConfigurationSource;
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.custom.*;
-import com.mercury.platform.shared.store.MercuryStore;
-import com.sun.jna.Native;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
 import org.apache.logging.log4j.LogManager;
@@ -47,7 +44,7 @@ public class AppStarter {
         HistoryManager.INSTANCE.load();
         UpdateManager updateManager = new UpdateManager();
 
-        MercuryStore.INSTANCE.uiLoadedSubject.subscribe((Boolean state) -> {
+        MercuryStoreCore.INSTANCE.uiLoadedSubject.subscribe((Boolean state) -> {
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
@@ -66,7 +63,7 @@ public class AppStarter {
                     User32.INSTANCE.GetClassName(hwnd, className, 512);
 
                     APP_STATUS = FrameVisibleState.SHOW;
-                    MercuryStore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
+                    MercuryStoreCore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
 
 //                    if(!Native.toString(className).equals("POEWindowClass")){
 //                        if(APP_STATUS == FrameVisibleState.SHOW) {
@@ -88,9 +85,9 @@ public class AppStarter {
                 }
             },0,150);
         });
-        MercuryStore.INSTANCE.showingDelaySubject.subscribe(state -> this.delay = 300);
-        MercuryStore.INSTANCE.shutdownAppSubject.subscribe(state -> this.shutdown = true);
-        MercuryStore.INSTANCE.shutdownForUpdateSubject.subscribe(state -> {
+        MercuryStoreCore.INSTANCE.showingDelaySubject.subscribe(state -> this.delay = 300);
+        MercuryStoreCore.INSTANCE.shutdownAppSubject.subscribe(state -> this.shutdown = true);
+        MercuryStoreCore.INSTANCE.shutdownForUpdateSubject.subscribe(state -> {
             this.updating = true;
             this.shutdown = true;
         });

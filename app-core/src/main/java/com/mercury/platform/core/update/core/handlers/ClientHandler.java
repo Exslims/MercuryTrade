@@ -5,18 +5,13 @@ import com.mercury.platform.core.update.bus.UpdaterClientEventBus;
 import com.mercury.platform.core.update.bus.event.UpdateReceivedEvent;
 import com.mercury.platform.core.update.core.holder.ApplicationHolder;
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.events.EventRouter;
-import com.mercury.platform.shared.events.MercuryEventHandler;
-import com.mercury.platform.shared.events.custom.*;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.update.UpdateDescriptor;
 import com.mercury.platform.update.UpdateType;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Arrays;
 
 /**
  * Need to refactoring.
@@ -45,7 +40,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
         if (object instanceof byte[]) {
             byte[] bytes = (byte[]) object;
             chunks = Bytes.concat(chunks,bytes);
-            MercuryStore.INSTANCE.chunkLoadedSubject.onNext(percentDelta);
+            MercuryStoreCore.INSTANCE.chunkLoadedSubject.onNext(percentDelta);
             if (chunks.length == length) {
                 UpdateReceivedEvent event = new UpdateReceivedEvent(chunks);
                 UpdaterClientEventBus.getInstance().post(event);
@@ -66,8 +61,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
                 Integer version = ApplicationHolder.getInstance().getVersion();
                 context.channel().writeAndFlush(new UpdateDescriptor(UpdateType.REQUEST_INFO, version));
             }
-            MercuryStore.INSTANCE.checkOutPatchSubject.subscribe(state -> this.checkOutPatchNotes());
-            MercuryStore.INSTANCE.startUpdateSubject.subscribe(state -> this.getLatestUpdate());
+            MercuryStoreCore.INSTANCE.checkOutPatchSubject.subscribe(state -> this.checkOutPatchNotes());
+            MercuryStoreCore.INSTANCE.startUpdateSubject.subscribe(state -> this.getLatestUpdate());
         }
     }
     private void checkOutPatchNotes(){

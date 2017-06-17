@@ -2,7 +2,7 @@ package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.entity.ResponseButton;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -49,7 +49,7 @@ public class NotificationPanelSettings extends ConfigurationPanel{
         ConfigManager.INSTANCE.saveButtonsConfig(buttons);
         ConfigManager.INSTANCE.setDismissAfterKick(dismissCheckBox.isSelected());
         ConfigManager.INSTANCE.setShowLeague(showLeagueCheckBox.isSelected());
-        MercuryStore.INSTANCE.buttonsChangedSubject.onNext(true);
+        MercuryStoreCore.INSTANCE.buttonsChangedSubject.onNext(true);
         return true;
     }
 

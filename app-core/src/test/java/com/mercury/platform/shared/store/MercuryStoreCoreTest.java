@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MercuryStoreTest {
+public class MercuryStoreCoreTest {
     @Test
     public void testSoundReducer() throws IOException {
         TestSubscriber<Map<String,String>> testSubscriber = new TestSubscriber<>();

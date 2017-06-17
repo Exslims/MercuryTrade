@@ -2,7 +2,7 @@ package com.mercury.platform.ui.frame.titled;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
@@ -81,7 +81,7 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         download.addActionListener(action -> {
             download.setEnabled(false);
             progressBarFrame.setVisible(true);
-            MercuryStore.INSTANCE.startUpdateSubject.onNext(true);
+            MercuryStoreCore.INSTANCE.startUpdateSubject.onNext(true);
         });
         JButton gitHub = componentsFactory.getBorderedButton("GitHub");
         gitHub.addActionListener(action -> {
@@ -308,13 +308,13 @@ public class NotesFrame extends AbstractTitledComponentFrame {
 
         @Override
         public void initHandlers() {
-            MercuryStore.INSTANCE.chunkLoadedSubject.subscribe(percentDelta -> SwingUtilities.invokeLater(() -> {
+            MercuryStoreCore.INSTANCE.chunkLoadedSubject.subscribe(percentDelta -> SwingUtilities.invokeLater(() -> {
                 this.percent += percentDelta;
                 this.percentLabel.setText(String.valueOf(percent) + "%");
                 this.repaint();
                 this.pack();
             }));
-            MercuryStore.INSTANCE.updateReadySubject.subscribe(state -> {
+            MercuryStoreCore.INSTANCE.updateReadySubject.subscribe(state -> {
                 this.percentLabel.setText("100%");
                 this.restart.setEnabled(true);
                 this.progressBar.setIndeterminate(false);

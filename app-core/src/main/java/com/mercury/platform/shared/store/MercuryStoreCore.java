@@ -9,11 +9,11 @@ import com.mercury.platform.shared.entity.SoundDescriptor;
 import rx.subjects.PublishSubject;
 
 
-public class MercuryStore {
+public class MercuryStoreCore {
     private static class MercuryStoreHolder {
-        static final MercuryStore HOLDER_INSTANCE = new MercuryStore();
+        static final MercuryStoreCore HOLDER_INSTANCE = new MercuryStoreCore();
     }
-    public static MercuryStore INSTANCE = MercuryStoreHolder.HOLDER_INSTANCE;
+    public static MercuryStoreCore INSTANCE = MercuryStoreHolder.HOLDER_INSTANCE;
 
     public final PublishSubject<SoundType> soundSubject = PublishSubject.create();
     public final PublishSubject<SoundDescriptor> soundSettingsSubject = PublishSubject.create();
@@ -45,9 +45,4 @@ public class MercuryStore {
     public final PublishSubject<Integer> updateInfoSubject = PublishSubject.create();
     public final PublishSubject<Boolean> updateReadySubject = PublishSubject.create();
 
-    //UI
-    public final PublishSubject<ItemMessage> closeGridItemSubject = PublishSubject.create();
-    public final PublishSubject<Message> closeMessagePanelSubject = PublishSubject.create();
-    public final PublishSubject<Boolean> collapseMessagePanelSubject = PublishSubject.create();
-    public final PublishSubject<Boolean> dismissTabInfoPanelSubject = PublishSubject.create();
 }

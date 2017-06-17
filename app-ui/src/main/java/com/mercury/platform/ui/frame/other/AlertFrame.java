@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.frame.other;
 
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -38,7 +38,7 @@ public class AlertFrame extends AbstractOverlaidFrame {
 
     @Override
     public void initHandlers() {
-        MercuryStore.INSTANCE.stringAlertSubject.subscribe(message -> {
+        MercuryStoreCore.INSTANCE.stringAlertSubject.subscribe(message -> {
             messageLabel.setText(message);
             this.repaint();
             this.pack();

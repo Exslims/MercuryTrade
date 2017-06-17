@@ -2,16 +2,14 @@ package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.entity.SoundDescriptor;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
@@ -63,7 +61,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
         notificationSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                MercuryStore.INSTANCE.soundSettingsSubject.onNext(new SoundDescriptor(
+                MercuryStoreCore.INSTANCE.soundSettingsSubject.onNext(new SoundDescriptor(
                         wavPaths.get("notification"),
                         notificationSlider.getValue() == -40 ? -80f : (float)notificationSlider.getValue()
                 ));
@@ -73,7 +71,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
         chatScannerSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                MercuryStore.INSTANCE.soundSettingsSubject.onNext(new SoundDescriptor(
+                MercuryStoreCore.INSTANCE.soundSettingsSubject.onNext(new SoundDescriptor(
                         wavPaths.get("chat_scanner"),
                         chatScannerSlider.getValue() == -40 ? -80f : (float)chatScannerSlider.getValue()
                 ));
@@ -83,7 +81,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
         clicksSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                MercuryStore.INSTANCE.soundSettingsSubject.onNext(new SoundDescriptor(
+                MercuryStoreCore.INSTANCE.soundSettingsSubject.onNext(new SoundDescriptor(
                         wavPaths.get("clicks"),
                         clicksSlider.getValue() == -40 ? -80f : (float)clicksSlider.getValue()
                 ));
@@ -93,7 +91,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
         updateSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                MercuryStore.INSTANCE.soundSettingsSubject.onNext(new SoundDescriptor(
+                MercuryStoreCore.INSTANCE.soundSettingsSubject.onNext(new SoundDescriptor(
                         wavPaths.get("update"),
                         updateSlider.getValue() == -40 ? -80f : (float)updateSlider.getValue()
                 ));

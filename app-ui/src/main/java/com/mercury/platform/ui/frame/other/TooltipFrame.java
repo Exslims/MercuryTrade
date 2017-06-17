@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.frame.other;
 
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
@@ -29,7 +29,7 @@ public class TooltipFrame extends AbstractOverlaidFrame {
     }
     @Override
     public void initHandlers() {
-        MercuryStore.INSTANCE.tooltipSubject.subscribe(tooltip -> {
+        MercuryStoreCore.INSTANCE.tooltipSubject.subscribe(tooltip -> {
             if(tooltip != null){
                 this.getContentPane().removeAll();
                 this.setPreferredSize(null);

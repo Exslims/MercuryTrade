@@ -3,9 +3,8 @@ package com.mercury.platform.ui.frame;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.HasEventHandlers;
-import com.mercury.platform.shared.store.MercuryStore;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
-import com.mercury.platform.ui.frame.movable.container.IncMessageFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,7 +43,7 @@ public abstract class AbstractOverlaidFrame extends JFrame implements HasEventHa
             }
         });
 
-        MercuryStore.INSTANCE.frameVisibleSubject.subscribe(this::changeVisible);
+        MercuryStoreCore.INSTANCE.frameVisibleSubject.subscribe(this::changeVisible);
     }
     protected void changeVisible(FrameVisibleState state){
         if (processingHideEvent) {
