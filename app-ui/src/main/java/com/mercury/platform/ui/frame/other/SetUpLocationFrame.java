@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 
 public class SetUpLocationFrame extends AbstractOverlaidFrame {
     public SetUpLocationFrame() {
-        super("MercuryTrade");
+        super();
     }
 
     @Override

@@ -23,8 +23,8 @@ public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscrib
     protected ConfigManager configManager = ConfigManager.INSTANCE;
 
     protected LayoutManager layout;
-    protected AbstractOverlaidFrame(String title){
-        super(title);
+    protected AbstractOverlaidFrame(){
+        super("MercuryTrade");
         this.componentsFactory = new ComponentsFactory();
         this.getRootPane().setOpaque(false);
         this.setUndecorated(true);

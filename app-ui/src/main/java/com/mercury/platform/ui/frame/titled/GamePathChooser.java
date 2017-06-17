@@ -20,7 +20,7 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
     private boolean readyToStart = false;
 
     public GamePathChooser() {
-        super("MercuryTrade");
+        super();
         this.processingHideEvent = false;
         this.processEResize = false;
         this.processSEResize = false;

@@ -17,8 +17,8 @@ public abstract class AbstractScalableComponentFrame extends AbstractComponentFr
     protected boolean sizeWasChanged = false;
     protected boolean inScaleSettings = false;
 
-    protected AbstractScalableComponentFrame(String title) {
-        super(title);
+    protected AbstractScalableComponentFrame() {
+        super();
         this.mainContainer = this.getContentPane();
         this.stubComponentsFactory = new ComponentsFactory();
         MercuryStoreUI.INSTANCE.saveScaleSubject.subscribe(this::performScaling);

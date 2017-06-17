@@ -13,8 +13,8 @@ public abstract class AbstractTitledComponentFrame extends AbstractComponentFram
     protected JButton hideButton;
     protected JPanel headerPanel;
     private JLabel frameTitleLabel;
-    protected AbstractTitledComponentFrame(String title) {
-        super(title);
+    protected AbstractTitledComponentFrame() {
+        super();
         this.miscPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     }
 

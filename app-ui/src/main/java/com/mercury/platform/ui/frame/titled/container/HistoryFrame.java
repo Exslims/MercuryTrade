@@ -24,7 +24,7 @@ import java.awt.event.*;
 public class HistoryFrame extends AbstractTitledComponentFrame implements HistoryContainer {
     private JPanel mainContainer;
     public HistoryFrame() {
-        super("MercuryTrade");
+        super();
         FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
         this.setPreferredSize(frameSettings.getFrameSize());
         this.componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("other"));

@@ -17,7 +17,7 @@ import java.util.Map;
 public class SetUpScaleFrame extends AbstractOverlaidFrame {
     private Map<String,Float> scaleData;
     public SetUpScaleFrame() {
-        super("MercuryTrade");
+        super();
     }
 
     @Override

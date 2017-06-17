@@ -27,7 +27,7 @@ public class NotesFrame extends AbstractTitledComponentFrame {
 
     private JCheckBox showOnStartUp;
     public NotesFrame(List<Note> notes, NotesType type) {
-        super("MercuryTrade");
+        super();
         this.currentNotes = notes;
         this.type = type;
         this.processEResize = false;
@@ -263,7 +263,7 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         private int percent;
         private JButton restart;
         private ProgressBarFrame() {
-            super("MercuryTrade");
+            super();
             percent = 0;
         }
         @Override

@@ -26,12 +26,12 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
     private TaskBarPanel taskBarPanel;
 
     public TaskBarFrame() {
-        super("MercuryTrade");
-        componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("taskbar"));
-        stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("taskbar"));
-        processEResize = false;
-        processSEResize = false;
-        prevState = FrameVisibleState.SHOW;
+        super();
+        this.componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("taskbar"));
+        this.stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("taskbar"));
+        this.processEResize = false;
+        this.processSEResize = false;
+        this.prevState = FrameVisibleState.SHOW;
     }
 
     @Override

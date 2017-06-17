@@ -25,7 +25,7 @@ public class AdrGroupFrame extends AbstractAdrFrame {
     private MouseAdapter mouseOverListener;
 
     public AdrGroupFrame(@NonNull AdrGroupDescriptor descriptor) {
-        super("MercuryTrade");
+        super();
         this.descriptor = descriptor;
         this.cells = new ArrayList<>();
         this.mouseListener = new DraggedFrameMouseListener();

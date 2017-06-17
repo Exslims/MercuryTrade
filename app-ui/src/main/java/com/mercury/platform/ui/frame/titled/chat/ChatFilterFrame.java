@@ -30,7 +30,7 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
     private JButton scrollEnd;
 
     public ChatFilterFrame() {
-        super("MercuryTrade");
+        super();
         FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
         this.setPreferredSize(frameSettings.getFrameSize());
         this.settingsFrame = new ChatFilterSettingsFrame(strings -> {

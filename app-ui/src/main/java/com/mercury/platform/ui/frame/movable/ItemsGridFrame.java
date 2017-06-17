@@ -23,7 +23,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
     private HorizontalScrollContainer tabsContainer;
     private StashTabsContainer stashTabsContainer;
     public ItemsGridFrame() {
-        super("MercuryTrade");
+        super();
         componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("itemcell"));
         stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("itemcell"));
         enableMouseOverBorder = false;

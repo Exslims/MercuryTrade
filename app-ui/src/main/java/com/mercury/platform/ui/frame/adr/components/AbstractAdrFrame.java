@@ -14,8 +14,8 @@ public abstract class AbstractAdrFrame extends AbstractOverlaidFrame{
     private int settingWl;
     private WinDef.HWND componentHwnd;
 
-    protected AbstractAdrFrame(String title) {
-        super(title);
+    protected AbstractAdrFrame() {
+        super();
         AWTUtilities.setWindowOpaque(this, false);
     }
 

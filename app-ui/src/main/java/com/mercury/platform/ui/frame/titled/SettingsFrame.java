@@ -15,7 +15,7 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
     private List<ConfigurationPanel> innerPanels;
     private boolean successfullySaved = true;
     public SettingsFrame(){
-        super("MercuryTrade");
+        super();
         this.setFocusable(true);
         this.setFocusableWindowState(true);
         this.setAlwaysOnTop(false);

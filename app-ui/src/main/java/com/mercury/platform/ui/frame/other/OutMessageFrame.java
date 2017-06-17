@@ -22,7 +22,7 @@ import java.awt.event.MouseEvent;
  */
 public class OutMessageFrame extends AbstractComponentFrame {
     public OutMessageFrame() {
-        super("MercuryTrade");
+        super();
     }
 
     private void addNewMessage(Message message){

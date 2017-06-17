@@ -13,7 +13,7 @@ import java.awt.*;
 public class TooltipFrame extends AbstractOverlaidFrame {
     private Timer tooltipTimer;
     public TooltipFrame() {
-        super("MercuryTrade");
+        super();
         this.setOpacity(ConfigManager.INSTANCE.getMaxOpacity()/100f);
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),

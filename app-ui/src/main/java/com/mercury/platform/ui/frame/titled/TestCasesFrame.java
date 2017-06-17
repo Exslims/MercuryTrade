@@ -24,7 +24,7 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
     private String currencyTemplate = "2017/02/11 18:56:15 9973390 951 [INFO Client 8980] @From %s: Hi, I'd like to buy your %d %s for my %d %s in %s. %s";
 
     public TestCasesFrame() {
-        super("MercuryTrade");
+        super();
         items = new ArrayList<>();
         currency = new ArrayList<>();
         nickNames = new ArrayList<>();

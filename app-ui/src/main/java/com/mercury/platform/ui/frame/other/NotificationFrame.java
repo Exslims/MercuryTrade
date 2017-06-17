@@ -15,7 +15,7 @@ public class NotificationFrame extends AbstractOverlaidFrame {
     private JLabel messageLabel;
     private Timeline showAnimation;
     public NotificationFrame() {
-        super("MercuryTrade");
+        super();
         this.setOpacity(0.9f);
         this.setBackground(AppThemeColor.TRANSPARENT);
     }

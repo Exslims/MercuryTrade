@@ -22,7 +22,7 @@ public class TimerFrame extends AbstractTitledComponentFrame {
     private int mapCount = 0;
     private int chaosSpend = 0;
     public TimerFrame() {
-        super("MercuryTrade");
+        super();
     }
 
     @Override

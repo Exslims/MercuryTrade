@@ -18,7 +18,7 @@ public class CurrencySearchFrame extends AbstractMovableComponentFrame {
     private JPanel loadingPanel;
     private JPanel resultPanel;
     public CurrencySearchFrame() {
-        super("MT-CurrencySearchFrame");
+        super();
         prevState = FrameVisibleState.SHOW;
     }
 

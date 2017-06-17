@@ -18,7 +18,7 @@ import java.awt.event.MouseWheelEvent;
 public class AdrManagerFrame extends AbstractTitledComponentFrame{
     private JPanel auraTreeContainer;
     public AdrManagerFrame() {
-        super("MercuryTrade");
+        super();
     }
 
     @Override

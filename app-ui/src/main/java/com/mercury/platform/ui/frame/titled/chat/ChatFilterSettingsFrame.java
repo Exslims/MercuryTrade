@@ -15,7 +15,7 @@ public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
     private JTextField quickResponseField;
 
     public ChatFilterSettingsFrame(ChatSettingsCallback callback) {
-        super("MercuryTrade");
+        super();
         this.callback = callback;
         this.processingHideEvent = false;
         this.setFocusableWindowState(true);

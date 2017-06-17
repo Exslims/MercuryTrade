@@ -50,7 +50,7 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
 
     private boolean dnd = false;
     public IncMessageFrame(){
-        super("MercuryTrade");
+        super();
         componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("notification"));
         stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("notification"));
 
@@ -617,7 +617,7 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
         private boolean wasVisible;
 
         ExpandAllFrame() {
-            super("MercuryTrade");
+            super();
         }
         @Override
         protected void initialize() {

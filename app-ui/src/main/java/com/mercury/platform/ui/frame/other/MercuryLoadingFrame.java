@@ -14,7 +14,7 @@ public class MercuryLoadingFrame extends AbstractOverlaidFrame {
     private Timeline hideAnimation;
     private Timeline showAnimation;
     public MercuryLoadingFrame() {
-        super("MercuryTrade");
+        super();
         this.setOpacity(0f);
         this.setBackground(AppThemeColor.TRANSPARENT);
         processingHideEvent = false;

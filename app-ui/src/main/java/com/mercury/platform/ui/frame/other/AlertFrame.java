@@ -12,7 +12,7 @@ import java.awt.event.MouseEvent;
 public class AlertFrame extends AbstractOverlaidFrame {
     private JLabel messageLabel;
     public AlertFrame() {
-        super("MercuryTrade");
+        super();
     }
     @Override
     protected void initialize() {

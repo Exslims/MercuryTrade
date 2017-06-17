@@ -17,7 +17,7 @@ import java.awt.event.MouseEvent;
 
 public class UpdateReadyFrame extends AbstractOverlaidFrame {
     public UpdateReadyFrame() {
-        super("MercuryTrade");
+        super();
     }
 
     @Override

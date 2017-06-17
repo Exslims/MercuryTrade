@@ -35,8 +35,8 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
     protected boolean processEResize = true;
     protected boolean processHideEffect = true;
 
-    protected AbstractComponentFrame(String title) {
-        super(title);
+    protected AbstractComponentFrame() {
+        super();
     }
 
     @Override
