@@ -16,18 +16,18 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
     private boolean successfullySaved = true;
     public SettingsFrame(){
         super("MercuryTrade");
-        setFocusable(true);
-        setFocusableWindowState(true);
-        setAlwaysOnTop(false);
-        innerPanels = new ArrayList<>();
-        processingHideEvent = false;
-        processHideEffect = false;
+        this.setFocusable(true);
+        this.setFocusableWindowState(true);
+        this.setAlwaysOnTop(false);
+        this.innerPanels = new ArrayList<>();
+        this.processingHideEvent = false;
+        this.processHideEffect = false;
     }
 
     @Override
     protected void initialize() {
         super.initialize();
-        initContainer();
+        this.initContainer();
         this.pack();
     }
 
@@ -36,13 +36,13 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         MercuryTabbedPane tabbedPane = new MercuryTabbedPane(this);
 
         ConfigurationPanel generalSettings = new GeneralSettings();
-        innerPanels.add(generalSettings);
+        this.innerPanels.add(generalSettings);
         ConfigurationPanel cbSettings = new NotificationPanelSettings();
-        innerPanels.add(cbSettings);
+        this.innerPanels.add(cbSettings);
         ConfigurationPanel taskBarSettings = new TaskBarSettingsPanel();
-        innerPanels.add(taskBarSettings);
+        this.innerPanels.add(taskBarSettings);
         ConfigurationPanel soundSettings = new SoundSettingsPanel();
-        innerPanels.add(soundSettings);
+        this.innerPanels.add(soundSettings);
 
         tabbedPane.addTab("General",generalSettings);
         tabbedPane.addTab("Sound",soundSettings);

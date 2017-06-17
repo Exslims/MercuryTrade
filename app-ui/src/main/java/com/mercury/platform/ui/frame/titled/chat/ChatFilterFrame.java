@@ -172,8 +172,8 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
         MercuryStoreUI.INSTANCE.scrollToEndSubject.subscribe(value -> {
             this.scrollToBottom = value;
             if (!this.scrollToBottom) {
-                scrollEnd.setIcon(componentsFactory.getIcon("app/scroll-end-r.png", 18));
-                msgContainer.scrollToBottom(false);
+                this.scrollEnd.setIcon(componentsFactory.getIcon("app/scroll-end-r.png", 18));
+                this.msgContainer.scrollToBottom(false);
             }
         });
     }
@@ -225,28 +225,28 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
             }
         });
 
-        scrollEnd = componentsFactory.getIconButton(
+        this.scrollEnd = componentsFactory.getIconButton(
                 "app/scroll-end.png",
                 18,
                 AppThemeColor.TRANSPARENT,
                 "Automatically scroll down");
-        scrollEnd.addActionListener(action -> {
+        this.scrollEnd.addActionListener(action -> {
             if (scrollToBottom) {
-                scrollEnd.setIcon(componentsFactory.getIcon("app/scroll-end-r.png", 18));
+                this.scrollEnd.setIcon(componentsFactory.getIcon("app/scroll-end-r.png", 18));
                 this.scrollToBottom = false;
-                msgContainer.scrollToBottom(false);
+                this.msgContainer.scrollToBottom(false);
                 this.repaint();
             } else {
-                scrollEnd.setIcon(componentsFactory.getIcon("app/scroll-end.png", 18));
+                this.scrollEnd.setIcon(componentsFactory.getIcon("app/scroll-end.png", 18));
                 this.scrollToBottom = true;
-                msgContainer.scrollToBottom(true);
+                this.msgContainer.scrollToBottom(true);
                 this.repaint();
             }
         });
 
         panel.add(edit);
         panel.add(sound);
-        panel.add(scrollEnd);
+        panel.add(this.scrollEnd);
         panel.add(clear);
 
         root.add(panel,BorderLayout.CENTER);

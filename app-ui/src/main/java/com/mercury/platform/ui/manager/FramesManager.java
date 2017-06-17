@@ -43,56 +43,56 @@ public class FramesManager implements AsSubscriber {
     private AdrManager adrManager;
 
     private FramesManager() {
-        framesMap = new HashMap<>();
-        locationCommander = new SetUpLocationCommander();
-        scaleCommander = new SetUpScaleCommander();
-        adrManager = new AdrManager();
+        this.framesMap = new HashMap<>();
+        this.locationCommander = new SetUpLocationCommander();
+        this.scaleCommander = new SetUpScaleCommander();
+        this.adrManager = new AdrManager();
     }
     public void start(){
-        createTrayIcon();
+        this.createTrayIcon();
 
         AbstractOverlaidFrame incMessageFrame = new IncMessageFrame();
-        framesMap.put(IncMessageFrame.class,incMessageFrame);
+        this.framesMap.put(IncMessageFrame.class,incMessageFrame);
         AbstractOverlaidFrame taskBarFrame = new TaskBarFrame();
         AbstractOverlaidFrame itemsMeshFrame = new ItemsGridFrame();
-        framesMap.put(ItemsGridFrame.class,itemsMeshFrame);
-        locationCommander.addFrame((AbstractMovableComponentFrame) incMessageFrame);
-        locationCommander.addFrame((AbstractMovableComponentFrame) taskBarFrame);
-        locationCommander.addFrame((AbstractMovableComponentFrame) itemsMeshFrame);
+        this.framesMap.put(ItemsGridFrame.class,itemsMeshFrame);
+        this.locationCommander.addFrame((AbstractMovableComponentFrame) incMessageFrame);
+        this.locationCommander.addFrame((AbstractMovableComponentFrame) taskBarFrame);
+        this.locationCommander.addFrame((AbstractMovableComponentFrame) itemsMeshFrame);
 
-        scaleCommander.addFrame((AbstractScalableComponentFrame) incMessageFrame);
-        scaleCommander.addFrame((AbstractScalableComponentFrame) taskBarFrame);
-        scaleCommander.addFrame((AbstractScalableComponentFrame) itemsMeshFrame);
+        this.scaleCommander.addFrame((AbstractScalableComponentFrame) incMessageFrame);
+        this.scaleCommander.addFrame((AbstractScalableComponentFrame) taskBarFrame);
+        this.scaleCommander.addFrame((AbstractScalableComponentFrame) itemsMeshFrame);
 
         NotesLoader notesLoader = new NotesLoader();
 
         List<Note> notesOnFirstStart = notesLoader.getNotesOnFirstStart();
-        framesMap.put(NotesFrame.class, new NotesFrame(notesOnFirstStart, NotesFrame.NotesType.INFO));
+        this.framesMap.put(NotesFrame.class, new NotesFrame(notesOnFirstStart, NotesFrame.NotesType.INFO));
 
-        framesMap.put(HistoryFrame.class,new HistoryFrame());
-        framesMap.put(SettingsFrame.class,new SettingsFrame());
-        framesMap.put(TestCasesFrame.class,new TestCasesFrame());
-        framesMap.put(TooltipFrame.class,new TooltipFrame());
-        framesMap.put(NotificationFrame.class,new NotificationFrame());
-        framesMap.put(MercuryLoadingFrame.class,new MercuryLoadingFrame());
+        this.framesMap.put(HistoryFrame.class,new HistoryFrame());
+        this.framesMap.put(SettingsFrame.class,new SettingsFrame());
+        this.framesMap.put(TestCasesFrame.class,new TestCasesFrame());
+        this.framesMap.put(TooltipFrame.class,new TooltipFrame());
+        this.framesMap.put(NotificationFrame.class,new NotificationFrame());
+        this.framesMap.put(MercuryLoadingFrame.class,new MercuryLoadingFrame());
         List<Note> patchNotes = notesLoader.getPatchNotes();
         if(ConfigManager.INSTANCE.isShowPatchNotes() && patchNotes.size() != 0){
             NotesFrame patchNotesFrame = new NotesFrame(patchNotes, NotesFrame.NotesType.PATCH);
             patchNotesFrame.init();
         }
-        framesMap.put(ChatFilterFrame.class,new ChatFilterFrame());
-        framesMap.put(UpdateReadyFrame.class,new UpdateReadyFrame());
-        framesMap.put(TaskBarFrame.class,taskBarFrame);
-        framesMap.put(SetUpLocationFrame.class,new SetUpLocationFrame());
-        framesMap.put(SetUpScaleFrame.class,new SetUpScaleFrame());
-        framesMap.put(AlertFrame.class,new AlertFrame());
+        this.framesMap.put(ChatFilterFrame.class,new ChatFilterFrame());
+        this.framesMap.put(UpdateReadyFrame.class,new UpdateReadyFrame());
+        this.framesMap.put(TaskBarFrame.class,taskBarFrame);
+        this.framesMap.put(SetUpLocationFrame.class,new SetUpLocationFrame());
+        this.framesMap.put(SetUpScaleFrame.class,new SetUpScaleFrame());
+        this.framesMap.put(AlertFrame.class,new AlertFrame());
 
-        framesMap.forEach((k,v)-> v.init());
+        this.framesMap.forEach((k,v)-> v.init());
 
         int decayTime = ConfigManager.INSTANCE.getFadeTime();
         int maxOpacity = ConfigManager.INSTANCE.getMaxOpacity();
         int minOpacity = ConfigManager.INSTANCE.getMinOpacity();
-        framesMap.forEach((k,frame) -> {
+        this.framesMap.forEach((k,frame) -> {
             if(frame instanceof AbstractComponentFrame) {
                 if (decayTime > 0) {
                     ((AbstractComponentFrame)frame).enableHideEffect(decayTime, minOpacity, maxOpacity);
@@ -102,8 +102,8 @@ public class FramesManager implements AsSubscriber {
                 }
             }
         });
-        subscribe();
-        adrManager.load();
+        this.subscribe();
+        this.adrManager.load();
         MercuryStoreCore.INSTANCE.uiLoadedSubject.onNext(true);
     }
     @Override
@@ -120,24 +120,24 @@ public class FramesManager implements AsSubscriber {
         MercuryStoreUI.INSTANCE.repaintSubject.subscribe(className -> this.framesMap.get(className).repaint());
     }
     public void exit() {
-        framesMap.forEach((k,v) -> v.setVisible(false));
+        this.framesMap.forEach((k,v) -> v.setVisible(false));
         MercuryStoreCore.INSTANCE.shutdownAppSubject.onNext(true);
     }
     public void exitForUpdate() {
-        framesMap.forEach((k,v) -> v.setVisible(false));
+        this.framesMap.forEach((k,v) -> v.setVisible(false));
         MercuryStoreCore.INSTANCE.shutdownForUpdateSubject.onNext(true);
     }
     public void showFrame(Class frameClass){
-        framesMap.get(frameClass).showComponent();
+        this.framesMap.get(frameClass).showComponent();
     }
     public void preShowFrame(Class frameClass){
-        framesMap.get(frameClass).setPrevState(FrameVisibleState.SHOW);
+        this.framesMap.get(frameClass).setPrevState(FrameVisibleState.SHOW);
     }
     public void hideFrame(Class frameClass){
-        framesMap.get(frameClass).hideComponent();
+        this.framesMap.get(frameClass).hideComponent();
     }
     public void hideOrShowFrame(Class frameClass){
-        AbstractOverlaidFrame frame = framesMap.get(frameClass);
+        AbstractOverlaidFrame frame = this.framesMap.get(frameClass);
         if(frame != null && frame.isVisible()){
             hideFrame(frameClass);
         }else {
@@ -145,26 +145,26 @@ public class FramesManager implements AsSubscriber {
         }
     }
     public void enableMovementExclude(Class... frames){
-        locationCommander.setUpAllExclude(frames);
+        this.locationCommander.setUpAllExclude(frames);
     }
     public void enableOrDisableMovementDirect(Class frameClass){
-        locationCommander.setOrEndUp(frameClass,false);
+        this.locationCommander.setOrEndUp(frameClass,false);
     }
     public void disableMovement(){
-        locationCommander.endUpAll();
+        this.locationCommander.endUpAll();
     }
     public void disableMovement(Class frameClass){
-        locationCommander.endUp(frameClass);
+        this.locationCommander.endUp(frameClass);
     }
 
     public void enableScale(){
-        showFrame(SetUpScaleFrame.class);
-        scaleCommander.setUpAll();
+        this.showFrame(SetUpScaleFrame.class);
+        this.scaleCommander.setUpAll();
     }
 
     public void disableScale(){
-        hideFrame(SetUpScaleFrame.class);
-        scaleCommander.endUpAll();
+        this.hideFrame(SetUpScaleFrame.class);
+        this.scaleCommander.endUpAll();
     }
     public void performAdr() {
         if(this.adrManager.getState().equals(AdrState.DEFAULT)) {
@@ -174,7 +174,7 @@ public class FramesManager implements AsSubscriber {
         }
     }
     public void restoreDefaultLocation(){
-        framesMap.forEach((k,v) -> {
+        this.framesMap.forEach((k,v) -> {
             FrameSettings settings = ConfigManager.INSTANCE.getDefaultFramesSettings().get(k.getSimpleName());
             if(!v.getClass().equals(ItemsGridFrame.class) && settings != null){
                 v.setLocation(settings.getFrameLocation());

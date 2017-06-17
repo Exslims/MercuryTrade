@@ -10,8 +10,8 @@ public abstract class SetUpCommander<T> {
     protected List<T> activeFrames;
 
     public SetUpCommander() {
-        frames = new HashMap<>();
-        activeFrames = new ArrayList<>();
+        this.frames = new HashMap<>();
+        this.activeFrames = new ArrayList<>();
     }
 
     public void addFrame(T frame){

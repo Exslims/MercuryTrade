@@ -26,15 +26,15 @@ public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscrib
     protected AbstractOverlaidFrame(String title){
         super(title);
         this.componentsFactory = new ComponentsFactory();
-        getRootPane().setOpaque(false);
-        setUndecorated(true);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBackground(AppThemeColor.FRAME);
-        setFocusableWindowState(false);
-        setFocusable(false);
-        setAlwaysOnTop(true);
-        setVisible(false);
+        this.getRootPane().setOpaque(false);
+        this.setUndecorated(true);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setBackground(AppThemeColor.FRAME);
+        this.setFocusableWindowState(false);
+        this.setFocusable(false);
+        this.setAlwaysOnTop(true);
+        this.setVisible(false);
         this.prevState = FrameVisibleState.HIDE;
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -46,21 +46,21 @@ public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscrib
         MercuryStoreCore.INSTANCE.frameVisibleSubject.subscribe(this::changeVisible);
     }
     protected void changeVisible(FrameVisibleState state){
-        if (processingHideEvent) {
+        if (this.processingHideEvent) {
             switch (state) {
                 case SHOW: {
-                    if (prevState.equals(FrameVisibleState.SHOW)) {
-                        showComponent();
+                    if (this.prevState.equals(FrameVisibleState.SHOW)) {
+                        this.showComponent();
                     }
                 }
                 break;
                 case HIDE: {
                     if (AbstractOverlaidFrame.this.isVisible()) {
-                        prevState = FrameVisibleState.SHOW;
+                        this.prevState = FrameVisibleState.SHOW;
                     }else {
-                        prevState = FrameVisibleState.HIDE;
+                        this.prevState = FrameVisibleState.HIDE;
                     }
-                    hideComponent();
+                    this.hideComponent();
                 }
                 break;
             }
@@ -68,9 +68,9 @@ public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscrib
     }
     public void init(){
         this.layout = getFrameLayout();
-        setLayout(layout);
-        initialize();
-        subscribe();
+        this.setLayout(layout);
+        this.initialize();
+        this.subscribe();
     }
 
     protected abstract LayoutManager getFrameLayout();

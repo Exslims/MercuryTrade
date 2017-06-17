@@ -15,37 +15,37 @@ public abstract class AbstractTitledComponentFrame extends AbstractComponentFram
     private JLabel frameTitleLabel;
     protected AbstractTitledComponentFrame(String title) {
         super(title);
-        miscPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        this.miscPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     }
 
     @Override
     protected void initialize() {
         super.initialize();
-        initHeaderPanel();
+        this.initHeaderPanel();
     }
 
     private void initHeaderPanel(){
         if(layout instanceof BorderLayout) {
-            headerPanel = new JPanel(new BorderLayout());
-            headerPanel.setBackground(AppThemeColor.HEADER);
-            headerPanel.setPreferredSize(new Dimension(100,26));
-            headerPanel.setBorder(BorderFactory.createMatteBorder(0,0,1,0,AppThemeColor.MSG_HEADER_BORDER));
+            this.headerPanel = new JPanel(new BorderLayout());
+            this.headerPanel.setBackground(AppThemeColor.HEADER);
+            this.headerPanel.setPreferredSize(new Dimension(100,26));
+            this.headerPanel.setBorder(BorderFactory.createMatteBorder(0,0,1,0,AppThemeColor.MSG_HEADER_BORDER));
 
             JLabel appIcon = componentsFactory.getIconLabel("app/app-icon.png", 16);
-            frameTitleLabel = componentsFactory.getTextLabel(getFrameTitle());
-            frameTitleLabel.setHorizontalAlignment(SwingConstants.LEFT);
-            frameTitleLabel.setVerticalAlignment(SwingConstants.CENTER);
-            frameTitleLabel.addMouseListener(new DraggedFrameMouseListener());
-            frameTitleLabel.addMouseMotionListener(new DraggedFrameMotionListener());
+            this.frameTitleLabel = componentsFactory.getTextLabel(getFrameTitle());
+            this.frameTitleLabel.setHorizontalAlignment(SwingConstants.LEFT);
+            this.frameTitleLabel.setVerticalAlignment(SwingConstants.CENTER);
+            this.frameTitleLabel.addMouseListener(new DraggedFrameMouseListener());
+            this.frameTitleLabel.addMouseMotionListener(new DraggedFrameMotionListener());
 
             appIcon.setBorder(BorderFactory.createEmptyBorder(0,5,0,0));
-            headerPanel.add(appIcon,BorderLayout.LINE_START);
-            headerPanel.add(frameTitleLabel, BorderLayout.CENTER);
+            this.headerPanel.add(appIcon,BorderLayout.LINE_START);
+            this.headerPanel.add(this.frameTitleLabel, BorderLayout.CENTER);
 
-            miscPanel.setBackground(AppThemeColor.TRANSPARENT);
-            hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.FRAME_ALPHA, "");
-            hideButton.setBorder(BorderFactory.createEmptyBorder(0,0,0,2));
-            hideButton.addMouseListener(new MouseAdapter() {
+            this.miscPanel.setBackground(AppThemeColor.TRANSPARENT);
+            this.hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.FRAME_ALPHA, "");
+            this.hideButton.setBorder(BorderFactory.createEmptyBorder(0,0,0,2));
+            this.hideButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if(SwingUtilities.isLeftMouseButton(e)) {
@@ -53,15 +53,15 @@ public abstract class AbstractTitledComponentFrame extends AbstractComponentFram
                     }
                 }
             });
-            miscPanel.add(hideButton);
-            headerPanel.add(miscPanel, BorderLayout.LINE_END);
+            this.miscPanel.add(hideButton);
+            this.headerPanel.add(miscPanel, BorderLayout.LINE_END);
             this.add(headerPanel, BorderLayout.PAGE_START);
         }
     }
     protected abstract String getFrameTitle();
 
     public void setFrameTitle(String title) {
-        frameTitleLabel.setText(title);
+        this.frameTitleLabel.setText(title);
     }
     protected void removeHideButton() {
         this.miscPanel.remove(hideButton);

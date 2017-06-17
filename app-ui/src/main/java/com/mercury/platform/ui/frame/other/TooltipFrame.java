@@ -10,9 +10,6 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by Константин on 17.01.2017.
- */
 public class TooltipFrame extends AbstractOverlaidFrame {
     private Timer tooltipTimer;
     public TooltipFrame() {

@@ -30,13 +30,13 @@ public class AdrManager {
         this.adrManagerFrame.init();
     }
     public void enableSettings(){
-        state = AdrState.SETTINGS;
-        adrManagerFrame.showComponent();
-        frames.forEach(AbstractAdrFrame::enableSettings);
+        this.state = AdrState.SETTINGS;
+        this.adrManagerFrame.showComponent();
+        this.frames.forEach(AbstractAdrFrame::enableSettings);
     }
     public void disableSettings(){
-        state = AdrState.DEFAULT;
-        adrManagerFrame.hideComponent();
-        frames.forEach(AbstractAdrFrame::disableSettings);
+        this.state = AdrState.DEFAULT;
+        this.adrManagerFrame.hideComponent();
+        this.frames.forEach(AbstractAdrFrame::disableSettings);
     }
 }

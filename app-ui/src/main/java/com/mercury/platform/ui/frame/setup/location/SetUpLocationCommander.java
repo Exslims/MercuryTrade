@@ -13,19 +13,19 @@ public class SetUpLocationCommander extends SetUpCommander<AbstractMovableCompon
     }
     @Override
     public void setUpAll(){
-        frames.forEach((title,frame)->{
-            enableMovement(frame,true);
-            activeFrames.add(frame);
+        this.frames.forEach((title,frame)->{
+            this.enableMovement(frame,true);
+            this.activeFrames.add(frame);
         });
     }
 
     @Override
     public void setUpAllExclude(Class[] framesClasses) {
         List<Class> framesList = Arrays.asList(framesClasses);
-        frames.forEach((title, frame)->{
+        this.frames.forEach((title, frame)->{
             if(!framesList.contains(title)) {
-                enableMovement(frame,true);
-                activeFrames.add(frame);
+                this.enableMovement(frame,true);
+                this.activeFrames.add(frame);
             }
         });
     }
@@ -34,25 +34,25 @@ public class SetUpLocationCommander extends SetUpCommander<AbstractMovableCompon
     public void setOrEndUp(Class frameClass, boolean showingSetUpFrame) {
         AbstractMovableComponentFrame frame = frames.get(frameClass);
         if(frame.getMoveState().equals(LocationState.DEFAULT)){
-            enableMovement(frame,showingSetUpFrame);
-            activeFrames.add(frame);
+            this.enableMovement(frame,showingSetUpFrame);
+            this.activeFrames.add(frame);
         }else {
-            disableMovement(frame);
-            activeFrames.remove(frame);
+            this.disableMovement(frame);
+            this.activeFrames.remove(frame);
         }
     }
 
     @Override
     public void endUpAll() {
-        activeFrames.forEach(this::disableMovement);
-        activeFrames.clear();
+        this.activeFrames.forEach(this::disableMovement);
+        this.activeFrames.clear();
     }
 
     @Override
     public void endUp(Class frameClass) {
         AbstractMovableComponentFrame frame = frames.get(frameClass);
-        disableMovement(frame);
-        activeFrames.remove(frame);
+        this.disableMovement(frame);
+        this.activeFrames.remove(frame);
     }
     private void enableMovement(AbstractMovableComponentFrame frame, boolean showSetUpFrame){
         frame.setState(LocationState.MOVING);

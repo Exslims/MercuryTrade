@@ -10,7 +10,7 @@ public class SetUpScaleCommander extends SetUpCommander<AbstractScalableComponen
     }
     @Override
     public void setUpAll() {
-        frames.forEach((k,v) -> {
+        this.frames.forEach((k,v) -> {
             v.setState(ScaleState.ENABLE);
         });
     }
@@ -27,7 +27,7 @@ public class SetUpScaleCommander extends SetUpCommander<AbstractScalableComponen
 
     @Override
     public void endUpAll() {
-        frames.forEach((k,v) -> {
+        this.frames.forEach((k,v) -> {
             v.setState(ScaleState.DEFAULT);
         });
     }

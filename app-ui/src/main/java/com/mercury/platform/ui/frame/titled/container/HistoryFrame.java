@@ -33,11 +33,11 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
     @Override
     protected void initialize() {
         super.initialize();
-        mainContainer = new VerticalScrollContainer();
-        mainContainer.setBackground(AppThemeColor.TRANSPARENT);
-        mainContainer.setLayout(new BoxLayout(mainContainer,BoxLayout.Y_AXIS));
+        this.mainContainer = new VerticalScrollContainer();
+        this.mainContainer.setBackground(AppThemeColor.TRANSPARENT);
+        this.mainContainer.setLayout(new BoxLayout(this.mainContainer,BoxLayout.Y_AXIS));
 
-        JScrollPane scrollPane = new JScrollPane(mainContainer);
+        JScrollPane scrollPane = new JScrollPane(this.mainContainer);
         scrollPane.setBorder(null);
         scrollPane.setBackground(AppThemeColor.FRAME);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -90,7 +90,7 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
                                 new NotificationMessageController(parsedMessage),
                                 this.componentsFactory);
                         messagePanel.disableTime();
-                        mainContainer.add(messagePanel, 0);
+                        this.mainContainer.add(messagePanel, 0);
                     }
                     vBar.setValue(vBar.getValue() + 100);
                 }
@@ -130,8 +130,8 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
                     MessagePanelStyle.HISTORY,
                     new NotificationMessageController(message),
                     this.componentsFactory);
-            mainContainer.add(messagePanel);
-            trimContainer();
+            this.mainContainer.add(messagePanel);
+            this.trimContainer();
             this.pack();
         }));
         MercuryStoreUI.INSTANCE.reloadMessageSubject.subscribe(this::onReloadMessage);
@@ -141,7 +141,7 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
             for (int i = 0; i < 5; i++) {
                 mainContainer.remove(0);
             }
-            pack();
+            this.pack();
         }
     }
 

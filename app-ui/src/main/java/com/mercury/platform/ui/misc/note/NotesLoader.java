@@ -11,9 +11,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Константин on 20.01.2017.
- */
+
 public class NotesLoader {
     private final Logger logger = LogManager.getLogger(NotesLoader.class.getSimpleName());
     public NotesLoader() {

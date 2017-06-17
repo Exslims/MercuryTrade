@@ -11,21 +11,16 @@ public class HideSettingsManager {
         static final HideSettingsManager HOLDER_INSTANCE = new HideSettingsManager();
     }
     public static HideSettingsManager INSTANCE = HideSettingsManagerHolder.HOLDER_INSTANCE;
-
-    private List<AbstractComponentFrame> frames;
-
-    private HideSettingsManager() {
-        frames = new ArrayList<>();
-    }
+    private List<AbstractComponentFrame> frames = new ArrayList<>();
     public void registerFrame(AbstractComponentFrame frame){
-        frames.add(frame);
+        this.frames.add(frame);
     }
     public void apply(int fadeTime, int minOpacity, int maxOpacity){
         ConfigManager.INSTANCE.setMinOpacity(minOpacity);
         ConfigManager.INSTANCE.setMaxOpacity(maxOpacity);
         ConfigManager.INSTANCE.setFadeTime(fadeTime);
 
-        frames.forEach(frame -> {
+        this.frames.forEach(frame -> {
             if(fadeTime > 0){
                 frame.enableHideEffect(fadeTime,minOpacity,maxOpacity);
             }else {

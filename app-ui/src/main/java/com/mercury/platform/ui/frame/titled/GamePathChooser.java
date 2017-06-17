@@ -21,16 +21,16 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
 
     public GamePathChooser() {
         super("MercuryTrade");
-        processingHideEvent = false;
-        processEResize = false;
-        processSEResize = false;
-        setAlwaysOnTop(true);
+        this.processingHideEvent = false;
+        this.processEResize = false;
+        this.processSEResize = false;
+        this.setAlwaysOnTop(true);
     }
 
     @Override
     protected void initialize() {
         super.initialize();
-        removeHideButton();
+        this.removeHideButton();
         this.add(getChooserPanel(),BorderLayout.CENTER);
         this.add(getMiscPanel(),BorderLayout.PAGE_END);
 
@@ -42,10 +42,10 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
     private JPanel getChooserPanel(){
         JPanel panel = componentsFactory.getTransparentPanel(new BorderLayout());
 
-        statusLabel = componentsFactory.getTextLabel("");
-        statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        statusLabel.setForeground(AppThemeColor.TEXT_IMPORTANT);
-        panel.add(statusLabel,BorderLayout.CENTER);
+        this.statusLabel = componentsFactory.getTextLabel("");
+        this.statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        this.statusLabel.setForeground(AppThemeColor.TEXT_IMPORTANT);
+        panel.add(this.statusLabel,BorderLayout.CENTER);
 
         JPanel chooserPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -67,10 +67,10 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
         selectButton.addActionListener(e -> {
             int returnVal = fileChooser.showOpenDialog(GamePathChooser.this);
             if(returnVal == JFileChooser.APPROVE_OPTION) {
-                gamePath = fileChooser.getSelectedFile().getPath();
+                this.gamePath = fileChooser.getSelectedFile().getPath();
                 textField.setText(gamePath);
-                repaint();
-                pack();
+                this.repaint();
+                this.pack();
             }
         });
         chooserPanel.add(selectButton);

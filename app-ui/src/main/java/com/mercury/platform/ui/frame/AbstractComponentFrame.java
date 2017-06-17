@@ -41,7 +41,7 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
 
     @Override
     protected void initialize(){
-        initAnimationTimers();
+        this.initAnimationTimers();
         this.setVisible(false);
 
         this.addMouseListener(new ResizeByWidthMouseListener());
@@ -64,10 +64,10 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
     }
 
     public void disableHideEffect(){
-        if(processHideEffect) {
+        if(this.processHideEffect) {
             this.setOpacity(maxOpacity);
             this.hideAnimationEnable = false;
-            if (hideEffectListener != null) {
+            if (this.hideEffectListener != null) {
                 this.removeMouseListener(hideEffectListener);
             }
         }
@@ -79,32 +79,32 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
             this.maxOpacity = maxOpacity / 100f;
             //this.setOpacity(minOpacity / 100f);
             this.setOpacity(maxOpacity / 100f);
-            if(hideEffectListener != null) {
+            if(this.hideEffectListener != null) {
                 this.removeMouseListener(hideEffectListener);
                 this.showAnimation.abort();
                 this.hideAnimation.abort();
             }
-            hideEffectListener = new HideEffectListener();
+            this.hideEffectListener = new HideEffectListener();
             this.addMouseListener(hideEffectListener);
-            initAnimationTimers();
+            this.initAnimationTimers();
             this.hideAnimationEnable = true;
         }
     }
 
     private void initAnimationTimers(){
-        showAnimation = new Timeline(this);
-        showAnimation.setDuration(SHOW_TIME);
-        showAnimation.addPropertyToInterpolate("opacity", minOpacity, maxOpacity);
+        this.showAnimation = new Timeline(this);
+        this.showAnimation.setDuration(SHOW_TIME);
+        this.showAnimation.addPropertyToInterpolate("opacity", this.minOpacity, this.maxOpacity);
 
-        hideAnimation = new Timeline(this);
-        hideAnimation.setDuration(HIDE_TIME);
-        hideAnimation.addPropertyToInterpolate("opacity",maxOpacity,minOpacity);
+        this.hideAnimation = new Timeline(this);
+        this.hideAnimation.setDuration(HIDE_TIME);
+        this.hideAnimation.addPropertyToInterpolate("opacity",this.maxOpacity,this.minOpacity);
     }
     public void onLocationChange(Point location){
-        configManager.saveFrameLocation(this.getClass().getSimpleName(),location);
+        this.configManager.saveFrameLocation(this.getClass().getSimpleName(),location);
     }
     protected void onFrameDragged(Point location){
-        AbstractComponentFrame.this.setLocation(location);
+        this.setLocation(location);
     }
 
     private class ResizeByWidthMouseMotionListener extends MouseMotionAdapter{

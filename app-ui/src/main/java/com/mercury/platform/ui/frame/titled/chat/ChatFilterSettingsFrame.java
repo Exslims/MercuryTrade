@@ -17,7 +17,7 @@ public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
     public ChatFilterSettingsFrame(ChatSettingsCallback callback) {
         super("MercuryTrade");
         this.callback = callback;
-        processingHideEvent = false;
+        this.processingHideEvent = false;
         this.setFocusableWindowState(true);
         this.setFocusable(true);
         this.setAlwaysOnTop(false);
@@ -54,8 +54,8 @@ public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
             String chunkStr = StringUtils.deleteWhitespace(words.getText());
             String[] split = chunkStr.split(",");
 
-            callback.onHide(split);
-            hideComponent();
+            this.callback.onHide(split);
+            this.hideComponent();
         });
         JButton cancel = componentsFactory.getBorderedButton("Cancel");
         cancel.setBorder(BorderFactory.createCompoundBorder(
@@ -94,14 +94,14 @@ public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
         root.setBackground(AppThemeColor.SLIDE_BG);
 
         JButton quickResponse = componentsFactory.getIconButton("app/chat_scanner_response.png", 18f, AppThemeColor.SLIDE_BG, "Quick response");
-        quickResponseField = componentsFactory.getTextField(ConfigManager.INSTANCE.getQuickResponse(),FontStyle.REGULAR,16f);
-        quickResponseField.setBackground(AppThemeColor.SLIDE_BG);
-        quickResponseField.setBorder(BorderFactory.createCompoundBorder(
+        this.quickResponseField = componentsFactory.getTextField(ConfigManager.INSTANCE.getQuickResponse(),FontStyle.REGULAR,16f);
+        this.quickResponseField.setBackground(AppThemeColor.SLIDE_BG);
+        this.quickResponseField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.HEADER,1),
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,3)
         ));
         setupArea.add(quickResponse,BorderLayout.LINE_START);
-        setupArea.add(quickResponseField,BorderLayout.CENTER);
+        setupArea.add(this.quickResponseField,BorderLayout.CENTER);
         root.add(setupArea,BorderLayout.CENTER);
         return root;
     }
@@ -130,7 +130,7 @@ public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
         this.setMinimumSize(new Dimension(this.getPreferredSize().width,height));
         this.setMinimumSize(new Dimension(this.getPreferredSize().width,height));
         this.setLocation(location);
-        showComponent();
+        this.showComponent();
     }
 
     @Override

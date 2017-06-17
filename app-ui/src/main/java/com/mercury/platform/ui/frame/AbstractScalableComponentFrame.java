@@ -39,8 +39,8 @@ public abstract class AbstractScalableComponentFrame extends AbstractComponentFr
     protected abstract void performScaling(Map<String,Float> scaleData);
 
     protected void changeScale(float scale){
-        stubComponentsFactory.setScale(scale);
-        initDefaultView();
+        this.stubComponentsFactory.setScale(scale);
+        this.initDefaultView();
     }
     public void setState(ScaleState state){
         switch (state){

@@ -30,17 +30,17 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         super("MercuryTrade");
         this.currentNotes = notes;
         this.type = type;
-        processEResize = false;
-        processSEResize = false;
-        progressBarFrame = new ProgressBarFrame();
-        progressBarFrame.init();
+        this.processEResize = false;
+        this.processSEResize = false;
+        this.progressBarFrame = new ProgressBarFrame();
+        this.progressBarFrame.init();
         if(type.equals(NotesType.INFO)) {
             boolean showOnStartUp = ConfigManager.INSTANCE.isShowOnStartUp();
             if (showOnStartUp) {
-                prevState = FrameVisibleState.SHOW;
+                this.prevState = FrameVisibleState.SHOW;
             } else {
                 this.setVisible(false);
-                prevState = FrameVisibleState.HIDE;
+                this.prevState = FrameVisibleState.HIDE;
             }
         }
     }
@@ -51,7 +51,7 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         JPanel rootPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         rootPanel.setBorder(BorderFactory.createEmptyBorder(6,6,6,6));
 
-        contentPanel = new ContentPanel();
+        this.contentPanel = new ContentPanel();
         rootPanel.add(contentPanel,BorderLayout.CENTER);
         JPanel miscPanel = componentsFactory.getTransparentPanel(new BorderLayout());
 
@@ -280,28 +280,28 @@ public class NotesFrame extends AbstractTitledComponentFrame {
             JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
 
             JPanel barPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-            progressBar = new JProgressBar();
-            progressBar.setIndeterminate(true);
-            progressBar.setPreferredSize(new Dimension(300, 26));
-            progressBar.setBackground(AppThemeColor.MSG_HEADER);
-            progressBar.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER));
-            progressBar.setFont(componentsFactory.getFontByLang("0",FontStyle.ITALIC));
+            this.progressBar = new JProgressBar();
+            this.progressBar.setIndeterminate(true);
+            this.progressBar.setPreferredSize(new Dimension(300, 26));
+            this.progressBar.setBackground(AppThemeColor.MSG_HEADER);
+            this.progressBar.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER));
+            this.progressBar.setFont(componentsFactory.getFontByLang("0",FontStyle.ITALIC));
             barPanel.add(progressBar);
 
             root.add(barPanel,BorderLayout.CENTER);
 
-            percentLabel = componentsFactory.getTextLabel(percent + "%");
+            this.percentLabel = componentsFactory.getTextLabel(percent + "%");
 
-            restart = componentsFactory.getBorderedButton("Restart");
-            restart.addActionListener(action -> {
-                restart.setEnabled(false);
+            this.restart = componentsFactory.getBorderedButton("Restart");
+            this.restart.addActionListener(action -> {
+                this.restart.setEnabled(false);
                 FramesManager.INSTANCE.exitForUpdate();
             });
             JPanel bottomBar = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.RIGHT));
-            bottomBar.add(percentLabel);
-            bottomBar.add(restart);
-            restart.setEnabled(false);
-            restart.setPreferredSize(new Dimension(80, 26));
+            bottomBar.add(this.percentLabel);
+            bottomBar.add(this.restart);
+            this.restart.setEnabled(false);
+            this.restart.setPreferredSize(new Dimension(80, 26));
             root.add(bottomBar,BorderLayout.PAGE_END);
             return root;
         }
