@@ -33,4 +33,5 @@ public class MercuryStoreUI {
     public final PublishSubject<ItemMessage> showItemGridSubject = PublishSubject.create();
     public final PublishSubject<Class<?>> packSubject = PublishSubject.create();
     public final PublishSubject<Class<?>> repaintSubject = PublishSubject.create();
+    public final PublishSubject<Boolean> notificationSettingsSubject = PublishSubject.create();
 }

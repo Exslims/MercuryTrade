@@ -157,7 +157,7 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
             if(EResizeSpace){
                 AbstractComponentFrame.this.setMaximumSize(size);
                 AbstractComponentFrame.this.setMinimumSize(size);
-                if(AbstractComponentFrame.this.getClass().getSimpleName().equals("IncMessageFrame")){
+                if(AbstractComponentFrame.this.getClass().getSimpleName().equals("MessageFrame")){
                     configManager.saveFrameSize(AbstractComponentFrame.this.getClass().getSimpleName(),new Dimension(size.width,0));
                 }else {
                     configManager.saveFrameSize(AbstractComponentFrame.this.getClass().getSimpleName(), size);

@@ -421,8 +421,8 @@ public class ComponentsFactory{
     public Font getFont(FontStyle style, float fontSize){
         return getSelectedFont(style).deriveFont(scale * fontSize);
     }
-    public JComboBox getComboBox(String[] childs){
-        JComboBox comboBox = new JComboBox(childs);
+    public JComboBox getComboBox(String[] child){
+        JComboBox comboBox = new JComboBox<>(child);
         comboBox.setBackground(AppThemeColor.HEADER);
         comboBox.setForeground(AppThemeColor.TEXT_DEFAULT);
         comboBox.setFont(BOLD_FONT.deriveFont(scale*16f));
@@ -434,25 +434,12 @@ public class ComponentsFactory{
         JSlider slider = new JSlider(JSlider.HORIZONTAL,min,max,value);
         slider.setMajorTickSpacing(10);
         slider.setMinorTickSpacing(1);
+        slider.setPaintLabels(true);
+        slider.setForeground(AppThemeColor.TEXT_DEFAULT);
+        slider.setFont(REGULAR_FONT.deriveFont(15f));
         slider.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                slider.getParent().repaint();
-            }
-        });
-        slider.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                slider.getParent().repaint();
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                slider.getParent().repaint();
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
                 slider.getParent().repaint();
             }
         });

@@ -12,10 +12,11 @@ import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
-import com.mercury.platform.ui.frame.movable.container.IncMessageFrame;
+import com.mercury.platform.ui.frame.movable.container.MessageFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
+import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,6 +47,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
     private JButton tradeButton;
     private JButton expandButton;
 
+    @Getter
     private Message message;
 
     private Timer timeAgo;
@@ -152,7 +154,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(IncMessageFrame.class);
+                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(MessageFrame.class);
                 }
 
                 @Override
@@ -160,13 +162,13 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
                     itemButton.setBorder(new CompoundBorder(
                             BorderFactory.createMatteBorder(0,1,0,1,AppThemeColor.BORDER),
                             BorderFactory.createEmptyBorder(0,3,0,1)));
-                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(IncMessageFrame.class);
+                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(MessageFrame.class);
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     itemButton.setBorder(BorderFactory.createEmptyBorder(0,4,0,2));
-                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(IncMessageFrame.class);
+                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(MessageFrame.class);
                 }
             });
             tradePanel.add(itemButton,BorderLayout.CENTER);
@@ -377,7 +379,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
                         labelText = day + "d " + hours + "h " + minute + "m";
                     }
                     timeLabel.setText(labelText);
-                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(IncMessageFrame.class);
+                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(MessageFrame.class);
                 }
             });
             timeAgo.start();
@@ -429,8 +431,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
         }
         setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
         setMinimumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
-
-        controller.expandMessage();
+        MercuryStoreUI.INSTANCE.packSubject.onNext(MessageFrame.class);
     }
     public void collapse(){
         expanded = false;
@@ -445,7 +446,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
         }
         setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
         setMinimumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
-        controller.collapseMessage();
+        MercuryStoreUI.INSTANCE.packSubject.onNext(MessageFrame.class);
     }
 
     public boolean isExpanded() {
@@ -478,7 +479,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
                 if(!style.equals(MessagePanelStyle.HISTORY)) {
                     tradeButton.setEnabled(true);
                 }
-                MercuryStoreUI.INSTANCE.repaintSubject.onNext(IncMessageFrame.class);
+                MercuryStoreUI.INSTANCE.repaintSubject.onNext(MessageFrame.class);
             }
         });
         MercuryStoreCore.INSTANCE.playerLeftSubject.subscribe(nickname -> {
@@ -488,13 +489,13 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
                 if (!style.equals(MessagePanelStyle.HISTORY)) {
                     tradeButton.setEnabled(false);
                 }
-                MercuryStoreUI.INSTANCE.repaintSubject.onNext(IncMessageFrame.class);
+                MercuryStoreUI.INSTANCE.repaintSubject.onNext(MessageFrame.class);
             }
         });
         MercuryStoreCore.INSTANCE.buttonsChangedSubject.subscribe(state -> {
             this.customButtonsPanel.removeAll();
             initResponseButtons(customButtonsPanel);
-            MercuryStoreUI.INSTANCE.repaintSubject.onNext(IncMessageFrame.class);
+            MercuryStoreUI.INSTANCE.repaintSubject.onNext(MessageFrame.class);
         });
     }
     private void initResponseButtons(JPanel panel){

@@ -14,7 +14,5 @@ public interface MessagePanelController {
      * Show Item Stash Highlights
      */
     void showITH();
-    void expandMessage();
-    void collapseMessage();
     void reloadMessage(@NonNull MessagePanel panel);
 }

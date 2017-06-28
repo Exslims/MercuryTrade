@@ -39,77 +39,30 @@ public class GeneralSettings extends ConfigurationPanel {
         verticalScrollContainer.add(getSettingsPanel());
     }
     private JPanel getSettingsPanel() {
-        Dimension elementsSize = new Dimension(260, 25);
-        JPanel root = componentsFactory.getTransparentPanel(new GridLayout(7,2));
+        JPanel root = componentsFactory.getTransparentPanel(new GridLayout(7,2,4,4));
+        root.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         root.setBackground(AppThemeColor.SLIDE_BG);
 
-        JLabel notifyLabel = componentsFactory.getTextLabel("Notify me when an update is available", FontStyle.REGULAR);
-        checkEnable = new JCheckBox();
-        checkEnable.setBackground(AppThemeColor.TRANSPARENT);
-        checkEnable.setSelected(ConfigManager.INSTANCE.isCheckUpdateOnStartUp());
-        checkEnable.setPreferredSize(elementsSize);
+        this.checkEnable = new JCheckBox();
+        this.checkEnable.setBackground(AppThemeColor.TRANSPARENT);
+        this.checkEnable.setSelected(ConfigManager.INSTANCE.isCheckUpdateOnStartUp());
 
-        JPanel fadeTimeSettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        fadeTimeSettingsPanel.add(componentsFactory.getTextLabel("Component fade out time: ", FontStyle.REGULAR));
-        fadeTimeSettingsPanel.setBorder(BorderFactory.createEmptyBorder(0,-5,0,0));
-
-        JPanel fadeTimePanel = componentsFactory.getTransparentPanel(new FlowLayout());
-        JLabel fadeTimeField = componentsFactory.getTextLabel(ConfigManager.INSTANCE.getFadeTime() + " sec", FontStyle.REGULAR);
-        fadeTimePanel.add(fadeTimeField);
-        fadeTimePanel.setPreferredSize(new Dimension(55,25));
-        fadeTimeSettingsPanel.add(fadeTimePanel);
-
-        if (ConfigManager.INSTANCE.getFadeTime() == 0) {
-            fadeTimeField.setText("Never");
-        }
-        fadeTimeSlider = componentsFactory.getSlider(0,60, ConfigManager.INSTANCE.getFadeTime());
-        fadeTimeSlider.addChangeListener(e -> {
-            if (fadeTimeSlider.getValue() == 0)
-                fadeTimeField.setText("Never");
-            else
-                fadeTimeField.setText(String.valueOf(fadeTimeSlider.getValue()) + " sec");
-
+        this.fadeTimeSlider = this.componentsFactory.getSlider(0,10, ConfigManager.INSTANCE.getFadeTime());
+        this.fadeTimeSlider.addChangeListener(e -> {
             MercuryStoreUI.INSTANCE.repaintSubject.onNext(SettingsFrame.class);
         });
-        fadeTimeSlider.setPreferredSize(elementsSize);
 
-        //
-
-        JPanel minOpacitySettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        minOpacitySettingsPanel.add(componentsFactory.getTextLabel("Min opacity: ", FontStyle.REGULAR));
-        minOpacitySettingsPanel.setBorder(BorderFactory.createEmptyBorder(0,-5,0,0));
-
-        JPanel minValuePanel = componentsFactory.getTransparentPanel(new FlowLayout());
-        JLabel minValueField = componentsFactory.getTextLabel(ConfigManager.INSTANCE.getMinOpacity() + "%", FontStyle.REGULAR); //todo
-        minValuePanel.add(minValueField);
-        minValuePanel.setPreferredSize(new Dimension(35,25));
-        minOpacitySettingsPanel.add(minValuePanel);
-
-        minSlider = componentsFactory.getSlider(10,100,ConfigManager.INSTANCE.getMinOpacity());
-        minSlider.addChangeListener(e -> {
-            if(!(minSlider.getValue() > maxSlider.getValue())) {
-                minValueField.setText(String.valueOf(minSlider.getValue()) + "%");
+        this.minSlider = this.componentsFactory.getSlider(40,100,ConfigManager.INSTANCE.getMinOpacity());
+        this.minSlider.addChangeListener(e -> {
+            if(!(this.minSlider.getValue() > this.maxSlider.getValue())) {
                 MercuryStoreUI.INSTANCE.repaintSubject.onNext(SettingsFrame.class);
             }else {
                 minSlider.setValue(minSlider.getValue()-1);
             }
         });
-        minSlider.setPreferredSize(elementsSize);
 
-        JPanel maxOpacitySettingsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        maxOpacitySettingsPanel.add(componentsFactory.getTextLabel("Max opacity: ", FontStyle.REGULAR));
-        maxOpacitySettingsPanel.setBorder(BorderFactory.createEmptyBorder(0,-5,0,0));
-        JPanel maxValuePanel = componentsFactory.getTransparentPanel(new FlowLayout());
-        JLabel maxValueField = componentsFactory.getTextLabel(ConfigManager.INSTANCE.getMaxOpacity() + "%", FontStyle.REGULAR); //todo
-        maxValuePanel.add(maxValueField);
-        maxValuePanel.setPreferredSize(new Dimension(35,30));
-        maxOpacitySettingsPanel.add(maxValuePanel);
-        maxSlider = componentsFactory.getSlider(20,100,ConfigManager.INSTANCE.getMaxOpacity());
-        maxSlider.addChangeListener(e -> {
-            maxValueField.setText(String.valueOf(maxSlider.getValue()) + "%");
-        });
-        maxSlider.setPreferredSize(elementsSize);
-        maxSlider.addMouseListener(new MouseAdapter() {
+        this.maxSlider = this.componentsFactory.getSlider(40,100,ConfigManager.INSTANCE.getMaxOpacity());
+        this.maxSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 if(minSlider.getValue() > maxSlider.getValue()){
@@ -118,24 +71,19 @@ public class GeneralSettings extends ConfigurationPanel {
             }
         });
 
-        JLabel notifierLabel = componentsFactory.getTextLabel("Notification sound alerts: ", FontStyle.REGULAR);
-
-        notifierStatusPicker = componentsFactory.getComboBox(new String[]{"Always play a sound", "Only when tabbed out","Never"});
+        this.notifierStatusPicker = this.componentsFactory.getComboBox(new String[]{"Always play a sound", "Only when tabbed out","Never"});
         WhisperNotifierStatus whisperNotifier = ConfigManager.INSTANCE.getWhisperNotifier();
-        notifierStatusPicker.setSelectedIndex(whisperNotifier.getCode());
-        notifierStatusPicker.setPreferredSize(elementsSize);
+        this.notifierStatusPicker.setSelectedIndex(whisperNotifier.getCode());
 
-        JLabel poeFolder = componentsFactory.getTextLabel("Path of Exile folder: ", FontStyle.REGULAR);
-        gamePathField = componentsFactory.getTextField(ConfigManager.INSTANCE.getGamePath());
-        gamePathField.setBorder(BorderFactory.createCompoundBorder(
+        this.gamePathField = this.componentsFactory.getTextField(ConfigManager.INSTANCE.getGamePath());
+        this.gamePathField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER,1),
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2)
         ));
-        gamePathField.setPreferredSize(new Dimension(200,25));
 
         JPanel poeFolderPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        poeFolderPanel.add(gamePathField);
-        JButton changeButton = componentsFactory.getBorderedButton("Change");
+        poeFolderPanel.add(this.gamePathField);
+        JButton changeButton = this.componentsFactory.getBorderedButton("Change");
         poeFolderPanel.add(changeButton);
 
         JFileChooser fileChooser = new JFileChooser();
@@ -143,29 +91,28 @@ public class GeneralSettings extends ConfigurationPanel {
         changeButton.addActionListener(e -> {
             int returnVal = fileChooser.showOpenDialog(this);
             if(returnVal == JFileChooser.APPROVE_OPTION) {
-                gamePathField.setBorder(BorderFactory.createCompoundBorder(
+                this.gamePathField.setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(AppThemeColor.BORDER,1),
                         BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2)
                 ));
-                gamePathField.setText(fileChooser.getSelectedFile().getPath());
-                gamePathField.removeMouseListener(poeFolderTooltipListener);
-                poeFolderTooltipListener = null;
-                repaint();
+                this.gamePathField.setText(fileChooser.getSelectedFile().getPath());
+                this.gamePathField.removeMouseListener(poeFolderTooltipListener);
+                this.poeFolderTooltipListener = null;
+                this.repaint();
             }
         });
 
-        root.add(notifyLabel);
-        root.add(wrapCellElement(checkEnable));
-        root.add(fadeTimeSettingsPanel);
-        root.add(wrapCellElement(fadeTimeSlider));
-        //root.add(wrapCellElement(secondsPicker));
-        root.add(minOpacitySettingsPanel);
-        root.add(wrapCellElement(minSlider));
-        root.add(maxOpacitySettingsPanel);
-        root.add(wrapCellElement(maxSlider));
-        root.add(notifierLabel);
-        root.add(wrapCellElement(notifierStatusPicker));
-        root.add(poeFolder);
+        root.add(this.componentsFactory.getTextLabel("Notify me when an update is available", FontStyle.REGULAR));
+        root.add(this.checkEnable);
+        root.add(this.componentsFactory.getTextLabel("Component fade out time: ", FontStyle.REGULAR));
+        root.add(this.fadeTimeSlider);
+        root.add(this.componentsFactory.getTextLabel("Min opacity: ", FontStyle.REGULAR));
+        root.add(this.minSlider);
+        root.add(this.componentsFactory.getTextLabel("Max opacity: ", FontStyle.REGULAR));
+        root.add(this.maxSlider);
+        root.add(this.componentsFactory.getTextLabel("Notification sound alerts: ", FontStyle.REGULAR));
+        root.add(this.notifierStatusPicker);
+        root.add(this.componentsFactory.getTextLabel("Path of Exile folder: ", FontStyle.REGULAR));
         root.add(poeFolderPanel);
         return root;
     }
@@ -211,23 +158,23 @@ public class GeneralSettings extends ConfigurationPanel {
     }
     @Override
     public boolean processAndSave() {
-        int minOpacity = minSlider.getValue();
-        int maxOpacity = maxSlider.getValue();
-        int timeToDelay= fadeTimeSlider.getValue(); // ----
+        int minOpacity = this.minSlider.getValue();
+        int maxOpacity = this.maxSlider.getValue();
+        int timeToDelay= this.fadeTimeSlider.getValue(); // ----
         HideSettingsManager.INSTANCE.apply(timeToDelay,minOpacity,maxOpacity);
-        ConfigManager.INSTANCE.setWhisperNotifier(WhisperNotifierStatus.get(notifierStatusPicker.getSelectedIndex()));
-        ConfigManager.INSTANCE.setCheckUpdateOnStartUp(checkEnable.isSelected());
-        if (ConfigManager.INSTANCE.isValidGamePath(gamePathField.getText())){
-            ConfigManager.INSTANCE.setGamePath(gamePathField.getText()+ File.separator);
+        ConfigManager.INSTANCE.setWhisperNotifier(WhisperNotifierStatus.get(this.notifierStatusPicker.getSelectedIndex()));
+        ConfigManager.INSTANCE.setCheckUpdateOnStartUp(this.checkEnable.isSelected());
+        if (ConfigManager.INSTANCE.isValidGamePath(this.gamePathField.getText())){
+            ConfigManager.INSTANCE.setGamePath(this.gamePathField.getText()+ File.separator);
             MercuryStoreCore.INSTANCE.poeFolderChangedSubject.onNext(true);
         } else {
-            gamePathField.setBorder(BorderFactory.createCompoundBorder(
+            this.gamePathField.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(AppThemeColor.TEXT_IMPORTANT,1),
                     BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2)
             ));
             if(poeFolderTooltipListener == null){
-                poeFolderTooltipListener = new WrongGamePathListener();
-                gamePathField.addMouseListener(poeFolderTooltipListener);
+                this.poeFolderTooltipListener = new WrongGamePathListener();
+                this.gamePathField.addMouseListener(poeFolderTooltipListener);
             }
             return false;
         }
@@ -238,11 +185,6 @@ public class GeneralSettings extends ConfigurationPanel {
     public void restore() {
         this.verticalScrollContainer.removeAll();
         this.createUI();
-    }
-    private JPanel wrapCellElement(Component component){
-        JPanel panel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        panel.add(component);
-        return panel;
     }
 
     private class WrongGamePathListener extends MouseAdapter{

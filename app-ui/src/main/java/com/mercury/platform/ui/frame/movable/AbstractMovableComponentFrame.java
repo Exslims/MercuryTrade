@@ -18,7 +18,6 @@ public abstract class AbstractMovableComponentFrame extends AbstractScalableComp
     protected boolean enableMouseOverBorder = true;
     protected AbstractMovableComponentFrame() {
         super();
-        mainContainer = this.getContentPane();
     }
 
     protected void onUnlock(){

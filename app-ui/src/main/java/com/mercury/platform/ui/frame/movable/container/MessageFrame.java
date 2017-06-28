@@ -28,13 +28,13 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class IncMessageFrame extends AbstractMovableComponentFrame implements MessagesContainer {
-    private static final Logger logger = LogManager.getLogger(IncMessageFrame.class.getSimpleName());
-    private Map<Message, MessagePanel> currentMessages;
+public class MessageFrame extends AbstractMovableComponentFrame implements MessagesContainer {
+    private static final Logger logger = LogManager.getLogger(MessageFrame.class.getSimpleName());
+    private List<MessagePanel> currentMessages = new ArrayList<>();
     private boolean wasVisible;
     private FlowDirections flowDirections;
     private FlowDirections pikerDirection;
@@ -49,12 +49,11 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
     private ExpandAllFrame expandAllFrame;
 
     private boolean dnd = false;
-    public IncMessageFrame(){
+    public MessageFrame(){
         super();
         componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("notification"));
         stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("notification"));
 
-        currentMessages = new HashMap<>();
         processSEResize = false;
         flowDirections = FlowDirections.valueOf(configManager.getFlowDirection());
         pikerDirection = FlowDirections.valueOf(configManager.getFlowDirection());
@@ -78,7 +77,7 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.getRootPane().setBorder(null);
         if(currentMessages.size() > 0){
-            currentMessages.forEach((message, panel) -> this.mainContainer.add(panel));
+            currentMessages.forEach(panel -> this.mainContainer.add(panel));
             this.setVisible(true);
         }
         if(flowDirections.equals(FlowDirections.UPWARDS)){
@@ -112,46 +111,32 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
             }
         });
         MercuryStoreCore.INSTANCE.messageSubject.subscribe(message -> SwingUtilities.invokeLater(()-> {
-            if(!currentMessages.containsKey(message)) {
-                addMessage(message);
+            List<MessagePanel> collect = this.currentMessages.stream()
+                    .filter(panel -> panel.getMessage().equals(message))
+                    .collect(Collectors.toList());
+            if(collect.size() == 0) {
+                this.addMessage(message);
             }
         }));
         MercuryStoreUI.INSTANCE.closeMessage.subscribe(message -> {
-            MessagePanel panel = currentMessages.get(message);
-            if (panel.isExpanded()) {
+            MessagePanel messagePanel = this.currentMessages.stream()
+                    .filter(panel -> panel.getMessage().equals(message))
+                    .collect(Collectors.toList()).get(0);
+            if(messagePanel.isExpanded()){
                 this.currentExpandedMsgCount--;
             }
-            this.remove(panel);
-            this.currentMessages.remove(message);
-            switch (flowDirections) {
-                case DOWNWARDS: {
-                    if (mainContainer.getComponentCount() == 0) {
-                        this.setVisible(false);
-                    } else if (mainContainer.getComponentCount() == limitMsgCount) {
-                        this.mainContainer.getComponent((limitMsgCount - 1)).setVisible(true);
-                        this.expandAllFrame.decMessageCount();
-                        this.expandAllFrame.setVisible(false);
-                        this.expanded = false;
-                    } else if (mainContainer.getComponentCount() > limitMsgCount) {
-                        this.mainContainer.getComponent((limitMsgCount - 1)).setVisible(true);
-                        this.expandAllFrame.decMessageCount();
-                    }
-                    break;
+            this.remove(messagePanel);
+            this.currentMessages.remove(messagePanel);
+
+            int limitMsgCount = ConfigManager.INSTANCE.getLimitMsgCount();
+            if (this.currentMessages.size() == 0) {
+                this.setVisible(false);
+            } else if (this.currentMessages.size() >= limitMsgCount) {
+                if(this.currentMessages.size() == limitMsgCount) {
+                    this.expandAllFrame.setVisible(false);
                 }
-                case UPWARDS: {
-                    if (mainContainer.getComponentCount() == 1) {
-                        this.setVisible(false);
-                    } else if (mainContainer.getComponentCount() == (limitMsgCount + 1)) {
-                        this.mainContainer.getComponent(mainContainer.getComponentCount() - limitMsgCount).setVisible(true);
-                        this.expandAllFrame.decMessageCount();
-                        this.expandAllFrame.setVisible(false);
-                        this.expanded = false;
-                    } else if (mainContainer.getComponentCount() > (limitMsgCount + 1)) {
-                        this.mainContainer.getComponent(mainContainer.getComponentCount() - limitMsgCount).setVisible(true);
-                        this.expandAllFrame.decMessageCount();
-                    }
-                    break;
-                }
+                this.currentMessages.get(limitMsgCount - 1).setVisible(true);
+                this.expandAllFrame.decMessageCount();
             }
             this.pack();
             this.setUpExpandButton();
@@ -171,43 +156,27 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
         if (!dnd && !this.isVisible() && AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
             this.showComponent();
         } else {
-            prevState = FrameVisibleState.SHOW;
+            this.prevState = FrameVisibleState.SHOW;
         }
         if (flowDirections.equals(FlowDirections.UPWARDS)) {
-            mainContainer.add(messagePanel, 1);
+            this.mainContainer.add(messagePanel, 1);
         } else {
-            mainContainer.add(messagePanel);
+            this.mainContainer.add(messagePanel);
         }
-        currentMessages.put(message,messagePanel);
+        this.currentMessages.add(messagePanel);
         this.pack();
-        if (currentExpandedMsgCount < expandedMsgCount) {
+        if (this.currentExpandedMsgCount < this.expandedMsgCount) {
             messagePanel.expand();
+            this.currentExpandedMsgCount++;
         }
-        switch (flowDirections) {
-            case DOWNWARDS: {
-                if (mainContainer.getComponentCount() > limitMsgCount && !expanded) {
-                    messagePanel.setVisible(false);
-                }
-                if (mainContainer.getComponentCount() > limitMsgCount) {
-                    if(AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
-                        setUpExpandButton();
-                    }
-                    expandAllFrame.incMessageCount();
-                }
-                break;
+        if(this.currentMessages.size() > this.limitMsgCount){
+            if(!expanded) {
+                messagePanel.setVisible(false);
             }
-            case UPWARDS: {
-                if (mainContainer.getComponentCount() > (limitMsgCount + 1) && !expanded) {
-                    messagePanel.setVisible(false);
-                }
-                if (mainContainer.getComponentCount() > (limitMsgCount + 1)) {
-                    if(AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
-                        setUpExpandButton();
-                    }
-                    expandAllFrame.incMessageCount();
-                }
-                break;
+            if(AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
+                this.setUpExpandButton();
             }
+            this.expandAllFrame.incMessageCount();
         }
     }
 
@@ -215,7 +184,7 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
     protected void changeVisible(FrameVisibleState state) {
         super.changeVisible(state);
         if(state.equals(FrameVisibleState.SHOW)) {
-            setUpExpandButton();
+            this.setUpExpandButton();
         }
     }
 
@@ -321,91 +290,48 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
     }
 
     private void onLimitCountChange(){
-        expandAllFrame.resetMessageCount();
+        this.expandAllFrame.resetMessageCount();
         Arrays.stream(mainContainer.getComponents())
                 .forEach(component -> component.setVisible(true));
-        switch (flowDirections){
-            case DOWNWARDS:{
-                Component[] components = mainContainer.getComponents();
-                for (int i = 0; i < components.length; i++) {
-                    if(i > limitMsgCount - 1){
-                        components[i].setVisible(false);
-                        expandAllFrame.incMessageCount();
-                    }
-                }
-                if(components.length - 1 < limitMsgCount){
-                    expandAllFrame.setVisible(false);
-                }
-                break;
-            }
-            case UPWARDS:{
-                Component[] components = mainContainer.getComponents();
-                for (int i = components.length - 1; i > 0; i--) {
-                    if(i < (components.length - limitMsgCount)){
-                        components[i].setVisible(false);
-                        expandAllFrame.incMessageCount();
-                    }
-                }
-                if(components.length - 2 < limitMsgCount){
-                    expandAllFrame.setVisible(false);
-                }
-                break;
-            }
+        this.currentMessages.stream().skip(this.limitMsgCount).forEach(panel -> {
+            panel.setVisible(false);
+            this.expandAllFrame.incMessageCount();
+        });
+        if(this.currentMessages.size() < this.limitMsgCount){
+            this.expandAllFrame.setVisible(false);
         }
     }
 
     private void onExpandedCountChange(){
-        int expanded = 0;
-        switch (flowDirections){
-            case DOWNWARDS:{
-                Component[] components = mainContainer.getComponents();
-                for (Component component :components) {
-                    if (expanded < expandedMsgCount) {
-                        ((MessagePanel) component).expand();
-                        expanded++;
-                    } else {
-                        ((MessagePanel) component).collapse();
-                    }
-                }
-                break;
-            }
-            case UPWARDS:{
-                Component[] components = mainContainer.getComponents();
-                for (int i = components.length - 1; i > 0; i--) {
-                    if (expanded < expandedMsgCount) {
-                        ((MessagePanel) components[i]).expand();
-                        expanded++;
-                    } else {
-                        ((MessagePanel) components[i]).collapse();
-                    }
-                }
-                break;
-            }
-        }
-        currentExpandedMsgCount = expanded;
+        this.currentExpandedMsgCount = 0;
+        this.currentMessages.forEach(MessagePanel::collapse);
+        this.currentMessages.stream().limit(this.expandedMsgCount).forEach(panel -> {
+            panel.expand();
+            this.currentExpandedMsgCount++;
+        });
     }
 
     @Override
     public void setOpacity(float opacity) {
         super.setOpacity(opacity);
-        expandAllFrame.setOpacity(opacity);
+        this.expandAllFrame.setOpacity(opacity);
     }
     @Override
     protected void onLock() {
-        expandAllFrame.setLocationState(LocationState.DEFAULT);
+        this.expandAllFrame.setLocationState(LocationState.DEFAULT);
         if(!this.flowDirections.equals(pikerDirection)){
-            configManager.setFlowDirection(pikerDirection.toString());
+            this.configManager.setFlowDirection(pikerDirection.toString());
             this.changeDirectionTo(pikerDirection);
-            locationWasChanged = true;
+            this.locationWasChanged = true;
         }
-        if(limitMsgCount != limitSlider.getValue()) {
-            limitMsgCount = limitSlider.getValue();
-            configManager.setLimitMsgCount(limitMsgCount);
+        if(this.limitMsgCount != this.limitSlider.getValue()) {
+            this.limitMsgCount = this.limitSlider.getValue();
+            this.configManager.setLimitMsgCount(limitMsgCount);
             this.onLimitCountChange();
         }
-        if(expandedMsgCount != unfoldSlider.getValue()) {
-            expandedMsgCount = unfoldSlider.getValue();
-            configManager.setExpandedMsgCount(expandedMsgCount);
+        if(this.expandedMsgCount != this.unfoldSlider.getValue()) {
+            this.expandedMsgCount = this.unfoldSlider.getValue();
+            this.configManager.setExpandedMsgCount(this.expandedMsgCount);
             this.onExpandedCountChange();
         }
         this.changeLocation();
@@ -418,15 +344,15 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
     @Override
     protected void onUnlock() {
         super.onUnlock();
-        setUpExpandButton();
-        expandAllFrame.setLocationState(LocationState.MOVING);
+        this.setUpExpandButton();
+        this.expandAllFrame.setLocationState(LocationState.MOVING);
     }
 
     @Override
     protected void onScaleLock() {
         if(currentMessages.size() > 0){
             this.setVisible(true);
-            expandAllFrame.setScaleState(ScaleState.DEFAULT);
+            this.expandAllFrame.setScaleState(ScaleState.DEFAULT);
             this.changeLocation();
             this.setUpExpandButton();
             this.pack();
@@ -439,7 +365,7 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
         if(currentMessages.size() > 0) {
             this.setVisible(true);
         }
-        expandAllFrame.setScaleState(ScaleState.ENABLE);
+        this.expandAllFrame.setScaleState(ScaleState.ENABLE);
         this.pack();
         this.repaint();
     }
@@ -447,74 +373,74 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
     @Override
     protected void onFrameDragged(Point location) {
         super.onFrameDragged(location);
-        expandAllFrame.setLocation(location.x - expandAllFrame.getPreferredSize().width - 2,location.y);
+        this.expandAllFrame.setLocation(location.x - expandAllFrame.getPreferredSize().width - 2,location.y);
     }
 
     @Override
     public void onLocationChange(Point location) {
         super.onLocationChange(location);
-        if(expandAllFrame.isVisible()) {
-            expandAllFrame.setLocation(location.x - expandAllFrame.getPreferredSize().width - 2, location.y);
+        if(this.expandAllFrame.isVisible()) {
+            this.expandAllFrame.setLocation(location.x - expandAllFrame.getPreferredSize().width - 2, location.y);
         }
     }
 
     private void changeDirectionTo(FlowDirections direction){
-        wasVisible = isVisible();
-        hideComponent();
+        this.wasVisible = isVisible();
+        this.hideComponent();
         switch (direction) {
             case DOWNWARDS:{
-                mainContainer.remove(buffer);
-                Component[] components = mainContainer.getComponents();
+                this.mainContainer.remove(this.buffer);
+                Component[] components = this.mainContainer.getComponents();
                 for (Component component : components) {
                     ((MessagePanel) component).setStyle(MessagePanelStyle.DOWNWARDS_SMALL);
-                    mainContainer.remove(component);
-                    mainContainer.add(component, 0);
+                    this.mainContainer.remove(component);
+                    this.mainContainer.add(component, 0);
                 }
                 break;
             }
             case UPWARDS: {
-                mainContainer.add(buffer,0);
-                Component[] components = mainContainer.getComponents();
+                this.mainContainer.add(buffer,0);
+                Component[] components = this.mainContainer.getComponents();
                 for (int i = 1; i < components.length; i++) {
                     ((MessagePanel) components[i]).setStyle(MessagePanelStyle.UPWARDS_SMALL);
-                    mainContainer.remove(components[i]);
-                    mainContainer.add(components[i], 1);
+                    this.mainContainer.remove(components[i]);
+                    this.mainContainer.add(components[i], 1);
                 }
                 break;
             }
         }
-        if(wasVisible) {
-            showComponent();
+        if(this.wasVisible) {
+            this.showComponent();
         }
         this.flowDirections = direction;
     }
     private void changeLocation(){
-        wasVisible = isVisible();
-        hideComponent();
+        this.wasVisible = isVisible();
+        this.hideComponent();
         switch (flowDirections){
             case DOWNWARDS:{
                 this.setLocation(ConfigManager.INSTANCE.getFrameSettings(this.getClass().getSimpleName()).getFrameLocation());
                 break;
             }
             case UPWARDS:{
-                if(locationWasChanged) {
+                if(this.locationWasChanged) {
                     int height = this.getLocation().y;
                     this.setLocation(this.getLocation().x, -1000);
                     this.setMinimumSize(new Dimension(this.getWidth(), height + 1000 + (int)(130*componentsFactory.getScale())));
                     this.setMaximumSize(new Dimension(this.getWidth(), height + 1000 + (int)(130*componentsFactory.getScale())));
-                    locationWasChanged = false;
+                    this.locationWasChanged = false;
                 }
                 break;
             }
         }
-        if(wasVisible) {
-            showComponent();
+        if(this.wasVisible) {
+            this.showComponent();
         }
     }
 
     @Override
     protected Point getFrameLocation() {
-        if(flowDirections.equals(FlowDirections.UPWARDS)){
+        if(this.flowDirections.equals(FlowDirections.UPWARDS)){
             return new Point(this.getLocationOnScreen().x,this.getLocationOnScreen().y + this.getHeight());
         }
         return super.getFrameLocation();
@@ -523,36 +449,36 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
     @Override
     public void onExpandMessage() {
         this.pack();
-        if(expandAllFrame.isVisible()) {
-            setUpExpandButton();
+        if(this.expandAllFrame.isVisible()) {
+            this.setUpExpandButton();
         }
-        currentExpandedMsgCount++;
+        this.currentExpandedMsgCount++;
     }
 
     @Override
     public void onCollapseMessage() {
         this.pack();
-        if(expandAllFrame.isVisible()) {
-            setUpExpandButton();
+        if(this.expandAllFrame.isVisible()) {
+            this.setUpExpandButton();
         }
-        currentExpandedMsgCount--;
+        this.currentExpandedMsgCount--;
     }
 
     @Override
     protected void performScaling(Map<String,Float> scaleData) {
-        wasVisible = isVisible();
-        hideComponent();
+        this.wasVisible = isVisible();
+        this.hideComponent();
         this.componentsFactory.setScale(scaleData.get("notification"));
-        currentMessages.forEach((message,panel)->{
+        this.currentMessages.forEach(panel -> {
             panel.setComponentsFactory(this.componentsFactory);
             panel.setStyle(panel.getStyle());
         });
-        if(wasVisible) {
-            showComponent();
+        if(this.wasVisible) {
+            this.showComponent();
         }
-        expandAllFrame.processNewScale();
-        changeLocation();
-        setUpExpandButton();
+        this.expandAllFrame.processNewScale();
+        this.changeLocation();
+        this.setUpExpandButton();
         this.pack();
         this.repaint();
     }
@@ -591,14 +517,6 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
             @Override
             public void showITH() {}
             @Override
-            public void expandMessage() {
-                pack();
-            }
-            @Override
-            public void collapseMessage() {
-                pack();
-            }
-            @Override
             public void reloadMessage(MessagePanel panel1) {}
         };
         MessagePanel messagePanel = new MessagePanel(message, MessagePanelStyle.DOWNWARDS_SMALL, stubController, factory);
@@ -622,7 +540,7 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
         @Override
         protected void initialize() {
             this.rootContainer = this.getContentPane();
-            this.componentsFactory = IncMessageFrame.this.componentsFactory;
+            this.componentsFactory = MessageFrame.this.componentsFactory;
             this.setBackground(AppThemeColor.MSG_HEADER);
             this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                             BorderFactory.createMatteBorder(1,1,1,0,AppThemeColor.TRANSPARENT),
@@ -675,7 +593,7 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
                             expanded = false;
                         }
                         expandButton.setIcon(componentsFactory.getIcon(iconPath,22));
-                        IncMessageFrame.this.pack();
+                        MessageFrame.this.pack();
                     }
                 }
             });
@@ -777,8 +695,8 @@ public class IncMessageFrame extends AbstractMovableComponentFrame implements Me
                         }
                     });
                     panel.add(infoLabel,BorderLayout.CENTER);
-                    panel.setPreferredSize(new Dimension(this.getPreferredSize().width,IncMessageFrame.this.getPreferredSize().height));
-                    this.setLocation(IncMessageFrame.this.getLocation().x - this.getPreferredSize().width - 2, IncMessageFrame.this.getLocation().y);
+                    panel.setPreferredSize(new Dimension(this.getPreferredSize().width,MessageFrame.this.getPreferredSize().height));
+                    this.setLocation(MessageFrame.this.getLocation().x - this.getPreferredSize().width - 2, MessageFrame.this.getLocation().y);
                     this.setContentPane(panel);
                     this.pack();
                     break;

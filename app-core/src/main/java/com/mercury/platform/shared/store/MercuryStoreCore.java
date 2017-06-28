@@ -44,5 +44,6 @@ public class MercuryStoreCore {
     public final PublishSubject<Boolean> startUpdateSubject = PublishSubject.create();
     public final PublishSubject<Integer> updateInfoSubject = PublishSubject.create();
     public final PublishSubject<Boolean> updateReadySubject = PublishSubject.create();
+    public final PublishSubject<Message> closeMessage = PublishSubject.create();
 
 }

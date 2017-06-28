@@ -9,7 +9,7 @@ import com.mercury.platform.ui.frame.AbstractComponentFrame;
 import com.mercury.platform.ui.frame.AbstractScalableComponentFrame;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
 import com.mercury.platform.ui.frame.movable.AbstractMovableComponentFrame;
-import com.mercury.platform.ui.frame.movable.container.IncMessageFrame;
+import com.mercury.platform.ui.frame.movable.container.MessageFrame;
 import com.mercury.platform.ui.frame.other.*;
 import com.mercury.platform.ui.frame.movable.TaskBarFrame;
 import com.mercury.platform.ui.frame.setup.adr.AdrState;
@@ -51,8 +51,8 @@ public class FramesManager implements AsSubscriber {
     public void start(){
         this.createTrayIcon();
 
-        AbstractOverlaidFrame incMessageFrame = new IncMessageFrame();
-        this.framesMap.put(IncMessageFrame.class,incMessageFrame);
+        AbstractOverlaidFrame incMessageFrame = new MessageFrame();
+        this.framesMap.put(MessageFrame.class,incMessageFrame);
         AbstractOverlaidFrame taskBarFrame = new TaskBarFrame();
         AbstractOverlaidFrame itemsMeshFrame = new ItemsGridFrame();
         this.framesMap.put(ItemsGridFrame.class,itemsMeshFrame);

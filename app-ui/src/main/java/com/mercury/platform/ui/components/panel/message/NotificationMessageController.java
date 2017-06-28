@@ -3,6 +3,7 @@ package com.mercury.platform.ui.components.panel.message;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.shared.store.MercuryStoreCore;
+import com.mercury.platform.ui.frame.movable.container.MessageFrame;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.NonNull;
 import org.apache.logging.log4j.LogManager;
@@ -60,16 +61,6 @@ public class NotificationMessageController implements MessagePanelController {
                 MercuryStoreUI.INSTANCE.showItemGridSubject.onNext((ItemMessage) message);
             }
         }
-    }
-
-    @Override
-    public void expandMessage() {
-        MercuryStoreUI.INSTANCE.expandMessageSubject.onNext(true);
-    }
-
-    @Override
-    public void collapseMessage() {
-        MercuryStoreUI.INSTANCE.collapseMessageSubject.onNext(true);
     }
 
     @Override
