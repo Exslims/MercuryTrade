@@ -4,30 +4,28 @@ import com.google.gson.reflect.TypeToken;
 import com.mercury.platform.shared.config.ConfigurationSource;
 import com.mercury.platform.shared.config.configration.BaseConfigurationService;
 import com.mercury.platform.shared.config.configration.KeyValueConfigurationService;
-import com.mercury.platform.shared.entity.SoundDescriptor;
+import com.mercury.platform.shared.config.descriptor.SoundDescriptor;
 
 import java.util.*;
 
 
-public class SoundConfigurationService extends BaseConfigurationService implements KeyValueConfigurationService<SoundDescriptor,String> {
-    private static final String OBJECT_KEY = "sound";
-    private Map<String,SoundDescriptor> data;
+public class SoundConfigurationService extends BaseConfigurationService<Map<String,SoundDescriptor>> implements KeyValueConfigurationService<SoundDescriptor,String> {
+    private static final String OBJECT_KEY = "soundConfiguration";
     public SoundConfigurationService(ConfigurationSource dataSource) {
         super(dataSource);
-        this.data = new HashMap<>();
     }
 
     @Override
     public void load(){
         this.data = jsonHelper.readMapData(OBJECT_KEY, new TypeToken<Map<String, SoundDescriptor>>() {});
         if(data == null) {
-            toDefault();
+            this.toDefault();
         }
     }
 
     @Override
     public SoundDescriptor get(String key) {
-        return this.data.computeIfAbsent(key, k -> getDefaultMap().get(key));
+        return this.data.computeIfAbsent(key, k -> this.getDefault().get(key));
     }
 
     @Override
@@ -40,23 +38,21 @@ public class SoundConfigurationService extends BaseConfigurationService implemen
         jsonHelper.writeMapObject(OBJECT_KEY,this.data);
     }
 
-    private void toDefault(){
-        Map<String, SoundDescriptor> defaultSt = getDefaultMap();
-        this.data = defaultSt;
-        jsonHelper.writeMapObject(OBJECT_KEY,defaultSt);
-    }
-    private Map<String,SoundDescriptor> getDefaultMap(){
+
+    @Override
+    public Map<String, SoundDescriptor> getDefault() {
         Map<String,SoundDescriptor> defaultSettings = new HashMap<>();
         defaultSettings.put("notification",new SoundDescriptor("app/notification.wav",0f));
         defaultSettings.put("chat_scanner",new SoundDescriptor("app/chat-filter.wav",0f));
         defaultSettings.put("clicks",new SoundDescriptor("default",0f));
         defaultSettings.put("update",new SoundDescriptor("default",0f));
         return defaultSettings;
-
     }
 
     @Override
-    public SoundDescriptor getDefault() {
-        return new SoundDescriptor("app/notification.wav",0f);
+    public void toDefault() {
+        Map<String, SoundDescriptor> defaultSt = this.getDefault();
+        this.data = defaultSt;
+        jsonHelper.writeMapObject(OBJECT_KEY,defaultSt);
     }
 }

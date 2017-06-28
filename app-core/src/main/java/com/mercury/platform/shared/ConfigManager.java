@@ -1,8 +1,8 @@
 package com.mercury.platform.shared;
 
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
-import com.mercury.platform.shared.entity.FrameSettings;
-import com.mercury.platform.shared.entity.ResponseButton;
+import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
+import com.mercury.platform.shared.config.descriptor.ResponseButtonDescriptor;
 import com.mercury.platform.shared.entity.StashTab;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
@@ -35,8 +35,8 @@ public class ConfigManager {
     private final String CONFIG_FILE_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade";
     private final String CONFIG_FILE = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\app-config.json";
 
-    private List<ResponseButton> cachedButtonsConfig;
-    private Map<String, FrameSettings> cachedFramesSettings;
+    private List<ResponseButtonDescriptor> cachedButtonsConfig;
+    private Map<String, FrameDescriptor> cachedFramesSettings;
     private Map<String,Dimension> minimumFrameSize;
     private Map<String,Object> defaultAppSettings;
 
@@ -189,7 +189,7 @@ public class ConfigManager {
                         isKick = Boolean.valueOf((String)object);
                         isClose = Boolean.valueOf((String)object1);
                     }
-                    cachedButtonsConfig.add(new ResponseButton((long) next.get("id"),isKick,isClose,(String) next.get("title"), (String) next.get("value")));
+                    cachedButtonsConfig.add(new ResponseButtonDescriptor((long) next.get("id"),isKick,isClose,(String) next.get("title"), (String) next.get("value")));
                 }
             }catch (Exception e){
                 saveButtonsConfig(getDefaultButtons());
@@ -200,7 +200,7 @@ public class ConfigManager {
             for (JSONObject next : (Iterable<JSONObject>) framesSetting) {
                 JSONObject location = (JSONObject) next.get("location");
                 JSONObject size = (JSONObject) next.get("size");
-                FrameSettings settings = new FrameSettings(
+                FrameDescriptor settings = new FrameDescriptor(
                         new Point(((Long)location.get("frameX")).intValue(), ((Long)location.get("frameY")).intValue()),
                         new Dimension(((Long)size.get("width")).intValue(),((Long)size.get("height")).intValue())
                 );
@@ -286,14 +286,14 @@ public class ConfigManager {
         }
 
     }
-    public List<ResponseButton> getButtonsConfig(){
+    public List<ResponseButtonDescriptor> getButtonsConfig(){
         return cachedButtonsConfig;
     }
 
-    public FrameSettings getFrameSettings(String frameClass){
-        FrameSettings settings = cachedFramesSettings.get(frameClass);
+    public FrameDescriptor getFrameSettings(String frameClass){
+        FrameDescriptor settings = cachedFramesSettings.get(frameClass);
         if(settings == null) {
-            FrameSettings defaultSettings = getDefaultFramesSettings().get(frameClass);
+            FrameDescriptor defaultSettings = getDefaultFramesSettings().get(frameClass);
             if(defaultSettings != null) {
                 cachedFramesSettings.put(frameClass, defaultSettings);
                 saveFrameSettings();
@@ -302,14 +302,14 @@ public class ConfigManager {
         return cachedFramesSettings.get(frameClass);
     }
     public void saveFrameLocation(String frameClassName, Point point) {
-        FrameSettings settings = cachedFramesSettings.get(frameClassName);
+        FrameDescriptor settings = cachedFramesSettings.get(frameClassName);
         settings.setFrameLocation(point);
         saveFrameSettings();
     }
 
     public void saveFrameSize(String frameClassName, Dimension size){
         try {
-            FrameSettings settings = cachedFramesSettings.get(frameClassName);
+            FrameDescriptor settings = cachedFramesSettings.get(frameClassName);
             settings.setFrameSize(size);
         }catch (NullPointerException e){
             cachedFramesSettings.put(frameClassName,getDefaultFramesSettings().get(frameClassName));
@@ -321,7 +321,7 @@ public class ConfigManager {
      * Save custom buttons config.
      * @param buttons map of buttons data.(title,text to send)
      */
-    public void saveButtonsConfig(List<ResponseButton> buttons){
+    public void saveButtonsConfig(List<ResponseButtonDescriptor> buttons){
         cachedButtonsConfig = buttons;
         JSONArray list = new JSONArray();
         buttons.forEach((button)->{
@@ -477,31 +477,31 @@ public class ConfigManager {
         saveProperty("quickResponse",quickResponse);
     }
 
-    private List<ResponseButton> getDefaultButtons(){
-        List<ResponseButton> defaultButtons = new ArrayList<>();
-        defaultButtons.add(new ResponseButton(0,false,false,"1m","one minute"));
-        defaultButtons.add(new ResponseButton(1,true,false,"thx","thanks"));
-        defaultButtons.add(new ResponseButton(2,false,false,"no thx", "no thanks"));
-        defaultButtons.add(new ResponseButton(3,false,false,"sold", "sold"));
+    private List<ResponseButtonDescriptor> getDefaultButtons(){
+        List<ResponseButtonDescriptor> defaultButtons = new ArrayList<>();
+        defaultButtons.add(new ResponseButtonDescriptor(0,false,false,"1m","one minute"));
+        defaultButtons.add(new ResponseButtonDescriptor(1,true,false,"thx","thanks"));
+        defaultButtons.add(new ResponseButtonDescriptor(2,false,false,"no thx", "no thanks"));
+        defaultButtons.add(new ResponseButtonDescriptor(3,false,false,"sold", "sold"));
         return defaultButtons;
     }
-    public Map<String,FrameSettings> getDefaultFramesSettings(){
-        Map<String, FrameSettings> defaultFramesSettings = new HashMap<>();
-        defaultFramesSettings.put("TaskBarFrame",new FrameSettings(new Point(400, 500),new Dimension(109,20)));
-        defaultFramesSettings.put("MessageFrame",new FrameSettings(new Point(700, 600),new Dimension(315,0)));
-        defaultFramesSettings.put("OutMessageFrame",new FrameSettings(new Point(200, 500),new Dimension(280,115)));
-        defaultFramesSettings.put("TestCasesFrame",new FrameSettings(new Point(1400, 500),new Dimension(400,100)));
-        defaultFramesSettings.put("SettingsFrame",new FrameSettings(new Point(600, 600),new Dimension(540,500)));
-        defaultFramesSettings.put("HistoryFrame",new FrameSettings(new Point(600, 500),new Dimension(280,400)));
-        defaultFramesSettings.put("TimerFrame",new FrameSettings(new Point(400, 600),new Dimension(240,102)));
-        defaultFramesSettings.put("ChatFilterFrame",new FrameSettings(new Point(400, 600),new Dimension(500,300)));
-        defaultFramesSettings.put("ItemsGridFrame",new FrameSettings(new Point(12, 79),new Dimension(641,718)));
-        defaultFramesSettings.put("NotesFrame",new FrameSettings(new Point(400, 600),new Dimension(540,100)));
-        defaultFramesSettings.put("ChatFilterSettingsFrame",new FrameSettings(new Point(400, 600),new Dimension(320,200)));
-        defaultFramesSettings.put("GamePathChooser",new FrameSettings(new Point(400, 600),new Dimension(520,30)));
-        defaultFramesSettings.put("CurrencySearchFrame",new FrameSettings(new Point(400, 600),new Dimension(400,300)));
-        defaultFramesSettings.put("AdrManagerFrame",new FrameSettings(new Point(400, 600),new Dimension(400,300)));
-        defaultFramesSettings.put("AdrCellSettingsFrame",new FrameSettings(new Point(400, 600),new Dimension(300,210)));
+    public Map<String,FrameDescriptor> getDefaultFramesSettings(){
+        Map<String, FrameDescriptor> defaultFramesSettings = new HashMap<>();
+        defaultFramesSettings.put("TaskBarFrame",new FrameDescriptor(new Point(400, 500),new Dimension(109,20)));
+        defaultFramesSettings.put("MessageFrame",new FrameDescriptor(new Point(700, 600),new Dimension(315,0)));
+        defaultFramesSettings.put("OutMessageFrame",new FrameDescriptor(new Point(200, 500),new Dimension(280,115)));
+        defaultFramesSettings.put("TestCasesFrame",new FrameDescriptor(new Point(1400, 500),new Dimension(400,100)));
+        defaultFramesSettings.put("SettingsFrame",new FrameDescriptor(new Point(600, 600),new Dimension(540,500)));
+        defaultFramesSettings.put("HistoryFrame",new FrameDescriptor(new Point(600, 500),new Dimension(280,400)));
+        defaultFramesSettings.put("TimerFrame",new FrameDescriptor(new Point(400, 600),new Dimension(240,102)));
+        defaultFramesSettings.put("ChatFilterFrame",new FrameDescriptor(new Point(400, 600),new Dimension(500,300)));
+        defaultFramesSettings.put("ItemsGridFrame",new FrameDescriptor(new Point(12, 79),new Dimension(641,718)));
+        defaultFramesSettings.put("NotesFrame",new FrameDescriptor(new Point(400, 600),new Dimension(540,100)));
+        defaultFramesSettings.put("ChatFilterSettingsFrame",new FrameDescriptor(new Point(400, 600),new Dimension(320,200)));
+        defaultFramesSettings.put("GamePathChooser",new FrameDescriptor(new Point(400, 600),new Dimension(520,30)));
+        defaultFramesSettings.put("CurrencySearchFrame",new FrameDescriptor(new Point(400, 600),new Dimension(400,300)));
+        defaultFramesSettings.put("AdrManagerFrame",new FrameDescriptor(new Point(400, 600),new Dimension(400,300)));
+        defaultFramesSettings.put("AdrCellSettingsFrame",new FrameDescriptor(new Point(400, 600),new Dimension(300,210)));
         return defaultFramesSettings;
     }
     public Dimension getMinimumFrameSize(String frameName){

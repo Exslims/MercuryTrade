@@ -3,7 +3,7 @@ package com.mercury.platform.ui.frame.other;
 import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
-import com.mercury.platform.shared.entity.FrameSettings;
+import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -71,7 +71,7 @@ public class UpdateReadyFrame extends AbstractOverlaidFrame {
     @Override
     public void subscribe() {
         MercuryStoreCore.INSTANCE.updateInfoSubject.subscribe(version -> {
-            FrameSettings tbSettings = ConfigManager.INSTANCE.getFrameSettings("TaskBarFrame");
+            FrameDescriptor tbSettings = ConfigManager.INSTANCE.getFrameSettings("TaskBarFrame");
             Point tbLocation = tbSettings.getFrameLocation();
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
             if(tbLocation.y + 30 + this.getHeight() > dim.height){

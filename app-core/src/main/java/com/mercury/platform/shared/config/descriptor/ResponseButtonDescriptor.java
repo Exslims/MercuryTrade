@@ -1,11 +1,11 @@
-package com.mercury.platform.shared.entity;
+package com.mercury.platform.shared.config.descriptor;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ResponseButton implements Comparable<ResponseButton>{
+public class ResponseButtonDescriptor implements Comparable<ResponseButtonDescriptor>{
     private long id;
     private boolean kick;
     private boolean close;
@@ -13,7 +13,7 @@ public class ResponseButton implements Comparable<ResponseButton>{
     private String responseText;
 
     @Override
-    public int compareTo(ResponseButton o) {
+    public int compareTo(ResponseButtonDescriptor o) {
         if(this.getId() > o.getId()) {
             return 1;
         }else if(this.getId() < o.getId()){

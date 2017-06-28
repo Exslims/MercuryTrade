@@ -2,7 +2,7 @@ package com.mercury.platform.ui.components.panel.message;
 
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.ui.components.ComponentsFactory;
-import com.mercury.platform.ui.frame.movable.container.FlowDirections;
+import com.mercury.platform.shared.entity.message.FlowDirections;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.NonNull;

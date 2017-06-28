@@ -1,4 +1,4 @@
-package com.mercury.platform.shared.entity;
+package com.mercury.platform.shared.config.descriptor;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.frame;
 
-import com.mercury.platform.shared.entity.FrameSettings;
+import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.manager.HideSettingsManager;
 import org.pushingpixels.trident.Timeline;
@@ -48,12 +48,12 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
         this.addMouseMotionListener(new ResizeByWidthMouseMotionListener());
         HideSettingsManager.INSTANCE.registerFrame(this);
 
-        FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
-        if(frameSettings != null) {
-            this.setLocation(frameSettings.getFrameLocation());
-            this.setSize(frameSettings.getFrameSize());
-            this.setMinimumSize(frameSettings.getFrameSize());
-            this.setMaximumSize(frameSettings.getFrameSize());
+        FrameDescriptor frameDescriptor = configManager.getFrameSettings(this.getClass().getSimpleName());
+        if(frameDescriptor != null) {
+            this.setLocation(frameDescriptor.getFrameLocation());
+            this.setSize(frameDescriptor.getFrameSize());
+            this.setMinimumSize(frameDescriptor.getFrameSize());
+            this.setMaximumSize(frameDescriptor.getFrameSize());
         }
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),

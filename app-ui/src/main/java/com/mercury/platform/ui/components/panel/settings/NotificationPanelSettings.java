@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.entity.ResponseButton;
+import com.mercury.platform.shared.config.descriptor.ResponseButtonDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -35,10 +35,10 @@ public class NotificationPanelSettings extends ConfigurationPanel{
 
     @Override
     public boolean processAndSave() {
-        List<ResponseButton> buttons = new ArrayList<>();
+        List<ResponseButtonDescriptor> buttons = new ArrayList<>();
         id = 0;
         inputs.forEach(pair -> {
-            buttons.add(new ResponseButton(
+            buttons.add(new ResponseButtonDescriptor(
                     id,
                     pair.kick.isSelected(),
                     pair.close.isSelected(),
@@ -104,7 +104,7 @@ public class NotificationPanelSettings extends ConfigurationPanel{
         buttonsTable = componentsFactory.getTransparentPanel(new GridBagLayout());
         buttonsTable.setBackground(AppThemeColor.SETTINGS_BG);
         inputs = new ArrayList<>();
-        List<ResponseButton> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();
+        List<ResponseButtonDescriptor> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();
         Collections.sort(buttonsConfig);
         GridBagConstraints titleColumn = new GridBagConstraints();
         GridBagConstraints valueColumn = new GridBagConstraints();

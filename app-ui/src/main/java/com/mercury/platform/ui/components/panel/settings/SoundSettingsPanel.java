@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.shared.config.Configuration;
-import com.mercury.platform.shared.entity.SoundDescriptor;
+import com.mercury.platform.shared.config.descriptor.SoundDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;

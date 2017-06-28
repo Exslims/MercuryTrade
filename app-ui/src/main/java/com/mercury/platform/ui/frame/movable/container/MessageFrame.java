@@ -3,6 +3,7 @@ package com.mercury.platform.ui.frame.movable.container;
 import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
+import com.mercury.platform.shared.entity.message.FlowDirections;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.shared.store.MercuryStoreCore;

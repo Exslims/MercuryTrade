@@ -3,7 +3,7 @@ package com.mercury.platform.ui.frame.titled.container;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.MessageParser;
-import com.mercury.platform.shared.entity.FrameSettings;
+import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
@@ -25,8 +25,8 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
     private JPanel mainContainer;
     public HistoryFrame() {
         super();
-        FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
-        this.setPreferredSize(frameSettings.getFrameSize());
+        FrameDescriptor frameDescriptor = configManager.getFrameSettings(this.getClass().getSimpleName());
+        this.setPreferredSize(frameDescriptor.getFrameSize());
         this.componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("other"));
     }
 

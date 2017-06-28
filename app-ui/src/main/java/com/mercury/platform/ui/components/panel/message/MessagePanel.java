@@ -6,7 +6,7 @@ import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.entity.message.CurrencyMessage;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.shared.entity.message.Message;
-import com.mercury.platform.shared.entity.ResponseButton;
+import com.mercury.platform.shared.config.descriptor.ResponseButtonDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -499,7 +499,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
         });
     }
     private void initResponseButtons(JPanel panel){
-        List<ResponseButton> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();
+        List<ResponseButtonDescriptor> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();
         Collections.sort(buttonsConfig);
         buttonsConfig.forEach((buttonConfig)->{
             JButton button = componentsFactory.getBorderedButton(buttonConfig.getTitle(),15f);

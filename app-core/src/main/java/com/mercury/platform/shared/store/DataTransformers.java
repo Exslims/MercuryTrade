@@ -7,7 +7,7 @@ import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.KeyValueConfigurationService;
-import com.mercury.platform.shared.entity.SoundDescriptor;
+import com.mercury.platform.shared.config.descriptor.SoundDescriptor;
 import rx.Observable;
 
 import java.util.Random;

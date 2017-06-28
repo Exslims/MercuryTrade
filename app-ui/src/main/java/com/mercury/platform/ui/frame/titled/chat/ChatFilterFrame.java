@@ -3,7 +3,7 @@ package com.mercury.platform.ui.frame.titled.chat;
 import com.mercury.platform.core.utils.interceptor.MessageInterceptor;
 import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
 import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.entity.FrameSettings;
+import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.chat.ChatFilterPanel;
@@ -31,8 +31,8 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
 
     public ChatFilterFrame() {
         super();
-        FrameSettings frameSettings = configManager.getFrameSettings(this.getClass().getSimpleName());
-        this.setPreferredSize(frameSettings.getFrameSize());
+        FrameDescriptor frameDescriptor = configManager.getFrameSettings(this.getClass().getSimpleName());
+        this.setPreferredSize(frameDescriptor.getFrameSize());
         this.settingsFrame = new ChatFilterSettingsFrame(strings -> {
             if(chatEnable){
                 performNewStrings(strings);
