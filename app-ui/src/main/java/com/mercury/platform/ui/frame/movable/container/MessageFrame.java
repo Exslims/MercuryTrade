@@ -3,6 +3,9 @@ package com.mercury.platform.ui.frame.movable.container;
 import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.PlainConfigurationService;
+import com.mercury.platform.shared.config.descriptor.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.FlowDirections;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.shared.entity.message.Message;
@@ -36,6 +39,7 @@ import java.util.stream.Collectors;
 public class MessageFrame extends AbstractMovableComponentFrame implements MessagesContainer {
     private static final Logger logger = LogManager.getLogger(MessageFrame.class.getSimpleName());
     private List<MessagePanel> currentMessages = new ArrayList<>();
+    private PlainConfigurationService<NotificationDescriptor> notificationService;
     private boolean wasVisible;
     private FlowDirections flowDirections;
     private FlowDirections pikerDirection;
@@ -44,49 +48,49 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
     private JSlider limitSlider;
     private int limitMsgCount;
     private JSlider unfoldSlider;
-    private int expandedMsgCount;
-    private int currentExpandedMsgCount;
+    private int unfoldCount;
+    private int currentUnfoldCount;
 
     private ExpandAllFrame expandAllFrame;
 
     private boolean dnd = false;
     public MessageFrame(){
         super();
-        componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("notification"));
-        stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("notification"));
-
-        processSEResize = false;
-        flowDirections = FlowDirections.valueOf(configManager.getFlowDirection());
-        pikerDirection = FlowDirections.valueOf(configManager.getFlowDirection());
-        limitMsgCount = configManager.getLimitMsgCount();
-        expandedMsgCount = configManager.getExpandedMsgCount();
-        currentExpandedMsgCount = 0;
-        expandAllFrame = new ExpandAllFrame();
-        buffer = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buffer.setMinimumSize(new Dimension(Integer.MAX_VALUE,Integer.MAX_VALUE));
-        buffer.setBackground(AppThemeColor.TRANSPARENT);
+        this.componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("notification"));
+        this.stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("notification"));
+        this.notificationService = Configuration.get().notificationConfiguration();
+        this.processSEResize = false;
+        this.flowDirections = this.notificationService.get().getFlowDirections();
+        this.pikerDirection = this.notificationService.get().getFlowDirections();
+        this.limitMsgCount = this.notificationService.get().getLimitCount();
+        this.unfoldCount = this.notificationService.get().getUnfoldCount();
+        this.currentUnfoldCount = 0;
+        this.expandAllFrame = new ExpandAllFrame();
+        this.buffer = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        this.buffer.setMinimumSize(new Dimension(Integer.MAX_VALUE,Integer.MAX_VALUE));
+        this.buffer.setBackground(AppThemeColor.TRANSPARENT);
     }
 
     @Override
     protected void initialize() {
         super.initialize();
-        createUI();
+        this.createUI();
     }
 
     @Override
     public void createUI() {
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.getRootPane().setBorder(null);
-        if(currentMessages.size() > 0){
-            currentMessages.forEach(panel -> this.mainContainer.add(panel));
+        if(this.currentMessages.size() > 0){
+            this.currentMessages.forEach(panel -> this.mainContainer.add(panel));
             this.setVisible(true);
         }
-        if(flowDirections.equals(FlowDirections.UPWARDS)){
-            changeDirectionTo(FlowDirections.UPWARDS);
-            locationWasChanged = true;
-            changeLocation();
+        if(this.flowDirections.equals(FlowDirections.UPWARDS)){
+            this.changeDirectionTo(FlowDirections.UPWARDS);
+            this.locationWasChanged = true;
+            this.changeLocation();
         }
-        expandAllFrame.init();
+        this.expandAllFrame.init();
     }
 
     @Override
@@ -124,19 +128,18 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
                     .filter(panel -> panel.getMessage().equals(message))
                     .collect(Collectors.toList()).get(0);
             if(messagePanel.isExpanded()){
-                this.currentExpandedMsgCount--;
+                this.currentUnfoldCount--;
             }
             this.remove(messagePanel);
             this.currentMessages.remove(messagePanel);
 
-            int limitMsgCount = ConfigManager.INSTANCE.getLimitMsgCount();
             if (this.currentMessages.size() == 0) {
                 this.setVisible(false);
-            } else if (this.currentMessages.size() >= limitMsgCount) {
-                if(this.currentMessages.size() == limitMsgCount) {
+            } else if (this.currentMessages.size() >= this.limitMsgCount) {
+                if(this.currentMessages.size() == this.limitMsgCount) {
                     this.expandAllFrame.setVisible(false);
                 }
-                this.currentMessages.get(limitMsgCount - 1).setVisible(true);
+                this.currentMessages.get(this.limitMsgCount - 1).setVisible(true);
                 this.expandAllFrame.decMessageCount();
             }
             this.pack();
@@ -166,9 +169,9 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
         }
         this.currentMessages.add(messagePanel);
         this.pack();
-        if (this.currentExpandedMsgCount < this.expandedMsgCount) {
+        if (this.currentUnfoldCount < this.unfoldCount) {
             messagePanel.expand();
-            this.currentExpandedMsgCount++;
+            this.currentUnfoldCount++;
         }
         if(this.currentMessages.size() > this.limitMsgCount){
             if(!expanded) {
@@ -193,39 +196,39 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
         if(!inScaleSettings && !inMoveMode && !dnd) {
             switch (flowDirections) {
                 case DOWNWARDS: {
-                    if(mainContainer.getComponentCount() >= (limitMsgCount + 1)) {
-                        if (mainContainer.getComponentCount() > limitMsgCount) {
+                    if(this.mainContainer.getComponentCount() >= (limitMsgCount + 1)) {
+                        if (this.mainContainer.getComponentCount() > limitMsgCount) {
                             Component[] components = mainContainer.getComponents();
                             int height = 0;
                             for (int i = 0; i < limitMsgCount; i++) {
                                 height += components[i].getPreferredSize().height;
                             }
-                            expandAllFrame.setMinimumSize(new Dimension((int)(20 * componentsFactory.getScale()), height));
-                            expandAllFrame.setLocation(new Point(this.getLocation().x - expandAllFrame.getPreferredSize().width,
+                            this.expandAllFrame.setMinimumSize(new Dimension((int)(20 * componentsFactory.getScale()), height));
+                            this.expandAllFrame.setLocation(new Point(this.getLocation().x - expandAllFrame.getPreferredSize().width,
                                     this.getLocation().y));
-                            expandAllFrame.pack();
+                            this.expandAllFrame.pack();
                         }
-                        expandAllFrame.changeArrowDirection();
-                        expandAllFrame.setVisible(true);
+                        this.expandAllFrame.changeArrowDirection();
+                        this.expandAllFrame.setVisible(true);
                     }
                     break;
                 }
                 case UPWARDS: {
-                    if(mainContainer.getComponentCount() >= (limitMsgCount + 2)) {
-                        if (mainContainer.getComponentCount() > (limitMsgCount + 1)) {
+                    if(this.mainContainer.getComponentCount() >= (limitMsgCount + 2)) {
+                        if (this.mainContainer.getComponentCount() > (limitMsgCount + 1)) {
                             Component[] components = mainContainer.getComponents();
                             int height = 0;
                             for (int i = components.length - 1; i > components.length - (limitMsgCount + 1); i--) {
                                 height += components[i].getPreferredSize().height;
                             }
                             Point location = mainContainer.getComponent(components.length - limitMsgCount).getLocationOnScreen();
-                            expandAllFrame.setMinimumSize(new Dimension((int)(20 * componentsFactory.getScale()), height));
-                            expandAllFrame.setLocation(new Point(this.getLocation().x - expandAllFrame.getPreferredSize().width,
+                            this.expandAllFrame.setMinimumSize(new Dimension((int)(20 * componentsFactory.getScale()), height));
+                            this.expandAllFrame.setLocation(new Point(this.getLocation().x - expandAllFrame.getPreferredSize().width,
                                     location.y));
-                            expandAllFrame.pack();
+                            this.expandAllFrame.pack();
                         }
-                        expandAllFrame.changeArrowDirection();
-                        expandAllFrame.setVisible(true);
+                        this.expandAllFrame.changeArrowDirection();
+                        this.expandAllFrame.setVisible(true);
                     }
                     break;
                 }
@@ -274,8 +277,8 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
                 limitCount,
                 limitSlider
                 ));
-        JLabel unfoldCount = componentsFactory.getTextLabel(String.valueOf(expandedMsgCount));
-        unfoldSlider = componentsFactory.getSlider(0, 20, expandedMsgCount);
+        JLabel unfoldCount = componentsFactory.getTextLabel(String.valueOf(this.unfoldCount));
+        unfoldSlider = componentsFactory.getSlider(0, 20, this.unfoldCount);
         unfoldSlider.addChangeListener(e -> {
             unfoldCount.setText(String.valueOf(unfoldSlider.getValue()));
             repaint();
@@ -304,11 +307,11 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
     }
 
     private void onExpandedCountChange(){
-        this.currentExpandedMsgCount = 0;
+        this.currentUnfoldCount = 0;
         this.currentMessages.forEach(MessagePanel::collapse);
-        this.currentMessages.stream().limit(this.expandedMsgCount).forEach(panel -> {
+        this.currentMessages.stream().limit(this.unfoldCount).forEach(panel -> {
             panel.expand();
-            this.currentExpandedMsgCount++;
+            this.currentUnfoldCount++;
         });
     }
 
@@ -321,20 +324,21 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
     protected void onLock() {
         this.expandAllFrame.setLocationState(LocationState.DEFAULT);
         if(!this.flowDirections.equals(pikerDirection)){
-            this.configManager.setFlowDirection(pikerDirection.toString());
+            this.notificationService.get().setFlowDirections(this.pikerDirection);
             this.changeDirectionTo(pikerDirection);
             this.locationWasChanged = true;
         }
         if(this.limitMsgCount != this.limitSlider.getValue()) {
             this.limitMsgCount = this.limitSlider.getValue();
-            this.configManager.setLimitMsgCount(limitMsgCount);
+            this.notificationService.get().setLimitCount(this.limitMsgCount);
             this.onLimitCountChange();
         }
-        if(this.expandedMsgCount != this.unfoldSlider.getValue()) {
-            this.expandedMsgCount = this.unfoldSlider.getValue();
-            this.configManager.setExpandedMsgCount(this.expandedMsgCount);
+        if(this.unfoldCount != this.unfoldSlider.getValue()) {
+            this.unfoldCount = this.unfoldSlider.getValue();
+            this.notificationService.get().setUnfoldCount(this.unfoldCount);
             this.onExpandedCountChange();
         }
+        MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
         this.changeLocation();
         super.onLock();
         this.setUpExpandButton();
@@ -453,7 +457,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
         if(this.expandAllFrame.isVisible()) {
             this.setUpExpandButton();
         }
-        this.currentExpandedMsgCount++;
+        this.currentUnfoldCount++;
     }
 
     @Override
@@ -462,7 +466,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
         if(this.expandAllFrame.isVisible()) {
             this.setUpExpandButton();
         }
-        this.currentExpandedMsgCount--;
+        this.currentUnfoldCount--;
     }
 
     @Override

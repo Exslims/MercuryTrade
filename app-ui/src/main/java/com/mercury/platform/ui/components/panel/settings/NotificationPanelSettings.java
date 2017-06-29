@@ -1,6 +1,9 @@
 package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.PlainConfigurationService;
+import com.mercury.platform.shared.config.descriptor.NotificationDescriptor;
 import com.mercury.platform.shared.config.descriptor.ResponseButtonDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -26,10 +29,12 @@ public class NotificationPanelSettings extends ConfigurationPanel{
     private JPanel buttonsTable;
     private JCheckBox dismissCheckBox;
     private JCheckBox showLeagueCheckBox;
+    private PlainConfigurationService<NotificationDescriptor> notificationService;
     private int id;
 
     public NotificationPanelSettings() {
         super();
+        this.notificationService = Configuration.get().notificationConfiguration();
         this.createUI();
     }
 
@@ -46,9 +51,9 @@ public class NotificationPanelSettings extends ConfigurationPanel{
                     pair.response.getText()));
             id++;
         });
-        ConfigManager.INSTANCE.saveButtonsConfig(buttons);
-        ConfigManager.INSTANCE.setDismissAfterKick(dismissCheckBox.isSelected());
-        ConfigManager.INSTANCE.setShowLeague(showLeagueCheckBox.isSelected());
+        this.notificationService.get().setButtons(buttons);
+        this.notificationService.get().setDismissAfterKick(this.dismissCheckBox.isSelected());
+        this.notificationService.get().setShowLeague(this.showLeagueCheckBox.isSelected());
         MercuryStoreCore.INSTANCE.buttonsChangedSubject.onNext(true);
         return true;
     }
@@ -85,13 +90,13 @@ public class NotificationPanelSettings extends ConfigurationPanel{
         topPanel.add(componentsFactory.getTextLabel("Close Notification panel on Kick:", FontStyle.REGULAR));
         dismissCheckBox = new JCheckBox();
         dismissCheckBox.setBackground(AppThemeColor.TRANSPARENT);
-        dismissCheckBox.setSelected(ConfigManager.INSTANCE.isDismissAfterKick());
+        dismissCheckBox.setSelected(this.notificationService.get().isDismissAfterKick());
         topPanel.add(dismissCheckBox);
 
         topPanel.add(componentsFactory.getTextLabel("Show league:", FontStyle.REGULAR));
         showLeagueCheckBox = new JCheckBox();
         showLeagueCheckBox.setBackground(AppThemeColor.TRANSPARENT);
-        showLeagueCheckBox.setSelected(ConfigManager.INSTANCE.isShowLeague());
+        showLeagueCheckBox.setSelected(this.notificationService.get().isShowLeague());
         topPanel.add(showLeagueCheckBox);
 
         topPanel.setBorder(new CompoundBorder(
@@ -104,7 +109,7 @@ public class NotificationPanelSettings extends ConfigurationPanel{
         buttonsTable = componentsFactory.getTransparentPanel(new GridBagLayout());
         buttonsTable.setBackground(AppThemeColor.SETTINGS_BG);
         inputs = new ArrayList<>();
-        List<ResponseButtonDescriptor> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();
+        List<ResponseButtonDescriptor> buttonsConfig = this.notificationService.get().getButtons();
         Collections.sort(buttonsConfig);
         GridBagConstraints titleColumn = new GridBagConstraints();
         GridBagConstraints valueColumn = new GridBagConstraints();

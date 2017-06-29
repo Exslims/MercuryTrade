@@ -10,7 +10,6 @@ public class ApplicationDescriptor {
     private int maxOpacity;
     private int fadeTime;
     private String gamePath;
-    private boolean showPatchNotes;
     private boolean showOnStartUp;
     private boolean itemsGridEnable;
     private boolean checkOutUpdate;

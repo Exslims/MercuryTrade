@@ -1,8 +1,9 @@
 package com.mercury.platform.ui.components.panel.message;
 
-
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.AsSubscriber;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.PlainConfigurationService;
+import com.mercury.platform.shared.config.descriptor.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.CurrencyMessage;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.shared.entity.message.Message;
@@ -39,6 +40,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
     private static final Logger logger = LogManager.getLogger(MessagePanel.class.getSimpleName());
 
     private ComponentsFactory componentsFactory;
+    private PlainConfigurationService<NotificationDescriptor> notificationService;
     private MessagePanelController controller;
     private MessagePanelStyle style;
 
@@ -65,6 +67,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
         this.message = message;
         this.style = style;
         this.whisper = message.getWhisperNickname();
+        this.notificationService = Configuration.get().notificationConfiguration();
     }
     public MessagePanel(Message message, MessagePanelStyle style, MessagePanelController controller, ComponentsFactory componentsFactory){
         this(message,style);
@@ -289,7 +292,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
             JButton kickButton = componentsFactory.getIconButton("app/kick.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.KICK);
             kickButton.addActionListener(e -> {
                 controller.performKick();
-                if(ConfigManager.INSTANCE.isDismissAfterKick()&& !style.equals(MessagePanelStyle.SP_MODE)){
+                if(this.notificationService.get().isDismissAfterKick() && !style.equals(MessagePanelStyle.SP_MODE)){
                     controller.performHide();
                 }
             });
@@ -328,7 +331,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
     private String getNicknameLabel(){
         String whisperNickname = message.getWhisperNickname();
         String result = whisperNickname + ":";
-        if(ConfigManager.INSTANCE.isShowLeague()) {
+        if(this.notificationService.get().isShowLeague()) {
             if (message.getLeague() != null) {
                 String league = message.getLeague().trim();
                 if (league.length() == 0) {
@@ -499,7 +502,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
         });
     }
     private void initResponseButtons(JPanel panel){
-        List<ResponseButtonDescriptor> buttonsConfig = ConfigManager.INSTANCE.getButtonsConfig();
+        List<ResponseButtonDescriptor> buttonsConfig = this.notificationService.get().getButtons();
         Collections.sort(buttonsConfig);
         buttonsConfig.forEach((buttonConfig)->{
             JButton button = componentsFactory.getBorderedButton(buttonConfig.getTitle(),15f);

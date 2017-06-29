@@ -34,8 +34,6 @@ public class ConfigManager {
 
     private final String CONFIG_FILE_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade";
     private final String CONFIG_FILE = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\app-config.json";
-
-    private List<ResponseButtonDescriptor> cachedButtonsConfig;
     private Map<String, FrameDescriptor> cachedFramesSettings;
     private Map<String,Dimension> minimumFrameSize;
     private Map<String,Object> defaultAppSettings;
@@ -52,14 +50,6 @@ public class ConfigManager {
     @Getter
     private String gamePath = "";
     @Getter
-    private String flowDirection = "DOWNWARDS";
-    @Getter
-    private String tradeMode = "DEFAULT";
-    @Getter
-    private int limitMsgCount = 3;
-    @Getter
-    private int expandedMsgCount = 2;
-    @Getter
     private boolean showPatchNotes = false;
     @Getter
     private boolean showOnStartUp = true;
@@ -67,10 +57,6 @@ public class ConfigManager {
     private boolean itemsGridEnable = true;
     @Getter
     private boolean checkUpdateOnStartUp = true;
-    @Getter
-    private boolean dismissAfterKick = true;
-    @Getter
-    private boolean showLeague = false;
     @Getter
     private boolean inGameDnd = false;
     @Getter
@@ -141,7 +127,6 @@ public class ConfigManager {
                 fileWriter.flush();
                 fileWriter.close();
 
-                saveButtonsConfig(getDefaultButtons());
                 cachedFramesSettings = getDefaultFramesSettings();
                 saveFrameSettings();
 
@@ -177,24 +162,6 @@ public class ConfigManager {
         JSONParser parser = new JSONParser();
         try {
             JSONObject root = (JSONObject) parser.parse(new FileReader(CONFIG_FILE));
-            JSONArray buttons = (JSONArray) root.get("buttons");
-            cachedButtonsConfig = new ArrayList<>();
-            try {
-                for (JSONObject next : (Iterable<JSONObject>) buttons) {
-                    Object object = next.get("isKick");
-                    boolean isKick = false;
-                    Object object1 = next.get("isClose");
-                    boolean isClose = false;
-                    if(object != null){
-                        isKick = Boolean.valueOf((String)object);
-                        isClose = Boolean.valueOf((String)object1);
-                    }
-                    cachedButtonsConfig.add(new ResponseButtonDescriptor((long) next.get("id"),isKick,isClose,(String) next.get("title"), (String) next.get("value")));
-                }
-            }catch (Exception e){
-                saveButtonsConfig(getDefaultButtons());
-            }
-
             JSONArray framesSetting = (JSONArray) root.get("framesSettings");
             cachedFramesSettings = new HashMap<>();
             for (JSONObject next : (Iterable<JSONObject>) framesSetting) {
@@ -213,15 +180,9 @@ public class ConfigManager {
             showOnStartUp = Boolean.valueOf(loadProperty("showOnStartUp"));
             showPatchNotes = Boolean.valueOf(loadProperty("showPatchNotes"));
             gamePath = loadProperty("gamePath");
-            flowDirection = loadProperty("flowDirection");
-            tradeMode = loadProperty("tradeMode");
-            limitMsgCount = Long.valueOf(loadProperty("limitMsgCount")).intValue();
-            expandedMsgCount = Long.valueOf(loadProperty("expandedMsgCount")).intValue();
             itemsGridEnable = Boolean.valueOf(loadProperty("itemsGridEnable"));
             checkUpdateOnStartUp = Boolean.valueOf(loadProperty("checkUpdateOnStartUp"));
-            dismissAfterKick = Boolean.valueOf(loadProperty("dismissAfterKick"));
             inGameDnd = Boolean.valueOf(loadProperty("inGameDnd"));
-            showLeague = Boolean.valueOf(loadProperty("showLeague"));
             dndResponseText = loadProperty("dndResponseText");
             defaultWords = loadProperty("defaultWords");
             quickResponse = loadProperty("quickResponse");
@@ -286,9 +247,6 @@ public class ConfigManager {
         }
 
     }
-    public List<ResponseButtonDescriptor> getButtonsConfig(){
-        return cachedButtonsConfig;
-    }
 
     public FrameDescriptor getFrameSettings(String frameClass){
         FrameDescriptor settings = cachedFramesSettings.get(frameClass);
@@ -315,25 +273,6 @@ public class ConfigManager {
             cachedFramesSettings.put(frameClassName,getDefaultFramesSettings().get(frameClassName));
         }
         saveFrameSettings();
-    }
-
-    /**
-     * Save custom buttons config.
-     * @param buttons map of buttons data.(title,text to send)
-     */
-    public void saveButtonsConfig(List<ResponseButtonDescriptor> buttons){
-        cachedButtonsConfig = buttons;
-        JSONArray list = new JSONArray();
-        buttons.forEach((button)->{
-            JSONObject buttonConfig = new JSONObject();
-            buttonConfig.put("id",button.getId());
-            buttonConfig.put("title",button.getTitle());
-            buttonConfig.put("value",button.getResponseText());
-            buttonConfig.put("isKick",String.valueOf(button.isKick()));
-            buttonConfig.put("isClose",String.valueOf(button.isClose()));
-            list.add(buttonConfig);
-        });
-        saveProperty("buttons", list);
     }
 
     public void saveStashTabs(List<StashTab> tabs){
@@ -405,10 +344,6 @@ public class ConfigManager {
         this.checkUpdateOnStartUp = checkUpdateOnStartUp;
         saveProperty("checkUpdateOnStartUp", String.valueOf(this.checkUpdateOnStartUp));
     }
-    public void setDismissAfterKick(boolean dismissAfterKick) {
-        this.dismissAfterKick = dismissAfterKick;
-        saveProperty("dismissAfterKick", String.valueOf(this.dismissAfterKick));
-    }
 
     public void setFadeTime(int fadeTime) {
         this.fadeTime = fadeTime;
@@ -438,18 +373,6 @@ public class ConfigManager {
         this.gamePath = gamePath;
         saveProperty("gamePath",gamePath);
     }
-    public void setFlowDirection(String flowDirection) {
-        this.flowDirection = flowDirection;
-        saveProperty("flowDirection",flowDirection);
-    }
-    public void setLimitMsgCount(int limitMsgCount) {
-        this.limitMsgCount = limitMsgCount;
-        saveProperty("limitMsgCount",String.valueOf(this.limitMsgCount));
-    }
-    public void setExpandedMsgCount(int expandedMsgCount) {
-        this.expandedMsgCount = expandedMsgCount;
-        saveProperty("expandedMsgCount",String.valueOf(this.expandedMsgCount));
-    }
     public void setItemsGridEnable(boolean itemsGridEnable) {
         this.itemsGridEnable = itemsGridEnable;
         saveProperty("itemsGridEnable",String.valueOf(this.itemsGridEnable));
@@ -461,11 +384,6 @@ public class ConfigManager {
     public void setDndResponseText(String dndResponseText) {
         this.dndResponseText = dndResponseText;
         saveProperty("dndResponseText",dndResponseText);
-    }
-
-    public void setShowLeague(boolean showLeague) {
-        this.showLeague = showLeague;
-        saveProperty("showLeague",String.valueOf(this.showLeague));
     }
 
     public void setDefaultWords(String defaultWords) {

@@ -166,12 +166,10 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         next.setPreferredSize(componentsFactory.convertSize(dimension));
         close.setPreferredSize(componentsFactory.convertSize(dimension));
 
-        if(type.equals(NotesType.PATCH) && !ConfigManager.INSTANCE.isShowPatchNotes()){
+        if(type.equals(NotesType.PATCH)){
             navBar.add(donate);
             navBar.add(gitHub);
             navBar.add(download);
-        }else {
-            ConfigManager.INSTANCE.setShowPatchNotes(false);
         }
         if(currentNotes.size() == 1){
             navBar.add(close);

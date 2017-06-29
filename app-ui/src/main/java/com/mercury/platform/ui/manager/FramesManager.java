@@ -75,11 +75,6 @@ public class FramesManager implements AsSubscriber {
         this.framesMap.put(TooltipFrame.class,new TooltipFrame());
         this.framesMap.put(NotificationFrame.class,new NotificationFrame());
         this.framesMap.put(MercuryLoadingFrame.class,new MercuryLoadingFrame());
-        List<Note> patchNotes = notesLoader.getPatchNotes();
-        if(ConfigManager.INSTANCE.isShowPatchNotes() && patchNotes.size() != 0){
-            NotesFrame patchNotesFrame = new NotesFrame(patchNotes, NotesFrame.NotesType.PATCH);
-            patchNotesFrame.init();
-        }
         this.framesMap.put(ChatFilterFrame.class,new ChatFilterFrame());
         this.framesMap.put(UpdateReadyFrame.class,new UpdateReadyFrame());
         this.framesMap.put(TaskBarFrame.class,taskBarFrame);

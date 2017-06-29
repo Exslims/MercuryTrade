@@ -23,7 +23,11 @@ public class SoundConfigurationService extends BaseConfigurationService implemen
 
     @Override
     public SoundDescriptor get(String key) {
-        return this.selectedProfile.getSoundDescriptorMap().computeIfAbsent(key, k -> this.getDefault().get(key));
+        return this.selectedProfile.getSoundDescriptorMap().computeIfAbsent(key, k -> {
+            this.selectedProfile.getSoundDescriptorMap().put(key,this.getDefault().get(key));
+            MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
+            return this.getDefault().get(key);
+        });
     }
 
     @Override
