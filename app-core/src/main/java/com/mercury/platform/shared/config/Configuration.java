@@ -1,7 +1,7 @@
 package com.mercury.platform.shared.config;
 
 public class Configuration {
-    public static ConfigManager configManager;
+    private static ConfigManager configManager;
     public static ConfigManager get() {
         return configManager;
     }

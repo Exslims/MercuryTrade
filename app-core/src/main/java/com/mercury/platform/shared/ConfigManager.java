@@ -61,10 +61,6 @@ public class ConfigManager {
     private boolean inGameDnd = false;
     @Getter
     private String dndResponseText = "Response text";
-    @Getter
-    private String defaultWords = "!wtb, uber, boss, perandus";
-    @Getter
-    private String quickResponse = "invite me pls";
 
     public ConfigManager() {
         minimumFrameSize = new HashMap<>();
@@ -184,8 +180,6 @@ public class ConfigManager {
             checkUpdateOnStartUp = Boolean.valueOf(loadProperty("checkUpdateOnStartUp"));
             inGameDnd = Boolean.valueOf(loadProperty("inGameDnd"));
             dndResponseText = loadProperty("dndResponseText");
-            defaultWords = loadProperty("defaultWords");
-            quickResponse = loadProperty("quickResponse");
         } catch (Exception e) {
             logger.error("Error in loadConfigFile: ",e);
         }
@@ -357,10 +351,6 @@ public class ConfigManager {
         this.maxOpacity = maxOpacity;
         saveProperty("maxOpacity", String.valueOf(this.maxOpacity));
     }
-    public void setShowPatchNotes(boolean showPatchNotes) {
-        this.showPatchNotes = showPatchNotes;
-        saveProperty("showPatchNotes", String.valueOf(this.showPatchNotes));
-    }
     public void setShowOnStartUp(boolean showOnStartUp) {
         this.showOnStartUp = showOnStartUp;
         saveProperty("showOnStartUp", String.valueOf(this.showOnStartUp));
@@ -386,23 +376,6 @@ public class ConfigManager {
         saveProperty("dndResponseText",dndResponseText);
     }
 
-    public void setDefaultWords(String defaultWords) {
-        this.defaultWords = defaultWords;
-        saveProperty("defaultWords",defaultWords);
-    }
-    public void setQuickResponse(String quickResponse) {
-        this.quickResponse = quickResponse;
-        saveProperty("quickResponse",quickResponse);
-    }
-
-    private List<ResponseButtonDescriptor> getDefaultButtons(){
-        List<ResponseButtonDescriptor> defaultButtons = new ArrayList<>();
-        defaultButtons.add(new ResponseButtonDescriptor(0,false,false,"1m","one minute"));
-        defaultButtons.add(new ResponseButtonDescriptor(1,true,false,"thx","thanks"));
-        defaultButtons.add(new ResponseButtonDescriptor(2,false,false,"no thx", "no thanks"));
-        defaultButtons.add(new ResponseButtonDescriptor(3,false,false,"sold", "sold"));
-        return defaultButtons;
-    }
     public Map<String,FrameDescriptor> getDefaultFramesSettings(){
         Map<String, FrameDescriptor> defaultFramesSettings = new HashMap<>();
         defaultFramesSettings.put("TaskBarFrame",new FrameDescriptor(new Point(400, 500),new Dimension(109,20)));

@@ -1,6 +1,9 @@
 package com.mercury.platform.ui.components.panel.chat;
 
 import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.PlainConfigurationService;
+import com.mercury.platform.shared.config.descriptor.ScannerDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -18,6 +21,7 @@ import java.awt.event.MouseEvent;
 
 public class ChatMessagePanel extends JPanel implements HasUI{
     private ComponentsFactory componentsFactory;
+    private PlainConfigurationService<ScannerDescriptor> scannerService;
     private String message;
     private String nickName;
 
@@ -27,6 +31,7 @@ public class ChatMessagePanel extends JPanel implements HasUI{
             @NonNull String message) {
 
         super(new BorderLayout());
+        this.scannerService = Configuration.get().scannerConfiguration();
         this.nickName = nickName;
         this.message = message;
 
@@ -50,7 +55,7 @@ public class ChatMessagePanel extends JPanel implements HasUI{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    MercuryStoreCore.INSTANCE.chatCommandSubject.onNext("@" + nickName + " " + ConfigManager.INSTANCE.getQuickResponse());
+                    MercuryStoreCore.INSTANCE.chatCommandSubject.onNext("@" + nickName + " " + scannerService.get().getResponseMessage());
                 }
             }
         });

@@ -1,6 +1,10 @@
 package com.mercury.platform.ui.frame.titled.chat;
 
 import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.PlainConfigurationService;
+import com.mercury.platform.shared.config.descriptor.ScannerDescriptor;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
@@ -12,11 +16,13 @@ import java.awt.*;
 
 public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
     private ChatSettingsCallback callback;
+    private PlainConfigurationService<ScannerDescriptor> scannerService;
     private JTextField quickResponseField;
 
     public ChatFilterSettingsFrame(ChatSettingsCallback callback) {
         super();
         this.callback = callback;
+        this.scannerService = Configuration.get().scannerConfiguration();
         this.processingHideEvent = false;
         this.setFocusableWindowState(true);
         this.setFocusable(true);
@@ -38,7 +44,7 @@ public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
                 15f,
                 "Show messages containing the following words:");
         title.setBorder(BorderFactory.createEmptyBorder(2,0,6,0));
-        JTextArea words = componentsFactory.getSimpleTextArea(ConfigManager.INSTANCE.getDefaultWords());
+        JTextArea words = componentsFactory.getSimpleTextArea(this.scannerService.get().getWords());
         words.setEditable(true);
         words.setCaretColor(AppThemeColor.TEXT_DEFAULT);
         words.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
@@ -48,8 +54,9 @@ public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
         Dimension buttonSize = new Dimension(90, 24);
         JButton save = componentsFactory.getBorderedButton("Save");
         save.addActionListener(action -> {
-            ConfigManager.INSTANCE.setDefaultWords(words.getText());
-            ConfigManager.INSTANCE.setQuickResponse(quickResponseField.getText());
+            this.scannerService.get().setWords(words.getText());
+            this.scannerService.get().setResponseMessage(quickResponseField.getText());
+            MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
 
             String chunkStr = StringUtils.deleteWhitespace(words.getText());
             String[] split = chunkStr.split(",");
@@ -94,7 +101,7 @@ public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
         root.setBackground(AppThemeColor.SLIDE_BG);
 
         JButton quickResponse = componentsFactory.getIconButton("app/chat_scanner_response.png", 18f, AppThemeColor.SLIDE_BG, "Quick response");
-        this.quickResponseField = componentsFactory.getTextField(ConfigManager.INSTANCE.getQuickResponse(),FontStyle.REGULAR,16f);
+        this.quickResponseField = componentsFactory.getTextField(this.scannerService.get().getResponseMessage(),FontStyle.REGULAR,16f);
         this.quickResponseField.setBackground(AppThemeColor.SLIDE_BG);
         this.quickResponseField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.HEADER,1),

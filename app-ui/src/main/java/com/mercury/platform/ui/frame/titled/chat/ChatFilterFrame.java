@@ -3,7 +3,10 @@ package com.mercury.platform.ui.frame.titled.chat;
 import com.mercury.platform.core.utils.interceptor.MessageInterceptor;
 import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
 import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
+import com.mercury.platform.shared.config.descriptor.ScannerDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.chat.ChatFilterPanel;
@@ -21,6 +24,7 @@ import java.util.List;
 
 public class ChatFilterFrame extends AbstractTitledComponentFrame {
     private ChatFilterSettingsFrame settingsFrame;
+    private PlainConfigurationService<ScannerDescriptor> scannerService;
     private ChatFilterPanel msgContainer;
     private MessageInterceptor interceptor;
     private JPanel toolbar;
@@ -31,6 +35,7 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
 
     public ChatFilterFrame() {
         super();
+        this.scannerService = Configuration.get().scannerConfiguration();
         FrameDescriptor frameDescriptor = configManager.getFrameSettings(this.getClass().getSimpleName());
         this.setPreferredSize(frameDescriptor.getFrameSize());
         this.settingsFrame = new ChatFilterSettingsFrame(strings -> {
@@ -88,7 +93,7 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
                 },
                 () -> {
                     chatEnable = true;
-                    String chunkStr = StringUtils.deleteWhitespace(ConfigManager.INSTANCE.getDefaultWords());
+                    String chunkStr = StringUtils.deleteWhitespace(this.scannerService.get().getWords());
                     String[] split = chunkStr.split(",");
                     performNewStrings(split);
                     enableButton.setText("Stop");
