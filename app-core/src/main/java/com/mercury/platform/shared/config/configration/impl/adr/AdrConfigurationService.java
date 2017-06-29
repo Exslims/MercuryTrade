@@ -1,22 +1,22 @@
 package com.mercury.platform.shared.config.configration.impl.adr;
 
 
-import com.mercury.platform.shared.config.ConfigurationSource;
 import com.mercury.platform.shared.config.configration.BaseConfigurationService;
 import com.mercury.platform.shared.config.configration.ListConfigurationService;
+import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
 import com.mercury.platform.shared.entity.adr.AdrIconDescriptor;
 import com.mercury.platform.shared.entity.adr.AdrGroupDescriptor;
 import com.mercury.platform.shared.entity.adr.AdrProfile;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 public class AdrConfigurationService extends BaseConfigurationService implements ListConfigurationService<AdrProfile>{
-    public AdrConfigurationService(ConfigurationSource dataSource) {
-        super(dataSource);
+    public AdrConfigurationService(ProfileDescriptor selectedProfile) {
+        super(selectedProfile);
     }
+
     @Override
     public List<AdrProfile> getEntities() {
         AdrProfile profile = new AdrProfile();
@@ -38,18 +38,19 @@ public class AdrConfigurationService extends BaseConfigurationService implements
         return Arrays.asList(profile);
     }
 
-    @Override
-    public void load() throws IOException {
-
-    }
-
-    @Override
-    public void save() {
-
-    }
 
     @Override
     public AdrProfile getDefault() {
         return null;
+    }
+
+    @Override
+    public void toDefault() {
+
+    }
+
+    @Override
+    public void validate() {
+
     }
 }

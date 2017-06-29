@@ -1,16 +1,14 @@
 package com.mercury.platform.shared.config.configration;
 
-import com.mercury.platform.shared.config.ConfigurationSource;
-import com.mercury.platform.shared.config.JSONHelper;
+import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
+import lombok.Getter;
+import lombok.Setter;
 
 
-public abstract class BaseConfigurationService<T> {
-    protected ConfigurationSource dataSource;
-    protected JSONHelper jsonHelper;
-    protected T data;
-
-    protected BaseConfigurationService(ConfigurationSource dataSource){
-        this.dataSource = dataSource;
-        this.jsonHelper = new JSONHelper(dataSource);
+public abstract class BaseConfigurationService {
+    @Getter @Setter
+    protected ProfileDescriptor selectedProfile;
+    public BaseConfigurationService(ProfileDescriptor selectedProfile){
+        this.selectedProfile = selectedProfile;
     }
 }

@@ -1,43 +1,35 @@
 package com.mercury.platform.shared.config.configration.impl;
 
-import com.google.gson.reflect.TypeToken;
-import com.mercury.platform.shared.config.ConfigurationSource;
 import com.mercury.platform.shared.config.configration.BaseConfigurationService;
 import com.mercury.platform.shared.config.configration.KeyValueConfigurationService;
+import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
 import com.mercury.platform.shared.config.descriptor.SoundDescriptor;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 
 import java.util.*;
 
 
-public class SoundConfigurationService extends BaseConfigurationService<Map<String,SoundDescriptor>> implements KeyValueConfigurationService<SoundDescriptor,String> {
-    private static final String OBJECT_KEY = "soundConfiguration";
-    public SoundConfigurationService(ConfigurationSource dataSource) {
-        super(dataSource);
+public class SoundConfigurationService extends BaseConfigurationService implements KeyValueConfigurationService<SoundDescriptor,String> {
+    public SoundConfigurationService(ProfileDescriptor selectedProfile) {
+        super(selectedProfile);
     }
 
     @Override
-    public void load(){
-        this.data = jsonHelper.readMapData(OBJECT_KEY, new TypeToken<Map<String, SoundDescriptor>>() {});
-        if(data == null) {
-            this.toDefault();
+    public void validate() {
+        if(this.selectedProfile.getSoundDescriptorMap() == null) {
+            this.selectedProfile.setSoundDescriptorMap(this.getDefault());
         }
     }
 
     @Override
     public SoundDescriptor get(String key) {
-        return this.data.computeIfAbsent(key, k -> this.getDefault().get(key));
+        return this.selectedProfile.getSoundDescriptorMap().computeIfAbsent(key, k -> this.getDefault().get(key));
     }
 
     @Override
     public Map<String, SoundDescriptor> getMap() {
-        return this.data;
+        return this.selectedProfile.getSoundDescriptorMap();
     }
-
-    @Override
-    public void save() {
-        jsonHelper.writeMapObject(OBJECT_KEY,this.data);
-    }
-
 
     @Override
     public Map<String, SoundDescriptor> getDefault() {
@@ -51,8 +43,6 @@ public class SoundConfigurationService extends BaseConfigurationService<Map<Stri
 
     @Override
     public void toDefault() {
-        Map<String, SoundDescriptor> defaultSt = this.getDefault();
-        this.data = defaultSt;
-        jsonHelper.writeMapObject(OBJECT_KEY,defaultSt);
+        this.selectedProfile.setSoundDescriptorMap(this.getDefault());
     }
 }

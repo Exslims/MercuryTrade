@@ -4,11 +4,13 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 public class JSONHelper {
@@ -17,6 +19,22 @@ public class JSONHelper {
 
     public JSONHelper(ConfigurationSource dataSource){
         this.dataSource = dataSource;
+    }
+    public <T> List<T> readArrayData(TypeToken<List<T>> typeToken){
+        try {
+            Gson gson = new Gson();
+            JsonParser jsonParser = new JsonParser();
+            try(JsonReader reader = new JsonReader(new FileReader(dataSource.getConfigurationFilePath()))) {
+                return gson.fromJson(
+                        jsonParser.parse(reader),
+                        typeToken.getType());
+            }
+        }catch (IOException e){
+            logger.error(e);
+            return null;
+        }catch (IllegalStateException e1) {
+            return null;
+        }
     }
     public <T> T readMapData(String key,TypeToken<T> typeToken){
         try {
@@ -44,6 +62,17 @@ public class JSONHelper {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.add(key,gson.toJsonTree(object));
                 gson.toJson(jsonObject,writer);
+            }
+        }catch (IOException e){
+            logger.error(e);
+        }
+
+    }
+    public <T> void writeListObject(List<?> object, TypeToken<List<T>> typeToken){
+        try {
+            Gson gson = new Gson();
+            try(JsonWriter writer = new JsonWriter(new FileWriter(dataSource.getConfigurationFilePath()))) {
+                gson.toJson(object,typeToken.getType(),writer);
             }
         }catch (IOException e){
             logger.error(e);

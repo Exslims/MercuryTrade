@@ -1,7 +1,8 @@
 package com.mercury.platform.shared.config.descriptor;
 
-/**
- * Created by Константин on 29.06.2017.
- */
+import lombok.Data;
+
+@Data
 public class AdrProfileDescriptor {
+    private String profileName;
 }

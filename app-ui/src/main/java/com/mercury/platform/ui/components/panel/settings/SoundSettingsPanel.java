@@ -169,7 +169,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
                 .setDb((float)clicksSlider.getValue());
         map.get("update")
                 .setDb((float)updateSlider.getValue());
-        Configuration.get().soundConfiguration().save();
+        MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
         return true;
     }
 
