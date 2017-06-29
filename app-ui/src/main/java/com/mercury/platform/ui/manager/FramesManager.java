@@ -3,6 +3,7 @@ package com.mercury.platform.ui.manager;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.AsSubscriber;
+import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.frame.AbstractComponentFrame;
@@ -170,7 +171,7 @@ public class FramesManager implements AsSubscriber {
     }
     public void restoreDefaultLocation(){
         this.framesMap.forEach((k,v) -> {
-            FrameDescriptor settings = ConfigManager.INSTANCE.getDefaultFramesSettings().get(k.getSimpleName());
+            FrameDescriptor settings = Configuration.get().framesConfiguration().get(k.getSimpleName());
             if(!v.getClass().equals(ItemsGridFrame.class) && settings != null){
                 v.setLocation(settings.getFrameLocation());
                 if(v instanceof AbstractMovableComponentFrame){

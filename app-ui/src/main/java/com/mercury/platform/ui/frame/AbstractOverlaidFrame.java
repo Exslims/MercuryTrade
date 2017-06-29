@@ -3,8 +3,11 @@ package com.mercury.platform.ui.frame;
 import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.AsSubscriber;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.impl.FramesConfigurationService;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
+import com.mercury.platform.ui.frame.other.MercuryLoadingFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,13 +22,16 @@ public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscrib
     protected FrameVisibleState prevState;
     protected boolean processingHideEvent = true;
 
-    protected ComponentsFactory componentsFactory;
+    protected ComponentsFactory componentsFactory = new ComponentsFactory();
     protected ConfigManager configManager = ConfigManager.INSTANCE;
+    protected FramesConfigurationService framesService;
 
     protected LayoutManager layout;
     protected AbstractOverlaidFrame(){
         super("MercuryTrade");
-        this.componentsFactory = new ComponentsFactory();
+        if(!this.getClass().equals(MercuryLoadingFrame.class)) {
+            this.framesService = Configuration.get().framesConfiguration();
+        }
         this.getRootPane().setOpaque(false);
         this.setUndecorated(true);
         this.setLocationRelativeTo(null);

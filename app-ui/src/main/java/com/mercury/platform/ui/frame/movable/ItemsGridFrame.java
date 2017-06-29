@@ -302,7 +302,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            Dimension size = configManager.getMinimumFrameSize(ItemsGridFrame.this.getClass().getSimpleName());
+            Dimension size = framesService.getMinimumSize(ItemsGridFrame.this.getClass().getSimpleName());
             ItemsGridFrame.this.setMinimumSize(size);
             panel.setBackground(AppThemeColor.TEXT_DISABLE);
         }
@@ -313,7 +313,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
             ItemsGridFrame.this.setMaximumSize(size);
             ItemsGridFrame.this.setMinimumSize(size);
             panel.setBackground(AppThemeColor.FRAME);
-            configManager.saveFrameSize(ItemsGridFrame.class.getSimpleName(),getSize());
+            framesService.get(ItemsGridFrame.class.getSimpleName()).setFrameSize(getSize());
         }
 
         @Override

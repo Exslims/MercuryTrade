@@ -25,7 +25,7 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
     private JPanel mainContainer;
     public HistoryFrame() {
         super();
-        FrameDescriptor frameDescriptor = configManager.getFrameSettings(this.getClass().getSimpleName());
+        FrameDescriptor frameDescriptor = this.framesService.get(this.getClass().getSimpleName());
         this.setPreferredSize(frameDescriptor.getFrameSize());
         this.componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("other"));
     }

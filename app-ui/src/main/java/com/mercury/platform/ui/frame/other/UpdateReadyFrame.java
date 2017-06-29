@@ -71,7 +71,7 @@ public class UpdateReadyFrame extends AbstractOverlaidFrame {
     @Override
     public void subscribe() {
         MercuryStoreCore.INSTANCE.updateInfoSubject.subscribe(version -> {
-            FrameDescriptor tbSettings = ConfigManager.INSTANCE.getFrameSettings("TaskBarFrame");
+            FrameDescriptor tbSettings = this.framesService.get("TaskBarFrame");
             Point tbLocation = tbSettings.getFrameLocation();
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
             if(tbLocation.y + 30 + this.getHeight() > dim.height){

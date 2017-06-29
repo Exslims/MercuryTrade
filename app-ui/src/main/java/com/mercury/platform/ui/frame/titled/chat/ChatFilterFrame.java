@@ -36,7 +36,7 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
     public ChatFilterFrame() {
         super();
         this.scannerService = Configuration.get().scannerConfiguration();
-        FrameDescriptor frameDescriptor = configManager.getFrameSettings(this.getClass().getSimpleName());
+        FrameDescriptor frameDescriptor = this.framesService.get(this.getClass().getSimpleName());
         this.setPreferredSize(frameDescriptor.getFrameSize());
         this.settingsFrame = new ChatFilterSettingsFrame(strings -> {
             if(chatEnable){

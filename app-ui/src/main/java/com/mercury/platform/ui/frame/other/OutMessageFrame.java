@@ -37,13 +37,13 @@ public class OutMessageFrame extends AbstractComponentFrame {
                 y = e.getY();
             }
         });
-        whisperLabel.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                OutMessageFrame.this.setLocation(e.getLocationOnScreen().x -x,e.getLocationOnScreen().y -y);
-                configManager.saveFrameLocation(OutMessageFrame.this.getClass().getSimpleName(),OutMessageFrame.this.getLocation());
-            }
-        });
+//        whisperLabel.addMouseMotionListener(new MouseAdapter() {
+//            @Override
+//            public void mouseDragged(MouseEvent e) {
+//                OutMessageFrame.this.setLocation(e.getLocationOnScreen().x -x,e.getLocationOnScreen().y -y);
+//                configManager.saveFrameLocation(OutMessageFrame.this.getClass().getSimpleName(),OutMessageFrame.this.getLocation());
+//            }
+//        });
 
         JPanel interactionPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));

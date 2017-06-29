@@ -34,8 +34,6 @@ public class ConfigManager {
 
     private final String CONFIG_FILE_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade";
     private final String CONFIG_FILE = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\app-config.json";
-    private Map<String, FrameDescriptor> cachedFramesSettings;
-    private Map<String,Dimension> minimumFrameSize;
     private Map<String,Object> defaultAppSettings;
 
     @Getter
@@ -62,46 +60,6 @@ public class ConfigManager {
     @Getter
     private String dndResponseText = "Response text";
 
-    public ConfigManager() {
-        minimumFrameSize = new HashMap<>();
-        minimumFrameSize.put("TaskBarFrame",new Dimension(109,20));
-        minimumFrameSize.put("MessageFrame",new Dimension(360,10));
-        minimumFrameSize.put("OutMessageFrame",new Dimension(280,115));
-        minimumFrameSize.put("TestCasesFrame",new Dimension(400,100));
-        minimumFrameSize.put("SettingsFrame",new Dimension(540,400));
-        minimumFrameSize.put("HistoryFrame",new Dimension(280,400));
-        minimumFrameSize.put("TimerFrame",new Dimension(240,102));
-        minimumFrameSize.put("ChatFilterFrame",new Dimension(400,100));
-        minimumFrameSize.put("ItemsGridFrame",new Dimension(150,150));
-        minimumFrameSize.put("NotesFrame",new Dimension(540,100));
-        minimumFrameSize.put("ChatFilterSettingsFrame",new Dimension(300,200));
-        minimumFrameSize.put("GamePathChooser",new Dimension(600,30));
-        minimumFrameSize.put("CurrencySearchFrame",new Dimension(400,300));
-        minimumFrameSize.put("AdrManagerFrame",new Dimension(400,300));
-        minimumFrameSize.put("AdrCellSettingsFrame",new Dimension(300,210));
-
-        defaultAppSettings = new HashMap<>();
-        defaultAppSettings.put("fadeTime",0);
-        defaultAppSettings.put("minOpacity",100);
-        defaultAppSettings.put("maxOpacity",100);
-        defaultAppSettings.put("showOnStartUp",true);
-        defaultAppSettings.put("showPatchNotes",false);
-        defaultAppSettings.put("whisperNotifier",WhisperNotifierStatus.ALWAYS);
-        defaultAppSettings.put("gamePath","");
-        defaultAppSettings.put("flowDirection","DOWNWARDS");
-        defaultAppSettings.put("tradeMode","DEFAULT");
-        defaultAppSettings.put("limitMsgCount",3);
-        defaultAppSettings.put("expandedMsgCount",2);
-        defaultAppSettings.put("itemsGridEnable",true);
-        defaultAppSettings.put("checkUpdateOnStartUp",true);
-        defaultAppSettings.put("dismissAfterKick",false);
-        defaultAppSettings.put("inGameDnd",false);
-        defaultAppSettings.put("showLeague",false);
-        defaultAppSettings.put("dndResponseText","Response text");
-        defaultAppSettings.put("defaultWords","!wtb, uber, boss, perandus");
-        defaultAppSettings.put("quickResponse","invite me pls");
-
-    }
 
     /**
      * Loading application data from app-config.json file. If file does not exist, created and filled by default.
@@ -123,8 +81,6 @@ public class ConfigManager {
                 fileWriter.flush();
                 fileWriter.close();
 
-                cachedFramesSettings = getDefaultFramesSettings();
-                saveFrameSettings();
 
                 saveProperty("fadeTime",String.valueOf(defaultAppSettings.get("fadeTime")));
                 saveProperty("minOpacity",String.valueOf(defaultAppSettings.get("minOpacity")));
@@ -155,20 +111,7 @@ public class ConfigManager {
         }
     }
     private void loadConfigFile(){
-        JSONParser parser = new JSONParser();
         try {
-            JSONObject root = (JSONObject) parser.parse(new FileReader(CONFIG_FILE));
-            JSONArray framesSetting = (JSONArray) root.get("framesSettings");
-            cachedFramesSettings = new HashMap<>();
-            for (JSONObject next : (Iterable<JSONObject>) framesSetting) {
-                JSONObject location = (JSONObject) next.get("location");
-                JSONObject size = (JSONObject) next.get("size");
-                FrameDescriptor settings = new FrameDescriptor(
-                        new Point(((Long)location.get("frameX")).intValue(), ((Long)location.get("frameY")).intValue()),
-                        new Dimension(((Long)size.get("width")).intValue(),((Long)size.get("height")).intValue())
-                );
-                cachedFramesSettings.put((String) next.get("frameClassName"), settings);
-            }
             whisperNotifier = WhisperNotifierStatus.valueOf(loadProperty("whisperNotifier"));
             fadeTime = Long.valueOf(loadProperty("fadeTime")).intValue();
             minOpacity = Long.valueOf(loadProperty("minOpacity")).intValue();
@@ -185,27 +128,6 @@ public class ConfigManager {
         }
     }
 
-    private void saveFrameSettings(){
-        JSONArray frames = new JSONArray();
-        cachedFramesSettings.forEach((frameName,frameSettings)->{
-            JSONObject object = new JSONObject();
-            JSONObject location = new JSONObject();
-            location.put("frameX",frameSettings.getFrameLocation().x);
-            location.put("frameY",frameSettings.getFrameLocation().y);
-
-            JSONObject size = new JSONObject();
-            size.put("width",frameSettings.getFrameSize().width);
-            size.put("height",frameSettings.getFrameSize().height);
-
-            object.put("location",location);
-            object.put("size",size);
-            object.put("frameClassName", frameName);
-
-            frames.add(object);
-        });
-
-        saveProperty("framesSettings",frames);
-    }
     private String loadProperty(String key){
         JSONParser parser = new JSONParser();
         try {
@@ -240,33 +162,6 @@ public class ConfigManager {
             logger.error("Error in ConfigManager.saveProperty with \"" + token + "\" token.",e);
         }
 
-    }
-
-    public FrameDescriptor getFrameSettings(String frameClass){
-        FrameDescriptor settings = cachedFramesSettings.get(frameClass);
-        if(settings == null) {
-            FrameDescriptor defaultSettings = getDefaultFramesSettings().get(frameClass);
-            if(defaultSettings != null) {
-                cachedFramesSettings.put(frameClass, defaultSettings);
-                saveFrameSettings();
-            }
-        }
-        return cachedFramesSettings.get(frameClass);
-    }
-    public void saveFrameLocation(String frameClassName, Point point) {
-        FrameDescriptor settings = cachedFramesSettings.get(frameClassName);
-        settings.setFrameLocation(point);
-        saveFrameSettings();
-    }
-
-    public void saveFrameSize(String frameClassName, Dimension size){
-        try {
-            FrameDescriptor settings = cachedFramesSettings.get(frameClassName);
-            settings.setFrameSize(size);
-        }catch (NullPointerException e){
-            cachedFramesSettings.put(frameClassName,getDefaultFramesSettings().get(frameClassName));
-        }
-        saveFrameSettings();
     }
 
     public void saveStashTabs(List<StashTab> tabs){
@@ -374,29 +269,6 @@ public class ConfigManager {
     public void setDndResponseText(String dndResponseText) {
         this.dndResponseText = dndResponseText;
         saveProperty("dndResponseText",dndResponseText);
-    }
-
-    public Map<String,FrameDescriptor> getDefaultFramesSettings(){
-        Map<String, FrameDescriptor> defaultFramesSettings = new HashMap<>();
-        defaultFramesSettings.put("TaskBarFrame",new FrameDescriptor(new Point(400, 500),new Dimension(109,20)));
-        defaultFramesSettings.put("MessageFrame",new FrameDescriptor(new Point(700, 600),new Dimension(315,0)));
-        defaultFramesSettings.put("OutMessageFrame",new FrameDescriptor(new Point(200, 500),new Dimension(280,115)));
-        defaultFramesSettings.put("TestCasesFrame",new FrameDescriptor(new Point(1400, 500),new Dimension(400,100)));
-        defaultFramesSettings.put("SettingsFrame",new FrameDescriptor(new Point(600, 600),new Dimension(540,500)));
-        defaultFramesSettings.put("HistoryFrame",new FrameDescriptor(new Point(600, 500),new Dimension(280,400)));
-        defaultFramesSettings.put("TimerFrame",new FrameDescriptor(new Point(400, 600),new Dimension(240,102)));
-        defaultFramesSettings.put("ChatFilterFrame",new FrameDescriptor(new Point(400, 600),new Dimension(500,300)));
-        defaultFramesSettings.put("ItemsGridFrame",new FrameDescriptor(new Point(12, 79),new Dimension(641,718)));
-        defaultFramesSettings.put("NotesFrame",new FrameDescriptor(new Point(400, 600),new Dimension(540,100)));
-        defaultFramesSettings.put("ChatFilterSettingsFrame",new FrameDescriptor(new Point(400, 600),new Dimension(320,200)));
-        defaultFramesSettings.put("GamePathChooser",new FrameDescriptor(new Point(400, 600),new Dimension(520,30)));
-        defaultFramesSettings.put("CurrencySearchFrame",new FrameDescriptor(new Point(400, 600),new Dimension(400,300)));
-        defaultFramesSettings.put("AdrManagerFrame",new FrameDescriptor(new Point(400, 600),new Dimension(400,300)));
-        defaultFramesSettings.put("AdrCellSettingsFrame",new FrameDescriptor(new Point(400, 600),new Dimension(300,210)));
-        return defaultFramesSettings;
-    }
-    public Dimension getMinimumFrameSize(String frameName){
-        return minimumFrameSize.get(frameName);
     }
     public boolean isValidGamePath(String gamePath){
         File file = new File(gamePath + File.separator + "logs" + File.separator + "Client.txt");

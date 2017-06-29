@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.frame;
 
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.manager.HideSettingsManager;
 import org.pushingpixels.trident.Timeline;
@@ -48,7 +49,7 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
         this.addMouseMotionListener(new ResizeByWidthMouseMotionListener());
         HideSettingsManager.INSTANCE.registerFrame(this);
 
-        FrameDescriptor frameDescriptor = configManager.getFrameSettings(this.getClass().getSimpleName());
+        FrameDescriptor frameDescriptor = this.framesService.get(this.getClass().getSimpleName());
         if(frameDescriptor != null) {
             this.setLocation(frameDescriptor.getFrameLocation());
             this.setSize(frameDescriptor.getFrameSize());
@@ -101,7 +102,9 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
         this.hideAnimation.addPropertyToInterpolate("opacity",this.maxOpacity,this.minOpacity);
     }
     public void onLocationChange(Point location){
-        this.configManager.saveFrameLocation(this.getClass().getSimpleName(),location);
+        FrameDescriptor frameDescriptor = this.framesService.getMap().get(this.getClass().getSimpleName());
+        frameDescriptor.setFrameLocation(location);
+        MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
     }
     protected void onFrameDragged(Point location){
         this.setLocation(location);
@@ -154,18 +157,21 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
                 hideTimer.start();
             }
             Dimension size = AbstractComponentFrame.this.getSize();
+            FrameDescriptor frameDescriptor = framesService.getMap().get(AbstractComponentFrame.this.getClass().getSimpleName());
             if(EResizeSpace){
                 AbstractComponentFrame.this.setMaximumSize(size);
                 AbstractComponentFrame.this.setMinimumSize(size);
                 if(AbstractComponentFrame.this.getClass().getSimpleName().equals("MessageFrame")){
-                    configManager.saveFrameSize(AbstractComponentFrame.this.getClass().getSimpleName(),new Dimension(size.width,0));
+                    frameDescriptor.setFrameSize(new Dimension(size.width,0));
                 }else {
-                    configManager.saveFrameSize(AbstractComponentFrame.this.getClass().getSimpleName(), size);
+                    frameDescriptor.setFrameSize(size);
                 }
+                MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
             }else if(SEResizeSpace){
                 AbstractComponentFrame.this.setMinimumSize(size);
                 AbstractComponentFrame.this.setMaximumSize(size);
-                configManager.saveFrameSize(AbstractComponentFrame.this.getClass().getSimpleName(),AbstractComponentFrame.this.getSize());
+                frameDescriptor.setFrameSize(AbstractComponentFrame.this.getSize());
+                MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
             }
             EResizeSpace = false;
             SEResizeSpace = false;
@@ -179,7 +185,7 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
         @Override
         public void mousePressed(MouseEvent e) {
             if(EResizeSpace || SEResizeSpace) {
-                Dimension size = configManager.getMinimumFrameSize(AbstractComponentFrame.this.getClass().getSimpleName());
+                Dimension size = framesService.getMinimumSize(AbstractComponentFrame.this.getClass().getSimpleName());
                 AbstractComponentFrame.this.setMinimumSize(size);
             }
         }

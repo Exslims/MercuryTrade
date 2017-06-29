@@ -424,7 +424,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
         this.hideComponent();
         switch (flowDirections){
             case DOWNWARDS:{
-                this.setLocation(ConfigManager.INSTANCE.getFrameSettings(this.getClass().getSimpleName()).getFrameLocation());
+                this.setLocation(this.framesService.get(this.getClass().getSimpleName()).getFrameLocation());
                 break;
             }
             case UPWARDS:{
