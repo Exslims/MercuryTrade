@@ -1,6 +1,5 @@
-package com.mercury.platform.shared.config.configration.impl;
+package com.mercury.platform.shared.config.configration;
 
-import com.mercury.platform.shared.config.configration.KeyValueConfigurationService;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 
 import java.awt.*;

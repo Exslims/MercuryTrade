@@ -3,7 +3,6 @@ package com.mercury.platform.shared.store;
 import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.KeyValueConfigurationService;
@@ -25,7 +24,7 @@ public class DataTransformers {
             switch (soundType){
                 case MESSAGE:{
                     SoundDescriptor desc = soundService.get("notification");
-                    WhisperNotifierStatus status = ConfigManager.INSTANCE.getWhisperNotifier();
+                    WhisperNotifierStatus status = Configuration.get().applicationConfiguration().get().getNotifierStatus();
                     if (status == WhisperNotifierStatus.ALWAYS ||
                             ((status == WhisperNotifierStatus.ALTAB) && (AppStarter.APP_STATUS == FrameVisibleState.HIDE))) {
                         return desc;

@@ -3,6 +3,8 @@ package com.mercury.platform.shared.config.descriptor;
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 public class ApplicationDescriptor {
     private WhisperNotifierStatus notifierStatus;

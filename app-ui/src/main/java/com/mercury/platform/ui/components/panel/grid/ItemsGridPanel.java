@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.components.panel.grid;
 
 import com.mercury.platform.shared.entity.message.ItemMessage;
-import com.mercury.platform.shared.entity.StashTab;
+import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
@@ -90,15 +90,15 @@ public class ItemsGridPanel extends JPanel implements HasUI {
         if (!tabButtons.containsKey(nickname + message.getTabName())) {
             int x = message.getLeft();
             int y = message.getTop();
-            StashTab stashTab;
+            StashTabDescriptor stashTabDescriptor;
             if(stashTabsContainer.containsTab(message.getTabName())) {
-                stashTab = stashTabsContainer.getStashTab(message.getTabName());
+                stashTabDescriptor = stashTabsContainer.getStashTab(message.getTabName());
             }else {
-                stashTab = new StashTab(message.getTabName(),false,true);
+                stashTabDescriptor = new StashTabDescriptor(message.getTabName(),false,true);
             }
-            Optional<ItemCell> cellByCoordinates = getCellByCoordinates(stashTab, x, y);
+            Optional<ItemCell> cellByCoordinates = getCellByCoordinates(stashTabDescriptor, x, y);
             if(cellByCoordinates.isPresent()) {
-                ItemInfoPanel cellHeader = createGridItem(message, cellByCoordinates.get(), stashTab);
+                ItemInfoPanel cellHeader = createGridItem(message, cellByCoordinates.get(), stashTabDescriptor);
                 if(controller != null){
                     cellHeader.setController(controller);
                 }
@@ -115,7 +115,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
         ItemCell itemCell = itemInfoPanel.getItemCell();
         int x = itemCell.getX();
         int y = itemCell.getY();
-        Optional<ItemCell> cellByCoordinates = getCellByCoordinates(itemInfoPanel.getStashTab(), x, y);
+        Optional<ItemCell> cellByCoordinates = getCellByCoordinates(itemInfoPanel.getStashTabDescriptor(), x, y);
         cellByCoordinates.ifPresent(itemCell1 -> itemInfoPanel.setCell(itemCell1.getCell()));
         MercuryStoreUI.INSTANCE.repaintSubject.onNext(ItemsGridFrame.class);
     }
@@ -138,7 +138,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
         return root;
     }
 
-    private Optional<ItemCell> getCellByCoordinates(@NonNull StashTab tab, int x, int y){
+    private Optional<ItemCell> getCellByCoordinates(@NonNull StashTabDescriptor tab, int x, int y){
         Optional<ItemCell> targetCell;
         if(x > 12 || y > 12) {
             tab.setQuad(true);
@@ -157,13 +157,13 @@ public class ItemsGridPanel extends JPanel implements HasUI {
         return targetCell;
     }
 
-    private ItemInfoPanel createGridItem(@NonNull ItemMessage message, @NonNull ItemCell cell, @NonNull StashTab stashTab){
-        ItemInfoPanel itemInfoPanel = new ItemInfoPanel(message,cell,stashTab,componentsFactory);
+    private ItemInfoPanel createGridItem(@NonNull ItemMessage message, @NonNull ItemCell cell, @NonNull StashTabDescriptor stashTabDescriptor){
+        ItemInfoPanel itemInfoPanel = new ItemInfoPanel(message,cell, stashTabDescriptor,componentsFactory);
         itemInfoPanel.setAlignmentY(SwingConstants.CENTER);
         itemInfoPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                if(stashTab.isQuad()){
+                if(stashTabDescriptor.isQuad()){
                     remove(((BorderLayout)getLayout()).getLayoutComponent(BorderLayout.CENTER));
                     add(quadTabGrid,BorderLayout.CENTER);
                 }else {
@@ -179,9 +179,9 @@ public class ItemsGridPanel extends JPanel implements HasUI {
         String nickname = message.getWhisperNickname();
         ItemInfoPanel itemInfoPanel = tabButtons.get(nickname + message.getTabName());
         if (itemInfoPanel != null) {
-            if(itemInfoPanel.getStashTab().isUndefined()){
-                itemInfoPanel.getStashTab().setUndefined(false);
-                stashTabsContainer.addTab(itemInfoPanel.getStashTab());
+            if(itemInfoPanel.getStashTabDescriptor().isUndefined()){
+                itemInfoPanel.getStashTabDescriptor().setUndefined(false);
+                stashTabsContainer.addTab(itemInfoPanel.getStashTabDescriptor());
                 stashTabsContainer.save();
             }
 

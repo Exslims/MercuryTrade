@@ -74,7 +74,7 @@ public abstract class AbstractScalableComponentFrame extends AbstractComponentFr
                         this.getBackground()
                 );
                 initDefaultView();
-                this.setLocation(this.framesService.get(this.getClass().getSimpleName()).getFrameLocation());
+                this.setLocation(this.framesConfig.get(this.getClass().getSimpleName()).getFrameLocation());
                 this.setMinimumSize(null);
                 this.setVisible(true);
                 this.onScaleUnlock();

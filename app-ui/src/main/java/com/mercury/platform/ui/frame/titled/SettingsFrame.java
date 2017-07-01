@@ -68,6 +68,7 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
                 }
             });
             if(successfullySaved) {
+                MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
                 hideComponent();
             }else {
                 successfullySaved = true;

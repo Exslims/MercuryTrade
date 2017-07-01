@@ -40,7 +40,7 @@ public class AdrConfigurationService extends BaseConfigurationService implements
 
 
     @Override
-    public AdrProfile getDefault() {
+    public List<AdrProfile> getDefault() {
         return null;
     }
 

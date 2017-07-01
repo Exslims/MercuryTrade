@@ -2,6 +2,7 @@ package com.mercury.platform.shared.config.descriptor;
 
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -13,4 +14,6 @@ public class ProfileDescriptor {
     private ApplicationDescriptor applicationDescriptor;
     private NotificationDescriptor notificationDescriptor;
     private ScannerDescriptor scannerDescriptor;
+    private Map<String,Float> scaleDataMap;
+    private List<StashTabDescriptor> stashTabDescriptors;
 }

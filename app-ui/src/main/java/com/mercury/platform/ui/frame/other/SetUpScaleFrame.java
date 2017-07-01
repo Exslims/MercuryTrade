@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.frame.other;
 
-import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
@@ -26,7 +26,7 @@ public class SetUpScaleFrame extends AbstractOverlaidFrame {
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1)));
 
-        this.scaleData = ConfigManager.INSTANCE.getScaleData();
+        this.scaleData = this.scaleConfig.getMap();
 
         JPanel rootPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         rootPanel.setBorder(BorderFactory.createEmptyBorder(6,6,0,6));
@@ -60,7 +60,7 @@ public class SetUpScaleFrame extends AbstractOverlaidFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 FramesManager.INSTANCE.disableScale();
-                ConfigManager.INSTANCE.saveScaleData(scaleData);
+                MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
                 MercuryStoreUI.INSTANCE.saveScaleSubject.onNext(scaleData);
             }
         });

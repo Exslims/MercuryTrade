@@ -1,16 +1,16 @@
 package com.mercury.platform.ui.frame;
 
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.config.Configuration;
-import com.mercury.platform.shared.config.configration.impl.FramesConfigurationService;
+import com.mercury.platform.shared.config.configration.FramesConfigurationService;
+import com.mercury.platform.shared.config.configration.KeyValueConfigurationService;
+import com.mercury.platform.shared.config.configration.PlainConfigurationService;
+import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.frame.other.MercuryLoadingFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,19 +18,21 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscriber {
-    private final Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
     protected FrameVisibleState prevState;
     protected boolean processingHideEvent = true;
 
     protected ComponentsFactory componentsFactory = new ComponentsFactory();
-    protected ConfigManager configManager = ConfigManager.INSTANCE;
-    protected FramesConfigurationService framesService;
+    protected FramesConfigurationService framesConfig;
+    protected PlainConfigurationService<ApplicationDescriptor> applicationConfig;
+    protected KeyValueConfigurationService<Float,String> scaleConfig;
 
     protected LayoutManager layout;
     protected AbstractOverlaidFrame(){
         super("MercuryTrade");
         if(!this.getClass().equals(MercuryLoadingFrame.class)) {
-            this.framesService = Configuration.get().framesConfiguration();
+            this.framesConfig = Configuration.get().framesConfiguration();
+            this.applicationConfig = Configuration.get().applicationConfiguration();
+            this.scaleConfig = Configuration.get().scaleConfiguration();
         }
         this.getRootPane().setOpaque(false);
         this.setUndecorated(true);

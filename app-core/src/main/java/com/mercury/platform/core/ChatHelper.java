@@ -1,7 +1,8 @@
 package com.mercury.platform.core;
 
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.AsSubscriber;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 
 import java.awt.*;
@@ -73,9 +74,10 @@ public class ChatHelper implements AsSubscriber {
         MercuryStoreCore.INSTANCE.chatCommandSubject.subscribe(this::executeMessage);
         MercuryStoreCore.INSTANCE.openChatSubject.subscribe(this::openChat);
         MercuryStoreCore.INSTANCE.dndSubject.subscribe(state -> {
-            if(ConfigManager.INSTANCE.isInGameDnd()){
+            ApplicationDescriptor config = Configuration.get().applicationConfiguration().get();
+            if(config.isInGameDnd()){
                 if(state) {
-                    executeMessage("/dnd " + ConfigManager.INSTANCE.getDndResponseText());
+                    executeMessage("/dnd " + config.getDndResponseText());
                 }else {
                     executeMessage("/dnd");
                 }

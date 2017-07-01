@@ -1,9 +1,9 @@
 package com.mercury.platform.ui.manager;
 
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.frame.AbstractComponentFrame;
@@ -85,16 +85,14 @@ public class FramesManager implements AsSubscriber {
 
         this.framesMap.forEach((k,v)-> v.init());
 
-        int decayTime = ConfigManager.INSTANCE.getFadeTime();
-        int maxOpacity = ConfigManager.INSTANCE.getMaxOpacity();
-        int minOpacity = ConfigManager.INSTANCE.getMinOpacity();
+        ApplicationDescriptor config = Configuration.get().applicationConfiguration().get();
         this.framesMap.forEach((k,frame) -> {
             if(frame instanceof AbstractComponentFrame) {
-                if (decayTime > 0) {
-                    ((AbstractComponentFrame)frame).enableHideEffect(decayTime, minOpacity, maxOpacity);
+                if (config.getFadeTime() > 0) {
+                    ((AbstractComponentFrame)frame).enableHideEffect(config.getFadeTime(), config.getMinOpacity(), config.getMaxOpacity());
                 } else {
                     ((AbstractComponentFrame)frame).disableHideEffect();
-                    frame.setOpacity(maxOpacity / 100f);
+                    frame.setOpacity(config.getMaxOpacity() / 100f);
                 }
             }
         });

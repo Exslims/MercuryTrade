@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.frame.titled;
 
 import com.mercury.platform.core.utils.FileMonitor;
-import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.apache.logging.log4j.LogManager;
@@ -94,7 +94,7 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(!readyToStart) {
-                    if (ConfigManager.INSTANCE.isValidGamePath(gamePath)) {
+                    if (isValidGamePath(gamePath)) {
                         readyToStart = true;
                         statusLabel.setText("Success!");
                         saveButton.setEnabled(false);
@@ -105,7 +105,8 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
                         Timer timer = new Timer(1000, null);
                         timer.addActionListener(actionEvent -> {
                             timer.stop();
-                            ConfigManager.INSTANCE.setGamePath(gamePath + File.separator);
+                            applicationConfig.get().setGamePath(gamePath + File.separator);
+                            MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
                             new FileMonitor().start();
                             FramesManager.INSTANCE.start();
                             setVisible(false);
@@ -123,7 +124,10 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
         miscPanel.add(closeButton);
         return miscPanel;
     }
-
+    private boolean isValidGamePath(String gamePath){
+        File file = new File(gamePath + File.separator + "logs" + File.separator + "Client.txt");
+        return file.exists();
+    }
 
     @Override
     public void subscribe() {

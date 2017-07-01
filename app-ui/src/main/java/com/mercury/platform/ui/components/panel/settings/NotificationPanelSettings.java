@@ -1,6 +1,5 @@
 package com.mercury.platform.ui.components.panel.settings;
 
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.NotificationDescriptor;

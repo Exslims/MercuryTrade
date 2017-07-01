@@ -1,6 +1,5 @@
 package com.mercury.platform.ui.frame.titled.container;
 
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
@@ -25,9 +24,9 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
     private JPanel mainContainer;
     public HistoryFrame() {
         super();
-        FrameDescriptor frameDescriptor = this.framesService.get(this.getClass().getSimpleName());
+        FrameDescriptor frameDescriptor = this.framesConfig.get(this.getClass().getSimpleName());
         this.setPreferredSize(frameDescriptor.getFrameSize());
-        this.componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("other"));
+        this.componentsFactory.setScale(this.scaleConfig.get("other"));
     }
 
     @Override

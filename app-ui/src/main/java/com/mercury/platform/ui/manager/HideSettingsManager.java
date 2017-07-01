@@ -1,6 +1,8 @@
 package com.mercury.platform.ui.manager;
 
-import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.frame.AbstractComponentFrame;
 
 import java.util.ArrayList;
@@ -16,9 +18,11 @@ public class HideSettingsManager {
         this.frames.add(frame);
     }
     public void apply(int fadeTime, int minOpacity, int maxOpacity){
-        ConfigManager.INSTANCE.setMinOpacity(minOpacity);
-        ConfigManager.INSTANCE.setMaxOpacity(maxOpacity);
-        ConfigManager.INSTANCE.setFadeTime(fadeTime);
+        ApplicationDescriptor config = Configuration.get().applicationConfiguration().get();
+        config.setMaxOpacity(maxOpacity);
+        config.setMinOpacity(minOpacity);
+        config.setFadeTime(fadeTime);
+        MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
 
         this.frames.forEach(frame -> {
             if(fadeTime > 0){

@@ -3,7 +3,6 @@ package com.mercury.platform.core;
 import com.mercury.platform.core.misc.SoundNotifier;
 import com.mercury.platform.core.update.UpdateClientStarter;
 import com.mercury.platform.core.utils.error.ErrorHandler;
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.UpdateManager;
@@ -32,8 +31,6 @@ public class AppStarter {
         BaseConfigManager configuration = new BaseConfigManager(new MercuryConfigurationSource());
         configuration.load();
         Configuration.set(configuration);
-
-        ConfigManager.INSTANCE.load();
         new SoundNotifier();
         new ChatHelper();
         new ErrorHandler();

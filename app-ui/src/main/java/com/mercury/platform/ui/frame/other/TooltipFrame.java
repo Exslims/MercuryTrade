@@ -1,6 +1,5 @@
 package com.mercury.platform.ui.frame.other;
 
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -14,7 +13,7 @@ public class TooltipFrame extends AbstractOverlaidFrame {
     private Timer tooltipTimer;
     public TooltipFrame() {
         super();
-        this.setOpacity(ConfigManager.INSTANCE.getMaxOpacity()/100f);
+        this.setOpacity(this.applicationConfig.get().getMaxOpacity()/100f);
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2)));

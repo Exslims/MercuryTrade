@@ -1,7 +1,6 @@
 package com.mercury.platform.core.utils;
 
-
-import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
@@ -31,10 +30,10 @@ public class FileMonitor {
         });
     }
     public void start(){
-        String gamePath = ConfigManager.INSTANCE.getGamePath();
+        String gamePath = Configuration.get().applicationConfiguration().get().getGamePath();
 
         File folder = new File(gamePath+"logs");
-        fileHandler = new MessageFileHandler(gamePath + "logs/Client.txt");
+        this.fileHandler = new MessageFileHandler(gamePath + "logs/Client.txt");
         FileAlterationObserver observer = new FileAlterationObserver(folder);
         monitor = new FileAlterationMonitor(POLLING_INTERVAL);
         FileAlterationListener listener = new FileAlterationListenerAdaptor(){

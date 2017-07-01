@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.frame.movable;
 
-import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.HorizontalScrollContainer;
@@ -24,8 +24,8 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
     private StashTabsContainer stashTabsContainer;
     public ItemsGridFrame() {
         super();
-        componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("itemcell"));
-        stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("itemcell"));
+        componentsFactory.setScale(this.scaleConfig.get("itemcell"));
+        stubComponentsFactory.setScale(this.scaleConfig.get("itemcell"));
         enableMouseOverBorder = false;
         processHideEffect = false;
         itemsGridPanel = new ItemsGridPanel(componentsFactory);
@@ -45,7 +45,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
     @Override
     public void subscribe() {
         MercuryStoreUI.INSTANCE.showItemGridSubject.subscribe(message -> {
-            if(this.configManager.isItemsGridEnable()) {
+            if(this.applicationConfig.get().isItemsGridEnable()) {
                 if (itemsGridPanel.getActiveTabsCount() == 0) {
                     this.setVisible(true);
                 }
@@ -65,7 +65,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
                 message -> itemsGridPanel.remove(message));
         MercuryStoreUI.INSTANCE.dismissTabInfoPanelSubject.subscribe(tabInfoPanel -> {
             tabsContainer.remove(tabInfoPanel);
-            stashTabsContainer.removeTab(tabInfoPanel.getStashTab());
+            stashTabsContainer.removeTab(tabInfoPanel.getStashTabDescriptor());
             this.repaint();
             this.pack();
         });
@@ -126,27 +126,27 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         tabType.setPreferredSize(new Dimension((int)(componentsFactory.getScale() * 70),tabType.getHeight()));
 
         labelPanel.add(tabType,BorderLayout.LINE_START);
-        Color titleColor = configManager.isItemsGridEnable()?AppThemeColor.TEXT_NICKNAME:AppThemeColor.TEXT_DISABLE;
+        Color titleColor = this.applicationConfig.get().isItemsGridEnable()?AppThemeColor.TEXT_NICKNAME:AppThemeColor.TEXT_DISABLE;
         JLabel titleLabel = componentsFactory.getTextLabel(FontStyle.BOLD, titleColor, TextAlignment.LEFTOP, 20f, "Align this grid(approximately)");
         labelPanel.add(titleLabel,BorderLayout.CENTER);
         headerPanel.add(labelPanel, BorderLayout.CENTER);
 
-        String title = (configManager.isItemsGridEnable())?"Disable" : "Enable";
+        String title = (this.applicationConfig.get().isItemsGridEnable())?"Disable" : "Enable";
         JButton disableButton = componentsFactory.getBorderedButton(title);
         disableButton.setPreferredSize(new Dimension((int)(90*componentsFactory.getScale()),(int)(24*componentsFactory.getScale())));
         componentsFactory.setUpToggleCallbacks(disableButton,
                 () -> {
                     disableButton.setText("Enable");
                     titleLabel.setForeground(AppThemeColor.TEXT_DISABLE);
-                    configManager.setItemsGridEnable(false);
+                    applicationConfig.get().setItemsGridEnable(false);
                     repaint();
                 },
                 () -> {
                     disableButton.setText("Disable");
                     titleLabel.setForeground(AppThemeColor.TEXT_NICKNAME);
-                    configManager.setItemsGridEnable(true);
+                    applicationConfig.get().setItemsGridEnable(true);
                     repaint();
-                },configManager.isItemsGridEnable());
+                },this.applicationConfig.get().isItemsGridEnable());
         JButton hideButton  = componentsFactory.getBorderedButton("Save");
         hideButton.setPreferredSize(new Dimension((int)(90*componentsFactory.getScale()),(int)(24*componentsFactory.getScale())));
         hideButton.addMouseListener(new MouseAdapter() {
@@ -154,6 +154,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
                     stashTabsContainer.save();
+                    MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
                     FramesManager.INSTANCE.disableMovement(ItemsGridFrame.class);
                 }
             }
@@ -188,7 +189,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
 
         savedTabsPanel.add(scrollPane,BorderLayout.CENTER);
         tabsContainer.getParent().setBackground(AppThemeColor.TRANSPARENT);
-        stashTabsContainer.getStashTabs().forEach(stashTab -> {
+        stashTabsContainer.getStashTabDescriptors().forEach(stashTab -> {
             TabInfoPanel tabInfoPanel = new TabInfoPanel(stashTab,componentsFactory);
             tabsContainer.add(tabInfoPanel);
         });
@@ -302,7 +303,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            Dimension size = framesService.getMinimumSize(ItemsGridFrame.this.getClass().getSimpleName());
+            Dimension size = framesConfig.getMinimumSize(ItemsGridFrame.this.getClass().getSimpleName());
             ItemsGridFrame.this.setMinimumSize(size);
             panel.setBackground(AppThemeColor.TEXT_DISABLE);
         }
@@ -313,7 +314,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
             ItemsGridFrame.this.setMaximumSize(size);
             ItemsGridFrame.this.setMinimumSize(size);
             panel.setBackground(AppThemeColor.FRAME);
-            framesService.get(ItemsGridFrame.class.getSimpleName()).setFrameSize(getSize());
+            framesConfig.get(ItemsGridFrame.class.getSimpleName()).setFrameSize(getSize());
         }
 
         @Override

@@ -1,33 +1,35 @@
 package com.mercury.platform.ui.components.panel.grid;
 
-import com.mercury.platform.shared.ConfigManager;
-import com.mercury.platform.shared.entity.StashTab;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.ListConfigurationService;
+import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 
 import java.util.List;
 public class StashTabsContainer {
-    private List<StashTab> stashTabs;
+    private ListConfigurationService<StashTabDescriptor> stashTabConfig;
     public StashTabsContainer() {
-        stashTabs = ConfigManager.INSTANCE.getStashTabs();
+        this.stashTabConfig = Configuration.get().stashTabConfiguration();
     }
-    public void addTab(StashTab tab){
-        stashTabs.add(tab);
-        save();
+    public void addTab(StashTabDescriptor tab){
+        this.stashTabConfig.getEntities().add(tab);
+        this.save();
     }
     public void save(){
-        ConfigManager.INSTANCE.saveStashTabs(stashTabs);
+        MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
     }
 
-    public List<StashTab> getStashTabs() {
-        return stashTabs;
+    public List<StashTabDescriptor> getStashTabDescriptors() {
+        return this.stashTabConfig.getEntities();
     }
     public boolean containsTab(String tabTitle){
-        return stashTabs.stream().anyMatch(tab -> tab.getTitle().equals(tabTitle));
+        return this.stashTabConfig.getEntities().stream().anyMatch(tab -> tab.getTitle().equals(tabTitle));
     }
-    public StashTab getStashTab(String tabTitle){
-        return stashTabs.stream().filter(tab -> tab.getTitle().equals(tabTitle)).findFirst().get();
+    public StashTabDescriptor getStashTab(String tabTitle){
+        return this.stashTabConfig.getEntities().stream().filter(tab -> tab.getTitle().equals(tabTitle)).findFirst().get();
     }
-    public void removeTab(StashTab tab){
-        stashTabs.remove(tab);
-        save();
+    public void removeTab(StashTabDescriptor tab){
+        this.stashTabConfig.getEntities().remove(tab);
+        this.save();
     }
 }

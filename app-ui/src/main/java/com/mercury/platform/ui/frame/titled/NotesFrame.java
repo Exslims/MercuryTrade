@@ -1,6 +1,5 @@
 package com.mercury.platform.ui.frame.titled;
 
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -35,8 +34,7 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         this.progressBarFrame = new ProgressBarFrame();
         this.progressBarFrame.init();
         if(type.equals(NotesType.INFO)) {
-            boolean showOnStartUp = ConfigManager.INSTANCE.isShowOnStartUp();
-            if (showOnStartUp) {
+            if (this.applicationConfig.get().isShowOnStartUp()) {
                 this.prevState = FrameVisibleState.SHOW;
             } else {
                 this.setVisible(false);
@@ -57,7 +55,7 @@ public class NotesFrame extends AbstractTitledComponentFrame {
 
         showOnStartUp = new JCheckBox();
         showOnStartUp.setBackground(AppThemeColor.TRANSPARENT);
-        showOnStartUp.setSelected(ConfigManager.INSTANCE.isShowOnStartUp());
+        showOnStartUp.setSelected(this.applicationConfig.get().isShowOnStartUp());
 
         JPanel showOnStartPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         showOnStartPanel.add(showOnStartUp);
@@ -150,7 +148,8 @@ public class NotesFrame extends AbstractTitledComponentFrame {
                 if(SwingUtilities.isLeftMouseButton(e)) {
                     NotesFrame.this.setVisible(false);
                     if (type.equals(NotesType.INFO)) {
-                        ConfigManager.INSTANCE.setShowOnStartUp(showOnStartUp.isSelected());
+                        applicationConfig.get().setShowOnStartUp(showOnStartUp.isSelected());
+                        MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
                         FramesManager.INSTANCE.enableMovementExclude(ItemsGridFrame.class);
                     }
                     prevState = FrameVisibleState.HIDE;

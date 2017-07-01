@@ -1,6 +1,7 @@
 package com.mercury.platform.shared.config.configration.impl;
 
 import com.mercury.platform.shared.config.configration.BaseConfigurationService;
+import com.mercury.platform.shared.config.configration.FramesConfigurationService;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;

@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.components.panel.grid;
 
-import com.mercury.platform.shared.entity.StashTab;
+import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
@@ -18,19 +18,19 @@ public class ItemInfoPanel extends JPanel implements HasUI{
     private ComponentsFactory componentsFactory;
     private ItemMessage message;
     private JPanel cell;
-    private StashTab stashTab;
+    private StashTabDescriptor stashTabDescriptor;
     private ItemCell itemCell;
     private Timer timer;
 
     private ItemInfoPanelController controller;
 
-    public ItemInfoPanel(ItemMessage message, ItemCell itemCell, StashTab stashTab, ComponentsFactory factory){
+    public ItemInfoPanel(ItemMessage message, ItemCell itemCell, StashTabDescriptor stashTabDescriptor, ComponentsFactory factory){
         this.componentsFactory = factory;
         this.controller = new ItemInfoPanelControllerImpl(message);
         this.message = message;
         this.cell = itemCell.getCell();
         this.itemCell = itemCell;
-        this.stashTab = stashTab;
+        this.stashTabDescriptor = stashTabDescriptor;
         setupMouseOverListener();
         createUI();
     }
@@ -57,12 +57,12 @@ public class ItemInfoPanel extends JPanel implements HasUI{
         JLabel tabLabel = componentsFactory.getTextLabel("Tab: " + message.getTabName());
         tabInfoPanel.add(tabLabel);
         tabInfoPanel.setBorder(BorderFactory.createEmptyBorder(-8,0,-6,0));
-        if(stashTab.isUndefined()) {
+        if(stashTabDescriptor.isUndefined()) {
             JCheckBox isItQuad = componentsFactory.getCheckBox(TooltipConstants.IS_IT_QUAD);
             tabInfoPanel.add(isItQuad);
 
             isItQuad.addActionListener(action->{
-                stashTab.setQuad(isItQuad.isSelected());
+                stashTabDescriptor.setQuad(isItQuad.isSelected());
                 if (timer != null && timer.isRunning()) {
                     timer.stop();
                 }
@@ -109,12 +109,12 @@ public class ItemInfoPanel extends JPanel implements HasUI{
         this.controller = controller;
     }
 
-    public StashTab getStashTab() {
-        return stashTab;
+    public StashTabDescriptor getStashTabDescriptor() {
+        return stashTabDescriptor;
     }
 
-    public void setStashTab(StashTab stashTab) {
-        this.stashTab = stashTab;
+    public void setStashTabDescriptor(StashTabDescriptor stashTabDescriptor) {
+        this.stashTabDescriptor = stashTabDescriptor;
     }
 
     public ItemCell getItemCell() {

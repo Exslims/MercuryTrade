@@ -1,6 +1,8 @@
 package com.mercury.platform.ui.components.panel.settings;
 
-import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.PlainConfigurationService;
+import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -10,11 +12,13 @@ import javax.swing.border.CompoundBorder;
 import java.awt.*;
 
 public class TaskBarSettingsPanel extends ConfigurationPanel{
+    private PlainConfigurationService<ApplicationDescriptor> applicationConfig;
     private JTextField responseField;
     private JCheckBox enableInGameDND;
 
     public TaskBarSettingsPanel() {
         super();
+        this.applicationConfig = Configuration.get().applicationConfiguration();
         this.createUI();
     }
     @Override
@@ -37,16 +41,12 @@ public class TaskBarSettingsPanel extends ConfigurationPanel{
         topPanel.add(componentsFactory.getTextLabel("Enable in-game dnd:", FontStyle.REGULAR), BorderLayout.LINE_START);
         enableInGameDND = new JCheckBox();
         enableInGameDND.setBackground(AppThemeColor.TRANSPARENT);
-        enableInGameDND.setSelected(ConfigManager.INSTANCE.isInGameDnd());
-        responseField = componentsFactory.getTextField(ConfigManager.INSTANCE.getDndResponseText(), FontStyle.REGULAR, 16f);
-        responseField.setEnabled(ConfigManager.INSTANCE.isInGameDnd());
+        enableInGameDND.setSelected(this.applicationConfig.get().isInGameDnd());
+        responseField = componentsFactory.getTextField(this.applicationConfig.get().getDndResponseText(), FontStyle.REGULAR, 16f);
+        responseField.setEnabled(this.applicationConfig.get().isInGameDnd());
         componentsFactory.setUpToggleCallbacks(enableInGameDND,
-                () -> {
-                    responseField.setEnabled(false);
-                },
-                () -> {
-                    responseField.setEnabled(true);
-                },ConfigManager.INSTANCE.isInGameDnd());
+                () -> responseField.setEnabled(false),
+                () -> responseField.setEnabled(true),this.applicationConfig.get().isInGameDnd());
 
         topPanel.add(enableInGameDND, BorderLayout.CENTER);
 
@@ -67,8 +67,8 @@ public class TaskBarSettingsPanel extends ConfigurationPanel{
 
     @Override
     public boolean processAndSave() {
-        ConfigManager.INSTANCE.setInGameDnd(enableInGameDND.isSelected());
-        ConfigManager.INSTANCE.setDndResponseText(responseField.getText());
+        this.applicationConfig.get().setInGameDnd(enableInGameDND.isSelected());
+        this.applicationConfig.get().setDndResponseText(responseField.getText());
         return true;
     }
 }

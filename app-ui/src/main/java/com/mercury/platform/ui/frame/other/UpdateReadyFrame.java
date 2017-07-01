@@ -1,7 +1,6 @@
 package com.mercury.platform.ui.frame.other;
 
 import com.mercury.platform.core.AppStarter;
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
@@ -26,7 +25,7 @@ public class UpdateReadyFrame extends AbstractOverlaidFrame {
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1)));
         this.add(getUpdatePanel());
-        this.setOpacity(ConfigManager.INSTANCE.getMaxOpacity()/100f);
+        this.setOpacity(this.applicationConfig.get().getMaxOpacity()/100f);
         this.pack();
     }
     private JPanel getUpdatePanel(){
@@ -71,7 +70,7 @@ public class UpdateReadyFrame extends AbstractOverlaidFrame {
     @Override
     public void subscribe() {
         MercuryStoreCore.INSTANCE.updateInfoSubject.subscribe(version -> {
-            FrameDescriptor tbSettings = this.framesService.get("TaskBarFrame");
+            FrameDescriptor tbSettings = this.framesConfig.get("TaskBarFrame");
             Point tbLocation = tbSettings.getFrameLocation();
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
             if(tbLocation.y + 30 + this.getHeight() > dim.height){

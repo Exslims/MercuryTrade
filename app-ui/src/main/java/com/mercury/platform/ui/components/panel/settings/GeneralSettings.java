@@ -2,7 +2,9 @@ package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import com.mercury.platform.core.update.core.holder.ApplicationHolder;
-import com.mercury.platform.shared.ConfigManager;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.PlainConfigurationService;
+import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.frame.titled.NotesFrame;
@@ -21,6 +23,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 
 public class GeneralSettings extends ConfigurationPanel {
+    private PlainConfigurationService<ApplicationDescriptor> applicationConfig;
     private JSlider minSlider;
     private JSlider maxSlider;
     private JSlider fadeTimeSlider;
@@ -30,6 +33,7 @@ public class GeneralSettings extends ConfigurationPanel {
     private WrongGamePathListener poeFolderTooltipListener;
     public GeneralSettings() {
         super();
+        this.applicationConfig = Configuration.get().applicationConfiguration();
         this.createUI();
     }
 
@@ -45,14 +49,14 @@ public class GeneralSettings extends ConfigurationPanel {
 
         this.checkEnable = new JCheckBox();
         this.checkEnable.setBackground(AppThemeColor.TRANSPARENT);
-        this.checkEnable.setSelected(ConfigManager.INSTANCE.isCheckUpdateOnStartUp());
+        this.checkEnable.setSelected(this.applicationConfig.get().isCheckOutUpdate());
 
-        this.fadeTimeSlider = this.componentsFactory.getSlider(0,10, ConfigManager.INSTANCE.getFadeTime());
+        this.fadeTimeSlider = this.componentsFactory.getSlider(0,10, this.applicationConfig.get().getFadeTime());
         this.fadeTimeSlider.addChangeListener(e -> {
             MercuryStoreUI.INSTANCE.repaintSubject.onNext(SettingsFrame.class);
         });
 
-        this.minSlider = this.componentsFactory.getSlider(40,100,ConfigManager.INSTANCE.getMinOpacity());
+        this.minSlider = this.componentsFactory.getSlider(40,100,this.applicationConfig.get().getMinOpacity());
         this.minSlider.addChangeListener(e -> {
             if(!(this.minSlider.getValue() > this.maxSlider.getValue())) {
                 MercuryStoreUI.INSTANCE.repaintSubject.onNext(SettingsFrame.class);
@@ -61,7 +65,7 @@ public class GeneralSettings extends ConfigurationPanel {
             }
         });
 
-        this.maxSlider = this.componentsFactory.getSlider(40,100,ConfigManager.INSTANCE.getMaxOpacity());
+        this.maxSlider = this.componentsFactory.getSlider(40,100,this.applicationConfig.get().getMaxOpacity());
         this.maxSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -72,10 +76,10 @@ public class GeneralSettings extends ConfigurationPanel {
         });
 
         this.notifierStatusPicker = this.componentsFactory.getComboBox(new String[]{"Always play a sound", "Only when tabbed out","Never"});
-        WhisperNotifierStatus whisperNotifier = ConfigManager.INSTANCE.getWhisperNotifier();
+        WhisperNotifierStatus whisperNotifier = this.applicationConfig.get().getNotifierStatus();
         this.notifierStatusPicker.setSelectedIndex(whisperNotifier.getCode());
 
-        this.gamePathField = this.componentsFactory.getTextField(ConfigManager.INSTANCE.getGamePath());
+        this.gamePathField = this.componentsFactory.getTextField(this.applicationConfig.get().getGamePath());
         this.gamePathField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER,1),
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2)
@@ -160,12 +164,12 @@ public class GeneralSettings extends ConfigurationPanel {
     public boolean processAndSave() {
         int minOpacity = this.minSlider.getValue();
         int maxOpacity = this.maxSlider.getValue();
-        int timeToDelay= this.fadeTimeSlider.getValue(); // ----
+        int timeToDelay= this.fadeTimeSlider.getValue();
         HideSettingsManager.INSTANCE.apply(timeToDelay,minOpacity,maxOpacity);
-        ConfigManager.INSTANCE.setWhisperNotifier(WhisperNotifierStatus.get(this.notifierStatusPicker.getSelectedIndex()));
-        ConfigManager.INSTANCE.setCheckUpdateOnStartUp(this.checkEnable.isSelected());
-        if (ConfigManager.INSTANCE.isValidGamePath(this.gamePathField.getText())){
-            ConfigManager.INSTANCE.setGamePath(this.gamePathField.getText()+ File.separator);
+        this.applicationConfig.get().setNotifierStatus(WhisperNotifierStatus.get(this.notifierStatusPicker.getSelectedIndex()));
+        this.applicationConfig.get().setCheckOutUpdate(this.checkEnable.isSelected());
+        if (this.isValidGamePath(this.gamePathField.getText())){
+            this.applicationConfig.get().setGamePath(this.gamePathField.getText()+ File.separator);
             MercuryStoreCore.INSTANCE.poeFolderChangedSubject.onNext(true);
         } else {
             this.gamePathField.setBorder(BorderFactory.createCompoundBorder(
@@ -179,6 +183,11 @@ public class GeneralSettings extends ConfigurationPanel {
             return false;
         }
         return true;
+    }
+
+    private boolean isValidGamePath(String gamePath){
+        File file = new File(gamePath + File.separator + "logs" + File.separator + "Client.txt");
+        return file.exists();
     }
 
     @Override

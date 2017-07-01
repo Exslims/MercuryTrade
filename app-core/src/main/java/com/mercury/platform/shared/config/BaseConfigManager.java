@@ -2,12 +2,14 @@ package com.mercury.platform.shared.config;
 
 import com.google.gson.reflect.TypeToken;
 import com.mercury.platform.shared.AsSubscriber;
+import com.mercury.platform.shared.config.configration.FramesConfigurationService;
 import com.mercury.platform.shared.config.configration.KeyValueConfigurationService;
 import com.mercury.platform.shared.config.configration.ListConfigurationService;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.configration.impl.*;
 import com.mercury.platform.shared.config.configration.impl.adr.AdrConfigurationService;
 import com.mercury.platform.shared.config.descriptor.*;
+import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
 import com.mercury.platform.shared.entity.adr.AdrProfile;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.logging.log4j.LogManager;
@@ -30,7 +32,9 @@ public class BaseConfigManager implements ConfigManager, AsSubscriber {
     private PlainConfigurationService<NotificationDescriptor> notificationConfigurationService;
     private PlainConfigurationService<ScannerDescriptor> scannerConfigurationService;
     private KeyValueConfigurationService<SoundDescriptor,String> soundConfigurationService;
+    private KeyValueConfigurationService<Float,String> scaleConfigurationService;
     private ListConfigurationService<AdrProfile> adrGroupConfiguration;
+    private ListConfigurationService<StashTabDescriptor> stashTabConfigurationService;
 
     public BaseConfigManager(ConfigurationSource dataSource){
         this.dataSource = dataSource;
@@ -61,9 +65,20 @@ public class BaseConfigManager implements ConfigManager, AsSubscriber {
     public KeyValueConfigurationService<SoundDescriptor,String> soundConfiguration() {
         return this.soundConfigurationService;
     }
+
+    @Override
+    public KeyValueConfigurationService<Float, String> scaleConfiguration() {
+        return this.scaleConfigurationService;
+    }
+
     @Override
     public ListConfigurationService<AdrProfile> adrGroupConfiguration() {
         return this.adrGroupConfiguration;
+    }
+
+    @Override
+    public ListConfigurationService<StashTabDescriptor> stashTabConfiguration() {
+        return this.stashTabConfigurationService;
     }
 
 
@@ -94,6 +109,8 @@ public class BaseConfigManager implements ConfigManager, AsSubscriber {
             this.applicationConfigurationService = new ApplicationConfigurationService(selectedProfile);
             this.scannerConfigurationService = new ScannerConfigurationService(selectedProfile);
             this.notificationConfigurationService = new NotificationConfigurationService(selectedProfile);
+            this.scaleConfigurationService = new ScaleConfigurationService(selectedProfile);
+            this.stashTabConfigurationService = new StashTabConfigurationService(selectedProfile);
 
             this.framesConfigurationService.validate();
             this.soundConfigurationService.validate();
@@ -101,6 +118,8 @@ public class BaseConfigManager implements ConfigManager, AsSubscriber {
             this.applicationConfigurationService.validate();
             this.notificationConfigurationService.validate();
             this.scannerConfigurationService.validate();
+            this.scaleConfigurationService.validate();
+            this.stashTabConfigurationService.validate();
 
             this.jsonHelper.writeListObject(this.profileDescriptors,new TypeToken<List<ProfileDescriptor>>(){});
         }catch (IOException e) {

@@ -1,6 +1,5 @@
 package com.mercury.platform.ui.frame.movable;
 
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -27,8 +26,8 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
 
     public TaskBarFrame() {
         super();
-        this.componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("taskbar"));
-        this.stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("taskbar"));
+        this.componentsFactory.setScale(this.scaleConfig.get("taskbar"));
+        this.stubComponentsFactory.setScale(this.scaleConfig.get("taskbar"));
         this.processEResize = false;
         this.processSEResize = false;
         this.prevState = FrameVisibleState.SHOW;

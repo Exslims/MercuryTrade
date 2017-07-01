@@ -13,11 +13,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 
-/**
- * Created by Константин on 11.02.2017.
- */
 public class HistoryManager {
-    private Logger logger = LogManager.getLogger(ConfigManager.class);
+    private Logger logger = LogManager.getLogger(HistoryManager.class);
 
     private static class HistoryManagerHolder {
         static final HistoryManager HOLDER_INSTANCE = new HistoryManager();

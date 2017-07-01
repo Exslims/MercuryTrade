@@ -49,7 +49,7 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
         this.addMouseMotionListener(new ResizeByWidthMouseMotionListener());
         HideSettingsManager.INSTANCE.registerFrame(this);
 
-        FrameDescriptor frameDescriptor = this.framesService.get(this.getClass().getSimpleName());
+        FrameDescriptor frameDescriptor = this.framesConfig.get(this.getClass().getSimpleName());
         if(frameDescriptor != null) {
             this.setLocation(frameDescriptor.getFrameLocation());
             this.setSize(frameDescriptor.getFrameSize());
@@ -102,7 +102,7 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
         this.hideAnimation.addPropertyToInterpolate("opacity",this.maxOpacity,this.minOpacity);
     }
     public void onLocationChange(Point location){
-        FrameDescriptor frameDescriptor = this.framesService.getMap().get(this.getClass().getSimpleName());
+        FrameDescriptor frameDescriptor = this.framesConfig.getMap().get(this.getClass().getSimpleName());
         frameDescriptor.setFrameLocation(location);
         MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
     }
@@ -157,7 +157,7 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
                 hideTimer.start();
             }
             Dimension size = AbstractComponentFrame.this.getSize();
-            FrameDescriptor frameDescriptor = framesService.getMap().get(AbstractComponentFrame.this.getClass().getSimpleName());
+            FrameDescriptor frameDescriptor = framesConfig.getMap().get(AbstractComponentFrame.this.getClass().getSimpleName());
             if(EResizeSpace){
                 AbstractComponentFrame.this.setMaximumSize(size);
                 AbstractComponentFrame.this.setMinimumSize(size);
@@ -185,7 +185,7 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
         @Override
         public void mousePressed(MouseEvent e) {
             if(EResizeSpace || SEResizeSpace) {
-                Dimension size = framesService.getMinimumSize(AbstractComponentFrame.this.getClass().getSimpleName());
+                Dimension size = framesConfig.getMinimumSize(AbstractComponentFrame.this.getClass().getSimpleName());
                 AbstractComponentFrame.this.setMinimumSize(size);
             }
         }

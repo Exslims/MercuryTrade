@@ -1,7 +1,6 @@
 package com.mercury.platform.ui.frame.movable.container;
 
 import com.mercury.platform.core.AppStarter;
-import com.mercury.platform.shared.ConfigManager;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
@@ -24,8 +23,6 @@ import com.mercury.platform.ui.frame.setup.scale.ScaleState;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -37,7 +34,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MessageFrame extends AbstractMovableComponentFrame implements MessagesContainer {
-    private static final Logger logger = LogManager.getLogger(MessageFrame.class.getSimpleName());
     private List<MessagePanel> currentMessages = new ArrayList<>();
     private PlainConfigurationService<NotificationDescriptor> notificationService;
     private boolean wasVisible;
@@ -56,8 +52,8 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
     private boolean dnd = false;
     public MessageFrame(){
         super();
-        this.componentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("notification"));
-        this.stubComponentsFactory.setScale(ConfigManager.INSTANCE.getScaleData().get("notification"));
+        this.componentsFactory.setScale(this.scaleConfig.get("notification"));
+        this.stubComponentsFactory.setScale(this.scaleConfig.get("notification"));
         this.notificationService = Configuration.get().notificationConfiguration();
         this.processSEResize = false;
         this.flowDirections = this.notificationService.get().getFlowDirections();
@@ -424,7 +420,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
         this.hideComponent();
         switch (flowDirections){
             case DOWNWARDS:{
-                this.setLocation(this.framesService.get(this.getClass().getSimpleName()).getFrameLocation());
+                this.setLocation(this.framesConfig.get(this.getClass().getSimpleName()).getFrameLocation());
                 break;
             }
             case UPWARDS:{

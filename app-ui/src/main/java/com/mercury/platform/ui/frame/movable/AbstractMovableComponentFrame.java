@@ -48,7 +48,7 @@ public abstract class AbstractMovableComponentFrame extends AbstractScalableComp
                 this.processSEResize = false;
                 JPanel panelForPin = setUpMoveListeners(getPanelForPINSettings());
                 this.setBackground(panelForPin.getBackground());
-                this.setLocation(this.framesService.get(this.getClass().getSimpleName()).getFrameLocation());
+                this.setLocation(this.framesConfig.get(this.getClass().getSimpleName()).getFrameLocation());
                 this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
                 this.setMinimumSize(null);
                 this.setContentPane(panelForPin);
