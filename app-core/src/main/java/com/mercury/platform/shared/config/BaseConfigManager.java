@@ -31,8 +31,8 @@ public class BaseConfigManager implements ConfigManager, AsSubscriber {
     private PlainConfigurationService<ApplicationDescriptor> applicationConfigurationService;
     private PlainConfigurationService<NotificationDescriptor> notificationConfigurationService;
     private PlainConfigurationService<ScannerDescriptor> scannerConfigurationService;
-    private KeyValueConfigurationService<SoundDescriptor,String> soundConfigurationService;
-    private KeyValueConfigurationService<Float,String> scaleConfigurationService;
+    private KeyValueConfigurationService<String,SoundDescriptor> soundConfigurationService;
+    private KeyValueConfigurationService<String,Float> scaleConfigurationService;
     private ListConfigurationService<AdrProfile> adrGroupConfiguration;
     private ListConfigurationService<StashTabDescriptor> stashTabConfigurationService;
 
@@ -62,12 +62,12 @@ public class BaseConfigManager implements ConfigManager, AsSubscriber {
     }
 
     @Override
-    public KeyValueConfigurationService<SoundDescriptor,String> soundConfiguration() {
+    public KeyValueConfigurationService<String,SoundDescriptor> soundConfiguration() {
         return this.soundConfigurationService;
     }
 
     @Override
-    public KeyValueConfigurationService<Float, String> scaleConfiguration() {
+    public KeyValueConfigurationService<String,Float> scaleConfiguration() {
         return this.scaleConfigurationService;
     }
 

@@ -1,4 +1,4 @@
-package com.mercury.platform.shared.config.descriptor;
+package com.mercury.platform.shared.config.descriptor.adr;
 
 import lombok.Data;
 

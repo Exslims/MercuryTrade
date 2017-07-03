@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.frame.adr;
 
 import com.mercury.platform.shared.config.Configuration;
-import com.mercury.platform.shared.entity.adr.AdrComponentDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.entity.adr.AdrGroupDescriptor;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;

@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public abstract class ConfigurationSource {
+abstract class ConfigurationSource {
     private String configurationFilePath;
 }

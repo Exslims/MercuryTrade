@@ -24,7 +24,7 @@ public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscrib
     protected ComponentsFactory componentsFactory = new ComponentsFactory();
     protected FramesConfigurationService framesConfig;
     protected PlainConfigurationService<ApplicationDescriptor> applicationConfig;
-    protected KeyValueConfigurationService<Float,String> scaleConfig;
+    protected KeyValueConfigurationService<String,Float> scaleConfig;
 
     protected LayoutManager layout;
     protected AbstractOverlaidFrame(){

@@ -1,5 +1,6 @@
 package com.mercury.platform.shared.entity.adr;
 
+import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import lombok.Data;
 
 import java.util.List;

@@ -14,8 +14,8 @@ public interface ConfigManager {
     PlainConfigurationService<ApplicationDescriptor> applicationConfiguration();
     PlainConfigurationService<NotificationDescriptor> notificationConfiguration();
     PlainConfigurationService<ScannerDescriptor> scannerConfiguration();
-    KeyValueConfigurationService<SoundDescriptor,String> soundConfiguration();
-    KeyValueConfigurationService<Float,String> scaleConfiguration();
+    KeyValueConfigurationService<String,SoundDescriptor> soundConfiguration();
+    KeyValueConfigurationService<String,Float> scaleConfiguration();
     ListConfigurationService<AdrProfile> adrGroupConfiguration();
     ListConfigurationService<StashTabDescriptor> stashTabConfiguration();
 }

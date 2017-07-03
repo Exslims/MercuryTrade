@@ -13,7 +13,7 @@ import java.util.Random;
 
 
 public class DataTransformers {
-    private static final KeyValueConfigurationService<SoundDescriptor, String> soundService = Configuration.get().soundConfiguration();
+    private static final KeyValueConfigurationService<String,SoundDescriptor> soundService = Configuration.get().soundConfiguration();
     public static Observable.Transformer<SoundType, SoundDescriptor> transformSoundData() {
         String[] clicks = {
                 "app/sounds/click1/button-pressed-10.wav",

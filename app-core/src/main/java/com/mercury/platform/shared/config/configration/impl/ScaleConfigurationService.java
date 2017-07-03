@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class ScaleConfigurationService extends BaseConfigurationService implements KeyValueConfigurationService<Float,String> {
+public class ScaleConfigurationService extends BaseConfigurationService implements KeyValueConfigurationService<String,Float> {
     public ScaleConfigurationService(ProfileDescriptor selectedProfile) {
         super(selectedProfile);
     }
