@@ -15,5 +15,6 @@ public class ProfileDescriptor {
     private NotificationDescriptor notificationDescriptor;
     private ScannerDescriptor scannerDescriptor;
     private Map<String,Float> scaleDataMap;
+    private Map<String,HotKeyDescriptor> hotKeysDataMap;
     private List<StashTabDescriptor> stashTabDescriptors;
 }

@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class FramesConfigurationServiceImpl extends BaseConfigurationService implements FramesConfigurationService {
+public class FramesConfigurationServiceImpl extends BaseConfigurationService<Map<String,FrameDescriptor>> implements FramesConfigurationService {
     private Map<String, Dimension> minimumFrameSize = new HashMap<>();
     private Map<String, FrameDescriptor> defaultFramesSettings = new HashMap<>();
     public FramesConfigurationServiceImpl(ProfileDescriptor selectedProfile) {

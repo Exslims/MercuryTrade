@@ -5,7 +5,7 @@ import com.mercury.platform.shared.config.configration.PlainConfigurationService
 import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
 import com.mercury.platform.shared.config.descriptor.ScannerDescriptor;
 
-public class ScannerConfigurationService extends BaseConfigurationService implements PlainConfigurationService<ScannerDescriptor> {
+public class ScannerConfigurationService extends BaseConfigurationService<ScannerDescriptor> implements PlainConfigurationService<ScannerDescriptor> {
     public ScannerConfigurationService(ProfileDescriptor selectedProfile) {
         super(selectedProfile);
     }

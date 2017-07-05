@@ -7,7 +7,7 @@ import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.commons.lang3.StringUtils;
 
-public class IncTradeMessagesInterceptor extends MessageInterceptor {
+public class TradeMessagesInterceptor extends MessageInterceptor {
     private MessageParser messageParser = new MessageParser();
 
     @Override
@@ -21,11 +21,6 @@ public class IncTradeMessagesInterceptor extends MessageInterceptor {
 
     @Override
     protected MessageFilter getFilter() {
-        return new MessageFilter() {
-            @Override
-            public boolean isMatching(String message) {
-                return message.contains("@From") && (message.contains("Hi, I would like") || message.contains("Hi, I'd like"));
-            }
-        };
+        return message -> message.contains("@From") && (message.contains("Hi, I would like") || message.contains("Hi, I'd like"));
     }
 }

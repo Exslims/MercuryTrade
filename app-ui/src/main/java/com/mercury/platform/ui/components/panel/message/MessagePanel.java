@@ -15,6 +15,7 @@ import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.frame.movable.container.MessageFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.HasHotkey;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import lombok.Getter;
@@ -36,7 +37,7 @@ import java.util.*;
 import java.util.List;
 
 
-public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
+public class MessagePanel extends JPanel implements AsSubscriber, HasUI,HasHotkey{
     private static final Logger logger = LogManager.getLogger(MessagePanel.class.getSimpleName());
 
     private ComponentsFactory componentsFactory;
@@ -68,6 +69,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
         this.style = style;
         this.whisper = message.getWhisperNickname();
         this.notificationService = Configuration.get().notificationConfiguration();
+        this.initHotKeyListeners();
     }
     public MessagePanel(Message message, MessagePanelStyle style, MessagePanelController controller, ComponentsFactory componentsFactory){
         this(message,style);
@@ -547,5 +549,12 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI{
 
     public void setComponentsFactory(ComponentsFactory componentsFactory) {
         this.componentsFactory = componentsFactory;
+    }
+
+    @Override
+    public void initHotKeyListeners() {
+        MercuryStoreCore.INSTANCE.hotKeySubject.subscribe(descriptor -> {
+
+        })
     }
 }

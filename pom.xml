@@ -20,7 +20,7 @@
     <properties>
         <project.version>1.0.0.5</project.version>
 
-        <systemhook.version>2.5</systemhook.version>
+        <systemhook.version>3.1</systemhook.version>
         <devjna.version>4.4.0</devjna.version>
         <commonsio.version>2.5</commonsio.version>
         <junit.version>4.12</junit.version>
@@ -42,11 +42,11 @@
 
     <dependencyManagement>
         <dependencies>
-            <!--<dependency>-->
-                <!--<groupId>lc.kra.system</groupId>-->
-                <!--<artifactId>system-hook</artifactId>-->
-                <!--<version>${systemhook.version}</version>-->
-            <!--</dependency>-->
+            <dependency>
+                <groupId>lc.kra.system</groupId>
+                <artifactId>system-hook</artifactId>
+                <version>${systemhook.version}</version>
+            </dependency>
             <dependency>
                 <groupId>net.jodah</groupId>
                 <artifactId>expiringmap</artifactId>
@@ -144,16 +144,16 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>system-hook-mvn-repo</id>-->
-            <!--<url>https://raw.github.com/kristian/system-hook/mvn-repo/</url>-->
-            <!--<snapshots>-->
-                <!--<enabled>true</enabled>-->
-                <!--<updatePolicy>always</updatePolicy>-->
-            <!--</snapshots>-->
-        <!--</repository>-->
-    <!--</repositories>-->
+    <repositories>
+        <repository>
+            <id>system-hook-mvn-repo</id>
+            <url>https://raw.github.com/kristian/system-hook/mvn-repo/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
     <build>
         <plugins>
             <plugin>

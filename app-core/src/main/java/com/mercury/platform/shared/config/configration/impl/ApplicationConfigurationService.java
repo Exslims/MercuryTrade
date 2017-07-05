@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class ApplicationConfigurationService extends BaseConfigurationService implements PlainConfigurationService<ApplicationDescriptor> {
+public class ApplicationConfigurationService extends BaseConfigurationService<ApplicationDescriptor> implements PlainConfigurationService<ApplicationDescriptor> {
     public ApplicationConfigurationService(ProfileDescriptor selectedProfile) {
         super(selectedProfile);
     }

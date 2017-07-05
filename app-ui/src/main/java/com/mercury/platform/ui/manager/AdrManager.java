@@ -3,7 +3,7 @@ package com.mercury.platform.ui.manager;
 
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.entity.adr.AdrGroupDescriptor;
-import com.mercury.platform.shared.entity.adr.AdrProfile;
+import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
 import com.mercury.platform.ui.frame.adr.components.AbstractAdrFrame;
 import com.mercury.platform.ui.frame.adr.AdrManagerFrame;
 import com.mercury.platform.ui.frame.adr.components.AdrGroupFrame;
@@ -20,7 +20,7 @@ public class AdrManager {
     private AdrState state = AdrState.DEFAULT;
     public void load(){
         this.adrManagerFrame = new AdrManagerFrame();
-        List<AdrProfile> entities = Configuration.get().adrGroupConfiguration().getEntities();
+        List<AdrProfileDescriptor> entities = Configuration.get().adrGroupConfiguration().getEntities();
         entities.get(0).getContents().forEach(it -> frames.add(new AdrGroupFrame((AdrGroupDescriptor)it)));
 
         this.frames.forEach(it -> {

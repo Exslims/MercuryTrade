@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class NotificationConfigurationService extends BaseConfigurationService implements PlainConfigurationService<NotificationDescriptor> {
+public class NotificationConfigurationService extends BaseConfigurationService<NotificationDescriptor> implements PlainConfigurationService<NotificationDescriptor> {
     public NotificationConfigurationService(ProfileDescriptor selectedProfile) {
         super(selectedProfile);
     }

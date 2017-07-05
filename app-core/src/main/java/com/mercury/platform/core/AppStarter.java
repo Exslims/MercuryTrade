@@ -5,6 +5,7 @@ import com.mercury.platform.core.update.UpdateClientStarter;
 import com.mercury.platform.core.utils.error.ErrorHandler;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.HistoryManager;
+import com.mercury.platform.shared.hotkey.HotKeysInterceptor;
 import com.mercury.platform.shared.UpdateManager;
 import com.mercury.platform.shared.config.BaseConfigManager;
 import com.mercury.platform.shared.config.Configuration;
@@ -34,6 +35,7 @@ public class AppStarter {
         new SoundNotifier();
         new ChatHelper();
         new ErrorHandler();
+        new HotKeysInterceptor();
 
         Executor executor = Executors.newSingleThreadExecutor();
         UpdateClientStarter updateClientStarter = new UpdateClientStarter();

@@ -9,7 +9,7 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import java.util.*;
 
 
-public class SoundConfigurationService extends BaseConfigurationService implements KeyValueConfigurationService<String,SoundDescriptor> {
+public class SoundConfigurationService extends BaseConfigurationService<Map<String,SoundDescriptor>> implements KeyValueConfigurationService<String,SoundDescriptor> {
     public SoundConfigurationService(ProfileDescriptor selectedProfile) {
         super(selectedProfile);
     }

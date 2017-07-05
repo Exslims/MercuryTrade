@@ -8,11 +8,10 @@ import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StashTabConfigurationService extends BaseConfigurationService implements ListConfigurationService<StashTabDescriptor> {
+public class StashTabConfigurationService extends BaseConfigurationService<List<StashTabDescriptor>> implements ListConfigurationService<StashTabDescriptor> {
     public StashTabConfigurationService(ProfileDescriptor selectedProfile) {
         super(selectedProfile);
     }
-
 
     @Override
     public List<StashTabDescriptor> getDefault() {

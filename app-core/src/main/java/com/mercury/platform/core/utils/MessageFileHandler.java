@@ -17,18 +17,16 @@ public class MessageFileHandler implements AsSubscriber {
     private String logFilePath;
     private Date lastMessageDate = new Date();
 
-    private List<MessageInterceptor> interceptors;
+    private List<MessageInterceptor> interceptors = new ArrayList<>();
 
     public MessageFileHandler(String logFilePath) {
         this.logFilePath = logFilePath;
 
-        interceptors = new ArrayList<>();
-//        interceptors.add(new EnteringAreaInterceptor());
-        interceptors.add(new IncTradeMessagesInterceptor());
-        interceptors.add(new PlayerJoinInterceptor());
-        interceptors.add(new PlayerLeftInterceptor());
+        this.interceptors.add(new TradeMessagesInterceptor());
+        this.interceptors.add(new PlayerJoinInterceptor());
+        this.interceptors.add(new PlayerLeftInterceptor());
 
-        subscribe();
+        this.subscribe();
     }
 
     public void parse() {
@@ -69,10 +67,10 @@ public class MessageFileHandler implements AsSubscriber {
             return date.after(lastMessageDate);
         }).collect(Collectors.toList());
         Collections.reverse(resultMessages);
-        interceptors.forEach(interceptor -> {
+        this.interceptors.forEach(interceptor -> {
             resultMessages.forEach(message -> {
                 if (interceptor.match(message)) {
-                    lastMessageDate = new Date(StringUtils.substring(message, 0, 20));
+                    this.lastMessageDate = new Date(StringUtils.substring(message, 0, 20));
                 }
             });
         });
@@ -81,11 +79,11 @@ public class MessageFileHandler implements AsSubscriber {
     @Override
     public void subscribe() {
         MercuryStoreCore.INSTANCE.addInterceptorSubject.subscribe(interceptor -> {
-            interceptors.add(interceptor);
-            lastMessageDate = new Date();
+            this.interceptors.add(interceptor);
+            this.lastMessageDate = new Date();
         });
         MercuryStoreCore.INSTANCE.removeInterceptorSubject.subscribe(interceptor -> {
-            interceptors.remove(interceptor);
+            this.interceptors.remove(interceptor);
         });
     }
 }

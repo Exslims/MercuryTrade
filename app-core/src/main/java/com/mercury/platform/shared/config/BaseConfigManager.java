@@ -2,15 +2,12 @@ package com.mercury.platform.shared.config;
 
 import com.google.gson.reflect.TypeToken;
 import com.mercury.platform.shared.AsSubscriber;
-import com.mercury.platform.shared.config.configration.FramesConfigurationService;
-import com.mercury.platform.shared.config.configration.KeyValueConfigurationService;
-import com.mercury.platform.shared.config.configration.ListConfigurationService;
-import com.mercury.platform.shared.config.configration.PlainConfigurationService;
+import com.mercury.platform.shared.config.configration.*;
 import com.mercury.platform.shared.config.configration.impl.*;
-import com.mercury.platform.shared.config.configration.impl.adr.AdrConfigurationService;
+import com.mercury.platform.shared.config.configration.impl.adr.AdrConfigurationServiceMock;
 import com.mercury.platform.shared.config.descriptor.*;
 import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
-import com.mercury.platform.shared.entity.adr.AdrProfile;
+import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,14 +24,17 @@ public class BaseConfigManager implements ConfigManager, AsSubscriber {
     private ConfigurationSource dataSource;
     private JSONHelper jsonHelper;
     private List<ProfileDescriptor> profileDescriptors;
+    private ProfileDescriptor selectedProfile;
     private FramesConfigurationService framesConfigurationService;
     private PlainConfigurationService<ApplicationDescriptor> applicationConfigurationService;
     private PlainConfigurationService<NotificationDescriptor> notificationConfigurationService;
     private PlainConfigurationService<ScannerDescriptor> scannerConfigurationService;
     private KeyValueConfigurationService<String,SoundDescriptor> soundConfigurationService;
     private KeyValueConfigurationService<String,Float> scaleConfigurationService;
-    private ListConfigurationService<AdrProfile> adrGroupConfiguration;
+    private ListConfigurationService<AdrProfileDescriptor> adrGroupConfiguration;
     private ListConfigurationService<StashTabDescriptor> stashTabConfigurationService;
+
+    private List<BaseConfigurationService> services = new ArrayList<>();
 
     public BaseConfigManager(ConfigurationSource dataSource){
         this.dataSource = dataSource;
@@ -72,13 +72,18 @@ public class BaseConfigManager implements ConfigManager, AsSubscriber {
     }
 
     @Override
-    public ListConfigurationService<AdrProfile> adrGroupConfiguration() {
+    public ListConfigurationService<AdrProfileDescriptor> adrGroupConfiguration() {
         return this.adrGroupConfiguration;
     }
 
     @Override
     public ListConfigurationService<StashTabDescriptor> stashTabConfiguration() {
         return this.stashTabConfigurationService;
+    }
+
+    @Override
+    public List<ProfileDescriptor> profiles() {
+        return this.profileDescriptors;
     }
 
 
@@ -99,27 +104,30 @@ public class BaseConfigManager implements ConfigManager, AsSubscriber {
                 this.jsonHelper.writeListObject(this.profileDescriptors,new TypeToken<List<ProfileDescriptor>>(){});
             }
 
-            ProfileDescriptor selectedProfile =  this.profileDescriptors.stream()
+           this.selectedProfile =  this.profileDescriptors.stream()
                     .filter(ProfileDescriptor::isSelected)
                     .findAny().orElse(null);
 
             this.framesConfigurationService = new FramesConfigurationServiceImpl(selectedProfile);
             this.soundConfigurationService = new SoundConfigurationService(selectedProfile);
-            this.adrGroupConfiguration = new AdrConfigurationService(selectedProfile);
+            this.adrGroupConfiguration = new AdrConfigurationServiceMock(selectedProfile);
             this.applicationConfigurationService = new ApplicationConfigurationService(selectedProfile);
             this.scannerConfigurationService = new ScannerConfigurationService(selectedProfile);
             this.notificationConfigurationService = new NotificationConfigurationService(selectedProfile);
             this.scaleConfigurationService = new ScaleConfigurationService(selectedProfile);
             this.stashTabConfigurationService = new StashTabConfigurationService(selectedProfile);
 
-            this.framesConfigurationService.validate();
-            this.soundConfigurationService.validate();
-            this.adrGroupConfiguration.validate();
-            this.applicationConfigurationService.validate();
-            this.notificationConfigurationService.validate();
-            this.scannerConfigurationService.validate();
-            this.scaleConfigurationService.validate();
-            this.stashTabConfigurationService.validate();
+            this.services.add((BaseConfigurationService) this.framesConfigurationService);
+            this.services.add((BaseConfigurationService) this.soundConfigurationService);
+            this.services.add((BaseConfigurationService) this.adrGroupConfiguration);
+            this.services.add((BaseConfigurationService) this.applicationConfigurationService);
+            this.services.add((BaseConfigurationService) this.scannerConfigurationService);
+            this.services.add((BaseConfigurationService) this.notificationConfigurationService);
+            this.services.add((BaseConfigurationService) this.scaleConfigurationService);
+            this.services.add((BaseConfigurationService) this.stashTabConfigurationService);
+
+            this.services.forEach(BaseConfigurationService::validate);
+
 
             this.jsonHelper.writeListObject(this.profileDescriptors,new TypeToken<List<ProfileDescriptor>>(){});
         }catch (IOException e) {
@@ -130,6 +138,19 @@ public class BaseConfigManager implements ConfigManager, AsSubscriber {
     @Override
     public void subscribe() {
         MercuryStoreCore.INSTANCE.saveConfigSubject.subscribe(state -> {
+            this.jsonHelper.writeListObject(this.profileDescriptors,new TypeToken<List<ProfileDescriptor>>(){});
+        });
+        MercuryStoreCore.INSTANCE.toDefaultSubject.subscribe(state -> {
+            this.services.forEach(BaseConfigurationService::toDefault);
+        });
+        MercuryStoreCore.INSTANCE.changeProfileSubject.subscribe(profile -> {
+            this.selectedProfile.setSelected(false);
+            this.selectedProfile = profile;
+            profile.setSelected(true);
+            this.services.forEach(service -> {
+                service.setSelectedProfile(profile);
+                service.validate();
+            });
             this.jsonHelper.writeListObject(this.profileDescriptors,new TypeToken<List<ProfileDescriptor>>(){});
         });
     }
