@@ -21,7 +21,7 @@ public class AdrManager {
     public void load(){
         this.adrManagerFrame = new AdrManagerFrame();
         List<AdrProfileDescriptor> entities = Configuration.get().adrGroupConfiguration().getEntities();
-        entities.get(0).getContents().forEach(it -> frames.add(new AdrGroupFrame((AdrGroupDescriptor)it)));
+//        entities.get(0).getContents().forEach(it -> frames.add(new AdrGroupFrame((AdrGroupDescriptor) it.getComponentDescriptor())));
 
         this.frames.forEach(it -> {
             it.init();

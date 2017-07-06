@@ -30,7 +30,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
     private JPanel getRootPanel(){
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
         DefaultListModel<AdrListEntry> model = new DefaultListModel<>();
-        AdrComponentDescriptor adrComponentDescriptor = Configuration.get().adrGroupConfiguration().getEntities().get(0).getContents().get(0);
+        AdrComponentDescriptor adrComponentDescriptor = Configuration.get().adrGroupConfiguration().getEntities().get(0).getContents().get(0).getComponentDescriptor();
 
         ((AdrGroupDescriptor)adrComponentDescriptor).getCells().forEach(it -> {
             model.addElement(new AdrListEntry(it.getIconPath()));

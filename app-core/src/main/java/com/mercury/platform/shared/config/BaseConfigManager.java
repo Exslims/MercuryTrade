@@ -8,6 +8,7 @@ import com.mercury.platform.shared.config.configration.impl.adr.AdrConfiguration
 import com.mercury.platform.shared.config.descriptor.*;
 import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
+import com.mercury.platform.shared.config.json.JSONHelper;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,8 +32,10 @@ public class BaseConfigManager implements ConfigManager, AsSubscriber {
     private PlainConfigurationService<ScannerDescriptor> scannerConfigurationService;
     private KeyValueConfigurationService<String,SoundDescriptor> soundConfigurationService;
     private KeyValueConfigurationService<String,Float> scaleConfigurationService;
+    private KeyValueConfigurationService<String,HotKeyDescriptor> hotKeyConfigurationService;
     private ListConfigurationService<AdrProfileDescriptor> adrGroupConfiguration;
     private ListConfigurationService<StashTabDescriptor> stashTabConfigurationService;
+    private ListConfigurationService<AdrProfileDescriptor> adrConfigurationService;
 
     private List<BaseConfigurationService> services = new ArrayList<>();
 
@@ -82,6 +85,16 @@ public class BaseConfigManager implements ConfigManager, AsSubscriber {
     }
 
     @Override
+    public ListConfigurationService<AdrProfileDescriptor> adrConfiguration() {
+        return this.adrConfigurationService;
+    }
+
+    @Override
+    public KeyValueConfigurationService<String, HotKeyDescriptor> hotKeysConfiguration() {
+        return this.hotKeyConfigurationService;
+    }
+
+    @Override
     public List<ProfileDescriptor> profiles() {
         return this.profileDescriptors;
     }
@@ -116,6 +129,8 @@ public class BaseConfigManager implements ConfigManager, AsSubscriber {
             this.notificationConfigurationService = new NotificationConfigurationService(selectedProfile);
             this.scaleConfigurationService = new ScaleConfigurationService(selectedProfile);
             this.stashTabConfigurationService = new StashTabConfigurationService(selectedProfile);
+            this.hotKeyConfigurationService = new HotKeysConfigurationService(selectedProfile);
+            this.adrConfigurationService = new AdrConfigurationServiceMock(selectedProfile);
 
             this.services.add((BaseConfigurationService) this.framesConfigurationService);
             this.services.add((BaseConfigurationService) this.soundConfigurationService);
@@ -125,6 +140,8 @@ public class BaseConfigManager implements ConfigManager, AsSubscriber {
             this.services.add((BaseConfigurationService) this.notificationConfigurationService);
             this.services.add((BaseConfigurationService) this.scaleConfigurationService);
             this.services.add((BaseConfigurationService) this.stashTabConfigurationService);
+            this.services.add((BaseConfigurationService) this.hotKeyConfigurationService);
+            this.services.add((BaseConfigurationService) this.adrConfigurationService);
 
             this.services.forEach(BaseConfigurationService::validate);
 

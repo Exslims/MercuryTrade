@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.components.panel.adr.group;
 
-import com.mercury.platform.shared.entity.adr.AdrIconDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.adr.ui.icon.SquareMercuryIconTrackerUI;
@@ -20,7 +20,7 @@ public class AdrGroupCellPanel extends JPanel implements HasUI{
         this.descriptor = cellDescriptor;
         this.componentsFactory = componentsFactory;
         this.setBackground(AppThemeColor.TRANSPARENT);
-        this.setPreferredSize(cellDescriptor.getCellSize());
+        this.setPreferredSize(cellDescriptor.getSize());
         this.setBorder(null);
         this.createUI();
     }

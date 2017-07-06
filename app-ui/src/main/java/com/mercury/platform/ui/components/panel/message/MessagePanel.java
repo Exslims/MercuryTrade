@@ -2,7 +2,10 @@ package com.mercury.platform.ui.components.panel.message;
 
 import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.KeyValueConfigurationService;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
+import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
+import com.mercury.platform.shared.config.descriptor.HotKeyType;
 import com.mercury.platform.shared.config.descriptor.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.CurrencyMessage;
 import com.mercury.platform.shared.entity.message.ItemMessage;
@@ -69,7 +72,9 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI,HasHotke
         this.style = style;
         this.whisper = message.getWhisperNickname();
         this.notificationService = Configuration.get().notificationConfiguration();
-        this.initHotKeyListeners();
+        if(!style.equals(MessagePanelStyle.HISTORY)) {
+            this.initHotKeyListeners();
+        }
     }
     public MessagePanel(Message message, MessagePanelStyle style, MessagePanelController controller, ComponentsFactory componentsFactory){
         this(message,style);
@@ -553,8 +558,12 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI,HasHotke
 
     @Override
     public void initHotKeyListeners() {
+        KeyValueConfigurationService<String, HotKeyDescriptor> config = Configuration.get().hotKeysConfiguration();
         MercuryStoreCore.INSTANCE.hotKeySubject.subscribe(descriptor -> {
-
-        })
+            HotKeyDescriptor hotKeyDescriptor = config.get(HotKeyType.CLOSE_NOTIFICATION.name());
+            if(descriptor.equals(hotKeyDescriptor)) {
+                this.controller.performHide();
+            }
+        });
     }
 }

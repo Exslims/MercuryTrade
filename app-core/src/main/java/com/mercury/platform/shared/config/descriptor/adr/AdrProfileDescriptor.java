@@ -7,5 +7,5 @@ import java.util.List;
 @Data
 public class AdrProfileDescriptor {
     private String profileName = "default";
-    private List<AdrComponentDescriptor> contents;
+    private List<AdrComponentWrapper> contents;
 }

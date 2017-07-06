@@ -1,5 +1,6 @@
 package com.mercury.platform.shared.config.descriptor;
 
+import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
 import lombok.Data;
 
 import java.util.List;
@@ -17,4 +18,5 @@ public class ProfileDescriptor {
     private Map<String,Float> scaleDataMap;
     private Map<String,HotKeyDescriptor> hotKeysDataMap;
     private List<StashTabDescriptor> stashTabDescriptors;
+    private List<AdrProfileDescriptor> adrProfileDescriptorList;
 }
