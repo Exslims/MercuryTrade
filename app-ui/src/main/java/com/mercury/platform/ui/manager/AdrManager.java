@@ -2,11 +2,9 @@ package com.mercury.platform.ui.manager;
 
 
 import com.mercury.platform.shared.config.Configuration;
-import com.mercury.platform.shared.entity.adr.AdrGroupDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
 import com.mercury.platform.ui.frame.adr.components.AbstractAdrFrame;
 import com.mercury.platform.ui.frame.adr.AdrManagerFrame;
-import com.mercury.platform.ui.frame.adr.components.AdrGroupFrame;
 import com.mercury.platform.ui.frame.setup.adr.AdrState;
 import lombok.Getter;
 

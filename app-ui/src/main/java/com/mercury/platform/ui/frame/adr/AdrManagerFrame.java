@@ -2,7 +2,7 @@ package com.mercury.platform.ui.frame.adr;
 
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
-import com.mercury.platform.shared.entity.adr.AdrGroupDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrIconGroupDescriptor;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.components.panel.adr.ui.AdrListEntry;
@@ -32,7 +32,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         DefaultListModel<AdrListEntry> model = new DefaultListModel<>();
         AdrComponentDescriptor adrComponentDescriptor = Configuration.get().adrGroupConfiguration().getEntities().get(0).getContents().get(0).getComponentDescriptor();
 
-        ((AdrGroupDescriptor)adrComponentDescriptor).getCells().forEach(it -> {
+        ((AdrIconGroupDescriptor)adrComponentDescriptor).getCells().forEach(it -> {
             model.addElement(new AdrListEntry(it.getIconPath()));
         });
 

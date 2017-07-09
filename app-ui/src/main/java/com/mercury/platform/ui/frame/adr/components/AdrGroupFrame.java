@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.frame.adr.components;
 
-import com.mercury.platform.shared.entity.adr.AdrGroupDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrIconGroupDescriptor;
 import com.mercury.platform.ui.components.panel.adr.group.AdrGroupCellPanel;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import lombok.NonNull;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class AdrGroupFrame extends AbstractAdrFrame {
     private List<AdrGroupCellPanel> cells;
-    private AdrGroupDescriptor descriptor;
+    private AdrIconGroupDescriptor descriptor;
 
     private int x;
     private int y;
@@ -24,7 +24,7 @@ public class AdrGroupFrame extends AbstractAdrFrame {
     private DraggedFrameMotionListener motionListener;
     private MouseAdapter mouseOverListener;
 
-    public AdrGroupFrame(@NonNull AdrGroupDescriptor descriptor) {
+    public AdrGroupFrame(@NonNull AdrIconGroupDescriptor descriptor) {
         super();
         this.descriptor = descriptor;
         this.cells = new ArrayList<>();
