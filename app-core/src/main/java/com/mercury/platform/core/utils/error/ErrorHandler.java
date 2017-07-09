@@ -9,7 +9,6 @@ public class ErrorHandler {
     private Logger logger = LogManager.getLogger(ErrorHandler.class.getSimpleName());
     public ErrorHandler(){
         Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
-            MercuryStoreCore.INSTANCE.appLoadingSubject.onNext(false);
             logger.error(ExceptionUtils.getStackTrace(throwable));
         });
     }

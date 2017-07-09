@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.frame.adr.settings;
+package com.mercury.platform.ui.adr.settings;
 
 import javax.swing.*;
 

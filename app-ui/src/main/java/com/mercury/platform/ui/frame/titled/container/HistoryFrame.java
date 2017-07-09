@@ -133,7 +133,7 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
             this.trimContainer();
             this.pack();
         }));
-        MercuryStoreUI.INSTANCE.reloadMessageSubject.subscribe(this::onReloadMessage);
+        MercuryStoreUI.reloadMessageSubject.subscribe(this::onReloadMessage);
     }
     private void trimContainer(){
         if(mainContainer.getComponentCount() > 40){

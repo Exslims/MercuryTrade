@@ -87,7 +87,7 @@ public class SupportPanel extends JPanel implements HasUI{
         scrollPane.addMouseWheelListener(new MouseAdapter() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                MercuryStoreUI.INSTANCE.repaintSubject.onNext(SettingsFrame.class);
+                MercuryStoreUI.repaintSubject.onNext(SettingsFrame.class);
             }
         });
         JScrollBar vBar = scrollPane.getVerticalScrollBar();

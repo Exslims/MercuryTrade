@@ -104,7 +104,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
                 }
                 navBar.add(cellHeader);
                 tabButtons.put(nickname + message.getTabName(), cellHeader);
-                MercuryStoreUI.INSTANCE.repaintSubject.onNext(ItemsGridFrame.class);
+                MercuryStoreUI.repaintSubject.onNext(ItemsGridFrame.class);
             }
         }
     }
@@ -117,7 +117,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
         int y = itemCell.getY();
         Optional<ItemCell> cellByCoordinates = getCellByCoordinates(itemInfoPanel.getStashTabDescriptor(), x, y);
         cellByCoordinates.ifPresent(itemCell1 -> itemInfoPanel.setCell(itemCell1.getCell()));
-        MercuryStoreUI.INSTANCE.repaintSubject.onNext(ItemsGridFrame.class);
+        MercuryStoreUI.repaintSubject.onNext(ItemsGridFrame.class);
     }
     public int getActiveTabsCount(){
         return navBar.getComponentCount();
@@ -170,7 +170,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
                     remove(((BorderLayout)getLayout()).getLayoutComponent(BorderLayout.CENTER));
                     add(defaultGrid,BorderLayout.CENTER);
                 }
-                MercuryStoreUI.INSTANCE.repaintSubject.onNext(ItemsGridFrame.class);
+                MercuryStoreUI.repaintSubject.onNext(ItemsGridFrame.class);
             }
         });
         return itemInfoPanel;
@@ -197,7 +197,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
                 repaint();
             });
             tabButtons.remove(nickname + message.getTabName());
-            MercuryStoreUI.INSTANCE.repaintSubject.onNext(ItemsGridFrame.class);
+            MercuryStoreUI.repaintSubject.onNext(ItemsGridFrame.class);
         }
     }
 }

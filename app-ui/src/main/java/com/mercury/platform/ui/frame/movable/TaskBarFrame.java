@@ -127,7 +127,7 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
 
     @Override
     protected void registerDirectScaleHandler() {
-        MercuryStoreUI.INSTANCE.taskBarScaleSubject.subscribe(this::changeScale);
+        MercuryStoreUI.taskBarScaleSubject.subscribe(this::changeScale);
     }
 
     @Override

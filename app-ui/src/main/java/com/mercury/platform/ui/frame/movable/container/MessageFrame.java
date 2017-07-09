@@ -119,7 +119,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
                 this.addMessage(message);
             }
         }));
-        MercuryStoreUI.INSTANCE.closeMessage.subscribe(message -> {
+        MercuryStoreUI.closeMessage.subscribe(message -> {
             MessagePanel messagePanel = this.currentMessages.stream()
                     .filter(panel -> panel.getMessage().equals(message))
                     .collect(Collectors.toList()).get(0);
@@ -141,8 +141,8 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
             this.pack();
             this.setUpExpandButton();
         });
-        MercuryStoreUI.INSTANCE.expandMessageSubject.subscribe(state -> this.onExpandMessage());
-        MercuryStoreUI.INSTANCE.collapseMessageSubject.subscribe(state -> this.onCollapseMessage());
+        MercuryStoreUI.expandMessageSubject.subscribe(state -> this.onExpandMessage());
+        MercuryStoreUI.collapseMessageSubject.subscribe(state -> this.onCollapseMessage());
     }
 
     private void addMessage(Message message){
@@ -486,7 +486,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
 
     @Override
     protected void registerDirectScaleHandler() {
-        MercuryStoreUI.INSTANCE.notificationScaleSubject.subscribe(this::changeScale);
+        MercuryStoreUI.notificationScaleSubject.subscribe(this::changeScale);
     }
 
     @Override

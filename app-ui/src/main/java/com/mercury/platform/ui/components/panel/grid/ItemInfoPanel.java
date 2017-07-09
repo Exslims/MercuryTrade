@@ -94,7 +94,7 @@ public class ItemInfoPanel extends JPanel implements HasUI{
                 timer.addActionListener(action -> {
                     timer.stop();
                     cell.setBorder(null);
-                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(ItemsGridFrame.class);
+                    MercuryStoreUI.repaintSubject.onNext(ItemsGridFrame.class);
                 });
                 timer.start();
             }

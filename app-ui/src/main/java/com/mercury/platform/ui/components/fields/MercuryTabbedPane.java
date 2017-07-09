@@ -11,9 +11,6 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
-/**
- * Created by Константин on 26.01.2017.
- */
 public class MercuryTabbedPane extends JPanel{
     private ComponentsFactory componentsFactory;
     private List<JButton> headerButtons;

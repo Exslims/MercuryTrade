@@ -173,7 +173,7 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
 
     @Override
     public void subscribe() {
-        MercuryStoreUI.INSTANCE.scrollToEndSubject.subscribe(value -> {
+        MercuryStoreUI.scrollToEndSubject.subscribe(value -> {
             this.scrollToBottom = value;
             if (!this.scrollToBottom) {
                 this.scrollEnd.setIcon(componentsFactory.getIcon("app/scroll-end-r.png", 18));

@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.frame.setup.adr;
+package com.mercury.platform.ui.adr;
 
 
 public enum AdrState {

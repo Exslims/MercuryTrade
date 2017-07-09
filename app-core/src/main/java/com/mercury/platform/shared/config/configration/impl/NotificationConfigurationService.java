@@ -25,6 +25,7 @@ public class NotificationConfigurationService extends BaseConfigurationService<N
         defaultButtons.add(new ResponseButtonDescriptor(2,false,false,"no thx", "no thanks"));
         defaultButtons.add(new ResponseButtonDescriptor(3,false,false,"sold", "sold"));
         notificationDescriptor.setButtons(defaultButtons);
+        notificationDescriptor.setNotificationEnable(true);
         notificationDescriptor.setLimitCount(3);
         notificationDescriptor.setUnfoldCount(2);
         notificationDescriptor.setDismissAfterKick(true);

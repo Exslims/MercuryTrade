@@ -19,8 +19,8 @@ import java.util.*;
 import java.util.List;
 
 
-public class BaseConfigManager implements ConfigManager, AsSubscriber {
-    private Logger logger = LogManager.getLogger(BaseConfigManager.class.getSimpleName());
+public class MercuryConfigManager implements ConfigManager, AsSubscriber {
+    private Logger logger = LogManager.getLogger(MercuryConfigManager.class.getSimpleName());
 
     private ConfigurationSource dataSource;
     private JSONHelper jsonHelper;
@@ -39,7 +39,7 @@ public class BaseConfigManager implements ConfigManager, AsSubscriber {
 
     private List<BaseConfigurationService> services = new ArrayList<>();
 
-    public BaseConfigManager(ConfigurationSource dataSource){
+    public MercuryConfigManager(ConfigurationSource dataSource){
         this.dataSource = dataSource;
         this.jsonHelper = new JSONHelper(dataSource);
         this.subscribe();
@@ -113,13 +113,14 @@ public class BaseConfigManager implements ConfigManager, AsSubscriber {
                 ProfileDescriptor defaultProfile = new ProfileDescriptor();
                 defaultProfile.setSelected(true);
                 defaultProfile.setProfileName("Profile1");
+                this.selectedProfile = defaultProfile;
                 this.profileDescriptors.add(defaultProfile);
                 this.jsonHelper.writeListObject(this.profileDescriptors,new TypeToken<List<ProfileDescriptor>>(){});
+            }else {
+                this.selectedProfile = this.profileDescriptors.stream()
+                        .filter(ProfileDescriptor::isSelected)
+                        .findAny().orElse(null);
             }
-
-           this.selectedProfile =  this.profileDescriptors.stream()
-                    .filter(ProfileDescriptor::isSelected)
-                    .findAny().orElse(null);
 
             this.framesConfigurationService = new FramesConfigurationServiceImpl(selectedProfile);
             this.soundConfigurationService = new SoundConfigurationService(selectedProfile);

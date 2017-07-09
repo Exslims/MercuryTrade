@@ -28,7 +28,7 @@ public class TabInfoPanel extends JPanel implements HasUI{
         JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_ALPHA, "Dismiss");
         hideButton.addActionListener((action)->{
             stashTabDescriptor.setUndefined(true);
-            MercuryStoreUI.INSTANCE.dismissTabInfoPanelSubject.onNext(this);
+            MercuryStoreUI.dismissTabInfoPanelSubject.onNext(this);
         });
         JPanel tabInfoPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel tabLabel = componentsFactory.getTextLabel(stashTabDescriptor.getTitle());

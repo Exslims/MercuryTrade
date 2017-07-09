@@ -164,7 +164,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI,HasHotke
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(MessageFrame.class);
+                    MercuryStoreUI.repaintSubject.onNext(MessageFrame.class);
                 }
 
                 @Override
@@ -172,13 +172,13 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI,HasHotke
                     itemButton.setBorder(new CompoundBorder(
                             BorderFactory.createMatteBorder(0,1,0,1,AppThemeColor.BORDER),
                             BorderFactory.createEmptyBorder(0,3,0,1)));
-                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(MessageFrame.class);
+                    MercuryStoreUI.repaintSubject.onNext(MessageFrame.class);
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     itemButton.setBorder(BorderFactory.createEmptyBorder(0,4,0,2));
-                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(MessageFrame.class);
+                    MercuryStoreUI.repaintSubject.onNext(MessageFrame.class);
                 }
             });
             tradePanel.add(itemButton,BorderLayout.CENTER);
@@ -389,7 +389,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI,HasHotke
                         labelText = day + "d " + hours + "h " + minute + "m";
                     }
                     timeLabel.setText(labelText);
-                    MercuryStoreUI.INSTANCE.repaintSubject.onNext(MessageFrame.class);
+                    MercuryStoreUI.repaintSubject.onNext(MessageFrame.class);
                 }
             });
             timeAgo.start();
@@ -441,7 +441,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI,HasHotke
         }
         setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
         setMinimumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
-        MercuryStoreUI.INSTANCE.packSubject.onNext(MessageFrame.class);
+        MercuryStoreUI.packSubject.onNext(MessageFrame.class);
     }
     public void collapse(){
         expanded = false;
@@ -456,7 +456,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI,HasHotke
         }
         setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
         setMinimumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
-        MercuryStoreUI.INSTANCE.packSubject.onNext(MessageFrame.class);
+        MercuryStoreUI.packSubject.onNext(MessageFrame.class);
     }
 
     public boolean isExpanded() {
@@ -489,7 +489,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI,HasHotke
                 if(!style.equals(MessagePanelStyle.HISTORY)) {
                     tradeButton.setEnabled(true);
                 }
-                MercuryStoreUI.INSTANCE.repaintSubject.onNext(MessageFrame.class);
+                MercuryStoreUI.repaintSubject.onNext(MessageFrame.class);
             }
         });
         MercuryStoreCore.INSTANCE.playerLeftSubject.subscribe(nickname -> {
@@ -499,13 +499,13 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI,HasHotke
                 if (!style.equals(MessagePanelStyle.HISTORY)) {
                     tradeButton.setEnabled(false);
                 }
-                MercuryStoreUI.INSTANCE.repaintSubject.onNext(MessageFrame.class);
+                MercuryStoreUI.repaintSubject.onNext(MessageFrame.class);
             }
         });
         MercuryStoreCore.INSTANCE.buttonsChangedSubject.subscribe(state -> {
             this.customButtonsPanel.removeAll();
             initResponseButtons(customButtonsPanel);
-            MercuryStoreUI.INSTANCE.repaintSubject.onNext(MessageFrame.class);
+            MercuryStoreUI.repaintSubject.onNext(MessageFrame.class);
         });
     }
     private void initResponseButtons(JPanel panel){

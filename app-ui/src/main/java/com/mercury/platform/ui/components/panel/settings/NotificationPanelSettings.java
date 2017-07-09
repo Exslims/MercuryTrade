@@ -150,7 +150,7 @@ public class NotificationPanelSettings extends ConfigurationPanel{
                         addNewRow("expl", "example",false,false, titleColumn, valueColumn,kickColumn,closeColumn, utilColumn);
                         buttonsTable.add(addNew, utilColumn);
 
-                        MercuryStoreUI.INSTANCE.packSubject.onNext(SettingsFrame.class);
+                        MercuryStoreUI.packSubject.onNext(SettingsFrame.class);
                     }
                 }
             }
@@ -211,7 +211,7 @@ public class NotificationPanelSettings extends ConfigurationPanel{
                     buttonsTable.remove(closeWrapper);
                     buttonsTable.remove(remove);
 
-                    MercuryStoreUI.INSTANCE.packSubject.onNext(SettingsFrame.class);
+                    MercuryStoreUI.packSubject.onNext(SettingsFrame.class);
                 }
             }
         });

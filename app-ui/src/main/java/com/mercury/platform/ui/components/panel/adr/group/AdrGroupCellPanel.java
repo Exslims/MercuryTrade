@@ -35,8 +35,8 @@ public class AdrGroupCellPanel extends JPanel implements HasUI{
         progressBar.setBorderPainted(false);
         progressBar.setBackground(AppThemeColor.TRANSPARENT);
         progressBar.setUI(new SquareMercuryIconTrackerUI(descriptor.getIconPath()));
-        progressBar.setValue(4000);
-        progressBar.setMaximum(4000);
+        progressBar.setValue(0);
+        progressBar.setMaximum((int)(this.descriptor.getDuration() * 1000));
         add(progressBar,BorderLayout.CENTER);
 
         this.progressTl = new Timeline(progressBar);

@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 public class NotificationDescriptor {
+    private boolean notificationEnable;
     private int limitCount;
     private int unfoldCount;
     private FlowDirections flowDirections;

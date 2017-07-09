@@ -1,6 +1,7 @@
-package com.mercury.platform.ui.frame.adr.components;
+package com.mercury.platform.ui.adr.components;
 
-import com.mercury.platform.shared.config.descriptor.adr.AdrIconGroupDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.ui.components.panel.adr.group.AdrGroupCellPanel;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import lombok.NonNull;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class AdrGroupFrame extends AbstractAdrFrame {
     private List<AdrGroupCellPanel> cells;
-    private AdrIconGroupDescriptor descriptor;
+    private AdrGroupDescriptor descriptor;
 
     private int x;
     private int y;
@@ -24,7 +25,7 @@ public class AdrGroupFrame extends AbstractAdrFrame {
     private DraggedFrameMotionListener motionListener;
     private MouseAdapter mouseOverListener;
 
-    public AdrGroupFrame(@NonNull AdrIconGroupDescriptor descriptor) {
+    public AdrGroupFrame(@NonNull AdrGroupDescriptor descriptor) {
         super();
         this.descriptor = descriptor;
         this.cells = new ArrayList<>();
@@ -46,9 +47,13 @@ public class AdrGroupFrame extends AbstractAdrFrame {
     private JPanel getCellsPanel(){
         JPanel root = componentsFactory.getTransparentPanel(new GridLayout(4, 1));
         descriptor.getCells().forEach(cellDescriptor -> {
-            AdrGroupCellPanel adrGroupCellPanel = new AdrGroupCellPanel(cellDescriptor,this.componentsFactory);
-            root.add(adrGroupCellPanel);
-            cells.add(adrGroupCellPanel);
+            switch (cellDescriptor.getType()){
+                case ICON: {
+                    AdrGroupCellPanel adrGroupCellPanel = new AdrGroupCellPanel((AdrIconDescriptor) cellDescriptor,this.componentsFactory);
+                    root.add(adrGroupCellPanel);
+                    cells.add(adrGroupCellPanel);
+                }
+            }
         });
         return root;
     }

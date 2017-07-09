@@ -51,10 +51,10 @@ public class ChatFilterPanel extends JPanel {
         scrollPane.addMouseWheelListener(new MouseAdapter() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                MercuryStoreUI.INSTANCE.repaintSubject.onNext(ChatFilterFrame.class);
+                MercuryStoreUI.repaintSubject.onNext(ChatFilterFrame.class);
             }
         });
-        scrollPane.addMouseWheelListener(e -> MercuryStoreUI.INSTANCE.scrollToEndSubject.onNext(false));
+        scrollPane.addMouseWheelListener(e -> MercuryStoreUI.scrollToEndSubject.onNext(false));
 
         container.getParent().setBackground(AppThemeColor.TRANSPARENT);
         JScrollBar vBar = scrollPane.getVerticalScrollBar();
@@ -64,7 +64,7 @@ public class ChatFilterPanel extends JPanel {
         vBar.setUnitIncrement(3);
         vBar.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
         vBar.addAdjustmentListener(e -> {
-            MercuryStoreUI.INSTANCE.repaintSubject.onNext(ChatFilterFrame.class);
+            MercuryStoreUI.repaintSubject.onNext(ChatFilterFrame.class);
         });
 
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
@@ -77,7 +77,7 @@ public class ChatFilterPanel extends JPanel {
         }
 
         this.addMessageToFilter(message);
-        MercuryStoreUI.INSTANCE.repaintSubject.onNext(ChatFilterFrame.class);
+        MercuryStoreUI.repaintSubject.onNext(ChatFilterFrame.class);
     }
 
     public void scrollToBottom(boolean value) {
@@ -107,7 +107,7 @@ public class ChatFilterPanel extends JPanel {
                 container.add(chatMessagePanel);
                 trimContainer();
                 expiresMessages.put(nickname,message);
-                MercuryStoreUI.INSTANCE.packSubject.onNext(ChatFilterFrame.class);
+                MercuryStoreUI.packSubject.onNext(ChatFilterFrame.class);
                 if(soundEnable){
                     MercuryStoreCore.INSTANCE.soundSubject.onNext(SoundType.CHAT_SCANNER);
                 }

@@ -12,11 +12,11 @@ public class ItemInfoPanelControllerImpl implements ItemInfoPanelController {
     }
     @Override
     public void hidePanel() {
-        MercuryStoreUI.INSTANCE.closeGridItemSubject.onNext(message);
+        MercuryStoreUI.closeGridItemSubject.onNext(message);
     }
 
     @Override
     public void changeTabType(@NonNull ItemInfoPanel panel) {
-        MercuryStoreUI.INSTANCE.itemCellStateSubject.onNext(panel);
+        MercuryStoreUI.itemCellStateSubject.onNext(panel);
     }
 }

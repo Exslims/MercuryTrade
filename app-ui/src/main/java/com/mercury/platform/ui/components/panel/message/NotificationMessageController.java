@@ -58,14 +58,14 @@ public class NotificationMessageController implements MessagePanelController {
         if(message instanceof ItemMessage) {
             this.copyItemNameToClipboard(((ItemMessage) message).getItemName());
             if (((ItemMessage) message).getTabName() != null) {
-                MercuryStoreUI.INSTANCE.showItemGridSubject.onNext((ItemMessage) message);
+                MercuryStoreUI.showItemGridSubject.onNext((ItemMessage) message);
             }
         }
     }
 
     @Override
     public void reloadMessage(MessagePanel panel) {
-        MercuryStoreUI.INSTANCE.reloadMessageSubject.onNext(panel);
+        MercuryStoreUI.reloadMessageSubject.onNext(panel);
     }
 
     private void copyItemNameToClipboard(@NonNull String itemName){
@@ -80,7 +80,7 @@ public class NotificationMessageController implements MessagePanelController {
 
     private void closeMessagePanel(){
         Timer timer = new Timer(30, action -> {
-            MercuryStoreUI.INSTANCE.closeMessage.onNext(message);
+            MercuryStoreUI.closeMessage.onNext(message);
         });
         timer.setRepeats(false);
         timer.start();

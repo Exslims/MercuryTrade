@@ -53,13 +53,13 @@ public class GeneralSettings extends ConfigurationPanel {
 
         this.fadeTimeSlider = this.componentsFactory.getSlider(0,10, this.applicationConfig.get().getFadeTime());
         this.fadeTimeSlider.addChangeListener(e -> {
-            MercuryStoreUI.INSTANCE.repaintSubject.onNext(SettingsFrame.class);
+            MercuryStoreUI.repaintSubject.onNext(SettingsFrame.class);
         });
 
         this.minSlider = this.componentsFactory.getSlider(40,100,this.applicationConfig.get().getMinOpacity());
         this.minSlider.addChangeListener(e -> {
             if(!(this.minSlider.getValue() > this.maxSlider.getValue())) {
-                MercuryStoreUI.INSTANCE.repaintSubject.onNext(SettingsFrame.class);
+                MercuryStoreUI.repaintSubject.onNext(SettingsFrame.class);
             }else {
                 minSlider.setValue(minSlider.getValue()-1);
             }
@@ -152,7 +152,7 @@ public class GeneralSettings extends ConfigurationPanel {
         root.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                MercuryStoreUI.INSTANCE.repaintSubject.onNext(SettingsFrame.class);
+                MercuryStoreUI.repaintSubject.onNext(SettingsFrame.class);
             }
         });
         root.add(openTutorial);

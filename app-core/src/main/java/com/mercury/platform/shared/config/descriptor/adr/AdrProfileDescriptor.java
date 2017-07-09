@@ -7,5 +7,6 @@ import java.util.List;
 @Data
 public class AdrProfileDescriptor {
     private String profileName = "default";
-    private List<AdrComponentWrapper> contents;
+    private List<AdrComponentDescriptor> contents;
+    private boolean selected;
 }

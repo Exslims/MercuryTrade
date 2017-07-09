@@ -12,14 +12,14 @@ import com.mercury.platform.ui.misc.MercuryStoreUI;
 public class MercuryTaskBarController implements TaskBarController {
     @Override
     public void enableDND() {
-        MercuryStoreUI.INSTANCE.repaintSubject.onNext(TaskBarFrame.class);
+        MercuryStoreUI.repaintSubject.onNext(TaskBarFrame.class);
         MercuryStoreCore.INSTANCE.notificationSubject.onNext("DND on");
         MercuryStoreCore.INSTANCE.dndSubject.onNext(true);
     }
 
     @Override
     public void disableDND() {
-        MercuryStoreUI.INSTANCE.repaintSubject.onNext(TaskBarFrame.class);
+        MercuryStoreUI.repaintSubject.onNext(TaskBarFrame.class);
         MercuryStoreCore.INSTANCE.notificationSubject.onNext("DND off");
         MercuryStoreCore.INSTANCE.dndSubject.onNext(false);
     }

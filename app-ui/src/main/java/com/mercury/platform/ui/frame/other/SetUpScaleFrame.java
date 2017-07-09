@@ -61,7 +61,7 @@ public class SetUpScaleFrame extends AbstractOverlaidFrame {
             public void mousePressed(MouseEvent e) {
                 FramesManager.INSTANCE.disableScale();
                 MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
-                MercuryStoreUI.INSTANCE.saveScaleSubject.onNext(scaleData);
+                MercuryStoreUI.saveScaleSubject.onNext(scaleData);
             }
         });
         save.setPreferredSize(new Dimension(100, 26));
@@ -102,7 +102,7 @@ public class SetUpScaleFrame extends AbstractOverlaidFrame {
                     prevValue = notificationSlider.getValue();
                     notificationValue.setText(String.valueOf(notificationSlider.getValue() * 10)+ "%");
                     scaleData.put("notification",notificationSlider.getValue()/10f);
-                    MercuryStoreUI.INSTANCE.notificationScaleSubject.onNext(notificationSlider.getValue()/10f);
+                    MercuryStoreUI.notificationScaleSubject.onNext(notificationSlider.getValue()/10f);
                     repaint();
                 }
             }
@@ -132,7 +132,7 @@ public class SetUpScaleFrame extends AbstractOverlaidFrame {
                     prevValue = taskBarSlider.getValue();
                     taskBarValue.setText(String.valueOf(taskBarSlider.getValue() * 10)+ "%");
                     scaleData.put("taskbar",taskBarSlider.getValue()/10f);
-                    MercuryStoreUI.INSTANCE.taskBarScaleSubject.onNext(taskBarSlider.getValue()/10f);
+                    MercuryStoreUI.taskBarScaleSubject.onNext(taskBarSlider.getValue()/10f);
                     repaint();
                 }
             }
@@ -161,7 +161,7 @@ public class SetUpScaleFrame extends AbstractOverlaidFrame {
                     prevValue = itemInfoSlider.getValue();
                     itemInfoValue.setText(String.valueOf(itemInfoSlider.getValue() * 10)+ "%");
                     scaleData.put("itemcell",itemInfoSlider.getValue()/10f);
-                    MercuryStoreUI.INSTANCE.itemPanelScaleSubject.onNext(itemInfoSlider.getValue()/10f);
+                    MercuryStoreUI.itemPanelScaleSubject.onNext(itemInfoSlider.getValue()/10f);
                     repaint();
                 }
             }

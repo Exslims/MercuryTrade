@@ -6,6 +6,7 @@ import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
+import com.mercury.platform.ui.adr.routing.AdrManager;
 import com.mercury.platform.ui.frame.AbstractComponentFrame;
 import com.mercury.platform.ui.frame.AbstractScalableComponentFrame;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
@@ -13,7 +14,7 @@ import com.mercury.platform.ui.frame.movable.AbstractMovableComponentFrame;
 import com.mercury.platform.ui.frame.movable.container.MessageFrame;
 import com.mercury.platform.ui.frame.other.*;
 import com.mercury.platform.ui.frame.movable.TaskBarFrame;
-import com.mercury.platform.ui.frame.setup.adr.AdrState;
+import com.mercury.platform.ui.adr.AdrState;
 import com.mercury.platform.ui.frame.setup.scale.SetUpScaleCommander;
 import com.mercury.platform.ui.frame.titled.*;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
@@ -110,8 +111,8 @@ public class FramesManager implements AsSubscriber {
             patchNotesFrame.setFrameTitle("MercuryTrade v" + notesLoader.getVersionFrom(json));
             patchNotesFrame.showComponent();
         });
-        MercuryStoreUI.INSTANCE.packSubject.subscribe(className -> this.framesMap.get(className).pack());
-        MercuryStoreUI.INSTANCE.repaintSubject.subscribe(className -> this.framesMap.get(className).repaint());
+        MercuryStoreUI.packSubject.subscribe(className -> this.framesMap.get(className).pack());
+        MercuryStoreUI.repaintSubject.subscribe(className -> this.framesMap.get(className).repaint());
     }
     public void exit() {
         this.framesMap.forEach((k,v) -> v.setVisible(false));

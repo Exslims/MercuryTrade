@@ -2,12 +2,11 @@ package com.mercury.platform.core;
 
 import com.mercury.platform.core.misc.SoundNotifier;
 import com.mercury.platform.core.update.UpdateClientStarter;
-import com.mercury.platform.core.utils.error.ErrorHandler;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.hotkey.HotKeysInterceptor;
 import com.mercury.platform.shared.UpdateManager;
-import com.mercury.platform.shared.config.BaseConfigManager;
+import com.mercury.platform.shared.config.MercuryConfigManager;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.MercuryConfigurationSource;
 import com.mercury.platform.shared.store.MercuryStoreCore;
@@ -29,12 +28,11 @@ public class AppStarter {
     private boolean updating = false;
 
     public void startApplication(){
-        BaseConfigManager configuration = new BaseConfigManager(new MercuryConfigurationSource());
+        MercuryConfigManager configuration = new MercuryConfigManager(new MercuryConfigurationSource());
         configuration.load();
         Configuration.set(configuration);
         new SoundNotifier();
         new ChatHelper();
-        new ErrorHandler();
         new HotKeysInterceptor();
 
         Executor executor = Executors.newSingleThreadExecutor();

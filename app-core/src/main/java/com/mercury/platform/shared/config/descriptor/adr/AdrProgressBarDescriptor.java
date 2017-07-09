@@ -7,8 +7,5 @@ import java.awt.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class AdrProgressBarDescriptor extends AdrComponentDescriptor{
-    public AdrProgressBarDescriptor(Point location, Dimension size) {
-        super(location, size);
-    }
+public class AdrProgressBarDescriptor extends AdrDurationComponent{
 }

@@ -2,6 +2,7 @@ package com.mercury.platform;
 
 import com.mercury.platform.core.AppStarter;
 import com.mercury.platform.core.utils.FileMonitor;
+import com.mercury.platform.core.utils.error.ErrorHandler;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.frame.other.MercuryLoadingFrame;
@@ -16,6 +17,7 @@ public class AppMain {
     private static final Logger logger = LogManager.getLogger(AppMain.class.getSimpleName());
     public static void main(String[] args) {
         System.setProperty("sun.java2d.d3d","false");
+        new ErrorHandler();
         MercuryLoadingFrame mercuryLoadingFrame = new MercuryLoadingFrame();
         mercuryLoadingFrame.init();
         mercuryLoadingFrame.showComponent();

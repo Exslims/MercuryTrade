@@ -44,7 +44,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
 
     @Override
     public void subscribe() {
-        MercuryStoreUI.INSTANCE.showItemGridSubject.subscribe(message -> {
+        MercuryStoreUI.showItemGridSubject.subscribe(message -> {
             if(this.applicationConfig.get().isItemsGridEnable()) {
                 if (itemsGridPanel.getActiveTabsCount() == 0) {
                     this.setVisible(true);
@@ -53,7 +53,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
                 this.pack();
             }
         });
-        MercuryStoreUI.INSTANCE.closeMessage.subscribe(message -> {
+        MercuryStoreUI.closeMessage.subscribe(message -> {
             if(message instanceof ItemMessage) {
                 this.itemsGridPanel.remove((ItemMessage) message);
                 if (itemsGridPanel.getActiveTabsCount() == 0) {
@@ -61,15 +61,15 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
                 }
             }
         });
-        MercuryStoreUI.INSTANCE.closeGridItemSubject.subscribe(
+        MercuryStoreUI.closeGridItemSubject.subscribe(
                 message -> itemsGridPanel.remove(message));
-        MercuryStoreUI.INSTANCE.dismissTabInfoPanelSubject.subscribe(tabInfoPanel -> {
+        MercuryStoreUI.dismissTabInfoPanelSubject.subscribe(tabInfoPanel -> {
             tabsContainer.remove(tabInfoPanel);
             stashTabsContainer.removeTab(tabInfoPanel.getStashTabDescriptor());
             this.repaint();
             this.pack();
         });
-        MercuryStoreUI.INSTANCE.itemCellStateSubject.subscribe(item -> {
+        MercuryStoreUI.itemCellStateSubject.subscribe(item -> {
             itemsGridPanel.changeTabType(item);
             this.pack();
         });
@@ -239,7 +239,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
 
     @Override
     protected void registerDirectScaleHandler() {
-        MercuryStoreUI.INSTANCE.itemPanelScaleSubject.subscribe(this::changeScale);
+        MercuryStoreUI.itemPanelScaleSubject.subscribe(this::changeScale);
     }
 
     @Override

@@ -1,8 +1,8 @@
-package com.mercury.platform.ui.frame.adr;
+package com.mercury.platform.ui.adr;
 
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
-import com.mercury.platform.shared.config.descriptor.adr.AdrIconGroupDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.components.panel.adr.ui.AdrListEntry;
@@ -30,11 +30,11 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
     private JPanel getRootPanel(){
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
         DefaultListModel<AdrListEntry> model = new DefaultListModel<>();
-        AdrComponentDescriptor adrComponentDescriptor = Configuration.get().adrGroupConfiguration().getEntities().get(0).getContents().get(0).getComponentDescriptor();
-
-        ((AdrIconGroupDescriptor)adrComponentDescriptor).getCells().forEach(it -> {
-            model.addElement(new AdrListEntry(it.getIconPath()));
-        });
+//        AdrComponentDescriptor adrComponentDescriptor = Configuration.get().adrGroupConfiguration().getEntities().get(0).getContents().get(0).getComponentDescriptor();
+//
+//        ((AdrGroupDescriptor)adrComponentDescriptor).getCells().forEach(it -> {
+//            model.addElement(new AdrListEntry(it.getIconPath()));
+//        });
 
         JList<AdrListEntry> list = new JList<>(model);
         list.setCellRenderer(new AdrListEntryCellRenderer());
