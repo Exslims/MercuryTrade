@@ -10,6 +10,7 @@ import com.mercury.platform.shared.config.MercuryConfigManager;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.MercuryConfigurationSource;
 import com.mercury.platform.shared.store.MercuryStoreCore;
+import com.sun.jna.Native;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
 import org.apache.logging.log4j.LogManager;
@@ -59,26 +60,26 @@ public class AppStarter {
 
                     User32.INSTANCE.GetClassName(hwnd, className, 512);
 
-                    APP_STATUS = FrameVisibleState.SHOW;
-                    MercuryStoreCore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
+//                    APP_STATUS = FrameVisibleState.SHOW;
+//                    MercuryStoreCore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
 
-//                    if(!Native.toString(className).equals("POEWindowClass")){
-//                        if(APP_STATUS == FrameVisibleState.SHOW) {
-//                            APP_STATUS = FrameVisibleState.HIDE;
-//                            MercuryStore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.HIDE);
-//                        }
-//                    }else{
-//                        if(APP_STATUS == FrameVisibleState.HIDE) {
-//                            try {
-//                                Thread.sleep(delay);
-//                                delay = 100;
-//                            } catch (InterruptedException e) {
-//                                logger.error(e);
-//                            }
-//                            APP_STATUS = FrameVisibleState.SHOW;
-//                            MercuryStore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
-//                        }
-//                    }
+                    if(!Native.toString(className).equals("POEWindowClass")){
+                        if(APP_STATUS == FrameVisibleState.SHOW) {
+                            APP_STATUS = FrameVisibleState.HIDE;
+                            MercuryStoreCore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.HIDE);
+                        }
+                    }else{
+                        if(APP_STATUS == FrameVisibleState.HIDE) {
+                            try {
+                                Thread.sleep(delay);
+                                delay = 100;
+                            } catch (InterruptedException e) {
+                                logger.error(e);
+                            }
+                            APP_STATUS = FrameVisibleState.SHOW;
+                            MercuryStoreCore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
+                        }
+                    }
                 }
             },0,150);
         });

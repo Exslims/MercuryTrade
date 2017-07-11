@@ -6,7 +6,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.mercury.platform.shared.config.ConfigurationSource;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
-import com.mercury.platform.shared.config.descriptor.adr.AdrComponentWrapper;
 import com.mercury.platform.shared.config.json.deserializer.AdrComponentDeserializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

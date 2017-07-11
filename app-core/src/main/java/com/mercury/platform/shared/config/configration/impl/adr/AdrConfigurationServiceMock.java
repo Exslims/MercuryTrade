@@ -38,22 +38,29 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         icon1.setDuration(8f);
         icon1.setIconType(AdrIconType.SQUARE);
         icon1.setType(AdrComponentType.ICON);
-        groupDescriptor.setCells(Arrays.asList(icon1,icon1,icon1,icon1));
+        AdrIconDescriptor icon2 = new AdrIconDescriptor();
+        icon2.setIconPath("Blood_Rage_skill_icon");
+        icon2.setLocation(new Point(400, 400));
+        icon2.setSize(new Dimension(64, 64));
+        icon2.setDuration(8f);
+        icon2.setIconType(AdrIconType.SQUARE);
+        icon2.setType(AdrComponentType.ICON);
+        AdrIconDescriptor icon3 = new AdrIconDescriptor();
+        icon3.setIconPath("Bismuth_Flask");
+        icon3.setLocation(new Point(400, 400));
+        icon3.setSize(new Dimension(64, 64));
+        icon3.setDuration(8f);
+        icon3.setIconType(AdrIconType.ELIPSE);
+        icon3.setType(AdrComponentType.ICON);
+        groupDescriptor.setCells(Arrays.asList(icon1,icon2,icon3,icon2));
 
         AdrGroupDescriptor groupDescriptor1 = new AdrGroupDescriptor();
         groupDescriptor1.setSize(new Dimension(64,64));
         groupDescriptor1.setLocation(new Point(500,500));
-        groupDescriptor1.setGroupType(AdrGroupType.DYNAMIC);
         groupDescriptor1.setType(AdrComponentType.GROUP);
-        AdrIconDescriptor icon2 = new AdrIconDescriptor();
-        icon2.setIconPath("Bismuth_Flask");
-        icon2.setLocation(new Point(400, 400));
-        icon2.setSize(new Dimension(64, 64));
-        icon2.setDuration(8f);
-        icon2.setIconType(AdrIconType.ELIPSE);
-        icon2.setType(AdrComponentType.ICON);
-        groupDescriptor1.setCells(Arrays.asList(icon2,icon2,icon2,icon2));
-        profile.setContents(Arrays.asList(groupDescriptor,groupDescriptor1));
+        groupDescriptor1.setGroupType(AdrGroupType.DYNAMIC);
+        groupDescriptor1.setCells(Arrays.asList(icon3,icon1,icon2,icon3));
+        profile.setContents(Arrays.asList(groupDescriptor,groupDescriptor1, icon1,groupDescriptor,icon3));
         return Arrays.asList(profile);
     }
 

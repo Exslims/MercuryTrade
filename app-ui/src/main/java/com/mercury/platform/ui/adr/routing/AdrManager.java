@@ -24,13 +24,12 @@ public class AdrManager implements AsSubscriber{
     @Getter
     private AdrState state = AdrState.DEFAULT;
     public void load(){
-        this.adrManagerFrame = new AdrManagerFrame();
         this.config = Configuration.get().adrGroupConfiguration();
         this.selectedProfile = this.config.getEntities()
                 .stream()
                 .filter(AdrProfileDescriptor::isSelected)
                 .findAny().orElse(null);
-
+        this.adrManagerFrame = new AdrManagerFrame(this.selectedProfile);
         this.selectedProfile.getContents().forEach(component -> {
             switch (component.getType()){
                 case GROUP: {
@@ -61,6 +60,12 @@ public class AdrManager implements AsSubscriber{
     public void subscribe() {
         MercuryStoreUI.adrSelectSubject.subscribe(component -> {
 
+        });
+        MercuryStoreUI.adrSelectProfileSubject.subscribe(profile -> {
+            this.selectedProfile.setSelected(false);
+            this.selectedProfile = profile;
+            //todo
+            profile.setSelected(true);
         });
     }
 }

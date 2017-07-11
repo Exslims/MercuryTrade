@@ -1,24 +1,27 @@
 package com.mercury.platform.ui.adr;
 
-import com.mercury.platform.shared.config.Configuration;
-import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
-import com.mercury.platform.ui.components.panel.adr.ui.AdrListEntry;
-import com.mercury.platform.ui.components.panel.adr.ui.AdrListEntryCellRenderer;
+import com.mercury.platform.ui.components.panel.adr.ui.AdrTreeEntryCellRenderer;
 import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import lombok.Getter;
 
 import javax.swing.*;
+import javax.swing.plaf.IconUIResource;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseWheelEvent;
 
 public class AdrManagerFrame extends AbstractTitledComponentFrame{
-    private JPanel auraTreeContainer;
-    public AdrManagerFrame() {
+    @Getter
+    private AdrProfileDescriptor selectedProfile;
+    public AdrManagerFrame(AdrProfileDescriptor selectedProfile) {
         super();
+        this.selectedProfile = selectedProfile;
+        UIManager.put("Tree.collapsedIcon",new IconUIResource(this.componentsFactory.getIcon("app/adr/node_collapse.png",22)));
+        UIManager.put("Tree.expandedIcon",new IconUIResource(this.componentsFactory.getIcon("app/adr/node_expand.png",22)));
     }
 
     @Override
@@ -29,49 +32,39 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
     }
     private JPanel getRootPanel(){
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
-        DefaultListModel<AdrListEntry> model = new DefaultListModel<>();
-//        AdrComponentDescriptor adrComponentDescriptor = Configuration.get().adrGroupConfiguration().getEntities().get(0).getContents().get(0).getComponentDescriptor();
-//
-//        ((AdrGroupDescriptor)adrComponentDescriptor).getCells().forEach(it -> {
-//            model.addElement(new AdrListEntry(it.getIconPath()));
-//        });
+        root.setBackground(AppThemeColor.FRAME);
+        DefaultMutableTreeNode model = new DefaultMutableTreeNode("test");
 
-        JList<AdrListEntry> list = new JList<>(model);
-        list.setCellRenderer(new AdrListEntryCellRenderer());
-        list.setBackground(AppThemeColor.TRANSPARENT);
-        list.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0,0,0,1,AppThemeColor.BORDER),
-                BorderFactory.createEmptyBorder(4,4,4,4)));
-        root.add(list,BorderLayout.LINE_START);
-
-        return root;
-    }
-    private JPanel getAuraTree(){
-        auraTreeContainer = new VerticalScrollContainer();
-        auraTreeContainer.setBackground(AppThemeColor.TRANSPARENT);
-        auraTreeContainer.setLayout(new BoxLayout(auraTreeContainer,BoxLayout.Y_AXIS));
-
-        JScrollPane scrollPane = new JScrollPane(auraTreeContainer);
-        scrollPane.setBorder(null);
-        scrollPane.setBackground(AppThemeColor.FRAME);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.addMouseWheelListener(new MouseAdapter() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                repaint();
+        this.selectedProfile.getContents().forEach(descriptor -> {
+            DefaultMutableTreeNode node = new DefaultMutableTreeNode(descriptor);
+            switch (descriptor.getType()){
+                case GROUP: {
+                    ((AdrGroupDescriptor)descriptor).getCells().forEach(cell -> {
+                        DefaultMutableTreeNode cellNode = new DefaultMutableTreeNode(cell);
+                        node.add(cellNode);
+                    });
+                    break;
+                }
             }
+            model.add(node);
         });
 
-        auraTreeContainer.getParent().setBackground(AppThemeColor.TRANSPARENT);
-        JScrollBar vBar = scrollPane.getVerticalScrollBar();
-        vBar.setBackground(AppThemeColor.SLIDE_BG);
-        vBar.setUI(new MercuryScrollBarUI());
-        vBar.setPreferredSize(new Dimension(15, Integer.MAX_VALUE));
-        vBar.setUnitIncrement(3);
-        vBar.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
-        vBar.addAdjustmentListener(e -> repaint());
-        return null;
+        JPanel leftPanel = new JPanel(new BorderLayout());
+        leftPanel.setBackground(AppThemeColor.FRAME);
+        leftPanel.setBorder(BorderFactory.createMatteBorder(0,0,0,1,AppThemeColor.BORDER));
+        JButton addComponent = this.componentsFactory.getIconButton("app/adr/add_component.png", 20, AppThemeColor.FRAME, "todo");
+        addComponent.setBorder(BorderFactory.createMatteBorder(0,0,1,0,AppThemeColor.BORDER));
+        JTree tree = new JTree(model);
+        tree.setCellRenderer(new AdrTreeEntryCellRenderer());
+        tree.setRootVisible(false);
+        tree.setShowsRootHandles(true);
+        tree.setBorder(BorderFactory.createEmptyBorder(4,4,0,4));
+        tree.setBackground(AppThemeColor.FRAME);
+        leftPanel.add(addComponent,BorderLayout.PAGE_START);
+        leftPanel.add(tree,BorderLayout.CENTER);
+        root.add(leftPanel,BorderLayout.LINE_START);
+
+        return root;
     }
 
     @Override
@@ -80,7 +73,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
 
     @Override
     protected String getFrameTitle() {
-        return "placeholder";
+        return "Aura Duration Tracking";
     }
 
 }

@@ -52,6 +52,7 @@ public class AdrGroupFrame extends AbstractAdrFrame {
                     AdrGroupCellPanel adrGroupCellPanel = new AdrGroupCellPanel((AdrIconDescriptor) cellDescriptor,this.componentsFactory);
                     root.add(adrGroupCellPanel);
                     cells.add(adrGroupCellPanel);
+                    break;
                 }
             }
         });
