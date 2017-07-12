@@ -16,7 +16,6 @@ import java.util.List;
 
 public class AdrGroupFrame extends AbstractAdrFrame {
     private List<AdrGroupCellPanel> cells;
-    private AdrGroupDescriptor descriptor;
 
     private int x;
     private int y;
@@ -26,8 +25,7 @@ public class AdrGroupFrame extends AbstractAdrFrame {
     private MouseAdapter mouseOverListener;
 
     public AdrGroupFrame(@NonNull AdrGroupDescriptor descriptor) {
-        super();
-        this.descriptor = descriptor;
+        super(descriptor);
         this.cells = new ArrayList<>();
         this.mouseListener = new DraggedFrameMouseListener();
         this.motionListener = new DraggedFrameMotionListener();
@@ -46,7 +44,7 @@ public class AdrGroupFrame extends AbstractAdrFrame {
 
     private JPanel getCellsPanel(){
         JPanel root = componentsFactory.getTransparentPanel(new GridLayout(4, 1));
-        descriptor.getCells().forEach(cellDescriptor -> {
+        ((AdrGroupDescriptor)descriptor).getCells().forEach(cellDescriptor -> {
             switch (cellDescriptor.getType()){
                 case ICON: {
                     AdrGroupCellPanel adrGroupCellPanel = new AdrGroupCellPanel((AdrIconDescriptor) cellDescriptor,this.componentsFactory);

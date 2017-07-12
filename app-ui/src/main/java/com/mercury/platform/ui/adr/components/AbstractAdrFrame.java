@@ -1,20 +1,25 @@
 package com.mercury.platform.ui.adr.components;
 
+import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.sun.awt.AWTUtilities;
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
+import lombok.Getter;
 
 import java.awt.*;
 
 public abstract class AbstractAdrFrame extends AbstractOverlaidFrame{
     private int settingWl;
+    @Getter
+    protected AdrComponentDescriptor descriptor;
     private WinDef.HWND componentHwnd;
 
-    protected AbstractAdrFrame() {
+    protected AbstractAdrFrame(AdrComponentDescriptor descriptor) {
         super();
+        this.descriptor = descriptor;
         AWTUtilities.setWindowOpaque(this, false);
     }
 

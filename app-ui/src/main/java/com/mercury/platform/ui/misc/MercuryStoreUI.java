@@ -5,6 +5,7 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
 import com.mercury.platform.shared.entity.message.ItemMessage;
 import com.mercury.platform.shared.entity.message.Message;
+import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
 import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
 import com.mercury.platform.ui.components.panel.grid.ItemInfoPanel;
 import com.mercury.platform.ui.components.panel.grid.TabInfoPanel;
@@ -33,7 +34,9 @@ public class MercuryStoreUI {
     public static final PublishSubject<Class<?>> repaintSubject = PublishSubject.create();
 
     //adr
-    public static final PublishSubject<AdrPageDefinition> adrSelectSubject = PublishSubject.create();
+    public static final PublishSubject<AdrPageDefinition> adrStateSubject = PublishSubject.create();
+    public static final PublishSubject<AdrComponentDefinition> adrComponentStateSubject = PublishSubject.create();
     public static final PublishSubject<AdrProfileDescriptor> adrSelectProfileSubject = PublishSubject.create();
     public static final PublishSubject<AdrComponentDescriptor> adrReloadSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> adrUpdateSubject = PublishSubject.create();
 }

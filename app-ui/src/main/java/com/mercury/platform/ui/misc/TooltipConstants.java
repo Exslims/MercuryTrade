@@ -41,7 +41,11 @@ public class TooltipConstants {
     //History tooltips
     public static final String HISTORY_CLEAR = "Clear history";
 
-    public static final String DISMISS_FINISHED_TRADES = "";
     public static final String NOTIFICATION_SETTINGS = "This box will appear if \"Pre-group limit\" is exceeded. All consecutive notifications will be grouped together to save screen space. Toggling this button will expand or collapse the whole group.";
 
+    //adr
+    public static final String ADR_CREATE_DYNAMIC_GROUP = "Create dynamic group";
+    public static final String ADR_CREATE_STATIC_GROUP = "Create static group";
+    public static final String ADR_CREATE_ICON = "Create icon component";
+    public static final String ADR_CREATE_PROGRESS_BAR = "Create progress bar component";
 }

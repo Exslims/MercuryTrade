@@ -3,6 +3,7 @@ package com.mercury.platform.ui.adr;
 
 import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.AdrConfigurationService;
 import com.mercury.platform.shared.config.configration.ListConfigurationService;
 import com.mercury.platform.shared.config.descriptor.adr.*;
 import com.mercury.platform.ui.adr.components.AbstractAdrFrame;
@@ -12,13 +13,15 @@ import com.mercury.platform.ui.adr.components.panel.*;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.Getter;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class AdrManager implements AsSubscriber{
     private List<AbstractAdrFrame> frames = new ArrayList<>();
     private AdrProfileDescriptor selectedProfile;
-    private ListConfigurationService<AdrProfileDescriptor> config;
+    private AdrConfigurationService config;
     private AdrManagerFrame adrManagerFrame;
 
     //pages
@@ -34,7 +37,7 @@ public class AdrManager implements AsSubscriber{
         this.iconSettingsPanel = new AdrIconPagePanel();
         this.progressBarSettingsPanel = new AdrProgressBarPagePanel();
 
-        this.config = Configuration.get().adrGroupConfiguration();
+        this.config = Configuration.get().adrConfiguration();
         this.selectedProfile = this.config.getEntities()
                 .stream()
                 .filter(AdrProfileDescriptor::isSelected)
@@ -69,24 +72,46 @@ public class AdrManager implements AsSubscriber{
 
     @Override
     public void subscribe() {
-        MercuryStoreUI.adrSelectSubject.subscribe(definition -> {
+        MercuryStoreUI.adrStateSubject.subscribe(definition -> {
             switch (definition.getState()){
                 case MAIN: {
                     this.mainPanel.setPayload((AdrComponentDescriptor) definition.getPayload());
                     this.adrManagerFrame.setPage(this.mainPanel);
                     break;
                 }
-                case OPERATIONS: {
-                    if(definition.getPayload() instanceof AdrGroupDescriptor){
-                        this.groupSettingsPanel.setPayload((AdrGroupDescriptor) definition.getPayload());
-                        this.adrManagerFrame.setPage(this.groupSettingsPanel);
-                    }
-                    break;
-                }
                 case PROFILE: {
                     break;
                 }
             }
+        });
+        MercuryStoreUI.adrComponentStateSubject.subscribe(definition -> {
+           switch (definition.getOperations()){
+               case NEW_COMPONENT:{
+                   if(definition.getDescriptor() instanceof AdrGroupDescriptor){
+                       AdrGroupDescriptor defaultGroup = this.config.getDefaultGroup();
+                       this.selectedProfile.getContents().add(defaultGroup);
+                       AdrGroupFrame adrGroupFrame = new AdrGroupFrame(defaultGroup);
+                       adrGroupFrame.init();
+                       adrGroupFrame.showComponent();
+                       adrGroupFrame.enableSettings();
+                       this.frames.add(adrGroupFrame);
+                       this.groupSettingsPanel.setPayload(defaultGroup);
+                       this.adrManagerFrame.reloadTree();
+                       this.adrManagerFrame.setPage(this.groupSettingsPanel);
+                   }
+                   break;
+               }
+               case EDIT_COMPONENT:{
+                   if(definition.getDescriptor() instanceof AdrGroupDescriptor){
+                       this.groupSettingsPanel.setPayload((AdrGroupDescriptor) definition.getDescriptor());
+                       this.adrManagerFrame.setPage(this.groupSettingsPanel);
+                   }
+                   break;
+               }
+               case REMOVE_COMPONENT: {
+                   break;
+               }
+           }
         });
         MercuryStoreUI.adrSelectProfileSubject.subscribe(profile -> {
             this.selectedProfile.setSelected(false);

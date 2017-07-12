@@ -33,9 +33,8 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
     private KeyValueConfigurationService<String,SoundDescriptor> soundConfigurationService;
     private KeyValueConfigurationService<String,Float> scaleConfigurationService;
     private KeyValueConfigurationService<String,HotKeyDescriptor> hotKeyConfigurationService;
-    private ListConfigurationService<AdrProfileDescriptor> adrGroupConfiguration;
     private ListConfigurationService<StashTabDescriptor> stashTabConfigurationService;
-    private ListConfigurationService<AdrProfileDescriptor> adrConfigurationService;
+    private AdrConfigurationService adrConfigurationService;
 
     private List<BaseConfigurationService> services = new ArrayList<>();
 
@@ -75,18 +74,13 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
     }
 
     @Override
-    public ListConfigurationService<AdrProfileDescriptor> adrGroupConfiguration() {
-        return this.adrGroupConfiguration;
+    public AdrConfigurationService adrConfiguration() {
+        return this.adrConfigurationService;
     }
 
     @Override
     public ListConfigurationService<StashTabDescriptor> stashTabConfiguration() {
         return this.stashTabConfigurationService;
-    }
-
-    @Override
-    public ListConfigurationService<AdrProfileDescriptor> adrConfiguration() {
-        return this.adrConfigurationService;
     }
 
     @Override
@@ -124,7 +118,6 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
 
             this.framesConfigurationService = new FramesConfigurationServiceImpl(selectedProfile);
             this.soundConfigurationService = new SoundConfigurationService(selectedProfile);
-            this.adrGroupConfiguration = new AdrConfigurationServiceMock(selectedProfile);
             this.applicationConfigurationService = new ApplicationConfigurationService(selectedProfile);
             this.scannerConfigurationService = new ScannerConfigurationService(selectedProfile);
             this.notificationConfigurationService = new NotificationConfigurationService(selectedProfile);
@@ -135,7 +128,6 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
 
             this.services.add((BaseConfigurationService) this.framesConfigurationService);
             this.services.add((BaseConfigurationService) this.soundConfigurationService);
-            this.services.add((BaseConfigurationService) this.adrGroupConfiguration);
             this.services.add((BaseConfigurationService) this.applicationConfigurationService);
             this.services.add((BaseConfigurationService) this.scannerConfigurationService);
             this.services.add((BaseConfigurationService) this.notificationConfigurationService);

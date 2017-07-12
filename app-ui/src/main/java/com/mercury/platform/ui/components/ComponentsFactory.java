@@ -532,6 +532,12 @@ public class ComponentsFactory{
         return c <= '\u007f';
     }
 
+    public JPanel getJPanel(LayoutManager layoutManager) {
+        JPanel panel = new JPanel(layoutManager);
+        panel.setBackground(AppThemeColor.FRAME_RGB);
+        return panel;
+    }
+
     @EqualsAndHashCode(callSuper = true)
     @Data
     @AllArgsConstructor

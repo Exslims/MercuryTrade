@@ -1,16 +1,20 @@
 package com.mercury.platform.shared.config.configration.impl.adr;
 
 
+import com.mercury.platform.shared.config.configration.AdrConfigurationService;
 import com.mercury.platform.shared.config.configration.BaseConfigurationService;
 import com.mercury.platform.shared.config.configration.ListConfigurationService;
 import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.*;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
-public class AdrConfigurationServiceMock extends BaseConfigurationService<List<AdrProfileDescriptor>> implements ListConfigurationService<AdrProfileDescriptor>{
+public class AdrConfigurationServiceMock extends BaseConfigurationService<List<AdrProfileDescriptor>> implements AdrConfigurationService {
     public AdrConfigurationServiceMock(ProfileDescriptor selectedProfile) {
         super(selectedProfile);
     }
@@ -60,8 +64,8 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         groupDescriptor1.setType(AdrComponentType.GROUP);
         groupDescriptor1.setGroupType(AdrGroupType.DYNAMIC);
         groupDescriptor1.setCells(Arrays.asList(icon3,icon1,icon2,icon3));
-        profile.setContents(Arrays.asList(groupDescriptor,groupDescriptor1, icon1,groupDescriptor,icon3));
-        return Arrays.asList(profile);
+        profile.setContents(Arrays.stream(new AdrComponentDescriptor[] {groupDescriptor,groupDescriptor1, icon1,groupDescriptor,icon3}).collect(Collectors.toList()));
+        return Arrays.stream(new AdrProfileDescriptor[]{profile}).collect(Collectors.toList());
     }
 
     @Override
@@ -74,5 +78,35 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         if(this.selectedProfile.getAdrProfileDescriptorList() == null){
             this.selectedProfile.setAdrProfileDescriptorList(this.getDefault());
         }
+    }
+
+    @Override
+    public AdrIconDescriptor getDefaultIcon() {
+        AdrIconDescriptor icon = new AdrIconDescriptor();
+        icon.setTitle("icon");
+        icon.setIconPath("");
+        icon.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
+        icon.setSize(new Dimension(64, 64));
+        icon.setDuration(8f);
+        icon.setIconType(AdrIconType.SQUARE);
+        icon.setType(AdrComponentType.ICON);
+        return icon;
+    }
+
+    @Override
+    public AdrProgressBarDescriptor getDefaultProgressBar() {
+        return null;
+    }
+
+    @Override
+    public AdrGroupDescriptor getDefaultGroup() {
+        AdrGroupDescriptor groupDescriptor = new AdrGroupDescriptor();
+        groupDescriptor.setTitle("group");
+        groupDescriptor.setSize(new Dimension(64,64));
+        groupDescriptor.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
+        groupDescriptor.setType(AdrComponentType.GROUP);
+        groupDescriptor.setGroupType(AdrGroupType.STATIC);
+        groupDescriptor.setCells(new ArrayList<>());
+        return groupDescriptor;
     }
 }
