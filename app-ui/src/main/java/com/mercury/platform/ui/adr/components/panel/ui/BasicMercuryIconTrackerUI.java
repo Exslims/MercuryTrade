@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.components.panel.adr.ui;
+package com.mercury.platform.ui.adr.components.panel.ui;
 
 import com.mercury.platform.ui.misc.AppThemeColor;
 import lombok.Getter;

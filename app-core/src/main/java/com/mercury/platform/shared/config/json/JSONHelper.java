@@ -31,10 +31,8 @@ public class JSONHelper {
                         jsonParser.parse(reader),
                         typeToken.getType());
             }
-        }catch (IOException e){
+        }catch (IOException | IllegalStateException | JsonSyntaxException e){
             logger.error(e);
-            return null;
-        }catch (IllegalStateException e1) {
             return null;
         }
     }
@@ -49,10 +47,8 @@ public class JSONHelper {
                                 .get(key),
                         typeToken.getType());
             }
-        }catch (IOException e){
+        }catch (IOException | IllegalStateException e){
             logger.error(e);
-            return null;
-        }catch (IllegalStateException e1) {
             return null;
         }
     }

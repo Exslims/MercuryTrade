@@ -1,9 +1,9 @@
-package com.mercury.platform.ui.components.panel.adr.group;
+package com.mercury.platform.ui.adr.components.panel.group;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
-import com.mercury.platform.ui.components.panel.adr.ui.icon.SquareMercuryIconTrackerUI;
+import com.mercury.platform.ui.adr.components.panel.ui.icon.SquareMercuryIconTrackerUI;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.pushingpixels.trident.Timeline;

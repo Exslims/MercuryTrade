@@ -2,7 +2,7 @@ package com.mercury.platform.ui.adr.components;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
-import com.mercury.platform.ui.components.panel.adr.group.AdrGroupCellPanel;
+import com.mercury.platform.ui.adr.components.panel.group.AdrGroupCellPanel;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import lombok.NonNull;
 

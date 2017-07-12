@@ -1,10 +1,7 @@
-package com.mercury.platform.ui.components.panel.adr.ui.icon;
+package com.mercury.platform.ui.adr.components.panel.ui.icon;
 
 
-import com.mercury.platform.ui.components.panel.adr.ui.BasicMercuryIconTrackerUI;
-import com.mercury.platform.ui.misc.AppThemeColor;
-import lombok.Getter;
-import lombok.Setter;
+import com.mercury.platform.ui.adr.components.panel.ui.BasicMercuryIconTrackerUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

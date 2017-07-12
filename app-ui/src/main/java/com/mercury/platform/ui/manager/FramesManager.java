@@ -6,7 +6,7 @@ import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
-import com.mercury.platform.ui.adr.routing.AdrManager;
+import com.mercury.platform.ui.adr.AdrManager;
 import com.mercury.platform.ui.frame.AbstractComponentFrame;
 import com.mercury.platform.ui.frame.AbstractScalableComponentFrame;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
