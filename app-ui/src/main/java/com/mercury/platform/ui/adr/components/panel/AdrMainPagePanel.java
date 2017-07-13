@@ -61,7 +61,9 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
         });
 
         JPanel buttonsPanel = this.componentsFactory.getJPanel(new GridLayout(8, 1));
-        buttonsPanel.add(wrap(createGroup));
+        if(!(this.payload instanceof AdrGroupDescriptor)){
+            buttonsPanel.add(wrap(createGroup));
+        }
         buttonsPanel.add(wrap(createIcon));
         buttonsPanel.add(wrap(createPB));
 

@@ -538,6 +538,28 @@ public class ComponentsFactory{
         return panel;
     }
 
+    public JPopupMenu getContextPanel() {
+        JPopupMenu contextMenu = new JPopupMenu();
+        contextMenu.setBackground(AppThemeColor.FRAME);
+        contextMenu.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER));
+        contextMenu.setFont(REGULAR_FONT.deriveFont(scale*16f));
+        contextMenu.setForeground(AppThemeColor.TEXT_DEFAULT);
+        return contextMenu;
+    }
+
+    public JMenuItem getMenuItem(String text) {
+        JMenuItem menuItem = new JMenu(text);
+        menuItem.setFont(REGULAR_FONT.deriveFont(scale*16f));
+        menuItem.setForeground(AppThemeColor.TEXT_DEFAULT);
+        return menuItem;
+    }
+    public JMenuItem getMenu(String text) {
+        JMenu menu = new JMenu(text);
+        menu.setFont(REGULAR_FONT.deriveFont(scale*16f));
+        menu.setForeground(AppThemeColor.TEXT_DEFAULT);
+        return menu;
+    }
+
     @EqualsAndHashCode(callSuper = true)
     @Data
     @AllArgsConstructor

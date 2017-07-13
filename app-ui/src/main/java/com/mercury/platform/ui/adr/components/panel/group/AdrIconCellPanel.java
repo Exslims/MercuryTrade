@@ -11,11 +11,11 @@ import org.pushingpixels.trident.Timeline;
 import javax.swing.*;
 import java.awt.*;
 
-public class AdrGroupCellPanel extends JPanel implements HasUI{
+public class AdrIconCellPanel extends JPanel implements HasUI{
     private ComponentsFactory componentsFactory;
     private AdrIconDescriptor descriptor;
     private Timeline progressTl;
-    public AdrGroupCellPanel(AdrIconDescriptor cellDescriptor, ComponentsFactory componentsFactory) {
+    public AdrIconCellPanel(AdrIconDescriptor cellDescriptor, ComponentsFactory componentsFactory) {
         super(new GridLayout(1,1));
         this.descriptor = cellDescriptor;
         this.componentsFactory = componentsFactory;

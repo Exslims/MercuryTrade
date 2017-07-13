@@ -2,7 +2,7 @@ package com.mercury.platform.ui.adr.components;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
-import com.mercury.platform.ui.adr.components.panel.group.AdrGroupCellPanel;
+import com.mercury.platform.ui.adr.components.panel.group.AdrIconCellPanel;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import lombok.NonNull;
 
@@ -15,7 +15,7 @@ import java.util.List;
 
 
 public class AdrGroupFrame extends AbstractAdrFrame {
-    private List<AdrGroupCellPanel> cells;
+    private List<AdrIconCellPanel> cells;
 
     private int x;
     private int y;
@@ -43,13 +43,14 @@ public class AdrGroupFrame extends AbstractAdrFrame {
     }
 
     private JPanel getCellsPanel(){
-        JPanel root = componentsFactory.getTransparentPanel(new GridLayout(4, 1));
+        int cellCount = ((AdrGroupDescriptor) descriptor).getCells().size();
+        JPanel root = componentsFactory.getTransparentPanel(new GridLayout(cellCount, 1));
         ((AdrGroupDescriptor)descriptor).getCells().forEach(cellDescriptor -> {
             switch (cellDescriptor.getType()){
                 case ICON: {
-                    AdrGroupCellPanel adrGroupCellPanel = new AdrGroupCellPanel((AdrIconDescriptor) cellDescriptor,this.componentsFactory);
-                    root.add(adrGroupCellPanel);
-                    cells.add(adrGroupCellPanel);
+                    AdrIconCellPanel adrIconCellPanel = new AdrIconCellPanel((AdrIconDescriptor) cellDescriptor,this.componentsFactory);
+                    root.add(adrIconCellPanel);
+                    cells.add(adrIconCellPanel);
                     break;
                 }
             }

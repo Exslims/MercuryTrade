@@ -18,8 +18,11 @@ import javax.swing.*;
 import javax.swing.plaf.IconUIResource;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class AdrManagerFrame extends AbstractTitledComponentFrame{
     private JPanel currentPage;
@@ -32,6 +35,9 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         this.selectedProfile = selectedProfile;
         UIManager.put("Tree.collapsedIcon",new IconUIResource(this.componentsFactory.getIcon("app/adr/node_collapse.png",22)));
         UIManager.put("Tree.expandedIcon",new IconUIResource(this.componentsFactory.getIcon("app/adr/node_expand.png",22)));
+        UIManager.getLookAndFeelDefaults().put("Menu.arrowIcon", null);
+        UIManager.put("MenuItem.background", AppThemeColor.FRAME);
+        UIManager.put("MenuItem.opaque", true);
     }
 
     @Override
@@ -72,6 +78,20 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
                                 (AdrComponentDescriptor)((DefaultMutableTreeNode) e.getPath().getLastPathComponent()).getUserObject(),
                                 AdrComponentOperations.EDIT_COMPONENT,
                                 false));
+            }
+        });
+        this.componentsTree.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(SwingUtilities.isRightMouseButton(e)){
+                    componentsTree.setSelectionRow(componentsTree.getClosestRowForLocation(e.getX(),e.getY()));
+                    TreePath pathForLocation = componentsTree.getPathForLocation(e.getX(), e.getY());
+                    if (pathForLocation != null) {
+                        getContextMenu((AdrComponentDescriptor)
+                                ((DefaultMutableTreeNode)pathForLocation.getLastPathComponent()).getUserObject())
+                                .show(e.getComponent(),e.getX(),e.getY());
+                    }
+                }
             }
         });
         JButton addComponent = this.componentsFactory.getIconButton("app/adr/add_component.png", 20, AppThemeColor.FRAME, "todo");
@@ -116,5 +136,24 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
             model.add(node);
         });
         return model;
+    }
+    private JPopupMenu getContextMenu(AdrComponentDescriptor selectedDescriptor) {
+        JPopupMenu contextMenu = this.componentsFactory.getContextPanel();
+        switch (selectedDescriptor.getType()){
+            case GROUP: {
+                JMenuItem addComponent = this.componentsFactory.getMenuItem("Add");
+                JMenuItem iconComponent = this.componentsFactory.getMenuItem("Icon");
+                JMenuItem pbComponent = this.componentsFactory.getMenuItem("Progress bar");
+                addComponent.add(iconComponent);
+                addComponent.add(pbComponent);
+                contextMenu.add(addComponent);
+                break;
+            }
+        }
+        JMenuItem duplicateComponent = this.componentsFactory.getMenuItem("Duplicate");
+        JMenuItem removeComponent = this.componentsFactory.getMenuItem("Remove");
+        contextMenu.add(duplicateComponent);
+        contextMenu.add(removeComponent);
+        return contextMenu;
     }
 }

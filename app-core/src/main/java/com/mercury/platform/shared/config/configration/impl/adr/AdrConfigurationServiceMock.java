@@ -84,10 +84,10 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
     public AdrIconDescriptor getDefaultIcon() {
         AdrIconDescriptor icon = new AdrIconDescriptor();
         icon.setTitle("icon");
-        icon.setIconPath("");
+        icon.setIconPath("default_icon");
         icon.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
         icon.setSize(new Dimension(64, 64));
-        icon.setDuration(8f);
+        icon.setDuration(0f);
         icon.setIconType(AdrIconType.SQUARE);
         icon.setType(AdrComponentType.ICON);
         return icon;
@@ -106,7 +106,9 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         groupDescriptor.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
         groupDescriptor.setType(AdrComponentType.GROUP);
         groupDescriptor.setGroupType(AdrGroupType.STATIC);
-        groupDescriptor.setCells(new ArrayList<>());
+        List<AdrComponentDescriptor> icons = new ArrayList<>();
+        icons.add(this.getDefaultIcon());
+        groupDescriptor.setCells(icons);
         return groupDescriptor;
     }
 }

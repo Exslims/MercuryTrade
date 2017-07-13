@@ -6,7 +6,7 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class AdrPagePanel<T> extends JPanel{
+public abstract class AdrPagePanel<T> extends JPanel {
     protected T payload;
     protected ComponentsFactory componentsFactory = new ComponentsFactory();
     public AdrPagePanel() {
