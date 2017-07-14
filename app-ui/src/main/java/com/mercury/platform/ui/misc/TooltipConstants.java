@@ -48,4 +48,5 @@ public class TooltipConstants {
     public static final String ADR_CREATE_STATIC_GROUP = "Create static group";
     public static final String ADR_CREATE_ICON = "Create icon component";
     public static final String ADR_CREATE_PROGRESS_BAR = "Create progress bar component";
+    public static final String PROFILE_SETTINGS = "todo";
 }

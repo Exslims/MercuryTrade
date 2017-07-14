@@ -4,7 +4,6 @@ package com.mercury.platform.ui.adr;
 import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.AdrConfigurationService;
-import com.mercury.platform.shared.config.configration.ListConfigurationService;
 import com.mercury.platform.shared.config.descriptor.adr.*;
 import com.mercury.platform.ui.adr.components.AbstractAdrFrame;
 import com.mercury.platform.ui.adr.components.AdrManagerFrame;
@@ -13,10 +12,8 @@ import com.mercury.platform.ui.adr.components.panel.*;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.Getter;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class AdrManager implements AsSubscriber{
     private List<AbstractAdrFrame> frames = new ArrayList<>();
@@ -88,7 +85,7 @@ public class AdrManager implements AsSubscriber{
            switch (definition.getOperations()){
                case NEW_COMPONENT:{
                    if(definition.getDescriptor() instanceof AdrGroupDescriptor){
-                       AdrGroupDescriptor defaultGroup = this.config.getDefaultGroup();
+                       AdrGroupDescriptor defaultGroup = this.config.getDefaultIconGroup();
                        this.selectedProfile.getContents().add(defaultGroup);
                        AdrGroupFrame adrGroupFrame = new AdrGroupFrame(defaultGroup);
                        adrGroupFrame.init();

@@ -4,6 +4,7 @@ package com.mercury.platform.ui.adr.components.panel.ui;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -25,6 +26,10 @@ public class AdrTreeEntryCellRenderer implements TreeCellRenderer {
             return label;
         }
         AdrComponentDescriptor descriptor = (AdrComponentDescriptor) ((DefaultMutableTreeNode)value).getUserObject();
+        label.setForeground(AppThemeColor.TEXT_DEFAULT);
+        label.setBackground(AppThemeColor.FRAME);
+        label.setFont(componentsFactory.getFont(FontStyle.REGULAR,16));
+        label.setText(descriptor.getTitle());
         switch (descriptor.getType()){
             case GROUP: {
                 String iconPath = "app/adr/static_group_icon.png";
@@ -38,22 +43,23 @@ public class AdrTreeEntryCellRenderer implements TreeCellRenderer {
                         break;
                     }
                 }
-                label.setIcon(componentsFactory.getImage(iconPath));
-                label.setForeground(AppThemeColor.TEXT_DEFAULT);
+                label.setPreferredSize(new Dimension(170,30));
+                label.setIcon(componentsFactory.getIcon(iconPath,48));
                 label.setBorder(BorderFactory.createEmptyBorder(0,2,0,2));
-                label.setFont(componentsFactory.getFont(FontStyle.REGULAR,20));
-                label.setBackground(AppThemeColor.FRAME);
                 break;
             }
             case ICON: {
                 AdrIconDescriptor iconDescriptor = (AdrIconDescriptor) ((DefaultMutableTreeNode)value).getUserObject();
+                label.setPreferredSize(new Dimension(150, 48));
                 label.setIcon(componentsFactory.getIcon("app/adr/" + iconDescriptor.getIconPath() + ".png",48));
-                label.setForeground(AppThemeColor.TEXT_DEFAULT);
                 label.setBorder(BorderFactory.createEmptyBorder());
-                label.setBackground(AppThemeColor.FRAME);
                 break;
             }
             case PROGRESS_BAR: {
+                AdrProgressBarDescriptor iconDescriptor = (AdrProgressBarDescriptor) ((DefaultMutableTreeNode)value).getUserObject();
+                label.setPreferredSize(new Dimension(150, 48));
+                label.setIcon(componentsFactory.getIcon("app/adr/" + iconDescriptor.getIconPath() + ".png",48));
+                label.setBorder(BorderFactory.createEmptyBorder());
                 break;
             }
         }
@@ -62,12 +68,6 @@ public class AdrTreeEntryCellRenderer implements TreeCellRenderer {
         }else {
             label.setBorder(BorderFactory.createLineBorder(AppThemeColor.FRAME));
         }
-        label.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                System.out.println("qweqwe");
-            }
-        });
         return label;
     }
 }

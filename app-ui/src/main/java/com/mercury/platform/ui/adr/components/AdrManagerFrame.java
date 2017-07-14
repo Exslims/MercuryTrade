@@ -9,9 +9,11 @@ import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
 import com.mercury.platform.ui.adr.routing.AdrComponentOperations;
 import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
 import com.mercury.platform.ui.adr.routing.AdrPageState;
+import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
+import com.mercury.platform.ui.misc.TooltipConstants;
 import lombok.Getter;
 
 import javax.swing.*;
@@ -32,6 +34,9 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
     private AdrProfileDescriptor selectedProfile;
     public AdrManagerFrame(AdrProfileDescriptor selectedProfile) {
         super();
+        this.setFocusable(true);
+        this.setFocusableWindowState(true);
+        this.setAlwaysOnTop(false);
         this.selectedProfile = selectedProfile;
         UIManager.put("Tree.collapsedIcon",new IconUIResource(this.componentsFactory.getIcon("app/adr/node_collapse.png",22)));
         UIManager.put("Tree.expandedIcon",new IconUIResource(this.componentsFactory.getIcon("app/adr/node_expand.png",22)));
@@ -45,6 +50,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         super.initialize();
         this.initRootPanel();
         this.add(this.root,BorderLayout.CENTER);
+        this.add(this.getBottomPanel(),BorderLayout.PAGE_END);
 
     }
     public void setPage(AdrPagePanel page){
@@ -83,6 +89,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         this.componentsTree.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                repaint();
                 if(SwingUtilities.isRightMouseButton(e)){
                     componentsTree.setSelectionRow(componentsTree.getClosestRowForLocation(e.getX(),e.getY()));
                     TreePath pathForLocation = componentsTree.getPathForLocation(e.getX(), e.getY());
@@ -94,14 +101,28 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
                 }
             }
         });
-        JButton addComponent = this.componentsFactory.getIconButton("app/adr/add_component.png", 20, AppThemeColor.FRAME, "todo");
-        addComponent.setBorder(BorderFactory.createMatteBorder(0,0,1,0,AppThemeColor.BORDER));
+
+        JScrollPane scrollPane = new JScrollPane(this.componentsTree);
+        scrollPane.setBorder(null);
+        scrollPane.setBackground(AppThemeColor.FRAME);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollBar vBar = scrollPane.getVerticalScrollBar();
+        vBar.setBackground(AppThemeColor.SLIDE_BG);
+        vBar.setUI(new MercuryScrollBarUI());
+        vBar.setPreferredSize(new Dimension(14, Integer.MAX_VALUE));
+        vBar.setUnitIncrement(3);
+        vBar.setBorder(BorderFactory.createEmptyBorder(1,1,1,2));
+        vBar.addAdjustmentListener(e -> repaint());
+
+        JButton addComponent = this.componentsFactory.getIconButton("app/adr/add_component.png", 20, AppThemeColor.BUTTON, "todo");
+        addComponent.setBorder(BorderFactory.createMatteBorder(1,0,1,0,AppThemeColor.BORDER));
         addComponent.addActionListener(action -> {
             this.componentsTree.clearSelection();
             MercuryStoreUI.adrStateSubject.onNext(new AdrPageDefinition<>(AdrPageState.MAIN,null));
         });
         leftPanel.add(addComponent,BorderLayout.PAGE_START);
-        leftPanel.add(this.componentsTree,BorderLayout.CENTER);
+        leftPanel.add(scrollPane,BorderLayout.CENTER);
         this.root.add(leftPanel,BorderLayout.LINE_START);
     }
 
@@ -155,5 +176,13 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         contextMenu.add(duplicateComponent);
         contextMenu.add(removeComponent);
         return contextMenu;
+    }
+    private JPanel getBottomPanel(){
+        JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
+        root.setBorder(BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.MSG_HEADER_BORDER));
+        root.setBackground(AppThemeColor.HEADER);
+        root.add(this.componentsFactory.getTextLabel("Selected profile: " + this.selectedProfile.getProfileName()),BorderLayout.LINE_START);
+        root.add(this.componentsFactory.getIconButton("app/adr/profile_settings_icon.png",20,AppThemeColor.HEADER, TooltipConstants.PROFILE_SETTINGS),BorderLayout.LINE_END);
+        return root;
     }
 }

@@ -16,7 +16,7 @@ public class HotKeyAdapter extends GlobalKeyAdapter {
 
     @Override
     public void keyReleased(GlobalKeyEvent event) {
-        if(this.currentKey.equals(this.convert(event))) {
+        if(this.currentKey != null && this.currentKey.equals(this.convert(event))) {
             this.keyTyped(this.currentKey);
         }
     }

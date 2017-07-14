@@ -7,16 +7,12 @@ import lc.kra.system.keyboard.GlobalKeyboardHook;
 
 public class HotKeysInterceptor {
     public HotKeysInterceptor() {
-        GlobalKeyboardHook keyboardHook = new GlobalKeyboardHook(true);
+        GlobalKeyboardHook keyboardHook = new GlobalKeyboardHook(false);
         keyboardHook.addKeyListener(new HotKeyAdapter() {
             @Override
             public void keyTyped(HotKeyDescriptor descriptor) {
                 MercuryStoreCore.INSTANCE.hotKeySubject.onNext(descriptor);
             }
         });
-    }
-
-    public static void main(String[] args) {
-        new HotKeysInterceptor();
     }
 }

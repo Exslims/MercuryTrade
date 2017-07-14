@@ -43,6 +43,7 @@ public class FramesManager implements AsSubscriber {
     private SetUpLocationCommander locationCommander;
     private SetUpScaleCommander scaleCommander;
     private AdrManager adrManager;
+    private TrayIcon trayIcon;
 
     private FramesManager() {
         this.framesMap = new HashMap<>();
@@ -198,12 +199,12 @@ public class FramesManager implements AsSubscriber {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        TrayIcon trayIcon = new TrayIcon(icon,"MercuryTrade",trayMenu);
-        trayIcon.setImageAutoSize(true);
+        this.trayIcon = new TrayIcon(icon,"MercuryTrade",trayMenu);
+        this.trayIcon.setImageAutoSize(true);
 
         SystemTray tray = SystemTray.getSystemTray();
         try {
-            tray.add(trayIcon);
+            tray.add(this.trayIcon);
         } catch (AWTException e) {
             e.printStackTrace();
         }
