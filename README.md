@@ -19,7 +19,7 @@ Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issue
 
 ---
  <p align="center">
- <img src="http://i.imgur.com/DtmumRO.png"/>
+ <img src="http://i.imgur.com/1s1gMgk.png"/>
   </p>
 
 **MercuryTrade** is an overlay application for Path of Exile written in Java. It's designed to facilitate all possible trading interactions providing a much better user experience for the players. The program went through countless design iterations and made by active Path of Exile players who use this tool themselves on a regular basis.
