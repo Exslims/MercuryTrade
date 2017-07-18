@@ -14,8 +14,8 @@ public class TradeMessagesInterceptor extends MessageInterceptor {
     protected void process(String message) {
         Message parsedMessage = messageParser.parse(StringUtils.substringAfter(message,"@"));
         if(parsedMessage != null) {
-            MercuryStoreCore.INSTANCE.soundSubject.onNext(SoundType.MESSAGE);
-            MercuryStoreCore.INSTANCE.messageSubject.onNext(parsedMessage);
+            MercuryStoreCore.soundSubject.onNext(SoundType.MESSAGE);
+            MercuryStoreCore.messageSubject.onNext(parsedMessage);
         }
     }
 

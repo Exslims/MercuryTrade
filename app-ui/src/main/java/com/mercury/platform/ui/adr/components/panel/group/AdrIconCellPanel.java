@@ -11,14 +11,11 @@ import org.pushingpixels.trident.Timeline;
 import javax.swing.*;
 import java.awt.*;
 
-public class AdrIconCellPanel extends JPanel implements HasUI{
-    private ComponentsFactory componentsFactory;
-    private AdrIconDescriptor descriptor;
+public class AdrIconCellPanel extends AdrComponentPanel<AdrIconDescriptor>{
     private Timeline progressTl;
     public AdrIconCellPanel(AdrIconDescriptor cellDescriptor, ComponentsFactory componentsFactory) {
-        super(new GridLayout(1,1));
-        this.descriptor = cellDescriptor;
-        this.componentsFactory = componentsFactory;
+        super(cellDescriptor,componentsFactory);
+        this.setLayout(new GridLayout(1,1));
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.setPreferredSize(cellDescriptor.getSize());
         this.setBorder(null);
@@ -26,10 +23,28 @@ public class AdrIconCellPanel extends JPanel implements HasUI{
     }
 
     @Override
+    public void enableSettings() {
+        this.setVisible(true);
+        this.progressTl.playLoop(Timeline.RepeatBehavior.LOOP);
+    }
+
+    @Override
+    public void disableSettings() {
+        this.progressTl.abort();
+        this.setVisible(false);
+    }
+
+    @Override
+    protected void onHotKeyPressed() {
+        this.setVisible(true);
+        this.progressTl.play();
+    }
+
+    @Override
     public void createUI() {
         JProgressBar progressBar = new JProgressBar();
         progressBar.setBorder(null);
-        progressBar.setFont(componentsFactory.getFont(FontStyle.BOLD,36));
+        progressBar.setFont(componentsFactory.getFont(FontStyle.BOLD,this.descriptor.getFontSize()));
         progressBar.setForeground(AppThemeColor.TEXT_DEFAULT);
         progressBar.setStringPainted(true);
         progressBar.setBorderPainted(false);
@@ -37,11 +52,10 @@ public class AdrIconCellPanel extends JPanel implements HasUI{
         progressBar.setUI(new SquareMercuryIconTrackerUI(descriptor.getIconPath()));
         progressBar.setValue(0);
         progressBar.setMaximum((int)(this.descriptor.getDuration() * 1000));
-        add(progressBar,BorderLayout.CENTER);
+        this.add(progressBar,BorderLayout.CENTER);
 
         this.progressTl = new Timeline(progressBar);
         this.progressTl.setDuration((int)(descriptor.getDuration()*1000));
         this.progressTl.addPropertyToInterpolate("value",progressBar.getMaximum(),0);
-        this.progressTl.playLoop(Timeline.RepeatBehavior.LOOP);
     }
 }

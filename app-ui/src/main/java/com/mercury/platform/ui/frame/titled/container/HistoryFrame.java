@@ -122,7 +122,7 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
 
     @Override
     public void subscribe() {
-        MercuryStoreCore.INSTANCE.messageSubject.subscribe(message -> SwingUtilities.invokeLater(()-> {
+        MercuryStoreCore.messageSubject.subscribe(message -> SwingUtilities.invokeLater(()-> {
             HistoryManager.INSTANCE.add(message);
             MessagePanel messagePanel = new MessagePanel(
                     message,

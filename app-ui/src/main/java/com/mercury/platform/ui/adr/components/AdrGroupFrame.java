@@ -2,6 +2,8 @@ package com.mercury.platform.ui.adr.components;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
+import com.mercury.platform.shared.store.MercuryStoreCore;
+import com.mercury.platform.ui.adr.components.panel.group.AdrComponentPanel;
 import com.mercury.platform.ui.adr.components.panel.group.AdrIconCellPanel;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import lombok.NonNull;
@@ -15,7 +17,7 @@ import java.util.List;
 
 
 public class AdrGroupFrame extends AbstractAdrFrame {
-    private List<AdrIconCellPanel> cells;
+    private List<AdrComponentPanel> cells;
 
     private int x;
     private int y;
@@ -90,8 +92,8 @@ public class AdrGroupFrame extends AbstractAdrFrame {
         this.setBackground(AppThemeColor.FRAME);
         this.getRootPane().setBorder(BorderFactory.createMatteBorder(1,1,0,1,AppThemeColor.BORDER));
         cells.forEach(it -> {
+            it.enableSettings();
             it.setBorder(BorderFactory.createMatteBorder(0,0,1,0,AppThemeColor.BORDER));
-
             it.addMouseListener(this.mouseListener);
             it.addMouseListener(this.mouseOverListener);
             it.addMouseMotionListener(this.motionListener);
@@ -107,6 +109,7 @@ public class AdrGroupFrame extends AbstractAdrFrame {
         this.getRootPane().setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
 
         cells.forEach(it -> {
+            it.disableSettings();
             it.removeMouseListener(this.mouseListener);
             it.removeMouseMotionListener(this.motionListener);
             it.removeMouseListener(this.mouseOverListener);
@@ -148,6 +151,9 @@ public class AdrGroupFrame extends AbstractAdrFrame {
                 Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
                 if (getLocationOnScreen().y + getSize().height > dimension.height) {
                     setLocation(getLocationOnScreen().x, dimension.height - getSize().height);
+                    descriptor.setLocation(
+                            new Point(getLocationOnScreen().x, dimension.height - getSize().height));
+                    MercuryStoreCore.saveConfigSubject.onNext(true);
                 }
             }
         }

@@ -38,7 +38,7 @@ public class AlertFrame extends AbstractOverlaidFrame {
 
     @Override
     public void subscribe() {
-        MercuryStoreCore.INSTANCE.stringAlertSubject.subscribe(message -> {
+        MercuryStoreCore.stringAlertSubject.subscribe(message -> {
             this.messageLabel.setText(message);
             this.repaint();
             this.pack();

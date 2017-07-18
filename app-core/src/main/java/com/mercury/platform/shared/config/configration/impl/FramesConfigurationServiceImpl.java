@@ -30,7 +30,7 @@ public class FramesConfigurationServiceImpl extends BaseConfigurationService<Map
     public FrameDescriptor get(String key) {
         return this.selectedProfile.getFrameDescriptorMap().computeIfAbsent(key, k -> {
             this.selectedProfile.getFrameDescriptorMap().put(key,this.getDefault().get(key));
-            MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
+            MercuryStoreCore.saveConfigSubject.onNext(true);
             return this.getDefault().get(key);
         });
     }

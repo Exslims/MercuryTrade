@@ -100,11 +100,11 @@ public class FramesManager implements AsSubscriber {
         });
         this.subscribe();
         this.adrManager.load();
-        MercuryStoreCore.INSTANCE.uiLoadedSubject.onNext(true);
+        MercuryStoreCore.uiLoadedSubject.onNext(true);
     }
     @Override
     public void subscribe() {
-        MercuryStoreCore.INSTANCE.showPatchNotesSubject.subscribe(json -> {
+        MercuryStoreCore.showPatchNotesSubject.subscribe(json -> {
             NotesLoader notesLoader = new NotesLoader();
             List<Note> notes = notesLoader.getPatchNotesFromString(json);
             NotesFrame patchNotesFrame = new NotesFrame(notes, NotesFrame.NotesType.PATCH);
@@ -117,11 +117,11 @@ public class FramesManager implements AsSubscriber {
     }
     public void exit() {
         this.framesMap.forEach((k,v) -> v.setVisible(false));
-        MercuryStoreCore.INSTANCE.shutdownAppSubject.onNext(true);
+        MercuryStoreCore.shutdownAppSubject.onNext(true);
     }
     public void exitForUpdate() {
         this.framesMap.forEach((k,v) -> v.setVisible(false));
-        MercuryStoreCore.INSTANCE.shutdownForUpdateSubject.onNext(true);
+        MercuryStoreCore.shutdownForUpdateSubject.onNext(true);
     }
     public void showFrame(Class frameClass){
         this.framesMap.get(frameClass).showComponent();

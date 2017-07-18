@@ -42,7 +42,7 @@ public class HotKeysConfigurationService extends BaseConfigurationService<Map<St
     public HotKeyDescriptor get(String key) {
         return this.selectedProfile.getHotKeysDataMap().computeIfAbsent(key, k -> {
             this.selectedProfile.getHotKeysDataMap().put(key,this.getDefault().get(key));
-            MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
+            MercuryStoreCore.saveConfigSubject.onNext(true);
             return this.getDefault().get(key);
         });
     }

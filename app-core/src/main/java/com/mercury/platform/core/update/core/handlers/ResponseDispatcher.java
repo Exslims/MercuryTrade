@@ -12,17 +12,17 @@ public class ResponseDispatcher {
     public void process(Object object){
         if (object instanceof PatchNotesDescriptor) {
             String notes = ((PatchNotesDescriptor) object).getJson();
-            MercuryStoreCore.INSTANCE.showPatchNotesSubject.onNext(notes);
+            MercuryStoreCore.showPatchNotesSubject.onNext(notes);
         }
         if(object instanceof UpdateDescriptor){
-            MercuryStoreCore.INSTANCE.soundSubject.onNext(SoundType.UPDATE);
-            MercuryStoreCore.INSTANCE.updateInfoSubject.onNext(((UpdateDescriptor) object).getVersion());
+            MercuryStoreCore.soundSubject.onNext(SoundType.UPDATE);
+            MercuryStoreCore.updateInfoSubject.onNext(((UpdateDescriptor) object).getVersion());
         }
         if(object instanceof AlreadyLatestUpdateMessage){
             if(ApplicationHolder.getInstance().isManualRequest()) {
                 ApplicationHolder.getInstance().setManualRequest(false);
                 String message = ((AlreadyLatestUpdateMessage) object).getMessage();
-                MercuryStoreCore.INSTANCE.stringAlertSubject.onNext(message);
+                MercuryStoreCore.stringAlertSubject.onNext(message);
             }
         }
     }

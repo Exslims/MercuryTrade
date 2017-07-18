@@ -54,7 +54,7 @@ public class ChatMessagePanel extends JPanel implements HasUI{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    MercuryStoreCore.INSTANCE.chatCommandSubject.onNext("@" + nickName + " " + scannerService.get().getResponseMessage());
+                    MercuryStoreCore.chatCommandSubject.onNext("@" + nickName + " " + scannerService.get().getResponseMessage());
                 }
             }
         });
@@ -63,7 +63,7 @@ public class ChatMessagePanel extends JPanel implements HasUI{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    MercuryStoreCore.INSTANCE.openChatSubject.onNext(nickName);
+                    MercuryStoreCore.openChatSubject.onNext(nickName);
                 }
             }
         });

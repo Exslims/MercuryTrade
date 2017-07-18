@@ -109,7 +109,7 @@ public class ChatFilterPanel extends JPanel {
                 expiresMessages.put(nickname,message);
                 MercuryStoreUI.packSubject.onNext(ChatFilterFrame.class);
                 if(soundEnable){
-                    MercuryStoreCore.INSTANCE.soundSubject.onNext(SoundType.CHAT_SCANNER);
+                    MercuryStoreCore.soundSubject.onNext(SoundType.CHAT_SCANNER);
                 }
                 if(scrollToBottom) {
                     container.scrollRectToVisible(new Rectangle(0, container.getHeight() - 1, 1, 1));

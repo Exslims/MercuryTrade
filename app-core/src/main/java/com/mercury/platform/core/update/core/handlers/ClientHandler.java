@@ -40,7 +40,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
         if (object instanceof byte[]) {
             byte[] bytes = (byte[]) object;
             chunks = Bytes.concat(chunks,bytes);
-            MercuryStoreCore.INSTANCE.chunkLoadedSubject.onNext(percentDelta);
+            MercuryStoreCore.chunkLoadedSubject.onNext(percentDelta);
             if (chunks.length == length) {
                 UpdateReceivedEvent event = new UpdateReceivedEvent(chunks);
                 UpdaterClientEventBus.getInstance().post(event);
@@ -61,8 +61,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
                 Integer version = ApplicationHolder.getInstance().getVersion();
                 context.channel().writeAndFlush(new UpdateDescriptor(UpdateType.REQUEST_INFO, version));
             }
-            MercuryStoreCore.INSTANCE.checkOutPatchSubject.subscribe(state -> this.checkOutPatchNotes());
-            MercuryStoreCore.INSTANCE.startUpdateSubject.subscribe(state -> this.getLatestUpdate());
+            MercuryStoreCore.checkOutPatchSubject.subscribe(state -> this.checkOutPatchNotes());
+            MercuryStoreCore.startUpdateSubject.subscribe(state -> this.getLatestUpdate());
         }
     }
     private void checkOutPatchNotes(){

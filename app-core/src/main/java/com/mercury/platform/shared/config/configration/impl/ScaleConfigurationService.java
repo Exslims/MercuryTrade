@@ -25,7 +25,7 @@ public class ScaleConfigurationService extends BaseConfigurationService<Map<Stri
     public Float get(String key) {
         return this.selectedProfile.getScaleDataMap().computeIfAbsent(key, k -> {
             this.selectedProfile.getScaleDataMap().put(key,this.getDefault().get(key));
-            MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
+            MercuryStoreCore.saveConfigSubject.onNext(true);
             return this.getDefault().get(key);
         });
     }

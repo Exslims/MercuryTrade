@@ -44,9 +44,16 @@ public class TooltipConstants {
     public static final String NOTIFICATION_SETTINGS = "This box will appear if \"Pre-group limit\" is exceeded. All consecutive notifications will be grouped together to save screen space. Toggling this button will expand or collapse the whole group.";
 
     //adr
-    public static final String ADR_CREATE_DYNAMIC_GROUP = "Create dynamic group";
-    public static final String ADR_CREATE_STATIC_GROUP = "Create static group";
+    public static final String ADR_PROFILE_SETTINGS = "todo";
+
+    //mainpage
+    public static final String ADR_CREATE_ICON_GROUP = "Create icons group";
+    public static final String ADR_CREATE_PB_GROUP = "Create progress bars group";
     public static final String ADR_CREATE_ICON = "Create icon component";
     public static final String ADR_CREATE_PROGRESS_BAR = "Create progress bar component";
-    public static final String PROFILE_SETTINGS = "todo";
+
+    public static final String ADR_CREATE_ICON_GROUP_DESC = "todo";
+    public static final String ADR_CREATE_PB_GROUP_DESC = "todo";
+    public static final String ADR_CREATE_ICON_DESC = "todo";
+    public static final String ADR_CREATE_PROGRESS_BAR_DESC = "todo";
 }

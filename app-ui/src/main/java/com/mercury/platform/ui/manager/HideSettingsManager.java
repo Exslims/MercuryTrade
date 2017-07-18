@@ -22,7 +22,7 @@ public class HideSettingsManager {
         config.setMaxOpacity(maxOpacity);
         config.setMinOpacity(minOpacity);
         config.setFadeTime(fadeTime);
-        MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
+        MercuryStoreCore.saveConfigSubject.onNext(true);
 
         this.frames.forEach(frame -> {
             if(fadeTime > 0){

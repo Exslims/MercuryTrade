@@ -34,12 +34,12 @@ public class UpdaterClient {
         ApplicationHolder.getInstance().setVersion(Integer.valueOf(version));
         connectionEstablished = false;
 
-        MercuryStoreCore.INSTANCE.requestPatchSubject.subscribe(state -> {
+        MercuryStoreCore.requestPatchSubject.subscribe(state -> {
             if(!connectionEstablished){
                 ApplicationHolder.getInstance().setManualRequest(false);
-                MercuryStoreCore.INSTANCE.stringAlertSubject.onNext("Server is currently down, please try again later.");
+                MercuryStoreCore.stringAlertSubject.onNext("Server is currently down, please try again later.");
             }else {
-                MercuryStoreCore.INSTANCE.checkOutPatchSubject.onNext(true);
+                MercuryStoreCore.checkOutPatchSubject.onNext(true);
             }
         });
     }

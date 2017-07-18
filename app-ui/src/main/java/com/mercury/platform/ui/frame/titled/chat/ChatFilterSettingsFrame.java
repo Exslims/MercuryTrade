@@ -55,7 +55,7 @@ public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
         save.addActionListener(action -> {
             this.scannerService.get().setWords(words.getText());
             this.scannerService.get().setResponseMessage(quickResponseField.getText());
-            MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
+            MercuryStoreCore.saveConfigSubject.onNext(true);
 
             String chunkStr = StringUtils.deleteWhitespace(words.getText());
             String[] split = chunkStr.split(",");

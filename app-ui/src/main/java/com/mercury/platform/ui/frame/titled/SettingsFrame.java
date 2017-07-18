@@ -48,7 +48,7 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         tabbedPane.addTab("Sound",soundSettings);
         tabbedPane.addTab("Notification panel",cbSettings);
         tabbedPane.addTab("Task panel",taskBarSettings);
-//        tabbedPane.addTab("Help",new HelpPanel());
+        tabbedPane.addTab("Help",new HelpPanel());
         tabbedPane.addTab("Support",new SupportPanel());
         tabbedPane.addTab("About",new AboutPanel());
 
@@ -68,7 +68,7 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
                 }
             });
             if(successfullySaved) {
-                MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
+                MercuryStoreCore.saveConfigSubject.onNext(true);
                 hideComponent();
             }else {
                 successfullySaved = true;
@@ -99,6 +99,6 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
     @Override
     public void hideComponent() {
         super.hideComponent();
-        MercuryStoreCore.INSTANCE.showingDelaySubject.onNext(true);
+        MercuryStoreCore.showingDelaySubject.onNext(true);
     }
 }

@@ -44,7 +44,7 @@ public class UpdateReadyFrame extends AbstractOverlaidFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 setVisible(false);
-                MercuryStoreCore.INSTANCE.checkOutPatchSubject.onNext(true);
+                MercuryStoreCore.checkOutPatchSubject.onNext(true);
             }
         });
         JButton dismiss = componentsFactory.getButton(
@@ -69,7 +69,7 @@ public class UpdateReadyFrame extends AbstractOverlaidFrame {
 
     @Override
     public void subscribe() {
-        MercuryStoreCore.INSTANCE.updateInfoSubject.subscribe(version -> {
+        MercuryStoreCore.updateInfoSubject.subscribe(version -> {
             FrameDescriptor tbSettings = this.framesConfig.get("TaskBarFrame");
             Point tbLocation = tbSettings.getFrameLocation();
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

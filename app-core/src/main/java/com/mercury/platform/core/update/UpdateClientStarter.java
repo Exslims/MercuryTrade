@@ -27,7 +27,7 @@ public class UpdateClientStarter implements Runnable{
         updaterClient.registerListener(handler -> {
             Files.write(Paths.get(JARS_FILE_PATH + "\\MercuryTrade.jar") , handler.getBytes() , StandardOpenOption.CREATE);
             setMercuryVersion(getIncrementedVersion(MercuryConstants.APP_VERSION));
-            MercuryStoreCore.INSTANCE.updateReadySubject.onNext(true);
+            MercuryStoreCore.updateReadySubject.onNext(true);
         });
         try {
             updaterClient.start();

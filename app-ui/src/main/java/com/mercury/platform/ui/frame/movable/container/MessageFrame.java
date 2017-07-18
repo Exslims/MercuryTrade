@@ -96,7 +96,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
 
     @Override
     public void subscribe() {
-        MercuryStoreCore.INSTANCE.dndSubject.subscribe(state -> {
+        MercuryStoreCore.dndSubject.subscribe(state -> {
             this.dnd = state;
             if(dnd){
                 this.setVisible(false);
@@ -111,7 +111,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
                 setUpExpandButton();
             }
         });
-        MercuryStoreCore.INSTANCE.messageSubject.subscribe(message -> SwingUtilities.invokeLater(()-> {
+        MercuryStoreCore.messageSubject.subscribe(message -> SwingUtilities.invokeLater(()-> {
             List<MessagePanel> collect = this.currentMessages.stream()
                     .filter(panel -> panel.getMessage().equals(message))
                     .collect(Collectors.toList());
@@ -334,7 +334,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
             this.notificationService.get().setUnfoldCount(this.unfoldCount);
             this.onExpandedCountChange();
         }
-        MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
+        MercuryStoreCore.saveConfigSubject.onNext(true);
         this.changeLocation();
         super.onLock();
         this.setUpExpandButton();
@@ -687,12 +687,12 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
                     infoLabel.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseEntered(MouseEvent e) {
-                            MercuryStoreCore.INSTANCE.tooltipSubject.onNext(TooltipConstants.NOTIFICATION_SETTINGS);
+                            MercuryStoreCore.tooltipSubject.onNext(TooltipConstants.NOTIFICATION_SETTINGS);
                         }
 
                         @Override
                         public void mouseExited(MouseEvent e) {
-                            MercuryStoreCore.INSTANCE.tooltipSubject.onNext(null);
+                            MercuryStoreCore.tooltipSubject.onNext(null);
                         }
                     });
                     panel.add(infoLabel,BorderLayout.CENTER);

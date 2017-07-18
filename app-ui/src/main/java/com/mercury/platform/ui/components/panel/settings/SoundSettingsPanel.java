@@ -61,7 +61,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
         notificationSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                MercuryStoreCore.INSTANCE.soundSettingsSubject.onNext(new SoundDescriptor(
+                MercuryStoreCore.soundSettingsSubject.onNext(new SoundDescriptor(
                         wavPaths.get("notification"),
                         notificationSlider.getValue() == -40 ? -80f : (float)notificationSlider.getValue()
                 ));
@@ -71,7 +71,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
         chatScannerSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                MercuryStoreCore.INSTANCE.soundSettingsSubject.onNext(new SoundDescriptor(
+                MercuryStoreCore.soundSettingsSubject.onNext(new SoundDescriptor(
                         wavPaths.get("chat_scanner"),
                         chatScannerSlider.getValue() == -40 ? -80f : (float)chatScannerSlider.getValue()
                 ));
@@ -81,7 +81,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
         clicksSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                MercuryStoreCore.INSTANCE.soundSettingsSubject.onNext(new SoundDescriptor(
+                MercuryStoreCore.soundSettingsSubject.onNext(new SoundDescriptor(
                         wavPaths.get("clicks"),
                         clicksSlider.getValue() == -40 ? -80f : (float)clicksSlider.getValue()
                 ));
@@ -91,7 +91,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
         updateSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                MercuryStoreCore.INSTANCE.soundSettingsSubject.onNext(new SoundDescriptor(
+                MercuryStoreCore.soundSettingsSubject.onNext(new SoundDescriptor(
                         wavPaths.get("update"),
                         updateSlider.getValue() == -40 ? -80f : (float)updateSlider.getValue()
                 ));
@@ -169,7 +169,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
                 .setDb((float)clicksSlider.getValue());
         map.get("update")
                 .setDb((float)updateSlider.getValue());
-        MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
+        MercuryStoreCore.saveConfigSubject.onNext(true);
         return true;
     }
 

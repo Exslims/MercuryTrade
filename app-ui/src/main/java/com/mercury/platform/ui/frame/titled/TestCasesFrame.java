@@ -179,7 +179,7 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
                         random.nextInt(12) + 1,
                         offer.get(random.nextInt(offer.size()))
                 ));
-                MercuryStoreCore.INSTANCE.messageSubject.onNext(message);
+                MercuryStoreCore.messageSubject.onNext(message);
             }
         });
         testPanel.add(button,buttonColumn);
@@ -201,7 +201,7 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
                         leagues.get(random.nextInt(leagues.size())),
                         offer.get(random.nextInt(offer.size()))
                 ));
-                MercuryStoreCore.INSTANCE.messageSubject.onNext(message);
+                MercuryStoreCore.messageSubject.onNext(message);
             }
         });
         testPanel.add(button1,buttonColumn);
@@ -226,19 +226,19 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
                         leagues.get(random.nextInt(leagues.size())),
                         offer.get(random.nextInt(offer.size()))
                 ));
-                MercuryStoreCore.INSTANCE.messageSubject.onNext(message);
-                MercuryStoreCore.INSTANCE.soundSubject.onNext(SoundType.MESSAGE);
+                MercuryStoreCore.messageSubject.onNext(message);
+                MercuryStoreCore.soundSubject.onNext(SoundType.MESSAGE);
 
                 Timer joinedTimer = new Timer(1000,null);
                 joinedTimer.addActionListener(e1 -> {
-                    MercuryStoreCore.INSTANCE.playerJoinSubject.onNext(nickname);
+                    MercuryStoreCore.playerJoinSubject.onNext(nickname);
                     joinedTimer.stop();
                 });
                 joinedTimer.start();
 
                 Timer leftTimer = new Timer(2000,null);
                 leftTimer.addActionListener(e1 -> {
-                    MercuryStoreCore.INSTANCE.playerLeftSubject.onNext(nickname);
+                    MercuryStoreCore.playerLeftSubject.onNext(nickname);
                     leftTimer.stop();
                 });
                 leftTimer.start();

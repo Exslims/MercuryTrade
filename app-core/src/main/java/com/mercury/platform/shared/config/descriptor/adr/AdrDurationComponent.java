@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 public class AdrDurationComponent extends AdrComponentDescriptor{
     private String iconPath;
     private float duration;
+    private float fontSize = 28f;
     private boolean textEnable = true;
     private boolean iconEnable = true;
     private boolean animationEnable = true;

@@ -13,15 +13,15 @@ public class MercuryTaskBarController implements TaskBarController {
     @Override
     public void enableDND() {
         MercuryStoreUI.repaintSubject.onNext(TaskBarFrame.class);
-        MercuryStoreCore.INSTANCE.notificationSubject.onNext("DND on");
-        MercuryStoreCore.INSTANCE.dndSubject.onNext(true);
+        MercuryStoreCore.notificationSubject.onNext("DND on");
+        MercuryStoreCore.dndSubject.onNext(true);
     }
 
     @Override
     public void disableDND() {
         MercuryStoreUI.repaintSubject.onNext(TaskBarFrame.class);
-        MercuryStoreCore.INSTANCE.notificationSubject.onNext("DND off");
-        MercuryStoreCore.INSTANCE.dndSubject.onNext(false);
+        MercuryStoreCore.notificationSubject.onNext("DND off");
+        MercuryStoreCore.dndSubject.onNext(false);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class MercuryTaskBarController implements TaskBarController {
 
     @Override
     public void performHideout() {
-        MercuryStoreCore.INSTANCE.chatCommandSubject.onNext("/hideout");
+        MercuryStoreCore.chatCommandSubject.onNext("/hideout");
     }
 
     @Override

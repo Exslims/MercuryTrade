@@ -138,7 +138,7 @@ public class GeneralSettings extends ConfigurationPanel {
                         "Check for updates");
         checkUpdates.addActionListener(action -> {
             ApplicationHolder.getInstance().setManualRequest(true);
-            MercuryStoreCore.INSTANCE.requestPatchSubject.onNext(true);
+            MercuryStoreCore.requestPatchSubject.onNext(true);
         });
         JButton openTests =
                 componentsFactory.getIconButton("app/open-tests.png",
@@ -170,7 +170,7 @@ public class GeneralSettings extends ConfigurationPanel {
         this.applicationConfig.get().setCheckOutUpdate(this.checkEnable.isSelected());
         if (this.isValidGamePath(this.gamePathField.getText())){
             this.applicationConfig.get().setGamePath(this.gamePathField.getText()+ File.separator);
-            MercuryStoreCore.INSTANCE.poeFolderChangedSubject.onNext(true);
+            MercuryStoreCore.poeFolderChangedSubject.onNext(true);
         } else {
             this.gamePathField.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(AppThemeColor.TEXT_IMPORTANT,1),
@@ -199,18 +199,18 @@ public class GeneralSettings extends ConfigurationPanel {
     private class WrongGamePathListener extends MouseAdapter{
         @Override
         public void mouseEntered(MouseEvent e) {
-            MercuryStoreCore.INSTANCE.tooltipSubject.onNext(
+            MercuryStoreCore.tooltipSubject.onNext(
                     "Wrong Path of Exile folder! Open Task Manager (CTRL + Shift + ESC) and check the path here!");
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-            MercuryStoreCore.INSTANCE.tooltipSubject.onNext(null);
+            MercuryStoreCore.tooltipSubject.onNext(null);
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-            MercuryStoreCore.INSTANCE.tooltipSubject.onNext(null);
+            MercuryStoreCore.tooltipSubject.onNext(null);
         }
     }
 }

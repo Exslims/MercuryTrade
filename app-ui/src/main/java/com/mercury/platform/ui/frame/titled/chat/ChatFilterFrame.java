@@ -84,7 +84,7 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
                 () -> {
                     chatEnable = false;
                     if (interceptor != null) {
-                        MercuryStoreCore.INSTANCE.removeInterceptorSubject.onNext(interceptor);
+                        MercuryStoreCore.removeInterceptorSubject.onNext(interceptor);
                     }
                     enableButton.setText("Start");
                     enableButton.setForeground(AppThemeColor.TEXT_SUCCESS);
@@ -139,7 +139,7 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
 
         msgContainer.setNewChunks(Arrays.asList(strings));
         if (interceptor != null) {
-            MercuryStoreCore.INSTANCE.removeInterceptorSubject.onNext(interceptor);
+            MercuryStoreCore.removeInterceptorSubject.onNext(interceptor);
         }
         interceptor = new MessageInterceptor() {
             @Override
@@ -163,7 +163,7 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
                 };
             }
         };
-        MercuryStoreCore.INSTANCE.addInterceptorSubject.onNext(interceptor);
+        MercuryStoreCore.addInterceptorSubject.onNext(interceptor);
     }
 
     @Override

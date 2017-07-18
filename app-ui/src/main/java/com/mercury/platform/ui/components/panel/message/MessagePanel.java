@@ -441,6 +441,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI,HasHotke
         }
         setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
         setMinimumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
+        MercuryStoreUI.expandMessageSubject.onNext(true);
         MercuryStoreUI.packSubject.onNext(MessageFrame.class);
     }
     public void collapse(){
@@ -456,6 +457,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI,HasHotke
         }
         setMaximumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
         setMinimumSize(new Dimension(Integer.MAX_VALUE,getPreferredSize().height));
+        MercuryStoreUI.collapseMessageSubject.onNext(true);
         MercuryStoreUI.packSubject.onNext(MessageFrame.class);
     }
 
@@ -482,7 +484,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI,HasHotke
     }
     @Override
     public void subscribe() {
-        MercuryStoreCore.INSTANCE.playerJoinSubject.subscribe(nickname -> {
+        MercuryStoreCore.playerJoinSubject.subscribe(nickname -> {
             if(nickname.equals(whisper)){
                 whisperLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
                 cachedWhisperColor = AppThemeColor.TEXT_SUCCESS;
@@ -492,7 +494,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI,HasHotke
                 MercuryStoreUI.repaintSubject.onNext(MessageFrame.class);
             }
         });
-        MercuryStoreCore.INSTANCE.playerLeftSubject.subscribe(nickname -> {
+        MercuryStoreCore.playerLeftSubject.subscribe(nickname -> {
             if (nickname.equals(whisper)) {
                 whisperLabel.setForeground(AppThemeColor.TEXT_DISABLE);
                 cachedWhisperColor = AppThemeColor.TEXT_DISABLE;
@@ -502,7 +504,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI,HasHotke
                 MercuryStoreUI.repaintSubject.onNext(MessageFrame.class);
             }
         });
-        MercuryStoreCore.INSTANCE.buttonsChangedSubject.subscribe(state -> {
+        MercuryStoreCore.buttonsChangedSubject.subscribe(state -> {
             this.customButtonsPanel.removeAll();
             initResponseButtons(customButtonsPanel);
             MercuryStoreUI.repaintSubject.onNext(MessageFrame.class);
@@ -559,7 +561,7 @@ public class MessagePanel extends JPanel implements AsSubscriber, HasUI,HasHotke
     @Override
     public void initHotKeyListeners() {
         KeyValueConfigurationService<String, HotKeyDescriptor> config = Configuration.get().hotKeysConfiguration();
-        MercuryStoreCore.INSTANCE.hotKeySubject.subscribe(descriptor -> {
+        MercuryStoreCore.hotKeySubject.subscribe(descriptor -> {
             HotKeyDescriptor hotKeyDescriptor = config.get(HotKeyType.CLOSE_NOTIFICATION.name());
             if(descriptor.equals(hotKeyDescriptor)) {
                 this.controller.performHide();

@@ -23,29 +23,29 @@ public class NotificationMessageController implements MessagePanelController {
     }
     @Override
     public void performInvite() {
-        MercuryStoreCore.INSTANCE.chatCommandSubject.onNext("/invite " + message.getWhisperNickname());
+        MercuryStoreCore.chatCommandSubject.onNext("/invite " + message.getWhisperNickname());
         showITH();
     }
 
     @Override
     public void performKick() {
-        MercuryStoreCore.INSTANCE.chatCommandSubject.onNext("/kick " + message.getWhisperNickname());
+        MercuryStoreCore.chatCommandSubject.onNext("/kick " + message.getWhisperNickname());
 
     }
 
     @Override
     public void performOfferTrade() {
-        MercuryStoreCore.INSTANCE.chatCommandSubject.onNext("/tradewith " + message.getWhisperNickname());
+        MercuryStoreCore.chatCommandSubject.onNext("/tradewith " + message.getWhisperNickname());
     }
 
     @Override
     public void performOpenChat() {
-        MercuryStoreCore.INSTANCE.openChatSubject.onNext(message.getWhisperNickname());
+        MercuryStoreCore.openChatSubject.onNext(message.getWhisperNickname());
     }
 
     @Override
     public void performResponse(@NonNull String responseText) {
-        MercuryStoreCore.INSTANCE.chatCommandSubject.onNext("@" + message.getWhisperNickname() + " " + responseText);
+        MercuryStoreCore.chatCommandSubject.onNext("@" + message.getWhisperNickname() + " " + responseText);
     }
 
     @Override

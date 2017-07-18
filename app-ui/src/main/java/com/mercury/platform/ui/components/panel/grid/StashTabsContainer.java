@@ -16,7 +16,7 @@ public class StashTabsContainer {
         this.save();
     }
     public void save(){
-        MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
+        MercuryStoreCore.saveConfigSubject.onNext(true);
     }
 
     public List<StashTabDescriptor> getStashTabDescriptors() {

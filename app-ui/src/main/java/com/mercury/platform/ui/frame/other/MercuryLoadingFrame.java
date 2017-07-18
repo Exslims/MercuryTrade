@@ -51,7 +51,7 @@ public class MercuryLoadingFrame extends AbstractOverlaidFrame {
 
     @Override
     public void subscribe() {
-        MercuryStoreCore.INSTANCE.appLoadingSubject
+        MercuryStoreCore.appLoadingSubject
                 .subscribe(state -> hideAnimation.play());
     }
 

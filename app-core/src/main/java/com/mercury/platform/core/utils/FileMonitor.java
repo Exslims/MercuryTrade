@@ -18,7 +18,7 @@ public class FileMonitor {
     private MessageFileHandler fileHandler;
     private FileAlterationMonitor monitor;
     public FileMonitor(){
-        MercuryStoreCore.INSTANCE.poeFolderChangedSubject.subscribe(state -> {
+        MercuryStoreCore.poeFolderChangedSubject.subscribe(state -> {
             if(monitor != null){
                 try {
                     monitor.stop();

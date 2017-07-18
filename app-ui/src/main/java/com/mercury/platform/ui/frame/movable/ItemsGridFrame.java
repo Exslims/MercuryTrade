@@ -154,7 +154,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
                     stashTabsContainer.save();
-                    MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
+                    MercuryStoreCore.saveConfigSubject.onNext(true);
                     FramesManager.INSTANCE.disableMovement(ItemsGridFrame.class);
                 }
             }

@@ -60,7 +60,7 @@ public class SetUpScaleFrame extends AbstractOverlaidFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 FramesManager.INSTANCE.disableScale();
-                MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
+                MercuryStoreCore.saveConfigSubject.onNext(true);
                 MercuryStoreUI.saveScaleSubject.onNext(scaleData);
             }
         });

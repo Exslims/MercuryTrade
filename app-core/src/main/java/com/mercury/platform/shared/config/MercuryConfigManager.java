@@ -147,13 +147,13 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
 
     @Override
     public void subscribe() {
-        MercuryStoreCore.INSTANCE.saveConfigSubject.subscribe(state -> {
+        MercuryStoreCore.saveConfigSubject.subscribe(state -> {
             this.jsonHelper.writeListObject(this.profileDescriptors,new TypeToken<List<ProfileDescriptor>>(){});
         });
-        MercuryStoreCore.INSTANCE.toDefaultSubject.subscribe(state -> {
+        MercuryStoreCore.toDefaultSubject.subscribe(state -> {
             this.services.forEach(BaseConfigurationService::toDefault);
         });
-        MercuryStoreCore.INSTANCE.changeProfileSubject.subscribe(profile -> {
+        MercuryStoreCore.changeProfileSubject.subscribe(profile -> {
             this.selectedProfile.setSelected(false);
             this.selectedProfile = profile;
             profile.setSelected(true);

@@ -32,7 +32,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         AdrGroupDescriptor groupDescriptor = new AdrGroupDescriptor();
         groupDescriptor.setSize(new Dimension(64,64));
         groupDescriptor.setLocation(new Point(400,400));
-        groupDescriptor.setTitle("qweqweqweqweqwe");
+        groupDescriptor.setTitle("icon group");
         groupDescriptor.setGroupType(AdrGroupType.STATIC);
         groupDescriptor.setContentType(AdrGroupContentType.ICONS);
         groupDescriptor.setDirection(AdrComponentDirection.VERTICAL);
@@ -41,7 +41,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         AdrIconDescriptor icon1 = new AdrIconDescriptor();
         icon1.setIconPath("Arctic_Armour_skill_icon");
         icon1.setLocation(new Point(400, 400));
-        icon1.setTitle("qweqweqweqweqweqwe");
+        icon1.setTitle("default");
         icon1.setSize(new Dimension(64, 64));
         icon1.setDuration(8f);
         icon1.setIconType(AdrIconType.SQUARE);

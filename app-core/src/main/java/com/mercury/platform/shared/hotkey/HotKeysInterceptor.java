@@ -11,7 +11,7 @@ public class HotKeysInterceptor {
         keyboardHook.addKeyListener(new HotKeyAdapter() {
             @Override
             public void keyTyped(HotKeyDescriptor descriptor) {
-                MercuryStoreCore.INSTANCE.hotKeySubject.onNext(descriptor);
+                MercuryStoreCore.hotKeySubject.onNext(descriptor);
             }
         });
     }

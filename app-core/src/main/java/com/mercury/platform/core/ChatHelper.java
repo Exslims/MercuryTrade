@@ -71,9 +71,9 @@ public class ChatHelper implements AsSubscriber {
 
     @Override
     public void subscribe() {
-        MercuryStoreCore.INSTANCE.chatCommandSubject.subscribe(this::executeMessage);
-        MercuryStoreCore.INSTANCE.openChatSubject.subscribe(this::openChat);
-        MercuryStoreCore.INSTANCE.dndSubject.subscribe(state -> {
+        MercuryStoreCore.chatCommandSubject.subscribe(this::executeMessage);
+        MercuryStoreCore.openChatSubject.subscribe(this::openChat);
+        MercuryStoreCore.dndSubject.subscribe(state -> {
             ApplicationDescriptor config = Configuration.get().applicationConfiguration().get();
             if(config.isInGameDnd()){
                 if(state) {

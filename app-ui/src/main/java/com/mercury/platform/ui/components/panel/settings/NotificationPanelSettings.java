@@ -53,7 +53,7 @@ public class NotificationPanelSettings extends ConfigurationPanel{
         this.notificationService.get().setButtons(buttons);
         this.notificationService.get().setDismissAfterKick(this.dismissCheckBox.isSelected());
         this.notificationService.get().setShowLeague(this.showLeagueCheckBox.isSelected());
-        MercuryStoreCore.INSTANCE.buttonsChangedSubject.onNext(true);
+        MercuryStoreCore.buttonsChangedSubject.onNext(true);
         return true;
     }
 

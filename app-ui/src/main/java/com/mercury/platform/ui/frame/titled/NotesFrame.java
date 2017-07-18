@@ -79,7 +79,7 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         download.addActionListener(action -> {
             download.setEnabled(false);
             progressBarFrame.setVisible(true);
-            MercuryStoreCore.INSTANCE.startUpdateSubject.onNext(true);
+            MercuryStoreCore.startUpdateSubject.onNext(true);
         });
         JButton gitHub = componentsFactory.getBorderedButton("GitHub");
         gitHub.addActionListener(action -> {
@@ -149,7 +149,7 @@ public class NotesFrame extends AbstractTitledComponentFrame {
                     NotesFrame.this.setVisible(false);
                     if (type.equals(NotesType.INFO)) {
                         applicationConfig.get().setShowOnStartUp(showOnStartUp.isSelected());
-                        MercuryStoreCore.INSTANCE.saveConfigSubject.onNext(true);
+                        MercuryStoreCore.saveConfigSubject.onNext(true);
                         FramesManager.INSTANCE.enableMovementExclude(ItemsGridFrame.class);
                     }
                     prevState = FrameVisibleState.HIDE;
@@ -305,13 +305,13 @@ public class NotesFrame extends AbstractTitledComponentFrame {
 
         @Override
         public void subscribe() {
-            MercuryStoreCore.INSTANCE.chunkLoadedSubject.subscribe(percentDelta -> SwingUtilities.invokeLater(() -> {
+            MercuryStoreCore.chunkLoadedSubject.subscribe(percentDelta -> SwingUtilities.invokeLater(() -> {
                 this.percent += percentDelta;
                 this.percentLabel.setText(String.valueOf(percent) + "%");
                 this.repaint();
                 this.pack();
             }));
-            MercuryStoreCore.INSTANCE.updateReadySubject.subscribe(state -> {
+            MercuryStoreCore.updateReadySubject.subscribe(state -> {
                 this.percentLabel.setText("100%");
                 this.restart.setEnabled(true);
                 this.progressBar.setIndeterminate(false);

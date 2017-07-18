@@ -64,7 +64,7 @@ public class OutMessageFrame extends AbstractComponentFrame {
         hoIn.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                MercuryStoreCore.INSTANCE.chatCommandSubject.onNext("/hideout " + message.getWhisperNickname());
+                MercuryStoreCore.chatCommandSubject.onNext("/hideout " + message.getWhisperNickname());
             }
         });
         miscPanel.add(hoIn);
@@ -72,7 +72,7 @@ public class OutMessageFrame extends AbstractComponentFrame {
         hoOut.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                MercuryStoreCore.INSTANCE.chatCommandSubject.onNext("/hideout");
+                MercuryStoreCore.chatCommandSubject.onNext("/hideout");
             }
         });
         miscPanel.add(hoOut);
@@ -118,7 +118,7 @@ public class OutMessageFrame extends AbstractComponentFrame {
     }
     @Override
     public void subscribe() {
-        MercuryStoreCore.INSTANCE.outMessageSubject.subscribe(message -> {
+        MercuryStoreCore.outMessageSubject.subscribe(message -> {
             if (!this.isVisible() && AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
                 this.setAlwaysOnTop(true);
                 this.setVisible(true);

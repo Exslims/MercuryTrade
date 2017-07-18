@@ -14,12 +14,12 @@ public class SoundNotifier {
     private final Logger logger = LogManager.getLogger(SoundNotifier.class);
     private boolean dnd = false;
     public SoundNotifier() {
-        MercuryStoreCore.INSTANCE.soundSubject
+        MercuryStoreCore.soundSubject
                 .compose(DataTransformers.transformSoundData())
                 .subscribe(data -> play(data.getWavPath(), data.getDb()));
-        MercuryStoreCore.INSTANCE.soundSettingsSubject
+        MercuryStoreCore.soundSettingsSubject
                 .subscribe(data -> play(data.getWavPath(), data.getDb()));
-        MercuryStoreCore.INSTANCE.dndSubject
+        MercuryStoreCore.dndSubject
                 .subscribe(value -> this.dnd = value);
     }
 

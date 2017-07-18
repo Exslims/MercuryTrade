@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.components.panel.settings;
 
+import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
@@ -45,6 +46,7 @@ public class HelpPanel extends JPanel implements HasUI {
                 if(SwingUtilities.isLeftMouseButton(e)){
                     FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
                     FramesManager.INSTANCE.preShowFrame(TestCasesFrame.class);
+                    MercuryStoreCore.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
                 }
             }
         });
@@ -68,7 +70,7 @@ public class HelpPanel extends JPanel implements HasUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)){
-                    MercuryStoreCore.INSTANCE.updateInfoSubject.onNext(123);
+                    MercuryStoreCore.updateInfoSubject.onNext(123);
                     FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
                 }
             }

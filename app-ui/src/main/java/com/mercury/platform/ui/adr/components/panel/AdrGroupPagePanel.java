@@ -23,8 +23,6 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
         JLabel groupScaleLabel = this.componentsFactory.getTextLabel("Scale:");
 
         JTextField titleField = this.componentsFactory.getTextField(this.payload.getTitle(), FontStyle.BOLD,16);
-        System.out.println( titleField.isEditable());
-        System.out.println(titleField.isRequestFocusEnabled());
         JComboBox groupType = this.componentsFactory.getComboBox(new String[]{"Static", "Dynamic"});
         groupType.setSelectedIndex(this.payload.getGroupType().ordinal());
         JTextField sizeField = this.componentsFactory.getTextField(this.payload.getTitle(), FontStyle.BOLD,16);

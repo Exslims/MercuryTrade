@@ -116,7 +116,10 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         vBar.addAdjustmentListener(e -> repaint());
 
         JButton addComponent = this.componentsFactory.getIconButton("app/adr/add_component.png", 20, AppThemeColor.BUTTON, "todo");
-        addComponent.setBorder(BorderFactory.createMatteBorder(1,0,1,0,AppThemeColor.BORDER));
+        addComponent.setBackground(AppThemeColor.FRAME);
+        addComponent.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(2,2,2,2),
+                BorderFactory.createMatteBorder(1,1,1,1,AppThemeColor.BORDER)));
         addComponent.addActionListener(action -> {
             this.componentsTree.clearSelection();
             MercuryStoreUI.adrStateSubject.onNext(new AdrPageDefinition<>(AdrPageState.MAIN,null));
@@ -182,7 +185,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         root.setBorder(BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.MSG_HEADER_BORDER));
         root.setBackground(AppThemeColor.HEADER);
         root.add(this.componentsFactory.getTextLabel("Selected profile: " + this.selectedProfile.getProfileName()),BorderLayout.LINE_START);
-        root.add(this.componentsFactory.getIconButton("app/adr/profile_settings_icon.png",20,AppThemeColor.HEADER, TooltipConstants.PROFILE_SETTINGS),BorderLayout.LINE_END);
+        root.add(this.componentsFactory.getIconButton("app/adr/profile_settings_icon.png",20,AppThemeColor.HEADER, TooltipConstants.ADR_PROFILE_SETTINGS),BorderLayout.LINE_END);
         return root;
     }
 }

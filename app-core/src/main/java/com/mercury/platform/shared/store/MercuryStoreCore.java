@@ -12,42 +12,37 @@ import rx.subjects.PublishSubject;
 
 
 public class MercuryStoreCore {
-    private static class MercuryStoreHolder {
-        static final MercuryStoreCore HOLDER_INSTANCE = new MercuryStoreCore();
-    }
-    public static MercuryStoreCore INSTANCE = MercuryStoreHolder.HOLDER_INSTANCE;
-
-    public final PublishSubject<SoundType> soundSubject = PublishSubject.create();
-    public final PublishSubject<SoundDescriptor> soundSettingsSubject = PublishSubject.create();
-    public final PublishSubject<Boolean> dndSubject = PublishSubject.create();
-    public final PublishSubject<FrameVisibleState> frameVisibleSubject = PublishSubject.create();
-    public final PublishSubject<Boolean> uiLoadedSubject = PublishSubject.create();
-    public final PublishSubject<MessageInterceptor> addInterceptorSubject = PublishSubject.create();
-    public final PublishSubject<MessageInterceptor> removeInterceptorSubject = PublishSubject.create();
-    public final PublishSubject<String> chatCommandSubject = PublishSubject.create();
-    public final PublishSubject<String> openChatSubject = PublishSubject.create();
-    public final PublishSubject<Message> messageSubject = PublishSubject.create();
-    public final PublishSubject<Message> outMessageSubject = PublishSubject.create();
-    public final PublishSubject<Boolean> appLoadingSubject = PublishSubject.create();
-    public final PublishSubject<Boolean> showingDelaySubject = PublishSubject.create();
-    public final PublishSubject<String> stringAlertSubject = PublishSubject.create();
-    public final PublishSubject<Boolean> poeFolderChangedSubject = PublishSubject.create();
-    public final PublishSubject<Boolean> checkOutPatchSubject = PublishSubject.create();
-    public final PublishSubject<Integer> chunkLoadedSubject = PublishSubject.create();
-    public final PublishSubject<Boolean> buttonsChangedSubject = PublishSubject.create();
-    public final PublishSubject<String> tooltipSubject = PublishSubject.create();
-    public final PublishSubject<String> notificationSubject = PublishSubject.create();
-    public final PublishSubject<String> playerJoinSubject = PublishSubject.create();
-    public final PublishSubject<String> playerLeftSubject = PublishSubject.create();
-    public final PublishSubject<Boolean> requestPatchSubject = PublishSubject.create();
-    public final PublishSubject<String> showPatchNotesSubject = PublishSubject.create();
-    public final PublishSubject<Boolean> shutdownAppSubject = PublishSubject.create();
-    public final PublishSubject<Boolean> shutdownForUpdateSubject = PublishSubject.create();
-    public final PublishSubject<Boolean> startUpdateSubject = PublishSubject.create();
-    public final PublishSubject<Integer> updateInfoSubject = PublishSubject.create();
-    public final PublishSubject<Boolean> updateReadySubject = PublishSubject.create();
-    public final PublishSubject<Boolean> saveConfigSubject = PublishSubject.create();
-    public final PublishSubject<Boolean> toDefaultSubject = PublishSubject.create();
-    public final PublishSubject<ProfileDescriptor> changeProfileSubject = PublishSubject.create();
-    public final PublishSubject<HotKeyDescriptor> hotKeySubject = PublishSubject.create();
+    public static final PublishSubject<SoundType> soundSubject = PublishSubject.create();
+    public static final PublishSubject<SoundDescriptor> soundSettingsSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> dndSubject = PublishSubject.create();
+    public static final PublishSubject<FrameVisibleState> frameVisibleSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> uiLoadedSubject = PublishSubject.create();
+    public static final PublishSubject<MessageInterceptor> addInterceptorSubject = PublishSubject.create();
+    public static final PublishSubject<MessageInterceptor> removeInterceptorSubject = PublishSubject.create();
+    public static final PublishSubject<String> chatCommandSubject = PublishSubject.create();
+    public static final PublishSubject<String> openChatSubject = PublishSubject.create();
+    public static final PublishSubject<Message> messageSubject = PublishSubject.create();
+    public static final PublishSubject<Message> outMessageSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> appLoadingSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> showingDelaySubject = PublishSubject.create();
+    public static final PublishSubject<String> stringAlertSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> poeFolderChangedSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> checkOutPatchSubject = PublishSubject.create();
+    public static final PublishSubject<Integer> chunkLoadedSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> buttonsChangedSubject = PublishSubject.create();
+    public static final PublishSubject<String> tooltipSubject = PublishSubject.create();
+    public static final PublishSubject<String> notificationSubject = PublishSubject.create();
+    public static final PublishSubject<String> playerJoinSubject = PublishSubject.create();
+    public static final PublishSubject<String> playerLeftSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> requestPatchSubject = PublishSubject.create();
+    public static final PublishSubject<String> showPatchNotesSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> shutdownAppSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> shutdownForUpdateSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> startUpdateSubject = PublishSubject.create();
+    public static final PublishSubject<Integer> updateInfoSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> updateReadySubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> saveConfigSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> toDefaultSubject = PublishSubject.create();
+    public static final PublishSubject<ProfileDescriptor> changeProfileSubject = PublishSubject.create();
+    public static final PublishSubject<HotKeyDescriptor> hotKeySubject = PublishSubject.create();
 }

@@ -43,6 +43,8 @@ public class ComponentsFactory{
     public ComponentsFactory() {
         loadFonts();
         this.scale = 1.0f;
+
+//        UIManager.getDefaults().put("Slider.horizontalThumbIcon",this.getImage("app/slider_thumb.png"));
     }
 
     /**
@@ -86,7 +88,7 @@ public class ComponentsFactory{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    MercuryStoreCore.INSTANCE.soundSubject.onNext(SoundType.CLICKS);
+                    MercuryStoreCore.soundSubject.onNext(SoundType.CLICKS);
                 }
             }
         });
@@ -184,7 +186,7 @@ public class ComponentsFactory{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
-                    MercuryStoreCore.INSTANCE.soundSubject.onNext(SoundType.CLICKS);
+                    MercuryStoreCore.soundSubject.onNext(SoundType.CLICKS);
                 }
             }
         });
@@ -349,7 +351,7 @@ public class ComponentsFactory{
         textField.setForeground(AppThemeColor.TEXT_DEFAULT);
         textField.setCaretColor(AppThemeColor.TEXT_DEFAULT);
         textField.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(AppThemeColor.TEXT_DEFAULT,1),
+                BorderFactory.createLineBorder(AppThemeColor.BORDER,1),
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,3)
         ));
         textField.setBackground(AppThemeColor.HEADER);
@@ -443,7 +445,7 @@ public class ComponentsFactory{
                 slider.getParent().repaint();
             }
         });
-        slider.setBackground(AppThemeColor.TRANSPARENT);
+        slider.setBackground(AppThemeColor.FRAME);
         return slider;
     }
     public JPanel getTransparentPanel(LayoutManager layout){
@@ -567,17 +569,17 @@ public class ComponentsFactory{
         private String tooltip;
         @Override
         public void mouseEntered(MouseEvent e) {
-            MercuryStoreCore.INSTANCE.tooltipSubject.onNext(tooltip);
+            MercuryStoreCore.tooltipSubject.onNext(tooltip);
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-            MercuryStoreCore.INSTANCE.tooltipSubject.onNext(null);
+            MercuryStoreCore.tooltipSubject.onNext(null);
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-            MercuryStoreCore.INSTANCE.tooltipSubject.onNext(null);
+            MercuryStoreCore.tooltipSubject.onNext(null);
         }
     }
 }

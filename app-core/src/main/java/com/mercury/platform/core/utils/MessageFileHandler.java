@@ -78,11 +78,11 @@ public class MessageFileHandler implements AsSubscriber {
 
     @Override
     public void subscribe() {
-        MercuryStoreCore.INSTANCE.addInterceptorSubject.subscribe(interceptor -> {
+        MercuryStoreCore.addInterceptorSubject.subscribe(interceptor -> {
             this.interceptors.add(interceptor);
             this.lastMessageDate = new Date();
         });
-        MercuryStoreCore.INSTANCE.removeInterceptorSubject.subscribe(interceptor -> {
+        MercuryStoreCore.removeInterceptorSubject.subscribe(interceptor -> {
             this.interceptors.remove(interceptor);
         });
     }

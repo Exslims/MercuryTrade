@@ -24,13 +24,13 @@ public class AppMain {
         new AppStarter().startApplication();
         String gamePath = Configuration.get().applicationConfiguration().get().getGamePath();
         if(gamePath.equals("") || !isValidGamePath(gamePath)){
-            MercuryStoreCore.INSTANCE.appLoadingSubject.onNext(false);
+            MercuryStoreCore.appLoadingSubject.onNext(false);
             GamePathChooser gamePathChooser = new GamePathChooser();
             gamePathChooser.init();
         }else {
             new FileMonitor().start();
             FramesManager.INSTANCE.start();
-            MercuryStoreCore.INSTANCE.appLoadingSubject.onNext(false);
+            MercuryStoreCore.appLoadingSubject.onNext(false);
         }
     }
     private static boolean isValidGamePath(String gamePath){

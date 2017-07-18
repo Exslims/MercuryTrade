@@ -42,10 +42,10 @@ public class AppStarter {
         HistoryManager.INSTANCE.load();
         UpdateManager updateManager = new UpdateManager();
 
-        MercuryStoreCore.INSTANCE.uiLoadedSubject.subscribe((Boolean state) -> {
+        MercuryStoreCore.uiLoadedSubject.subscribe((Boolean state) -> {
             Timer timer = new Timer();
             APP_STATUS = FrameVisibleState.SHOW;
-            MercuryStoreCore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
+            MercuryStoreCore.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
 //            timer.schedule(new TimerTask() {
 //                @Override
 //                public void run() {
@@ -65,7 +65,7 @@ public class AppStarter {
 //                    if(!Native.toString(className).equals("POEWindowClass")){
 //                        if(APP_STATUS == FrameVisibleState.SHOW) {
 //                            APP_STATUS = FrameVisibleState.HIDE;
-//                            MercuryStoreCore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.HIDE);
+//                            MercuryStoreCore.frameVisibleSubject.onNext(FrameVisibleState.HIDE);
 //                        }
 //                    }else{
 //                        if(APP_STATUS == FrameVisibleState.HIDE) {
@@ -76,15 +76,15 @@ public class AppStarter {
 //                                logger.error(e);
 //                            }
 //                            APP_STATUS = FrameVisibleState.SHOW;
-//                            MercuryStoreCore.INSTANCE.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
+//                            MercuryStoreCore.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
 //                        }
 //                    }
 //                }
 //            },0,150);
         });
-        MercuryStoreCore.INSTANCE.showingDelaySubject.subscribe(state -> this.delay = 300);
-        MercuryStoreCore.INSTANCE.shutdownAppSubject.subscribe(state -> this.shutdown = true);
-        MercuryStoreCore.INSTANCE.shutdownForUpdateSubject.subscribe(state -> {
+        MercuryStoreCore.showingDelaySubject.subscribe(state -> this.delay = 300);
+        MercuryStoreCore.shutdownAppSubject.subscribe(state -> this.shutdown = true);
+        MercuryStoreCore.shutdownForUpdateSubject.subscribe(state -> {
             this.updating = true;
             this.shutdown = true;
         });
