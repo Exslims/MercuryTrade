@@ -3,7 +3,6 @@ package com.mercury.platform.shared.config.configration.impl.adr;
 
 import com.mercury.platform.shared.config.configration.AdrConfigurationService;
 import com.mercury.platform.shared.config.configration.BaseConfigurationService;
-import com.mercury.platform.shared.config.configration.ListConfigurationService;
 import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.*;
@@ -62,7 +61,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         icon3.setSize(new Dimension(64, 64));
         icon3.setDuration(8f);
         icon3.setHotKeyDescriptor(new HotKeyDescriptor(51,'3',false,true,false,false));
-        icon3.setIconType(AdrIconType.ELIPSE);
+        icon3.setIconType(AdrIconType.ELLIPSE);
         icon3.setType(AdrComponentType.ICON);
         groupDescriptor.setCells(Arrays.asList(icon1,icon2,icon3,icon2));
 

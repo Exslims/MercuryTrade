@@ -109,6 +109,7 @@ public class AdrManager implements AsSubscriber{
                        this.adrManagerFrame.setPage(this.groupSettingsPanel);
                    }
                    if(definition.getDescriptor() instanceof AdrIconDescriptor){
+                       this.iconSettingsPanel.setFromGroup(definition.isFromGroup());
                        this.iconSettingsPanel.setPayload((AdrIconDescriptor) definition.getDescriptor());
                        this.adrManagerFrame.setPage(this.iconSettingsPanel);
                    }

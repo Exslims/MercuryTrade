@@ -5,8 +5,12 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.style.MercuryComboBoxUI;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
+import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.misc.ToggleCallback;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
+import com.sun.java.swing.plaf.windows.WindowsButtonUI;
+import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,12 +24,14 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.NumberFormat;
 
 /**
  * Factory for each element which uses in application
@@ -343,6 +349,28 @@ public class ComponentsFactory{
         textField.setFont(DEFAULT_FONT);
         return textField;
     }
+    public JFormattedTextField getIntegerTextField(Integer min, Integer max, Integer value){
+        NumberFormat format = NumberFormat.getInstance();
+        NumberFormatter formatter = new NumberFormatter(format);
+        formatter.setValueClass(Integer.class);
+        formatter.setMinimum(min);
+        formatter.setMaximum(max);
+        formatter.setAllowsInvalid(true);
+        formatter.setCommitsOnValidEdit(false);
+
+        JFormattedTextField field = new JFormattedTextField(formatter);
+        field.setValue(value);
+        field.setFont(REGULAR_FONT.deriveFont(scale*18));
+        field.setFocusLostBehavior(JFormattedTextField.PERSIST);
+        field.setForeground(AppThemeColor.TEXT_DEFAULT);
+        field.setCaretColor(AppThemeColor.TEXT_DEFAULT);
+        field.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.BORDER,1),
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,3)
+        ));
+        field.setBackground(AppThemeColor.HEADER);
+        return field;
+    }
     public JTextField getTextField(String text, FontStyle style, float fontSize){
         JTextField textField = new JTextField(text);
         if(style != null) {
@@ -362,6 +390,14 @@ public class ComponentsFactory{
         JCheckBox checkBox = new JCheckBox();
         checkBox.setBackground(AppThemeColor.TRANSPARENT);
         checkBox.addMouseListener(new TooltipMouseListener(tooltip));
+        return checkBox;
+    }
+    public JCheckBox getCheckBox(boolean value){
+        JCheckBox checkBox = new JCheckBox();
+        checkBox.setSelected(value);
+        checkBox.setUI(new WindowsButtonUI());
+        checkBox.setFocusPainted(false);
+        checkBox.setBackground(AppThemeColor.TRANSPARENT);
         return checkBox;
     }
     public Font getFontByLang(String text,FontStyle style){
@@ -436,9 +472,11 @@ public class ComponentsFactory{
         JSlider slider = new JSlider(JSlider.HORIZONTAL,min,max,value);
         slider.setMajorTickSpacing(10);
         slider.setMinorTickSpacing(1);
-        slider.setPaintLabels(true);
+//        slider.setPaintLabels(true);
+        slider.setUI(new WindowsSliderUI(slider));
         slider.setForeground(AppThemeColor.TEXT_DEFAULT);
         slider.setFont(REGULAR_FONT.deriveFont(15f));
+        slider.setRequestFocusEnabled(false);
         slider.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -447,6 +485,24 @@ public class ComponentsFactory{
         });
         slider.setBackground(AppThemeColor.FRAME);
         return slider;
+    }
+
+    public JScrollPane getVerticalContainer(JPanel container){
+        JScrollPane scrollPane = new JScrollPane(container);
+        scrollPane.setBorder(null);
+        scrollPane.setBackground(AppThemeColor.FRAME);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.addMouseWheelListener(e -> MercuryStoreUI.scrollToEndSubject.onNext(false));
+
+        container.getParent().setBackground(AppThemeColor.TRANSPARENT);
+        JScrollBar vBar = scrollPane.getVerticalScrollBar();
+        vBar.setBackground(AppThemeColor.SLIDE_BG);
+        vBar.setUI(new MercuryScrollBarUI());
+        vBar.setPreferredSize(new Dimension(15, Integer.MAX_VALUE));
+        vBar.setUnitIncrement(3);
+        vBar.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+        return scrollPane;
     }
     public JPanel getTransparentPanel(LayoutManager layout){
         JPanel panel = new JPanel(layout);
@@ -538,6 +594,12 @@ public class ComponentsFactory{
         JPanel panel = new JPanel(layoutManager);
         panel.setBackground(AppThemeColor.FRAME_RGB);
         return panel;
+    }
+    public JPanel wrapToSlide(JPanel panel){
+        JPanel wrapper = this.getJPanel(new BorderLayout());
+        wrapper.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+        wrapper.add(panel,BorderLayout.CENTER);
+        return wrapper;
     }
 
     public JPopupMenu getContextPanel() {

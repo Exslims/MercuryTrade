@@ -19,6 +19,7 @@ public class HotKeyManager {
             @Override
             public void mouseClicked(MouseEvent e) {
                 button.setBackground(AppThemeColor.SLIDE_BG);
+                button.setText("Press any key");
                 allowed = true;
             }
         });
@@ -40,6 +41,9 @@ public class HotKeyManager {
         return button;
     }
     private String getButtonText(HotKeyDescriptor descriptor){
+        if(descriptor.getKeyChar() == '\u0000') {
+            return "...";
+        }
         String text = String.valueOf(descriptor.getKeyChar());
         if(descriptor.isShiftPressed())
             text = "Shift + " + text;
