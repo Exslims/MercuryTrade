@@ -3,9 +3,10 @@ package com.mercury.platform.ui.adr.components;
 import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
-import com.mercury.platform.ui.adr.components.panel.group.AdrComponentPanel;
-import com.mercury.platform.ui.adr.components.panel.group.AdrIconCellPanel;
+import com.mercury.platform.ui.adr.components.panel.AdrComponentPanel;
+import com.mercury.platform.ui.adr.components.panel.AdrIconCellPanel;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.NonNull;
 
 import javax.swing.*;
@@ -25,6 +26,7 @@ public class AdrGroupFrame extends AbstractAdrFrame {
     private DraggedFrameMouseListener mouseListener;
     private DraggedFrameMotionListener motionListener;
     private MouseAdapter mouseOverListener;
+
 
     public AdrGroupFrame(@NonNull AdrGroupDescriptor descriptor) {
         super(descriptor);
@@ -83,7 +85,9 @@ public class AdrGroupFrame extends AbstractAdrFrame {
     }
     @Override
     public void subscribe() {
-
+        MercuryStoreUI.adrRepaintSubject.subscribe(state -> {
+            this.repaint();
+        });
     }
 
     @Override

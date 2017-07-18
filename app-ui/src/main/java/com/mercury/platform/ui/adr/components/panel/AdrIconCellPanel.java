@@ -1,12 +1,13 @@
-package com.mercury.platform.ui.adr.components.panel.group;
+package com.mercury.platform.ui.adr.components.panel;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.adr.components.panel.ui.icon.SquareMercuryIconTrackerUI;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import org.pushingpixels.trident.Timeline;
+import org.pushingpixels.trident.callback.TimelineCallbackAdapter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,16 +21,19 @@ public class AdrIconCellPanel extends AdrComponentPanel<AdrIconDescriptor>{
         this.setPreferredSize(cellDescriptor.getSize());
         this.setBorder(null);
         this.createUI();
+        this.setVisible(false);
     }
 
     @Override
     public void enableSettings() {
+        super.enableSettings();
         this.setVisible(true);
         this.progressTl.playLoop(Timeline.RepeatBehavior.LOOP);
     }
 
     @Override
     public void disableSettings() {
+        super.disableSettings();
         this.progressTl.abort();
         this.setVisible(false);
     }
@@ -57,5 +61,14 @@ public class AdrIconCellPanel extends AdrComponentPanel<AdrIconDescriptor>{
         this.progressTl = new Timeline(progressBar);
         this.progressTl.setDuration((int)(descriptor.getDuration()*1000));
         this.progressTl.addPropertyToInterpolate("value",progressBar.getMaximum(),0);
+        this.progressTl.addCallback(new TimelineCallbackAdapter() {
+            @Override
+            public void onTimelineStateChanged(Timeline.TimelineState oldState, Timeline.TimelineState newState, float durationFraction, float timelinePosition) {
+                if(newState.equals(Timeline.TimelineState.IDLE) && !inSettings){
+                    setVisible(false);
+                    MercuryStoreUI.adrRepaintSubject.onNext(true);
+                }
+            }
+        });
     }
 }

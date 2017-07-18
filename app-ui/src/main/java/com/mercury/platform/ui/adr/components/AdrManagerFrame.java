@@ -3,7 +3,7 @@ package com.mercury.platform.ui.adr.components;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
-import com.mercury.platform.ui.adr.components.panel.AdrPagePanel;
+import com.mercury.platform.ui.adr.components.panel.page.AdrPagePanel;
 import com.mercury.platform.ui.adr.components.panel.ui.AdrTreeEntryCellRenderer;
 import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
 import com.mercury.platform.ui.adr.routing.AdrComponentOperations;

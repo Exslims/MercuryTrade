@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.adr.components.panel.group;
+package com.mercury.platform.ui.adr.components.panel;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
@@ -12,7 +12,7 @@ import javax.swing.*;
 public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extends JPanel implements HasUI {
     protected T descriptor;
     protected ComponentsFactory componentsFactory;
-    private boolean inSettings;
+    protected boolean inSettings;
     AdrComponentPanel(T descriptor, ComponentsFactory componentsFactory) {
         this.descriptor = descriptor;
         this.componentsFactory = componentsFactory;
@@ -23,9 +23,9 @@ public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extend
             }
         });
         MercuryStoreCore.hotKeySubject.subscribe(hotKey -> {
-//            if(this.descriptor.getHotKeyDescriptor().equals(hotKey) && !this.inSettings){
-//                this.onHotKeyPressed();
-//            }
+            if(this.descriptor.getHotKeyDescriptor().equals(hotKey) && !this.inSettings){
+                this.onHotKeyPressed();
+            }
         });
     }
     public void enableSettings() {

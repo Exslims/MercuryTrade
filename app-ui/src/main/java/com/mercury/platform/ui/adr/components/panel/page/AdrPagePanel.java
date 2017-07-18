@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.adr.components.panel;
+package com.mercury.platform.ui.adr.components.panel.page;
 
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.misc.AppThemeColor;

@@ -8,7 +8,9 @@ import com.mercury.platform.shared.config.descriptor.adr.*;
 import com.mercury.platform.ui.adr.components.AbstractAdrFrame;
 import com.mercury.platform.ui.adr.components.AdrManagerFrame;
 import com.mercury.platform.ui.adr.components.AdrGroupFrame;
-import com.mercury.platform.ui.adr.components.panel.*;
+import com.mercury.platform.ui.adr.components.panel.page.*;
+import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
+import com.mercury.platform.ui.adr.routing.AdrPageState;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.Getter;
 
@@ -55,6 +57,9 @@ public class AdrManager implements AsSubscriber{
         });
         this.adrManagerFrame.init();
         this.subscribe();
+
+        this.mainPanel.setPayload(null);
+        this.adrManagerFrame.setPage(this.mainPanel);
     }
     public void enableSettings(){
         this.state = AdrState.SETTINGS;
@@ -102,6 +107,10 @@ public class AdrManager implements AsSubscriber{
                    if(definition.getDescriptor() instanceof AdrGroupDescriptor){
                        this.groupSettingsPanel.setPayload((AdrGroupDescriptor) definition.getDescriptor());
                        this.adrManagerFrame.setPage(this.groupSettingsPanel);
+                   }
+                   if(definition.getDescriptor() instanceof AdrIconDescriptor){
+                       this.iconSettingsPanel.setPayload((AdrIconDescriptor) definition.getDescriptor());
+                       this.adrManagerFrame.setPage(this.iconSettingsPanel);
                    }
                    break;
                }

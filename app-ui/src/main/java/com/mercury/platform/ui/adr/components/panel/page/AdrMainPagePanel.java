@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.adr.components.panel;
+package com.mercury.platform.ui.adr.components.panel.page;
 
 
 import com.mercury.platform.shared.config.descriptor.adr.*;

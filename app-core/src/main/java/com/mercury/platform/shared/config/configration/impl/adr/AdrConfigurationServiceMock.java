@@ -4,6 +4,7 @@ package com.mercury.platform.shared.config.configration.impl.adr;
 import com.mercury.platform.shared.config.configration.AdrConfigurationService;
 import com.mercury.platform.shared.config.configration.BaseConfigurationService;
 import com.mercury.platform.shared.config.configration.ListConfigurationService;
+import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.*;
 
@@ -44,6 +45,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         icon1.setTitle("default");
         icon1.setSize(new Dimension(64, 64));
         icon1.setDuration(8f);
+        icon1.setHotKeyDescriptor(new HotKeyDescriptor(49,'1',false,false,false,false));
         icon1.setIconType(AdrIconType.SQUARE);
         icon1.setType(AdrComponentType.ICON);
         AdrIconDescriptor icon2 = new AdrIconDescriptor();
@@ -51,6 +53,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         icon2.setLocation(new Point(400, 400));
         icon2.setSize(new Dimension(64, 64));
         icon2.setDuration(8f);
+        icon2.setHotKeyDescriptor(new HotKeyDescriptor(50,'2',false,false,false,false));
         icon2.setIconType(AdrIconType.SQUARE);
         icon2.setType(AdrComponentType.ICON);
         AdrIconDescriptor icon3 = new AdrIconDescriptor();
@@ -58,6 +61,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         icon3.setLocation(new Point(400, 400));
         icon3.setSize(new Dimension(64, 64));
         icon3.setDuration(8f);
+        icon3.setHotKeyDescriptor(new HotKeyDescriptor(51,'3',false,true,false,false));
         icon3.setIconType(AdrIconType.ELIPSE);
         icon3.setType(AdrComponentType.ICON);
         groupDescriptor.setCells(Arrays.asList(icon1,icon2,icon3,icon2));
@@ -70,7 +74,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         groupDescriptor1.setDirection(AdrComponentDirection.VERTICAL);
         groupDescriptor1.setGroupType(AdrGroupType.DYNAMIC);
         groupDescriptor1.setCells(Arrays.asList(icon3,icon1,icon2,icon3));
-        profile.setContents(Arrays.stream(new AdrComponentDescriptor[] {groupDescriptor,this.getDefaultPBGroup(),groupDescriptor1, icon1,groupDescriptor,icon3,this.getDefaultProgressBar()}).collect(Collectors.toList()));
+        profile.setContents(Arrays.stream(new AdrComponentDescriptor[] {groupDescriptor,this.getDefaultPBGroup(),groupDescriptor1,this.getDefaultIcon(),this.getDefaultProgressBar()}).collect(Collectors.toList()));
         return Arrays.stream(new AdrProfileDescriptor[]{profile}).collect(Collectors.toList());
     }
 
@@ -94,6 +98,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         icon.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
         icon.setSize(new Dimension(64, 64));
         icon.setDuration(0f);
+        icon.setHotKeyDescriptor(new HotKeyDescriptor());
         icon.setIconType(AdrIconType.SQUARE);
         icon.setType(AdrComponentType.ICON);
         return icon;
