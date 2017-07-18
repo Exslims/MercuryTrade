@@ -28,6 +28,7 @@ public class AdrManager implements AsSubscriber{
     private AdrPagePanel<AdrComponentDescriptor> mainPanel;
     private AdrPagePanel<AdrIconDescriptor> iconSettingsPanel;
     private AdrPagePanel<AdrProgressBarDescriptor> progressBarSettingsPanel;
+    private AdrPagePanel<List<AdrProfileDescriptor>> profilesSettingsPanel;
     @Getter
     private AdrState state = AdrState.DEFAULT;
     public void load(){
@@ -35,6 +36,7 @@ public class AdrManager implements AsSubscriber{
         this.mainPanel = new AdrMainPagePanel();
         this.iconSettingsPanel = new AdrIconPagePanel();
         this.progressBarSettingsPanel = new AdrProgressBarPagePanel();
+        this.profilesSettingsPanel = new AdrProfilePagePanel();
 
         this.config = Configuration.get().adrConfiguration();
         this.selectedProfile = this.config.getEntities()
@@ -73,6 +75,7 @@ public class AdrManager implements AsSubscriber{
     }
 
     @Override
+    @SuppressWarnings("all")
     public void subscribe() {
         MercuryStoreUI.adrStateSubject.subscribe(definition -> {
             switch (definition.getState()){
@@ -82,6 +85,8 @@ public class AdrManager implements AsSubscriber{
                     break;
                 }
                 case PROFILE: {
+                    this.profilesSettingsPanel.setPayload((List<AdrProfileDescriptor>) definition.getPayload());
+                    this.adrManagerFrame.setPage(this.profilesSettingsPanel);
                     break;
                 }
             }

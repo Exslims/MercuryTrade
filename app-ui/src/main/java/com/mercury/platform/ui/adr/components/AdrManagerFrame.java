@@ -1,8 +1,10 @@
 package com.mercury.platform.ui.adr.components;
 
+import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.page.AdrPagePanel;
 import com.mercury.platform.ui.adr.components.panel.ui.AdrTreeEntryCellRenderer;
 import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
@@ -185,7 +187,13 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         root.setBorder(BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.MSG_HEADER_BORDER));
         root.setBackground(AppThemeColor.HEADER);
         root.add(this.componentsFactory.getTextLabel("Selected profile: " + this.selectedProfile.getProfileName()),BorderLayout.LINE_START);
-        root.add(this.componentsFactory.getIconButton("app/adr/profile_settings_icon.png",20,AppThemeColor.HEADER, TooltipConstants.ADR_PROFILE_SETTINGS),BorderLayout.LINE_END);
+        JButton openProfileSettings = this.componentsFactory.getIconButton("app/adr/profile_settings_icon.png", 20, AppThemeColor.HEADER, TooltipConstants.ADR_PROFILE_SETTINGS);
+        openProfileSettings.addActionListener(action -> {
+            this.componentsTree.clearSelection();
+            MercuryStoreUI.adrStateSubject.onNext(new AdrPageDefinition<>(AdrPageState.PROFILE,
+                    Configuration.get().adrConfiguration().getEntities()));
+        });
+        root.add(openProfileSettings,BorderLayout.LINE_END);
         return root;
     }
 }

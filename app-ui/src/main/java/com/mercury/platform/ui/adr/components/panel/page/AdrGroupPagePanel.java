@@ -33,7 +33,7 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
         JSlider opacitySlider = this.componentsFactory.getSlider(20,100, (int) this.payload.getOpacity() * 100);
         opacitySlider.setBackground(AppThemeColor.SLIDE_BG);
 
-        JComboBox groupType = this.componentsFactory.getComboBox(new String[]{"Static", "Dynamic"});
+        JComboBox groupType = this.componentsFactory.getComboBox(new String[]{"Dynamic","Static"});
         groupType.setSelectedIndex(this.payload.getGroupType().ordinal());
         JPanel iconSizePanel = this.getIconSizePanel();
         JComboBox groupDirection = this.componentsFactory.getComboBox(new String[]{"Horizontal", "Vertical"});
