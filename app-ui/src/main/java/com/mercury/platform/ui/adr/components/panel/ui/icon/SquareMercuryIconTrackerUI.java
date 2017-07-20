@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.adr.components.panel.ui.icon;
 
 
+import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.ui.adr.components.panel.ui.BasicMercuryIconTrackerUI;
 
 import javax.imageio.ImageIO;
@@ -13,8 +14,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class SquareMercuryIconTrackerUI extends BasicMercuryIconTrackerUI {
-    public SquareMercuryIconTrackerUI(String iconPath) {
-        super(iconPath);
+    public SquareMercuryIconTrackerUI(AdrIconDescriptor descriptor) {
+        super(descriptor);
     }
 
     @Override
@@ -45,7 +46,7 @@ public class SquareMercuryIconTrackerUI extends BasicMercuryIconTrackerUI {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.7f));
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
         try {
-            BufferedImage read = ImageIO.read(getClass().getClassLoader().getResource("app/adr/" +iconPath + ".png"));
+            BufferedImage read = ImageIO.read(getClass().getClassLoader().getResource("app/adr/" +descriptor.getIconPath() + ".png"));
             g2.drawImage(read,0,0,(int)sz,(int)sz,null);
         } catch (IOException e) {
             e.printStackTrace();

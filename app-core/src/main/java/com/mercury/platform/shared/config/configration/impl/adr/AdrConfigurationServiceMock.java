@@ -38,23 +38,14 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         groupDescriptor.setDirection(AdrComponentDirection.VERTICAL);
         groupDescriptor.setType(AdrComponentType.GROUP);
 
-        AdrIconDescriptor icon1 = new AdrIconDescriptor();
+        AdrIconDescriptor icon1 = this.getDefaultIcon();
         icon1.setIconPath("Arctic_Armour_skill_icon");
-        icon1.setLocation(new Point(400, 400));
-        icon1.setTitle("default");
-        icon1.setSize(new Dimension(64, 64));
-        icon1.setDuration(8f);
         icon1.setHotKeyDescriptor(new HotKeyDescriptor(49,'1',false,false,false,false));
-        icon1.setIconType(AdrIconType.SQUARE);
-        icon1.setType(AdrComponentType.ICON);
-        AdrIconDescriptor icon2 = new AdrIconDescriptor();
+        icon1.setDuration(5f);
+        AdrIconDescriptor icon2 = this.getDefaultIcon();
         icon2.setIconPath("Blood_Rage_skill_icon");
-        icon2.setLocation(new Point(400, 400));
-        icon2.setSize(new Dimension(64, 64));
         icon2.setDuration(8f);
         icon2.setHotKeyDescriptor(new HotKeyDescriptor(50,'2',false,false,false,false));
-        icon2.setIconType(AdrIconType.SQUARE);
-        icon2.setType(AdrComponentType.ICON);
         AdrIconDescriptor icon3 = new AdrIconDescriptor();
         icon3.setIconPath("Bismuth_Flask");
         icon3.setLocation(new Point(400, 400));
@@ -100,6 +91,9 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         icon.setHotKeyDescriptor(new HotKeyDescriptor());
         icon.setIconType(AdrIconType.SQUARE);
         icon.setType(AdrComponentType.ICON);
+        icon.setDefaultValueTextColor(new Color(255,250,213));
+        icon.setMediumValueTextColor(new Color(255,211,78));
+        icon.setLowValueTextColor(new Color(224,86,60));
         return icon;
     }
 
@@ -112,6 +106,9 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         progressBar.setSize(new Dimension(240, 64));
         progressBar.setDuration(0f);
         progressBar.setType(AdrComponentType.PROGRESS_BAR);
+        progressBar.setDefaultValueTextColor(new Color(255,250,213));
+        progressBar.setMediumValueTextColor(new Color(255,211,78));
+        progressBar.setLowValueTextColor(new Color(224,86,60));
         return progressBar;
     }
 

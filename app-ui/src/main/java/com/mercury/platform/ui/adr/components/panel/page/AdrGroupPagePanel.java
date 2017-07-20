@@ -20,6 +20,7 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
 
         JLabel titleLabel = this.componentsFactory.getTextLabel("Title:");
         JLabel opacityLabel = this.componentsFactory.getTextLabel("Opacity:");
+        JLabel locationLabel = this.componentsFactory.getTextLabel("Location:");
 
         JLabel groupTypeLabel = this.componentsFactory.getTextLabel("Group type:");
         String sizeText = "Icons size:";
@@ -35,11 +36,11 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
 
         JComboBox groupType = this.componentsFactory.getComboBox(new String[]{"Dynamic","Static"});
         groupType.setSelectedIndex(this.payload.getGroupType().ordinal());
-        JPanel iconSizePanel = this.getIconSizePanel();
+        JPanel iconSizePanel = this.adrComponentsFactory.getIconSizePanel(this.payload,this.fromGroup);
         JComboBox groupDirection = this.componentsFactory.getComboBox(new String[]{"Horizontal", "Vertical"});
         groupDirection.setSelectedIndex(this.payload.getDirection().ordinal());
 
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(2, 2,0,6));
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(3, 2,0,6));
         JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(3, 2,0,6));
         generalPanel.setBackground(AppThemeColor.SLIDE_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -54,6 +55,8 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
         generalPanel.add(titleField);
         generalPanel.add(opacityLabel);
         generalPanel.add(opacitySlider);
+        generalPanel.add(locationLabel);
+        generalPanel.add(this.adrComponentsFactory.getLocationPanel(this.payload,this.fromGroup));
 
 
         specPanel.add(groupTypeLabel);
@@ -66,18 +69,5 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
         container.add(this.componentsFactory.wrapToSlide(generalPanel));
         container.add(this.componentsFactory.wrapToSlide(specPanel));
         this.add(verticalContainer,BorderLayout.PAGE_START);
-    }
-    private JPanel getIconSizePanel(){
-        JPanel root = this.componentsFactory.getJPanel(new GridLayout(1, 4,4,0));
-        root.setBackground(AppThemeColor.SLIDE_BG);
-        JLabel widthLabel = this.componentsFactory.getTextLabel("Width:");
-        JLabel heightLabel = this.componentsFactory.getTextLabel("Height:");
-        JTextField widthField = this.componentsFactory.getIntegerTextField(10,1000,this.payload.getSize().width);
-        JTextField heightField = this.componentsFactory.getIntegerTextField(10,1000,this.payload.getSize().height);
-        root.add(widthLabel);
-        root.add(widthField);
-        root.add(heightLabel);
-        root.add(heightField);
-        return root;
     }
 }

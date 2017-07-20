@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.adr.components.panel.ui;
 
+import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,9 +15,10 @@ import java.text.DecimalFormat;
 public abstract class BasicMercuryIconTrackerUI extends BasicProgressBarUI{
     @Getter
     @Setter
-    protected String iconPath;
-    protected BasicMercuryIconTrackerUI(String iconPath){
-        this.iconPath = iconPath;
+    protected AdrIconDescriptor descriptor;
+
+    protected BasicMercuryIconTrackerUI(AdrIconDescriptor descriptor){
+        this.descriptor = descriptor;
     }
     @Override
     public Dimension getPreferredSize(JComponent c) {
@@ -38,11 +40,11 @@ public abstract class BasicMercuryIconTrackerUI extends BasicProgressBarUI{
                 x, y, width, height);
         Rectangle oldClip = g2.getClipBounds();
         if(value > 4f) {
-            g2.setColor(getSelectionForeground());
+            g2.setColor(this.descriptor.getDefaultValueTextColor());
         }else if(value < 4f && value > 1f) {
-            g2.setColor(AppThemeColor.TEXT_NICKNAME);
+            g2.setColor(this.descriptor.getMediumValueTextColor());
         }else {
-            g2.setColor(AppThemeColor.TEXT_IMPORTANT);
+            g2.setColor(this.descriptor.getLowValueTextColor());
         }
         SwingUtilities2.drawString(progressBar, g2, progressString,
                 renderLocation.x, renderLocation.y);

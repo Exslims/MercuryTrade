@@ -53,7 +53,7 @@ public class AdrIconCellPanel extends AdrComponentPanel<AdrIconDescriptor>{
         progressBar.setStringPainted(true);
         progressBar.setBorderPainted(false);
         progressBar.setBackground(AppThemeColor.TRANSPARENT);
-        progressBar.setUI(new SquareMercuryIconTrackerUI(descriptor.getIconPath()));
+        progressBar.setUI(new SquareMercuryIconTrackerUI(descriptor));
         progressBar.setValue(0);
         progressBar.setMaximum((int)(this.descriptor.getDuration() * 1000));
         this.add(progressBar,BorderLayout.CENTER);

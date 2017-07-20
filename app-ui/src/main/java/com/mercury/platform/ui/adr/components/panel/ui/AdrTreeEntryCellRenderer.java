@@ -13,8 +13,6 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class AdrTreeEntryCellRenderer implements TreeCellRenderer {
     private ComponentsFactory componentsFactory = new ComponentsFactory();

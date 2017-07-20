@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.adr.components.panel.page;
 
+import com.mercury.platform.ui.adr.components.AdrComponentsFactory;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import lombok.Getter;
@@ -13,6 +14,7 @@ public abstract class AdrPagePanel<T> extends JPanel {
     protected boolean fromGroup;
     protected T payload;
     protected ComponentsFactory componentsFactory = new ComponentsFactory();
+    protected AdrComponentsFactory adrComponentsFactory = new AdrComponentsFactory(this.componentsFactory);
     public AdrPagePanel() {
         this.setLayout(new BorderLayout());
         this.setBackground(AppThemeColor.FRAME);

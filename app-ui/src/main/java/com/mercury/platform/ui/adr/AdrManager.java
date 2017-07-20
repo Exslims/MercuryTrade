@@ -9,8 +9,6 @@ import com.mercury.platform.ui.adr.components.AbstractAdrFrame;
 import com.mercury.platform.ui.adr.components.AdrManagerFrame;
 import com.mercury.platform.ui.adr.components.AdrGroupFrame;
 import com.mercury.platform.ui.adr.components.panel.page.*;
-import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
-import com.mercury.platform.ui.adr.routing.AdrPageState;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.Getter;
 

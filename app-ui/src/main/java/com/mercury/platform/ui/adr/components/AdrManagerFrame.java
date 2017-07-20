@@ -4,7 +4,6 @@ import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
-import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.page.AdrPagePanel;
 import com.mercury.platform.ui.adr.components.panel.ui.AdrTreeEntryCellRenderer;
 import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
@@ -85,7 +84,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
                         new AdrComponentDefinition(
                                 (AdrComponentDescriptor)((DefaultMutableTreeNode) e.getPath().getLastPathComponent()).getUserObject(),
                                 AdrComponentOperations.EDIT_COMPONENT,
-                                false));
+                                e.getPath().getPathCount() == 3));
             }
         });
         this.componentsTree.addMouseListener(new MouseAdapter() {
