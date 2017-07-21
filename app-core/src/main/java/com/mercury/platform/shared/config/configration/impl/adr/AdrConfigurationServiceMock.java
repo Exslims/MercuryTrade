@@ -35,7 +35,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         groupDescriptor.setTitle("icon group");
         groupDescriptor.setGroupType(AdrGroupType.STATIC);
         groupDescriptor.setContentType(AdrGroupContentType.ICONS);
-        groupDescriptor.setDirection(AdrComponentDirection.VERTICAL);
+        groupDescriptor.setOrientation(AdrComponentOrientation.VERTICAL);
         groupDescriptor.setType(AdrComponentType.GROUP);
 
         AdrIconDescriptor icon1 = this.getDefaultIcon();
@@ -61,10 +61,10 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         groupDescriptor1.setLocation(new Point(500,500));
         groupDescriptor1.setType(AdrComponentType.GROUP);
         groupDescriptor1.setContentType(AdrGroupContentType.ICONS);
-        groupDescriptor1.setDirection(AdrComponentDirection.VERTICAL);
+        groupDescriptor1.setOrientation(AdrComponentOrientation.VERTICAL);
         groupDescriptor1.setGroupType(AdrGroupType.DYNAMIC);
         groupDescriptor1.setCells(Arrays.asList(icon3,icon1,icon2,icon3));
-        profile.setContents(Arrays.stream(new AdrComponentDescriptor[] {groupDescriptor,this.getDefaultPBGroup(),groupDescriptor1,this.getDefaultIcon(),this.getDefaultProgressBar()}).collect(Collectors.toList()));
+        profile.setContents(Arrays.stream(new AdrComponentDescriptor[] {groupDescriptor,groupDescriptor1}).collect(Collectors.toList()));
         return Arrays.stream(new AdrProfileDescriptor[]{profile}).collect(Collectors.toList());
     }
 
@@ -140,7 +140,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         groupDescriptor.setTitle("group");
         groupDescriptor.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
         groupDescriptor.setType(AdrComponentType.GROUP);
-        groupDescriptor.setDirection(AdrComponentDirection.VERTICAL);
+        groupDescriptor.setOrientation(AdrComponentOrientation.VERTICAL);
         groupDescriptor.setGroupType(AdrGroupType.STATIC);
         return groupDescriptor;
     }

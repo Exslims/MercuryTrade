@@ -1,8 +1,11 @@
 package com.mercury.platform.ui.adr.components;
 
+import com.mercury.platform.shared.config.descriptor.adr.AdrComponentOrientation;
 import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrGroupType;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
+import com.mercury.platform.ui.adr.AdrFrameMagnet;
 import com.mercury.platform.ui.adr.components.panel.AdrComponentPanel;
 import com.mercury.platform.ui.adr.components.panel.AdrIconCellPanel;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -17,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class AdrGroupFrame extends AbstractAdrFrame {
+public class AdrGroupFrame extends AbstractAdrFrame<AdrGroupDescriptor> {
     private List<AdrComponentPanel> cells;
 
     private int x;
@@ -27,7 +30,7 @@ public class AdrGroupFrame extends AbstractAdrFrame {
     private DraggedFrameMotionListener motionListener;
     private MouseAdapter mouseOverListener;
 
-
+    private JPanel cellsPanel;
     public AdrGroupFrame(@NonNull AdrGroupDescriptor descriptor) {
         super(descriptor);
         this.cells = new ArrayList<>();
@@ -42,14 +45,19 @@ public class AdrGroupFrame extends AbstractAdrFrame {
         this.setLocation(descriptor.getLocation());
         this.setOpacity(descriptor.getOpacity());
         this.componentsFactory.setScale(descriptor.getScale());
-        this.add(getCellsPanel(),BorderLayout.CENTER);
+        this.cellsPanel = this.getCellsPanel();
+        this.add(this.cellsPanel,BorderLayout.CENTER);
         this.pack();
     }
 
     private JPanel getCellsPanel(){
-        int cellCount = ((AdrGroupDescriptor) descriptor).getCells().size();
-        JPanel root = componentsFactory.getTransparentPanel(new GridLayout(cellCount, 1));
-        ((AdrGroupDescriptor)descriptor).getCells().forEach(cellDescriptor -> {
+        int cellCount = descriptor.getCells().size();
+        GridLayout layout = new GridLayout(cellCount, 1);
+        if(this.descriptor.getOrientation().equals(AdrComponentOrientation.HORIZONTAL)){
+            layout = new GridLayout(1,cellCount);
+        }
+        JPanel root = componentsFactory.getTransparentPanel(layout);
+        descriptor.getCells().forEach(cellDescriptor -> {
             switch (cellDescriptor.getType()){
                 case ICON: {
                     AdrIconCellPanel adrIconCellPanel = new AdrIconCellPanel((AdrIconDescriptor) cellDescriptor,this.componentsFactory);
@@ -88,6 +96,31 @@ public class AdrGroupFrame extends AbstractAdrFrame {
         MercuryStoreUI.adrRepaintSubject.subscribe(state -> {
             this.repaint();
             this.pack();
+        });
+        MercuryStoreUI.adrReloadSubject.subscribe(descriptor -> {
+            if(descriptor.equals(this.descriptor)){
+                int cellCount = this.descriptor.getCells().size();
+                switch (this.descriptor.getOrientation()){
+                    case VERTICAL:{
+                        if(this.descriptor.getGroupType().equals(AdrGroupType.STATIC)) {
+                            this.cellsPanel.setLayout(new GridLayout(cellCount, 1));
+                        }else {
+                            this.cellsPanel.setLayout(new BoxLayout(this.cellsPanel,BoxLayout.Y_AXIS));
+                        }
+                        break;
+                    }
+                    case HORIZONTAL:{
+                        if(this.descriptor.getGroupType().equals(AdrGroupType.STATIC)) {
+                            this.cellsPanel.setLayout(new GridLayout(1,cellCount));
+                        }else {
+                            this.cellsPanel.setLayout(new BoxLayout(this.cellsPanel,BoxLayout.X_AXIS));
+                        }
+                        break;
+                    }
+                }
+                this.repaint();
+                this.pack();
+            }
         });
     }
 
@@ -137,7 +170,9 @@ public class AdrGroupFrame extends AbstractAdrFrame {
         public void mouseDragged(MouseEvent e) {
             if(SwingUtilities.isLeftMouseButton(e)) {
                 e.translatePoint(AdrGroupFrame.this.getLocation().x - x, AdrGroupFrame.this.getLocation().y - y);
-                AdrGroupFrame.this.setLocation(e.getPoint());
+                Point point = e.getPoint();
+//                AdrFrameMagnet.INSTANCE.obtainApproxFrameLocation(point,descriptor);
+                AdrGroupFrame.this.setLocation(point);
             }
         }
     }

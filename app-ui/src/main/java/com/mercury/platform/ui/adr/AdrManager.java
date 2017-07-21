@@ -58,6 +58,9 @@ public class AdrManager implements AsSubscriber{
         this.adrManagerFrame.init();
         this.subscribe();
 
+        AdrFrameMagnet.INSTANCE.setDescriptors(this.selectedProfile.getContents());
+        AdrFrameMagnet.INSTANCE.setDelta(10);
+
         this.mainPanel.setPayload(null);
         this.adrManagerFrame.setPage(this.mainPanel);
     }

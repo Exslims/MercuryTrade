@@ -1,13 +1,18 @@
 package com.mercury.platform.ui.adr.components.panel.page;
 
+import com.mercury.platform.shared.config.descriptor.adr.AdrComponentOrientation;
 import com.mercury.platform.shared.config.descriptor.adr.AdrGroupContentType;
 import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrGroupType;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
@@ -36,10 +41,17 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
 
         JComboBox groupType = this.componentsFactory.getComboBox(new String[]{"Dynamic","Static"});
         groupType.setSelectedIndex(this.payload.getGroupType().ordinal());
+        groupType.addItemListener(e -> {
+            this.payload.setGroupType(AdrGroupType.valueOfPretty((String) groupType.getSelectedItem()));
+            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
+        });
         JPanel iconSizePanel = this.adrComponentsFactory.getIconSizePanel(this.payload,this.fromGroup);
-        JComboBox groupDirection = this.componentsFactory.getComboBox(new String[]{"Horizontal", "Vertical"});
-        groupDirection.setSelectedIndex(this.payload.getDirection().ordinal());
-
+        JComboBox groupOrientation = this.componentsFactory.getComboBox(new String[]{"Horizontal", "Vertical"});
+        groupOrientation.setSelectedIndex(this.payload.getOrientation().ordinal());
+        groupOrientation.addItemListener(e -> {
+            this.payload.setOrientation(AdrComponentOrientation.valueOfPretty((String) groupOrientation.getSelectedItem()));
+            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
+        });
         JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(3, 2,0,6));
         JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(3, 2,0,6));
         generalPanel.setBackground(AppThemeColor.SLIDE_BG);
@@ -62,7 +74,7 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
         specPanel.add(groupTypeLabel);
         specPanel.add(groupType);
         specPanel.add(groupDirectionLabel);
-        specPanel.add(groupDirection);
+        specPanel.add(groupOrientation);
         specPanel.add(sizeLabel);
         specPanel.add(iconSizePanel);
 

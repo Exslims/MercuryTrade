@@ -21,5 +21,5 @@ public class AdrComponentDescriptor {
     private boolean visible = true;
     private float scale = 1f;
     private float opacity = 1f;
-    private AdrComponentDirection direction;
+    private AdrComponentOrientation orientation;
 }
