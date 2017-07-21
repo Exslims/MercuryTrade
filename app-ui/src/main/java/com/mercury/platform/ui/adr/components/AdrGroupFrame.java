@@ -87,6 +87,7 @@ public class AdrGroupFrame extends AbstractAdrFrame {
     public void subscribe() {
         MercuryStoreUI.adrRepaintSubject.subscribe(state -> {
             this.repaint();
+            this.pack();
         });
     }
 

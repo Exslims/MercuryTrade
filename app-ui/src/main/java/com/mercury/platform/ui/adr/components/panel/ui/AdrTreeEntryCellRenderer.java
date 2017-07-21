@@ -49,7 +49,7 @@ public class AdrTreeEntryCellRenderer implements TreeCellRenderer {
             case ICON: {
                 AdrIconDescriptor iconDescriptor = (AdrIconDescriptor) ((DefaultMutableTreeNode)value).getUserObject();
                 label.setPreferredSize(new Dimension(150, 48));
-                label.setIcon(componentsFactory.getIcon("app/adr/" + iconDescriptor.getIconPath() + ".png",48));
+                label.setIcon(componentsFactory.getIcon("app/adr/icons/" + iconDescriptor.getIconPath() + ".png",48));
                 label.setBorder(BorderFactory.createEmptyBorder());
                 break;
             }

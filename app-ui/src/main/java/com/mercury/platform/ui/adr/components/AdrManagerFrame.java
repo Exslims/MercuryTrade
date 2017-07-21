@@ -44,6 +44,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         UIManager.getLookAndFeelDefaults().put("Menu.arrowIcon", null);
         UIManager.put("MenuItem.background", AppThemeColor.FRAME);
         UIManager.put("MenuItem.opaque", true);
+        this.subscribe();
     }
 
     @Override
@@ -132,6 +133,9 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
 
     @Override
     public void subscribe() {
+        MercuryStoreUI.adrReloadSubject.subscribe(state -> {
+            this.componentsTree.updateUI();
+        });
     }
 
     @Override

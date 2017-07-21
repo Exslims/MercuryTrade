@@ -46,6 +46,9 @@ public class AdrIconCellPanel extends AdrComponentPanel<AdrIconDescriptor>{
 
     @Override
     public void createUI() {
+        if(this.progressTl != null) {
+            this.progressTl.cancel();
+        }
         JProgressBar progressBar = new JProgressBar();
         progressBar.setBorder(null);
         progressBar.setFont(componentsFactory.getFont(FontStyle.BOLD,this.descriptor.getFontSize()));
@@ -70,5 +73,9 @@ public class AdrIconCellPanel extends AdrComponentPanel<AdrIconDescriptor>{
                 }
             }
         });
+        MercuryStoreUI.adrRepaintSubject.onNext(true);
+        if(this.inSettings){
+            this.enableSettings();
+        }
     }
 }

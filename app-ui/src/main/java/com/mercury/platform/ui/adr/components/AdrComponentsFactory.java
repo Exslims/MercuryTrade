@@ -7,23 +7,29 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDes
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
+import com.mercury.platform.ui.dialog.IconSelectDialog;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
-import javax.swing.plaf.synth.SynthColorChooserUI;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AdrComponentsFactory {
     private ComponentsFactory componentsFactory;
     private boolean allowed;
+    private IconSelectDialog iconSelectDialog;
 
     public AdrComponentsFactory(ComponentsFactory componentsFactory) {
         this.componentsFactory = componentsFactory;
+        this.iconSelectDialog = new IconSelectDialog(this.getIconBundle());
     }
 
     public JPanel getIconSizePanel(AdrComponentDescriptor descriptor, boolean fromGroup){
@@ -138,9 +144,23 @@ public class AdrComponentsFactory {
     public JPanel getIconSelectPanel(AdrDurationComponentDescriptor descriptor){
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setBackground(AppThemeColor.SLIDE_BG);
-        root.add(this.componentsFactory.getIconLabel("app/adr/"+descriptor.getIconPath()+".png",24),BorderLayout.LINE_START);
-        root.add(this.componentsFactory.getTextLabel(descriptor.getIconPath()),BorderLayout.CENTER);
+        JLabel iconLabel = this.componentsFactory.getIconLabel("app/adr/icons/" + descriptor.getIconPath() + ".png", 26);
+        JLabel iconPathLabel = this.componentsFactory.getTextLabel(descriptor.getIconPath());
+        root.add(iconLabel, BorderLayout.LINE_START);
+        root.add(iconPathLabel,BorderLayout.CENTER);
         JButton selectIcon = this.componentsFactory.getBorderedButton("Select");
+        selectIcon.addActionListener(action -> {
+            this.iconSelectDialog.setSelectedIcon(descriptor.getIconPath());
+            this.iconSelectDialog.setCallback(selectedIconPath -> {
+                descriptor.setIconPath(selectedIconPath);
+                iconLabel.setIcon(this.componentsFactory.getIcon("app/adr/icons/" + descriptor.getIconPath() + ".png",26));
+                iconPathLabel.setText(descriptor.getIconPath());
+
+                MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+            });
+            this.iconSelectDialog.setLocationRelativeTo(root);
+            this.iconSelectDialog.setVisible(true);
+        });
         root.add(selectIcon,BorderLayout.LINE_END);
         return root;
     }
@@ -246,6 +266,28 @@ public class AdrComponentsFactory {
         if(descriptor.isControlPressed())
             text = "Ctrl + " + text;
         return text;
+    }
+
+    private String[] getIconBundle() {
+        return new String[] {
+                "Arctic_Armour_skill_icon",
+                "Bismuth_Flask",
+                "Bleeding_Immunity",
+                "Blood_Rage_skill_icon",
+                "Chill_And_Freeze_Immunity",
+                "default_icon",
+                "Diamond_Flask",
+                "Granite_Flask",
+                "Increase_Movement_Speed",
+                "Jade_Flask",
+                "Phase_Run_skill_icon",
+                "Quicksilver_Flask",
+                "Ruby_Flask",
+                "Silver_Flask",
+                "Stibnite_Flask",
+                "Topaz_Flask",
+                "Witchfire_Brew"
+        };
     }
 
     private class ColorChooserMouseListener extends MouseAdapter {
