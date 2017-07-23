@@ -388,7 +388,9 @@ public class ComponentsFactory{
 
     public JCheckBox getCheckBox(String tooltip){
         JCheckBox checkBox = new JCheckBox();
+        checkBox.setFocusPainted(false);
         checkBox.setBackground(AppThemeColor.TRANSPARENT);
+        checkBox.setUI(new WindowsButtonUI());
         checkBox.addMouseListener(new TooltipMouseListener(tooltip));
         return checkBox;
     }
@@ -398,6 +400,11 @@ public class ComponentsFactory{
         checkBox.setUI(new WindowsButtonUI());
         checkBox.setFocusPainted(false);
         checkBox.setBackground(AppThemeColor.TRANSPARENT);
+        return checkBox;
+    }
+    public JCheckBox getCheckBox(boolean value,String tooltip){
+        JCheckBox checkBox = this.getCheckBox(tooltip);
+        checkBox.setSelected(value);
         return checkBox;
     }
     public Font getFontByLang(String text,FontStyle style){

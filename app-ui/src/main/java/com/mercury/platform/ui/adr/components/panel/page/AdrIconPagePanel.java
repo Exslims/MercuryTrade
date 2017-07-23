@@ -2,13 +2,20 @@ package com.mercury.platform.ui.adr.components.panel.page;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconType;
+import com.mercury.platform.ui.adr.validator.DoubleFieldValidator;
+import com.mercury.platform.ui.adr.validator.DoubleFormatFieldValidator;
+import com.mercury.platform.ui.adr.validator.IntegerFieldValidator;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Arrays;
@@ -42,15 +49,22 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
 
         JLabel hotKeyLabel = this.componentsFactory.getTextLabel("HotKey:");
         JLabel iconLabel = this.componentsFactory.getTextLabel("Icon:");
-        JLabel iconTypeLabel = this.componentsFactory.getTextLabel("Icon type:");
-        JLabel textEnableLabel = this.componentsFactory.getTextLabel("Text enable:");
+        JLabel textFormatLabel = this.componentsFactory.getTextLabel("Text format:");
         JLabel fontSizeLabel = this.componentsFactory.getTextLabel("Font size:");
         JLabel durationLabel = this.componentsFactory.getTextLabel("Duration:");
-        JLabel colorLabel = this.componentsFactory.getTextLabel("Text color:");
+        JLabel textColorLabel = this.componentsFactory.getTextLabel("Text color:");
+        JLabel borderColorLabel = this.componentsFactory.getTextLabel("Border color:");
         JLabel invertLabel = this.componentsFactory.getTextLabel("Invert tracker:");
         JLabel animationMaskLabel = this.componentsFactory.getTextLabel("Animation mask:");
 
         JTextField titleField = this.componentsFactory.getTextField(this.payload.getTitle(), FontStyle.REGULAR,18);
+        titleField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                payload.setTitle(titleField.getText());
+                MercuryStoreUI.adrReloadSubject.onNext(payload);
+            }
+        });
         JSlider opacitySlider = this.componentsFactory.getSlider(20,100, (int) (this.payload.getOpacity() * 100));
         opacitySlider.setBackground(AppThemeColor.SLIDE_BG);
         if(this.fromGroup){
@@ -60,18 +74,32 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         JButton hotKeyButton = this.adrComponentsFactory.getHotKeyButton(this.payload.getHotKeyDescriptor());
 
         JPanel iconSelectPanel = this.adrComponentsFactory.getIconSelectPanel(this.payload);
-        JComboBox iconTypeBox = this.componentsFactory.getComboBox(new String[]{"Square", "Ellipse"});
-        iconTypeBox.setSelectedIndex(this.payload.getIconType().ordinal());
-        iconTypeBox.addItemListener(e -> {
-            this.payload.setIconType(AdrIconType.valueOfPretty((String) iconTypeBox.getSelectedItem()));
+        JTextField fontSizeField = this.adrComponentsFactory.getSmartField(this.payload.getFontSize(), new IntegerFieldValidator(4, 1000), value -> {
+            this.payload.setFontSize(value);
             MercuryStoreUI.adrReloadSubject.onNext(this.payload);
         });
-        JCheckBox textEnableBox = this.componentsFactory.getCheckBox(this.payload.isTextEnable());
-        JFormattedTextField fontSizeField = this.componentsFactory.getIntegerTextField(10, 200, (int) this.payload.getFontSize());
-        JFormattedTextField durationField = this.componentsFactory.getIntegerTextField(1, 200, (int) this.payload.getDuration());
+        JTextField durationField = this.adrComponentsFactory.getSmartField(this.payload.getDuration(), new DoubleFieldValidator(0.1, 1000.0), value -> {
+            this.payload.setDuration(value);
+            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
+        });
+        JTextField textFormatField = this.adrComponentsFactory.getSmartField(this.payload.getTextFormat(), new DoubleFormatFieldValidator(), value -> {
+            this.payload.setTextFormat(value);
+        });
         JCheckBox invertBox = this.componentsFactory.getCheckBox(this.payload.isInvert());
         JCheckBox animationBox = this.componentsFactory.getCheckBox(this.payload.isAnimationEnable());
+        animationBox.addActionListener(e ->
+                this.payload.setAnimationEnable(animationBox.isSelected()));
         JPanel textColorPanel = this.adrComponentsFactory.getTextColorPanel(this.payload);
+        JPanel textPanel = this.componentsFactory.getJPanel(new BorderLayout());
+        textPanel.setBackground(AppThemeColor.SLIDE_BG);
+        JCheckBox textEnableBox = this.componentsFactory.getCheckBox(this.payload.isTextEnable(),"Is text enable?");
+        textEnableBox.addActionListener(state -> this.payload.setTextEnable(textEnableBox.isSelected()));
+        textPanel.add(textEnableBox,BorderLayout.LINE_START);
+        textPanel.add(textColorPanel,BorderLayout.CENTER);
+
+        JPanel borderColorPanel = this.adrComponentsFactory.getBorderColorPanel(
+                this.payload,
+                color -> this.payload.setBorderColor(color));
 
         JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(3, 2,0,6));
         JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(10, 2,0,6));
@@ -98,16 +126,16 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         specPanel.add(iconSizePanel);
         specPanel.add(iconLabel);
         specPanel.add(iconSelectPanel);
-        specPanel.add(iconTypeLabel);
-        specPanel.add(iconTypeBox);
-        specPanel.add(fontSizeLabel);
-        specPanel.add(fontSizeField);
         specPanel.add(durationLabel);
         specPanel.add(durationField);
-        specPanel.add(colorLabel);
-        specPanel.add(textColorPanel);
-        specPanel.add(textEnableLabel);
-        specPanel.add(textEnableBox);
+        specPanel.add(textColorLabel);
+        specPanel.add(textPanel);
+        specPanel.add(fontSizeLabel);
+        specPanel.add(fontSizeField);
+        specPanel.add(textFormatLabel);
+        specPanel.add(textFormatField);
+        specPanel.add(borderColorLabel);
+        specPanel.add(borderColorPanel);
         specPanel.add(invertLabel);
         specPanel.add(invertBox);
         specPanel.add(animationMaskLabel);
@@ -118,4 +146,5 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
 
         this.add(verticalContainer,BorderLayout.CENTER);
     }
+
 }

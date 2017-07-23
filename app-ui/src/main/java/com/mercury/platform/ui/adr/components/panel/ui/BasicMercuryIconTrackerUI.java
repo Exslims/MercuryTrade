@@ -31,29 +31,44 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
         return dimension;
     }
 
-    protected void paintString(Graphics g, int x, int y, int width, int height, int amountFull, Insets b) {
-        float value = tracker.getValue() / 1000f;
+    protected void paintString(Graphics g, int x, int y, int width, int height, int amountFull) {
+        if(tracker.isStringPainted()) {
+            float value = tracker.getValue() / 1000f;
 
-        Graphics2D g2 = (Graphics2D)g;
-        DecimalFormat decimalFormat = new DecimalFormat("0.0");
-        String progressString = String.valueOf(decimalFormat.format(value));
-        g2.setFont(tracker.getFont());
-        Point renderLocation = getStringPlacement(g2, progressString,
-                x, y, width, height);
-        Rectangle oldClip = g2.getClipBounds();
-        if(value > 4f) {
-            g2.setColor(this.descriptor.getDefaultValueTextColor());
-        }else if(value < 4f && value > 1f) {
-            g2.setColor(this.descriptor.getMediumValueTextColor());
-        }else {
-            g2.setColor(this.descriptor.getLowValueTextColor());
+            Graphics2D g2 = (Graphics2D) g;
+            DecimalFormat decimalFormat = new DecimalFormat(descriptor.getTextFormat());
+            String progressString = String.valueOf(decimalFormat.format(value));
+            g2.setFont(tracker.getFont());
+            Point renderLocation = getStringPlacement(g2, progressString,
+                    x, y, width, height);
+            Rectangle oldClip = g2.getClipBounds();
+            if (value >= descriptor.getDefaultValueTextThreshold()) {
+                g2.setColor(this.descriptor.getDefaultValueTextColor());
+            } else if (value >= this.descriptor.getMediumValueTextThreshold()) {
+                g2.setColor(this.descriptor.getMediumValueTextColor());
+            } else {
+                g2.setColor(this.descriptor.getLowValueTextColor());
+            }
+            SwingUtilities2.drawString(tracker, g2, progressString,
+                    renderLocation.x, renderLocation.y);
+            g2.clipRect(width, y, amountFull, height);
+            SwingUtilities2.drawString(tracker, g2, progressString,
+                    renderLocation.x, renderLocation.y);
+            g2.setClip(oldClip);
         }
-        SwingUtilities2.drawString(tracker, g2, progressString,
-                renderLocation.x, renderLocation.y);
-        g2.clipRect(width, y, amountFull, height);
-        SwingUtilities2.drawString(tracker, g2, progressString,
-                renderLocation.x, renderLocation.y);
-        g2.setClip(oldClip);
+    }
+    protected void paintBorder(Graphics g){
+        int thickness = descriptor.getThickness();
+        if(thickness > 0) {
+            Graphics2D g2 = (Graphics2D) g;
+            Stroke oldStroke = g2.getStroke();
+            if(!descriptor.isBindToTextColor()) {
+                g2.setPaint(this.descriptor.getBorderColor());
+            }
+            g2.setStroke(new BasicStroke(thickness));
+            g2.drawRect(0, 0, tracker.getWidth() - thickness, tracker.getHeight() - thickness);
+            g2.setStroke(oldStroke);
+        }
     }
 
     protected Point getStringPlacement(Graphics g, String progressString,

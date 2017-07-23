@@ -119,6 +119,11 @@ public class AdrManager implements AsSubscriber{
                        this.iconSettingsPanel.setPayload((AdrIconDescriptor) definition.getDescriptor());
                        this.adrManagerFrame.setPage(this.iconSettingsPanel);
                    }
+                   if(definition.getDescriptor() instanceof AdrProgressBarDescriptor){
+                       this.progressBarSettingsPanel.setFromGroup(definition.isFromGroup());
+                       this.progressBarSettingsPanel.setPayload((AdrProgressBarDescriptor) definition.getDescriptor());
+                       this.adrManagerFrame.setPage(this.progressBarSettingsPanel);
+                   }
                    break;
                }
                case REMOVE_COMPONENT: {

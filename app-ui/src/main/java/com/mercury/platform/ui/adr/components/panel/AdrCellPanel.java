@@ -54,24 +54,6 @@ public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescript
             this.progressTl.cancel();
         }
         MercuryTracker tracker = new MercuryTracker(this.descriptor);
-        tracker.setValue(0);
-        tracker.setMaximum((int) (this.descriptor.getDuration() * 1000));
-        if (descriptor instanceof AdrIconDescriptor) {
-            switch (((AdrIconDescriptor) descriptor).getIconType()) {
-                case SQUARE: {
-                    tracker.setUI(new SquareIconTrackerUI((AdrIconDescriptor) this.descriptor, tracker));
-                    break;
-                }
-                case ELLIPSE: {
-                    tracker.setUI(new EllipseIconTrackerUI((AdrIconDescriptor) this.descriptor, tracker));
-                    break;
-                }
-            }
-        } else { //pb
-            tracker.setUI(new ProgressBarTrackerUI((AdrProgressBarDescriptor) this.descriptor, tracker));
-        }
-        tracker.setFont(componentsFactory.getFont(FontStyle.BOLD, this.descriptor.getFontSize()));
-        tracker.setForeground(AppThemeColor.TEXT_DEFAULT);
         this.add(tracker, BorderLayout.CENTER);
 
         this.progressTl = new Timeline(tracker);

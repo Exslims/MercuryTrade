@@ -41,19 +41,15 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         AdrIconDescriptor icon1 = this.getDefaultIcon();
         icon1.setIconPath("Arctic_Armour_skill_icon");
         icon1.setHotKeyDescriptor(new HotKeyDescriptor(49,'1',false,false,false,false));
-        icon1.setDuration(5f);
+        icon1.setDuration(3d);
         AdrIconDescriptor icon2 = this.getDefaultIcon();
         icon2.setIconPath("Blood_Rage_skill_icon");
-        icon2.setDuration(8f);
+        icon2.setDuration(5d);
         icon2.setHotKeyDescriptor(new HotKeyDescriptor(50,'2',false,false,false,false));
-        AdrIconDescriptor icon3 = new AdrIconDescriptor();
+        AdrIconDescriptor icon3 = this.getDefaultIcon();
         icon3.setIconPath("Bismuth_Flask");
-        icon3.setLocation(new Point(400, 400));
-        icon3.setSize(new Dimension(64, 64));
-        icon3.setDuration(8f);
+        icon3.setDuration(8d);
         icon3.setHotKeyDescriptor(new HotKeyDescriptor(51,'3',false,true,false,false));
-        icon3.setIconType(AdrIconType.ELLIPSE);
-        icon3.setType(AdrComponentType.ICON);
         groupDescriptor.setCells(Arrays.asList(icon1,icon2,icon3,icon2));
 
         AdrGroupDescriptor groupDescriptor1 = new AdrGroupDescriptor();
@@ -87,7 +83,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         icon.setIconPath("default_icon");
         icon.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
         icon.setSize(new Dimension(64, 64));
-        icon.setDuration(0f);
+        icon.setDuration(0d);
         icon.setHotKeyDescriptor(new HotKeyDescriptor());
         icon.setIconType(AdrIconType.SQUARE);
         icon.setOrientation(AdrComponentOrientation.HORIZONTAL);
@@ -95,6 +91,11 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         icon.setDefaultValueTextColor(new Color(255,250,213));
         icon.setMediumValueTextColor(new Color(255,211,78));
         icon.setLowValueTextColor(new Color(224,86,60));
+        icon.setBorderColor(new Color(16,110,99));
+        icon.setLowValueTextThreshold(1.0);
+        icon.setMediumValueTextThreshold(3.0);
+        icon.setDefaultValueTextThreshold(5.0);
+        icon.setTextFormat("0.0");
         return icon;
     }
 
@@ -102,18 +103,24 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
     public AdrProgressBarDescriptor getDefaultProgressBar() {
         AdrProgressBarDescriptor progressBar = new AdrProgressBarDescriptor();
         progressBar.setTitle("progress bar");
-        progressBar.setIconPath("default_progress_bar_icon");
+        progressBar.setIconPath("Arctic_Armour_skill_icon");
         progressBar.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
         progressBar.setSize(new Dimension(240, 30));
-        progressBar.setDuration(6.56f);
+        progressBar.setDuration(6.56d);
         progressBar.setOrientation(AdrComponentOrientation.HORIZONTAL);
-        progressBar.setHotKeyDescriptor(new HotKeyDescriptor());
+        progressBar.setHotKeyDescriptor(new HotKeyDescriptor(50,'2',false,false,false,false));
         progressBar.setType(AdrComponentType.PROGRESS_BAR);
         progressBar.setDefaultValueTextColor(new Color(255,250,213));
         progressBar.setMediumValueTextColor(new Color(255,211,78));
         progressBar.setLowValueTextColor(new Color(224,86,60));
         progressBar.setBackgroundColor(new Color(59, 59, 59));
         progressBar.setForegroundColor(new Color(16,91,99));
+        progressBar.setBorderColor(new Color(16,110,99));
+        progressBar.setLowValueTextThreshold(1.0);
+        progressBar.setMediumValueTextThreshold(3.0);
+        progressBar.setDefaultValueTextThreshold(5.0);
+        progressBar.setThickness(1);
+        progressBar.setTextFormat("0.0");
         return progressBar;
     }
 
@@ -133,9 +140,11 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
     public AdrGroupDescriptor getDefaultPBGroup() {
         AdrGroupDescriptor groupDescriptor = this.getDefaultGroup();
         groupDescriptor.setTitle("progress bar group");
-        groupDescriptor.setSize(new Dimension(240,64));
+        groupDescriptor.setSize(new Dimension(240,30));
         groupDescriptor.setContentType(AdrGroupContentType.PROGRESS_BARS);
         List<AdrComponentDescriptor> pbList = new ArrayList<>();
+        pbList.add(this.getDefaultProgressBar());
+        pbList.add(this.getDefaultProgressBar());
         pbList.add(this.getDefaultProgressBar());
         groupDescriptor.setCells(pbList);
         return groupDescriptor;

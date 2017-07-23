@@ -136,6 +136,9 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         MercuryStoreUI.adrReloadSubject.subscribe(state -> {
             this.componentsTree.updateUI();
         });
+        MercuryStoreUI.adrUpdateTree.subscribe(state -> {
+            this.componentsTree.updateUI();
+        });
     }
 
     @Override

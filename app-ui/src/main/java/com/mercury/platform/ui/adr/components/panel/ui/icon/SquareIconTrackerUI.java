@@ -21,7 +21,6 @@ public class SquareIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescri
 
     @Override
     public void paint(Graphics g, JComponent c) {
-        Insets b = tracker.getInsets();
         int barRectWidth  = tracker.getWidth();
         int barRectHeight = tracker.getHeight();
         if (barRectWidth <= 0 || barRectHeight <= 0) {
@@ -33,18 +32,7 @@ public class SquareIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescri
         g.setColor(tracker.getBackground());
         g2.fillRect(0,0,barRectWidth,barRectHeight);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        double degree = 360 * (1f - tracker.getPercentComplete());
         double sz = Math.max(barRectWidth, barRectHeight);
-        Shape outer  = new Rectangle2D.Double(0, 0, sz, sz);
-        Shape sector = new Arc2D.Double(-sz, -sz, sz *3, sz *3, 90 - degree, degree, Arc2D.PIE);
-
-        Area foreground = new Area(sector);
-        Area background = new Area(outer);
-
-        foreground.intersect(background);
-
-        g2.setPaint(new Color(59, 59, 59));
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.7f));
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
         try {
             BufferedImage read = ImageIO.read(getClass().getClassLoader().getResource("app/adr/icons/" +descriptor.getIconPath() + ".png"));
@@ -52,11 +40,23 @@ public class SquareIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescri
         } catch (IOException e) {
             e.printStackTrace();
         }
+        if(descriptor.isAnimationEnable()) {
+            double degree = 360 * (1f - tracker.getPercentComplete());
+            Shape outer = new Rectangle2D.Double(0, 0, sz, sz);
+            Shape sector = new Arc2D.Double(-sz, -sz, sz * 3, sz * 3, 90 - degree, degree, Arc2D.PIE);
 
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.7f));
-        g2.fill(foreground);
+            Area foreground = new Area(sector);
+            Area background = new Area(outer);
+
+            foreground.intersect(background);
+
+            g2.setPaint(new Color(59, 59, 59));
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+            g2.fill(foreground);
+        }
 
         g2.dispose();
-        this.paintString(g, 0, 0, barRectWidth, barRectHeight, 0, b);
+        this.paintString(g, 0, 0, barRectWidth, barRectHeight, 0);
+        this.paintBorder(g);
     }
 }

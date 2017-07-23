@@ -46,10 +46,13 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
         });
         JSlider opacitySlider = this.componentsFactory.getSlider(20,100, (int) (this.payload.getOpacity() * 100));
         opacitySlider.setBackground(AppThemeColor.SLIDE_BG);
-        opacitySlider.addChangeListener(e -> {
-            this.payload.setOpacity(opacitySlider.getValue()/100f);
-            this.payload.getCells().forEach(item -> item.setOpacity(this.payload.getOpacity()));
-            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
+        opacitySlider.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                payload.setOpacity(opacitySlider.getValue() / 100f);
+                payload.getCells().forEach(item -> item.setOpacity(payload.getOpacity()));
+                MercuryStoreUI.adrReloadSubject.onNext(payload);
+            }
         });
 
         JComboBox groupType = this.componentsFactory.getComboBox(new String[]{"Dynamic","Static"});

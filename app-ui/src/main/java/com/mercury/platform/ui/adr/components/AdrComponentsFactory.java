@@ -6,19 +6,23 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
+import com.mercury.platform.ui.adr.components.panel.FieldValueListener;
+import com.mercury.platform.ui.adr.validator.DoubleFieldValidator;
+import com.mercury.platform.ui.adr.validator.FieldValidator;
+import com.mercury.platform.ui.adr.validator.IntegerFieldValidator;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
+import com.mercury.platform.ui.dialog.DialogCallback;
 import com.mercury.platform.ui.dialog.IconSelectDialog;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 public class AdrComponentsFactory {
     private ComponentsFactory componentsFactory;
@@ -189,7 +193,7 @@ public class AdrComponentsFactory {
         return root;
     }
     public JPanel getTextColorPanel(AdrDurationComponentDescriptor descriptor){
-        JPanel root = this.componentsFactory.getJPanel(new GridLayout(1,3,6,0));
+        JPanel root = this.componentsFactory.getJPanel(new GridLayout(1,7,2,0));
         root.setBackground(AppThemeColor.SLIDE_BG);
 
         JColorChooser colorChooser = getColorChooser();
@@ -197,6 +201,30 @@ public class AdrComponentsFactory {
         JPanel defaultValuePanel = new JPanel();
         JPanel mediumValuePanel = new JPanel();
         JPanel lowValuePanel = new JPanel();
+
+        defaultValuePanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK));
+        mediumValuePanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK));
+        lowValuePanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK));
+
+        defaultValuePanel.setBackground(descriptor.getDefaultValueTextColor());
+        mediumValuePanel.setBackground(descriptor.getMediumValueTextColor());
+        lowValuePanel.setBackground(descriptor.getLowValueTextColor());
+
+        JLabel conditionLabel = this.componentsFactory.getTextLabel("<",FontStyle.BOLD,24);
+        JLabel conditionLabel1 = this.componentsFactory.getTextLabel("<",FontStyle.BOLD,24);
+        conditionLabel.setBorder(null);
+        conditionLabel1.setBorder(null);
+        conditionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        conditionLabel1.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JTextField mediumThreshold = this.getSmartField(
+                descriptor.getMediumValueTextThreshold(),
+                new DoubleFieldValidator(0.1, 1000.0),
+                descriptor::setMediumValueTextThreshold);
+        JTextField defaultThreshold = this.getSmartField(
+                descriptor.getDefaultValueTextThreshold(),
+                new DoubleFieldValidator(0.1, 1000.0),
+                descriptor::setDefaultValueTextThreshold);
 
         defaultValuePanel.addMouseListener(new ColorChooserMouseListener(defaultValuePanel){
             @Override
@@ -246,26 +274,80 @@ public class AdrComponentsFactory {
                 dialog.setVisible(true);
             }
         });
-
-        defaultValuePanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK));
-        mediumValuePanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK));
-        lowValuePanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK));
-
-        defaultValuePanel.setBackground(descriptor.getDefaultValueTextColor());
-        mediumValuePanel.setBackground(descriptor.getMediumValueTextColor());
-        lowValuePanel.setBackground(descriptor.getLowValueTextColor());
-
-        root.add(defaultValuePanel);
-        root.add(mediumValuePanel);
         root.add(lowValuePanel);
+        root.add(conditionLabel);
+        root.add(mediumThreshold);
+        root.add(mediumValuePanel);
+        root.add(conditionLabel1);
+        root.add(defaultThreshold);
+        root.add(defaultValuePanel);
+        return root;
+    }
 
+    public JPanel getColorPickerPanel(Color initColor, DialogCallback<Color> callback){
+        JPanel root = this.componentsFactory.getJPanel(new GridLayout(1,1,6,0));
+        root.setBackground(AppThemeColor.SLIDE_BG);
+        JColorChooser colorChooser = getColorChooser();
 
+        JPanel colorPanel = new JPanel();
+
+        colorPanel.addMouseListener(new ColorChooserMouseListener(colorPanel){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                colorChooser.setColor(initColor);
+                JDialog dialog = JColorChooser.createDialog(colorPanel,
+                        "Set color",
+                        true,
+                        colorChooser,
+                        action -> {
+                    callback.onAction(colorChooser.getColor());
+                    colorPanel.setBackground(colorChooser.getColor());
+                    },
+                        null);
+                dialog.setVisible(true);
+            }
+        });
+
+        colorPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK));
+        colorPanel.setBackground(initColor);
+
+        root.add(colorPanel);
 
         JPanel wrapper = this.componentsFactory.getJPanel(new BorderLayout());
         wrapper.setBackground(AppThemeColor.SLIDE_BG);
         wrapper.setBorder(BorderFactory.createEmptyBorder(6,0,6,0));
         wrapper.add(root,BorderLayout.CENTER);
         return wrapper;
+    }
+
+    public <T> JTextField getSmartField(T value, FieldValidator<String,T> validator, FieldValueListener<T> listener){
+        JTextField field = this.componentsFactory.getTextField(String.valueOf(value),FontStyle.REGULAR,16f);
+        field.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(validator.validate(field.getText())){
+                    listener.onAction(validator.getValue());
+                }else {
+                    field.setText(String.valueOf(value));
+                }
+            }
+        });
+        return field;
+    }
+
+    public JPanel getBorderColorPanel(AdrDurationComponentDescriptor descriptor, DialogCallback<Color> callback){
+        JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
+        root.setBackground(AppThemeColor.SLIDE_BG);
+        JCheckBox checkBox = this.componentsFactory.getCheckBox(descriptor.isBindToTextColor(),"Bind to text color?");
+        checkBox.addActionListener(e -> descriptor.setBindToTextColor(checkBox.isSelected()));
+        JPanel colorPickerPanel = this.getColorPickerPanel(descriptor.getBorderColor(), value -> {
+            checkBox.setSelected(false);
+            callback.onAction(value);
+        });
+
+        root.add(checkBox,BorderLayout.LINE_START);
+        root.add(colorPickerPanel,BorderLayout.CENTER);
+        return root;
     }
 
     private JColorChooser getColorChooser(){

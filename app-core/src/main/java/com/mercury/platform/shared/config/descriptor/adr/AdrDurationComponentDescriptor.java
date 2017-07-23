@@ -9,8 +9,8 @@ import java.awt.*;
 @Data
 public class AdrDurationComponentDescriptor extends AdrComponentDescriptor{
     private String iconPath;
-    private float duration;
-    private float fontSize = 28f;
+    private Double duration;
+    private int fontSize = 28;
     private boolean textEnable = true;
     private boolean iconEnable = true;
     private boolean animationEnable = true;
@@ -19,4 +19,10 @@ public class AdrDurationComponentDescriptor extends AdrComponentDescriptor{
     private Color lowValueTextColor;
     private Color mediumValueTextColor;
     private Color defaultValueTextColor;
+    private Color borderColor;
+    private Double lowValueTextThreshold;
+    private Double mediumValueTextThreshold;
+    private Double defaultValueTextThreshold;
+    private int thickness = 1;
+    private boolean bindToTextColor;
 }
