@@ -1,12 +1,18 @@
 package com.mercury.platform.ui.adr.components.panel.page;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrIconType;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 
 public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
@@ -45,7 +51,7 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         JLabel animationMaskLabel = this.componentsFactory.getTextLabel("Animation mask:");
 
         JTextField titleField = this.componentsFactory.getTextField(this.payload.getTitle(), FontStyle.REGULAR,18);
-        JSlider opacitySlider = this.componentsFactory.getSlider(20,100, (int) this.payload.getOpacity() * 100);
+        JSlider opacitySlider = this.componentsFactory.getSlider(20,100, (int) (this.payload.getOpacity() * 100));
         opacitySlider.setBackground(AppThemeColor.SLIDE_BG);
         if(this.fromGroup){
             opacitySlider.setEnabled(false);
@@ -56,6 +62,10 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         JPanel iconSelectPanel = this.adrComponentsFactory.getIconSelectPanel(this.payload);
         JComboBox iconTypeBox = this.componentsFactory.getComboBox(new String[]{"Square", "Ellipse"});
         iconTypeBox.setSelectedIndex(this.payload.getIconType().ordinal());
+        iconTypeBox.addItemListener(e -> {
+            this.payload.setIconType(AdrIconType.valueOfPretty((String) iconTypeBox.getSelectedItem()));
+            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
+        });
         JCheckBox textEnableBox = this.componentsFactory.getCheckBox(this.payload.isTextEnable());
         JFormattedTextField fontSizeField = this.componentsFactory.getIntegerTextField(10, 200, (int) this.payload.getFontSize());
         JFormattedTextField durationField = this.componentsFactory.getIntegerTextField(1, 200, (int) this.payload.getDuration());

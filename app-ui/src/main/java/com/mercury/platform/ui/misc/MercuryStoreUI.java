@@ -39,5 +39,5 @@ public class MercuryStoreUI {
     public static final PublishSubject<AdrProfileDescriptor> adrSelectProfileSubject = PublishSubject.create();
     public static final PublishSubject<AdrComponentDescriptor> adrReloadSubject = PublishSubject.create();
     public static final PublishSubject<Boolean> adrRepaintSubject = PublishSubject.create();
-    public static final PublishSubject<Boolean> adrUpdateSubject = PublishSubject.create();
+    public static final PublishSubject<AdrComponentDescriptor> adrUpdateSubject = PublishSubject.create();
 }

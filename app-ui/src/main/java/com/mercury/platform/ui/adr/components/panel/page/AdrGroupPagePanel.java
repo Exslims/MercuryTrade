@@ -10,9 +10,10 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
 
 public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
@@ -36,8 +37,20 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
         JLabel groupDirectionLabel = this.componentsFactory.getTextLabel("Direction:");
 
         JTextField titleField = this.componentsFactory.getTextField(this.payload.getTitle(), FontStyle.BOLD,16);
-        JSlider opacitySlider = this.componentsFactory.getSlider(20,100, (int) this.payload.getOpacity() * 100);
+        titleField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                payload.setTitle(titleField.getText());
+                MercuryStoreUI.adrReloadSubject.onNext(payload);
+            }
+        });
+        JSlider opacitySlider = this.componentsFactory.getSlider(20,100, (int) (this.payload.getOpacity() * 100));
         opacitySlider.setBackground(AppThemeColor.SLIDE_BG);
+        opacitySlider.addChangeListener(e -> {
+            this.payload.setOpacity(opacitySlider.getValue()/100f);
+            this.payload.getCells().forEach(item -> item.setOpacity(this.payload.getOpacity()));
+            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
+        });
 
         JComboBox groupType = this.componentsFactory.getComboBox(new String[]{"Dynamic","Static"});
         groupType.setSelectedIndex(this.payload.getGroupType().ordinal());

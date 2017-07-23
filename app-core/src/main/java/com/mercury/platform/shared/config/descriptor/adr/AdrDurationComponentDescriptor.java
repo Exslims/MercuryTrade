@@ -15,6 +15,7 @@ public class AdrDurationComponentDescriptor extends AdrComponentDescriptor{
     private boolean iconEnable = true;
     private boolean animationEnable = true;
     private boolean invert;
+    private String textFormat;
     private Color lowValueTextColor;
     private Color mediumValueTextColor;
     private Color defaultValueTextColor;

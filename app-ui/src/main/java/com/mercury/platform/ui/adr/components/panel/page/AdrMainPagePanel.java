@@ -30,8 +30,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         JPanel createIconsGroup = this.getButton(
                 "app/adr/create_icon_group.png",
-                TooltipConstants.ADR_CREATE_ICON_GROUP,
-                TooltipConstants.ADR_CREATE_ICON_GROUP_DESC);
+                TooltipConstants.ADR_CREATE_ICON_GROUP);
         createIconsGroup.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -44,8 +43,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
         });
         JPanel createPbGroup = this.getButton(
                 "app/adr/create_pb_group.png",
-                TooltipConstants.ADR_CREATE_PB_GROUP,
-                TooltipConstants.ADR_CREATE_PB_GROUP_DESC);
+                TooltipConstants.ADR_CREATE_PB_GROUP);
         createPbGroup.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -58,8 +56,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
         });
         JPanel createIcon = this.getButton(
                 "app/adr/create_icon.png",
-                TooltipConstants.ADR_CREATE_ICON,
-                TooltipConstants.ADR_CREATE_ICON_DESC);
+                TooltipConstants.ADR_CREATE_ICON);
         createIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -76,8 +73,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
         });
         JPanel createPb = this.getButton(
                 "app/adr/create_pb.png",
-                TooltipConstants.ADR_CREATE_PROGRESS_BAR,
-                TooltipConstants.ADR_CREATE_PROGRESS_BAR_DESC);
+                TooltipConstants.ADR_CREATE_PROGRESS_BAR);
         createPb.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -99,10 +95,10 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
         this.add(buttonsPanel,BorderLayout.PAGE_START);
     }
 
-    private JPanel getButton(String iconPath, String title, String innerText) {
+    private JPanel getButton(String iconPath, String title) {
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setBackground(AppThemeColor.SLIDE_BG);
-        JLabel iconLabel = this.componentsFactory.getIconLabel(iconPath, 96);
+        JLabel iconLabel = this.componentsFactory.getIconLabel(iconPath, 72);
         iconLabel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(4,4,4,4),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK)
@@ -111,8 +107,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
         root.add(iconLabel,BorderLayout.LINE_START);
         JPanel labelsPanel = this.componentsFactory.getJPanel(new BorderLayout());
         labelsPanel.setBackground(AppThemeColor.SLIDE_BG);
-        labelsPanel.add(this.componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,18,title),BorderLayout.PAGE_START);
-        labelsPanel.add(this.componentsFactory.getTextLabel(innerText),BorderLayout.CENTER);
+        labelsPanel.add(this.componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,20,title),BorderLayout.CENTER);
         root.add(labelsPanel,BorderLayout.CENTER);
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK));
         root.addMouseListener(new MouseAdapter() {

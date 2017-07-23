@@ -35,7 +35,7 @@ public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extend
         this.inSettings = false;
     }
     protected abstract void onHotKeyPressed();
-    private void update(){
+    public void update(){
         this.removeAll();
         this.createUI();
     }

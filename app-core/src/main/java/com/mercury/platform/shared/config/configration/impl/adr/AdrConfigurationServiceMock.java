@@ -64,7 +64,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         groupDescriptor1.setOrientation(AdrComponentOrientation.VERTICAL);
         groupDescriptor1.setGroupType(AdrGroupType.DYNAMIC);
         groupDescriptor1.setCells(Arrays.asList(icon3,icon1,icon2,icon3));
-        profile.setContents(Arrays.stream(new AdrComponentDescriptor[] {groupDescriptor,groupDescriptor1}).collect(Collectors.toList()));
+        profile.setContents(Arrays.stream(new AdrComponentDescriptor[] {groupDescriptor,groupDescriptor1,this.getDefaultPBGroup()}).collect(Collectors.toList()));
         return Arrays.stream(new AdrProfileDescriptor[]{profile}).collect(Collectors.toList());
     }
 
@@ -90,6 +90,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         icon.setDuration(0f);
         icon.setHotKeyDescriptor(new HotKeyDescriptor());
         icon.setIconType(AdrIconType.SQUARE);
+        icon.setOrientation(AdrComponentOrientation.HORIZONTAL);
         icon.setType(AdrComponentType.ICON);
         icon.setDefaultValueTextColor(new Color(255,250,213));
         icon.setMediumValueTextColor(new Color(255,211,78));
@@ -103,12 +104,16 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         progressBar.setTitle("progress bar");
         progressBar.setIconPath("default_progress_bar_icon");
         progressBar.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
-        progressBar.setSize(new Dimension(240, 64));
-        progressBar.setDuration(0f);
+        progressBar.setSize(new Dimension(240, 30));
+        progressBar.setDuration(6.56f);
+        progressBar.setOrientation(AdrComponentOrientation.HORIZONTAL);
+        progressBar.setHotKeyDescriptor(new HotKeyDescriptor());
         progressBar.setType(AdrComponentType.PROGRESS_BAR);
         progressBar.setDefaultValueTextColor(new Color(255,250,213));
         progressBar.setMediumValueTextColor(new Color(255,211,78));
         progressBar.setLowValueTextColor(new Color(224,86,60));
+        progressBar.setBackgroundColor(new Color(59, 59, 59));
+        progressBar.setForegroundColor(new Color(16,91,99));
         return progressBar;
     }
 

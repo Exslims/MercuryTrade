@@ -1,13 +1,9 @@
 package com.mercury.platform.ui.adr.components;
 
-import com.mercury.platform.shared.config.descriptor.adr.AdrComponentOrientation;
-import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
-import com.mercury.platform.shared.config.descriptor.adr.AdrGroupType;
-import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.*;
 import com.mercury.platform.shared.store.MercuryStoreCore;
-import com.mercury.platform.ui.adr.AdrFrameMagnet;
 import com.mercury.platform.ui.adr.components.panel.AdrComponentPanel;
-import com.mercury.platform.ui.adr.components.panel.AdrIconCellPanel;
+import com.mercury.platform.ui.adr.components.panel.AdrCellPanel;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.NonNull;
@@ -57,15 +53,10 @@ public class AdrGroupFrame extends AbstractAdrFrame<AdrGroupDescriptor> {
             layout = new GridLayout(1,cellCount);
         }
         JPanel root = componentsFactory.getTransparentPanel(layout);
-        descriptor.getCells().forEach(cellDescriptor -> {
-            switch (cellDescriptor.getType()){
-                case ICON: {
-                    AdrIconCellPanel adrIconCellPanel = new AdrIconCellPanel((AdrIconDescriptor) cellDescriptor,this.componentsFactory);
-                    root.add(adrIconCellPanel);
-                    cells.add(adrIconCellPanel);
-                    break;
-                }
-            }
+        descriptor.getCells().forEach(component -> {
+                AdrCellPanel adrCellPanel = new AdrCellPanel((AdrDurationComponentDescriptor) component, this.componentsFactory);
+                root.add(adrCellPanel);
+                this.cells.add(adrCellPanel);
         });
         return root;
     }
@@ -118,6 +109,11 @@ public class AdrGroupFrame extends AbstractAdrFrame<AdrGroupDescriptor> {
                         break;
                     }
                 }
+                this.cells.forEach(item -> {
+                    item.setPreferredSize(this.descriptor.getSize());
+                    item.setLocation(this.descriptor.getLocation());
+                });
+                this.setOpacity(this.descriptor.getOpacity());
                 this.repaint();
                 this.pack();
             }
@@ -171,7 +167,6 @@ public class AdrGroupFrame extends AbstractAdrFrame<AdrGroupDescriptor> {
             if(SwingUtilities.isLeftMouseButton(e)) {
                 e.translatePoint(AdrGroupFrame.this.getLocation().x - x, AdrGroupFrame.this.getLocation().y - y);
                 Point point = e.getPoint();
-//                AdrFrameMagnet.INSTANCE.obtainApproxFrameLocation(point,descriptor);
                 AdrGroupFrame.this.setLocation(point);
             }
         }
@@ -191,10 +186,10 @@ public class AdrGroupFrame extends AbstractAdrFrame<AdrGroupDescriptor> {
                 Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
                 if (getLocationOnScreen().y + getSize().height > dimension.height) {
                     setLocation(getLocationOnScreen().x, dimension.height - getSize().height);
-                    descriptor.setLocation(
-                            new Point(getLocationOnScreen().x, dimension.height - getSize().height));
-                    MercuryStoreCore.saveConfigSubject.onNext(true);
                 }
+                descriptor.setLocation(getLocationOnScreen());
+                MercuryStoreUI.adrUpdateSubject.onNext(descriptor);
+                MercuryStoreCore.saveConfigSubject.onNext(true);
             }
         }
     }

@@ -3,6 +3,7 @@ package com.mercury.platform.ui.adr.components.panel.ui.icon;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.ui.adr.components.panel.ui.BasicMercuryIconTrackerUI;
+import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,26 +14,26 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class SquareMercuryIconTrackerUI extends BasicMercuryIconTrackerUI {
-    public SquareMercuryIconTrackerUI(AdrIconDescriptor descriptor) {
-        super(descriptor);
+public class SquareIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescriptor> {
+    public SquareIconTrackerUI(AdrIconDescriptor descriptor, MercuryTracker tracker) {
+        super(descriptor,tracker);
     }
 
     @Override
     public void paint(Graphics g, JComponent c) {
-        Insets b = progressBar.getInsets();
-        int barRectWidth  = progressBar.getWidth();
-        int barRectHeight = progressBar.getHeight();
+        Insets b = tracker.getInsets();
+        int barRectWidth  = tracker.getWidth();
+        int barRectHeight = tracker.getHeight();
         if (barRectWidth <= 0 || barRectHeight <= 0) {
             return;
         }
 
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
-        g.setColor(progressBar.getBackground());
+        g.setColor(tracker.getBackground());
         g2.fillRect(0,0,barRectWidth,barRectHeight);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        double degree = 360 * (1f - progressBar.getPercentComplete());
+        double degree = 360 * (1f - tracker.getPercentComplete());
         double sz = Math.max(barRectWidth, barRectHeight);
         Shape outer  = new Rectangle2D.Double(0, 0, sz, sz);
         Shape sector = new Arc2D.Double(-sz, -sz, sz *3, sz *3, 90 - degree, degree, Arc2D.PIE);
@@ -56,8 +57,6 @@ public class SquareMercuryIconTrackerUI extends BasicMercuryIconTrackerUI {
         g2.fill(foreground);
 
         g2.dispose();
-        if (progressBar.isStringPainted()) {
-            paintString(g, 0, 0, barRectWidth, barRectHeight, 0, b);
-        }
+        this.paintString(g, 0, 0, barRectWidth, barRectHeight, 0, b);
     }
 }

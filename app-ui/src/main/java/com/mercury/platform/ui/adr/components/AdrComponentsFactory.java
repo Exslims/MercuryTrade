@@ -4,6 +4,7 @@ package com.mercury.platform.ui.adr.components;
 import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -42,16 +43,24 @@ public class AdrComponentsFactory {
             public void focusLost(FocusEvent e) {
                 try {
                     descriptor.setSize(new Dimension(Integer.parseInt(widthField.getText()), descriptor.getSize().height));
+                    if(descriptor instanceof AdrGroupDescriptor){
+                        ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setSize(descriptor.getSize()));
+                    }
+                    MercuryStoreUI.adrReloadSubject.onNext(descriptor);
                 }catch (NumberFormatException e1){
                     widthField.setValue(descriptor.getSize().width);
                 }
             }
         });
-        heightLabel.addFocusListener(new FocusAdapter() {
+        heightField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
                 try {
                     descriptor.setSize(new Dimension(descriptor.getSize().width,Integer.parseInt(heightField.getText())));
+                    if(descriptor instanceof AdrGroupDescriptor){
+                        ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setSize(descriptor.getSize()));
+                    }
+                    MercuryStoreUI.adrReloadSubject.onNext(descriptor);
                 }catch (NumberFormatException e1){
                     heightField.setValue(descriptor.getSize().height);
                 }
@@ -82,16 +91,24 @@ public class AdrComponentsFactory {
             public void focusLost(FocusEvent e) {
                 try {
                     descriptor.setLocation(new Point(Integer.parseInt(xField.getText()), descriptor.getLocation().y));
+                    if(descriptor instanceof AdrGroupDescriptor){
+                        ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setLocation(descriptor.getLocation()));
+                    }
+                    MercuryStoreUI.adrReloadSubject.onNext(descriptor);
                 }catch (NumberFormatException e1){
                     xField.setValue(descriptor.getLocation().x);
                 }
             }
         });
-        yLabel.addFocusListener(new FocusAdapter() {
+        yField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
                 try {
                     descriptor.setLocation(new Point(descriptor.getLocation().x,Integer.parseInt(yField.getText())));
+                    if(descriptor instanceof AdrGroupDescriptor){
+                        ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setLocation(descriptor.getLocation()));
+                    }
+                    MercuryStoreUI.adrReloadSubject.onNext(descriptor);
                 }catch (NumberFormatException e1){
                     yField.setValue(descriptor.getLocation().y);
                 }
@@ -101,6 +118,16 @@ public class AdrComponentsFactory {
         root.add(xField);
         root.add(yLabel);
         root.add(yField);
+
+        MercuryStoreUI.adrUpdateSubject.subscribe(source -> {
+            if(source.equals(descriptor)){
+                xField.setValue(descriptor.getLocation().x);
+                yField.setValue(descriptor.getLocation().y);
+                if(descriptor instanceof AdrGroupDescriptor){
+                    ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setLocation(descriptor.getLocation()));
+                }
+            }
+        });
 
         if(fromGroup){
             xField.setEnabled(false);
