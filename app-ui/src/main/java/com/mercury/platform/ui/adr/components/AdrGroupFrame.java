@@ -16,31 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class AdrGroupFrame extends AbstractAdrFrame<AdrGroupDescriptor> {
+public class AdrGroupFrame extends AbstractAdrComponentFrame<AdrGroupDescriptor> {
     private List<AdrComponentPanel> cells;
-
-    private int x;
-    private int y;
-
-    private DraggedFrameMouseListener mouseListener;
-    private DraggedFrameMotionListener motionListener;
-    private MouseAdapter mouseOverListener;
 
     private JPanel cellsPanel;
     public AdrGroupFrame(@NonNull AdrGroupDescriptor descriptor) {
         super(descriptor);
         this.cells = new ArrayList<>();
-        this.mouseListener = new DraggedFrameMouseListener();
-        this.motionListener = new DraggedFrameMotionListener();
-        this.mouseOverListener = getMouseOverListener();
-
     }
 
     @Override
     protected void initialize() {
-        this.setLocation(descriptor.getLocation());
-        this.setOpacity(descriptor.getOpacity());
-        this.componentsFactory.setScale(descriptor.getScale());
+        super.initialize();
         this.cellsPanel = this.getCellsPanel();
         this.add(this.cellsPanel,BorderLayout.CENTER);
         this.pack();
@@ -60,34 +47,9 @@ public class AdrGroupFrame extends AbstractAdrFrame<AdrGroupDescriptor> {
         });
         return root;
     }
-    private MouseAdapter getMouseOverListener(){
-        return new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_MESSAGE));
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                ((JPanel)e.getSource()).setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_MESSAGE));
-                repaint();
-                pack();
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                ((JPanel)e.getSource()).setBorder(BorderFactory.createMatteBorder(0,0,1,0,AppThemeColor.BORDER));
-                repaint();
-                pack();
-            }
-        };
-    }
     @Override
     public void subscribe() {
-        MercuryStoreUI.adrRepaintSubject.subscribe(state -> {
-            this.repaint();
-            this.pack();
-        });
+        super.subscribe();
         MercuryStoreUI.adrReloadSubject.subscribe(descriptor -> {
             if(descriptor.equals(this.descriptor)){
                 int cellCount = this.descriptor.getCells().size();
@@ -123,8 +85,6 @@ public class AdrGroupFrame extends AbstractAdrFrame<AdrGroupDescriptor> {
     @Override
     public void enableSettings() {
         super.enableSettings();
-        this.setBackground(AppThemeColor.FRAME);
-        this.getRootPane().setBorder(BorderFactory.createMatteBorder(1,1,0,1,AppThemeColor.BORDER));
         cells.forEach(it -> {
             it.enableSettings();
             it.setBorder(BorderFactory.createMatteBorder(0,0,1,0,AppThemeColor.BORDER));
@@ -132,16 +92,11 @@ public class AdrGroupFrame extends AbstractAdrFrame<AdrGroupDescriptor> {
             it.addMouseListener(this.mouseOverListener);
             it.addMouseMotionListener(this.motionListener);
         });
-        this.addMouseListener(this.mouseListener);
-        this.addMouseMotionListener(this.motionListener);
     }
 
     @Override
     public void disableSettings() {
         super.disableSettings();
-        this.setBackground(AppThemeColor.TRANSPARENT);
-        this.getRootPane().setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
-
         cells.forEach(it -> {
             it.disableSettings();
             it.removeMouseListener(this.mouseListener);
@@ -149,48 +104,7 @@ public class AdrGroupFrame extends AbstractAdrFrame<AdrGroupDescriptor> {
             it.removeMouseListener(this.mouseOverListener);
             it.setBorder(BorderFactory.createEmptyBorder(0,0,1,0));
         });
-
-        this.removeMouseListener(this.mouseListener);
-        this.removeMouseMotionListener(this.motionListener);
         this.pack();
         this.repaint();
-    }
-
-    @Override
-    protected LayoutManager getFrameLayout() {
-        return new BorderLayout();
-    }
-
-    public class DraggedFrameMotionListener extends MouseAdapter {
-        @Override
-        public void mouseDragged(MouseEvent e) {
-            if(SwingUtilities.isLeftMouseButton(e)) {
-                e.translatePoint(AdrGroupFrame.this.getLocation().x - x, AdrGroupFrame.this.getLocation().y - y);
-                Point point = e.getPoint();
-                AdrGroupFrame.this.setLocation(point);
-            }
-        }
-    }
-    public class DraggedFrameMouseListener extends MouseAdapter{
-        @Override
-        public void mousePressed(MouseEvent e) {
-            if(SwingUtilities.isLeftMouseButton(e)) {
-                x = e.getX();
-                y = e.getY();
-            }
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            if(SwingUtilities.isLeftMouseButton(e)) {
-                Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-                if (getLocationOnScreen().y + getSize().height > dimension.height) {
-                    setLocation(getLocationOnScreen().x, dimension.height - getSize().height);
-                }
-                descriptor.setLocation(getLocationOnScreen());
-                MercuryStoreUI.adrUpdateSubject.onNext(descriptor);
-                MercuryStoreCore.saveConfigSubject.onNext(true);
-            }
-        }
     }
 }

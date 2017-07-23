@@ -8,6 +8,7 @@ import com.mercury.platform.shared.config.descriptor.adr.*;
 import com.mercury.platform.ui.adr.components.AbstractAdrFrame;
 import com.mercury.platform.ui.adr.components.AdrManagerFrame;
 import com.mercury.platform.ui.adr.components.AdrGroupFrame;
+import com.mercury.platform.ui.adr.components.AdrSingleComponentFrame;
 import com.mercury.platform.ui.adr.components.panel.page.*;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.Getter;
@@ -97,6 +98,9 @@ public class AdrManager implements AsSubscriber{
                case NEW_COMPONENT:{
                    if(definition.getDescriptor() instanceof AdrGroupDescriptor){
                        AdrGroupDescriptor defaultGroup = this.config.getDefaultIconGroup();
+                       if(((AdrGroupDescriptor) definition.getDescriptor()).getContentType().equals(AdrGroupContentType.PROGRESS_BARS)) {
+                           defaultGroup = this.config.getDefaultPBGroup();
+                       }
                        this.selectedProfile.getContents().add(defaultGroup);
                        AdrGroupFrame adrGroupFrame = new AdrGroupFrame(defaultGroup);
                        adrGroupFrame.init();
@@ -106,6 +110,31 @@ public class AdrManager implements AsSubscriber{
                        this.groupSettingsPanel.setPayload(defaultGroup);
                        this.adrManagerFrame.reloadTree();
                        this.adrManagerFrame.setPage(this.groupSettingsPanel);
+                   }
+                   if(definition.getDescriptor() instanceof AdrIconDescriptor){
+                       AdrIconDescriptor defaultIcon = this.config.getDefaultIcon();
+                       this.selectedProfile.getContents().add(defaultIcon);
+                       AdrSingleComponentFrame componentFrame = new AdrSingleComponentFrame(defaultIcon);
+                       componentFrame.init();
+                       componentFrame.showComponent();
+                       componentFrame.enableSettings();
+                       this.frames.add(componentFrame);
+                       this.iconSettingsPanel.setPayload(defaultIcon);
+                       this.adrManagerFrame.reloadTree();
+                       this.adrManagerFrame.setPage(this.iconSettingsPanel);
+
+                   }
+                   if(definition.getDescriptor() instanceof AdrProgressBarDescriptor){
+                       AdrProgressBarDescriptor defaultProgressBar = this.config.getDefaultProgressBar();
+                       this.selectedProfile.getContents().add(defaultProgressBar);
+                       AdrSingleComponentFrame componentFrame = new AdrSingleComponentFrame(defaultProgressBar);
+                       componentFrame.init();
+                       componentFrame.showComponent();
+                       componentFrame.enableSettings();
+                       this.frames.add(componentFrame);
+                       this.progressBarSettingsPanel.setPayload(defaultProgressBar);
+                       this.adrManagerFrame.reloadTree();
+                       this.adrManagerFrame.setPage(this.progressBarSettingsPanel);
                    }
                    break;
                }

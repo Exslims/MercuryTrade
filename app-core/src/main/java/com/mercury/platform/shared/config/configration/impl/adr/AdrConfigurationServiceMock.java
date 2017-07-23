@@ -83,7 +83,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         icon.setIconPath("default_icon");
         icon.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
         icon.setSize(new Dimension(64, 64));
-        icon.setDuration(0d);
+        icon.setDuration(6.0d);
         icon.setHotKeyDescriptor(new HotKeyDescriptor());
         icon.setIconType(AdrIconType.SQUARE);
         icon.setOrientation(AdrComponentOrientation.HORIZONTAL);
@@ -103,10 +103,10 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
     public AdrProgressBarDescriptor getDefaultProgressBar() {
         AdrProgressBarDescriptor progressBar = new AdrProgressBarDescriptor();
         progressBar.setTitle("progress bar");
-        progressBar.setIconPath("Arctic_Armour_skill_icon");
+        progressBar.setIconPath("default_icon");
         progressBar.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
         progressBar.setSize(new Dimension(240, 30));
-        progressBar.setDuration(6.56d);
+        progressBar.setDuration(6.0d);
         progressBar.setOrientation(AdrComponentOrientation.HORIZONTAL);
         progressBar.setHotKeyDescriptor(new HotKeyDescriptor(50,'2',false,false,false,false));
         progressBar.setType(AdrComponentType.PROGRESS_BAR);
