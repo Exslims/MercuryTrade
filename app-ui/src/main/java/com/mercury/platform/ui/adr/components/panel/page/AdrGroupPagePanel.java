@@ -10,8 +10,6 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -28,6 +26,7 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
         JLabel opacityLabel = this.componentsFactory.getTextLabel("Opacity:");
         JLabel locationLabel = this.componentsFactory.getTextLabel("Location:");
 
+        JLabel paddingLabel = this.componentsFactory.getTextLabel("Components padding:");
         JLabel groupTypeLabel = this.componentsFactory.getTextLabel("Group type:");
         String sizeText = "Icons size:";
         if(this.payload.getContentType().equals(AdrGroupContentType.PROGRESS_BARS)){
@@ -44,6 +43,8 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
                 MercuryStoreUI.adrReloadSubject.onNext(payload);
             }
         });
+        JPanel locationPanel = this.adrComponentsFactory.getLocationPanel(this.payload, this.fromGroup);
+        JPanel paddingPanel = this.adrComponentsFactory.getGapPanel(this.payload);
         JSlider opacitySlider = this.componentsFactory.getSlider(20,100, (int) (this.payload.getOpacity() * 100));
         opacitySlider.setBackground(AppThemeColor.SLIDE_BG);
         opacitySlider.addMouseListener(new MouseAdapter() {
@@ -61,14 +62,14 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
             this.payload.setGroupType(AdrGroupType.valueOfPretty((String) groupType.getSelectedItem()));
             MercuryStoreUI.adrReloadSubject.onNext(this.payload);
         });
-        JPanel iconSizePanel = this.adrComponentsFactory.getIconSizePanel(this.payload,this.fromGroup);
+        JPanel iconSizePanel = this.adrComponentsFactory.getComponentSizePanel(this.payload,this.fromGroup);
         JComboBox groupOrientation = this.componentsFactory.getComboBox(new String[]{"Horizontal", "Vertical"});
         groupOrientation.setSelectedIndex(this.payload.getOrientation().ordinal());
         groupOrientation.addItemListener(e -> {
             this.payload.setOrientation(AdrComponentOrientation.valueOfPretty((String) groupOrientation.getSelectedItem()));
             MercuryStoreUI.adrReloadSubject.onNext(this.payload);
         });
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(3, 2,0,6));
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(4, 2,0,6));
         JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(3, 2,0,6));
         generalPanel.setBackground(AppThemeColor.SLIDE_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -84,7 +85,9 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
         generalPanel.add(opacityLabel);
         generalPanel.add(opacitySlider);
         generalPanel.add(locationLabel);
-        generalPanel.add(this.adrComponentsFactory.getLocationPanel(this.payload,this.fromGroup));
+        generalPanel.add(locationPanel);
+        generalPanel.add(paddingLabel);
+        generalPanel.add(paddingPanel);
 
 
         specPanel.add(groupTypeLabel);

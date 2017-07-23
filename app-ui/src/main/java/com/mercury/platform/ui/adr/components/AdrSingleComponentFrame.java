@@ -32,6 +32,7 @@ public class AdrSingleComponentFrame extends AbstractAdrComponentFrame<AdrDurati
         MercuryStoreUI.adrReloadSubject.subscribe(descriptor -> {
             if(descriptor.equals(this.descriptor)){
                 this.setOpacity(this.descriptor.getOpacity());
+                this.setLocation(descriptor.getLocation());
                 this.setPreferredSize(this.descriptor.getSize());
                 this.repaint();
                 this.pack();

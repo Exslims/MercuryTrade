@@ -34,42 +34,26 @@ public class AdrComponentsFactory {
         this.iconSelectDialog = new IconSelectDialog(this.getIconBundle());
     }
 
-    public JPanel getIconSizePanel(AdrComponentDescriptor descriptor, boolean fromGroup){
+    public JPanel getComponentSizePanel(AdrComponentDescriptor descriptor, boolean fromGroup){
         JPanel root = this.componentsFactory.getJPanel(new GridLayout(1, 4,4,0));
         root.setBackground(AppThemeColor.SLIDE_BG);
         JLabel widthLabel = this.componentsFactory.getTextLabel("Width:");
         JLabel heightLabel = this.componentsFactory.getTextLabel("Height:");
-        JFormattedTextField widthField = this.componentsFactory.getIntegerTextField(10,1000,descriptor.getSize().width);
-        JFormattedTextField heightField = this.componentsFactory.getIntegerTextField(10,1000,descriptor.getSize().height);
+        JTextField widthField = this.getSmartField(descriptor.getSize().width, new IntegerFieldValidator(10,2000), value -> {
+            descriptor.setSize(new Dimension(value, descriptor.getSize().height));
+            if(descriptor instanceof AdrGroupDescriptor){
+                ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setSize(descriptor.getSize()));
+            }
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+        JTextField heightField = this.getSmartField(descriptor.getSize().height, new IntegerFieldValidator(10,1000), value -> {
+            descriptor.setSize(new Dimension(descriptor.getSize().width,value));
+            if(descriptor instanceof AdrGroupDescriptor){
+                ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setSize(descriptor.getSize()));
+            }
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
 
-        widthField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                try {
-                    descriptor.setSize(new Dimension(Integer.parseInt(widthField.getText()), descriptor.getSize().height));
-                    if(descriptor instanceof AdrGroupDescriptor){
-                        ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setSize(descriptor.getSize()));
-                    }
-                    MercuryStoreUI.adrReloadSubject.onNext(descriptor);
-                }catch (NumberFormatException e1){
-                    widthField.setValue(descriptor.getSize().width);
-                }
-            }
-        });
-        heightField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                try {
-                    descriptor.setSize(new Dimension(descriptor.getSize().width,Integer.parseInt(heightField.getText())));
-                    if(descriptor instanceof AdrGroupDescriptor){
-                        ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setSize(descriptor.getSize()));
-                    }
-                    MercuryStoreUI.adrReloadSubject.onNext(descriptor);
-                }catch (NumberFormatException e1){
-                    heightField.setValue(descriptor.getSize().height);
-                }
-            }
-        });
         root.add(widthLabel);
         root.add(widthField);
         root.add(heightLabel);
@@ -87,36 +71,19 @@ public class AdrComponentsFactory {
         root.setBackground(AppThemeColor.SLIDE_BG);
         JLabel xLabel = this.componentsFactory.getTextLabel("X:");
         JLabel yLabel = this.componentsFactory.getTextLabel("Y:");
-        JFormattedTextField xField = this.componentsFactory.getIntegerTextField(1,3000,descriptor.getLocation().x);
-        JFormattedTextField yField = this.componentsFactory.getIntegerTextField(1,3000,descriptor.getLocation().y);
-
-        xField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                try {
-                    descriptor.setLocation(new Point(Integer.parseInt(xField.getText()), descriptor.getLocation().y));
-                    if(descriptor instanceof AdrGroupDescriptor){
-                        ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setLocation(descriptor.getLocation()));
-                    }
-                    MercuryStoreUI.adrReloadSubject.onNext(descriptor);
-                }catch (NumberFormatException e1){
-                    xField.setValue(descriptor.getLocation().x);
-                }
+        JTextField xField = this.getSmartField(descriptor.getLocation().x,new IntegerFieldValidator(0,10000),value -> {
+            descriptor.setLocation(new Point(value, descriptor.getLocation().y));
+            if(descriptor instanceof AdrGroupDescriptor){
+                ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setLocation(descriptor.getLocation()));
             }
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
         });
-        yField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                try {
-                    descriptor.setLocation(new Point(descriptor.getLocation().x,Integer.parseInt(yField.getText())));
-                    if(descriptor instanceof AdrGroupDescriptor){
-                        ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setLocation(descriptor.getLocation()));
-                    }
-                    MercuryStoreUI.adrReloadSubject.onNext(descriptor);
-                }catch (NumberFormatException e1){
-                    yField.setValue(descriptor.getLocation().y);
-                }
+        JTextField yField = this.getSmartField(descriptor.getLocation().y,new IntegerFieldValidator(0,5000),value -> {
+            descriptor.setLocation(new Point(descriptor.getLocation().x,value));
+            if(descriptor instanceof AdrGroupDescriptor){
+                ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setLocation(descriptor.getLocation()));
             }
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
         });
         root.add(xLabel);
         root.add(xField);
@@ -125,8 +92,8 @@ public class AdrComponentsFactory {
 
         MercuryStoreUI.adrUpdateSubject.subscribe(source -> {
             if(source.equals(descriptor)){
-                xField.setValue(descriptor.getLocation().x);
-                yField.setValue(descriptor.getLocation().y);
+                xField.setText(String.valueOf(descriptor.getLocation().x));
+                yField.setText(String.valueOf(descriptor.getLocation().y));
                 if(descriptor instanceof AdrGroupDescriptor){
                     ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setLocation(descriptor.getLocation()));
                 }
@@ -347,6 +314,27 @@ public class AdrComponentsFactory {
 
         root.add(checkBox,BorderLayout.LINE_START);
         root.add(colorPickerPanel,BorderLayout.CENTER);
+        return root;
+    }
+
+    public JPanel getGapPanel(AdrGroupDescriptor descriptor){
+        JPanel root = this.componentsFactory.getJPanel(new GridLayout(1, 4,4,0));
+        root.setBackground(AppThemeColor.SLIDE_BG);
+        JLabel hGap = this.componentsFactory.getTextLabel("hGap:");
+        JLabel vGap = this.componentsFactory.getTextLabel("vGap:");
+        JTextField hGapField = this.getSmartField(descriptor.getHGap(),new IntegerFieldValidator(0,200),value -> {
+            descriptor.setHGap(value);
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+        JTextField vGapField = this.getSmartField(descriptor.getVGap(),new IntegerFieldValidator(0,200),value -> {
+            descriptor.setVGap(value);
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+
+        root.add(hGap);
+        root.add(hGapField);
+        root.add(vGap);
+        root.add(vGapField);
         return root;
     }
 

@@ -35,9 +35,9 @@ public class AdrGroupFrame extends AbstractAdrComponentFrame<AdrGroupDescriptor>
 
     private JPanel getCellsPanel(){
         int cellCount = descriptor.getCells().size();
-        GridLayout layout = new GridLayout(cellCount, 1);
+        GridLayout layout = new GridLayout(cellCount, 1,descriptor.getHGap(),descriptor.getVGap());
         if(this.descriptor.getOrientation().equals(AdrComponentOrientation.HORIZONTAL)){
-            layout = new GridLayout(1,cellCount);
+            layout = new GridLayout(1,cellCount,descriptor.getHGap(),descriptor.getVGap());
         }
         JPanel root = componentsFactory.getTransparentPanel(layout);
         descriptor.getCells().forEach(component -> {
@@ -56,7 +56,7 @@ public class AdrGroupFrame extends AbstractAdrComponentFrame<AdrGroupDescriptor>
                 switch (this.descriptor.getOrientation()){
                     case VERTICAL:{
                         if(this.descriptor.getGroupType().equals(AdrGroupType.STATIC)) {
-                            this.cellsPanel.setLayout(new GridLayout(cellCount, 1));
+                            this.cellsPanel.setLayout(new GridLayout(cellCount, 1,this.descriptor.getHGap(),this.descriptor.getVGap()));
                         }else {
                             this.cellsPanel.setLayout(new BoxLayout(this.cellsPanel,BoxLayout.Y_AXIS));
                         }
@@ -64,7 +64,7 @@ public class AdrGroupFrame extends AbstractAdrComponentFrame<AdrGroupDescriptor>
                     }
                     case HORIZONTAL:{
                         if(this.descriptor.getGroupType().equals(AdrGroupType.STATIC)) {
-                            this.cellsPanel.setLayout(new GridLayout(1,cellCount));
+                            this.cellsPanel.setLayout(new GridLayout(1,cellCount,this.descriptor.getHGap(),this.descriptor.getVGap()));
                         }else {
                             this.cellsPanel.setLayout(new BoxLayout(this.cellsPanel,BoxLayout.X_AXIS));
                         }
@@ -75,6 +75,7 @@ public class AdrGroupFrame extends AbstractAdrComponentFrame<AdrGroupDescriptor>
                     item.setPreferredSize(this.descriptor.getSize());
                     item.setLocation(this.descriptor.getLocation());
                 });
+                this.setLocation(descriptor.getLocation());
                 this.setOpacity(this.descriptor.getOpacity());
                 this.repaint();
                 this.pack();

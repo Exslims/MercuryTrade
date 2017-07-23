@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.adr.components.panel.ui.icon;
 
+import com.mercury.platform.shared.config.descriptor.adr.AdrIconAlignment;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
 import com.mercury.platform.ui.adr.components.panel.ui.BasicMercuryIconTrackerUI;
 import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
@@ -37,12 +38,22 @@ public class ProgressBarTrackerUI extends BasicMercuryIconTrackerUI<AdrProgressB
         Shape outer  = new Rectangle2D.Double(0, 0,barRectWidth, barRectHeight);
         Shape sector = new Rectangle2D.Double(0, 0, sectorWidth, barRectHeight);
         if(descriptor.isIconEnable()){
+            int iconX = 0;
+            int iconY = 0;
+            if(descriptor.getIconAlignment().equals(AdrIconAlignment.RIGHT)){
+                iconX = barRectWidth - barRectHeight;
+            }
             sectorWidth = (barRectWidth - tracker.getHeight()) * tracker.getPercentComplete();
-            outer  = new Rectangle2D.Double(tracker.getHeight(), 0,barRectWidth, barRectHeight);
-            sector = new Rectangle2D.Double(tracker.getHeight(), 0, sectorWidth, barRectHeight);
+            if(descriptor.getIconAlignment().equals(AdrIconAlignment.RIGHT)) {
+                outer = new Rectangle2D.Double(0, 0, barRectWidth - barRectHeight, barRectHeight);
+                sector = new Rectangle2D.Double(0, 0, sectorWidth, barRectHeight);
+            }else {
+                outer = new Rectangle2D.Double(tracker.getHeight(), 0, barRectWidth, barRectHeight);
+                sector = new Rectangle2D.Double(tracker.getHeight(), 0, sectorWidth, barRectHeight);
+            }
             try {
                 BufferedImage read = ImageIO.read(getClass().getClassLoader().getResource("app/adr/icons/" +descriptor.getIconPath() + ".png"));
-                g2.drawImage(read,0,0,tracker.getHeight(),tracker.getHeight(),null);
+                g2.drawImage(read,iconX,iconY,tracker.getHeight(),tracker.getHeight(),null);
             } catch (IOException e) {
                 e.printStackTrace();
             }

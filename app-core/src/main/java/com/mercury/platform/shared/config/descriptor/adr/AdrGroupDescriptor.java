@@ -12,4 +12,6 @@ public class AdrGroupDescriptor extends AdrComponentDescriptor {
     private List<AdrComponentDescriptor> cells;
     private AdrGroupContentType contentType;
     private AdrGroupType groupType;
+    private int vGap;
+    private int hGap;
 }

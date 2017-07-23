@@ -11,4 +11,5 @@ public class AdrProgressBarDescriptor extends AdrDurationComponentDescriptor {
     private boolean iconEnable;
     private Color backgroundColor;
     private Color foregroundColor;
+    private AdrIconAlignment iconAlignment;
 }

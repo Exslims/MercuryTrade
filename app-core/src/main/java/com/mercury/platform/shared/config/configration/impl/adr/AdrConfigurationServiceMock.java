@@ -116,6 +116,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         progressBar.setBackgroundColor(new Color(59, 59, 59));
         progressBar.setForegroundColor(new Color(16,91,99));
         progressBar.setBorderColor(new Color(16,110,99));
+        progressBar.setIconAlignment(AdrIconAlignment.LEFT);
         progressBar.setLowValueTextThreshold(1.0);
         progressBar.setMediumValueTextThreshold(3.0);
         progressBar.setDefaultValueTextThreshold(5.0);

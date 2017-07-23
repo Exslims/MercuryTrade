@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.adr.components.panel.page;
 
+import com.mercury.platform.shared.config.descriptor.adr.AdrIconAlignment;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconType;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
 import com.mercury.platform.ui.adr.components.panel.FieldValueListener;
@@ -15,6 +16,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescriptor> {
     @Override
@@ -35,9 +38,11 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         JLabel titleLabel = this.componentsFactory.getTextLabel("Title:");
         JLabel opacityLabel = this.componentsFactory.getTextLabel(opacityLabelText);
         JLabel locationLabel = this.componentsFactory.getTextLabel(locationText);
+        JLabel sizeLabel = this.componentsFactory.getTextLabel("Progress bar size:");
 
         JLabel hotKeyLabel = this.componentsFactory.getTextLabel("HotKey:");
         JLabel iconLabel = this.componentsFactory.getTextLabel("Icon:");
+        JLabel iconAlignmentLabel = this.componentsFactory.getTextLabel("Icon alignment:");
         JLabel textFormatLabel = this.componentsFactory.getTextLabel("Text format:");
         JLabel fontSizeLabel = this.componentsFactory.getTextLabel("Font size:");
         JLabel durationLabel = this.componentsFactory.getTextLabel("Duration:");
@@ -60,6 +65,7 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         if(this.fromGroup){
             opacitySlider.setEnabled(false);
         }
+        JPanel sizePanel = this.adrComponentsFactory.getComponentSizePanel(this.payload,this.fromGroup);
         JButton hotKeyButton = this.adrComponentsFactory.getHotKeyButton(this.payload.getHotKeyDescriptor());
 
         JPanel iconSelectPanel = this.adrComponentsFactory.getIconSelectPanel(this.payload);
@@ -72,6 +78,10 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         });
         iconPanel.add(iconEnableBox,BorderLayout.LINE_START);
         iconPanel.add(iconSelectPanel,BorderLayout.CENTER);
+        JComboBox iconAlignment = this.componentsFactory.getComboBox(new String[]{"Left side","Right side"});
+        iconAlignment.setSelectedItem(this.payload.getIconAlignment());
+        iconAlignment.addItemListener(e ->
+                this.payload.setIconAlignment(AdrIconAlignment.valueOfPretty((String) iconAlignment.getSelectedItem())));
         JTextField fontSizeField = this.adrComponentsFactory.getSmartField(this.payload.getFontSize(), new IntegerFieldValidator(4, 1000), value -> {
             this.payload.setFontSize(value);
             MercuryStoreUI.adrReloadSubject.onNext(this.payload);
@@ -101,8 +111,8 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         textPanel.add(textEnableBox,BorderLayout.LINE_START);
         textPanel.add(textColorPanel,BorderLayout.CENTER);
 
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(3, 2,0,6));
-        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(10, 2,0,6));
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(4, 2,0,6));
+        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(11, 2,0,6));
         generalPanel.setBackground(AppThemeColor.SLIDE_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK),
@@ -119,11 +129,15 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         generalPanel.add(opacitySlider);
         generalPanel.add(locationLabel);
         generalPanel.add(this.adrComponentsFactory.getLocationPanel(this.payload,this.fromGroup));
+        generalPanel.add(sizeLabel);
+        generalPanel.add(sizePanel);
 
         specPanel.add(hotKeyLabel);
         specPanel.add(hotKeyButton);
         specPanel.add(iconLabel);
         specPanel.add(iconPanel);
+        specPanel.add(iconAlignmentLabel);
+        specPanel.add(iconAlignment);
         specPanel.add(durationLabel);
         specPanel.add(durationField);
         specPanel.add(backgroundColorLabel);

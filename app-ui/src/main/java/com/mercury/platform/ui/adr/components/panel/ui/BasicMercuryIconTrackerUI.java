@@ -32,7 +32,7 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
     }
 
     protected void paintString(Graphics g, int x, int y, int width, int height, int amountFull) {
-        if(tracker.isStringPainted()) {
+        if(descriptor.isTextEnable()) {
             float value = tracker.getValue() / 1000f;
 
             Graphics2D g2 = (Graphics2D) g;

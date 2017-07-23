@@ -1,7 +1,6 @@
 package com.mercury.platform.ui.adr.components.panel.page;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
-import com.mercury.platform.shared.config.descriptor.adr.AdrIconType;
 import com.mercury.platform.ui.adr.validator.DoubleFieldValidator;
 import com.mercury.platform.ui.adr.validator.DoubleFormatFieldValidator;
 import com.mercury.platform.ui.adr.validator.IntegerFieldValidator;
@@ -11,15 +10,9 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 
 public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
@@ -70,7 +63,7 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         if(this.fromGroup){
             opacitySlider.setEnabled(false);
         }
-        JPanel iconSizePanel = this.adrComponentsFactory.getIconSizePanel(this.payload,this.fromGroup);
+        JPanel iconSizePanel = this.adrComponentsFactory.getComponentSizePanel(this.payload,this.fromGroup);
         JButton hotKeyButton = this.adrComponentsFactory.getHotKeyButton(this.payload.getHotKeyDescriptor());
 
         JPanel iconSelectPanel = this.adrComponentsFactory.getIconSelectPanel(this.payload);
@@ -101,8 +94,8 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
                 this.payload,
                 color -> this.payload.setBorderColor(color));
 
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(3, 2,0,6));
-        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(10, 2,0,6));
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(4, 2,0,6));
+        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(9, 2,0,6));
         generalPanel.setBackground(AppThemeColor.SLIDE_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK),
@@ -119,11 +112,11 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         generalPanel.add(opacitySlider);
         generalPanel.add(locationLabel);
         generalPanel.add(this.adrComponentsFactory.getLocationPanel(this.payload,this.fromGroup));
+        generalPanel.add(sizeLabel);
+        generalPanel.add(iconSizePanel);
 
         specPanel.add(hotKeyLabel);
         specPanel.add(hotKeyButton);
-        specPanel.add(sizeLabel);
-        specPanel.add(iconSizePanel);
         specPanel.add(iconLabel);
         specPanel.add(iconSelectPanel);
         specPanel.add(durationLabel);
