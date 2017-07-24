@@ -96,10 +96,10 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
             public void mouseClicked(MouseEvent e) {
             }
         });
-        buttonsPanel.add(createIconsGroup);
-        buttonsPanel.add(createPbGroup);
         buttonsPanel.add(createIcon);
         buttonsPanel.add(createPb);
+        buttonsPanel.add(createIconsGroup);
+        buttonsPanel.add(createPbGroup);
         buttonsPanel.add(importButton);
         this.add(buttonsPanel,BorderLayout.PAGE_START);
     }
@@ -112,12 +112,9 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
                 BorderFactory.createEmptyBorder(4,4,4,4),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK)
         ));
-        iconLabel.setBackground(AppThemeColor.SLIDE_BG);
+        iconLabel.setBackground(AppThemeColor.FRAME_RGB);
         root.add(iconLabel,BorderLayout.LINE_START);
-        JPanel labelsPanel = this.componentsFactory.getJPanel(new BorderLayout());
-        labelsPanel.setBackground(AppThemeColor.SLIDE_BG);
-        labelsPanel.add(this.componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,20,title),BorderLayout.CENTER);
-        root.add(labelsPanel,BorderLayout.CENTER);
+        root.add(this.componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,20,title),BorderLayout.CENTER);
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK));
         root.addMouseListener(new MouseAdapter() {
             @Override

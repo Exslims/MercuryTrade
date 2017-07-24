@@ -26,6 +26,9 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
     @Override
     public Dimension getPreferredSize(JComponent c) {
         Dimension dimension = super.getPreferredSize(c);
+        if(dimension == null){
+            dimension = new Dimension(150, 26);
+        }
         int value = Math.max(dimension.width, dimension.height);
         dimension.setSize(value, value);
         return dimension;

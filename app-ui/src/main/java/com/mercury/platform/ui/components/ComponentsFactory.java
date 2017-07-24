@@ -608,6 +608,12 @@ public class ComponentsFactory{
         wrapper.add(panel,BorderLayout.CENTER);
         return wrapper;
     }
+    public JPanel wrapToSlide(JPanel panel,int top,int left,int bottom,int right){
+        JPanel wrapper = this.getJPanel(new BorderLayout());
+        wrapper.setBorder(BorderFactory.createEmptyBorder(top,left,bottom,right));
+        wrapper.add(panel,BorderLayout.CENTER);
+        return wrapper;
+    }
 
     public JPopupMenu getContextPanel() {
         JPopupMenu contextMenu = new JPopupMenu();

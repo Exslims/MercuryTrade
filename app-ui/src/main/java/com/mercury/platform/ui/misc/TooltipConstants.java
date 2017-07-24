@@ -47,19 +47,13 @@ public class TooltipConstants {
     public static final String ADR_PROFILE_SETTINGS = "todo";
 
     //mainpage
-    public static final String ADR_CREATE_ICON_GROUP = "Create icons group";
-    public static final String ADR_CREATE_PB_GROUP = "Create progress bars group";
-    public static final String ADR_CREATE_ICON = "Create icon component";
-    public static final String ADR_CREATE_PROGRESS_BAR = "Create progress bar component";
+    public static final String ADR_CREATE_ICON_GROUP = "Icons group";
+    public static final String ADR_CREATE_PB_GROUP = "Progress bars group";
+    public static final String ADR_CREATE_ICON = "Icon";
+    public static final String ADR_CREATE_PROGRESS_BAR = "Progress bar";
     public static final String ADR_IMPORT_COMPONENT = "Import component";
 
-    public static final String ADR_CREATE_ICON_GROUP_DESC = "Данный компонент является группой которая может содержать множество других компонент типа иконки, группа может быть динамической или статической и имеет ориентацию";
-    public static final String ADR_CREATE_PB_GROUP_DESC = "Данный компонент является группой которая может содержать множество других компонент типа прогресс баров, группа может быть динамической или статической и имеет ориентацию";
-    public static final String ADR_CREATE_ICON_DESC = "Данный компонент представляет собой трекер бафа ввиде иконки";
-    public static final String ADR_CREATE_PROGRESS_BAR_DESC = "Данный компонент представляет собой трекер бафа ввиде прогресс бара";
-
-    public static final String ADR_HELP_HEADER = "При настройке ADR есть 2 важные вещи о которых вы должны знать:";
-    public static final String ADR_HELP_PART_1 = "1. Каждый компонент дерева ADR имеет конктексное меню с помощью которого можно удалить/переместить/создать копию компонента или добавить компонент в группу";
-    public static final String ADR_HELP_PART_2 = "2. Для того чтобы изменить позицию компонента можно либо изменить его координаты в настройке либо просто переместить его мышкой нажав по нему левой клавишей мыши.";
-    public static final String ADR_HELP_PART_3 = "При возникновении дополнительных вопросов вы можете обратится в дикорд";
+    public static final String ADR_EXPORT_BUTTON = "Export component";
+    public static final String ADR_REMOVE_BUTTON = "Remove component";
+    public static final String ADR_ADD_BUTTON = "Add component";
 }

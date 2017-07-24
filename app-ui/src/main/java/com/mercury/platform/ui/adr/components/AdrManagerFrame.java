@@ -5,11 +5,13 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
 import com.mercury.platform.ui.adr.components.panel.page.AdrPagePanel;
+import com.mercury.platform.ui.adr.components.panel.tree.AdrTreePanel;
 import com.mercury.platform.ui.adr.components.panel.ui.AdrTreeEntryCellRenderer;
 import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
 import com.mercury.platform.ui.adr.routing.AdrComponentOperations;
 import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
 import com.mercury.platform.ui.adr.routing.AdrPageState;
+import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -33,7 +35,7 @@ import java.util.stream.Collectors;
 public class AdrManagerFrame extends AbstractTitledComponentFrame{
     private JPanel currentPage;
     private JPanel root;
-    private JTree componentsTree;
+//    private JTree componentsTree;
     @Getter
     private AdrProfileDescriptor selectedProfile;
     public AdrManagerFrame(AdrProfileDescriptor selectedProfile) {
@@ -76,73 +78,75 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setBackground(AppThemeColor.FRAME);
         leftPanel.setBorder(BorderFactory.createMatteBorder(0,0,0,1,AppThemeColor.BORDER));
-        this.componentsTree = new JTree(this.getTreeModel());
-        this.componentsTree.setCellRenderer(new AdrTreeEntryCellRenderer());
-        this.componentsTree.setRootVisible(false);
-        this.componentsTree.setShowsRootHandles(true);
-        this.componentsTree.setBorder(BorderFactory.createEmptyBorder(4,4,0,4));
-        this.componentsTree.setBackground(AppThemeColor.FRAME);
-        this.componentsTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+//        this.componentsTree = new JTree(this.getTreeModel());
+//        this.componentsTree.setCellRenderer(new AdrTreeEntryCellRenderer());
+//        this.componentsTree.setRootVisible(false);
+//        this.componentsTree.setShowsRootHandles(true);
+//        this.componentsTree.setBorder(BorderFactory.createEmptyBorder(4,4,0,4));
+//        this.componentsTree.setBackground(AppThemeColor.FRAME);
+//        this.componentsTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+//
+//        this.componentsTree.addTreeSelectionListener(e -> {
+//            if(this.componentsTree.getSelectionCount() > 0) {
+//                MercuryStoreUI.adrComponentStateSubject.onNext(
+//                        new AdrComponentDefinition(
+//                                (AdrComponentDescriptor)((DefaultMutableTreeNode) e.getPath().getLastPathComponent()).getUserObject(),
+//                                AdrComponentOperations.EDIT_COMPONENT,
+//                                e.getPath().getPathCount() == 3));
+//            }
+//        });
+//        this.componentsTree.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                repaint();
+//                if(SwingUtilities.isRightMouseButton(e)){
+//                    componentsTree.setSelectionRow(componentsTree.getClosestRowForLocation(e.getX(),e.getY()));
+//                    TreePath pathForLocation = componentsTree.getPathForLocation(e.getX(), e.getY());
+//                    if (pathForLocation != null) {
+//                        getContextMenu((AdrComponentDescriptor)
+//                                ((DefaultMutableTreeNode)pathForLocation.getLastPathComponent()).getUserObject())
+//                                .show(e.getComponent(),e.getX(),e.getY());
+//                    }
+//                }
+//            }
+//        });
 
-        this.componentsTree.addTreeSelectionListener(e -> {
-            if(this.componentsTree.getSelectionCount() > 0) {
-                MercuryStoreUI.adrComponentStateSubject.onNext(
-                        new AdrComponentDefinition(
-                                (AdrComponentDescriptor)((DefaultMutableTreeNode) e.getPath().getLastPathComponent()).getUserObject(),
-                                AdrComponentOperations.EDIT_COMPONENT,
-                                e.getPath().getPathCount() == 3));
-            }
-        });
-        this.componentsTree.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                repaint();
-                if(SwingUtilities.isRightMouseButton(e)){
-                    componentsTree.setSelectionRow(componentsTree.getClosestRowForLocation(e.getX(),e.getY()));
-                    TreePath pathForLocation = componentsTree.getPathForLocation(e.getX(), e.getY());
-                    if (pathForLocation != null) {
-                        getContextMenu((AdrComponentDescriptor)
-                                ((DefaultMutableTreeNode)pathForLocation.getLastPathComponent()).getUserObject())
-                                .show(e.getComponent(),e.getX(),e.getY());
-                    }
-                }
-            }
-        });
+//        JScrollPane scrollPane = new JScrollPane(this.componentsTree);
+//        scrollPane.setBorder(null);
+//        scrollPane.setBackground(AppThemeColor.FRAME);
+//        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+//        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+//        JScrollBar vBar = scrollPane.getVerticalScrollBar();
+//        vBar.setBackground(AppThemeColor.SLIDE_BG);
+//        vBar.setUI(new MercuryScrollBarUI());
+//        vBar.setPreferredSize(new Dimension(14, Integer.MAX_VALUE));
+//        vBar.setUnitIncrement(3);
+//        vBar.setBorder(BorderFactory.createEmptyBorder(1,1,1,2));
+//        vBar.addAdjustmentListener(e -> repaint());
 
-        JScrollPane scrollPane = new JScrollPane(this.componentsTree);
-        scrollPane.setBorder(null);
-        scrollPane.setBackground(AppThemeColor.FRAME);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        JScrollBar vBar = scrollPane.getVerticalScrollBar();
-        vBar.setBackground(AppThemeColor.SLIDE_BG);
-        vBar.setUI(new MercuryScrollBarUI());
-        vBar.setPreferredSize(new Dimension(14, Integer.MAX_VALUE));
-        vBar.setUnitIncrement(3);
-        vBar.setBorder(BorderFactory.createEmptyBorder(1,1,1,2));
-        vBar.addAdjustmentListener(e -> repaint());
-
-        JButton addComponent = this.componentsFactory.getIconButton("app/adr/add_component.png", 20, AppThemeColor.BUTTON, "todo");
+        JButton addComponent = this.componentsFactory.getButton("New");
         addComponent.setBackground(AppThemeColor.FRAME);
+        addComponent.setFont(this.componentsFactory.getFont(FontStyle.BOLD,20f));
         addComponent.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(2,2,2,2),
                 BorderFactory.createMatteBorder(1,1,1,1,AppThemeColor.BORDER)));
         addComponent.addActionListener(action -> {
-            this.componentsTree.clearSelection();
+//            this.componentsTree.clearSelection();
             MercuryStoreUI.adrStateSubject.onNext(new AdrPageDefinition<>(AdrPageState.MAIN,null));
         });
         leftPanel.add(addComponent,BorderLayout.PAGE_START);
-        leftPanel.add(scrollPane,BorderLayout.CENTER);
+        leftPanel.add(new AdrTreePanel(this.selectedProfile.getContents()),BorderLayout.CENTER);
         this.root.add(leftPanel,BorderLayout.LINE_START);
     }
 
     @Override
     public void subscribe() {
-        MercuryStoreUI.adrReloadSubject.subscribe(state -> {
-            this.componentsTree.updateUI();
-        });
+//        MercuryStoreUI.adrReloadSubject.subscribe(state -> {
+//            this.componentsTree.updateUI();
+//        });
         MercuryStoreUI.adrUpdateTree.subscribe(state -> {
-            this.componentsTree.updateUI();
+            this.repaint();
+            this.pack();
         });
     }
 
@@ -152,8 +156,8 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
     }
 
     public void reloadTree() {
-        DefaultTreeModel model = (DefaultTreeModel) this.componentsTree.getModel();
-        model.setRoot(getTreeModel());
+//        DefaultTreeModel model = (DefaultTreeModel) this.componentsTree.getModel();
+//        model.setRoot(getTreeModel());
         this.pack();
         this.repaint();
     }
@@ -206,7 +210,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         profilePanel.add(profileSelector);
         JButton openProfileSettings = this.componentsFactory.getIconButton("app/adr/profile_settings_icon.png", 20, AppThemeColor.HEADER, TooltipConstants.ADR_PROFILE_SETTINGS);
         openProfileSettings.addActionListener(action -> {
-            this.componentsTree.clearSelection();
+//            this.componentsTree.clearSelection();
             MercuryStoreUI.adrStateSubject.onNext(new AdrPageDefinition<>(AdrPageState.PROFILE,
                     Configuration.get().adrConfiguration().getEntities()));
         });
