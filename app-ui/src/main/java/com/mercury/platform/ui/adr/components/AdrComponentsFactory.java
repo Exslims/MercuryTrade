@@ -13,25 +13,23 @@ import com.mercury.platform.ui.adr.validator.IntegerFieldValidator;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.dialog.DialogCallback;
-import com.mercury.platform.ui.dialog.IconSelectDialog;
+import com.mercury.platform.ui.adr.dialog.AdrIconSelectDialog;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 
 public class AdrComponentsFactory {
     private ComponentsFactory componentsFactory;
     private boolean allowed;
-    private IconSelectDialog iconSelectDialog;
+    private AdrIconSelectDialog adrIconSelectDialog;
 
     public AdrComponentsFactory(ComponentsFactory componentsFactory) {
         this.componentsFactory = componentsFactory;
-        this.iconSelectDialog = new IconSelectDialog(this.getIconBundle());
+        this.adrIconSelectDialog = new AdrIconSelectDialog(this.getIconBundle());
     }
 
     public JPanel getComponentSizePanel(AdrComponentDescriptor descriptor, boolean fromGroup){
@@ -145,16 +143,16 @@ public class AdrComponentsFactory {
         root.add(iconPathLabel,BorderLayout.CENTER);
         JButton selectIcon = this.componentsFactory.getBorderedButton("Select");
         selectIcon.addActionListener(action -> {
-            this.iconSelectDialog.setSelectedIcon(descriptor.getIconPath());
-            this.iconSelectDialog.setCallback(selectedIconPath -> {
+            this.adrIconSelectDialog.setSelectedIcon(descriptor.getIconPath());
+            this.adrIconSelectDialog.setCallback(selectedIconPath -> {
                 descriptor.setIconPath(selectedIconPath);
                 iconLabel.setIcon(this.componentsFactory.getIcon("app/adr/icons/" + descriptor.getIconPath() + ".png",26));
                 iconPathLabel.setText(descriptor.getIconPath());
 
                 MercuryStoreUI.adrReloadSubject.onNext(descriptor);
             });
-            this.iconSelectDialog.setLocationRelativeTo(root);
-            this.iconSelectDialog.setVisible(true);
+            this.adrIconSelectDialog.setLocationRelativeTo(root);
+            this.adrIconSelectDialog.setVisible(true);
         });
         root.add(selectIcon,BorderLayout.LINE_END);
         return root;

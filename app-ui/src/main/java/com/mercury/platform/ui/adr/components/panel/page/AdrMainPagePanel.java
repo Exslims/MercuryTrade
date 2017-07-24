@@ -26,7 +26,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
 //            this.add(this.componentsFactory.getTextLabel(this.payload.getTitle() + ">"), BorderLayout.PAGE_START);
 //        }
 
-        JPanel buttonsPanel = this.componentsFactory.getJPanel(new GridLayout(4, 1,6,6));
+        JPanel buttonsPanel = this.componentsFactory.getJPanel(new GridLayout(5, 1,6,6));
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         JPanel createIconsGroup = this.getButton(
                 "app/adr/create_icon_group.png",
@@ -88,10 +88,19 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
                 MercuryStoreUI.adrComponentStateSubject.onNext(definition);
             }
         });
+        JPanel importButton = this.getButton(
+                "app/adr/create_pb.png",
+                TooltipConstants.ADR_IMPORT_COMPONENT);
+        importButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+        });
         buttonsPanel.add(createIconsGroup);
         buttonsPanel.add(createPbGroup);
         buttonsPanel.add(createIcon);
         buttonsPanel.add(createPb);
+        buttonsPanel.add(importButton);
         this.add(buttonsPanel,BorderLayout.PAGE_START);
     }
 
@@ -119,11 +128,13 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
             @Override
             public void mouseEntered(MouseEvent e) {
                 root.setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_MESSAGE));
+                root.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 root.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK));
+                root.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
         return root;

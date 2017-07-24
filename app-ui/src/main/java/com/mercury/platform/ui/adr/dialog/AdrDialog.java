@@ -1,22 +1,17 @@
-package com.mercury.platform.ui.dialog;
+package com.mercury.platform.ui.adr.dialog;
 
 
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class BaseDialog<T,P> extends JDialog {
-    @Setter
-    protected DialogCallback<T> callback;
-    protected P payload;
+public abstract class AdrDialog<T> extends JDialog{
     protected ComponentsFactory componentsFactory = new ComponentsFactory();
-    public BaseDialog(DialogCallback<T> callback, Component relative, P payload) {
+    protected T payload;
+    public AdrDialog(Component relative, T payload) {
         this.payload = payload;
-        this.callback = callback;
         this.setModal(true);
         this.setAlwaysOnTop(true);
         this.setLayout(new BorderLayout());

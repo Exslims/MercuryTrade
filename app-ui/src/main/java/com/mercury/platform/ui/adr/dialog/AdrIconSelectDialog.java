@@ -1,9 +1,10 @@
-package com.mercury.platform.ui.dialog;
+package com.mercury.platform.ui.adr.dialog;
 
 
 import com.mercury.platform.ui.adr.components.panel.ui.IconsListCellRenderer;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
+import com.mercury.platform.ui.dialog.BaseDialog;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -12,10 +13,11 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.List;
 
-public class IconSelectDialog extends BaseDialog<String,String[]> {
+public class AdrIconSelectDialog extends BaseDialog<String,String[]> {
     private JList iconsList;
-    public IconSelectDialog(String[] payload) {
+    public AdrIconSelectDialog(String[] payload) {
         super(null, null, payload);
+        this.setTitle("Select icon");
     }
 
     @Override

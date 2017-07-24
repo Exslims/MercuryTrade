@@ -26,6 +26,9 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AdrManagerFrame extends AbstractTitledComponentFrame{
     private JPanel currentPage;
@@ -44,6 +47,8 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         UIManager.getLookAndFeelDefaults().put("Menu.arrowIcon", null);
         UIManager.put("MenuItem.background", AppThemeColor.FRAME);
         UIManager.put("MenuItem.opaque", true);
+        UIManager.put("ComboBox.selectionBackground", AppThemeColor.HEADER);
+        UIManager.put("ComboBox.selectionForeground", AppThemeColor.TEXT_DEFAULT);
         this.subscribe();
     }
 
@@ -192,13 +197,20 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setBorder(BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.MSG_HEADER_BORDER));
         root.setBackground(AppThemeColor.HEADER);
-        root.add(this.componentsFactory.getTextLabel("Selected profile: " + this.selectedProfile.getProfileName()),BorderLayout.LINE_START);
+        JPanel profilePanel = this.componentsFactory.getJPanel(new GridLayout(1, 2));
+        profilePanel.setBackground(AppThemeColor.HEADER);
+        profilePanel.add(this.componentsFactory.getTextLabel("Selected profile: "),BorderLayout.LINE_START);
+        List<String> profilesNames = Configuration.get().adrConfiguration().getEntities().stream().map(AdrProfileDescriptor::getProfileName).collect(Collectors.toList());
+        JComboBox profileSelector = this.componentsFactory.getComboBox(profilesNames.toArray(new String[0]));
+        profileSelector.setBorder(BorderFactory.createLineBorder(AppThemeColor.MSG_HEADER_BORDER));
+        profilePanel.add(profileSelector);
         JButton openProfileSettings = this.componentsFactory.getIconButton("app/adr/profile_settings_icon.png", 20, AppThemeColor.HEADER, TooltipConstants.ADR_PROFILE_SETTINGS);
         openProfileSettings.addActionListener(action -> {
             this.componentsTree.clearSelection();
             MercuryStoreUI.adrStateSubject.onNext(new AdrPageDefinition<>(AdrPageState.PROFILE,
                     Configuration.get().adrConfiguration().getEntities()));
         });
+        root.add(profilePanel,BorderLayout.LINE_START);
         root.add(openProfileSettings,BorderLayout.LINE_END);
         return root;
     }

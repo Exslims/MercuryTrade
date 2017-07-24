@@ -51,12 +51,11 @@ public class AdrManager implements AsSubscriber{
                 }
             }
         });
-
+        this.adrManagerFrame.init();
         this.frames.forEach(it -> {
             it.init();
             it.disableSettings();
         });
-        this.adrManagerFrame.init();
         this.subscribe();
 
         AdrFrameMagnet.INSTANCE.setDescriptors(this.selectedProfile.getContents());

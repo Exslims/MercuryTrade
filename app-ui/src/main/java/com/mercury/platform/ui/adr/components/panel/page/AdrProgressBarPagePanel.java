@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.adr.components.panel.page;
 
+import com.mercury.platform.shared.config.descriptor.adr.AdrComponentOrientation;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconAlignment;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconType;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
@@ -39,6 +40,7 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         JLabel opacityLabel = this.componentsFactory.getTextLabel(opacityLabelText);
         JLabel locationLabel = this.componentsFactory.getTextLabel(locationText);
         JLabel sizeLabel = this.componentsFactory.getTextLabel("Progress bar size:");
+        JLabel pbOrientationLabel = this.componentsFactory.getTextLabel("Orientation:");
 
         JLabel hotKeyLabel = this.componentsFactory.getTextLabel("HotKey:");
         JLabel iconLabel = this.componentsFactory.getTextLabel("Icon:");
@@ -66,6 +68,12 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
             opacitySlider.setEnabled(false);
         }
         JPanel sizePanel = this.adrComponentsFactory.getComponentSizePanel(this.payload,this.fromGroup);
+        JComboBox pbOrientation = this.componentsFactory.getComboBox(new String[]{"Horizontal", "Vertical"});
+        pbOrientation.setSelectedIndex(this.payload.getOrientation().ordinal());
+        pbOrientation.addItemListener(e -> {
+            this.payload.setOrientation(AdrComponentOrientation.valueOfPretty((String) pbOrientation.getSelectedItem()));
+            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
+        });
         JButton hotKeyButton = this.adrComponentsFactory.getHotKeyButton(this.payload.getHotKeyDescriptor());
 
         JPanel iconSelectPanel = this.adrComponentsFactory.getIconSelectPanel(this.payload);
@@ -111,7 +119,7 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         textPanel.add(textEnableBox,BorderLayout.LINE_START);
         textPanel.add(textColorPanel,BorderLayout.CENTER);
 
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(4, 2,0,6));
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(5, 2,0,6));
         JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(11, 2,0,6));
         generalPanel.setBackground(AppThemeColor.SLIDE_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -131,6 +139,8 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         generalPanel.add(this.adrComponentsFactory.getLocationPanel(this.payload,this.fromGroup));
         generalPanel.add(sizeLabel);
         generalPanel.add(sizePanel);
+        generalPanel.add(pbOrientationLabel);
+        generalPanel.add(pbOrientation);
 
         specPanel.add(hotKeyLabel);
         specPanel.add(hotKeyButton);

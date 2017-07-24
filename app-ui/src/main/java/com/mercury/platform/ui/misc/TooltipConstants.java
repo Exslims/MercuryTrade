@@ -51,6 +51,7 @@ public class TooltipConstants {
     public static final String ADR_CREATE_PB_GROUP = "Create progress bars group";
     public static final String ADR_CREATE_ICON = "Create icon component";
     public static final String ADR_CREATE_PROGRESS_BAR = "Create progress bar component";
+    public static final String ADR_IMPORT_COMPONENT = "Import component";
 
     public static final String ADR_CREATE_ICON_GROUP_DESC = "Данный компонент является группой которая может содержать множество других компонент типа иконки, группа может быть динамической или статической и имеет ориентацию";
     public static final String ADR_CREATE_PB_GROUP_DESC = "Данный компонент является группой которая может содержать множество других компонент типа прогресс баров, группа может быть динамической или статической и имеет ориентацию";

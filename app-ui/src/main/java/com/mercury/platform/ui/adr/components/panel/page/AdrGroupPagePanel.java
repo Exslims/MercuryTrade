@@ -33,7 +33,7 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
             sizeText = "Progress bars width:";
         }
         JLabel sizeLabel = this.componentsFactory.getTextLabel(sizeText);
-        JLabel groupDirectionLabel = this.componentsFactory.getTextLabel("Direction:");
+        JLabel groupOrientationLabel = this.componentsFactory.getTextLabel("Group's orientation:");
 
         JTextField titleField = this.componentsFactory.getTextField(this.payload.getTitle(), FontStyle.BOLD,16);
         titleField.addFocusListener(new FocusAdapter() {
@@ -92,7 +92,7 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
 
         specPanel.add(groupTypeLabel);
         specPanel.add(groupType);
-        specPanel.add(groupDirectionLabel);
+        specPanel.add(groupOrientationLabel);
         specPanel.add(groupOrientation);
         specPanel.add(sizeLabel);
         specPanel.add(iconSizePanel);

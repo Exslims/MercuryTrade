@@ -6,9 +6,7 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
-/**
- * Created by Константин on 04.01.2017.
- */
+
 public class MercuryComboBoxUI extends BasicComboBoxUI {
     public static MercuryComboBoxUI createUI(JComponent c) {
         return new MercuryComboBoxUI();
@@ -17,4 +15,5 @@ public class MercuryComboBoxUI extends BasicComboBoxUI {
     @Override protected JButton createArrowButton() {
         return new ComponentsFactory().getIconButton("app/expand-combobox.png",16, AppThemeColor.FRAME_ALPHA,"Expand.");
     }
+
 }
