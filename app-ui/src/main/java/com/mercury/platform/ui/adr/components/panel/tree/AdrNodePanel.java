@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.adr.components.panel.tree;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
+import com.mercury.platform.ui.adr.components.AdrComponentsFactory;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -15,10 +16,11 @@ public abstract class AdrNodePanel<D extends AdrComponentDescriptor> extends JPa
     @Getter
     protected D descriptor;
     protected ComponentsFactory componentsFactory = new ComponentsFactory();
+    protected AdrComponentsFactory adrComponentsFactory = new AdrComponentsFactory(this.componentsFactory);
 
     public AdrNodePanel(D descriptor) {
         this.descriptor = descriptor;
-        this.addMouseListener(new AdrMouseOverListener(this));
+        this.addMouseListener(new AdrMouseOverListener<>(this, descriptor));
         MercuryStoreUI.adrReloadSubject.subscribe(source -> {
             if(this.descriptor.equals(source)){
                 this.update();

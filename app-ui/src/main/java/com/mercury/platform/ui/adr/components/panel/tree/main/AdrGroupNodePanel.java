@@ -1,6 +1,8 @@
-package com.mercury.platform.ui.adr.components.panel.tree;
+package com.mercury.platform.ui.adr.components.panel.tree.main;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
+import com.mercury.platform.ui.adr.components.panel.tree.AdrNodePanel;
+import com.mercury.platform.ui.adr.dialog.ExportHelper;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
@@ -41,10 +43,12 @@ public class AdrGroupNodePanel extends AdrNodePanel<AdrGroupDescriptor> {
             }
             MercuryStoreUI.adrUpdateTree.onNext(true);
         });
-        JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 16, AppThemeColor.FRAME, TooltipConstants.ADR_REMOVE_BUTTON);
-        JButton addButton = this.componentsFactory.getIconButton("app/adr/add_node.png", 16, AppThemeColor.FRAME, TooltipConstants.ADR_ADD_BUTTON);
-        JButton exportButton = this.componentsFactory.getIconButton("app/adr/export_node.png", 16, AppThemeColor.FRAME, TooltipConstants.ADR_EXPORT_BUTTON);
-
+        JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_REMOVE_BUTTON);
+        JButton addButton = this.componentsFactory.getIconButton("app/adr/add_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_ADD_BUTTON);
+        JButton exportButton = this.componentsFactory.getIconButton("app/adr/export_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_EXPORT_BUTTON);
+        exportButton.addActionListener(action -> {
+            ExportHelper.exportComponent(this.descriptor);
+        });
         JPanel buttonsPanel = this.componentsFactory.getJPanel(new GridLayout(1, 2));
         buttonsPanel.add(exportButton);
         buttonsPanel.add(addButton);

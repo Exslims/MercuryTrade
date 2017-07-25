@@ -16,6 +16,7 @@ import com.mercury.platform.ui.dialog.DialogCallback;
 import com.mercury.platform.ui.adr.dialog.AdrIconSelectDialog;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
+import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
@@ -334,6 +335,57 @@ public class AdrComponentsFactory {
         root.add(vGap);
         root.add(vGapField);
         return root;
+    }
+    public JPopupMenu getContextMenu(AdrComponentDescriptor selectedDescriptor) {
+        JPopupMenu contextMenu = this.componentsFactory.getContextPanel();
+        switch (selectedDescriptor.getType()){
+            case GROUP: {
+                JMenuItem addComponent = this.componentsFactory.getMenuItem("Add");
+                JMenuItem iconComponent = this.componentsFactory.getMenuItem("Icon");
+                JMenuItem pbComponent = this.componentsFactory.getMenuItem("Progress bar");
+                addComponent.add(iconComponent);
+                addComponent.add(pbComponent);
+                contextMenu.add(addComponent);
+                break;
+            }
+        }
+        JMenuItem duplicateComponent = this.componentsFactory.getMenuItem("Duplicate");
+        JMenuItem removeComponent = this.componentsFactory.getMenuItem("Remove");
+        contextMenu.add(duplicateComponent);
+        contextMenu.add(removeComponent);
+        return contextMenu;
+    }
+
+    public JPanel getRightComponentOperationsPanel(AdrComponentDescriptor descriptor) {
+        JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 15, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_REMOVE_BUTTON);
+        JButton visibleButton = this.componentsFactory.getIconButton("app/adr/visible_node_on.png", 15, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_EXPORT_BUTTON);
+        visibleButton.addActionListener(action -> {
+            if(descriptor.isVisible()){
+                visibleButton.setIcon(this.componentsFactory.getIcon("app/adr/visible_node_off.png",15));
+                descriptor.setVisible(false);
+            }else {
+                visibleButton.setIcon(this.componentsFactory.getIcon("app/adr/visible_node_on.png",15));
+                descriptor.setVisible(true);
+            }
+        });
+        JPanel buttonsPanel = this.componentsFactory.getJPanel(new GridLayout(2, 1));
+        buttonsPanel.setBackground(AppThemeColor.SLIDE_BG);
+        buttonsPanel.add(removeButton);
+        buttonsPanel.add(visibleButton);
+        return buttonsPanel;
+    }
+    public JPanel getLeftComponentOperationsPanel(AdrComponentDescriptor descriptor) {
+        JButton duplicateButton = this.componentsFactory.getIconButton("app/adr/duplicate_node.png", 16, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_EXPORT_BUTTON);
+        JButton moveButton = this.componentsFactory.getIconButton("app/adr/move_node.png", 15, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_EXPORT_BUTTON);
+        moveButton.addActionListener(action -> {
+            JPopupMenu contextMenu = this.getContextMenu(descriptor);
+            contextMenu.show(moveButton,8,8);
+        });
+        JPanel buttonsPanel = this.componentsFactory.getJPanel(new GridLayout(2, 2));
+        buttonsPanel.setBackground(AppThemeColor.SLIDE_BG);
+        buttonsPanel.add(moveButton);
+        buttonsPanel.add(duplicateButton);
+        return buttonsPanel;
     }
 
     private JColorChooser getColorChooser(){

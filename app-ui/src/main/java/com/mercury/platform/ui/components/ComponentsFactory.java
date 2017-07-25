@@ -602,16 +602,25 @@ public class ComponentsFactory{
         panel.setBackground(AppThemeColor.FRAME_RGB);
         return panel;
     }
-    public JPanel wrapToSlide(JPanel panel){
+    public JPanel wrapToSlide(JComponent panel){
         JPanel wrapper = this.getJPanel(new BorderLayout());
         wrapper.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         wrapper.add(panel,BorderLayout.CENTER);
         return wrapper;
     }
-    public JPanel wrapToSlide(JPanel panel,int top,int left,int bottom,int right){
-        JPanel wrapper = this.getJPanel(new BorderLayout());
+    public JPanel wrapToSlide(JComponent panel,Color bg){
+        JPanel wrapper = this.wrapToSlide(panel);
+        wrapper.setBackground(bg);
+        return wrapper;
+    }
+    public JPanel wrapToSlide(JComponent panel,Color bg,int top,int left,int bottom,int righ){
+        JPanel wrapper = this.wrapToSlide(panel,top,left,bottom,righ);
+        wrapper.setBackground(bg);
+        return wrapper;
+    }
+    public JPanel wrapToSlide(JComponent panel,int top,int left,int bottom,int right){
+        JPanel wrapper = this.wrapToSlide(panel);
         wrapper.setBorder(BorderFactory.createEmptyBorder(top,left,bottom,right));
-        wrapper.add(panel,BorderLayout.CENTER);
         return wrapper;
     }
 
