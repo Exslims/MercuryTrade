@@ -388,6 +388,37 @@ public class AdrComponentsFactory {
         return buttonsPanel;
     }
 
+    public JPanel getCounterPanel(JPanel innerPanel, String title, Color bg){
+        JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
+        root.setBackground(bg);
+
+        JPanel headerPanel = this.componentsFactory.getJPanel(new BorderLayout());
+        headerPanel.setBackground(bg);
+        JLabel titleLabel = this.componentsFactory.getTextLabel(title);
+        JButton counterButton = this.getCounterButton(innerPanel,bg);
+        headerPanel.add(titleLabel,BorderLayout.CENTER);
+        headerPanel.add(counterButton,BorderLayout.LINE_START);
+        root.add(headerPanel,BorderLayout.PAGE_START);
+        root.add(innerPanel,BorderLayout.CENTER);
+        return root;
+    }
+
+    public JButton getCounterButton(JPanel targetPanel,Color bg){
+        JButton expandButton = this.componentsFactory.getIconButton("app/adr/expand_icon.png", 16, AppThemeColor.FRAME, "");
+        expandButton.setBackground(bg);
+        expandButton.addActionListener(action -> {
+            if(targetPanel.isVisible()){
+                expandButton.setIcon(this.componentsFactory.getIcon("app/adr/expand_icon.png",16));
+                targetPanel.setVisible(false);
+            }else {
+                expandButton.setIcon(this.componentsFactory.getIcon("app/adr/collapse_icon.png",16));
+                targetPanel.setVisible(true);
+            }
+            MercuryStoreUI.adrUpdateTree.onNext(true); //todo
+        });
+        return expandButton;
+    }
+
     private JColorChooser getColorChooser(){
         JColorChooser colorChooser = new JColorChooser();
         String type = UIManager.getString("ColorChooser.hsvNameText", colorChooser.getLocale());

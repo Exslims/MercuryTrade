@@ -65,7 +65,7 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         }
         JPanel iconSizePanel = this.adrComponentsFactory.getComponentSizePanel(this.payload,this.fromGroup);
         JButton hotKeyButton = this.adrComponentsFactory.getHotKeyButton(this.payload.getHotKeyDescriptor());
-
+        JPanel locationPanel = this.adrComponentsFactory.getLocationPanel(this.payload, this.fromGroup);
         JPanel iconSelectPanel = this.adrComponentsFactory.getIconSelectPanel(this.payload);
         JTextField fontSizeField = this.adrComponentsFactory.getSmartField(this.payload.getFontSize(), new IntegerFieldValidator(4, 1000), value -> {
             this.payload.setFontSize(value);
@@ -94,33 +94,31 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
                 this.payload,
                 color -> this.payload.setBorderColor(color));
 
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(4, 2,0,6));
-        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(9, 2,0,6));
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(6, 2,0,6));
+        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(7, 2,0,6));
         generalPanel.setBackground(AppThemeColor.SLIDE_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK),
                 BorderFactory.createEmptyBorder(4,2,4,2)));
 
         specPanel.setBackground(AppThemeColor.SLIDE_BG);
-        specPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK),
-                BorderFactory.createEmptyBorder(4,2,4,2)));
+        specPanel.setBorder(BorderFactory.createEmptyBorder(0,0,4,2));
 
         generalPanel.add(titleLabel);
         generalPanel.add(titleField);
-        generalPanel.add(opacityLabel);
-        generalPanel.add(opacitySlider);
         generalPanel.add(locationLabel);
-        generalPanel.add(this.adrComponentsFactory.getLocationPanel(this.payload,this.fromGroup));
+        generalPanel.add(locationPanel);
         generalPanel.add(sizeLabel);
         generalPanel.add(iconSizePanel);
+        generalPanel.add(hotKeyLabel);
+        generalPanel.add(hotKeyButton);
+        generalPanel.add(iconLabel);
+        generalPanel.add(iconSelectPanel);
+        generalPanel.add(durationLabel);
+        generalPanel.add(durationField);
 
-        specPanel.add(hotKeyLabel);
-        specPanel.add(hotKeyButton);
-        specPanel.add(iconLabel);
-        specPanel.add(iconSelectPanel);
-        specPanel.add(durationLabel);
-        specPanel.add(durationField);
+        specPanel.add(opacityLabel);
+        specPanel.add(opacitySlider);
         specPanel.add(textColorLabel);
         specPanel.add(textPanel);
         specPanel.add(fontSizeLabel);
@@ -134,8 +132,13 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         specPanel.add(animationMaskLabel);
         specPanel.add(animationBox);
 
+        specPanel.setVisible(false);
+
+        JPanel advancedPanel = this.adrComponentsFactory.getCounterPanel(specPanel, "Advanced:", AppThemeColor.ADR_BG);
+        advancedPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
+
         container.add(this.componentsFactory.wrapToSlide(generalPanel));
-        container.add(this.componentsFactory.wrapToSlide(specPanel));
+        container.add(this.componentsFactory.wrapToSlide(advancedPanel));
 
         this.add(verticalContainer,BorderLayout.CENTER);
     }

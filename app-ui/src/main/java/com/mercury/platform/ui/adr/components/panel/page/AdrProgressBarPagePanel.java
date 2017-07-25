@@ -74,6 +74,7 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
             this.payload.setOrientation(AdrComponentOrientation.valueOfPretty((String) pbOrientation.getSelectedItem()));
             MercuryStoreUI.adrReloadSubject.onNext(this.payload);
         });
+        JPanel locationPanel = this.adrComponentsFactory.getLocationPanel(this.payload, this.fromGroup);
         JButton hotKeyButton = this.adrComponentsFactory.getHotKeyButton(this.payload.getHotKeyDescriptor());
 
         JPanel iconSelectPanel = this.adrComponentsFactory.getIconSelectPanel(this.payload);
@@ -104,13 +105,22 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         JCheckBox invertBox = this.componentsFactory.getCheckBox(this.payload.isInvert());
         JPanel backgroundColorPanel = this.adrComponentsFactory.getColorPickerPanel(
                 this.payload.getBackgroundColor(),
-                color -> this.payload.setBackgroundColor(color));
+                color -> {
+                    this.payload.setBackgroundColor(color);
+                    MercuryStoreUI.adrUpdateTree.onNext(true);
+                });
         JPanel foregroundColorPanel = this.adrComponentsFactory.getColorPickerPanel(
                 this.payload.getForegroundColor(),
-                color -> this.payload.setForegroundColor(color));
+                color -> {
+                    this.payload.setForegroundColor(color);
+                    MercuryStoreUI.adrUpdateTree.onNext(true);
+                });
         JPanel borderColorPanel = this.adrComponentsFactory.getBorderColorPanel(
                 this.payload,
-                color -> this.payload.setBorderColor(color));
+                color -> {
+                    this.payload.setBorderColor(color);
+                    MercuryStoreUI.adrUpdateTree.onNext(true);
+                });
         JPanel textColorPanel = this.adrComponentsFactory.getTextColorPanel(this.payload);
         JPanel textPanel = this.componentsFactory.getJPanel(new BorderLayout());
         textPanel.setBackground(AppThemeColor.SLIDE_BG);
@@ -119,37 +129,35 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         textPanel.add(textEnableBox,BorderLayout.LINE_START);
         textPanel.add(textColorPanel,BorderLayout.CENTER);
 
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(5, 2,0,6));
-        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(11, 2,0,6));
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(6, 2,0,6));
+        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(10, 2,0,6));
         generalPanel.setBackground(AppThemeColor.SLIDE_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK),
                 BorderFactory.createEmptyBorder(4,2,4,2)));
 
         specPanel.setBackground(AppThemeColor.SLIDE_BG);
-        specPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK),
-                BorderFactory.createEmptyBorder(4,2,4,2)));
+        specPanel.setBorder(BorderFactory.createEmptyBorder(0,0,4,2));
 
         generalPanel.add(titleLabel);
         generalPanel.add(titleField);
-        generalPanel.add(opacityLabel);
-        generalPanel.add(opacitySlider);
         generalPanel.add(locationLabel);
-        generalPanel.add(this.adrComponentsFactory.getLocationPanel(this.payload,this.fromGroup));
+        generalPanel.add(locationPanel);
         generalPanel.add(sizeLabel);
         generalPanel.add(sizePanel);
-        generalPanel.add(pbOrientationLabel);
-        generalPanel.add(pbOrientation);
+        generalPanel.add(hotKeyLabel);
+        generalPanel.add(hotKeyButton);
+        generalPanel.add(iconLabel);
+        generalPanel.add(iconPanel);
+        generalPanel.add(durationLabel);
+        generalPanel.add(durationField);
 
-        specPanel.add(hotKeyLabel);
-        specPanel.add(hotKeyButton);
-        specPanel.add(iconLabel);
-        specPanel.add(iconPanel);
+        specPanel.add(opacityLabel);
+        specPanel.add(opacitySlider);
+        specPanel.add(pbOrientationLabel);
+        specPanel.add(pbOrientation);
         specPanel.add(iconAlignmentLabel);
         specPanel.add(iconAlignment);
-        specPanel.add(durationLabel);
-        specPanel.add(durationField);
         specPanel.add(backgroundColorLabel);
         specPanel.add(backgroundColorPanel);
         specPanel.add(foregroundColorLabel);
@@ -165,8 +173,13 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         specPanel.add(invertLabel);
         specPanel.add(invertBox);
 
+        specPanel.setVisible(false);
+
+        JPanel advancedPanel = this.adrComponentsFactory.getCounterPanel(specPanel, "Advanced:", AppThemeColor.ADR_BG);
+        advancedPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
+
         container.add(this.componentsFactory.wrapToSlide(generalPanel));
-        container.add(this.componentsFactory.wrapToSlide(specPanel));
+        container.add(this.componentsFactory.wrapToSlide(advancedPanel));
 
         this.add(verticalContainer,BorderLayout.CENTER);
     }

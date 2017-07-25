@@ -26,11 +26,11 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
         JLabel opacityLabel = this.componentsFactory.getTextLabel("Opacity:");
         JLabel locationLabel = this.componentsFactory.getTextLabel("Location:");
 
-        JLabel paddingLabel = this.componentsFactory.getTextLabel("Components padding:");
-        JLabel groupTypeLabel = this.componentsFactory.getTextLabel("Group type:");
-        String sizeText = "Icons size:";
+        JLabel paddingLabel = this.componentsFactory.getTextLabel("Component's padding:");
+        JLabel groupTypeLabel = this.componentsFactory.getTextLabel("Group's type:");
+        String sizeText = "Icon's size:";
         if(this.payload.getContentType().equals(AdrGroupContentType.PROGRESS_BARS)){
-            sizeText = "Progress bars width:";
+            sizeText = "Progress bar's size:";
         }
         JLabel sizeLabel = this.componentsFactory.getTextLabel(sizeText);
         JLabel groupOrientationLabel = this.componentsFactory.getTextLabel("Group's orientation:");
@@ -69,36 +69,38 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
             this.payload.setOrientation(AdrComponentOrientation.valueOfPretty((String) groupOrientation.getSelectedItem()));
             MercuryStoreUI.adrReloadSubject.onNext(this.payload);
         });
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(4, 2,0,6));
-        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(3, 2,0,6));
-        generalPanel.setBackground(AppThemeColor.SLIDE_BG);
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(3, 2,0,6));
+        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(4, 2,0,6));
+        generalPanel.setBackground(AppThemeColor.ADR_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK),
+                BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER),
                 BorderFactory.createEmptyBorder(4,2,4,2)));
 
         specPanel.setBackground(AppThemeColor.SLIDE_BG);
-        specPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK),
-                BorderFactory.createEmptyBorder(4,2,4,2)));
+        specPanel.setBorder(BorderFactory.createEmptyBorder(0,0,4,2));
         generalPanel.add(titleLabel);
         generalPanel.add(titleField);
-        generalPanel.add(opacityLabel);
-        generalPanel.add(opacitySlider);
         generalPanel.add(locationLabel);
         generalPanel.add(locationPanel);
-        generalPanel.add(paddingLabel);
-        generalPanel.add(paddingPanel);
+        generalPanel.add(sizeLabel);
+        generalPanel.add(iconSizePanel);
 
 
+        specPanel.add(opacityLabel);
+        specPanel.add(opacitySlider);
         specPanel.add(groupTypeLabel);
         specPanel.add(groupType);
         specPanel.add(groupOrientationLabel);
         specPanel.add(groupOrientation);
-        specPanel.add(sizeLabel);
-        specPanel.add(iconSizePanel);
+        specPanel.add(paddingLabel);
+        specPanel.add(paddingPanel);
 
+        specPanel.setVisible(false);
+
+        JPanel advancedPanel = this.adrComponentsFactory.getCounterPanel(specPanel, "Advanced:", AppThemeColor.ADR_BG);
+        advancedPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
         container.add(this.componentsFactory.wrapToSlide(generalPanel));
-        container.add(this.componentsFactory.wrapToSlide(specPanel));
+        container.add(this.componentsFactory.wrapToSlide(advancedPanel));
         this.add(verticalContainer,BorderLayout.PAGE_START);
     }
 }
