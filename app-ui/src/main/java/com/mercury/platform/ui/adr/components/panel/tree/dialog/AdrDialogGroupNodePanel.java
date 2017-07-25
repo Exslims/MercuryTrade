@@ -2,7 +2,6 @@ package com.mercury.platform.ui.adr.components.panel.tree.dialog;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrNodePanel;
-import com.mercury.platform.ui.adr.dialog.ExportHelper;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
@@ -16,6 +15,7 @@ public class AdrDialogGroupNodePanel extends AdrNodePanel<AdrGroupDescriptor>{
     private JPanel container;
     public AdrDialogGroupNodePanel(AdrGroupDescriptor descriptor) {
         super(descriptor);
+        this.mouseListener.setProcessSelect(false);
     }
 
     @Override

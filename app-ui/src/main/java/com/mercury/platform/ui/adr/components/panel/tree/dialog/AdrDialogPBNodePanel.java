@@ -13,6 +13,7 @@ import java.awt.*;
 public class AdrDialogPBNodePanel extends AdrNodePanel<AdrProgressBarDescriptor>{
     public AdrDialogPBNodePanel(AdrProgressBarDescriptor descriptor) {
         super(descriptor);
+        this.mouseListener.setProcessSelect(false);
     }
     @Override
     public void createUI() {

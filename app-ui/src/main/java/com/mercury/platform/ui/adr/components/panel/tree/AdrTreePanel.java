@@ -2,7 +2,6 @@ package com.mercury.platform.ui.adr.components.panel.tree;
 
 import com.mercury.platform.shared.config.descriptor.adr.*;
 import com.mercury.platform.ui.components.ComponentsFactory;
-import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import lombok.Getter;
@@ -28,14 +27,14 @@ public class AdrTreePanel extends JPanel{
         this.container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
         JScrollPane verticalContainer = this.componentsFactory.getVerticalContainer(container);
         this.add(verticalContainer,BorderLayout.CENTER);
-        this.initTree(this.container,this.descriptors);
+        this.initTree(this.container,this.descriptors,false);
     }
 
-    private void initTree(JPanel parent, List<AdrComponentDescriptor> child) {
+    private void initTree(JPanel parent, List<AdrComponentDescriptor> child, boolean inner) {
         child.forEach(it -> {
-            JPanel viewOf = this.renderer.getViewOf(it);
+            JPanel viewOf = this.renderer.getViewOf(it,inner);
             if(it instanceof AdrGroupDescriptor){
-                this.initTree(viewOf,((AdrGroupDescriptor) it).getCells());
+                this.initTree(viewOf,((AdrGroupDescriptor) it).getCells(),true);
                 parent.add(this.componentsFactory.wrapToSlide(viewOf,2,4,2,4));
             }else {
                 parent.add(this.componentsFactory.wrapToSlide(viewOf,2,4,2,4));

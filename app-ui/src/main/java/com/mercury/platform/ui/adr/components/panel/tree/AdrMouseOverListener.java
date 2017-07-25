@@ -5,6 +5,7 @@ import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
 import com.mercury.platform.ui.adr.routing.AdrComponentOperations;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
+import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,11 +14,17 @@ import java.awt.event.MouseEvent;
 
 
 public class AdrMouseOverListener<T extends AdrComponentDescriptor> extends MouseAdapter {
-    private JPanel source;
+    private JComponent source;
     private T descriptor;
+    private Cursor overCursor = new Cursor(Cursor.HAND_CURSOR);
     private boolean clicked = false;
+    @Setter
+    private boolean processSelect = true;
+    @Setter
+    private boolean fromGroup = true;
 
-    public AdrMouseOverListener(JPanel source, T descriptor) {
+    public AdrMouseOverListener(JComponent source, T descriptor, boolean fromGroup) {
+        this.fromGroup = fromGroup;
         this.source = source;
         this.descriptor = descriptor;
         MercuryStoreUI.adrSelectSubject.subscribe(selected -> {
@@ -30,16 +37,22 @@ public class AdrMouseOverListener<T extends AdrComponentDescriptor> extends Mous
             }
         });
     }
+    public AdrMouseOverListener(JComponent source, T descriptor, Cursor overCursor) {
+        this(source,descriptor,true);
+        this.overCursor = overCursor;
+    }
     @Override
     public void mouseClicked(MouseEvent e) {
         this.source.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER));
-        this.clicked = !this.clicked;
-        MercuryStoreUI.adrSelectSubject.onNext(this.descriptor);
-        MercuryStoreUI.adrComponentStateSubject.onNext(
-                        new AdrComponentDefinition(
-                               this.descriptor,
-                                AdrComponentOperations.EDIT_COMPONENT,
-                                true));
+        if(this.processSelect) {
+            this.clicked = !this.clicked;
+            MercuryStoreUI.adrSelectSubject.onNext(this.descriptor);
+            MercuryStoreUI.adrComponentStateSubject.onNext(
+                    new AdrComponentDefinition(
+                            this.descriptor,
+                            AdrComponentOperations.EDIT_COMPONENT,
+                            this.fromGroup));
+        }
     }
 
     @Override
@@ -47,7 +60,7 @@ public class AdrMouseOverListener<T extends AdrComponentDescriptor> extends Mous
         if(!this.clicked) {
             this.source.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, AppThemeColor.ADR_MOUSE_OVER_BORDER));
         }
-        this.source.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.source.setCursor(this.overCursor);
     }
 
     @Override

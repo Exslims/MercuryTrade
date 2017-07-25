@@ -14,7 +14,7 @@ import java.awt.*;
 public class AdrGroupNodePanel extends AdrNodePanel<AdrGroupDescriptor> {
     private JPanel container;
     public AdrGroupNodePanel(AdrGroupDescriptor descriptor) {
-        super(descriptor);
+        super(descriptor,false);
     }
 
     @Override

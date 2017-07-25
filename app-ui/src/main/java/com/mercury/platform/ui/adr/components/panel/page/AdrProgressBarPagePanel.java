@@ -15,10 +15,7 @@ import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 
 public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescriptor> {
     @Override
@@ -67,6 +64,13 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         if(this.fromGroup){
             opacitySlider.setEnabled(false);
         }
+        opacitySlider.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                payload.setOpacity(opacitySlider.getValue() / 100f);
+                MercuryStoreUI.adrReloadSubject.onNext(payload);
+            }
+        });
         JPanel sizePanel = this.adrComponentsFactory.getComponentSizePanel(this.payload,this.fromGroup);
         JComboBox pbOrientation = this.componentsFactory.getComboBox(new String[]{"Horizontal", "Vertical"});
         pbOrientation.setSelectedIndex(this.payload.getOrientation().ordinal());
@@ -89,8 +93,10 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         iconPanel.add(iconSelectPanel,BorderLayout.CENTER);
         JComboBox iconAlignment = this.componentsFactory.getComboBox(new String[]{"Left side","Right side"});
         iconAlignment.setSelectedItem(this.payload.getIconAlignment());
-        iconAlignment.addItemListener(e ->
-                this.payload.setIconAlignment(AdrIconAlignment.valueOfPretty((String) iconAlignment.getSelectedItem())));
+        iconAlignment.addItemListener(e -> {
+                this.payload.setIconAlignment(AdrIconAlignment.valueOfPretty((String) iconAlignment.getSelectedItem()));
+                MercuryStoreUI.adrUpdateTree.onNext(true);
+        });
         JTextField fontSizeField = this.adrComponentsFactory.getSmartField(this.payload.getFontSize(), new IntegerFieldValidator(4, 1000), value -> {
             this.payload.setFontSize(value);
             MercuryStoreUI.adrReloadSubject.onNext(this.payload);
@@ -173,9 +179,21 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         specPanel.add(invertLabel);
         specPanel.add(invertBox);
 
-        specPanel.setVisible(false);
+        specPanel.setVisible(this.advancedExpanded);
 
-        JPanel advancedPanel = this.adrComponentsFactory.getCounterPanel(specPanel, "Advanced:", AppThemeColor.ADR_BG);
+        specPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                advancedExpanded = specPanel.isVisible();
+            }
+
+            @Override
+            public void componentHidden(ComponentEvent e) {
+                advancedExpanded = specPanel.isVisible();
+            }
+        });
+
+        JPanel advancedPanel = this.adrComponentsFactory.getCounterPanel(specPanel, "Advanced:", AppThemeColor.ADR_BG,this.advancedExpanded);
         advancedPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
 
         container.add(this.componentsFactory.wrapToSlide(generalPanel));

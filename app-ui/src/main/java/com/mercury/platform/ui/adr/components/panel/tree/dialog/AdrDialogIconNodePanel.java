@@ -13,6 +13,7 @@ import java.awt.*;
 public class AdrDialogIconNodePanel extends AdrNodePanel<AdrIconDescriptor> {
     public AdrDialogIconNodePanel(AdrIconDescriptor descriptor) {
         super(descriptor);
+        this.mouseListener.setProcessSelect(false);
     }
 
     @Override

@@ -11,7 +11,7 @@ import javax.swing.*;
 
 public class AdrDialogTreeNodeRenderer implements AdrTreeNodeRenderer{
     @Override
-    public JPanel getViewOf(AdrComponentDescriptor descriptor) {
+    public JPanel getViewOf(AdrComponentDescriptor descriptor,boolean inner) {
         switch (descriptor.getType()){
             case ICON:{
                 return new AdrDialogIconNodePanel((AdrIconDescriptor) descriptor);

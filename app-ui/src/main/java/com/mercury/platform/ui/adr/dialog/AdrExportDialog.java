@@ -13,6 +13,7 @@ import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.List;
 
 public class AdrExportDialog<T extends AdrComponentDescriptor> extends AdrDialog<T> {

@@ -11,13 +11,13 @@ import javax.swing.*;
 
 public class AdrMainTreeNodeRenderer implements AdrTreeNodeRenderer {
     @Override
-    public JPanel getViewOf(AdrComponentDescriptor descriptor) {
+    public JPanel getViewOf(AdrComponentDescriptor descriptor, boolean inner) {
         switch (descriptor.getType()){
             case ICON:{
-                return new AdrIconNodePanel((AdrIconDescriptor) descriptor);
+                return new AdrIconNodePanel((AdrIconDescriptor) descriptor,inner);
             }
             case PROGRESS_BAR:{
-                return new AdrProgressBarNodePanel((AdrProgressBarDescriptor) descriptor);
+                return new AdrProgressBarNodePanel((AdrProgressBarDescriptor) descriptor,inner);
             }
             case GROUP: {
                 return new AdrGroupNodePanel((AdrGroupDescriptor) descriptor);

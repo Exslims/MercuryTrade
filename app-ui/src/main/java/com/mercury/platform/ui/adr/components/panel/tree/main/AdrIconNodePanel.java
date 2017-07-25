@@ -10,8 +10,8 @@ import java.awt.*;
 
 
 public class AdrIconNodePanel extends AdrNodePanel<AdrIconDescriptor> {
-    public AdrIconNodePanel(AdrIconDescriptor descriptor) {
-        super(descriptor);
+    public AdrIconNodePanel(AdrIconDescriptor descriptor, boolean inner) {
+        super(descriptor,inner);
     }
 
     @Override

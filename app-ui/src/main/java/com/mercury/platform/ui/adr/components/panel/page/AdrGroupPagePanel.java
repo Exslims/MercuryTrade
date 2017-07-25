@@ -12,6 +12,9 @@ import com.mercury.platform.ui.misc.MercuryStoreUI;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 
 
 public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
@@ -95,9 +98,20 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
         specPanel.add(paddingLabel);
         specPanel.add(paddingPanel);
 
-        specPanel.setVisible(false);
+        specPanel.setVisible(this.advancedExpanded);
+        specPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                advancedExpanded = specPanel.isVisible();
+            }
 
-        JPanel advancedPanel = this.adrComponentsFactory.getCounterPanel(specPanel, "Advanced:", AppThemeColor.ADR_BG);
+            @Override
+            public void componentHidden(ComponentEvent e) {
+                advancedExpanded = specPanel.isVisible();
+            }
+        });
+
+        JPanel advancedPanel = this.adrComponentsFactory.getCounterPanel(specPanel, "Advanced:", AppThemeColor.ADR_BG,this.advancedExpanded);
         advancedPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
         container.add(this.componentsFactory.wrapToSlide(generalPanel));
         container.add(this.componentsFactory.wrapToSlide(advancedPanel));

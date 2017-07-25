@@ -2,6 +2,7 @@ package com.mercury.platform.ui.adr.components;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
+import com.mercury.platform.ui.adr.components.panel.tree.AdrMouseOverListener;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 
@@ -23,7 +24,7 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
         super(descriptor);
         this.mouseListener = new DraggedFrameMouseListener();
         this.motionListener = new DraggedFrameMotionListener();
-        this.mouseOverListener = getMouseOverListener();
+        this.mouseOverListener = new AdrMouseOverListener<>(this.getRootPane(),this.descriptor,new Cursor(Cursor.MOVE_CURSOR));
     }
 
     @Override
@@ -47,6 +48,7 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
         this.setBackground(AppThemeColor.FRAME);
         this.getRootPane().setBorder(BorderFactory.createMatteBorder(1,1,0,1,AppThemeColor.BORDER));
         this.addMouseListener(this.mouseListener);
+        this.addMouseListener(this.mouseOverListener);
         this.addMouseMotionListener(this.motionListener);
     }
 
@@ -56,30 +58,8 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.getRootPane().setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
         this.removeMouseListener(this.mouseListener);
+        this.removeMouseListener(this.mouseOverListener);
         this.removeMouseMotionListener(this.motionListener);
-    }
-
-    private MouseAdapter getMouseOverListener(){
-        return new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_MESSAGE));
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                ((JPanel)e.getSource()).setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_MESSAGE));
-                repaint();
-                pack();
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                ((JPanel)e.getSource()).setBorder(BorderFactory.createMatteBorder(0,0,1,0,AppThemeColor.BORDER));
-                repaint();
-                pack();
-            }
-        };
     }
     @Override
     protected LayoutManager getFrameLayout() {

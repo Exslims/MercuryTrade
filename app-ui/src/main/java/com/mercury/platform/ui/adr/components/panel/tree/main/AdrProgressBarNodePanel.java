@@ -10,8 +10,8 @@ import java.awt.*;
 
 
 public class AdrProgressBarNodePanel extends AdrNodePanel<AdrProgressBarDescriptor> {
-    public AdrProgressBarNodePanel(AdrProgressBarDescriptor descriptor) {
-        super(descriptor);
+    public AdrProgressBarNodePanel(AdrProgressBarDescriptor descriptor, boolean inner) {
+        super(descriptor,inner);
     }
     @Override
     public void createUI() {

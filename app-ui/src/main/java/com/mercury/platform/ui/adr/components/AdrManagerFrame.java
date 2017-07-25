@@ -95,7 +95,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
 
     @Override
     protected String getFrameTitle() {
-        return "Aura Duration Tracking";
+        return "Aura Duration Tracker";
     }
 
     public void reloadTree() {

@@ -11,8 +11,7 @@ import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.event.*;
 
 
 public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
@@ -63,6 +62,13 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         if(this.fromGroup){
             opacitySlider.setEnabled(false);
         }
+        opacitySlider.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                payload.setOpacity(opacitySlider.getValue() / 100f);
+                MercuryStoreUI.adrReloadSubject.onNext(payload);
+            }
+        });
         JPanel iconSizePanel = this.adrComponentsFactory.getComponentSizePanel(this.payload,this.fromGroup);
         JButton hotKeyButton = this.adrComponentsFactory.getHotKeyButton(this.payload.getHotKeyDescriptor());
         JPanel locationPanel = this.adrComponentsFactory.getLocationPanel(this.payload, this.fromGroup);
@@ -132,9 +138,21 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         specPanel.add(animationMaskLabel);
         specPanel.add(animationBox);
 
-        specPanel.setVisible(false);
+        specPanel.setVisible(this.advancedExpanded);
 
-        JPanel advancedPanel = this.adrComponentsFactory.getCounterPanel(specPanel, "Advanced:", AppThemeColor.ADR_BG);
+        specPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                advancedExpanded = specPanel.isVisible();
+            }
+
+            @Override
+            public void componentHidden(ComponentEvent e) {
+                advancedExpanded = specPanel.isVisible();
+            }
+        });
+
+        JPanel advancedPanel = this.adrComponentsFactory.getCounterPanel(specPanel, "Advanced:", AppThemeColor.ADR_BG,this.advancedExpanded);
         advancedPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
 
         container.add(this.componentsFactory.wrapToSlide(generalPanel));

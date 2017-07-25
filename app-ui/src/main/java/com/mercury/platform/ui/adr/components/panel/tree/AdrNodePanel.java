@@ -17,22 +17,23 @@ public abstract class AdrNodePanel<D extends AdrComponentDescriptor> extends JPa
     protected D descriptor;
     protected ComponentsFactory componentsFactory = new ComponentsFactory();
     protected AdrComponentsFactory adrComponentsFactory = new AdrComponentsFactory(this.componentsFactory);
+    protected AdrMouseOverListener mouseListener;
 
     public AdrNodePanel(D descriptor) {
+        this(descriptor,false);
+    }
+    public AdrNodePanel(D descriptor, boolean inner) {
         this.descriptor = descriptor;
-        this.addMouseListener(new AdrMouseOverListener<>(this, descriptor));
+        this.mouseListener = (new AdrMouseOverListener<>(this, descriptor,inner));
+        this.addMouseListener(this.mouseListener);
         MercuryStoreUI.adrReloadSubject.subscribe(source -> {
             if(this.descriptor.equals(source)){
-                this.update();
+                this.updateUI();
             }
         });
         this.setLayout(new BorderLayout());
         this.setBackground(AppThemeColor.SLIDE_BG);
         this.setBorder(BorderFactory.createLineBorder(AppThemeColor.MSG_HEADER_BORDER));
-        this.createUI();
-    }
-    private void update() {
-        this.removeAll();
         this.createUI();
     }
 }

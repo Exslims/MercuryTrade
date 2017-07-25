@@ -254,9 +254,7 @@ public class AdrComponentsFactory {
         JPanel root = this.componentsFactory.getJPanel(new GridLayout(1,1,6,0));
         root.setBackground(AppThemeColor.SLIDE_BG);
         JColorChooser colorChooser = getColorChooser();
-
         JPanel colorPanel = new JPanel();
-
         colorPanel.addMouseListener(new ColorChooserMouseListener(colorPanel){
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -388,14 +386,14 @@ public class AdrComponentsFactory {
         return buttonsPanel;
     }
 
-    public JPanel getCounterPanel(JPanel innerPanel, String title, Color bg){
+    public JPanel getCounterPanel(JPanel innerPanel, String title, Color bg, boolean initial){
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setBackground(bg);
 
         JPanel headerPanel = this.componentsFactory.getJPanel(new BorderLayout());
         headerPanel.setBackground(bg);
         JLabel titleLabel = this.componentsFactory.getTextLabel(title);
-        JButton counterButton = this.getCounterButton(innerPanel,bg);
+        JButton counterButton = this.getCounterButton(innerPanel,bg,initial);
         headerPanel.add(titleLabel,BorderLayout.CENTER);
         headerPanel.add(counterButton,BorderLayout.LINE_START);
         root.add(headerPanel,BorderLayout.PAGE_START);
@@ -403,8 +401,9 @@ public class AdrComponentsFactory {
         return root;
     }
 
-    public JButton getCounterButton(JPanel targetPanel,Color bg){
-        JButton expandButton = this.componentsFactory.getIconButton("app/adr/expand_icon.png", 16, AppThemeColor.FRAME, "");
+    public JButton getCounterButton(JPanel targetPanel,Color bg, boolean initial){
+        String initialIcon = (initial)?"app/adr/collapse_icon.png" : "app/adr/expand_icon.png";
+        JButton expandButton = this.componentsFactory.getIconButton(initialIcon, 16, AppThemeColor.FRAME, "");
         expandButton.setBackground(bg);
         expandButton.addActionListener(action -> {
             if(targetPanel.isVisible()){
