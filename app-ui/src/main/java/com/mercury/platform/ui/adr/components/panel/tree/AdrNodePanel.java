@@ -12,7 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public abstract class AdrNodePanel<D extends AdrComponentDescriptor> extends JPanel implements HasUI{
+public abstract class AdrNodePanel<D extends AdrComponentDescriptor> extends JPanel implements HasUI {
     @Getter
     protected D descriptor;
     protected ComponentsFactory componentsFactory = new ComponentsFactory();
@@ -20,15 +20,16 @@ public abstract class AdrNodePanel<D extends AdrComponentDescriptor> extends JPa
     protected AdrMouseOverListener mouseListener;
 
     public AdrNodePanel(D descriptor) {
-        this(descriptor,false);
+        this(descriptor, false);
     }
+
     public AdrNodePanel(D descriptor, boolean inner) {
         this.descriptor = descriptor;
-        this.mouseListener = (new AdrMouseOverListener<>(this, descriptor,inner));
+        this.mouseListener = (new AdrMouseOverListener<>(this, descriptor, inner));
         this.addMouseListener(this.mouseListener);
         MercuryStoreUI.adrReloadSubject.subscribe(source -> {
-            if(this.descriptor.equals(source)){
-                this.updateUI();
+            if (this.descriptor.equals(source)) {
+                this.update();
             }
         });
         this.setLayout(new BorderLayout());
@@ -36,4 +37,5 @@ public abstract class AdrNodePanel<D extends AdrComponentDescriptor> extends JPa
         this.setBorder(BorderFactory.createLineBorder(AppThemeColor.MSG_HEADER_BORDER));
         this.createUI();
     }
+    protected abstract void update();
 }

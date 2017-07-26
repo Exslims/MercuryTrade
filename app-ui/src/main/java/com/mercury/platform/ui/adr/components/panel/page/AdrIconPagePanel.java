@@ -26,18 +26,10 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         if(this.fromGroup){
             opacityLabelText = "Opacity(from group):";
         }
-        String sizeText = "Icon size:";
-        if(this.fromGroup){
-            sizeText = "Icon size(from group):";
-        }
-        String locationText = "Location:";
-        if(this.fromGroup){
-            locationText = "Location(from group):";
-        }
         JLabel titleLabel = this.componentsFactory.getTextLabel("Title:");
         JLabel opacityLabel = this.componentsFactory.getTextLabel(opacityLabelText);
-        JLabel sizeLabel = this.componentsFactory.getTextLabel(sizeText);
-        JLabel locationLabel = this.componentsFactory.getTextLabel(locationText);
+        JLabel sizeLabel = this.componentsFactory.getTextLabel("Icon size:");
+        JLabel locationLabel = this.componentsFactory.getTextLabel("Location:");
 
         JLabel hotKeyLabel = this.componentsFactory.getTextLabel("HotKey:");
         JLabel iconLabel = this.componentsFactory.getTextLabel("Icon:");
@@ -100,7 +92,7 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
                 this.payload,
                 color -> this.payload.setBorderColor(color));
 
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(6, 2,0,6));
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 4 : 6, 2,0,6));
         JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(7, 2,0,6));
         generalPanel.setBackground(AppThemeColor.SLIDE_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -112,10 +104,12 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
 
         generalPanel.add(titleLabel);
         generalPanel.add(titleField);
-        generalPanel.add(locationLabel);
-        generalPanel.add(locationPanel);
-        generalPanel.add(sizeLabel);
-        generalPanel.add(iconSizePanel);
+        if(!this.fromGroup) {
+            generalPanel.add(locationLabel);
+            generalPanel.add(locationPanel);
+            generalPanel.add(sizeLabel);
+            generalPanel.add(iconSizePanel);
+        }
         generalPanel.add(hotKeyLabel);
         generalPanel.add(hotKeyButton);
         generalPanel.add(iconLabel);
@@ -157,7 +151,12 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
 
         container.add(this.componentsFactory.wrapToSlide(generalPanel));
         container.add(this.componentsFactory.wrapToSlide(advancedPanel));
-
+        container.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                requestFocus();
+            }
+        });
         this.add(verticalContainer,BorderLayout.CENTER);
     }
 

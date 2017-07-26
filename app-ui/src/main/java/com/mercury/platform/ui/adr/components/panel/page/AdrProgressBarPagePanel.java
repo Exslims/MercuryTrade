@@ -25,17 +25,9 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
         JScrollPane verticalContainer = this.componentsFactory.getVerticalContainer(container);
 
-        String opacityLabelText = "Opacity:";
-        if(this.fromGroup){
-            opacityLabelText = "Opacity(from group):";
-        }
-        String locationText = "Location:";
-        if(this.fromGroup){
-            locationText = "Location(from group):";
-        }
         JLabel titleLabel = this.componentsFactory.getTextLabel("Title:");
-        JLabel opacityLabel = this.componentsFactory.getTextLabel(opacityLabelText);
-        JLabel locationLabel = this.componentsFactory.getTextLabel(locationText);
+        JLabel opacityLabel = this.componentsFactory.getTextLabel("Opacity:");
+        JLabel locationLabel = this.componentsFactory.getTextLabel("Location:");
         JLabel sizeLabel = this.componentsFactory.getTextLabel("Progress bar size:");
         JLabel pbOrientationLabel = this.componentsFactory.getTextLabel("Orientation:");
 
@@ -135,7 +127,7 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         textPanel.add(textEnableBox,BorderLayout.LINE_START);
         textPanel.add(textColorPanel,BorderLayout.CENTER);
 
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(6, 2,0,6));
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 4 : 6, 2,0,6));
         JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(10, 2,0,6));
         generalPanel.setBackground(AppThemeColor.SLIDE_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -147,10 +139,12 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
 
         generalPanel.add(titleLabel);
         generalPanel.add(titleField);
-        generalPanel.add(locationLabel);
-        generalPanel.add(locationPanel);
-        generalPanel.add(sizeLabel);
-        generalPanel.add(sizePanel);
+        if(!this.fromGroup) {
+            generalPanel.add(locationLabel);
+            generalPanel.add(locationPanel);
+            generalPanel.add(sizeLabel);
+            generalPanel.add(sizePanel);
+        }
         generalPanel.add(hotKeyLabel);
         generalPanel.add(hotKeyButton);
         generalPanel.add(iconLabel);
@@ -198,7 +192,12 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
 
         container.add(this.componentsFactory.wrapToSlide(generalPanel));
         container.add(this.componentsFactory.wrapToSlide(advancedPanel));
-
+        container.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                requestFocus();
+            }
+        });
         this.add(verticalContainer,BorderLayout.CENTER);
     }
 }

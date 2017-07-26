@@ -18,8 +18,15 @@ public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extend
         this.componentsFactory = componentsFactory;
 
         MercuryStoreUI.adrReloadSubject.subscribe(it -> {
-            if(it.equals(this.descriptor)){
+            if(this.descriptor.equals(it)){
                 this.update();
+            }
+        });
+        MercuryStoreUI.adrSelectSubject.subscribe(it -> {
+            if(descriptor.equals(it)){
+                this.onSelect();
+            }else {
+                this.onUnSelect();
             }
         });
         MercuryStoreCore.hotKeySubject.subscribe(hotKey -> {
@@ -34,10 +41,12 @@ public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extend
     public void disableSettings() {
         this.inSettings = false;
     }
+    protected abstract void onSelect();
+    protected abstract void onUnSelect();
     protected abstract void onHotKeyPressed();
     public void update(){
         this.removeAll();
         this.createUI();
+        this.onSelect();
     }
-
 }

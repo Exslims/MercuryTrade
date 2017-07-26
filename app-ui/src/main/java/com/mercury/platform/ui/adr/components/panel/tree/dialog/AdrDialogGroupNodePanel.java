@@ -12,10 +12,17 @@ import java.awt.*;
 
 
 public class AdrDialogGroupNodePanel extends AdrNodePanel<AdrGroupDescriptor>{
+    private JLabel groupLabel;
     private JPanel container;
     public AdrDialogGroupNodePanel(AdrGroupDescriptor descriptor) {
         super(descriptor);
         this.mouseListener.setProcessSelect(false);
+    }
+
+    @Override
+    protected void update() {
+        this.groupLabel.setText(descriptor.getTitle());
+        this.groupLabel.setIcon(componentsFactory.getIcon(this.adrComponentsFactory.getGroupTypeIconPath(this.descriptor), 48));
     }
 
     @Override
@@ -49,27 +56,16 @@ public class AdrDialogGroupNodePanel extends AdrNodePanel<AdrGroupDescriptor>{
         JPanel buttonsPanel = this.componentsFactory.getJPanel(new GridLayout(1, 1));
         buttonsPanel.add(removeButton);
 
-        JLabel label = new JLabel();
-        label.setForeground(AppThemeColor.TEXT_DEFAULT);
-        label.setBackground(AppThemeColor.FRAME);
-        label.setFont(componentsFactory.getFont(FontStyle.REGULAR, 16));
-        label.setText(descriptor.getTitle());
-        String iconPath = "app/adr/static_group_icon.png";
-        switch (descriptor.getGroupType()) {
-            case STATIC: {
-                iconPath = "app/adr/static_group_icon.png";
-                break;
-            }
-            case DYNAMIC: {
-                iconPath = "app/adr/dynamic_group_icon.png";
-                break;
-            }
-        }
-        label.setPreferredSize(new Dimension(170, 30));
-        label.setIcon(componentsFactory.getIcon(iconPath, 48));
-        label.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 2));
+        this.groupLabel = new JLabel();
+        this.groupLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
+        this.groupLabel.setBackground(AppThemeColor.FRAME);
+        this.groupLabel.setFont(componentsFactory.getFont(FontStyle.REGULAR, 16));
+        this.groupLabel.setText(descriptor.getTitle());
+        this.groupLabel.setPreferredSize(new Dimension(170, 30));
+        this.groupLabel.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 2));
+
         root.add(expandButton,BorderLayout.LINE_START);
-        root.add(label,BorderLayout.CENTER);
+        root.add(this.groupLabel,BorderLayout.CENTER);
         root.add(buttonsPanel,BorderLayout.LINE_END);
         return root;
     }

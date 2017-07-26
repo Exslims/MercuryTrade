@@ -6,6 +6,7 @@ import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
 import com.mercury.platform.ui.adr.routing.AdrComponentOperations;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
+import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
@@ -22,12 +23,17 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
 
     @Override
     protected void init() {
-//        if(this.payload instanceof AdrGroupDescriptor){
-//            this.add(this.componentsFactory.getTextLabel(this.payload.getTitle() + ">"), BorderLayout.PAGE_START);
-//        }
+        if(this.fromGroup){
+            JLabel header = this.componentsFactory.getTextLabel(this.payload.getTitle() + " >", FontStyle.REGULAR, 20);
+            header.setBorder(BorderFactory.createEmptyBorder(4,6,0,4));
+            this.add(header, BorderLayout.PAGE_START);
+        }
+        JPanel container = new VerticalScrollContainer();
+        container.setBackground(AppThemeColor.FRAME_RGB);
+        container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
+        container.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+        JScrollPane verticalContainer = this.componentsFactory.getVerticalContainer(container);
 
-        JPanel buttonsPanel = this.componentsFactory.getJPanel(new GridLayout(5, 1,6,6));
-        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         JPanel createIconsGroup = this.getButton(
                 "app/adr/create_icon_group.png",
                 TooltipConstants.ADR_CREATE_ICON_GROUP);
@@ -64,9 +70,9 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
                 AdrIconDescriptor iconDescriptor = new AdrIconDescriptor();
                 definition.setDescriptor(iconDescriptor);
                 definition.setOperations(AdrComponentOperations.NEW_COMPONENT);
-                if(payload instanceof AdrGroupDescriptor) {
+                if(payload != null) {
                     ((AdrGroupDescriptor) payload).getCells().add(iconDescriptor);
-                    definition.setFromGroup(true);
+                    definition.setFromGroup(fromGroup);
                 }
                 MercuryStoreUI.adrComponentStateSubject.onNext(definition);
             }
@@ -81,27 +87,42 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
                 AdrProgressBarDescriptor iconDescriptor = new AdrProgressBarDescriptor();
                 definition.setDescriptor(iconDescriptor);
                 definition.setOperations(AdrComponentOperations.NEW_COMPONENT);
-                if(payload instanceof AdrGroupDescriptor) {
+                if(payload != null) {
                     ((AdrGroupDescriptor) payload).getCells().add(iconDescriptor);
-                    definition.setFromGroup(true);
+                    definition.setFromGroup(fromGroup);
                 }
                 MercuryStoreUI.adrComponentStateSubject.onNext(definition);
             }
         });
         JPanel importButton = this.getButton(
-                "app/adr/create_pb.png",
+                "app/adr/import_icon.png",
                 TooltipConstants.ADR_IMPORT_COMPONENT);
         importButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
             }
         });
-        buttonsPanel.add(createIcon);
-        buttonsPanel.add(createPb);
-        buttonsPanel.add(createIconsGroup);
-        buttonsPanel.add(createPbGroup);
-        buttonsPanel.add(importButton);
-        this.add(buttonsPanel,BorderLayout.PAGE_START);
+        if(this.fromGroup) {
+            switch (((AdrGroupDescriptor) this.payload).getContentType()){
+                case ICONS:{
+                    container.add(this.componentsFactory.wrapToSlide(createIcon));
+                    break;
+                }
+                case PROGRESS_BARS:{
+                    container.add(this.componentsFactory.wrapToSlide(createPb));
+                    break;
+                }
+            }
+        }else {
+            container.add(this.componentsFactory.wrapToSlide(createIcon));
+            container.add(this.componentsFactory.wrapToSlide(createPb));
+        }
+        if(!this.fromGroup) {
+            container.add(this.componentsFactory.wrapToSlide(createIconsGroup));
+            container.add(this.componentsFactory.wrapToSlide(createPbGroup));
+        }
+        container.add(this.componentsFactory.wrapToSlide(importButton));
+        this.add(verticalContainer,BorderLayout.CENTER);
     }
 
     private JPanel getButton(String iconPath, String title) {

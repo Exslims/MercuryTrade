@@ -15,6 +15,12 @@ public class AdrDialogPBNodePanel extends AdrNodePanel<AdrProgressBarDescriptor>
         super(descriptor);
         this.mouseListener.setProcessSelect(false);
     }
+
+    @Override
+    protected void update() {
+
+    }
+
     @Override
     public void createUI() {
         JPanel root = this.componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER));
@@ -22,8 +28,7 @@ public class AdrDialogPBNodePanel extends AdrNodePanel<AdrProgressBarDescriptor>
         MercuryTracker tracker = new MercuryTracker(descriptor);
         tracker.setValue((int) ((descriptor.getDuration()/2) * 1000));
         tracker.setStringPainted(false);
-        tracker.setPreferredSize(new Dimension(150, 26));
-        this.setPreferredSize(new Dimension(150, 36));
+        tracker.setPreferredSize(new Dimension(180, 30));
         root.add(tracker);
         this.add(root,BorderLayout.CENTER);
         JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_REMOVE_BUTTON);

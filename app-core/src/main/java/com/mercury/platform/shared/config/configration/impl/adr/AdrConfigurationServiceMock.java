@@ -12,9 +12,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class AdrConfigurationServiceMock extends BaseConfigurationService<List<AdrProfileDescriptor>> implements AdrConfigurationService {
+    private AtomicInteger idGenerator = new AtomicInteger();
     public AdrConfigurationServiceMock(ProfileDescriptor selectedProfile) {
         super(selectedProfile);
     }
@@ -29,15 +31,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
     public List<AdrProfileDescriptor> getDefault() {
         AdrProfileDescriptor profile = new AdrProfileDescriptor();
         profile.setSelected(true);
-        AdrGroupDescriptor groupDescriptor = new AdrGroupDescriptor();
-        groupDescriptor.setSize(new Dimension(64,64));
-        groupDescriptor.setLocation(new Point(400,400));
-        groupDescriptor.setTitle("icon group");
-        groupDescriptor.setGroupType(AdrGroupType.STATIC);
-        groupDescriptor.setContentType(AdrGroupContentType.ICONS);
-        groupDescriptor.setOrientation(AdrComponentOrientation.VERTICAL);
-        groupDescriptor.setType(AdrComponentType.GROUP);
-
+        AdrGroupDescriptor groupDescriptor = this.getDefaultIconGroup();
         AdrIconDescriptor icon1 = this.getDefaultIcon();
         icon1.setIconPath("Arctic_Armour_skill_icon");
         icon1.setHotKeyDescriptor(new HotKeyDescriptor(49,'1',false,false,false,false));
@@ -79,6 +73,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
     @Override
     public AdrIconDescriptor getDefaultIcon() {
         AdrIconDescriptor icon = new AdrIconDescriptor();
+        icon.setId(this.idGenerator.incrementAndGet());
         icon.setTitle("icon");
         icon.setIconPath("default_icon");
         icon.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
@@ -102,6 +97,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
     @Override
     public AdrProgressBarDescriptor getDefaultProgressBar() {
         AdrProgressBarDescriptor progressBar = new AdrProgressBarDescriptor();
+        progressBar.setId(this.idGenerator.incrementAndGet());
         progressBar.setTitle("progress bar");
         progressBar.setIconPath("default_icon");
         progressBar.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
@@ -152,6 +148,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
     }
     private AdrGroupDescriptor getDefaultGroup(){
         AdrGroupDescriptor groupDescriptor = new AdrGroupDescriptor();
+        groupDescriptor.setId(this.idGenerator.incrementAndGet());
         groupDescriptor.setTitle("group");
         groupDescriptor.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
         groupDescriptor.setType(AdrComponentType.GROUP);

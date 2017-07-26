@@ -18,8 +18,11 @@ public class ProgressBarTrackerUI extends BasicMercuryIconTrackerUI<AdrProgressB
         super(descriptor,tracker);
     }
 
-
+    @Override
     public void paint(Graphics g, JComponent c) {
+        if(!descriptor.isVisible()){
+            return;
+        }
         int barRectWidth  = tracker.getWidth();
         int barRectHeight = tracker.getHeight();
         if (barRectWidth <= 0 || barRectHeight <= 0) {

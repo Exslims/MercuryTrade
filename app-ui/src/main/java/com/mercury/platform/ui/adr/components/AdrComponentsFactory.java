@@ -365,6 +365,7 @@ public class AdrComponentsFactory {
                 visibleButton.setIcon(this.componentsFactory.getIcon("app/adr/visible_node_on.png",15));
                 descriptor.setVisible(true);
             }
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
         });
         JPanel buttonsPanel = this.componentsFactory.getJPanel(new GridLayout(2, 1));
         buttonsPanel.setBackground(AppThemeColor.SLIDE_BG);
@@ -417,6 +418,20 @@ public class AdrComponentsFactory {
         });
         return expandButton;
     }
+    public String getGroupTypeIconPath(AdrGroupDescriptor descriptor){
+        String iconPath = "app/adr/static_group_icon.png";
+        switch (descriptor.getGroupType()) {
+            case STATIC: {
+                iconPath = "app/adr/static_group_icon.png";
+                break;
+            }
+            case DYNAMIC: {
+                iconPath = "app/adr/dynamic_group_icon.png";
+                break;
+            }
+        }
+        return iconPath;
+    }
 
     private JColorChooser getColorChooser(){
         JColorChooser colorChooser = new JColorChooser();
@@ -444,12 +459,13 @@ public class AdrComponentsFactory {
 
     private String[] getIconBundle() {
         return new String[] {
+                "no_icon",
+                "default_icon",
                 "Arctic_Armour_skill_icon",
                 "Bismuth_Flask",
                 "Bleeding_Immunity",
                 "Blood_Rage_skill_icon",
                 "Chill_And_Freeze_Immunity",
-                "default_icon",
                 "Diamond_Flask",
                 "Granite_Flask",
                 "Increase_Movement_Speed",

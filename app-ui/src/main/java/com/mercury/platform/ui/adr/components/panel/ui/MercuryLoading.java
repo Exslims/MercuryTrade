@@ -16,7 +16,7 @@ import lombok.Setter;
 import javax.swing.*;
 
 
-public class MercuryTracker extends JComponent {
+public class MercuryLoading extends JComponent {
     @Getter
     private int value;
     @Setter @Getter
@@ -27,30 +27,12 @@ public class MercuryTracker extends JComponent {
     private AdrDurationComponentDescriptor descriptor;
     @Setter @Getter
     private boolean stringPainted = true;
-    public MercuryTracker(AdrDurationComponentDescriptor descriptor) {
+    public MercuryLoading(AdrDurationComponentDescriptor descriptor) {
         this.descriptor = descriptor;
-        switch (descriptor.getType()){
-            case ICON: {
-                if(((AdrIconDescriptor)descriptor).getIconType().equals(AdrIconType.SQUARE)){
-                    this.setUI(new SquareIconTrackerUI((AdrIconDescriptor) descriptor,this));
-                }else {
-                    this.setUI(new EllipseIconTrackerUI((AdrIconDescriptor) descriptor,this));
-                }
-                break;
-            }
-            case PROGRESS_BAR: {
-                this.setUI(new ProgressBarTrackerUI((AdrProgressBarDescriptor) descriptor,this));
-                break;
-            }
-            default:{
-                throw new IllegalArgumentException("AdrComponent for MercuryTracker must be ICON or PROGRESS_BAR");
-            }
-        }
         this.setValue(0);
         this.setMaximum((int) (this.descriptor.getDuration() * 1000));
         this.setFont(new ComponentsFactory().getFont(FontStyle.BOLD, this.descriptor.getFontSize()));
         this.setForeground(AppThemeColor.TEXT_DEFAULT);
-        this.setBackground(AppThemeColor.TRANSPARENT);
     }
 
     public void setUI(BasicMercuryIconTrackerUI ui){
@@ -65,10 +47,5 @@ public class MercuryTracker extends JComponent {
     @Override
     public void updateUI() {
         setUI(this.ui);
-    }
-
-    public float getPercentComplete(){
-        long span = maximum - minimum;
-        return (value - minimum) / (span * 1f);
     }
 }

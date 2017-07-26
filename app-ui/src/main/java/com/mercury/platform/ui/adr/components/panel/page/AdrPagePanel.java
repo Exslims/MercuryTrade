@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public abstract class AdrPagePanel<T> extends JPanel {
     @Getter @Setter

@@ -1,18 +1,18 @@
 package com.mercury.platform.ui.adr.dialog;
 
 
-import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
-public abstract class AdrDialog<T extends AdrComponentDescriptor> extends JDialog{
+public abstract class AdrDialog<T> extends JDialog{
     protected ComponentsFactory componentsFactory = new ComponentsFactory();
-    protected List<T> payload;
-    public AdrDialog(Component relative, List<T> payload) {
+    protected T payload;
+    public AdrDialog(Component relative, T payload) {
         this.payload = payload;
         this.setModal(true);
         this.setAlwaysOnTop(true);
@@ -23,6 +23,15 @@ public abstract class AdrDialog<T extends AdrComponentDescriptor> extends JDialo
         this.createView();
         this.pack();
         this.setLocationRelativeTo(relative);
+
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                postConstruct();
+            }
+        });
     }
+
     protected abstract void createView();
+    protected abstract void postConstruct();
 }

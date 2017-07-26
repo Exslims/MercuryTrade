@@ -1,10 +1,12 @@
 package com.mercury.platform.ui.adr.components;
 
 import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
 import com.mercury.platform.ui.adr.components.panel.page.AdrPagePanel;
 import com.mercury.platform.ui.adr.components.panel.tree.main.AdrMainTreeNodeRenderer;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrTreePanel;
+import com.mercury.platform.ui.adr.dialog.ExportHelper;
 import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
 import com.mercury.platform.ui.adr.routing.AdrPageState;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -66,6 +68,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         this.tree = new AdrTreePanel(
                 this.selectedProfile.getContents(),
                 new AdrMainTreeNodeRenderer());
+        this.tree.updateTree();
 
         JButton addComponent = this.componentsFactory.getButton("New");
         addComponent.setBackground(AppThemeColor.FRAME);
@@ -98,31 +101,34 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         return "Aura Duration Tracker";
     }
 
-    public void reloadTree() {
-//        DefaultTreeModel model = (DefaultTreeModel) this.componentsTree.getModel();
-//        model.setRoot(getTreeModel());
+    public void addNewNode(AdrComponentDescriptor descriptor, boolean fromGroup) {
+        this.tree.addNode(descriptor,fromGroup);
         this.pack();
         this.repaint();
     }
     private JPanel getBottomPanel(){
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setBorder(BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.MSG_HEADER_BORDER));
-        root.setBackground(AppThemeColor.HEADER);
+        root.setBackground(AppThemeColor.ADR_FOOTER_BG);
         JPanel profilePanel = this.componentsFactory.getJPanel(new GridLayout(1, 2));
-        profilePanel.setBackground(AppThemeColor.HEADER);
-        profilePanel.add(this.componentsFactory.getTextLabel("Selected profile: "),BorderLayout.LINE_START);
+        profilePanel.setBackground(AppThemeColor.ADR_FOOTER_BG);
         List<String> profilesNames = Configuration.get().adrConfiguration().getEntities().stream().map(AdrProfileDescriptor::getProfileName).collect(Collectors.toList());
         JComboBox profileSelector = this.componentsFactory.getComboBox(profilesNames.toArray(new String[0]));
         profileSelector.setBorder(BorderFactory.createLineBorder(AppThemeColor.MSG_HEADER_BORDER));
-        profilePanel.add(profileSelector);
-        JButton openProfileSettings = this.componentsFactory.getIconButton("app/adr/profile_settings_icon.png", 20, AppThemeColor.HEADER, TooltipConstants.ADR_PROFILE_SETTINGS);
-        openProfileSettings.addActionListener(action -> {
-//            this.componentsTree.clearSelection();
-            MercuryStoreUI.adrStateSubject.onNext(new AdrPageDefinition<>(AdrPageState.PROFILE,
-                    Configuration.get().adrConfiguration().getEntities()));
+        JButton exportButton = this.componentsFactory.getIconButton("app/adr/export_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_EXPORT_BUTTON);
+        exportButton.addActionListener(action -> {
+            ExportHelper.exportProfile(this.selectedProfile);
         });
-        root.add(profilePanel,BorderLayout.LINE_START);
-        root.add(openProfileSettings,BorderLayout.LINE_END);
+        exportButton.setBackground(AppThemeColor.ADR_FOOTER_BG);
+        profilePanel.add(exportButton);
+        JPanel bottomPanel = this.componentsFactory.getJPanel(new BorderLayout());
+        bottomPanel.setBackground(AppThemeColor.ADR_FOOTER_BG);
+        profilePanel.add(this.componentsFactory.getTextLabel("Selected profile: "),BorderLayout.LINE_START);
+        profilePanel.add(profileSelector);
+        bottomPanel.add(exportButton,BorderLayout.LINE_START);
+        bottomPanel.add(profilePanel,BorderLayout.CENTER);
+
+        root.add(bottomPanel,BorderLayout.LINE_START);
         return root;
     }
 }

@@ -2,7 +2,7 @@ package com.mercury.platform.ui.adr.dialog;
 
 
 import com.google.gson.Gson;
-import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
 import com.mercury.platform.ui.adr.components.panel.tree.*;
 import com.mercury.platform.ui.adr.components.panel.tree.dialog.AdrDialogTreeNodeRenderer;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -13,18 +13,33 @@ import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
-import java.util.List;
 
-public class AdrExportDialog<T extends AdrComponentDescriptor> extends AdrDialog<T> {
+public class AdrExportDialog extends AdrDialog<AdrProfileDescriptor> {
     private JTextArea jsonArea;
-    public AdrExportDialog(Component relative, java.util.List<T> payload) {
-        super(relative, payload);
+    private AdrTreePanel adrTree;
+    private SwingWorker<AdrTreePanel,Void> worker;
+    public AdrExportDialog(Component relative, AdrProfileDescriptor descriptor){
+        super(relative, descriptor);
         this.setTitle("Export manager");
 
         MercuryStoreUI.adrUpdateTree.subscribe(state -> {
             this.repaint();
         });
+
+        this.worker = new SwingWorker<AdrTreePanel, Void>() {
+            @Override
+            protected AdrTreePanel doInBackground() throws Exception {
+                adrTree.updateTree();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                adrTree.setVisible(true);
+                pack();
+                repaint();
+            }
+        };
     }
 
     @Override
@@ -35,6 +50,16 @@ public class AdrExportDialog<T extends AdrComponentDescriptor> extends AdrDialog
         root.add(this.getViewPanel(),BorderLayout.LINE_END);
         this.add(this.componentsFactory.wrapToSlide(root),BorderLayout.CENTER);
     }
+
+    @Override
+    protected void postConstruct() {
+        this.jsonArea.setText(this.getPayloadAsJson());
+        this.adrTree.setVisible(true);
+        this.worker.execute();
+        this.pack();
+        this.repaint();
+    }
+
     private JPanel getDataPanel(){
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
@@ -48,7 +73,7 @@ public class AdrExportDialog<T extends AdrComponentDescriptor> extends AdrDialog
         container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
         JScrollPane verticalContainer = this.componentsFactory.getVerticalContainer(container);
 
-        this.jsonArea = this.componentsFactory.getSimpleTextArea(this.getPayloadAsJson());
+        this.jsonArea = this.componentsFactory.getSimpleTextArea("");
         this.jsonArea.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
         this.jsonArea.setMinimumSize(new Dimension(450,550));
         this.jsonArea.setBackground(AppThemeColor.ADR_TEXT_ARE_BG);
@@ -72,9 +97,9 @@ public class AdrExportDialog<T extends AdrComponentDescriptor> extends AdrDialog
         headerPanel.add(addButton,BorderLayout.LINE_END);
         root.add(headerPanel,BorderLayout.PAGE_START);
 
-        root.add(this.componentsFactory.wrapToSlide(new AdrTreePanel(
-                (List<AdrComponentDescriptor>) this.payload,
-                new AdrDialogTreeNodeRenderer()),AppThemeColor.FRAME_RGB),BorderLayout.CENTER);
+        this.adrTree = new AdrTreePanel(this.payload.getContents(), new AdrDialogTreeNodeRenderer());
+        this.adrTree.setVisible(false);
+        root.add(this.componentsFactory.wrapToSlide(this.adrTree,AppThemeColor.FRAME_RGB),BorderLayout.CENTER);
         return this.componentsFactory.wrapToSlide(root);
     }
     private String getPayloadAsJson(){

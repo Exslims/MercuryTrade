@@ -11,20 +11,27 @@ import java.awt.*;
 
 
 public class AdrDialogIconNodePanel extends AdrNodePanel<AdrIconDescriptor> {
+    private JLabel iconLabel;
     public AdrDialogIconNodePanel(AdrIconDescriptor descriptor) {
         super(descriptor);
         this.mouseListener.setProcessSelect(false);
     }
 
     @Override
+    protected void update() {
+        this.iconLabel.setText(this.descriptor.getTitle());
+        this.iconLabel.setIcon(this.componentsFactory.getIcon("app/adr/icons/" + descriptor.getIconPath() + ".png",28));
+    }
+
+    @Override
     public void createUI() {
-        JLabel label = this.componentsFactory.getIconLabel("app/adr/icons/" + descriptor.getIconPath() + ".png",48);
-        label.setForeground(AppThemeColor.TEXT_DEFAULT);
-        label.setFont(componentsFactory.getFont(FontStyle.REGULAR, 16));
-        label.setText(descriptor.getTitle());
-        label.setPreferredSize(new Dimension(150, 48));
-        label.setBorder(BorderFactory.createEmptyBorder());
-        this.add(label,BorderLayout.CENTER);
+        this.iconLabel = this.componentsFactory.getIconLabel("app/adr/icons/" + descriptor.getIconPath() + ".png",28);
+        this.iconLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
+        this.iconLabel.setFont(componentsFactory.getFont(FontStyle.REGULAR, 16));
+        this.iconLabel.setText(descriptor.getTitle());
+        this.iconLabel.setPreferredSize(new Dimension(150, 28));
+        this.iconLabel.setBorder(BorderFactory.createEmptyBorder());
+        this.add(this.iconLabel,BorderLayout.CENTER);
         JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 15, AppThemeColor.ADR_BG, TooltipConstants.ADR_REMOVE_BUTTON);
         this.add(removeButton,BorderLayout.LINE_END);
     }

@@ -15,9 +15,11 @@ import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.callback.TimelineCallbackAdapter;
 
 import java.awt.*;
+import java.util.Random;
 
 public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescriptor>{
     private Timeline progressTl;
+    private MercuryTracker tracker;
     public AdrCellPanel(AdrDurationComponentDescriptor cellDescriptor, ComponentsFactory componentsFactory) {
         super(cellDescriptor,componentsFactory);
         this.setLayout(new GridLayout(1,1));
@@ -31,7 +33,8 @@ public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescript
     public void enableSettings() {
         super.enableSettings();
         this.setVisible(true);
-        this.progressTl.playLoop(Timeline.RepeatBehavior.LOOP);
+        this.progressTl.abort();
+        this.tracker.setValue(new Random().nextInt((int) (this.descriptor.getDuration() * 1000)));
     }
 
     @Override
@@ -39,6 +42,16 @@ public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescript
         super.disableSettings();
         this.progressTl.abort();
         this.setVisible(false);
+    }
+
+    @Override
+    protected void onSelect() {
+        this.progressTl.playLoop(Timeline.RepeatBehavior.LOOP);
+    }
+
+    @Override
+    protected void onUnSelect() {
+        this.progressTl.abort();
     }
 
     @Override
@@ -53,10 +66,10 @@ public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescript
         if (this.progressTl != null) {
             this.progressTl.cancel();
         }
-        MercuryTracker tracker = new MercuryTracker(this.descriptor);
-        this.add(tracker, BorderLayout.CENTER);
+        this.tracker = new MercuryTracker(this.descriptor);
+        this.add(this.tracker, BorderLayout.CENTER);
 
-        this.progressTl = new Timeline(tracker);
+        this.progressTl = new Timeline(this.tracker);
         this.progressTl.setDuration((int) (descriptor.getDuration() * 1000));
         this.progressTl.addPropertyToInterpolate("value", tracker.getMaximum(), 0);
         this.progressTl.addCallback(new TimelineCallbackAdapter() {

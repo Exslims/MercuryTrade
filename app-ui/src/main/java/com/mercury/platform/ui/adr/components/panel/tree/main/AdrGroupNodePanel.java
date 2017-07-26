@@ -3,6 +3,8 @@ package com.mercury.platform.ui.adr.components.panel.tree.main;
 import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrNodePanel;
 import com.mercury.platform.ui.adr.dialog.ExportHelper;
+import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
+import com.mercury.platform.ui.adr.routing.AdrPageState;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
@@ -12,13 +14,27 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AdrGroupNodePanel extends AdrNodePanel<AdrGroupDescriptor> {
+    private JLabel groupLabel;
     private JPanel container;
+    private JButton expandButton;
     public AdrGroupNodePanel(AdrGroupDescriptor descriptor) {
         super(descriptor,false);
     }
 
     @Override
+    protected void update() {
+        this.groupLabel.setText(descriptor.getTitle());
+        this.groupLabel.setIcon(componentsFactory.getIcon(this.adrComponentsFactory.getGroupTypeIconPath(this.descriptor), 48));
+    }
+
+    @Override
     public void createUI() {
+        MercuryStoreUI.adrSelectSubject.subscribe(descriptor -> {
+            if(this.descriptor.equals(descriptor)){
+                this.container.setVisible(true);
+                this.expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_collapse.png",20));
+            }
+        });
         this.container = this.componentsFactory.getJPanel(new GridLayout(descriptor.getCells().size(), 1));
         this.container.setVisible(false);
         this.add(this.container,BorderLayout.CENTER);
@@ -32,49 +48,38 @@ public class AdrGroupNodePanel extends AdrNodePanel<AdrGroupDescriptor> {
 
     private JPanel getTopPanel(){
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
-        JButton expandButton = this.componentsFactory.getIconButton("app/adr/node_expand.png", 20, AppThemeColor.FRAME, "");
-        expandButton.addActionListener(action -> {
+        this.expandButton = this.componentsFactory.getIconButton("app/adr/node_expand.png", 20, AppThemeColor.FRAME, "");
+        this.expandButton.addActionListener(action -> {
             if(this.container.isVisible()){
-                expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_expand.png",20));
+                this.expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_expand.png",20));
                 this.container.setVisible(false);
             }else {
-                expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_collapse.png",20));
+                this.expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_collapse.png",20));
                 this.container.setVisible(true);
             }
             MercuryStoreUI.adrUpdateTree.onNext(true);
         });
         JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_REMOVE_BUTTON);
         JButton addButton = this.componentsFactory.getIconButton("app/adr/add_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_ADD_BUTTON);
-        JButton exportButton = this.componentsFactory.getIconButton("app/adr/export_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_EXPORT_BUTTON);
-        exportButton.addActionListener(action -> {
-            ExportHelper.exportComponent(this.descriptor);
+        addButton.addActionListener(action -> {
+            MercuryStoreUI.adrSelectSubject.onNext(this.descriptor);
+            MercuryStoreUI.adrStateSubject.onNext(new AdrPageDefinition<>(AdrPageState.MAIN,this.descriptor));
         });
         JPanel buttonsPanel = this.componentsFactory.getJPanel(new GridLayout(1, 2));
-        buttonsPanel.add(exportButton);
         buttonsPanel.add(addButton);
         buttonsPanel.add(removeButton);
 
-        JLabel label = new JLabel();
-        label.setForeground(AppThemeColor.TEXT_DEFAULT);
-        label.setBackground(AppThemeColor.FRAME);
-        label.setFont(componentsFactory.getFont(FontStyle.REGULAR, 16));
-        label.setText(descriptor.getTitle());
-        String iconPath = "app/adr/static_group_icon.png";
-        switch (descriptor.getGroupType()) {
-            case STATIC: {
-                iconPath = "app/adr/static_group_icon.png";
-                break;
-            }
-            case DYNAMIC: {
-                iconPath = "app/adr/dynamic_group_icon.png";
-                break;
-            }
-        }
-        label.setPreferredSize(new Dimension(170, 30));
-        label.setIcon(componentsFactory.getIcon(iconPath, 48));
-        label.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 2));
-        root.add(expandButton,BorderLayout.LINE_START);
-        root.add(label,BorderLayout.CENTER);
+        this.groupLabel = new JLabel();
+        this.groupLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
+        this.groupLabel.setBackground(AppThemeColor.FRAME);
+        this.groupLabel.setFont(componentsFactory.getFont(FontStyle.REGULAR, 16));
+        this.groupLabel.setText(descriptor.getTitle());
+
+        this.groupLabel.setPreferredSize(new Dimension(170, 30));
+        this.groupLabel.setIcon(componentsFactory.getIcon(this.adrComponentsFactory.getGroupTypeIconPath(this.descriptor), 48));
+        this.groupLabel.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 2));
+        root.add(this.expandButton,BorderLayout.LINE_START);
+        root.add(this.groupLabel,BorderLayout.CENTER);
         root.add(buttonsPanel,BorderLayout.LINE_END);
         return root;
     }

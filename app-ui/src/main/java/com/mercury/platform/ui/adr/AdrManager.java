@@ -81,6 +81,7 @@ public class AdrManager implements AsSubscriber{
         MercuryStoreUI.adrStateSubject.subscribe(definition -> {
             switch (definition.getState()){
                 case MAIN: {
+                    this.mainPanel.setFromGroup(definition.getPayload() != null);
                     this.mainPanel.setPayload((AdrComponentDescriptor) definition.getPayload());
                     this.adrManagerFrame.setPage(this.mainPanel);
                     break;
@@ -107,8 +108,9 @@ public class AdrManager implements AsSubscriber{
                        adrGroupFrame.enableSettings();
                        this.frames.add(adrGroupFrame);
                        this.groupSettingsPanel.setPayload(defaultGroup);
-                       this.adrManagerFrame.reloadTree();
+                       this.adrManagerFrame.addNewNode(defaultGroup,definition.isFromGroup());
                        this.adrManagerFrame.setPage(this.groupSettingsPanel);
+                       MercuryStoreUI.adrSelectSubject.onNext(defaultGroup);
                    }
                    if(definition.getDescriptor() instanceof AdrIconDescriptor){
                        AdrIconDescriptor defaultIcon = this.config.getDefaultIcon();
@@ -119,8 +121,10 @@ public class AdrManager implements AsSubscriber{
                        componentFrame.enableSettings();
                        this.frames.add(componentFrame);
                        this.iconSettingsPanel.setPayload(defaultIcon);
-                       this.adrManagerFrame.reloadTree();
+                       this.iconSettingsPanel.setFromGroup(definition.isFromGroup());
+                       this.adrManagerFrame.addNewNode(defaultIcon,definition.isFromGroup());
                        this.adrManagerFrame.setPage(this.iconSettingsPanel);
+                       MercuryStoreUI.adrSelectSubject.onNext(defaultIcon);
 
                    }
                    if(definition.getDescriptor() instanceof AdrProgressBarDescriptor){
@@ -132,8 +136,10 @@ public class AdrManager implements AsSubscriber{
                        componentFrame.enableSettings();
                        this.frames.add(componentFrame);
                        this.progressBarSettingsPanel.setPayload(defaultProgressBar);
-                       this.adrManagerFrame.reloadTree();
+                       this.progressBarSettingsPanel.setFromGroup(definition.isFromGroup());
+                       this.adrManagerFrame.addNewNode(defaultProgressBar,definition.isFromGroup());
                        this.adrManagerFrame.setPage(this.progressBarSettingsPanel);
+                       MercuryStoreUI.adrSelectSubject.onNext(defaultProgressBar);
                    }
                    break;
                }

@@ -13,6 +13,12 @@ public class AdrProgressBarNodePanel extends AdrNodePanel<AdrProgressBarDescript
     public AdrProgressBarNodePanel(AdrProgressBarDescriptor descriptor, boolean inner) {
         super(descriptor,inner);
     }
+
+    @Override
+    protected void update() {
+        /*NOP*/
+    }
+
     @Override
     public void createUI() {
         JPanel root = this.componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER));
@@ -20,7 +26,7 @@ public class AdrProgressBarNodePanel extends AdrNodePanel<AdrProgressBarDescript
         MercuryTracker tracker = new MercuryTracker(descriptor);
         tracker.setValue((int) ((descriptor.getDuration()/2) * 1000));
         tracker.setStringPainted(false);
-        tracker.setPreferredSize(new Dimension(150, 26));
+        tracker.setPreferredSize(new Dimension(180, 36));
         this.setPreferredSize(new Dimension(150, 48));
         root.add(tracker);
         this.add(root,BorderLayout.CENTER);

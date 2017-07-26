@@ -115,6 +115,12 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
         advancedPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
         container.add(this.componentsFactory.wrapToSlide(generalPanel));
         container.add(this.componentsFactory.wrapToSlide(advancedPanel));
+        container.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                requestFocus();
+            }
+        });
         this.add(verticalContainer,BorderLayout.PAGE_START);
     }
 }

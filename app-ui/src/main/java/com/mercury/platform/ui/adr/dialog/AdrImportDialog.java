@@ -8,11 +8,16 @@ import java.util.List;
 
 
 public class AdrImportDialog<T extends AdrComponentDescriptor> extends AdrDialog<T>{
-    public AdrImportDialog(Component relative, List<T> payload) {
+    public AdrImportDialog(Component relative, T payload) {
         super(relative, payload);
     }
     @Override
     protected void createView() {
+
+    }
+
+    @Override
+    protected void postConstruct() {
 
     }
 }

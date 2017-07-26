@@ -1,7 +1,6 @@
 package com.mercury.platform.ui.adr.components;
 
 import com.mercury.platform.shared.config.descriptor.adr.*;
-import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.AdrComponentPanel;
 import com.mercury.platform.ui.adr.components.panel.AdrCellPanel;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -10,8 +9,6 @@ import lombok.NonNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
