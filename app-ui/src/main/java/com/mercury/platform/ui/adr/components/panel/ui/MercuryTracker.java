@@ -27,6 +27,8 @@ public class MercuryTracker extends JComponent {
     private AdrDurationComponentDescriptor descriptor;
     @Setter @Getter
     private boolean stringPainted = true;
+    @Setter @Getter
+    private boolean showCase = false;
     public MercuryTracker(AdrDurationComponentDescriptor descriptor) {
         this.descriptor = descriptor;
         switch (descriptor.getType()){

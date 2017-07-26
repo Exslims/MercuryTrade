@@ -20,7 +20,7 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
     protected DraggedFrameMotionListener motionListener;
     protected MouseAdapter mouseOverListener;
     
-    protected AbstractAdrComponentFrame(T descriptor) {
+    public AbstractAdrComponentFrame(T descriptor) {
         super(descriptor);
         this.mouseListener = new DraggedFrameMouseListener();
         this.motionListener = new DraggedFrameMotionListener();

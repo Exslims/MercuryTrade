@@ -5,14 +5,12 @@ import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.AdrConfigurationService;
 import com.mercury.platform.shared.config.descriptor.adr.*;
-import com.mercury.platform.ui.adr.components.AbstractAdrFrame;
-import com.mercury.platform.ui.adr.components.AdrManagerFrame;
-import com.mercury.platform.ui.adr.components.AdrGroupFrame;
-import com.mercury.platform.ui.adr.components.AdrSingleComponentFrame;
+import com.mercury.platform.ui.adr.components.*;
 import com.mercury.platform.ui.adr.components.panel.page.*;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.Getter;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,16 +44,31 @@ public class AdrManager implements AsSubscriber{
         this.selectedProfile.getContents().forEach(component -> {
             switch (component.getType()){
                 case GROUP: {
-                    this.frames.add(new AdrGroupFrame((AdrGroupDescriptor) component));
+                    this.frames.add(new AdrTrackerGroupFrame((AdrGroupDescriptor) component));
+                    break;
+                }
+                case PROGRESS_BAR:{
+                    this.frames.add(new AdrSingleComponentFrame((AdrProgressBarDescriptor) component));
+                    break;
+                }
+                case ICON:{
+                    this.frames.add(new AdrSingleComponentFrame((AdrIconDescriptor) component));
                     break;
                 }
             }
         });
         this.adrManagerFrame.init();
+        AdrTestGroup test = new AdrTestGroup();
+        test.setLocation(new Point(300,300));
+        test.setSize(new Dimension(400,400));
+        test.setTitle("Test group");
+        this.frames.add(new AdrGroupFrame(test));
+
         this.frames.forEach(it -> {
             it.init();
             it.disableSettings();
         });
+
         this.subscribe();
 
         AdrFrameMagnet.INSTANCE.setDescriptors(this.selectedProfile.getContents());
@@ -102,11 +115,11 @@ public class AdrManager implements AsSubscriber{
                            defaultGroup = this.config.getDefaultPBGroup();
                        }
                        this.selectedProfile.getContents().add(defaultGroup);
-                       AdrGroupFrame adrGroupFrame = new AdrGroupFrame(defaultGroup);
-                       adrGroupFrame.init();
-                       adrGroupFrame.showComponent();
-                       adrGroupFrame.enableSettings();
-                       this.frames.add(adrGroupFrame);
+                       AdrTrackerGroupFrame adrTrackerGroupFrame = new AdrTrackerGroupFrame(defaultGroup);
+                       adrTrackerGroupFrame.init();
+                       adrTrackerGroupFrame.showComponent();
+                       adrTrackerGroupFrame.enableSettings();
+                       this.frames.add(adrTrackerGroupFrame);
                        this.groupSettingsPanel.setPayload(defaultGroup);
                        this.adrManagerFrame.addNewNode(defaultGroup,definition.isFromGroup());
                        this.adrManagerFrame.setPage(this.groupSettingsPanel);

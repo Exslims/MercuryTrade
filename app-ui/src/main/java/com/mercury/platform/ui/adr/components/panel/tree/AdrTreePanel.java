@@ -24,7 +24,7 @@ public class AdrTreePanel extends JPanel{
         super(new BorderLayout());
         performanceHelper.reset();
         this.renderer = renderer;
-        this.setPreferredSize(new Dimension(250,10));
+        this.setPreferredSize(new Dimension(280,10));
         this.descriptors = descriptors;
         this.container = new VerticalScrollContainer();
         this.container.setBackground(AppThemeColor.FRAME);

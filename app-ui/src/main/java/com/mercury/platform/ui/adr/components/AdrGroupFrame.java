@@ -1,108 +1,49 @@
 package com.mercury.platform.ui.adr.components;
 
-import com.mercury.platform.shared.config.descriptor.adr.*;
-import com.mercury.platform.ui.adr.components.panel.AdrComponentPanel;
-import com.mercury.platform.ui.adr.components.panel.AdrCellPanel;
+
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.MercuryStoreUI;
-import lombok.NonNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
-
-public class AdrGroupFrame extends AbstractAdrComponentFrame<AdrGroupDescriptor> {
-    private List<AdrComponentPanel> cells;
-
-    private JPanel cellsPanel;
-    public AdrGroupFrame(@NonNull AdrGroupDescriptor descriptor) {
+public class AdrGroupFrame extends AbstractAdrComponentFrame<AdrTestGroup>{
+    private JPanel header;
+    public AdrGroupFrame(AdrTestGroup descriptor) {
         super(descriptor);
-        this.cells = new ArrayList<>();
     }
 
     @Override
     protected void initialize() {
         super.initialize();
-        this.cellsPanel = this.getCellsPanel();
-        this.add(this.cellsPanel,BorderLayout.CENTER);
+        this.setPreferredSize(this.descriptor.getSize());
+        header = this.componentsFactory.getJPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel label = this.componentsFactory.getTextLabel(this.descriptor.getTitle());
+        header.setBackground(AppThemeColor.ADR_BG);
+        header.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
+        header.add(label);
+        this.add(header,BorderLayout.PAGE_START);
         this.pack();
     }
 
-    private JPanel getCellsPanel(){
-        int cellCount = descriptor.getCells().size();
-        GridLayout layout = new GridLayout(cellCount, 1,descriptor.getHGap(),descriptor.getVGap());
-        if(this.descriptor.getOrientation().equals(AdrComponentOrientation.HORIZONTAL)){
-            layout = new GridLayout(1,cellCount,descriptor.getHGap(),descriptor.getVGap());
-        }
-        JPanel root = componentsFactory.getTransparentPanel(layout);
-        descriptor.getCells().forEach(component -> {
-                AdrCellPanel adrCellPanel = new AdrCellPanel((AdrDurationComponentDescriptor) component, this.componentsFactory);
-                root.add(adrCellPanel);
-                this.cells.add(adrCellPanel);
-        });
-        return root;
-    }
     @Override
     public void subscribe() {
         super.subscribe();
-        MercuryStoreUI.adrReloadSubject.subscribe(descriptor -> {
-            if(descriptor.equals(this.descriptor)){
-                int cellCount = this.descriptor.getCells().size();
-                switch (this.descriptor.getOrientation()){
-                    case VERTICAL:{
-                        if(this.descriptor.getGroupType().equals(AdrGroupType.STATIC)) {
-                            this.cellsPanel.setLayout(new GridLayout(cellCount, 1,this.descriptor.getHGap(),this.descriptor.getVGap()));
-                        }else {
-                            this.cellsPanel.setLayout(new BoxLayout(this.cellsPanel,BoxLayout.Y_AXIS));
-                        }
-                        break;
-                    }
-                    case HORIZONTAL:{
-                        if(this.descriptor.getGroupType().equals(AdrGroupType.STATIC)) {
-                            this.cellsPanel.setLayout(new GridLayout(1,cellCount,this.descriptor.getHGap(),this.descriptor.getVGap()));
-                        }else {
-                            this.cellsPanel.setLayout(new BoxLayout(this.cellsPanel,BoxLayout.X_AXIS));
-                        }
-                        break;
-                    }
-                }
-                this.cells.forEach(item -> {
-                    item.setPreferredSize(this.descriptor.getSize());
-                    item.setLocation(this.descriptor.getLocation());
-                });
-                this.setLocation(descriptor.getLocation());
-                this.setOpacity(this.descriptor.getOpacity());
-                this.repaint();
-                this.pack();
-            }
-        });
     }
 
     @Override
     public void enableSettings() {
         super.enableSettings();
-        cells.forEach(it -> {
-            it.enableSettings();
-            it.setBorder(BorderFactory.createMatteBorder(0,0,1,0,AppThemeColor.BORDER));
-            it.addMouseListener(this.mouseListener);
-            it.addMouseListener(this.mouseOverListener);
-            it.addMouseMotionListener(this.motionListener);
-        });
+        this.setBackground(AppThemeColor.TRANSPARENT);
+        header.setBackground(AppThemeColor.ADR_BG);
     }
 
     @Override
     public void disableSettings() {
         super.disableSettings();
-        cells.forEach(it -> {
-            it.disableSettings();
-            it.removeMouseListener(this.mouseListener);
-            it.removeMouseMotionListener(this.motionListener);
-            it.removeMouseListener(this.mouseOverListener);
-            it.setBorder(BorderFactory.createEmptyBorder(0,0,1,0));
-        });
-        this.pack();
-        this.repaint();
+    }
+
+    @Override
+    protected LayoutManager getFrameLayout() {
+        return new BorderLayout();
     }
 }
