@@ -18,6 +18,7 @@ public abstract class AdrNodePanel<D extends AdrComponentDescriptor> extends JPa
     protected ComponentsFactory componentsFactory = new ComponentsFactory();
     protected AdrComponentsFactory adrComponentsFactory = new AdrComponentsFactory(this.componentsFactory);
     protected AdrMouseOverListener mouseListener;
+    protected boolean inner;
 
     public AdrNodePanel(D descriptor) {
         this(descriptor, false);
@@ -25,6 +26,7 @@ public abstract class AdrNodePanel<D extends AdrComponentDescriptor> extends JPa
 
     public AdrNodePanel(D descriptor, boolean inner) {
         this.descriptor = descriptor;
+        this.inner = inner;
         this.mouseListener = (new AdrMouseOverListener<>(this, descriptor, inner));
         this.addMouseListener(this.mouseListener);
         MercuryStoreUI.adrReloadSubject.subscribe(source -> {

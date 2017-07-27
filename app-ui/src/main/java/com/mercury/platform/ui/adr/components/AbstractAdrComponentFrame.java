@@ -22,9 +22,11 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
     
     public AbstractAdrComponentFrame(T descriptor) {
         super(descriptor);
+        this.setBackground(AppThemeColor.TRANSPARENT);
+
         this.mouseListener = new DraggedFrameMouseListener();
         this.motionListener = new DraggedFrameMotionListener();
-        this.mouseOverListener = new AdrMouseOverListener<>(this.getRootPane(),this.descriptor,new Cursor(Cursor.MOVE_CURSOR));
+        this.mouseOverListener = new AdrMouseOverListener<>(this.getRootPane(),this.descriptor,true);
     }
 
     @Override
@@ -45,8 +47,7 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
     @Override
     public void enableSettings() {
         super.enableSettings();
-        this.setBackground(AppThemeColor.FRAME);
-        this.getRootPane().setBorder(BorderFactory.createMatteBorder(1,1,0,1,AppThemeColor.BORDER));
+        this.getRootPane().setBorder(BorderFactory.createMatteBorder(1,1,1,1,AppThemeColor.ADR_DEFAULT_BORDER));
         this.addMouseListener(this.mouseListener);
         this.addMouseListener(this.mouseOverListener);
         this.addMouseMotionListener(this.motionListener);
@@ -55,7 +56,6 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
     @Override
     public void disableSettings() {
         super.disableSettings();
-        this.setBackground(AppThemeColor.TRANSPARENT);
         this.getRootPane().setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
         this.removeMouseListener(this.mouseListener);
         this.removeMouseListener(this.mouseOverListener);
@@ -93,6 +93,7 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
                     setLocation(getLocationOnScreen().x, dimension.height - getSize().height);
                 }
                 descriptor.setLocation(getLocationOnScreen());
+                System.out.println(descriptor.getLocation());
                 MercuryStoreUI.adrUpdateSubject.onNext(descriptor);
                 MercuryStoreCore.saveConfigSubject.onNext(true);
             }

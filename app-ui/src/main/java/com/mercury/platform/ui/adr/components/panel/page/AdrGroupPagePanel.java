@@ -1,9 +1,9 @@
 package com.mercury.platform.ui.adr.components.panel.page;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentOrientation;
-import com.mercury.platform.shared.config.descriptor.adr.AdrGroupContentType;
-import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
-import com.mercury.platform.shared.config.descriptor.adr.AdrGroupType;
+import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupContentType;
+import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupType;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -12,12 +12,9 @@ import com.mercury.platform.ui.misc.MercuryStoreUI;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 
 
-public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
+public class AdrGroupPagePanel extends AdrPagePanel<AdrTrackerGroupDescriptor> {
     @Override
     protected void init() {
         JPanel container = new VerticalScrollContainer();
@@ -32,7 +29,7 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
         JLabel paddingLabel = this.componentsFactory.getTextLabel("Component's padding:");
         JLabel groupTypeLabel = this.componentsFactory.getTextLabel("Group's type:");
         String sizeText = "Icon's size:";
-        if(this.payload.getContentType().equals(AdrGroupContentType.PROGRESS_BARS)){
+        if(this.payload.getContentType().equals(AdrTrackerGroupContentType.PROGRESS_BARS)){
             sizeText = "Progress bar's size:";
         }
         JLabel sizeLabel = this.componentsFactory.getTextLabel(sizeText);
@@ -62,7 +59,7 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrGroupDescriptor> {
         JComboBox groupType = this.componentsFactory.getComboBox(new String[]{"Dynamic","Static"});
         groupType.setSelectedIndex(this.payload.getGroupType().ordinal());
         groupType.addItemListener(e -> {
-            this.payload.setGroupType(AdrGroupType.valueOfPretty((String) groupType.getSelectedItem()));
+            this.payload.setGroupType(AdrTrackerGroupType.valueOfPretty((String) groupType.getSelectedItem()));
             MercuryStoreUI.adrReloadSubject.onNext(this.payload);
         });
         JPanel iconSizePanel = this.adrComponentsFactory.getComponentSizePanel(this.payload,this.fromGroup);

@@ -10,8 +10,12 @@ import com.mercury.platform.ui.adr.components.panel.ui.icon.SquareIconTrackerUI;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.Getter;
 import lombok.Setter;
+import org.pushingpixels.trident.Timeline;
+import org.pushingpixels.trident.callback.TimelineCallback;
+import org.pushingpixels.trident.callback.TimelineCallbackAdapter;
 
 import javax.swing.*;
 
@@ -29,6 +33,9 @@ public class MercuryTracker extends JComponent {
     private boolean stringPainted = true;
     @Setter @Getter
     private boolean showCase = false;
+
+    private Timeline progressTl;
+
     public MercuryTracker(AdrDurationComponentDescriptor descriptor) {
         this.descriptor = descriptor;
         switch (descriptor.getType()){
@@ -53,6 +60,10 @@ public class MercuryTracker extends JComponent {
         this.setFont(new ComponentsFactory().getFont(FontStyle.BOLD, this.descriptor.getFontSize()));
         this.setForeground(AppThemeColor.TEXT_DEFAULT);
         this.setBackground(AppThemeColor.TRANSPARENT);
+
+        this.progressTl = new Timeline(this);
+        this.progressTl.setDuration((int) (descriptor.getDuration() * 1000));
+        this.progressTl.addPropertyToInterpolate("value", this.getMaximum(), 0);
     }
 
     public void setUI(BasicMercuryIconTrackerUI ui){
@@ -72,5 +83,20 @@ public class MercuryTracker extends JComponent {
     public float getPercentComplete(){
         long span = maximum - minimum;
         return (value - minimum) / (span * 1f);
+    }
+    public void addTimelineCallback(TimelineCallback callback){
+        this.progressTl.addCallback(callback);
+    }
+    public void abort(){
+        this.progressTl.abort();
+    }
+    public void playLoop(){
+        this.progressTl.playLoop(Timeline.RepeatBehavior.LOOP);
+    }
+    public void play(){
+        this.progressTl.play();
+    }
+    public void cancel(){
+        this.progressTl.cancel();
     }
 }

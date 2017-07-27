@@ -36,6 +36,8 @@ public class MercuryStoreUI {
     //adr
     public static final PublishSubject<AdrPageDefinition> adrStateSubject = PublishSubject.create();
     public static final PublishSubject<AdrComponentDefinition> adrComponentStateSubject = PublishSubject.create();
+    public static final PublishSubject<AdrComponentDescriptor> adrRemoveComponentSubject = PublishSubject.create();
+    public static final PublishSubject<AdrComponentDescriptor> adrPostRemoveComponentSubject = PublishSubject.create();
     public static final PublishSubject<AdrProfileDescriptor> adrSelectProfileSubject = PublishSubject.create();
     public static final PublishSubject<AdrComponentDescriptor> adrSelectSubject = PublishSubject.create();
     public static final PublishSubject<AdrComponentDescriptor> adrReloadSubject = PublishSubject.create();

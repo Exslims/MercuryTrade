@@ -1,7 +1,6 @@
 package com.mercury.platform.ui.adr.components;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
-import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.sun.awt.AWTUtilities;
 import com.sun.jna.Native;

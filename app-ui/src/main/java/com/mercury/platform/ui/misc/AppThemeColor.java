@@ -29,6 +29,7 @@ public class AppThemeColor {
     public static final Color ADR_MOUSE_OVER_BORDER = new Color(155, 150, 120);
     public static final Color ADR_DEFAULT_BORDER = new Color(62, 73, 72);
     public static final Color ADR_BG = new Color(45, 55, 54);
+    public static final Color ADR_TRACKER_GROUP_BG = new Color(35, 45, 44);
     public static final Color ADR_PANEL_BORDER = new Color(23, 103, 115);
     public static final Color ADR_TEXT_ARE_BG = new Color(50, 52, 51);
     public static final Color ADR_FOOTER_BG = new Color(55,65,64);

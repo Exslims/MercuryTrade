@@ -36,7 +36,7 @@ public class AdrTreeEntryCellRenderer implements TreeCellRenderer {
             switch (descriptor.getType()) {
                 case GROUP: {
                     String iconPath = "app/adr/static_group_icon.png";
-                    switch (((AdrGroupDescriptor) descriptor).getGroupType()) {
+                    switch (((AdrTrackerGroupDescriptor) descriptor).getGroupType()) {
                         case STATIC: {
                             iconPath = "app/adr/static_group_icon.png";
                             break;

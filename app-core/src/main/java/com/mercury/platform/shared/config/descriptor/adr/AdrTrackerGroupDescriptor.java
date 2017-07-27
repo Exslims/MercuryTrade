@@ -3,15 +3,14 @@ package com.mercury.platform.shared.config.descriptor.adr;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.awt.*;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class AdrGroupDescriptor extends AdrComponentDescriptor {
+public class AdrTrackerGroupDescriptor extends AdrComponentDescriptor {
     private List<AdrComponentDescriptor> cells;
-    private AdrGroupContentType contentType;
-    private AdrGroupType groupType;
+    private AdrTrackerGroupContentType contentType;
+    private AdrTrackerGroupType groupType;
     private int vGap;
     private int hGap;
 }

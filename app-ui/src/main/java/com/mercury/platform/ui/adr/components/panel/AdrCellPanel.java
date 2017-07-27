@@ -18,14 +18,12 @@ import java.awt.*;
 import java.util.Random;
 
 public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescriptor>{
-    private Timeline progressTl;
     private MercuryTracker tracker;
     public AdrCellPanel(AdrDurationComponentDescriptor cellDescriptor, ComponentsFactory componentsFactory) {
         super(cellDescriptor,componentsFactory);
         this.setLayout(new GridLayout(1,1));
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.setBorder(null);
-        this.createUI();
         this.setVisible(false);
     }
 
@@ -33,46 +31,45 @@ public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescript
     public void enableSettings() {
         super.enableSettings();
         this.setVisible(true);
-        this.progressTl.abort();
+        this.tracker.abort();
         this.tracker.setValue(new Random().nextInt((int) (this.descriptor.getDuration() * 1000)));
     }
 
     @Override
     public void disableSettings() {
         super.disableSettings();
-        this.progressTl.abort();
+        this.tracker.abort();
         this.setVisible(false);
     }
 
     @Override
-    protected void onSelect() {
-        this.progressTl.playLoop(Timeline.RepeatBehavior.LOOP);
+    public void onSelect() {
+        this.tracker.playLoop();
     }
 
     @Override
-    protected void onUnSelect() {
-        this.progressTl.abort();
+    public void onUnSelect() {
+        this.tracker.abort();
     }
 
     @Override
     protected void onHotKeyPressed() {
         this.setVisible(true);
-        this.progressTl.play();
+        this.tracker.play();
+    }
+
+    @Override
+    protected void onUpdate() {
+        this.remove(this.tracker);
+        this.createUI();
     }
 
     @Override
     public void createUI() {
         this.setPreferredSize(this.descriptor.getSize());
-        if (this.progressTl != null) {
-            this.progressTl.cancel();
-        }
         this.tracker = new MercuryTracker(this.descriptor);
         this.add(this.tracker, BorderLayout.CENTER);
-
-        this.progressTl = new Timeline(this.tracker);
-        this.progressTl.setDuration((int) (descriptor.getDuration() * 1000));
-        this.progressTl.addPropertyToInterpolate("value", tracker.getMaximum(), 0);
-        this.progressTl.addCallback(new TimelineCallbackAdapter() {
+        this.tracker.addTimelineCallback(new TimelineCallbackAdapter() {
             @Override
             public void onTimelineStateChanged(Timeline.TimelineState oldState, Timeline.TimelineState newState, float durationFraction, float timelinePosition) {
                 if (newState.equals(Timeline.TimelineState.IDLE) && !inSettings) {
@@ -82,8 +79,5 @@ public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescript
             }
         });
         MercuryStoreUI.adrRepaintSubject.onNext(true);
-        if (this.inSettings) {
-            this.enableSettings();
-        }
     }
 }

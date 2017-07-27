@@ -51,7 +51,7 @@ public class TooltipConstants {
     public static final String ADR_CREATE_PB_GROUP = "Progress bars group";
     public static final String ADR_CREATE_ICON = "Icon";
     public static final String ADR_CREATE_PROGRESS_BAR = "Progress bar";
-    public static final String ADR_IMPORT_COMPONENT = "Import component";
+    public static final String ADR_IMPORT_COMPONENT = "Import";
 
     public static final String ADR_EXPORT_BUTTON = "Export component";
     public static final String ADR_REMOVE_BUTTON = "Remove component";

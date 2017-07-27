@@ -40,10 +40,10 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
         createIconsGroup.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                AdrGroupDescriptor adrGroupDescriptor = new AdrGroupDescriptor();
-                adrGroupDescriptor.setContentType(AdrGroupContentType.ICONS);
+                AdrTrackerGroupDescriptor adrTrackerGroupDescriptor = new AdrTrackerGroupDescriptor();
+                adrTrackerGroupDescriptor.setContentType(AdrTrackerGroupContentType.ICONS);
                 MercuryStoreUI.adrComponentStateSubject.onNext(
-                        new AdrComponentDefinition(adrGroupDescriptor, AdrComponentOperations.NEW_COMPONENT,false)
+                        new AdrComponentDefinition(adrTrackerGroupDescriptor, AdrComponentOperations.NEW_COMPONENT,false)
                 );
             }
         });
@@ -53,10 +53,10 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
         createPbGroup.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                AdrGroupDescriptor adrGroupDescriptor = new AdrGroupDescriptor();
-                adrGroupDescriptor.setContentType(AdrGroupContentType.PROGRESS_BARS);
+                AdrTrackerGroupDescriptor adrTrackerGroupDescriptor = new AdrTrackerGroupDescriptor();
+                adrTrackerGroupDescriptor.setContentType(AdrTrackerGroupContentType.PROGRESS_BARS);
                 MercuryStoreUI.adrComponentStateSubject.onNext(
-                        new AdrComponentDefinition(adrGroupDescriptor, AdrComponentOperations.NEW_COMPONENT,false)
+                        new AdrComponentDefinition(adrTrackerGroupDescriptor, AdrComponentOperations.NEW_COMPONENT,false)
                 );
             }
         });
@@ -71,7 +71,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
                 definition.setDescriptor(iconDescriptor);
                 definition.setOperations(AdrComponentOperations.NEW_COMPONENT);
                 if(payload != null) {
-                    ((AdrGroupDescriptor) payload).getCells().add(iconDescriptor);
+                    ((AdrTrackerGroupDescriptor) payload).getCells().add(iconDescriptor);
                     definition.setFromGroup(fromGroup);
                 }
                 MercuryStoreUI.adrComponentStateSubject.onNext(definition);
@@ -88,7 +88,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
                 definition.setDescriptor(iconDescriptor);
                 definition.setOperations(AdrComponentOperations.NEW_COMPONENT);
                 if(payload != null) {
-                    ((AdrGroupDescriptor) payload).getCells().add(iconDescriptor);
+                    ((AdrTrackerGroupDescriptor) payload).getCells().add(iconDescriptor);
                     definition.setFromGroup(fromGroup);
                 }
                 MercuryStoreUI.adrComponentStateSubject.onNext(definition);
@@ -103,7 +103,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
             }
         });
         if(this.fromGroup) {
-            switch (((AdrGroupDescriptor) this.payload).getContentType()){
+            switch (((AdrTrackerGroupDescriptor) this.payload).getContentType()){
                 case ICONS:{
                     container.add(this.componentsFactory.wrapToSlide(createIcon));
                     break;

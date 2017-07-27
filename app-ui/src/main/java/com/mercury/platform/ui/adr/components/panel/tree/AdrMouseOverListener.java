@@ -37,10 +37,6 @@ public class AdrMouseOverListener<T extends AdrComponentDescriptor> extends Mous
             }
         });
     }
-    public AdrMouseOverListener(JComponent source, T descriptor, Cursor overCursor) {
-        this(source,descriptor,true);
-        this.overCursor = overCursor;
-    }
     @Override
     public void mouseClicked(MouseEvent e) {
         this.source.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER));

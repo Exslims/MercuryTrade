@@ -37,7 +37,6 @@ public class ProgressBarTrackerUI extends BasicMercuryIconTrackerUI<AdrProgressB
         g2.fillRect(0,0,barRectWidth,barRectHeight);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         float sectorWidth = barRectWidth * tracker.getPercentComplete();
         Shape outer  = new Rectangle2D.Double(0, 0,barRectWidth, barRectHeight);

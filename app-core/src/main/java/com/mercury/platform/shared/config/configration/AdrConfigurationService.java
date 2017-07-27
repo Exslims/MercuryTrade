@@ -1,7 +1,7 @@
 package com.mercury.platform.shared.config.configration;
 
 
-import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
@@ -9,6 +9,6 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescripto
 public interface AdrConfigurationService extends ListConfigurationService<AdrProfileDescriptor>{
     AdrIconDescriptor getDefaultIcon();
     AdrProgressBarDescriptor getDefaultProgressBar();
-    AdrGroupDescriptor getDefaultIconGroup();
-    AdrGroupDescriptor getDefaultPBGroup();
+    AdrTrackerGroupDescriptor getDefaultIconGroup();
+    AdrTrackerGroupDescriptor getDefaultPBGroup();
 }

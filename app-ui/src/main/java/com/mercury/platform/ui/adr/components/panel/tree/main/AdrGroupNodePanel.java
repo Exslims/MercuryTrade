@@ -1,11 +1,12 @@
 package com.mercury.platform.ui.adr.components.panel.tree.main;
 
-import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrNodePanel;
-import com.mercury.platform.ui.adr.dialog.ExportHelper;
 import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
 import com.mercury.platform.ui.adr.routing.AdrPageState;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
+import com.mercury.platform.ui.dialog.AlertDialog;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
@@ -13,11 +14,11 @@ import com.mercury.platform.ui.misc.TooltipConstants;
 import javax.swing.*;
 import java.awt.*;
 
-public class AdrGroupNodePanel extends AdrNodePanel<AdrGroupDescriptor> {
+public class AdrGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescriptor> {
     private JLabel groupLabel;
     private JPanel container;
     private JButton expandButton;
-    public AdrGroupNodePanel(AdrGroupDescriptor descriptor) {
+    public AdrGroupNodePanel(AdrTrackerGroupDescriptor descriptor) {
         super(descriptor,false);
     }
 
@@ -25,7 +26,9 @@ public class AdrGroupNodePanel extends AdrNodePanel<AdrGroupDescriptor> {
     protected void update() {
         this.groupLabel.setText(descriptor.getTitle());
         this.groupLabel.setIcon(componentsFactory.getIcon(this.adrComponentsFactory.getGroupTypeIconPath(this.descriptor), 48));
+        this.updateUI();
     }
+
 
     @Override
     public void createUI() {
@@ -35,8 +38,9 @@ public class AdrGroupNodePanel extends AdrNodePanel<AdrGroupDescriptor> {
                 this.expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_collapse.png",20));
             }
         });
-        this.container = this.componentsFactory.getJPanel(new GridLayout(descriptor.getCells().size(), 1));
+        this.container = this.componentsFactory.getJPanel(new GridLayout(0, 1));
         this.container.setVisible(false);
+
         this.add(this.container,BorderLayout.CENTER);
         this.add(this.getTopPanel(),BorderLayout.PAGE_START);
     }
@@ -60,6 +64,14 @@ public class AdrGroupNodePanel extends AdrNodePanel<AdrGroupDescriptor> {
             MercuryStoreUI.adrUpdateTree.onNext(true);
         });
         JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_REMOVE_BUTTON);
+        removeButton.addActionListener(action -> new AlertDialog(success -> {
+            if(success) {
+                Container wrapper = this.getParent();
+                wrapper.getParent().remove(wrapper);
+                MercuryStoreUI.adrRemoveComponentSubject.onNext(descriptor);
+                MercuryStoreUI.adrUpdateTree.onNext(true);
+            }
+        },"Do you want to delete \"" + descriptor.getTitle() + "\"component?",this).setVisible(true));
         JButton addButton = this.componentsFactory.getIconButton("app/adr/add_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_ADD_BUTTON);
         addButton.addActionListener(action -> {
             MercuryStoreUI.adrSelectSubject.onNext(this.descriptor);

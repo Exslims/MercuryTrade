@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.adr.components.panel.tree.main;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
-import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrTreeNodeRenderer;
@@ -20,7 +20,7 @@ public class AdrMainTreeNodeRenderer implements AdrTreeNodeRenderer {
                 return new AdrProgressBarNodePanel((AdrProgressBarDescriptor) descriptor,inner);
             }
             case GROUP: {
-                return new AdrGroupNodePanel((AdrGroupDescriptor) descriptor);
+                return new AdrGroupNodePanel((AdrTrackerGroupDescriptor) descriptor);
             }
         }
         return new JPanel();

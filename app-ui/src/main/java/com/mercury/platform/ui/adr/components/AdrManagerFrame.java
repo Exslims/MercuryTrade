@@ -106,11 +106,15 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         this.pack();
         this.repaint();
     }
+    public void removeNode(AdrComponentDescriptor descriptor) {
+        this.pack();
+        this.repaint();
+    }
     private JPanel getBottomPanel(){
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setBorder(BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.MSG_HEADER_BORDER));
         root.setBackground(AppThemeColor.ADR_FOOTER_BG);
-        JPanel profilePanel = this.componentsFactory.getJPanel(new GridLayout(1, 2));
+        JPanel profilePanel = this.componentsFactory.getJPanel(new GridLayout(1, 3));
         profilePanel.setBackground(AppThemeColor.ADR_FOOTER_BG);
         List<String> profilesNames = Configuration.get().adrConfiguration().getEntities().stream().map(AdrProfileDescriptor::getProfileName).collect(Collectors.toList());
         JComboBox profileSelector = this.componentsFactory.getComboBox(profilesNames.toArray(new String[0]));
@@ -125,6 +129,11 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         bottomPanel.setBackground(AppThemeColor.ADR_FOOTER_BG);
         profilePanel.add(this.componentsFactory.getTextLabel("Selected profile: "),BorderLayout.LINE_START);
         profilePanel.add(profileSelector);
+        JButton reloadButton = this.componentsFactory.getIconButton("app/adr/export_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_EXPORT_BUTTON);
+        reloadButton.addActionListener(action -> {
+            this.tree.updateTree();
+        });
+        profilePanel.add(reloadButton);
         bottomPanel.add(exportButton,BorderLayout.LINE_START);
         bottomPanel.add(profilePanel,BorderLayout.CENTER);
 

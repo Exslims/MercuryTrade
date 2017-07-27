@@ -1,7 +1,7 @@
 package com.mercury.platform.shared.config.descriptor.adr;
 
 
-public enum AdrGroupType {
+public enum AdrTrackerGroupType {
     DYNAMIC {
         @Override
         public String asPretty() {
@@ -16,10 +16,10 @@ public enum AdrGroupType {
     };
 
     public abstract String asPretty();
-    public static AdrGroupType valueOfPretty(String s){
-        for (AdrGroupType adrGroupType : AdrGroupType.values()) {
-            if(adrGroupType.asPretty().equals(s)){
-                return adrGroupType;
+    public static AdrTrackerGroupType valueOfPretty(String s){
+        for (AdrTrackerGroupType adrTrackerGroupType : AdrTrackerGroupType.values()) {
+            if(adrTrackerGroupType.asPretty().equals(s)){
+                return adrTrackerGroupType;
             }
         }
         return null;

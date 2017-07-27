@@ -17,29 +17,14 @@ import java.awt.*;
 public class AdrExportDialog extends AdrDialog<AdrProfileDescriptor> {
     private JTextArea jsonArea;
     private AdrTreePanel adrTree;
-    private SwingWorker<AdrTreePanel,Void> worker;
     public AdrExportDialog(Component relative, AdrProfileDescriptor descriptor){
         super(relative, descriptor);
         this.setTitle("Export manager");
 
         MercuryStoreUI.adrUpdateTree.subscribe(state -> {
+            this.pack();
             this.repaint();
         });
-
-        this.worker = new SwingWorker<AdrTreePanel, Void>() {
-            @Override
-            protected AdrTreePanel doInBackground() throws Exception {
-                adrTree.updateTree();
-                return null;
-            }
-
-            @Override
-            protected void done() {
-                adrTree.setVisible(true);
-                pack();
-                repaint();
-            }
-        };
     }
 
     @Override
@@ -55,7 +40,7 @@ public class AdrExportDialog extends AdrDialog<AdrProfileDescriptor> {
     protected void postConstruct() {
         this.jsonArea.setText(this.getPayloadAsJson());
         this.adrTree.setVisible(true);
-        this.worker.execute();
+        this.adrTree.updateTree();
         this.pack();
         this.repaint();
     }

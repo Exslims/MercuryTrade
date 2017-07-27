@@ -4,14 +4,17 @@ package com.mercury.platform.ui.adr.components;
 import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDescriptor;
-import com.mercury.platform.shared.config.descriptor.adr.AdrGroupDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.FieldValueListener;
+import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
+import com.mercury.platform.ui.adr.routing.AdrComponentOperations;
 import com.mercury.platform.ui.adr.validator.DoubleFieldValidator;
 import com.mercury.platform.ui.adr.validator.FieldValidator;
 import com.mercury.platform.ui.adr.validator.IntegerFieldValidator;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
+import com.mercury.platform.ui.dialog.AlertDialog;
 import com.mercury.platform.ui.dialog.DialogCallback;
 import com.mercury.platform.ui.adr.dialog.AdrIconSelectDialog;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -40,15 +43,15 @@ public class AdrComponentsFactory {
         JLabel heightLabel = this.componentsFactory.getTextLabel("Height:");
         JTextField widthField = this.getSmartField(descriptor.getSize().width, new IntegerFieldValidator(10,2000), value -> {
             descriptor.setSize(new Dimension(value, descriptor.getSize().height));
-            if(descriptor instanceof AdrGroupDescriptor){
-                ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setSize(descriptor.getSize()));
+            if(descriptor instanceof AdrTrackerGroupDescriptor){
+                ((AdrTrackerGroupDescriptor) descriptor).getCells().forEach(item -> item.setSize(descriptor.getSize()));
             }
             MercuryStoreUI.adrReloadSubject.onNext(descriptor);
         });
         JTextField heightField = this.getSmartField(descriptor.getSize().height, new IntegerFieldValidator(10,1000), value -> {
             descriptor.setSize(new Dimension(descriptor.getSize().width,value));
-            if(descriptor instanceof AdrGroupDescriptor){
-                ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setSize(descriptor.getSize()));
+            if(descriptor instanceof AdrTrackerGroupDescriptor){
+                ((AdrTrackerGroupDescriptor) descriptor).getCells().forEach(item -> item.setSize(descriptor.getSize()));
             }
             MercuryStoreUI.adrReloadSubject.onNext(descriptor);
         });
@@ -72,15 +75,15 @@ public class AdrComponentsFactory {
         JLabel yLabel = this.componentsFactory.getTextLabel("Y:");
         JTextField xField = this.getSmartField(descriptor.getLocation().x,new IntegerFieldValidator(0,10000),value -> {
             descriptor.setLocation(new Point(value, descriptor.getLocation().y));
-            if(descriptor instanceof AdrGroupDescriptor){
-                ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setLocation(descriptor.getLocation()));
+            if(descriptor instanceof AdrTrackerGroupDescriptor){
+                ((AdrTrackerGroupDescriptor) descriptor).getCells().forEach(item -> item.setLocation(descriptor.getLocation()));
             }
             MercuryStoreUI.adrReloadSubject.onNext(descriptor);
         });
         JTextField yField = this.getSmartField(descriptor.getLocation().y,new IntegerFieldValidator(0,5000),value -> {
             descriptor.setLocation(new Point(descriptor.getLocation().x,value));
-            if(descriptor instanceof AdrGroupDescriptor){
-                ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setLocation(descriptor.getLocation()));
+            if(descriptor instanceof AdrTrackerGroupDescriptor){
+                ((AdrTrackerGroupDescriptor) descriptor).getCells().forEach(item -> item.setLocation(descriptor.getLocation()));
             }
             MercuryStoreUI.adrReloadSubject.onNext(descriptor);
         });
@@ -93,8 +96,8 @@ public class AdrComponentsFactory {
             if(source.equals(descriptor)){
                 xField.setText(String.valueOf(descriptor.getLocation().x));
                 yField.setText(String.valueOf(descriptor.getLocation().y));
-                if(descriptor instanceof AdrGroupDescriptor){
-                    ((AdrGroupDescriptor) descriptor).getCells().forEach(item -> item.setLocation(descriptor.getLocation()));
+                if(descriptor instanceof AdrTrackerGroupDescriptor){
+                    ((AdrTrackerGroupDescriptor) descriptor).getCells().forEach(item -> item.setLocation(descriptor.getLocation()));
                 }
             }
         });
@@ -314,7 +317,7 @@ public class AdrComponentsFactory {
         return root;
     }
 
-    public JPanel getGapPanel(AdrGroupDescriptor descriptor){
+    public JPanel getGapPanel(AdrTrackerGroupDescriptor descriptor){
         JPanel root = this.componentsFactory.getJPanel(new GridLayout(1, 4,4,0));
         root.setBackground(AppThemeColor.SLIDE_BG);
         JLabel hGap = this.componentsFactory.getTextLabel("hGap:");
@@ -354,8 +357,11 @@ public class AdrComponentsFactory {
         return contextMenu;
     }
 
-    public JPanel getRightComponentOperationsPanel(AdrComponentDescriptor descriptor) {
+    public JPanel getRightComponentOperationsPanel(AdrComponentDescriptor descriptor, Container source) {
         JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 15, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_REMOVE_BUTTON);
+        removeButton.addActionListener(action -> {
+            new AlertDialog(this.getRemoveCallback(source,descriptor),"Do you want to delete \"" + descriptor.getTitle() + "\"component?",removeButton).setVisible(true);
+        });
         JButton visibleButton = this.componentsFactory.getIconButton("app/adr/visible_node_on.png", 15, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_EXPORT_BUTTON);
         visibleButton.addActionListener(action -> {
             if(descriptor.isVisible()){
@@ -418,7 +424,7 @@ public class AdrComponentsFactory {
         });
         return expandButton;
     }
-    public String getGroupTypeIconPath(AdrGroupDescriptor descriptor){
+    public String getGroupTypeIconPath(AdrTrackerGroupDescriptor descriptor){
         String iconPath = "app/adr/static_group_icon.png";
         switch (descriptor.getGroupType()) {
             case STATIC: {
@@ -431,6 +437,16 @@ public class AdrComponentsFactory {
             }
         }
         return iconPath;
+    }
+    public DialogCallback<Boolean> getRemoveCallback(Container container, AdrComponentDescriptor descriptor){
+        return success -> {
+            if(success) {
+                Container wrapper = container.getParent();
+                wrapper.getParent().remove(wrapper);
+                MercuryStoreUI.adrRemoveComponentSubject.onNext(descriptor);
+                MercuryStoreUI.adrUpdateTree.onNext(true);
+            }
+        };
     }
 
     private JColorChooser getColorChooser(){

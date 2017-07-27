@@ -13,7 +13,7 @@ public class AdrComponentDeserializer implements JsonDeserializer<AdrComponentDe
         Gson gson = new Gson();
         switch (AdrComponentType.valueOf(jsonObj.getAsString())){
             case GROUP:{
-                return gson.fromJson(jsonElement.getAsJsonObject(), AdrGroupDescriptor.class);
+                return gson.fromJson(jsonElement.getAsJsonObject(), AdrTrackerGroupDescriptor.class);
             }
             case ICON: {
                 return gson.fromJson(jsonElement.getAsJsonObject(), AdrIconDescriptor.class);
