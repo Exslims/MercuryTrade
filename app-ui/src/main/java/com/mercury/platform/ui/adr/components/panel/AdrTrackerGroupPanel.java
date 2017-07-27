@@ -25,12 +25,11 @@ public class AdrTrackerGroupPanel extends AdrComponentPanel<AdrTrackerGroupDescr
     @Override
     public void subscribe() {
         super.subscribe();
-        MercuryStoreUI.adrPostRemoveComponentSubject.subscribe(target -> {
+        MercuryStoreUI.adrPostOperationsComponentSubject.subscribe(target -> {
             if(this.cells.stream()
                     .map(AdrComponentPanel::getDescriptor)
                     .collect(Collectors.toList())
-                    .contains(target)){
-                this.descriptor.getCells().remove(target);
+                    .size() != this.descriptor.getCells().size()){
                 this.removeAll();
                 this.createUI();
                 MercuryStoreCore.saveConfigSubject.onNext(true);

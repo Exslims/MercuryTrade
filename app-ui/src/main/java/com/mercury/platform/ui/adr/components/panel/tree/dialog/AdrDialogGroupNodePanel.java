@@ -49,7 +49,7 @@ public class AdrDialogGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescrip
                 expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_collapse.png",20));
                 this.container.setVisible(true);
             }
-            MercuryStoreUI.adrUpdateTree.onNext(true);
+            MercuryStoreUI.adrManagerPack.onNext(true);
         });
         JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_REMOVE_BUTTON);
 

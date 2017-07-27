@@ -3,13 +3,9 @@ package com.mercury.platform.ui.adr.components.panel.tree.main;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrNodePanel;
 import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
-import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
-import com.mercury.platform.ui.adr.routing.AdrComponentOperations;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
-import com.mercury.platform.ui.dialog.DialogCallback;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,6 +45,6 @@ public class AdrIconNodePanel extends AdrNodePanel<AdrIconDescriptor> {
         this.add(root,BorderLayout.CENTER);
         this.add(this.adrComponentsFactory.getLeftComponentOperationsPanel(this.descriptor),BorderLayout.LINE_START);
         this.add(this.adrComponentsFactory
-                .getRightComponentOperationsPanel(this.descriptor, this),BorderLayout.LINE_END);
+                .getRightComponentOperationsPanel(this.descriptor),BorderLayout.LINE_END);
     }
 }

@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.adr.components.panel.page;
 
 
+import com.mercury.platform.shared.config.configration.AdrConfigurationService;
 import com.mercury.platform.shared.config.descriptor.adr.*;
 import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
 import com.mercury.platform.ui.adr.routing.AdrComponentOperations;
@@ -17,8 +18,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
-    public AdrMainPagePanel() {
+    private AdrConfigurationService config;
+    public AdrMainPagePanel(AdrConfigurationService config) {
         super();
+        this.config = config;
     }
 
     @Override
@@ -40,10 +43,8 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
         createIconsGroup.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                AdrTrackerGroupDescriptor adrTrackerGroupDescriptor = new AdrTrackerGroupDescriptor();
-                adrTrackerGroupDescriptor.setContentType(AdrTrackerGroupContentType.ICONS);
                 MercuryStoreUI.adrComponentStateSubject.onNext(
-                        new AdrComponentDefinition(adrTrackerGroupDescriptor, AdrComponentOperations.NEW_COMPONENT,false)
+                        new AdrComponentDefinition(config.getDefaultIconGroup(), AdrComponentOperations.NEW_COMPONENT,payload)
                 );
             }
         });
@@ -53,10 +54,8 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
         createPbGroup.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                AdrTrackerGroupDescriptor adrTrackerGroupDescriptor = new AdrTrackerGroupDescriptor();
-                adrTrackerGroupDescriptor.setContentType(AdrTrackerGroupContentType.PROGRESS_BARS);
                 MercuryStoreUI.adrComponentStateSubject.onNext(
-                        new AdrComponentDefinition(adrTrackerGroupDescriptor, AdrComponentOperations.NEW_COMPONENT,false)
+                        new AdrComponentDefinition(config.getDefaultPBGroup(), AdrComponentOperations.NEW_COMPONENT,payload)
                 );
             }
         });
@@ -67,12 +66,12 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
             @Override
             public void mouseClicked(MouseEvent e) {
                 AdrComponentDefinition definition = new AdrComponentDefinition();
-                AdrIconDescriptor iconDescriptor = new AdrIconDescriptor();
-                definition.setDescriptor(iconDescriptor);
+                AdrIconDescriptor defaultIcon = config.getDefaultIcon();
+                definition.setDescriptor(defaultIcon);
                 definition.setOperations(AdrComponentOperations.NEW_COMPONENT);
                 if(payload != null) {
-                    ((AdrTrackerGroupDescriptor) payload).getCells().add(iconDescriptor);
-                    definition.setFromGroup(fromGroup);
+                    ((AdrTrackerGroupDescriptor) payload).getCells().add(defaultIcon);
+                    definition.setParent(payload);
                 }
                 MercuryStoreUI.adrComponentStateSubject.onNext(definition);
             }
@@ -84,12 +83,12 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
             @Override
             public void mouseClicked(MouseEvent e) {
                 AdrComponentDefinition definition = new AdrComponentDefinition();
-                AdrProgressBarDescriptor iconDescriptor = new AdrProgressBarDescriptor();
+                AdrProgressBarDescriptor iconDescriptor = config.getDefaultProgressBar();
                 definition.setDescriptor(iconDescriptor);
                 definition.setOperations(AdrComponentOperations.NEW_COMPONENT);
                 if(payload != null) {
                     ((AdrTrackerGroupDescriptor) payload).getCells().add(iconDescriptor);
-                    definition.setFromGroup(fromGroup);
+                    definition.setParent(payload);
                 }
                 MercuryStoreUI.adrComponentStateSubject.onNext(definition);
             }

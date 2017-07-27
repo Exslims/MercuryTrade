@@ -39,6 +39,6 @@ public class AdrProgressBarNodePanel extends AdrNodePanel<AdrProgressBarDescript
         this.add(root,BorderLayout.CENTER);
         this.add(this.adrComponentsFactory.getLeftComponentOperationsPanel(this.descriptor),BorderLayout.LINE_START);
         this.add(this.adrComponentsFactory
-                .getRightComponentOperationsPanel(this.descriptor, this),BorderLayout.LINE_END);
+                .getRightComponentOperationsPanel(this.descriptor),BorderLayout.LINE_END);
     }
 }

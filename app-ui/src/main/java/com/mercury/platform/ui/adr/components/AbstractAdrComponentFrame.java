@@ -26,7 +26,7 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
 
         this.mouseListener = new DraggedFrameMouseListener();
         this.motionListener = new DraggedFrameMotionListener();
-        this.mouseOverListener = new AdrMouseOverListener<>(this.getRootPane(),this.descriptor,true);
+        this.mouseOverListener = new AdrMouseOverListener<>(this.getRootPane(),this.descriptor,false);
     }
 
     @Override

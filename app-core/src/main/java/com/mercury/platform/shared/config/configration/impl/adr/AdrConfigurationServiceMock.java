@@ -102,7 +102,6 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         groupDescriptor.setSize(new Dimension(64,64));
         groupDescriptor.setContentType(AdrTrackerGroupContentType.ICONS);
         List<AdrComponentDescriptor> icons = new ArrayList<>();
-        icons.add(this.getDefaultIcon());
         groupDescriptor.setCells(icons);
         return groupDescriptor;
     }
@@ -114,9 +113,6 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         groupDescriptor.setSize(new Dimension(240,30));
         groupDescriptor.setContentType(AdrTrackerGroupContentType.PROGRESS_BARS);
         List<AdrComponentDescriptor> pbList = new ArrayList<>();
-        pbList.add(this.getDefaultProgressBar());
-        pbList.add(this.getDefaultProgressBar());
-        pbList.add(this.getDefaultProgressBar());
         groupDescriptor.setCells(pbList);
         return groupDescriptor;
     }

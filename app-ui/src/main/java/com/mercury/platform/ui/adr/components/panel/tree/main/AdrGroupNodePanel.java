@@ -1,7 +1,6 @@
 package com.mercury.platform.ui.adr.components.panel.tree.main;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
-import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrNodePanel;
 import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
 import com.mercury.platform.ui.adr.routing.AdrPageState;
@@ -50,6 +49,11 @@ public class AdrGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescriptor> {
         return this.container.add(comp);
     }
 
+    @Override
+    public void remove(Component comp) {
+        this.container.remove(comp);
+    }
+
     private JPanel getTopPanel(){
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         this.expandButton = this.componentsFactory.getIconButton("app/adr/node_expand.png", 20, AppThemeColor.FRAME, "");
@@ -61,15 +65,13 @@ public class AdrGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescriptor> {
                 this.expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_collapse.png",20));
                 this.container.setVisible(true);
             }
-            MercuryStoreUI.adrUpdateTree.onNext(true);
+            MercuryStoreUI.adrManagerPack.onNext(true);
         });
         JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_REMOVE_BUTTON);
         removeButton.addActionListener(action -> new AlertDialog(success -> {
             if(success) {
-                Container wrapper = this.getParent();
-                wrapper.getParent().remove(wrapper);
                 MercuryStoreUI.adrRemoveComponentSubject.onNext(descriptor);
-                MercuryStoreUI.adrUpdateTree.onNext(true);
+                MercuryStoreUI.adrManagerPack.onNext(true);
             }
         },"Do you want to delete \"" + descriptor.getTitle() + "\"component?",this).setVisible(true));
         JButton addButton = this.componentsFactory.getIconButton("app/adr/add_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_ADD_BUTTON);

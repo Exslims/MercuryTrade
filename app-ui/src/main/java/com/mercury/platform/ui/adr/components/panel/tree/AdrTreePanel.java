@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.adr.components.panel.tree;
 
-import com.mercury.platform.experimental.PerformanceHelper;
 import com.mercury.platform.shared.config.descriptor.adr.*;
+import com.mercury.platform.ui.adr.components.panel.tree.model.AdrTreeNode;
 import com.mercury.platform.ui.adr.components.panel.ui.MercuryLoading;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
@@ -12,7 +12,6 @@ import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.List;
 
 public class AdrTreePanel extends JPanel{
@@ -21,13 +20,12 @@ public class AdrTreePanel extends JPanel{
     private ComponentsFactory componentsFactory = new ComponentsFactory();
     private List<AdrComponentDescriptor> descriptors;
     private JPanel container;
-    private PerformanceHelper performanceHelper = new PerformanceHelper();
     private SwingWorker<Void,Void> worker;
     private MercuryLoading mercuryLoading;
     private JScrollPane verticalContainer;
+    private AdrTreeNode<AdrComponentDescriptor> treeModel;
     public AdrTreePanel(List<AdrComponentDescriptor> descriptors, AdrTreeNodeRenderer renderer) {
         super(new BorderLayout());
-        performanceHelper.reset();
         this.renderer = renderer;
         this.setBackground(AppThemeColor.FRAME_RGB);
         this.setPreferredSize(new Dimension(280,10));
@@ -41,17 +39,28 @@ public class AdrTreePanel extends JPanel{
         mercuryLoading.playLoop();
         this.add(mercuryLoading,BorderLayout.CENTER);
     }
+    private void createTreeModel(AdrTreeNode<AdrComponentDescriptor> parent, List<AdrComponentDescriptor> source){
+        source.forEach(it -> {
+            JPanel viewOf = this.renderer.getViewOf(it, parent.getData() != null);
+            AdrTreeNode<AdrComponentDescriptor> node = parent.addChild(it, viewOf);
+            if(it.getType().equals(AdrComponentType.GROUP)){
+                this.createTreeModel(node,((AdrTrackerGroupDescriptor)it).getCells());
+            }
+        });
+    }
     public void updateTree(){
         if(this.worker != null && !this.worker.isDone()) {
             return;
         }
         this.remove(this.verticalContainer);
+        this.container.removeAll();
         this.mercuryLoading.playLoop();
         this.add(this.mercuryLoading,BorderLayout.CENTER);
         this.worker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                updateTree(descriptors);
+                treeModel = new AdrTreeNode<>(null,container);
+                createTreeModel(treeModel,descriptors);
                 return null;
             }
 
@@ -60,36 +69,44 @@ public class AdrTreePanel extends JPanel{
                 mercuryLoading.abort();
                 remove(mercuryLoading);
                 add(verticalContainer,BorderLayout.CENTER);
-                MercuryStoreUI.adrUpdateTree.onNext(true);
+                MercuryStoreUI.adrManagerPack.onNext(true);
             }
         };
         this.worker.execute();
     }
     private void updateTree(List<AdrComponentDescriptor> descriptors){
         this.descriptors = descriptors;
-        this.container.removeAll();
-        this.initTree(this.container,this.descriptors,false);
+        this.updateTree();
     }
-    public void addNode(AdrComponentDescriptor descriptor,boolean inner){
-        this.addNodeHierarchy(this.container, Arrays.asList(descriptor),inner);
+    public void addNode(AdrComponentDescriptor descriptor, AdrComponentDescriptor parentDescriptor){
+        this.addNodeHierarchy(this.treeModel,descriptor,parentDescriptor);
     }
-    private void addNodeHierarchy(JPanel parent, List<AdrComponentDescriptor> child, boolean inner){
-        child.forEach(it -> {
-            JPanel viewOf = this.renderer.getViewOf(it,inner);
-            switch (it.getType()) {
-                case GROUP: {
-                    this.addNodeHierarchy(viewOf, ((AdrTrackerGroupDescriptor) it).getCells(), true);
-                    parent.add(this.componentsFactory.wrapToSlide(viewOf, 2, 4, 2, 4));
-                    break;
+    //todo TRUE HIERARCHY
+    private void addNodeHierarchy(AdrTreeNode<AdrComponentDescriptor> parent,
+                                  AdrComponentDescriptor descriptor,
+                                  AdrComponentDescriptor parentDescriptor){
+        if(parentDescriptor == null){
+            JPanel viewOf = this.renderer.getViewOf(descriptor, parent.getData() != null);
+            parent.addChild(descriptor, viewOf);
+        }else {
+            parent.forEach(it -> {
+                if(parentDescriptor.equals(it.getData())){
+                    JPanel viewOf = this.renderer.getViewOf(descriptor, it.getData() != null);
+                    it.addChild(descriptor, viewOf);
                 }
-                default: {
-                    parent.add(this.componentsFactory.wrapToSlide(viewOf, 2, 4, 2, 4));
-                }
-            }
-        });
+            });
+        }
     }
 
-    private void initTree(JPanel parent, List<AdrComponentDescriptor> child, boolean inner) {
-        this.addNodeHierarchy(parent,child,inner);
+    public void removeNode(AdrComponentDescriptor descriptor){
+        this.removeNode(this.treeModel,descriptor);
+        MercuryStoreUI.adrManagerPack.onNext(true);
+    }
+    private void removeNode(AdrTreeNode<AdrComponentDescriptor> node, AdrComponentDescriptor descriptor){
+        node.removeChild(descriptor);
+        node.forEach(it -> {
+            it.removeChild(descriptor);
+            this.removeNode(it,descriptor);
+        });
     }
 }

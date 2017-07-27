@@ -7,8 +7,6 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDes
 import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.FieldValueListener;
-import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
-import com.mercury.platform.ui.adr.routing.AdrComponentOperations;
 import com.mercury.platform.ui.adr.validator.DoubleFieldValidator;
 import com.mercury.platform.ui.adr.validator.FieldValidator;
 import com.mercury.platform.ui.adr.validator.IntegerFieldValidator;
@@ -357,10 +355,10 @@ public class AdrComponentsFactory {
         return contextMenu;
     }
 
-    public JPanel getRightComponentOperationsPanel(AdrComponentDescriptor descriptor, Container source) {
+    public JPanel getRightComponentOperationsPanel(AdrComponentDescriptor descriptor) {
         JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 15, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_REMOVE_BUTTON);
         removeButton.addActionListener(action -> {
-            new AlertDialog(this.getRemoveCallback(source,descriptor),"Do you want to delete \"" + descriptor.getTitle() + "\"component?",removeButton).setVisible(true);
+            new AlertDialog(this.getRemoveCallback(descriptor),"Do you want to delete \"" + descriptor.getTitle() + "\"component?",removeButton).setVisible(true);
         });
         JButton visibleButton = this.componentsFactory.getIconButton("app/adr/visible_node_on.png", 15, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_EXPORT_BUTTON);
         visibleButton.addActionListener(action -> {
@@ -420,7 +418,7 @@ public class AdrComponentsFactory {
                 expandButton.setIcon(this.componentsFactory.getIcon("app/adr/collapse_icon.png",16));
                 targetPanel.setVisible(true);
             }
-            MercuryStoreUI.adrUpdateTree.onNext(true); //todo
+            MercuryStoreUI.adrManagerPack.onNext(true); //todo
         });
         return expandButton;
     }
@@ -438,13 +436,11 @@ public class AdrComponentsFactory {
         }
         return iconPath;
     }
-    public DialogCallback<Boolean> getRemoveCallback(Container container, AdrComponentDescriptor descriptor){
+    public DialogCallback<Boolean> getRemoveCallback(AdrComponentDescriptor descriptor){
         return success -> {
             if(success) {
-                Container wrapper = container.getParent();
-                wrapper.getParent().remove(wrapper);
                 MercuryStoreUI.adrRemoveComponentSubject.onNext(descriptor);
-                MercuryStoreUI.adrUpdateTree.onNext(true);
+                MercuryStoreUI.adrManagerPack.onNext(true);
             }
         };
     }

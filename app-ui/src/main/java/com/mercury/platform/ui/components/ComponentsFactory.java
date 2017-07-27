@@ -623,6 +623,23 @@ public class ComponentsFactory{
         wrapper.setBorder(BorderFactory.createEmptyBorder(top,left,bottom,right));
         return wrapper;
     }
+    public JPanel wrapToAdrSlide(JComponent panel,int top,int left,int bottom,int right){
+        JPanel wrapper = new JPanel(new BorderLayout()) {
+            @Override
+            public void remove(Component comp) {
+                panel.remove(comp);
+            }
+
+            @Override
+            public Component add(Component comp) {
+                return panel.add(comp);
+            }
+        };
+        wrapper.setBackground(AppThemeColor.FRAME_RGB);
+        wrapper.setBorder(BorderFactory.createEmptyBorder(top,left,bottom,right));
+        wrapper.add(panel,BorderLayout.CENTER);
+        return wrapper;
+    }
 
     public JPopupMenu getContextPanel() {
         JPopupMenu contextMenu = new JPopupMenu();

@@ -90,7 +90,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         MercuryStoreUI.adrReloadSubject.subscribe(state -> {
             this.tree.updateUI();
         });
-        MercuryStoreUI.adrUpdateTree.subscribe(state -> {
+        MercuryStoreUI.adrManagerPack.subscribe(state -> {
             this.repaint();
             this.pack();
         });
@@ -101,12 +101,13 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         return "Aura Duration Tracker";
     }
 
-    public void addNewNode(AdrComponentDescriptor descriptor, boolean fromGroup) {
-        this.tree.addNode(descriptor,fromGroup);
+    public void addNewNode(AdrComponentDescriptor descriptor, AdrComponentDescriptor parent) {
+        this.tree.addNode(descriptor,parent);
         this.pack();
         this.repaint();
     }
     public void removeNode(AdrComponentDescriptor descriptor) {
+        this.tree.removeNode(descriptor);
         this.pack();
         this.repaint();
     }

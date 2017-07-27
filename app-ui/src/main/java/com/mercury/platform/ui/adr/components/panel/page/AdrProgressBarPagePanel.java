@@ -2,9 +2,7 @@ package com.mercury.platform.ui.adr.components.panel.page;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentOrientation;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconAlignment;
-import com.mercury.platform.shared.config.descriptor.adr.AdrIconType;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
-import com.mercury.platform.ui.adr.components.panel.FieldValueListener;
 import com.mercury.platform.ui.adr.validator.DoubleFieldValidator;
 import com.mercury.platform.ui.adr.validator.DoubleFormatFieldValidator;
 import com.mercury.platform.ui.adr.validator.IntegerFieldValidator;
@@ -79,7 +77,7 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         JCheckBox iconEnableBox = this.componentsFactory.getCheckBox(this.payload.isIconEnable(),"Is icon enable?");
         iconEnableBox.addActionListener(state -> {
             this.payload.setIconEnable(iconEnableBox.isSelected());
-            MercuryStoreUI.adrUpdateTree.onNext(true);
+            MercuryStoreUI.adrManagerPack.onNext(true);
         });
         iconPanel.add(iconEnableBox,BorderLayout.LINE_START);
         iconPanel.add(iconSelectPanel,BorderLayout.CENTER);
@@ -87,7 +85,7 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         iconAlignment.setSelectedItem(this.payload.getIconAlignment());
         iconAlignment.addItemListener(e -> {
                 this.payload.setIconAlignment(AdrIconAlignment.valueOfPretty((String) iconAlignment.getSelectedItem()));
-                MercuryStoreUI.adrUpdateTree.onNext(true);
+                MercuryStoreUI.adrManagerPack.onNext(true);
         });
         JTextField fontSizeField = this.adrComponentsFactory.getSmartField(this.payload.getFontSize(), new IntegerFieldValidator(4, 1000), value -> {
             this.payload.setFontSize(value);
@@ -105,19 +103,19 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
                 this.payload.getBackgroundColor(),
                 color -> {
                     this.payload.setBackgroundColor(color);
-                    MercuryStoreUI.adrUpdateTree.onNext(true);
+                    MercuryStoreUI.adrManagerPack.onNext(true);
                 });
         JPanel foregroundColorPanel = this.adrComponentsFactory.getColorPickerPanel(
                 this.payload.getForegroundColor(),
                 color -> {
                     this.payload.setForegroundColor(color);
-                    MercuryStoreUI.adrUpdateTree.onNext(true);
+                    MercuryStoreUI.adrManagerPack.onNext(true);
                 });
         JPanel borderColorPanel = this.adrComponentsFactory.getBorderColorPanel(
                 this.payload,
                 color -> {
                     this.payload.setBorderColor(color);
-                    MercuryStoreUI.adrUpdateTree.onNext(true);
+                    MercuryStoreUI.adrManagerPack.onNext(true);
                 });
         JPanel textColorPanel = this.adrComponentsFactory.getTextColorPanel(this.payload);
         JPanel textPanel = this.componentsFactory.getJPanel(new BorderLayout());

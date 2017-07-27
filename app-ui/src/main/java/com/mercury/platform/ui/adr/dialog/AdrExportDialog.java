@@ -21,7 +21,7 @@ public class AdrExportDialog extends AdrDialog<AdrProfileDescriptor> {
         super(relative, descriptor);
         this.setTitle("Export manager");
 
-        MercuryStoreUI.adrUpdateTree.subscribe(state -> {
+        MercuryStoreUI.adrManagerPack.subscribe(state -> {
             this.pack();
             this.repaint();
         });
