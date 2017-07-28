@@ -1,7 +1,9 @@
 package com.mercury.platform.ui.adr.components.panel.tree.main;
 
+import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrNodePanel;
+import com.mercury.platform.ui.adr.components.panel.tree.model.AdrTreeNode;
 import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -16,9 +18,10 @@ public class AdrIconNodePanel extends AdrNodePanel<AdrIconDescriptor> {
     private JLabel titleLabel;
     private MercuryTracker tracker;
 
-    public AdrIconNodePanel(AdrIconDescriptor descriptor, boolean inner) {
-        super(descriptor,inner);
+    public AdrIconNodePanel(AdrTreeNode<AdrComponentDescriptor> treeNode) {
+        super(treeNode);
     }
+
 
     @Override
     protected void update() {
@@ -32,6 +35,7 @@ public class AdrIconNodePanel extends AdrNodePanel<AdrIconDescriptor> {
         root.setBackground(AppThemeColor.ADR_BG);
         this.tracker = new MercuryTracker(this.descriptor);
         this.tracker.setPreferredSize(new Dimension(48, 48));
+        this.tracker.setShowCase(true);
         this.tracker.setValue(new Random().nextInt((int) (this.descriptor.getDuration() * 1000)));
         this.tracker.setFont(new ComponentsFactory().getFont(FontStyle.BOLD, 20));
         this.tracker.setBackground(AppThemeColor.ADR_TEXT_ARE_BG);
@@ -43,7 +47,7 @@ public class AdrIconNodePanel extends AdrNodePanel<AdrIconDescriptor> {
         root.add(tracker,BorderLayout.LINE_START);
         root.add(this.titleLabel);
         this.add(root,BorderLayout.CENTER);
-        this.add(this.adrComponentsFactory.getLeftComponentOperationsPanel(this.descriptor),BorderLayout.LINE_START);
+        this.add(this.adrComponentsFactory.getLeftComponentOperationsPanel(this.treeNode),BorderLayout.LINE_START);
         this.add(this.adrComponentsFactory
                 .getRightComponentOperationsPanel(this.descriptor),BorderLayout.LINE_END);
     }

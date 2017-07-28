@@ -1,7 +1,9 @@
 package com.mercury.platform.ui.adr.components.panel.tree.main;
 
+import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrNodePanel;
+import com.mercury.platform.ui.adr.components.panel.tree.model.AdrTreeNode;
 import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
 import com.mercury.platform.ui.adr.routing.AdrPageState;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -17,8 +19,9 @@ public class AdrGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescriptor> {
     private JLabel groupLabel;
     private JPanel container;
     private JButton expandButton;
-    public AdrGroupNodePanel(AdrTrackerGroupDescriptor descriptor) {
-        super(descriptor,false);
+
+    public AdrGroupNodePanel(AdrTreeNode<AdrComponentDescriptor> treeNode) {
+        super(treeNode);
     }
 
     @Override

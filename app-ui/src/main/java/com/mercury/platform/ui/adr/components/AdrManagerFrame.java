@@ -17,6 +17,7 @@ import com.mercury.platform.ui.misc.TooltipConstants;
 import lombok.Getter;
 
 import javax.swing.*;
+import javax.swing.plaf.InsetsUIResource;
 import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,8 +34,9 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         this.setFocusableWindowState(true);
         this.setAlwaysOnTop(false);
         this.selectedProfile = selectedProfile;
-        UIManager.getLookAndFeelDefaults().put("Menu.arrowIcon", null);
-        UIManager.put("MenuItem.background", AppThemeColor.FRAME);
+        UIManager.put("MenuItem.background", AppThemeColor.ADR_BG);
+        UIManager.put("MenuItem.selectionBackground", AppThemeColor.ADR_POPUP_BG);
+        UIManager.put("PopupMenu.contentMargins", new InsetsUIResource(2,0,2,0));
         UIManager.put("MenuItem.opaque", true);
         UIManager.put("ComboBox.selectionBackground", AppThemeColor.HEADER);
         UIManager.put("ComboBox.selectionForeground", AppThemeColor.TEXT_DEFAULT);
@@ -108,6 +110,11 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
     }
     public void removeNode(AdrComponentDescriptor descriptor) {
         this.tree.removeNode(descriptor);
+        this.pack();
+        this.repaint();
+    }
+    public void duplicateNode(AdrComponentDescriptor descriptor){
+        this.tree.duplicateNode(descriptor);
         this.pack();
         this.repaint();
     }

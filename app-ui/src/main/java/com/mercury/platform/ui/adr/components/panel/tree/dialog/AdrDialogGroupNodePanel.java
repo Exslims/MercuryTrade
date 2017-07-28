@@ -1,7 +1,9 @@
 package com.mercury.platform.ui.adr.components.panel.tree.dialog;
 
+import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrNodePanel;
+import com.mercury.platform.ui.adr.components.panel.tree.model.AdrTreeNode;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
@@ -14,10 +16,12 @@ import java.awt.*;
 public class AdrDialogGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescriptor>{
     private JLabel groupLabel;
     private JPanel container;
-    public AdrDialogGroupNodePanel(AdrTrackerGroupDescriptor descriptor) {
-        super(descriptor);
+
+    public AdrDialogGroupNodePanel(AdrTreeNode<AdrComponentDescriptor> treeNode) {
+        super(treeNode);
         this.mouseListener.setProcessSelect(false);
     }
+
 
     @Override
     protected void update() {

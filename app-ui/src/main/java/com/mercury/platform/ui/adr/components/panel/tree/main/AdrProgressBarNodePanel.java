@@ -1,7 +1,9 @@
 package com.mercury.platform.ui.adr.components.panel.tree.main;
 
+import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrNodePanel;
+import com.mercury.platform.ui.adr.components.panel.tree.model.AdrTreeNode;
 import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
 import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
 import com.mercury.platform.ui.adr.routing.AdrComponentOperations;
@@ -16,8 +18,9 @@ import java.awt.*;
 
 
 public class AdrProgressBarNodePanel extends AdrNodePanel<AdrProgressBarDescriptor> {
-    public AdrProgressBarNodePanel(AdrProgressBarDescriptor descriptor, boolean inner) {
-        super(descriptor,inner);
+
+    public AdrProgressBarNodePanel(AdrTreeNode<AdrComponentDescriptor> treeNode) {
+        super(treeNode);
     }
 
     @Override
@@ -37,7 +40,7 @@ public class AdrProgressBarNodePanel extends AdrNodePanel<AdrProgressBarDescript
         this.setPreferredSize(new Dimension(150, 48));
         root.add(tracker);
         this.add(root,BorderLayout.CENTER);
-        this.add(this.adrComponentsFactory.getLeftComponentOperationsPanel(this.descriptor),BorderLayout.LINE_START);
+        this.add(this.adrComponentsFactory.getLeftComponentOperationsPanel(this.treeNode),BorderLayout.LINE_START);
         this.add(this.adrComponentsFactory
                 .getRightComponentOperationsPanel(this.descriptor),BorderLayout.LINE_END);
     }

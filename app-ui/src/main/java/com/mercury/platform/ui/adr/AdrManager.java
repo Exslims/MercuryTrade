@@ -44,7 +44,7 @@ public class AdrManager implements AsSubscriber{
         this.adrManagerFrame = new AdrManagerFrame(this.selectedProfile);
         this.selectedProfile.getContents().forEach(component -> {
             switch (component.getType()){
-                case GROUP: {
+                case TRACKER_GROUP: {
                     this.frames.add(new AdrTrackerGroupFrame((AdrTrackerGroupDescriptor) component));
                     break;
                 }
@@ -124,6 +124,8 @@ public class AdrManager implements AsSubscriber{
                            componentFrame.showComponent();
                            componentFrame.enableSettings();
                            this.frames.add(componentFrame);
+                       }else {
+                           ((AdrTrackerGroupDescriptor)definition.getParent()).getCells().add(definition.getDescriptor());
                        }
                        if(definition.getDescriptor() instanceof AdrIconDescriptor){
                            this.iconSettingsPanel.setFromGroup(definition.getParent() != null);
@@ -156,6 +158,13 @@ public class AdrManager implements AsSubscriber{
                        this.progressBarSettingsPanel.setPayload((AdrProgressBarDescriptor) definition.getDescriptor());
                        this.adrManagerFrame.setPage(this.progressBarSettingsPanel);
                    }
+                   break;
+               }
+               case DUPLICATE_COMPONENT:{
+                   this.adrManagerFrame.duplicateNode(definition.getDescriptor());
+                   MercuryStoreUI.adrSelectSubject.onNext(definition.getDescriptor());
+                   MercuryStoreCore.saveConfigSubject.onNext(true);
+                   MercuryStoreUI.adrPostOperationsComponentSubject.onNext(definition.getDescriptor());
                    break;
                }
            }

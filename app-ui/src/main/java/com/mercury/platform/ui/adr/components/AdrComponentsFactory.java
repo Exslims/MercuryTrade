@@ -1,12 +1,14 @@
 package com.mercury.platform.ui.adr.components;
 
 
+import com.mercury.platform.shared.CloneHelper;
 import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
-import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
-import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDescriptor;
-import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.*;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.FieldValueListener;
+import com.mercury.platform.ui.adr.components.panel.tree.model.AdrTreeNode;
+import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
+import com.mercury.platform.ui.adr.routing.AdrComponentOperations;
 import com.mercury.platform.ui.adr.validator.DoubleFieldValidator;
 import com.mercury.platform.ui.adr.validator.FieldValidator;
 import com.mercury.platform.ui.adr.validator.IntegerFieldValidator;
@@ -23,6 +25,7 @@ import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
 
 public class AdrComponentsFactory {
     private ComponentsFactory componentsFactory;
@@ -335,23 +338,75 @@ public class AdrComponentsFactory {
         root.add(vGapField);
         return root;
     }
-    public JPopupMenu getContextMenu(AdrComponentDescriptor selectedDescriptor) {
+    public JPopupMenu getContextMenu(AdrTreeNode<AdrComponentDescriptor> treeNode) {
         JPopupMenu contextMenu = this.componentsFactory.getContextPanel();
-        switch (selectedDescriptor.getType()){
-            case GROUP: {
-                JMenuItem addComponent = this.componentsFactory.getMenuItem("Add");
-                JMenuItem iconComponent = this.componentsFactory.getMenuItem("Icon");
-                JMenuItem pbComponent = this.componentsFactory.getMenuItem("Progress bar");
-                addComponent.add(iconComponent);
-                addComponent.add(pbComponent);
-                contextMenu.add(addComponent);
-                break;
-            }
+        contextMenu.setBackground(AppThemeColor.ADR_BG);
+        contextMenu.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
+        contextMenu.setForeground(AppThemeColor.TEXT_DEFAULT);
+
+        if(treeNode.getParent().getData() != null){
+            JMenuItem moveOut = this.componentsFactory.getMenuItem("Move out");
+            moveOut.setBorder(BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.ADR_DEFAULT_BORDER));
+            moveOut.addActionListener(action -> {
+                MercuryStoreUI.adrRemoveComponentSubject.onNext(treeNode.getData());
+                MercuryStoreUI.adrComponentStateSubject.onNext(
+                        new AdrComponentDefinition(treeNode.getData(),
+                                AdrComponentOperations.NEW_COMPONENT,
+                                treeNode.getParent().getParent().getData())
+                );
+            });
+            moveOut.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    contextMenu.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    contextMenu.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                }
+            });
+            contextMenu.add(moveOut);
         }
-        JMenuItem duplicateComponent = this.componentsFactory.getMenuItem("Duplicate");
-        JMenuItem removeComponent = this.componentsFactory.getMenuItem("Remove");
-        contextMenu.add(duplicateComponent);
-        contextMenu.add(removeComponent);
+        treeNode.getParent().forEach(neighbor -> {
+            if(neighbor.getData() instanceof AdrTrackerGroupDescriptor) {
+                JMenuItem moveTo = this.componentsFactory.getMenuItem("Move to " + neighbor.getData().getTitle());
+                moveTo.setBorder(BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.ADR_DEFAULT_BORDER));
+                moveTo.addActionListener(action -> {
+                    MercuryStoreUI.adrRemoveComponentSubject.onNext(treeNode.getData());
+                    MercuryStoreUI.adrComponentStateSubject.onNext(
+                            new AdrComponentDefinition(treeNode.getData(),
+                                    AdrComponentOperations.NEW_COMPONENT,
+                                    neighbor.getData())
+                    );
+                });
+                moveTo.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        contextMenu.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        contextMenu.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                    }
+                });
+                switch (((AdrTrackerGroupDescriptor)neighbor.getData()).getContentType()){
+                    case ICONS:{
+                        if(treeNode.getData() instanceof AdrIconDescriptor){
+                            contextMenu.add(moveTo);
+                        }
+                        break;
+                    }
+                    case PROGRESS_BARS: {
+                        if(treeNode.getData() instanceof AdrProgressBarDescriptor){
+                            contextMenu.add(moveTo);
+                        }
+                        break;
+                    }
+                }
+            }
+        });
         return contextMenu;
     }
 
@@ -377,11 +432,22 @@ public class AdrComponentsFactory {
         buttonsPanel.add(visibleButton);
         return buttonsPanel;
     }
-    public JPanel getLeftComponentOperationsPanel(AdrComponentDescriptor descriptor) {
+    public JPanel getLeftComponentOperationsPanel(AdrTreeNode<AdrComponentDescriptor> treeNode) {
         JButton duplicateButton = this.componentsFactory.getIconButton("app/adr/duplicate_node.png", 16, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_EXPORT_BUTTON);
+        duplicateButton.addActionListener(action -> {
+            AdrComponentDescriptor cloned = CloneHelper.cloneObject(treeNode.getData());
+            if(cloned != null) {
+                cloned.setId(cloned.getId() + 1);
+                cloned.setLocation(new Point(new Random().nextInt(500), new Random().nextInt(500)));
+                MercuryStoreUI.adrComponentStateSubject.onNext(
+                        new AdrComponentDefinition(cloned,
+                                AdrComponentOperations.NEW_COMPONENT,
+                                treeNode.getParent().getData()));
+            }
+        });
         JButton moveButton = this.componentsFactory.getIconButton("app/adr/move_node.png", 15, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_EXPORT_BUTTON);
         moveButton.addActionListener(action -> {
-            JPopupMenu contextMenu = this.getContextMenu(descriptor);
+            JPopupMenu contextMenu = this.getContextMenu(treeNode);
             contextMenu.show(moveButton,8,8);
         });
         JPanel buttonsPanel = this.componentsFactory.getJPanel(new GridLayout(2, 2));

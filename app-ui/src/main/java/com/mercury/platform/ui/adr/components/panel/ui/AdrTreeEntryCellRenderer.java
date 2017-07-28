@@ -34,7 +34,7 @@ public class AdrTreeEntryCellRenderer implements TreeCellRenderer {
             label.setFont(componentsFactory.getFont(FontStyle.REGULAR, 16));
             label.setText(descriptor.getTitle());
             switch (descriptor.getType()) {
-                case GROUP: {
+                case TRACKER_GROUP: {
                     String iconPath = "app/adr/static_group_icon.png";
                     switch (((AdrTrackerGroupDescriptor) descriptor).getGroupType()) {
                         case STATIC: {

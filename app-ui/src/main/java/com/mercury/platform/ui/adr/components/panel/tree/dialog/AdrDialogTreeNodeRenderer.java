@@ -5,22 +5,23 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescript
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrTreeNodeRenderer;
+import com.mercury.platform.ui.adr.components.panel.tree.model.AdrTreeNode;
 
 import javax.swing.*;
 
 
 public class AdrDialogTreeNodeRenderer implements AdrTreeNodeRenderer{
     @Override
-    public JPanel getViewOf(AdrComponentDescriptor descriptor,boolean inner) {
-        switch (descriptor.getType()){
+    public JPanel getViewOf(AdrTreeNode<AdrComponentDescriptor> node) {
+        switch (node.getData().getType()){
             case ICON:{
-                return new AdrDialogIconNodePanel((AdrIconDescriptor) descriptor);
+                return new AdrDialogIconNodePanel(node);
             }
             case PROGRESS_BAR:{
-                return new AdrDialogPBNodePanel((AdrProgressBarDescriptor) descriptor);
+                return new AdrDialogPBNodePanel(node);
             }
-            case GROUP: {
-                return new AdrDialogGroupNodePanel((AdrTrackerGroupDescriptor) descriptor);
+            case TRACKER_GROUP: {
+                return new AdrDialogGroupNodePanel(node);
             }
         }
         return new JPanel();

@@ -69,10 +69,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
                 AdrIconDescriptor defaultIcon = config.getDefaultIcon();
                 definition.setDescriptor(defaultIcon);
                 definition.setOperations(AdrComponentOperations.NEW_COMPONENT);
-                if(payload != null) {
-                    ((AdrTrackerGroupDescriptor) payload).getCells().add(defaultIcon);
-                    definition.setParent(payload);
-                }
+                definition.setParent(payload);
                 MercuryStoreUI.adrComponentStateSubject.onNext(definition);
             }
         });
@@ -86,10 +83,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
                 AdrProgressBarDescriptor iconDescriptor = config.getDefaultProgressBar();
                 definition.setDescriptor(iconDescriptor);
                 definition.setOperations(AdrComponentOperations.NEW_COMPONENT);
-                if(payload != null) {
-                    ((AdrTrackerGroupDescriptor) payload).getCells().add(iconDescriptor);
-                    definition.setParent(payload);
-                }
+                definition.setParent(payload);
                 MercuryStoreUI.adrComponentStateSubject.onNext(definition);
             }
         });

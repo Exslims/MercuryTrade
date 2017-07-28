@@ -41,10 +41,11 @@ public class AdrTreePanel extends JPanel{
     }
     private void createTreeModel(AdrTreeNode<AdrComponentDescriptor> parent, List<AdrComponentDescriptor> source){
         source.forEach(it -> {
-            JPanel viewOf = this.renderer.getViewOf(it, parent.getData() != null);
-            AdrTreeNode<AdrComponentDescriptor> node = parent.addChild(it, viewOf);
-            if(it.getType().equals(AdrComponentType.GROUP)){
-                this.createTreeModel(node,((AdrTrackerGroupDescriptor)it).getCells());
+            AdrTreeNode<AdrComponentDescriptor> treeNode = parent.addChild(it);
+            JPanel viewOf = this.renderer.getViewOf(treeNode);
+            treeNode.setPanel(viewOf);
+            if(it.getType().equals(AdrComponentType.TRACKER_GROUP)){
+                this.createTreeModel(treeNode,((AdrTrackerGroupDescriptor)it).getCells());
             }
         });
     }
@@ -81,19 +82,21 @@ public class AdrTreePanel extends JPanel{
     public void addNode(AdrComponentDescriptor descriptor, AdrComponentDescriptor parentDescriptor){
         this.addNodeHierarchy(this.treeModel,descriptor,parentDescriptor);
     }
-    //todo TRUE HIERARCHY
     private void addNodeHierarchy(AdrTreeNode<AdrComponentDescriptor> parent,
                                   AdrComponentDescriptor descriptor,
                                   AdrComponentDescriptor parentDescriptor){
         if(parentDescriptor == null){
-            JPanel viewOf = this.renderer.getViewOf(descriptor, parent.getData() != null);
-            parent.addChild(descriptor, viewOf);
+            AdrTreeNode<AdrComponentDescriptor> node = parent.addChild(descriptor);
+            JPanel viewOf = this.renderer.getViewOf(node);
+            node.setPanel(viewOf);
         }else {
             parent.forEach(it -> {
                 if(parentDescriptor.equals(it.getData())){
-                    JPanel viewOf = this.renderer.getViewOf(descriptor, it.getData() != null);
-                    it.addChild(descriptor, viewOf);
+                    AdrTreeNode<AdrComponentDescriptor> node = it.addChild(descriptor);
+                    JPanel viewOf = this.renderer.getViewOf(node);
+                    node.setPanel(viewOf);
                 }
+                this.addNodeHierarchy(it,descriptor,parentDescriptor);
             });
         }
     }
@@ -108,5 +111,8 @@ public class AdrTreePanel extends JPanel{
             it.removeChild(descriptor);
             this.removeNode(it,descriptor);
         });
+    }
+    public void duplicateNode(AdrComponentDescriptor descriptor){
+        this.treeModel.duplicateChild(descriptor);
     }
 }

@@ -1,7 +1,9 @@
 package com.mercury.platform.ui.adr.components.panel.tree.dialog;
 
+import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrNodePanel;
+import com.mercury.platform.ui.adr.components.panel.tree.model.AdrTreeNode;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
@@ -12,8 +14,9 @@ import java.awt.*;
 
 public class AdrDialogIconNodePanel extends AdrNodePanel<AdrIconDescriptor> {
     private JLabel iconLabel;
-    public AdrDialogIconNodePanel(AdrIconDescriptor descriptor) {
-        super(descriptor);
+
+    public AdrDialogIconNodePanel(AdrTreeNode<AdrComponentDescriptor> treeNode) {
+        super(treeNode);
         this.mouseListener.setProcessSelect(false);
     }
 

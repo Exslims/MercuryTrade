@@ -121,7 +121,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         groupDescriptor.setId(this.idGenerator.incrementAndGet());
         groupDescriptor.setTitle("group");
         groupDescriptor.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
-        groupDescriptor.setType(AdrComponentType.GROUP);
+        groupDescriptor.setType(AdrComponentType.TRACKER_GROUP);
         groupDescriptor.setOrientation(AdrComponentOrientation.VERTICAL);
         groupDescriptor.setGroupType(AdrTrackerGroupType.STATIC);
         return groupDescriptor;

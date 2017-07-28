@@ -651,7 +651,7 @@ public class ComponentsFactory{
     }
 
     public JMenuItem getMenuItem(String text) {
-        JMenuItem menuItem = new JMenu(text);
+        JMenuItem menuItem = new JMenuItem(text);
         menuItem.setFont(REGULAR_FONT.deriveFont(scale*16f));
         menuItem.setForeground(AppThemeColor.TEXT_DEFAULT);
         return menuItem;

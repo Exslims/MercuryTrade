@@ -4,10 +4,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.awt.*;
+import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class AdrDurationComponentDescriptor extends AdrComponentDescriptor{
+public class AdrDurationComponentDescriptor extends AdrComponentDescriptor implements Serializable {
     private String iconPath;
     private Double duration;
     private int fontSize = 28;

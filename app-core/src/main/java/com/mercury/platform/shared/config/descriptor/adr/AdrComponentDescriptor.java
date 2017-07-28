@@ -7,11 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.awt.*;
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdrComponentDescriptor {
+public class AdrComponentDescriptor implements Serializable{
     private int id;
     private String title = "default";
     private AdrComponentType type;

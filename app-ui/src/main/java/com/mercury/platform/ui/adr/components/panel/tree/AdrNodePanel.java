@@ -2,6 +2,7 @@ package com.mercury.platform.ui.adr.components.panel.tree;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.ui.adr.components.AdrComponentsFactory;
+import com.mercury.platform.ui.adr.components.panel.tree.model.AdrTreeNode;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -18,16 +19,12 @@ public abstract class AdrNodePanel<D extends AdrComponentDescriptor> extends JPa
     protected ComponentsFactory componentsFactory = new ComponentsFactory();
     protected AdrComponentsFactory adrComponentsFactory = new AdrComponentsFactory(this.componentsFactory);
     protected AdrMouseOverListener mouseListener;
-    protected boolean inner;
+    protected AdrTreeNode<AdrComponentDescriptor> treeNode;
 
-    public AdrNodePanel(D descriptor) {
-        this(descriptor, false);
-    }
-
-    public AdrNodePanel(D descriptor, boolean inner) {
-        this.descriptor = descriptor;
-        this.inner = inner;
-        this.mouseListener = (new AdrMouseOverListener<>(this, descriptor, inner));
+    public AdrNodePanel(AdrTreeNode<AdrComponentDescriptor> treeNode) {
+        this.treeNode = treeNode;
+        this.descriptor = (D) treeNode.getData();
+        this.mouseListener = new AdrMouseOverListener<>(this, descriptor, treeNode.getParent() != null);
         this.addMouseListener(this.mouseListener);
         MercuryStoreUI.adrReloadSubject.subscribe(source -> {
             if (this.descriptor.equals(source)) {

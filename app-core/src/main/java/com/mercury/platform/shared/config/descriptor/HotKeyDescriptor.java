@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HotKeyDescriptor {
+public class HotKeyDescriptor implements Serializable{
     private int virtualKeyCode;
     private char keyChar;
     private boolean menuPressed;

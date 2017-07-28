@@ -1,8 +1,10 @@
 package com.mercury.platform.ui.adr.components.panel.tree.dialog;
 
 
+import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrNodePanel;
+import com.mercury.platform.ui.adr.components.panel.tree.model.AdrTreeNode;
 import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
@@ -11,8 +13,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AdrDialogPBNodePanel extends AdrNodePanel<AdrProgressBarDescriptor>{
-    public AdrDialogPBNodePanel(AdrProgressBarDescriptor descriptor) {
-        super(descriptor);
+    public AdrDialogPBNodePanel(AdrTreeNode<AdrComponentDescriptor> treeNode) {
+        super(treeNode);
         this.mouseListener.setProcessSelect(false);
     }
 
