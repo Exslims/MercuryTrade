@@ -25,6 +25,7 @@ public class ProgressBarTrackerUI extends BasicMercuryIconTrackerUI<AdrProgressB
                 return;
             }
         }
+        Insets insets = descriptor.getInsets();
         int barRectWidth  = tracker.getWidth();
         int barRectHeight = tracker.getHeight();
         if (barRectWidth <= 0 || barRectHeight <= 0) {
@@ -40,7 +41,7 @@ public class ProgressBarTrackerUI extends BasicMercuryIconTrackerUI<AdrProgressB
 
         float sectorWidth = barRectWidth * tracker.getPercentComplete();
         Shape outer  = new Rectangle2D.Double(0, 0,barRectWidth, barRectHeight);
-        Shape sector = new Rectangle2D.Double(0, 0, sectorWidth, barRectHeight);
+        Shape sector = new Rectangle2D.Double(insets.left, insets.top, sectorWidth - insets.right * 2, barRectHeight - insets.bottom * 2);
         if(descriptor.isIconEnable()){
             int iconX = 0;
             int iconY = 0;
@@ -50,13 +51,13 @@ public class ProgressBarTrackerUI extends BasicMercuryIconTrackerUI<AdrProgressB
             sectorWidth = (barRectWidth - tracker.getHeight()) * tracker.getPercentComplete();
             if(descriptor.getIconAlignment().equals(AdrIconAlignment.RIGHT)) {
                 outer = new Rectangle2D.Double(0, 0, barRectWidth - barRectHeight, barRectHeight);
-                sector = new Rectangle2D.Double(0, 0, sectorWidth, barRectHeight);
+                sector = new Rectangle2D.Double(insets.left, insets.top, sectorWidth - insets.right * 2, barRectHeight - insets.bottom * 2);
             }else {
                 outer = new Rectangle2D.Double(tracker.getHeight(), 0, barRectWidth, barRectHeight);
-                sector = new Rectangle2D.Double(tracker.getHeight(), 0, sectorWidth, barRectHeight);
+                sector = new Rectangle2D.Double(tracker.getHeight() + insets.left, insets.top, sectorWidth - insets.right * 2, barRectHeight - insets.bottom * 2);
             }
             try {
-                BufferedImage read = ImageIO.read(getClass().getClassLoader().getResource("app/adr/icons/" +descriptor.getIconPath() + ".png"));
+                BufferedImage read = ImageIO.read(this.config.getIcon(descriptor.getIconPath()));
                 g2.drawImage(read,iconX,iconY,tracker.getHeight(),tracker.getHeight(),null);
             } catch (IOException e) {
                 e.printStackTrace();

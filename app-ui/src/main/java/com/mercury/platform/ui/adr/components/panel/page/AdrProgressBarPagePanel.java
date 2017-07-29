@@ -99,14 +99,14 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
             this.payload.setTextFormat(value);
         });
         JCheckBox invertBox = this.componentsFactory.getCheckBox(this.payload.isInvert());
-        JPanel backgroundColorPanel = this.adrComponentsFactory.getColorPickerPanel(
-                this.payload.getBackgroundColor(),
+        JPanel backgroundColorPanel = this.adrComponentsFactory.getHexColorPickerPanel(
+                () -> this.payload.getBackgroundColor(),
                 color -> {
                     this.payload.setBackgroundColor(color);
                     MercuryStoreUI.adrManagerPack.onNext(true);
                 });
-        JPanel foregroundColorPanel = this.adrComponentsFactory.getColorPickerPanel(
-                this.payload.getForegroundColor(),
+        JPanel foregroundColorPanel = this.adrComponentsFactory.getHexColorPickerPanel(
+                () ->this.payload.getForegroundColor(),
                 color -> {
                     this.payload.setForegroundColor(color);
                     MercuryStoreUI.adrManagerPack.onNext(true);

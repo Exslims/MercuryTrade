@@ -39,10 +39,10 @@ public class SquareIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescri
         g2.fillRect(0,0,barRectWidth,barRectHeight);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         double sz = Math.max(barRectWidth, barRectHeight);
-        if(!descriptor.getIconPath().equals("no_icon")) {
+        if(!descriptor.getIconPath().equals("no_icon.png")) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
             try {
-                BufferedImage read = ImageIO.read(getClass().getClassLoader().getResource("app/adr/icons/" + descriptor.getIconPath() + ".png"));
+                BufferedImage read = ImageIO.read(this.config.getIcon(descriptor.getIconPath()));
                 g2.drawImage(read, 0, 0, (int) sz, (int) sz, null);
             } catch (IOException e) {
                 e.printStackTrace();

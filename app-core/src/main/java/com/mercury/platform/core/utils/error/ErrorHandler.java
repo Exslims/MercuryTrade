@@ -11,5 +11,8 @@ public class ErrorHandler {
         Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
             logger.error(ExceptionUtils.getStackTrace(throwable));
         });
+        MercuryStoreCore.errorHandlerSubject.subscribe(error -> {
+            logger.error(error.getErrorMessage(),ExceptionUtils.getStackTrace(error.getStackTrace()));
+        });
     }
 }

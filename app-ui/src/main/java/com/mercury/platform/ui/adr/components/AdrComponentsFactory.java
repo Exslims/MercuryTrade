@@ -2,15 +2,19 @@ package com.mercury.platform.ui.adr.components;
 
 
 import com.mercury.platform.shared.CloneHelper;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.IconBundleConfigurationService;
 import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.*;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.FieldValueListener;
 import com.mercury.platform.ui.adr.components.panel.tree.model.AdrTreeNode;
+import com.mercury.platform.ui.adr.components.panel.ui.ValueBinder;
 import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
 import com.mercury.platform.ui.adr.routing.AdrComponentOperations;
 import com.mercury.platform.ui.adr.validator.DoubleFieldValidator;
 import com.mercury.platform.ui.adr.validator.FieldValidator;
+import com.mercury.platform.ui.adr.validator.HexFieldValidator;
 import com.mercury.platform.ui.adr.validator.IntegerFieldValidator;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -30,11 +34,11 @@ import java.util.Random;
 public class AdrComponentsFactory {
     private ComponentsFactory componentsFactory;
     private boolean allowed;
-    private AdrIconSelectDialog adrIconSelectDialog;
+    private IconBundleConfigurationService config;
 
     public AdrComponentsFactory(ComponentsFactory componentsFactory) {
         this.componentsFactory = componentsFactory;
-        this.adrIconSelectDialog = new AdrIconSelectDialog(this.getIconBundle());
+        this.config = Configuration.get().iconBundleConfiguration();
     }
 
     public JPanel getComponentSizePanel(AdrComponentDescriptor descriptor, boolean fromGroup){
@@ -142,22 +146,23 @@ public class AdrComponentsFactory {
     public JPanel getIconSelectPanel(AdrDurationComponentDescriptor descriptor){
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setBackground(AppThemeColor.SLIDE_BG);
-        JLabel iconLabel = this.componentsFactory.getIconLabel("app/adr/icons/" + descriptor.getIconPath() + ".png", 26);
+        JLabel iconLabel = this.componentsFactory.getIconLabel(this.config.getIcon(descriptor.getIconPath()), 26);
         JLabel iconPathLabel = this.componentsFactory.getTextLabel(descriptor.getIconPath());
         root.add(iconLabel, BorderLayout.LINE_START);
         root.add(iconPathLabel,BorderLayout.CENTER);
         JButton selectIcon = this.componentsFactory.getBorderedButton("Select");
         selectIcon.addActionListener(action -> {
-            this.adrIconSelectDialog.setSelectedIcon(descriptor.getIconPath());
-            this.adrIconSelectDialog.setCallback(selectedIconPath -> {
+            AdrIconSelectDialog adrIconSelectDialog = new AdrIconSelectDialog();
+            adrIconSelectDialog.setSelectedIcon(descriptor.getIconPath());
+            adrIconSelectDialog.setCallback(selectedIconPath -> {
                 descriptor.setIconPath(selectedIconPath);
-                iconLabel.setIcon(this.componentsFactory.getIcon("app/adr/icons/" + descriptor.getIconPath() + ".png",26));
+                iconLabel.setIcon(this.componentsFactory.getIcon(this.config.getIcon(selectedIconPath),26));
                 iconPathLabel.setText(descriptor.getIconPath());
 
                 MercuryStoreUI.adrReloadSubject.onNext(descriptor);
             });
-            this.adrIconSelectDialog.setLocationRelativeTo(root);
-            this.adrIconSelectDialog.setVisible(true);
+            adrIconSelectDialog.setLocationRelativeTo(root);
+            adrIconSelectDialog.setVisible(true);
         });
         root.add(selectIcon,BorderLayout.LINE_END);
         return root;
@@ -254,7 +259,7 @@ public class AdrComponentsFactory {
         return root;
     }
 
-    public JPanel getColorPickerPanel(Color initColor, DialogCallback<Color> callback){
+    public JPanel getColorPickerPanel(ValueBinder<Color> binder, DialogCallback<Color> callback){
         JPanel root = this.componentsFactory.getJPanel(new GridLayout(1,1,6,0));
         root.setBackground(AppThemeColor.SLIDE_BG);
         JColorChooser colorChooser = getColorChooser();
@@ -262,7 +267,7 @@ public class AdrComponentsFactory {
         colorPanel.addMouseListener(new ColorChooserMouseListener(colorPanel){
             @Override
             public void mouseClicked(MouseEvent e) {
-                colorChooser.setColor(initColor);
+                colorChooser.setColor(binder.getValue());
                 JDialog dialog = JColorChooser.createDialog(colorPanel,
                         "Set color",
                         true,
@@ -277,9 +282,53 @@ public class AdrComponentsFactory {
         });
 
         colorPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK));
-        colorPanel.setBackground(initColor);
+        colorPanel.setBackground(binder.getValue());
 
         root.add(colorPanel);
+
+        JPanel wrapper = this.componentsFactory.getJPanel(new BorderLayout());
+        wrapper.setBackground(AppThemeColor.SLIDE_BG);
+        wrapper.setBorder(BorderFactory.createEmptyBorder(6,0,6,0));
+        wrapper.add(root,BorderLayout.CENTER);
+        return wrapper;
+    }
+    public JPanel getHexColorPickerPanel(ValueBinder<Color> colorBinder, DialogCallback<Color> callback){
+        JPanel root = this.componentsFactory.getJPanel(new BorderLayout(6,0));
+        root.setBackground(AppThemeColor.SLIDE_BG);
+        JColorChooser colorChooser = getColorChooser();
+        JPanel colorPanel = new JPanel();
+        JTextField hexField = this.getSmartField(
+                "#" + Integer.toHexString(colorBinder.getValue().getRGB() & 0xffffff),
+                new HexFieldValidator(),
+                value -> {
+                    Color decoded = Color.decode(value);
+                    callback.onAction(decoded);
+                    colorPanel.setBackground(decoded);
+                });
+        hexField.setPreferredSize(new Dimension(76,26));
+        colorPanel.addMouseListener(new ColorChooserMouseListener(colorPanel){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                colorChooser.setColor(colorBinder.getValue());
+                JDialog dialog = JColorChooser.createDialog(colorPanel,
+                        "Set color",
+                        true,
+                        colorChooser,
+                        action -> {
+                            callback.onAction(colorChooser.getColor());
+                            colorPanel.setBackground(colorChooser.getColor());
+                            hexField.setText("#" + Integer.toHexString(colorChooser.getColor().getRGB() & 0xffffff));
+                        },
+                        null);
+                dialog.setVisible(true);
+            }
+        });
+
+        colorPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK));
+        colorPanel.setBackground(colorBinder.getValue());
+
+        root.add(hexField,BorderLayout.LINE_START);
+        root.add(colorPanel,BorderLayout.CENTER);
 
         JPanel wrapper = this.componentsFactory.getJPanel(new BorderLayout());
         wrapper.setBackground(AppThemeColor.SLIDE_BG);
@@ -308,7 +357,7 @@ public class AdrComponentsFactory {
         root.setBackground(AppThemeColor.SLIDE_BG);
         JCheckBox checkBox = this.componentsFactory.getCheckBox(descriptor.isBindToTextColor(),"Bind to text color?");
         checkBox.addActionListener(e -> descriptor.setBindToTextColor(checkBox.isSelected()));
-        JPanel colorPickerPanel = this.getColorPickerPanel(descriptor.getBorderColor(), value -> {
+        JPanel colorPickerPanel = this.getColorPickerPanel(descriptor::getBorderColor, value -> {
             checkBox.setSelected(false);
             callback.onAction(value);
         });
@@ -533,29 +582,6 @@ public class AdrComponentsFactory {
         if(descriptor.isControlPressed())
             text = "Ctrl + " + text;
         return text;
-    }
-
-    private String[] getIconBundle() {
-        return new String[] {
-                "no_icon",
-                "default_icon",
-                "Arctic_Armour_skill_icon",
-                "Bismuth_Flask",
-                "Bleeding_Immunity",
-                "Blood_Rage_skill_icon",
-                "Chill_And_Freeze_Immunity",
-                "Diamond_Flask",
-                "Granite_Flask",
-                "Increase_Movement_Speed",
-                "Jade_Flask",
-                "Phase_Run_skill_icon",
-                "Quicksilver_Flask",
-                "Ruby_Flask",
-                "Silver_Flask",
-                "Stibnite_Flask",
-                "Topaz_Flask",
-                "Witchfire_Brew"
-        };
     }
 
     private class ColorChooserMouseListener extends MouseAdapter {

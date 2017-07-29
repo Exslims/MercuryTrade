@@ -1,6 +1,9 @@
 package com.mercury.platform.ui.adr.dialog;
 
 
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.IconBundleConfigurationService;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.ui.IconsListCellRenderer;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
@@ -9,25 +12,25 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.util.List;
 
 public class AdrIconSelectDialog extends BaseDialog<String,String[]> {
     private JList iconsList;
-    public AdrIconSelectDialog(String[] payload) {
-        super(null, null, payload);
+    private IconBundleConfigurationService config;
+    public AdrIconSelectDialog() {
+        super(null, null, null);
         this.setTitle("Select icon");
     }
 
     @Override
     protected void createView() {
+        this.config = Configuration.get().iconBundleConfiguration();
+
         VerticalScrollContainer container = new VerticalScrollContainer();
         container.setBackground(AppThemeColor.SLIDE_BG);
         container.setLayout(new BorderLayout());
 
         JScrollPane scrollPane = this.componentsFactory.getVerticalContainer(container);
-        this.iconsList = new JList<>(this.payload);
+        this.iconsList = new JList<>(this.config.getEntities().toArray());
         this.iconsList.setBackground(AppThemeColor.SLIDE_BG);
         this.iconsList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         this.iconsList.setVisibleRowCount(-1);
@@ -55,7 +58,20 @@ public class AdrIconSelectDialog extends BaseDialog<String,String[]> {
                 BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK),
                         BorderFactory.createEmptyBorder(4,0,4,4)));
-
+        JButton addIconButton = this.componentsFactory.getBorderedButton("Add icon");
+        addIconButton.setPreferredSize(new Dimension(100,26));
+        addIconButton.addActionListener(action -> {
+            FileDialog dialog = new FileDialog(this,"Choose icon", FileDialog.LOAD);
+            dialog.setFile("*.png");
+            dialog.setVisible(true);
+            dialog.toFront();
+            if(this.isValidIconPath(dialog.getFile())){
+                this.config.addIcon(dialog.getDirectory() + dialog.getFile());
+                this.iconsList.setListData(this.config.getEntities().toArray());
+                MercuryStoreCore.saveConfigSubject.onNext(true);
+            }
+        });
+        root.add(addIconButton,BorderLayout.LINE_END);
         JPanel wrapper = this.componentsFactory.wrapToSlide(root);
         wrapper.setBorder(BorderFactory.createEmptyBorder(4,0,4,0));
         return wrapper;
@@ -80,5 +96,8 @@ public class AdrIconSelectDialog extends BaseDialog<String,String[]> {
         root.add(selectButton);
         root.add(cancelButton);
         return root;
+    }
+    private boolean isValidIconPath(String name){
+        return name != null && (name.endsWith(".png"));
     }
 }

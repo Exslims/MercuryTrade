@@ -49,7 +49,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         AdrIconDescriptor icon = new AdrIconDescriptor();
         icon.setId(this.idGenerator.incrementAndGet());
         icon.setTitle("icon");
-        icon.setIconPath("default_icon");
+        icon.setIconPath("default_icon.png");
         icon.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
         icon.setSize(new Dimension(64, 64));
         icon.setDuration(6.0d);
@@ -73,7 +73,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         AdrProgressBarDescriptor progressBar = new AdrProgressBarDescriptor();
         progressBar.setId(this.idGenerator.incrementAndGet());
         progressBar.setTitle("progress bar");
-        progressBar.setIconPath("default_icon");
+        progressBar.setIconPath("default_icon.png");
         progressBar.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
         progressBar.setSize(new Dimension(240, 30));
         progressBar.setDuration(6.0d);
@@ -176,15 +176,15 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         dynamicPBV.getCells().clear();
 
         AdrIconDescriptor icon1 = this.getDefaultIcon();
-        icon1.setIconPath("Bismuth_Flask");
+        icon1.setIconPath("Bismuth_Flask.png");
         icon1.setHotKeyDescriptor(hotKey);
         icon1.setDuration(3d);
         AdrIconDescriptor icon2 = this.getDefaultIcon();
-        icon2.setIconPath("Bleeding_Immunity");
+        icon2.setIconPath("Bleeding_Immunity.png");
         icon2.setDuration(5d);
         icon2.setHotKeyDescriptor(hotKey);
         AdrIconDescriptor icon3 = this.getDefaultIcon();
-        icon3.setIconPath("Silver_Flask");
+        icon3.setIconPath("Silver_Flask.png");
         icon3.setDuration(8d);
         icon3.setHotKeyDescriptor(hotKey);
 
@@ -193,25 +193,25 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         staticIconH.getCells().add(icon3);
 
         AdrIconDescriptor icon4 = this.getDefaultIcon();
-        icon4.setIconPath("Arctic_Armour_skill_icon");
+        icon4.setIconPath("Arctic_Armour_skill_icon.png");
         icon4.setHotKeyDescriptor(hotKey);
         icon4.setDuration(3d);
         AdrIconDescriptor icon5 = this.getDefaultIcon();
-        icon5.setIconPath("Phase_Run_skill_icon");
+        icon5.setIconPath("Phase_Run_skill_icon.png");
         icon5.setDuration(5d);
         icon5.setHotKeyDescriptor(hotKey);
         AdrIconDescriptor icon6 = this.getDefaultIcon();
-        icon6.setIconPath("Arctic_Armour_skill_icon");
+        icon6.setIconPath("Arctic_Armour_skill_icon.png");
         icon6.setDuration(8d);
         icon6.setHotKeyDescriptor(hotKey);
 
         AdrProgressBarDescriptor pb1 = this.getDefaultProgressBar();
-        pb1.setIconPath("Topaz_flask");
+        pb1.setIconPath("Topaz_Flask.png");
         pb1.setHotKeyDescriptor(hotKey);
         pb1.setTextFormat("0");
         pb1.setDuration(3d);
         AdrProgressBarDescriptor pb2 = this.getDefaultProgressBar();
-        pb2.setIconPath("Quicksilver_Flask");
+        pb2.setIconPath("Quicksilver_Flask.png");
         pb2.setIconAlignment(AdrIconAlignment.RIGHT);
         pb2.setBackgroundColor(new Color(47,52,59));
         pb2.setForegroundColor(new Color(227,205,164));
@@ -231,7 +231,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         pb3.setDuration(10d);
 
         AdrProgressBarDescriptor pb4 = this.getDefaultProgressBar();
-        pb4.setIconPath("Stibnite_Flask");
+        pb4.setIconPath("Stibnite_Flask.png");
         pb4.setIconAlignment(AdrIconAlignment.RIGHT);
         pb4.setHotKeyDescriptor(hotKey);
         pb4.setBackgroundColor(new Color(47,52,59));
@@ -240,7 +240,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         pb4.setTextFormat("0.0");
         pb4.setDuration(8d);
         AdrProgressBarDescriptor pb5 = this.getDefaultProgressBar();
-        pb5.setIconPath("Granite_Flask");
+        pb5.setIconPath("Granite_Flask.png");
         pb5.setIconAlignment(AdrIconAlignment.LEFT);
         pb5.setHotKeyDescriptor(hotKey);
         pb5.setFontSize(22);

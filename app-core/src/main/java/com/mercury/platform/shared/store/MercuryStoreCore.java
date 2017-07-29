@@ -5,6 +5,7 @@ import com.mercury.platform.core.utils.interceptor.MessageInterceptor;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
+import com.mercury.platform.shared.entity.message.MercuryError;
 import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.shared.config.descriptor.SoundDescriptor;
 import lc.kra.system.keyboard.event.GlobalKeyEvent;
@@ -45,4 +46,5 @@ public class MercuryStoreCore {
     public static final PublishSubject<Boolean> toDefaultSubject = PublishSubject.create();
     public static final PublishSubject<ProfileDescriptor> changeProfileSubject = PublishSubject.create();
     public static final PublishSubject<HotKeyDescriptor> hotKeySubject = PublishSubject.create();
+    public static final PublishSubject<MercuryError> errorHandlerSubject = PublishSubject.create();
 }

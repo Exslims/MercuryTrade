@@ -36,7 +36,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         this.selectedProfile = selectedProfile;
         UIManager.put("MenuItem.background", AppThemeColor.ADR_BG);
         UIManager.put("MenuItem.selectionBackground", AppThemeColor.ADR_POPUP_BG);
-        UIManager.put("PopupMenu.contentMargins", new InsetsUIResource(2,0,2,0));
+        UIManager.put("Menu.contentMargins", new InsetsUIResource(2,0,2,0));
         UIManager.put("MenuItem.opaque", true);
         UIManager.put("ComboBox.selectionBackground", AppThemeColor.HEADER);
         UIManager.put("ComboBox.selectionForeground", AppThemeColor.TEXT_DEFAULT);

@@ -18,5 +18,6 @@ public interface ConfigManager {
     KeyValueConfigurationService<String,HotKeyDescriptor> hotKeysConfiguration();
     AdrConfigurationService adrConfiguration();
     ListConfigurationService<StashTabDescriptor> stashTabConfiguration();
+    IconBundleConfigurationService iconBundleConfiguration();
     List<ProfileDescriptor> profiles();
 }

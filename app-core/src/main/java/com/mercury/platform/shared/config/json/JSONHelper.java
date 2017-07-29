@@ -17,16 +17,16 @@ import java.util.Map;
 
 public class JSONHelper {
     private Logger logger = LogManager.getLogger(JSONHelper.class.getSimpleName());
-    private ConfigurationSource dataSource;
+    private String dataSource;
 
-    public JSONHelper(ConfigurationSource dataSource){
+    public JSONHelper(String dataSource){
         this.dataSource = dataSource;
     }
     public <T> List<T> readArrayData(TypeToken<List<T>> typeToken){
         try {
             Gson gson = new GsonBuilder().registerTypeAdapter(AdrComponentDescriptor.class,new AdrComponentDeserializer()).create();
             JsonParser jsonParser = new JsonParser();
-            try(JsonReader reader = new JsonReader(new FileReader(dataSource.getConfigurationFilePath()))) {
+            try(JsonReader reader = new JsonReader(new FileReader(dataSource))) {
                 return gson.fromJson(
                         jsonParser.parse(reader),
                         typeToken.getType());
@@ -40,7 +40,7 @@ public class JSONHelper {
         try {
             Gson gson = new Gson();
             JsonParser jsonParser = new JsonParser();
-            try(JsonReader reader = new JsonReader(new FileReader(dataSource.getConfigurationFilePath()))) {
+            try(JsonReader reader = new JsonReader(new FileReader(dataSource))) {
                 return gson.fromJson(
                         jsonParser.parse(reader)
                                 .getAsJsonObject()
@@ -56,7 +56,7 @@ public class JSONHelper {
         try {
             Gson gson = new GsonBuilder().enableComplexMapKeySerialization().setPrettyPrinting().create();
 
-            try(JsonWriter writer = new JsonWriter(new FileWriter(dataSource.getConfigurationFilePath()))) {
+            try(JsonWriter writer = new JsonWriter(new FileWriter(dataSource))) {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.add(key,gson.toJsonTree(object));
                 gson.toJson(jsonObject,writer);
@@ -69,7 +69,7 @@ public class JSONHelper {
     public <T> void writeListObject(List<?> object, TypeToken<List<T>> typeToken){
         try {
             Gson gson = new Gson();
-            try(JsonWriter writer = new JsonWriter(new FileWriter(dataSource.getConfigurationFilePath()))) {
+            try(JsonWriter writer = new JsonWriter(new FileWriter(dataSource))) {
                 gson.toJson(object,typeToken.getType(),writer);
             }
         }catch (IOException e){

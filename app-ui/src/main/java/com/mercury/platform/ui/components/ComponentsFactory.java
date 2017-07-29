@@ -31,6 +31,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 import java.text.NumberFormat;
 
 /**
@@ -323,6 +324,15 @@ public class ComponentsFactory{
         }
         return iconLabel;
     }
+    public JLabel getIconLabel(URL url, int size){
+        JLabel iconLabel = new JLabel();
+        try {
+            iconLabel.setIcon(getIcon(url,(int)(scale*size)));
+        } catch (Exception e) {
+            return getTextLabel(StringUtils.substringBetween(url.getPath(),"/","."));
+        }
+        return iconLabel;
+    }
     public JLabel getIconLabel(String iconPath, int size, String tooltip){
         JLabel iconLabel = new JLabel();
         try {
@@ -532,6 +542,16 @@ public class ComponentsFactory{
         BufferedImage icon = null;
         try {
             BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
+            icon = Scalr.resize(buttonIcon, (int)(scale * size));
+        } catch (IOException e) {
+            log.error(e);
+        }
+        return new ImageIcon(icon);
+    }
+    public ImageIcon getIcon(URL iconPath, float size){
+        BufferedImage icon = null;
+        try {
+            BufferedImage buttonIcon = ImageIO.read(iconPath);
             icon = Scalr.resize(buttonIcon, (int)(scale * size));
         } catch (IOException e) {
             log.error(e);

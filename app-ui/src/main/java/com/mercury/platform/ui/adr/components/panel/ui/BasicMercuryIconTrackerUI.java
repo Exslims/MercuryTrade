@@ -1,5 +1,7 @@
 package com.mercury.platform.ui.adr.components.panel.ui;
 
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.IconBundleConfigurationService;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentOrientation;
 import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
@@ -18,10 +20,12 @@ import java.text.DecimalFormat;
 public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDescriptor> extends ComponentUI{
     protected T descriptor;
     protected MercuryTracker tracker;
+    protected  IconBundleConfigurationService config;
 
     protected BasicMercuryIconTrackerUI(T descriptor, MercuryTracker tracker){
         this.descriptor = descriptor;
         this.tracker = tracker;
+        this.config = Configuration.get().iconBundleConfiguration();
     }
     @Override
     public Dimension getPreferredSize(JComponent c) {

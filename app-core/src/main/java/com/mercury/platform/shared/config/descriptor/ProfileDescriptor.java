@@ -19,4 +19,5 @@ public class ProfileDescriptor {
     private Map<String,HotKeyDescriptor> hotKeysDataMap;
     private List<StashTabDescriptor> stashTabDescriptors;
     private List<AdrProfileDescriptor> adrProfileDescriptorList;
+    private List<String> iconBundleList;
 }
