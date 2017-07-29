@@ -14,7 +14,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 
 public class AppMain {
-    private static final Logger logger = LogManager.getLogger(AppMain.class.getSimpleName());
     public static void main(String[] args) {
         System.setProperty("sun.java2d.d3d","false");
         new ErrorHandler();

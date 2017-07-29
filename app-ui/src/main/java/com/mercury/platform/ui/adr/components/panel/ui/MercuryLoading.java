@@ -1,13 +1,14 @@
 package com.mercury.platform.ui.adr.components.panel.ui;
-
-
 import com.mercury.platform.ui.misc.AppThemeColor;
 import lombok.Getter;
 import lombok.Setter;
 import org.pushingpixels.trident.Timeline;
+import org.pushingpixels.trident.callback.TimelineCallbackAdapter;
 import org.pushingpixels.trident.ease.Spline;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
+import java.awt.*;
 
 
 public class MercuryLoading extends JComponent {
@@ -17,8 +18,9 @@ public class MercuryLoading extends JComponent {
     private int maximum;
     @Setter @Getter
     private int minimum;
-
     private Timeline progressTl;
+    @Setter
+    private boolean swapEnable;
 
     public MercuryLoading() {
         this.setValue(0);
@@ -32,10 +34,19 @@ public class MercuryLoading extends JComponent {
         this.progressTl.setDuration(2400);
         this.progressTl.addPropertyToInterpolate("value", this.getMaximum(), 0);
         this.progressTl.setEase(new Spline(1));
+        this.progressTl.addCallback(new TimelineCallbackAdapter() {
+            @Override
+            public void onTimelineStateChanged(Timeline.TimelineState oldState, Timeline.TimelineState newState, float durationFraction, float timelinePosition) {
+                swapColors();
+            }
+        });
     }
     public void setValue(int value) {
         this.value = value;
         this.updateUI();
+    }
+    public void setLoadingUI(ComponentUI componentUI){
+        this.setUI(componentUI);
     }
 
     @Override
@@ -58,5 +69,12 @@ public class MercuryLoading extends JComponent {
     }
     public void cancel(){
         this.progressTl.cancel();
+    }
+    public void swapColors(){
+        if(swapEnable) {
+            Color temp = new Color(this.getBackground().getRGB());
+            this.setBackground(this.getForeground());
+            this.setForeground(temp);
+        }
     }
 }
