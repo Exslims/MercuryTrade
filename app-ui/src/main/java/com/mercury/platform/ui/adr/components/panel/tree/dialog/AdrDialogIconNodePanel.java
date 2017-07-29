@@ -4,17 +4,18 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrNodePanel;
 import com.mercury.platform.ui.adr.components.panel.tree.model.AdrTreeNode;
+import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
+import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 
 public class AdrDialogIconNodePanel extends AdrNodePanel<AdrIconDescriptor> {
-    private JLabel iconLabel;
-
     public AdrDialogIconNodePanel(AdrTreeNode<AdrComponentDescriptor> treeNode) {
         super(treeNode);
         this.mouseListener.setProcessSelect(false);
@@ -22,20 +23,26 @@ public class AdrDialogIconNodePanel extends AdrNodePanel<AdrIconDescriptor> {
 
     @Override
     protected void update() {
-        this.iconLabel.setText(this.descriptor.getTitle());
-        this.iconLabel.setIcon(this.componentsFactory.getIcon("app/adr/icons/" + descriptor.getIconPath() + ".png",28));
     }
 
     @Override
     public void createUI() {
-        this.iconLabel = this.componentsFactory.getIconLabel("app/adr/icons/" + descriptor.getIconPath() + ".png",28);
-        this.iconLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
-        this.iconLabel.setFont(componentsFactory.getFont(FontStyle.REGULAR, 16));
-        this.iconLabel.setText(descriptor.getTitle());
-        this.iconLabel.setPreferredSize(new Dimension(150, 28));
-        this.iconLabel.setBorder(BorderFactory.createEmptyBorder());
-        this.add(this.iconLabel,BorderLayout.CENTER);
-        JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 15, AppThemeColor.ADR_BG, TooltipConstants.ADR_REMOVE_BUTTON);
-        this.add(removeButton,BorderLayout.LINE_END);
+        JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
+        root.setBackground(AppThemeColor.ADR_BG);
+        MercuryTracker tracker = new MercuryTracker(this.descriptor);
+        tracker.setPreferredSize(new Dimension(48, 48));
+        tracker.setShowCase(true);
+        tracker.setStringPainted(false);
+        tracker.setValue(new Random().nextInt((int) (this.descriptor.getDuration() * 1000)));
+        tracker.setFont(new ComponentsFactory().getFont(FontStyle.BOLD, 20));
+        tracker.setBackground(AppThemeColor.ADR_TEXT_ARE_BG);
+
+        JLabel titleLabel = this.componentsFactory.getTextLabel(this.descriptor.getTitle());
+        titleLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
+        titleLabel.setFont(componentsFactory.getFont(FontStyle.REGULAR, 16));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0,4,0,0));
+        root.add(tracker,BorderLayout.LINE_START);
+        root.add(titleLabel,BorderLayout.CENTER);
+        this.add(root,BorderLayout.CENTER);
     }
 }

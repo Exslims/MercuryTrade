@@ -11,6 +11,5 @@ import java.io.Serializable;
 public class AdrProgressBarDescriptor extends AdrDurationComponentDescriptor implements Serializable {
     private Color backgroundColor;
     private Color foregroundColor;
-    private Insets insets = new Insets(4,4,4,4);
     private AdrIconAlignment iconAlignment;
 }

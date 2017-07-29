@@ -46,7 +46,7 @@ public class AdrIconNodePanel extends AdrNodePanel<AdrIconDescriptor> {
         this.titleLabel.setFont(componentsFactory.getFont(FontStyle.REGULAR, 16));
         this.titleLabel.setBorder(BorderFactory.createEmptyBorder(0,4,0,0));
         root.add(tracker,BorderLayout.LINE_START);
-        root.add(this.titleLabel);
+        root.add(this.titleLabel,BorderLayout.CENTER);
         this.add(root,BorderLayout.CENTER);
         this.add(this.adrComponentsFactory.getLeftComponentOperationsPanel(this.treeNode),BorderLayout.LINE_START);
         this.add(this.adrComponentsFactory

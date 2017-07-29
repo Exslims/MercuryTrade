@@ -25,5 +25,6 @@ public class AdrDurationComponentDescriptor extends AdrComponentDescriptor imple
     private Double mediumValueTextThreshold;
     private Double defaultValueTextThreshold;
     private int thickness = 1;
+    private Insets insets = new Insets(0,0,0,0);
     private boolean bindToTextColor;
 }

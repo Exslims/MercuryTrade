@@ -55,10 +55,6 @@ public class AdrDialogGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescrip
             }
             MercuryStoreUI.adrManagerPack.onNext(true);
         });
-        JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_REMOVE_BUTTON);
-
-        JPanel buttonsPanel = this.componentsFactory.getJPanel(new GridLayout(1, 1));
-        buttonsPanel.add(removeButton);
 
         this.groupLabel = new JLabel();
         this.groupLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
@@ -70,7 +66,6 @@ public class AdrDialogGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescrip
 
         root.add(expandButton,BorderLayout.LINE_START);
         root.add(this.groupLabel,BorderLayout.CENTER);
-        root.add(buttonsPanel,BorderLayout.LINE_END);
         return root;
     }
 }

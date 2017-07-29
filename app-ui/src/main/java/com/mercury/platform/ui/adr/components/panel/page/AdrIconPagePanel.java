@@ -22,12 +22,8 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
         JScrollPane verticalContainer = this.componentsFactory.getVerticalContainer(container);
 
-        String opacityLabelText = "Opacity:";
-        if(this.fromGroup){
-            opacityLabelText = "Opacity(from group):";
-        }
         JLabel titleLabel = this.componentsFactory.getTextLabel("Title:");
-        JLabel opacityLabel = this.componentsFactory.getTextLabel(opacityLabelText);
+        JLabel opacityLabel = this.componentsFactory.getTextLabel("Opacity:");
         JLabel sizeLabel = this.componentsFactory.getTextLabel("Icon size:");
         JLabel locationLabel = this.componentsFactory.getTextLabel("Location:");
 
@@ -92,7 +88,7 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
                 this.payload,
                 color -> this.payload.setBorderColor(color));
 
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 4 : 6, 2,0,6));
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 4 : 5, 2,0,6));
         JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(7, 2,0,6));
         generalPanel.setBackground(AppThemeColor.SLIDE_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -117,8 +113,10 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         generalPanel.add(durationLabel);
         generalPanel.add(durationField);
 
-        specPanel.add(opacityLabel);
-        specPanel.add(opacitySlider);
+        if(!this.fromGroup) {
+            specPanel.add(opacityLabel);
+            specPanel.add(opacitySlider);
+        }
         specPanel.add(textColorLabel);
         specPanel.add(textPanel);
         specPanel.add(fontSizeLabel);

@@ -33,8 +33,5 @@ public class AdrDialogPBNodePanel extends AdrNodePanel<AdrProgressBarDescriptor>
         tracker.setPreferredSize(new Dimension(180, 30));
         root.add(tracker);
         this.add(root,BorderLayout.CENTER);
-        JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_REMOVE_BUTTON);
-        removeButton.setBackground(AppThemeColor.ADR_BG);
-        this.add(removeButton,BorderLayout.LINE_END);
     }
 }

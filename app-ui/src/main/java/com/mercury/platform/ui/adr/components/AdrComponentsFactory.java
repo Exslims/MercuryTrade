@@ -10,6 +10,7 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.FieldValueListener;
 import com.mercury.platform.ui.adr.components.panel.tree.model.AdrTreeNode;
 import com.mercury.platform.ui.adr.components.panel.ui.ValueBinder;
+import com.mercury.platform.ui.adr.dialog.ExportHelper;
 import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
 import com.mercury.platform.ui.adr.routing.AdrComponentOperations;
 import com.mercury.platform.ui.adr.validator.DoubleFieldValidator;
@@ -456,6 +457,12 @@ public class AdrComponentsFactory {
                 }
             }
         });
+        JMenuItem export = this.componentsFactory.getMenuItem("Export");
+        export.setBorder(BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.ADR_DEFAULT_BORDER));
+        export.addActionListener(action -> {
+            ExportHelper.exportComponent(treeNode.getData());
+        });
+        contextMenu.add(export);
         return contextMenu;
     }
 

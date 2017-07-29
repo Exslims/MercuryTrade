@@ -2,6 +2,7 @@ package com.mercury.platform.ui.adr.dialog;
 
 
 import com.google.gson.Gson;
+import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
 import com.mercury.platform.ui.adr.components.panel.tree.*;
 import com.mercury.platform.ui.adr.components.panel.tree.dialog.AdrDialogTreeNodeRenderer;
@@ -13,11 +14,13 @@ import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.*;
+import java.util.List;
 
-public class AdrExportDialog extends AdrDialog<AdrProfileDescriptor> {
+public class AdrExportDialog extends AdrDialog<List<AdrComponentDescriptor>> {
     private JTextArea jsonArea;
     private AdrTreePanel adrTree;
-    public AdrExportDialog(Component relative, AdrProfileDescriptor descriptor){
+    public AdrExportDialog(Component relative, List<AdrComponentDescriptor> descriptor){
         super(relative, descriptor);
         this.setTitle("Export manager");
 
@@ -74,15 +77,12 @@ public class AdrExportDialog extends AdrDialog<AdrProfileDescriptor> {
         JPanel headerPanel = this.componentsFactory.getJPanel(new BorderLayout());
         headerPanel.setBackground(AppThemeColor.ADR_BG);
 
-        JButton addButton = this.componentsFactory.getIconButton("app/adr/add_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_ADD_BUTTON);
-        addButton.setBackground(AppThemeColor.ADR_BG);
         JLabel header = this.componentsFactory.getTextLabel("View:", FontStyle.BOLD,18);
         header.setForeground(AppThemeColor.TEXT_NICKNAME);
         headerPanel.add(header,BorderLayout.CENTER);
-        headerPanel.add(addButton,BorderLayout.LINE_END);
         root.add(headerPanel,BorderLayout.PAGE_START);
 
-        this.adrTree = new AdrTreePanel(this.payload.getContents(), new AdrDialogTreeNodeRenderer());
+        this.adrTree = new AdrTreePanel(this.payload, new AdrDialogTreeNodeRenderer());
         this.adrTree.setVisible(false);
         root.add(this.componentsFactory.wrapToSlide(this.adrTree,AppThemeColor.FRAME_RGB),BorderLayout.CENTER);
         return this.componentsFactory.wrapToSlide(root);
