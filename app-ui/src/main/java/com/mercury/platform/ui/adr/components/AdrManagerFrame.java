@@ -6,6 +6,7 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
 import com.mercury.platform.ui.adr.components.panel.page.AdrPagePanel;
 import com.mercury.platform.ui.adr.components.panel.tree.main.AdrMainTreeNodeRenderer;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrTreePanel;
+import com.mercury.platform.ui.adr.dialog.AdrNewProfileDialog;
 import com.mercury.platform.ui.adr.dialog.ExportHelper;
 import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
 import com.mercury.platform.ui.adr.routing.AdrPageState;
@@ -143,13 +144,23 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
                 .stream()
                 .map(AdrProfileDescriptor::getProfileName)
                 .collect(Collectors.toList());
+        profilesNames.add("Create new");
         profileSelector = this.componentsFactory.getComboBox(profilesNames.toArray(new String[0]));
         profileSelector.setBorder(BorderFactory.createLineBorder(AppThemeColor.MSG_HEADER_BORDER));
         profileSelector.setSelectedItem(this.selectedProfile.getProfileName());
         profileSelector.addItemListener(e -> {
             if(e.getStateChange() == ItemEvent.SELECTED) {
-                profileSelector.setEnabled(false);
-                MercuryStoreUI.adrSelectProfileSubject.onNext((String) profileSelector.getSelectedItem());
+                if(!profileSelector.getSelectedItem().equals("Create new")) {
+                    if(!profileSelector.getSelectedItem().equals(this.selectedProfile.getProfileName())) {
+                        profileSelector.setEnabled(false);
+                        MercuryStoreUI.adrSelectProfileSubject.onNext((String) profileSelector.getSelectedItem());
+                    }
+                }else {
+                    profileSelector.setSelectedItem(this.selectedProfile.getProfileName());
+                    new AdrNewProfileDialog(profileName -> {
+                        System.out.println(profileName);
+                    },profileSelector,profilesNames).setVisible(true);
+                }
             }
         });
         JButton exportButton = this.componentsFactory.getIconButton("app/adr/export_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_EXPORT_BUTTON);
@@ -162,11 +173,11 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         bottomPanel.setBackground(AppThemeColor.ADR_FOOTER_BG);
         profilePanel.add(this.componentsFactory.getTextLabel("Selected profile: "),BorderLayout.LINE_START);
         profilePanel.add(profileSelector);
-        JButton reloadButton = this.componentsFactory.getIconButton("app/adr/export_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_EXPORT_BUTTON);
-        reloadButton.addActionListener(action -> {
-            this.tree.updateTree();
-        });
-        profilePanel.add(reloadButton);
+//        JButton reloadButton = this.componentsFactory.getIconButton("app/adr/export_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_EXPORT_BUTTON);
+//        reloadButton.addActionListener(action -> {
+//            this.tree.updateTree();
+//        });
+//        profilePanel.add(reloadButton);
         bottomPanel.add(exportButton,BorderLayout.LINE_START);
         bottomPanel.add(profilePanel,BorderLayout.CENTER);
 
