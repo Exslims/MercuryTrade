@@ -12,7 +12,7 @@ public class ErrorHandler {
             logger.error(ExceptionUtils.getStackTrace(throwable));
         });
         MercuryStoreCore.errorHandlerSubject.subscribe(error -> {
-            logger.error(error.getErrorMessage(),ExceptionUtils.getStackTrace(error.getStackTrace()));
+            logger.error(error.getErrorMessage() + "\n" + ExceptionUtils.getStackTrace(error.getStackTrace()));
         });
     }
 }

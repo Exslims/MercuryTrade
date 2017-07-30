@@ -189,7 +189,7 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
     private ProfileDescriptor getDefaultProfile(){
         ProfileDescriptor defaultProfile = new ProfileDescriptor();
         defaultProfile.setSelected(true);
-        defaultProfile.setProfileName("Profile1");
+        defaultProfile.setName("Profile1");
         return defaultProfile;
     }
 }

@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Data
 public class ProfileDescriptor {
-    private String profileName;
+    private String name;
     private boolean selected;
     private Map<String,FrameDescriptor> frameDescriptorMap;
     private Map<String,SoundDescriptor> soundDescriptorMap;

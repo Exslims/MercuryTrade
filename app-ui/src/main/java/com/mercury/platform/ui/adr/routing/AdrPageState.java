@@ -1,7 +1,6 @@
 package com.mercury.platform.ui.adr.routing;
 
 
-public enum  AdrPageState {
+public enum AdrPageState {
     MAIN,
-    PROFILE,
 }

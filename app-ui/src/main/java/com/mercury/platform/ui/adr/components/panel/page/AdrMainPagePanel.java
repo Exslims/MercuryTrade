@@ -3,6 +3,7 @@ package com.mercury.platform.ui.adr.components.panel.page;
 
 import com.mercury.platform.shared.config.configration.AdrConfigurationService;
 import com.mercury.platform.shared.config.descriptor.adr.*;
+import com.mercury.platform.ui.adr.dialog.AdrImportDialog;
 import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
 import com.mercury.platform.ui.adr.routing.AdrComponentOperations;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -93,6 +94,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
         importButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                new AdrImportDialog(importButton).setVisible(true);
             }
         });
         if(this.fromGroup) {

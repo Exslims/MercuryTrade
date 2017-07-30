@@ -5,10 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 public class AdrComponentDefinition {
     private AdrComponentDescriptor descriptor;
+    private List<AdrComponentDescriptor> descriptors;
     private AdrComponentOperations operations;
     private AdrComponentDescriptor parent;
     private boolean fromGroup;

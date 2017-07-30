@@ -16,7 +16,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class AdrConfigurationServiceMock extends BaseConfigurationService<List<AdrProfileDescriptor>> implements AdrConfigurationService {
-    private AtomicInteger idGenerator = new AtomicInteger();
     private List<AdrProfileDescriptor> currentProfiles;
     public AdrConfigurationServiceMock(ProfileDescriptor selectedProfile) {
         super(selectedProfile);
@@ -24,7 +23,8 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
 
     @Override
     public List<AdrProfileDescriptor> getEntities() {
-        return this.getDefault();
+        return this.selectedProfile.getAdrProfileDescriptorList();
+//        return this.getDefault();
     }
 
 
@@ -40,10 +40,10 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
 
     @Override
     public void validate() {
+        this.currentProfiles = Arrays.stream(new AdrProfileDescriptor[]{this.getShowcaseProfile(),this.getDefaultProfile("Default profile")}).collect(Collectors.toList());
         if(this.selectedProfile.getAdrProfileDescriptorList() == null){
             this.selectedProfile.setAdrProfileDescriptorList(this.getDefault());
         }
-        this.currentProfiles = Arrays.stream(new AdrProfileDescriptor[]{this.getShowcaseProfile(),this.getDefaultProfile("Default profile")}).collect(Collectors.toList());
     }
     private AdrProfileDescriptor getDefaultProfile(String profileName){
         AdrProfileDescriptor profileDescriptor = new AdrProfileDescriptor();
@@ -52,7 +52,6 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         profileDescriptor.setSelected(false);
         AdrProgressBarDescriptor defaultProgressBar = this.getDefaultProgressBar();
         defaultProgressBar.setTitle("ASDASDASDASD");
-        defaultProgressBar.setId(123);
         defaultProgressBar.setLocation(new Point(200,200));
         profileDescriptor.getContents().add(defaultProgressBar);
         return profileDescriptor;
@@ -61,7 +60,6 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
     @Override
     public AdrIconDescriptor getDefaultIcon() {
         AdrIconDescriptor icon = new AdrIconDescriptor();
-        icon.setId(this.idGenerator.incrementAndGet());
         icon.setTitle("icon");
         icon.setIconPath("default_icon.png");
         icon.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
@@ -85,7 +83,6 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
     @Override
     public AdrProgressBarDescriptor getDefaultProgressBar() {
         AdrProgressBarDescriptor progressBar = new AdrProgressBarDescriptor();
-        progressBar.setId(this.idGenerator.incrementAndGet());
         progressBar.setTitle("progress bar");
         progressBar.setIconPath("default_icon.png");
         progressBar.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
@@ -132,7 +129,6 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
     }
     private AdrTrackerGroupDescriptor getDefaultGroup(){
         AdrTrackerGroupDescriptor groupDescriptor = new AdrTrackerGroupDescriptor();
-        groupDescriptor.setId(this.idGenerator.incrementAndGet());
         groupDescriptor.setTitle("group");
         groupDescriptor.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
         groupDescriptor.setType(AdrComponentType.TRACKER_GROUP);

@@ -14,6 +14,8 @@ import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.*;
 import java.util.List;
 
@@ -28,19 +30,14 @@ public class AdrExportDialog extends AdrDialog<List<AdrComponentDescriptor>> {
             this.pack();
             this.repaint();
         });
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                postConstruct();
+            }
+        });
     }
-
-    @Override
-    protected void createView() {
-        this.setPreferredSize(new Dimension(600,500));
-        JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
-        root.add(this.getDataPanel(),BorderLayout.CENTER);
-        root.add(this.getViewPanel(),BorderLayout.LINE_END);
-        this.add(this.componentsFactory.wrapToSlide(root),BorderLayout.CENTER);
-    }
-
-    @Override
-    protected void postConstruct() {
+    private void postConstruct() {
         this.jsonArea.setText(this.getPayloadAsJson());
         this.adrTree.setVisible(true);
         this.adrTree.updateTree();
@@ -48,7 +45,8 @@ public class AdrExportDialog extends AdrDialog<List<AdrComponentDescriptor>> {
         this.repaint();
     }
 
-    private JPanel getDataPanel(){
+    @Override
+    protected JPanel getDataPanel(){
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
         root.setBackground(AppThemeColor.ADR_BG);
@@ -69,7 +67,8 @@ public class AdrExportDialog extends AdrDialog<List<AdrComponentDescriptor>> {
         root.add(this.componentsFactory.wrapToSlide(verticalContainer,AppThemeColor.ADR_BG,0,5,4,0),BorderLayout.CENTER);
         return this.componentsFactory.wrapToSlide(root);
     }
-    private JPanel getViewPanel(){
+    @Override
+    protected JPanel getViewPanel(){
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setPreferredSize(new Dimension(240,100));
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));

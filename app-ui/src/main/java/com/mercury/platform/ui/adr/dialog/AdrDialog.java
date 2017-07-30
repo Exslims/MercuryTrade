@@ -23,15 +23,14 @@ public abstract class AdrDialog<T> extends JDialog{
         this.createView();
         this.pack();
         this.setLocationRelativeTo(relative);
-
-        this.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentShown(ComponentEvent e) {
-                postConstruct();
-            }
-        });
     }
-
-    protected abstract void createView();
-    protected abstract void postConstruct();
+    private void createView() {
+        this.setPreferredSize(new Dimension(600,500));
+        JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
+        root.add(this.getDataPanel(),BorderLayout.CENTER);
+        root.add(this.getViewPanel(),BorderLayout.LINE_END);
+        this.add(this.componentsFactory.wrapToSlide(root),BorderLayout.CENTER);
+    }
+    protected abstract JPanel getDataPanel();
+    protected abstract JPanel getViewPanel();
 }

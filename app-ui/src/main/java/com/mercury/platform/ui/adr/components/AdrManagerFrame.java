@@ -17,6 +17,7 @@ import com.mercury.platform.ui.misc.TooltipConstants;
 import lombok.Getter;
 
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.InsetsUIResource;
 import java.awt.*;
 import java.awt.event.ItemEvent;
@@ -43,6 +44,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         UIManager.put("MenuItem.opaque", true);
         UIManager.put("ComboBox.selectionBackground", AppThemeColor.HEADER);
         UIManager.put("ComboBox.selectionForeground", AppThemeColor.ADR_POPUP_BG);
+        UIManager.put("ComboBox.disabledForeground",  AppThemeColor.ADR_FOOTER_BG);
         this.subscribe();
     }
 
@@ -146,7 +148,6 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         profileSelector.setSelectedItem(this.selectedProfile.getProfileName());
         profileSelector.addItemListener(e -> {
             if(e.getStateChange() == ItemEvent.SELECTED) {
-                System.out.println("qew");
                 profileSelector.setEnabled(false);
                 MercuryStoreUI.adrSelectProfileSubject.onNext((String) profileSelector.getSelectedItem());
             }

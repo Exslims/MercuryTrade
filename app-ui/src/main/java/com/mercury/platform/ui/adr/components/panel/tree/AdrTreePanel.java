@@ -18,6 +18,7 @@ public class AdrTreePanel extends JPanel{
     @Getter @Setter
     private AdrTreeNodeRenderer renderer;
     private ComponentsFactory componentsFactory = new ComponentsFactory();
+    @Getter
     private List<AdrComponentDescriptor> descriptors;
     private JPanel container;
     private SwingWorker<Void,Void> worker;

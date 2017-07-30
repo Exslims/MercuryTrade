@@ -8,12 +8,13 @@ import lombok.NoArgsConstructor;
 
 import java.awt.*;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AdrComponentDescriptor implements Serializable{
-    private int id;
+    private String componentId = UUID.randomUUID().toString();
     private String title = "default";
     private AdrComponentType type;
     private Point location;

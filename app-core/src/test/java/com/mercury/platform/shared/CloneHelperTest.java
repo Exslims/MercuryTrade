@@ -12,7 +12,7 @@ public class CloneHelperTest {
         AdrConfigurationServiceMock config = new AdrConfigurationServiceMock(null);
         AdrIconDescriptor sourceIcon = config.getDefaultIcon();
         AdrIconDescriptor cloned = CloneHelper.cloneObject(sourceIcon);
-        cloned.setId(cloned.getId() + 10341);
+        cloned.setComponentId(cloned.getComponentId() + 10341);
         assertNotEquals(sourceIcon,cloned);
     }
 }

@@ -153,6 +153,12 @@ public class AdrManager implements AsSubscriber{
                    MercuryStoreUI.adrPostOperationsComponentSubject.onNext(definition.getDescriptor());
                    break;
                }
+               case NEW_FROM_IMPORT:{
+                   this.selectedProfile.getContents().addAll(definition.getDescriptors());
+                   MercuryStoreCore.saveConfigSubject.onNext(true);
+                   this.selectProfile(this.selectedProfile.getProfileName());
+                   break;
+               }
            }
         });
         MercuryStoreUI.adrRemoveComponentSubject.subscribe(descriptor -> {
@@ -173,6 +179,7 @@ public class AdrManager implements AsSubscriber{
             MercuryStoreUI.adrPostOperationsComponentSubject.onNext(descriptor);
         });
         MercuryStoreUI.adrSelectProfileSubject.subscribe(profileName -> {
+            this.selectedProfile.setSelected(false);
             this.selectProfile(profileName);
         });
     }
@@ -183,7 +190,7 @@ public class AdrManager implements AsSubscriber{
                 .stream()
                 .filter(profile -> profile.getProfileName().equals(profileName))
                 .findAny().orElse(null);
-        this.selectedProfile.setSelected(false);
+        selectedProfile.setSelected(true);
         this.selectedProfile = selectedProfile;
 
         this.worker = new SwingWorker<Void, Void>() {

@@ -493,7 +493,7 @@ public class AdrComponentsFactory {
         duplicateButton.addActionListener(action -> {
             AdrComponentDescriptor cloned = CloneHelper.cloneObject(treeNode.getData());
             if(cloned != null) {
-                cloned.setId(cloned.getId() + 1);
+                cloned.setComponentId(cloned.getComponentId() + 1);
                 cloned.setLocation(new Point(new Random().nextInt(500), new Random().nextInt(500)));
                 MercuryStoreUI.adrComponentStateSubject.onNext(
                         new AdrComponentDefinition(cloned,

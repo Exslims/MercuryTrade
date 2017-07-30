@@ -4,9 +4,10 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.mercury.platform.shared.config.ConfigurationSource;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
-import com.mercury.platform.shared.config.json.deserializer.AdrComponentDeserializer;
+import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
+import com.mercury.platform.shared.config.json.deserializer.AdrComponentJsonAdapter;
+import com.mercury.platform.shared.config.json.deserializer.AdrTrackerGroupDeserializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.FileReader;
@@ -24,7 +25,12 @@ public class JSONHelper {
     }
     public <T> List<T> readArrayData(TypeToken<List<T>> typeToken){
         try {
-            Gson gson = new GsonBuilder().registerTypeAdapter(AdrComponentDescriptor.class,new AdrComponentDeserializer()).create();
+
+            Gson gson = new GsonBuilder()
+                    .registerTypeHierarchyAdapter(AdrTrackerGroupDescriptor.class,new AdrTrackerGroupDeserializer())
+                    .registerTypeHierarchyAdapter(AdrComponentDescriptor.class,new AdrComponentJsonAdapter())
+                    .create();
+
             JsonParser jsonParser = new JsonParser();
             try(JsonReader reader = new JsonReader(new FileReader(dataSource))) {
                 return gson.fromJson(
@@ -68,7 +74,9 @@ public class JSONHelper {
     }
     public <T> void writeListObject(List<?> object, TypeToken<List<T>> typeToken){
         try {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(AdrComponentDescriptor.class,new AdrComponentJsonAdapter())
+                    .create();
             try(JsonWriter writer = new JsonWriter(new FileWriter(dataSource))) {
                 gson.toJson(object,typeToken.getType(),writer);
             }
