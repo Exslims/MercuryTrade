@@ -19,6 +19,8 @@ import lombok.Getter;
 import javax.swing.*;
 import javax.swing.plaf.InsetsUIResource;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +28,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
     private JPanel currentPage;
     private JPanel root;
     private AdrTreePanel tree;
+    private JComboBox profileSelector;
     @Getter
     private AdrProfileDescriptor selectedProfile;
     public AdrManagerFrame(AdrProfileDescriptor selectedProfile) {
@@ -39,7 +42,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         UIManager.put("Menu.contentMargins", new InsetsUIResource(2,0,2,0));
         UIManager.put("MenuItem.opaque", true);
         UIManager.put("ComboBox.selectionBackground", AppThemeColor.HEADER);
-        UIManager.put("ComboBox.selectionForeground", AppThemeColor.TEXT_DEFAULT);
+        UIManager.put("ComboBox.selectionForeground", AppThemeColor.ADR_POPUP_BG);
         this.subscribe();
     }
 
@@ -98,6 +101,14 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         });
     }
 
+    public void setSelectedProfile(AdrProfileDescriptor profile){
+        this.selectedProfile = profile;
+        this.tree.updateTree(profile.getContents());
+    }
+    public void onProfileLoaded(){
+        this.profileSelector.setEnabled(true);
+    }
+
     @Override
     protected String getFrameTitle() {
         return "Aura Duration Tracker";
@@ -124,9 +135,22 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         root.setBackground(AppThemeColor.ADR_FOOTER_BG);
         JPanel profilePanel = this.componentsFactory.getJPanel(new GridLayout(1, 3));
         profilePanel.setBackground(AppThemeColor.ADR_FOOTER_BG);
-        List<String> profilesNames = Configuration.get().adrConfiguration().getEntities().stream().map(AdrProfileDescriptor::getProfileName).collect(Collectors.toList());
-        JComboBox profileSelector = this.componentsFactory.getComboBox(profilesNames.toArray(new String[0]));
+        List<String> profilesNames = Configuration.get()
+                .adrConfiguration()
+                .getEntities()
+                .stream()
+                .map(AdrProfileDescriptor::getProfileName)
+                .collect(Collectors.toList());
+        profileSelector = this.componentsFactory.getComboBox(profilesNames.toArray(new String[0]));
         profileSelector.setBorder(BorderFactory.createLineBorder(AppThemeColor.MSG_HEADER_BORDER));
+        profileSelector.setSelectedItem(this.selectedProfile.getProfileName());
+        profileSelector.addItemListener(e -> {
+            if(e.getStateChange() == ItemEvent.SELECTED) {
+                System.out.println("qew");
+                profileSelector.setEnabled(false);
+                MercuryStoreUI.adrSelectProfileSubject.onNext((String) profileSelector.getSelectedItem());
+            }
+        });
         JButton exportButton = this.componentsFactory.getIconButton("app/adr/export_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_EXPORT_BUTTON);
         exportButton.addActionListener(action -> {
             ExportHelper.exportProfile(this.selectedProfile);

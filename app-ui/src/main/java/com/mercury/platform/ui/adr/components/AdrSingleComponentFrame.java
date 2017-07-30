@@ -4,6 +4,7 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDes
 import com.mercury.platform.ui.adr.components.panel.AdrCellPanel;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
+import rx.Subscription;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +12,7 @@ import java.awt.*;
 
 public class AdrSingleComponentFrame extends AbstractAdrComponentFrame<AdrDurationComponentDescriptor> {
     private AdrCellPanel component;
+    private Subscription adrReloadSubscription;
     public AdrSingleComponentFrame(AdrDurationComponentDescriptor descriptor) {
         super(descriptor);
     }
@@ -29,7 +31,7 @@ public class AdrSingleComponentFrame extends AbstractAdrComponentFrame<AdrDurati
     @Override
     public void subscribe() {
         super.subscribe();
-        MercuryStoreUI.adrReloadSubject.subscribe(descriptor -> {
+        this.adrReloadSubscription = MercuryStoreUI.adrReloadSubject.subscribe(descriptor -> {
             if(descriptor.equals(this.descriptor)){
                 this.setOpacity(this.descriptor.getOpacity());
                 this.setLocation(descriptor.getLocation());
@@ -60,5 +62,11 @@ public class AdrSingleComponentFrame extends AbstractAdrComponentFrame<AdrDurati
         this.component.setBorder(BorderFactory.createEmptyBorder(0,0,1,0));
         this.pack();
         this.repaint();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        this.adrReloadSubscription.unsubscribe();
     }
 }

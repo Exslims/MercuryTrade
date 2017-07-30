@@ -11,6 +11,8 @@ import com.mercury.platform.ui.adr.components.panel.page.*;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.Getter;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,10 @@ public class AdrManager implements AsSubscriber{
     private AdrPagePanel<AdrComponentDescriptor> mainPanel;
     private AdrPagePanel<AdrIconDescriptor> iconSettingsPanel;
     private AdrPagePanel<AdrProgressBarDescriptor> progressBarSettingsPanel;
-    private AdrPagePanel<List<AdrProfileDescriptor>> profilesSettingsPanel;
+
+    private AdrLoadingPage loadingPage;
+
+    private SwingWorker<Void,Void> worker;
     @Getter
     private AdrState state = AdrState.DEFAULT;
     public void load(){
@@ -35,29 +40,15 @@ public class AdrManager implements AsSubscriber{
         this.mainPanel = new AdrMainPagePanel(this.config);
         this.iconSettingsPanel = new AdrIconPagePanel();
         this.progressBarSettingsPanel = new AdrProgressBarPagePanel();
-        this.profilesSettingsPanel = new AdrProfilePagePanel();
+
+        this.loadingPage = new AdrLoadingPage();
 
         this.selectedProfile = this.config.getEntities()
                 .stream()
                 .filter(AdrProfileDescriptor::isSelected)
                 .findAny().orElse(null);
         this.adrManagerFrame = new AdrManagerFrame(this.selectedProfile);
-        this.selectedProfile.getContents().forEach(component -> {
-            switch (component.getType()){
-                case TRACKER_GROUP: {
-                    this.frames.add(new AdrTrackerGroupFrame((AdrTrackerGroupDescriptor) component));
-                    break;
-                }
-                case PROGRESS_BAR:{
-                    this.frames.add(new AdrSingleComponentFrame((AdrProgressBarDescriptor) component));
-                    break;
-                }
-                case ICON:{
-                    this.frames.add(new AdrSingleComponentFrame((AdrIconDescriptor) component));
-                    break;
-                }
-            }
-        });
+        this.initComponents();
         this.adrManagerFrame.init();
         this.frames.forEach(it -> {
             it.init();
@@ -92,11 +83,6 @@ public class AdrManager implements AsSubscriber{
                     this.mainPanel.setFromGroup(definition.getPayload() != null);
                     this.mainPanel.setPayload((AdrComponentDescriptor) definition.getPayload());
                     this.adrManagerFrame.setPage(this.mainPanel);
-                    break;
-                }
-                case PROFILE: {
-                    this.profilesSettingsPanel.setPayload((List<AdrProfileDescriptor>) definition.getPayload());
-                    this.adrManagerFrame.setPage(this.profilesSettingsPanel);
                     break;
                 }
             }
@@ -186,11 +172,64 @@ public class AdrManager implements AsSubscriber{
             MercuryStoreCore.saveConfigSubject.onNext(true);
             MercuryStoreUI.adrPostOperationsComponentSubject.onNext(descriptor);
         });
-        MercuryStoreUI.adrSelectProfileSubject.subscribe(profile -> {
-            this.selectedProfile.setSelected(false);
-            this.selectedProfile = profile;
-            //todo
-            profile.setSelected(true);
+        MercuryStoreUI.adrSelectProfileSubject.subscribe(profileName -> {
+            this.selectProfile(profileName);
+        });
+    }
+    private void selectProfile(String profileName){
+        this.adrManagerFrame.setPage(this.loadingPage);
+        this.loadingPage.playLoop();
+        AdrProfileDescriptor selectedProfile = this.config.getEntities()
+                .stream()
+                .filter(profile -> profile.getProfileName().equals(profileName))
+                .findAny().orElse(null);
+        this.selectedProfile.setSelected(false);
+        this.selectedProfile = selectedProfile;
+
+        this.worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                initComponents();
+                frames.forEach(it -> {
+                    it.init();
+                    it.showComponent();
+                    it.enableSettings();
+                });
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                mainPanel.setFromGroup(false);
+                mainPanel.setPayload(null);
+                adrManagerFrame.setPage(mainPanel);
+                loadingPage.abort();
+                adrManagerFrame.onProfileLoaded();
+                MercuryStoreUI.adrManagerPack.onNext(true);
+            }
+        };
+        this.worker.execute();
+        this.adrManagerFrame.setSelectedProfile(selectedProfile);
+    }
+    private void initComponents(){
+        MercuryStoreUI.onDestroySubject.onNext(true);
+        this.frames.forEach(Window::dispose);
+        this.frames.clear();
+        this.selectedProfile.getContents().forEach(component -> {
+            switch (component.getType()){
+                case TRACKER_GROUP: {
+                    this.frames.add(new AdrTrackerGroupFrame((AdrTrackerGroupDescriptor) component));
+                    break;
+                }
+                case PROGRESS_BAR:{
+                    this.frames.add(new AdrSingleComponentFrame((AdrProgressBarDescriptor) component));
+                    break;
+                }
+                case ICON:{
+                    this.frames.add(new AdrSingleComponentFrame((AdrIconDescriptor) component));
+                    break;
+                }
+            }
         });
     }
 }

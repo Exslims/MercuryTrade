@@ -88,8 +88,8 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
                 this.payload,
                 color -> this.payload.setBorderColor(color));
 
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 4 : 5, 2,0,6));
-        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(7, 2,0,6));
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 4 : 6, 2,0,6));
+        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 6 : 7, 2,0,6));
         generalPanel.setBackground(AppThemeColor.SLIDE_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK),

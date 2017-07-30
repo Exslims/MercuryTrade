@@ -7,6 +7,7 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
+import rx.Subscription;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 public class AdrTrackerGroupPanel extends AdrComponentPanel<AdrTrackerGroupDescriptor> {
     private List<AdrComponentPanel> cells;
+    private Subscription adrPostOpSubscription;
     public AdrTrackerGroupPanel(AdrTrackerGroupDescriptor descriptor, ComponentsFactory componentsFactory) {
         super(descriptor, componentsFactory);
         this.setBackground(AppThemeColor.TRANSPARENT);
@@ -25,7 +27,7 @@ public class AdrTrackerGroupPanel extends AdrComponentPanel<AdrTrackerGroupDescr
     @Override
     public void subscribe() {
         super.subscribe();
-        MercuryStoreUI.adrPostOperationsComponentSubject.subscribe(target -> {
+        this.adrPostOpSubscription = MercuryStoreUI.adrPostOperationsComponentSubject.subscribe(target -> {
             if(this.cells.stream()
                     .map(AdrComponentPanel::getDescriptor)
                     .collect(Collectors.toList())
@@ -108,5 +110,10 @@ public class AdrTrackerGroupPanel extends AdrComponentPanel<AdrTrackerGroupDescr
     @Override
     protected void onUpdate() {
         this.init();
+    }
+
+    @Override
+    public void onDestroy() {
+        this.adrPostOpSubscription.unsubscribe();
     }
 }

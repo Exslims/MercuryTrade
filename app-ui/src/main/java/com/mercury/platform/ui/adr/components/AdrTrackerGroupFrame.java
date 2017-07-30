@@ -4,6 +4,7 @@ import com.mercury.platform.shared.config.descriptor.adr.*;
 import com.mercury.platform.ui.adr.components.panel.AdrTrackerGroupPanel;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.NonNull;
+import rx.Subscription;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +12,7 @@ import java.awt.*;
 
 public class AdrTrackerGroupFrame extends AbstractAdrComponentFrame<AdrTrackerGroupDescriptor> {
     private AdrTrackerGroupPanel trackerGroupPanel;
+    private Subscription adrReloadSubscription;
     public AdrTrackerGroupFrame(@NonNull AdrTrackerGroupDescriptor descriptor) {
         super(descriptor);
     }
@@ -26,7 +28,7 @@ public class AdrTrackerGroupFrame extends AbstractAdrComponentFrame<AdrTrackerGr
     @Override
     public void subscribe() {
         super.subscribe();
-        MercuryStoreUI.adrReloadSubject.subscribe(descriptor -> {
+        this.adrReloadSubscription = MercuryStoreUI.adrReloadSubject.subscribe(descriptor -> {
             if(descriptor.equals(this.descriptor)){
                 this.setLocation(descriptor.getLocation());
                 this.setOpacity(this.descriptor.getOpacity());
@@ -57,5 +59,12 @@ public class AdrTrackerGroupFrame extends AbstractAdrComponentFrame<AdrTrackerGr
         this.getRootPane().setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
         this.pack();
         this.repaint();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        this.adrReloadSubscription.unsubscribe();
+        this.trackerGroupPanel.onDestroy();
     }
 }

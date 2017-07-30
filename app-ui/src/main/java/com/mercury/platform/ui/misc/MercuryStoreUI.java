@@ -38,10 +38,13 @@ public class MercuryStoreUI {
     public static final PublishSubject<AdrComponentDefinition> adrComponentStateSubject = PublishSubject.create();
     public static final PublishSubject<AdrComponentDescriptor> adrRemoveComponentSubject = PublishSubject.create();
     public static final PublishSubject<AdrComponentDescriptor> adrPostOperationsComponentSubject = PublishSubject.create();
-    public static final PublishSubject<AdrProfileDescriptor> adrSelectProfileSubject = PublishSubject.create();
+    public static final PublishSubject<String> adrSelectProfileSubject = PublishSubject.create();
     public static final PublishSubject<AdrComponentDescriptor> adrSelectSubject = PublishSubject.create();
     public static final PublishSubject<AdrComponentDescriptor> adrReloadSubject = PublishSubject.create();
     public static final PublishSubject<Boolean> adrManagerPack = PublishSubject.create();
     public static final PublishSubject<Boolean> adrRepaintSubject = PublishSubject.create();
     public static final PublishSubject<AdrComponentDescriptor> adrUpdateSubject = PublishSubject.create();
+
+
+    public static final PublishSubject<Boolean> onDestroySubject = PublishSubject.create();
 }

@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.adr.components;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
+import com.mercury.platform.shared.store.DestroySubscription;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.sun.awt.AWTUtilities;
 import com.sun.jna.Native;
@@ -11,7 +12,7 @@ import lombok.Getter;
 
 import java.awt.*;
 
-public abstract class AbstractAdrFrame<T extends AdrComponentDescriptor> extends AbstractOverlaidFrame{
+public abstract class AbstractAdrFrame<T extends AdrComponentDescriptor> extends AbstractOverlaidFrame implements DestroySubscription{
     private int settingWl;
     @Getter
     protected T descriptor;

@@ -67,7 +67,9 @@ public class AdrIconSelectDialog extends BaseDialog<String,String[]> {
             dialog.toFront();
             if(this.isValidIconPath(dialog.getFile())){
                 this.config.addIcon(dialog.getDirectory() + dialog.getFile());
+                Object selectedValue = this.iconsList.getSelectedValue();
                 this.iconsList.setListData(this.config.getEntities().toArray());
+                this.setSelectedIcon((String) selectedValue);
                 MercuryStoreCore.saveConfigSubject.onNext(true);
             }
         });

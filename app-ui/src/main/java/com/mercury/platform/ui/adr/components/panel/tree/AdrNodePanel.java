@@ -24,7 +24,7 @@ public abstract class AdrNodePanel<D extends AdrComponentDescriptor> extends JPa
     public AdrNodePanel(AdrTreeNode<AdrComponentDescriptor> treeNode) {
         this.treeNode = treeNode;
         this.descriptor = (D) treeNode.getData();
-        this.mouseListener = new AdrMouseOverListener<>(this, descriptor, treeNode.getParent() != null);
+        this.mouseListener = new AdrMouseOverListener<>(this, descriptor, treeNode.getParent().getData() != null);
         this.addMouseListener(this.mouseListener);
         MercuryStoreUI.adrReloadSubject.subscribe(source -> {
             if (this.descriptor.equals(source)) {

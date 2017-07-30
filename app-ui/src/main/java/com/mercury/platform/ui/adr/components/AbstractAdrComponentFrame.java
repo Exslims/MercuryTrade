@@ -5,6 +5,7 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrMouseOverListener;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
+import rx.Subscription;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +19,9 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
 
     protected DraggedFrameMouseListener mouseListener;
     protected DraggedFrameMotionListener motionListener;
-    protected MouseAdapter mouseOverListener;
+    protected AdrMouseOverListener mouseOverListener;
+
+    private Subscription adrRepaintSubscription;
     
     public AbstractAdrComponentFrame(T descriptor) {
         super(descriptor);
@@ -38,10 +41,11 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
 
     @Override
     public void subscribe() {
-        MercuryStoreUI.adrRepaintSubject.subscribe(state -> {
+        this.adrRepaintSubscription = MercuryStoreUI.adrRepaintSubject.subscribe(state -> {
             this.repaint();
             this.pack();
         });
+        MercuryStoreUI.onDestroySubject.subscribe(state -> this.onDestroy());
     }
 
     @Override
@@ -61,6 +65,13 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
         this.removeMouseListener(this.mouseOverListener);
         this.removeMouseMotionListener(this.motionListener);
     }
+
+    @Override
+    public void onDestroy() {
+        this.mouseOverListener.onDestroy();
+        this.adrRepaintSubscription.unsubscribe();
+    }
+
     @Override
     protected LayoutManager getFrameLayout() {
         return new BorderLayout();

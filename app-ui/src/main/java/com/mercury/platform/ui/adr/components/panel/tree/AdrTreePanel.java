@@ -75,7 +75,7 @@ public class AdrTreePanel extends JPanel{
         };
         this.worker.execute();
     }
-    private void updateTree(List<AdrComponentDescriptor> descriptors){
+    public void updateTree(List<AdrComponentDescriptor> descriptors){
         this.descriptors = descriptors;
         this.updateTree();
     }
