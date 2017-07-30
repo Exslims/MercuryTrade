@@ -28,7 +28,7 @@ Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issue
 ## FUNCTIONALITY:
 ---
 
-&nbsp; *Main feature:* **Notification**
+&nbsp; *Major feature:* **Notification**
 
 <p align="center">
   <img src="http://i.imgur.com/Sv2Iod9.png"/>
@@ -70,7 +70,7 @@ If you've received multiple notifications before dismissing your current one, th
 #
 
 
-&nbsp; *Main feature:* **History**
+&nbsp; *Minor feature:* **History**
 
 <p align="center">
   <img src="http://i.imgur.com/hQarj9q.png"/>
