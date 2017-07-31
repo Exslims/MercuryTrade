@@ -1,14 +1,8 @@
 package com.mercury.platform.ui.adr.components.panel;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDescriptor;
-import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
-import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
 import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
-import com.mercury.platform.ui.adr.components.panel.ui.icon.ProgressBarTrackerUI;
-import com.mercury.platform.ui.adr.components.panel.ui.icon.EllipseIconTrackerUI;
 import com.mercury.platform.ui.components.ComponentsFactory;
-import com.mercury.platform.ui.components.fields.font.FontStyle;
-import com.mercury.platform.ui.adr.components.panel.ui.icon.SquareIconTrackerUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import org.pushingpixels.trident.Timeline;
@@ -33,13 +27,17 @@ public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescript
         this.setVisible(true);
         this.tracker.abort();
         this.tracker.setValue(new Random().nextInt((int) (this.descriptor.getDuration() * 1000)));
+        this.tracker.setStringPainted(descriptor.isTextEnable());
+        this.tracker.setMaskPainted(descriptor.isMaskEnable());
     }
 
     @Override
     public void disableSettings() {
         super.disableSettings();
         this.tracker.abort();
-        this.setVisible(false);
+        this.setVisible(this.descriptor.isAlwaysVisible());
+        this.tracker.setStringPainted(!descriptor.isAlwaysVisible());
+        this.tracker.setMaskPainted(!descriptor.isAlwaysVisible());
     }
 
     @Override
@@ -55,6 +53,8 @@ public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescript
     @Override
     protected void onHotKeyPressed() {
         this.setVisible(true);
+        this.tracker.setStringPainted(descriptor.isTextEnable());
+        this.tracker.setMaskPainted(descriptor.isMaskEnable());
         this.tracker.play();
     }
 
@@ -73,7 +73,12 @@ public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescript
             @Override
             public void onTimelineStateChanged(Timeline.TimelineState oldState, Timeline.TimelineState newState, float durationFraction, float timelinePosition) {
                 if (newState.equals(Timeline.TimelineState.IDLE) && !inSettings) {
-                    setVisible(false);
+                    if(!descriptor.isAlwaysVisible()) {
+                        setVisible(false);
+                    }else {
+                        tracker.setStringPainted(!descriptor.isAlwaysVisible());
+                        tracker.setMaskPainted(!descriptor.isAlwaysVisible());
+                    }
                     MercuryStoreUI.adrRepaintSubject.onNext(true);
                 }
             }

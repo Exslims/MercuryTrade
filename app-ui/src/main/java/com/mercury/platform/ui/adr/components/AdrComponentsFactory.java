@@ -31,6 +31,7 @@ import javax.swing.colorchooser.AbstractColorChooserPanel;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
+import java.util.UUID;
 
 public class AdrComponentsFactory {
     private ComponentsFactory componentsFactory;
@@ -60,6 +61,15 @@ public class AdrComponentsFactory {
                 ((AdrTrackerGroupDescriptor) descriptor).getCells().forEach(item -> item.setSize(descriptor.getSize()));
             }
             MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+        MercuryStoreUI.adrUpdateSubject.subscribe(source -> {
+            if(source.equals(descriptor)){
+                widthField.setText(String.valueOf(descriptor.getSize().width));
+                heightField.setText(String.valueOf(descriptor.getSize().height));
+                if(descriptor instanceof AdrTrackerGroupDescriptor){
+                    ((AdrTrackerGroupDescriptor) descriptor).getCells().forEach(item -> item.setSize(descriptor.getSize()));
+                }
+            }
         });
 
         root.add(widthLabel);
@@ -350,6 +360,13 @@ public class AdrComponentsFactory {
                 }
             }
         });
+        field.addActionListener(action -> {
+            if (validator.validate(field.getText())) {
+                listener.onAction(validator.getValue());
+            } else {
+                field.setText(String.valueOf(value));
+            }
+        });
         return field;
     }
 
@@ -493,7 +510,7 @@ public class AdrComponentsFactory {
         duplicateButton.addActionListener(action -> {
             AdrComponentDescriptor cloned = CloneHelper.cloneObject(treeNode.getData());
             if(cloned != null) {
-                cloned.setComponentId(cloned.getComponentId() + 1);
+                cloned.setComponentId(UUID.randomUUID().toString());
                 cloned.setLocation(new Point(new Random().nextInt(500), new Random().nextInt(500)));
                 MercuryStoreUI.adrComponentStateSubject.onNext(
                         new AdrComponentDefinition(cloned,
@@ -540,7 +557,7 @@ public class AdrComponentsFactory {
                 expandButton.setIcon(this.componentsFactory.getIcon("app/adr/collapse_icon.png",16));
                 targetPanel.setVisible(true);
             }
-            MercuryStoreUI.adrManagerPack.onNext(true); //todo
+            MercuryStoreUI.adrManagerRepaint.onNext(true); //todo
         });
         return expandButton;
     }

@@ -118,6 +118,6 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrTrackerGroupDescriptor> {
                 requestFocus();
             }
         });
-        this.add(verticalContainer,BorderLayout.PAGE_START);
+        this.add(verticalContainer,BorderLayout.CENTER);
     }
 }

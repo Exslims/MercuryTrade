@@ -18,27 +18,27 @@ import java.awt.*;
 
 
 public class AdrProgressBarNodePanel extends AdrNodePanel<AdrProgressBarDescriptor> {
-
+    private MercuryTracker tracker;
     public AdrProgressBarNodePanel(AdrTreeNode<AdrComponentDescriptor> treeNode) {
         super(treeNode);
     }
 
     @Override
     protected void update() {
-        /*NOP*/
+        this.tracker.updateUI();
     }
 
     @Override
     public void createUI() {
         JPanel root = this.componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER));
         root.setBackground(AppThemeColor.SLIDE_BG);
-        MercuryTracker tracker = new MercuryTracker(descriptor);
-        tracker.setValue((int) ((descriptor.getDuration()/2) * 1000));
-        tracker.setFont(new ComponentsFactory().getFont(FontStyle.BOLD, 20));
-        tracker.setPreferredSize(new Dimension(180, 36));
-        tracker.setShowCase(true);
+        this.tracker = new MercuryTracker(descriptor);
+        this.tracker.setValue((int) ((descriptor.getDuration()/2) * 1000));
+        this.tracker.setFont(new ComponentsFactory().getFont(FontStyle.BOLD, 20));
+        this.tracker.setPreferredSize(new Dimension(180, 36));
+        this.tracker.setShowCase(true);
         this.setPreferredSize(new Dimension(150, 48));
-        root.add(tracker);
+        root.add(this.tracker);
         this.add(root,BorderLayout.CENTER);
         this.add(this.adrComponentsFactory.getLeftComponentOperationsPanel(this.treeNode),BorderLayout.LINE_START);
         this.add(this.adrComponentsFactory

@@ -5,13 +5,25 @@ public enum AdrIconAlignment {
     LEFT {
         @Override
         public String asPretty() {
-            return "Left side";
+            return "Left";
         }
     },
     RIGHT {
         @Override
         public String asPretty() {
-            return "Right side";
+            return "Right";
+        }
+    },
+    TOP {
+        @Override
+        public String asPretty() {
+            return "Top";
+        }
+    },
+    BOTTOM {
+        @Override
+        public String asPretty() {
+            return "Bottom";
         }
     };
 

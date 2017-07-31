@@ -12,6 +12,8 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 public class AdrIconSelectDialog extends BaseDialog<String,String[]> {
     private JList iconsList;
@@ -24,19 +26,21 @@ public class AdrIconSelectDialog extends BaseDialog<String,String[]> {
     @Override
     protected void createView() {
         this.config = Configuration.get().iconBundleConfiguration();
+        this.setPreferredSize(new Dimension(530,400));
 
         VerticalScrollContainer container = new VerticalScrollContainer();
         container.setBackground(AppThemeColor.SLIDE_BG);
         container.setLayout(new BorderLayout());
 
         JScrollPane scrollPane = this.componentsFactory.getVerticalContainer(container);
-        this.iconsList = new JList<>(this.config.getEntities().toArray());
+        List<String> entities = this.config.getDefaultBundle();
+        entities.addAll(this.config.getEntities());
+        this.iconsList = new JList<>(entities.toArray());
         this.iconsList.setBackground(AppThemeColor.SLIDE_BG);
         this.iconsList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         this.iconsList.setVisibleRowCount(-1);
         this.iconsList.setCellRenderer(new IconsListCellRenderer());
         this.iconsList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        this.iconsList.setPreferredSize(new Dimension(500,260));
 
         container.add(this.iconsList,BorderLayout.CENTER);
 
@@ -68,7 +72,9 @@ public class AdrIconSelectDialog extends BaseDialog<String,String[]> {
             if(this.isValidIconPath(dialog.getFile())){
                 this.config.addIcon(dialog.getDirectory() + dialog.getFile());
                 Object selectedValue = this.iconsList.getSelectedValue();
-                this.iconsList.setListData(this.config.getEntities().toArray());
+                List<String> entities = this.config.getDefaultBundle();
+                entities.addAll(this.config.getEntities());
+                this.iconsList.setListData(entities.toArray());
                 this.setSelectedIcon((String) selectedValue);
                 MercuryStoreCore.saveConfigSubject.onNext(true);
             }

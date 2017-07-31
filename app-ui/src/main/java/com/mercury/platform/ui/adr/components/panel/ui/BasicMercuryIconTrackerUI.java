@@ -92,9 +92,14 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
                             fontSizer.getLeading() -
                             fontSizer.getDescent()) / 2));
         } else {
-            return new Point(x + ((width - fontSizer.getAscent() +
-                    fontSizer.getLeading() + fontSizer.getDescent()) / 2),
-                    y + Math.round(height/2 - stringWidth/2));
+            return new Point(x + ((width  -
+                    fontSizer.getAscent() -
+                    fontSizer.getLeading() -
+                    fontSizer.getDescent()) / 2),
+                    y + ((height +
+                            fontSizer.getAscent() -
+                            fontSizer.getLeading() -
+                            fontSizer.getDescent()) / 2));
         }
     }
 }

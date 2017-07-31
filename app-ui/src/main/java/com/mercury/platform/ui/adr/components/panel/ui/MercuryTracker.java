@@ -1,21 +1,14 @@
 package com.mercury.platform.ui.adr.components.panel.ui;
 
-import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDescriptor;
-import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
-import com.mercury.platform.shared.config.descriptor.adr.AdrIconType;
-import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
-import com.mercury.platform.ui.adr.components.panel.ui.icon.EllipseIconTrackerUI;
-import com.mercury.platform.ui.adr.components.panel.ui.icon.ProgressBarTrackerUI;
-import com.mercury.platform.ui.adr.components.panel.ui.icon.SquareIconTrackerUI;
+import com.mercury.platform.shared.config.descriptor.adr.*;
+import com.mercury.platform.ui.adr.components.panel.ui.icon.*;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.Getter;
 import lombok.Setter;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.callback.TimelineCallback;
-import org.pushingpixels.trident.callback.TimelineCallbackAdapter;
 
 import javax.swing.*;
 
@@ -32,12 +25,31 @@ public class MercuryTracker extends JComponent {
     @Setter @Getter
     private boolean stringPainted = true;
     @Setter @Getter
+    private boolean maskPainted = true;
+    @Setter @Getter
     private boolean showCase = false;
 
     private Timeline progressTl;
 
     public MercuryTracker(AdrDurationComponentDescriptor descriptor) {
         this.descriptor = descriptor;
+        //todo remove
+        this.setMaximum((int) (this.descriptor.getDuration() * 1000));
+        this.setFont(new ComponentsFactory().getFont(FontStyle.BOLD, this.descriptor.getFontSize()));
+        this.setForeground(AppThemeColor.TEXT_DEFAULT);
+        this.setBackground(AppThemeColor.TRANSPARENT);
+        this.initUI();
+        this.progressTl = new Timeline(this);
+        this.progressTl.setDuration((int) (descriptor.getDuration() * 1000));
+        if(this.descriptor.isInvertTimer()) {
+            this.setValue((int) (this.descriptor.getDuration() * 1000));
+            this.progressTl.addPropertyToInterpolate("value", 0, this.getMaximum());
+        }else {
+            this.setValue(0);
+            this.progressTl.addPropertyToInterpolate("value", this.getMaximum(), 0);
+        }
+    }
+    private void initUI(){
         switch (descriptor.getType()){
             case ICON: {
                 if(((AdrIconDescriptor)descriptor).getIconType().equals(AdrIconType.SQUARE)){
@@ -48,22 +60,41 @@ public class MercuryTracker extends JComponent {
                 break;
             }
             case PROGRESS_BAR: {
-                this.setUI(new ProgressBarTrackerUI((AdrProgressBarDescriptor) descriptor,this));
+                if(descriptor.getOrientation().equals(AdrComponentOrientation.HORIZONTAL)) {
+                    if(descriptor.isIconEnable()){
+                        switch (((AdrProgressBarDescriptor) descriptor).getIconAlignment()){
+                            case LEFT:{
+                                this.setUI(new LIconHProgressBarTrackerUI((AdrProgressBarDescriptor) descriptor, this));
+                                break;
+                            }
+                            case RIGHT:{
+                                this.setUI(new RIconHProgressBarTrackerUI((AdrProgressBarDescriptor) descriptor, this));
+                            }
+                        }
+                    }else {
+                        this.setUI(new MercuryProgressBarTrackerUI((AdrProgressBarDescriptor) descriptor, this));
+                    }
+                }else {
+                    if(descriptor.isIconEnable()){
+                        switch (((AdrProgressBarDescriptor) descriptor).getIconAlignment()){
+                            case TOP:{
+                                this.setUI(new TIconVProgressBarTrackerUI((AdrProgressBarDescriptor) descriptor, this));
+                                break;
+                            }
+                            case BOTTOM:{
+                                this.setUI(new BIconVProgressBarTrackerUI((AdrProgressBarDescriptor) descriptor, this));
+                            }
+                        }
+                    }else {
+                        this.setUI(new VProgressBarTrackerUI((AdrProgressBarDescriptor) descriptor, this));
+                    }
+                }
                 break;
             }
             default:{
                 throw new IllegalArgumentException("AdrComponent for MercuryTracker must be ICON or PROGRESS_BAR");
             }
         }
-        this.setValue(0);
-        this.setMaximum((int) (this.descriptor.getDuration() * 1000));
-        this.setFont(new ComponentsFactory().getFont(FontStyle.BOLD, this.descriptor.getFontSize()));
-        this.setForeground(AppThemeColor.TEXT_DEFAULT);
-        this.setBackground(AppThemeColor.TRANSPARENT);
-
-        this.progressTl = new Timeline(this);
-        this.progressTl.setDuration((int) (descriptor.getDuration() * 1000));
-        this.progressTl.addPropertyToInterpolate("value", this.getMaximum(), 0);
     }
 
     public void setUI(BasicMercuryIconTrackerUI ui){
@@ -77,6 +108,7 @@ public class MercuryTracker extends JComponent {
 
     @Override
     public void updateUI() {
+        this.initUI();
         setUI(this.ui);
     }
 

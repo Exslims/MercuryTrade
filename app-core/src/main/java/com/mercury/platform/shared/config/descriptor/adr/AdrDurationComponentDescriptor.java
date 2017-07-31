@@ -14,8 +14,10 @@ public class AdrDurationComponentDescriptor extends AdrComponentDescriptor imple
     private int fontSize = 28;
     private boolean textEnable = true;
     private boolean iconEnable = true;
-    private boolean animationEnable = true;
-    private boolean invert;
+    private boolean maskEnable = true;
+    private boolean alwaysVisible;
+    private boolean invertMask;
+    private boolean invertTimer;
     private String textFormat;
     private Color lowValueTextColor;
     private Color mediumValueTextColor;

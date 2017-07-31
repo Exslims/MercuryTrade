@@ -104,13 +104,20 @@ public class AdrImportDialog extends AdrDialog{
         JButton importToCurrent = this.componentsFactory.getBorderedButton("Import to current profile");
         importToCurrent.addActionListener(action -> {
             List<AdrComponentDescriptor> descriptors = this.adrTree.getDescriptors();
-            descriptors.forEach(it -> it.setComponentId(UUID.randomUUID().toString()));
-            AdrComponentDefinition definition = new AdrComponentDefinition();
-            definition.setDescriptors(descriptors);
-            definition.setOperations(AdrComponentOperations.NEW_FROM_IMPORT);
-            MercuryStoreUI.adrComponentStateSubject.onNext(definition);
-            this.setVisible(false);
-            this.dispose();
+            if(descriptors != null) {
+                descriptors.forEach(it -> {
+                    it.setComponentId(UUID.randomUUID().toString());
+                    if(it instanceof AdrTrackerGroupDescriptor){
+                        ((AdrTrackerGroupDescriptor) it).getCells().forEach(cell-> cell.setComponentId(UUID.randomUUID().toString()));
+                    }
+                });
+                AdrComponentDefinition definition = new AdrComponentDefinition();
+                definition.setDescriptors(descriptors);
+                definition.setOperations(AdrComponentOperations.NEW_FROM_IMPORT);
+                MercuryStoreUI.adrComponentStateSubject.onNext(definition);
+                this.setVisible(false);
+                this.dispose();
+            }
         });
         JButton createAndImport = this.componentsFactory.getBorderedButton("Create new and import");
         buttonsPanel.add(importToCurrent);

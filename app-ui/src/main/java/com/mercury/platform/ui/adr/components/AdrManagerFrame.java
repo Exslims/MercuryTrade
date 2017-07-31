@@ -1,8 +1,10 @@
 package com.mercury.platform.ui.adr.components;
 
 import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.page.AdrPagePanel;
 import com.mercury.platform.ui.adr.components.panel.tree.main.AdrMainTreeNodeRenderer;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrTreePanel;
@@ -39,6 +41,8 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         this.setFocusableWindowState(true);
         this.setAlwaysOnTop(false);
         this.selectedProfile = selectedProfile;
+        FrameDescriptor frameDescriptor = this.framesConfig.get(this.getClass().getSimpleName());
+        this.setPreferredSize(frameDescriptor.getFrameSize());
         UIManager.put("MenuItem.background", AppThemeColor.ADR_BG);
         UIManager.put("MenuItem.selectionBackground", AppThemeColor.ADR_POPUP_BG);
         UIManager.put("Menu.contentMargins", new InsetsUIResource(2,0,2,0));
@@ -97,10 +101,14 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
     public void subscribe() {
         MercuryStoreUI.adrReloadSubject.subscribe(state -> {
             this.tree.updateUI();
+            MercuryStoreCore.saveConfigSubject.onNext(true);
         });
         MercuryStoreUI.adrManagerPack.subscribe(state -> {
             this.repaint();
             this.pack();
+        });
+        MercuryStoreUI.adrManagerRepaint.subscribe(state -> {
+            this.repaint();
         });
     }
 
@@ -132,6 +140,20 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         this.pack();
         this.repaint();
     }
+    public void removeProfile(AdrProfileDescriptor profile) {
+        this.profileSelector.removeItem(profile.getProfileName());
+    }
+    public void onProfileRename(List<AdrProfileDescriptor> entities){
+        this.profileSelector.removeAllItems();
+        List<String> profilesNames = entities
+                .stream()
+                .map(AdrProfileDescriptor::getProfileName)
+                .collect(Collectors.toList());
+        profilesNames.add("Create new");
+        profilesNames.forEach(it -> this.profileSelector.addItem(it));
+        this.profileSelector.setSelectedItem(this.selectedProfile.getProfileName());
+        this.repaint();
+    }
     private JPanel getBottomPanel(){
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setBorder(BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.MSG_HEADER_BORDER));
@@ -158,7 +180,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
                 }else {
                     profileSelector.setSelectedItem(this.selectedProfile.getProfileName());
                     new AdrNewProfileDialog(profileName -> {
-                        System.out.println(profileName);
+
                     },profileSelector,profilesNames).setVisible(true);
                 }
             }
@@ -178,10 +200,17 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
 //            this.tree.updateTree();
 //        });
 //        profilePanel.add(reloadButton);
+        JButton profileSettingsButton = this.componentsFactory.getIconButton("app/adr/profile_settings_icon.png", 22, AppThemeColor.FRAME, TooltipConstants.ADR_EXPORT_BUTTON);
+        profileSettingsButton.addActionListener(action -> {
+            MercuryStoreUI.adrStateSubject.onNext(new AdrPageDefinition<>(AdrPageState.PROFILES_SETTINGS,null));
+        });
+        profileSettingsButton.setBackground(AppThemeColor.ADR_FOOTER_BG);
         bottomPanel.add(exportButton,BorderLayout.LINE_START);
         bottomPanel.add(profilePanel,BorderLayout.CENTER);
+        bottomPanel.add(profileSettingsButton,BorderLayout.LINE_END);
 
         root.add(bottomPanel,BorderLayout.LINE_START);
+        root.add(profileSettingsButton,BorderLayout.LINE_END);
         return root;
     }
 }

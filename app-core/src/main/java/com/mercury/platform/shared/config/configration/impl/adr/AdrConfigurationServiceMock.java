@@ -186,15 +186,15 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         dynamicPBV.getCells().clear();
 
         AdrIconDescriptor icon1 = this.getDefaultIcon();
-        icon1.setIconPath("Bismuth_Flask.png");
+        icon1.setIconPath("Bismuth_Flask_status_icon.png");
         icon1.setHotKeyDescriptor(hotKey);
         icon1.setDuration(3d);
         AdrIconDescriptor icon2 = this.getDefaultIcon();
-        icon2.setIconPath("Bleeding_Immunity.png");
+        icon2.setIconPath("Vaal_Lightning_Strike_skill_icon.png");
         icon2.setDuration(5d);
         icon2.setHotKeyDescriptor(hotKey);
         AdrIconDescriptor icon3 = this.getDefaultIcon();
-        icon3.setIconPath("Silver_Flask.png");
+        icon3.setIconPath("Silver_Flask_status_icon.png");
         icon3.setDuration(8d);
         icon3.setHotKeyDescriptor(hotKey);
 
@@ -206,6 +206,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         icon4.setIconPath("Arctic_Armour_skill_icon.png");
         icon4.setHotKeyDescriptor(hotKey);
         icon4.setDuration(3d);
+        icon4.setAlwaysVisible(true);
         AdrIconDescriptor icon5 = this.getDefaultIcon();
         icon5.setIconPath("Phase_Run_skill_icon.png");
         icon5.setDuration(5d);
@@ -214,14 +215,15 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         icon6.setIconPath("Arctic_Armour_skill_icon.png");
         icon6.setDuration(8d);
         icon6.setHotKeyDescriptor(hotKey);
+        icon6.setAlwaysVisible(true);
 
         AdrProgressBarDescriptor pb1 = this.getDefaultProgressBar();
-        pb1.setIconPath("Topaz_Flask.png");
+        pb1.setIconPath("Topaz_Flask_status_icon.png");
         pb1.setHotKeyDescriptor(hotKey);
         pb1.setTextFormat("0");
         pb1.setDuration(3d);
         AdrProgressBarDescriptor pb2 = this.getDefaultProgressBar();
-        pb2.setIconPath("Quicksilver_Flask.png");
+        pb2.setIconPath("Quicksilver_Flask_status_icon.png");
         pb2.setIconAlignment(AdrIconAlignment.RIGHT);
         pb2.setBackgroundColor(new Color(47,52,59));
         pb2.setForegroundColor(new Color(227,205,164));
@@ -241,7 +243,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         pb3.setDuration(10d);
 
         AdrProgressBarDescriptor pb4 = this.getDefaultProgressBar();
-        pb4.setIconPath("Stibnite_Flask.png");
+        pb4.setIconPath("Stibnite_Flask_status_icon.png");
         pb4.setIconAlignment(AdrIconAlignment.RIGHT);
         pb4.setHotKeyDescriptor(hotKey);
         pb4.setBackgroundColor(new Color(47,52,59));
@@ -250,7 +252,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         pb4.setTextFormat("0.0");
         pb4.setDuration(8d);
         AdrProgressBarDescriptor pb5 = this.getDefaultProgressBar();
-        pb5.setIconPath("Granite_Flask.png");
+        pb5.setIconPath("Granite_Flask_status_icon.png");
         pb5.setIconAlignment(AdrIconAlignment.LEFT);
         pb5.setHotKeyDescriptor(hotKey);
         pb5.setFontSize(22);
@@ -261,6 +263,12 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         pb5.setTextFormat("0.0");
         pb5.setBindToTextColor(false);
         pb5.setDuration(20d);
+
+        AdrIconDescriptor icon7 = this.getDefaultIcon();
+        icon7.setIconPath("Arctic_Armour_skill_icon.png");
+        icon7.setDuration(8d);
+        icon7.setHotKeyDescriptor(hotKey);
+        icon7.setAlwaysVisible(true);
 
         staticIconV.getCells().add(icon4);
         staticIconV.getCells().add(icon5);
@@ -277,6 +285,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         profile.getContents().add(staticIconV);
         profile.getContents().add(staticPBV);
         profile.getContents().add(staticBiggerPBH);
+        profile.getContents().add(icon7);
         return profile;
     }
 }

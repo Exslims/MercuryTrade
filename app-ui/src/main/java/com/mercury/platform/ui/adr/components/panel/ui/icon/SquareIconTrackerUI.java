@@ -48,8 +48,13 @@ public class SquareIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescri
                 e.printStackTrace();
             }
         }
-        if(descriptor.isAnimationEnable() && !tracker.isShowCase()) {
-            double degree = 360 * (1f - tracker.getPercentComplete());
+        if(tracker.isMaskPainted() && descriptor.isMaskEnable() && !tracker.isShowCase()) {
+            double degree;
+            if(descriptor.isInvertMask()) {
+                degree = 360 * tracker.getPercentComplete();
+            }else {
+                degree = 360 * (1f - tracker.getPercentComplete());
+            }
             Shape outer = new Rectangle2D.Double(0, 0, sz, sz);
             Shape sector = new Arc2D.Double(-sz, -sz, sz * 3, sz * 3, 90 - degree, degree, Arc2D.PIE);
 

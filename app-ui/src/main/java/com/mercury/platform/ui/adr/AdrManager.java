@@ -27,6 +27,7 @@ public class AdrManager implements AsSubscriber{
     private AdrPagePanel<AdrComponentDescriptor> mainPanel;
     private AdrPagePanel<AdrIconDescriptor> iconSettingsPanel;
     private AdrPagePanel<AdrProgressBarDescriptor> progressBarSettingsPanel;
+    private AdrPagePanel<List<AdrProfileDescriptor>> profileSettingsPanel;
 
     private AdrLoadingPage loadingPage;
 
@@ -40,6 +41,7 @@ public class AdrManager implements AsSubscriber{
         this.mainPanel = new AdrMainPagePanel(this.config);
         this.iconSettingsPanel = new AdrIconPagePanel();
         this.progressBarSettingsPanel = new AdrProgressBarPagePanel();
+        this.profileSettingsPanel = new AdrProfilePagePanel();
 
         this.loadingPage = new AdrLoadingPage();
 
@@ -83,6 +85,11 @@ public class AdrManager implements AsSubscriber{
                     this.mainPanel.setFromGroup(definition.getPayload() != null);
                     this.mainPanel.setPayload((AdrComponentDescriptor) definition.getPayload());
                     this.adrManagerFrame.setPage(this.mainPanel);
+                    break;
+                }
+                case PROFILES_SETTINGS:{
+                    this.profileSettingsPanel.setPayload(this.config.getEntities());
+                    this.adrManagerFrame.setPage(this.profileSettingsPanel);
                     break;
                 }
             }
@@ -181,6 +188,15 @@ public class AdrManager implements AsSubscriber{
         MercuryStoreUI.adrSelectProfileSubject.subscribe(profileName -> {
             this.selectedProfile.setSelected(false);
             this.selectProfile(profileName);
+        });
+        MercuryStoreUI.adrRemoveProfileSubject.subscribe(profile -> {
+            this.config.getEntities().remove(profile);
+            this.adrManagerFrame.removeProfile(profile);
+            MercuryStoreCore.saveConfigSubject.onNext(true);
+        });
+        MercuryStoreUI.adrRenameProfileSubject.subscribe(state -> {
+            this.adrManagerFrame.onProfileRename(this.config.getEntities());
+            MercuryStoreCore.saveConfigSubject.onNext(true);
         });
     }
     private void selectProfile(String profileName){

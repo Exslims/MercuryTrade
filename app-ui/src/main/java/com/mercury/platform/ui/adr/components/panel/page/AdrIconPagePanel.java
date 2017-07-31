@@ -26,16 +26,18 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         JLabel opacityLabel = this.componentsFactory.getTextLabel("Opacity:");
         JLabel sizeLabel = this.componentsFactory.getTextLabel("Icon size:");
         JLabel locationLabel = this.componentsFactory.getTextLabel("Location:");
+        JLabel alwaysVisibleLabel = this.componentsFactory.getTextLabel("Always visible:");
 
         JLabel hotKeyLabel = this.componentsFactory.getTextLabel("HotKey:");
         JLabel iconLabel = this.componentsFactory.getTextLabel("Icon:");
         JLabel textFormatLabel = this.componentsFactory.getTextLabel("Text format:");
         JLabel fontSizeLabel = this.componentsFactory.getTextLabel("Font size:");
+        JLabel invertTimerLabel = this.componentsFactory.getTextLabel("Invert timer:");
         JLabel durationLabel = this.componentsFactory.getTextLabel("Duration:");
         JLabel textColorLabel = this.componentsFactory.getTextLabel("Text color:");
         JLabel borderColorLabel = this.componentsFactory.getTextLabel("Border color:");
-        JLabel invertLabel = this.componentsFactory.getTextLabel("Invert tracker:");
         JLabel animationMaskLabel = this.componentsFactory.getTextLabel("Animation mask:");
+        JLabel invertMaskLabel = this.componentsFactory.getTextLabel("Invert mask:");
 
         JTextField titleField = this.componentsFactory.getTextField(this.payload.getTitle(), FontStyle.REGULAR,18);
         titleField.addFocusListener(new FocusAdapter() {
@@ -71,11 +73,26 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         });
         JTextField textFormatField = this.adrComponentsFactory.getSmartField(this.payload.getTextFormat(), new DoubleFormatFieldValidator(), value -> {
             this.payload.setTextFormat(value);
+            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
         });
-        JCheckBox invertBox = this.componentsFactory.getCheckBox(this.payload.isInvert());
-        JCheckBox animationBox = this.componentsFactory.getCheckBox(this.payload.isAnimationEnable());
+        JCheckBox alwaysVisibleBox = this.componentsFactory.getCheckBox(this.payload.isAlwaysVisible());
+        alwaysVisibleBox.addActionListener(action -> {
+            this.payload.setAlwaysVisible(alwaysVisibleBox.isSelected());
+            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
+        });
+        JCheckBox invertTimerBox = this.componentsFactory.getCheckBox(this.payload.isInvertTimer());
+        invertTimerBox.addActionListener(action -> {
+            this.payload.setInvertTimer(invertTimerBox.isSelected());
+            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
+        });
+        JCheckBox invertMaskBox = this.componentsFactory.getCheckBox(this.payload.isInvertMask());
+        invertMaskBox.addActionListener(action -> {
+            this.payload.setInvertMask(invertMaskBox.isSelected());
+            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
+        });
+        JCheckBox animationBox = this.componentsFactory.getCheckBox(this.payload.isMaskEnable());
         animationBox.addActionListener(e ->
-                this.payload.setAnimationEnable(animationBox.isSelected()));
+                this.payload.setMaskEnable(animationBox.isSelected()));
         JPanel textColorPanel = this.adrComponentsFactory.getTextColorPanel(this.payload);
         JPanel textPanel = this.componentsFactory.getJPanel(new BorderLayout());
         textPanel.setBackground(AppThemeColor.SLIDE_BG);
@@ -86,10 +103,13 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
 
         JPanel borderColorPanel = this.adrComponentsFactory.getBorderColorPanel(
                 this.payload,
-                color -> this.payload.setBorderColor(color));
+                color -> {
+                    this.payload.setBorderColor(color);
+                    MercuryStoreUI.adrReloadSubject.onNext(this.payload);
+                });
 
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 4 : 6, 2,0,6));
-        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 6 : 7, 2,0,6));
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 5 : 7, 2,0,6));
+        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 7 : 8, 2,0,6));
         generalPanel.setBackground(AppThemeColor.SLIDE_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK),
@@ -112,6 +132,8 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         generalPanel.add(iconSelectPanel);
         generalPanel.add(durationLabel);
         generalPanel.add(durationField);
+        generalPanel.add(alwaysVisibleLabel);
+        generalPanel.add(alwaysVisibleBox);
 
         if(!this.fromGroup) {
             specPanel.add(opacityLabel);
@@ -125,10 +147,12 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         specPanel.add(textFormatField);
         specPanel.add(borderColorLabel);
         specPanel.add(borderColorPanel);
-        specPanel.add(invertLabel);
-        specPanel.add(invertBox);
+        specPanel.add(invertTimerLabel);
+        specPanel.add(invertTimerBox);
         specPanel.add(animationMaskLabel);
         specPanel.add(animationBox);
+        specPanel.add(invertMaskLabel);
+        specPanel.add(invertMaskBox);
 
         specPanel.setVisible(this.advancedExpanded);
 
