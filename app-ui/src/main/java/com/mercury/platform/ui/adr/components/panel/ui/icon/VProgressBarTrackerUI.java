@@ -9,7 +9,8 @@ public class VProgressBarTrackerUI extends MercuryProgressBarTrackerUI {
         Graphics2D g2 = (Graphics2D) g.create();
         float sectorHeight = barRectHeight * tracker.getPercentComplete();
         Shape outer  = new Rectangle2D.Double(0, 0,barRectWidth, barRectHeight);
-        Shape sector = new Rectangle2D.Double(insets.left, insets.top, barRectWidth - insets.right * 2, sectorHeight - insets.bottom * 2);        Area foreground = new Area(sector);
+        Shape sector = new Rectangle2D.Double(insets.left, insets.top, barRectWidth - insets.right * 2, sectorHeight - insets.bottom * 2);
+        Area foreground = new Area(sector);
         Area background = new Area(outer);
 
         foreground.intersect(background);

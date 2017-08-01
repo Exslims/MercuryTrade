@@ -6,7 +6,7 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescripto
 
 
 public enum ProgressBarUI implements ProgressBarUIStrategy{
-    HORIZONTAL_LEFT {
+    HORIZONTAL_LEFT_ICON {
         @Override
         public boolean isSuitable(AdrProgressBarDescriptor descriptor) {
             return descriptor.isIconEnable()
@@ -19,7 +19,7 @@ public enum ProgressBarUI implements ProgressBarUIStrategy{
             return new LIconHProgressBarTrackerUI();
         }
     },
-    HORIZONTAL_RIGHT {
+    HORIZONTAL_RIGHT_ICON {
         @Override
         public boolean isSuitable(AdrProgressBarDescriptor descriptor) {
             return descriptor.isIconEnable()
@@ -32,7 +32,7 @@ public enum ProgressBarUI implements ProgressBarUIStrategy{
             return new RIconHProgressBarTrackerUI();
         }
     },
-    VERTICAL_TOP {
+    VERTICAL_TOP_ICON {
         @Override
         public boolean isSuitable(AdrProgressBarDescriptor descriptor) {
             return descriptor.isIconEnable()
@@ -45,7 +45,7 @@ public enum ProgressBarUI implements ProgressBarUIStrategy{
             return new TIconVProgressBarTrackerUI();
         }
     },
-    VERTICAL_BOTTOM {
+    VERTICAL_BOTTOM_ICON {
         @Override
         public boolean isSuitable(AdrProgressBarDescriptor descriptor) {
             return descriptor.isIconEnable()
@@ -81,11 +81,9 @@ public enum ProgressBarUI implements ProgressBarUIStrategy{
         }
     };
     public static MercuryProgressBarTrackerUI getUIBy(AdrProgressBarDescriptor descriptor){
-        if(descriptor.isIconEnable()) {
-            for (ProgressBarUI progressBarUI : ProgressBarUI.values()) {
-                if (progressBarUI.isSuitable(descriptor)) {
-                    return progressBarUI.getUI();
-                }
+        for (ProgressBarUI progressBarUI : ProgressBarUI.values()) {
+            if (progressBarUI.isSuitable(descriptor)) {
+                return progressBarUI.getUI();
             }
         }
         return new MercuryProgressBarTrackerUI();
