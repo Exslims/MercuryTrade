@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.adr.components.panel.ui.icon;
+package com.mercury.platform.ui.adr.components.panel.ui.impl;
 
 import java.awt.*;
 import java.awt.geom.Area;
@@ -6,10 +6,15 @@ import java.awt.geom.Rectangle2D;
 
 public class VProgressBarTrackerUI extends MercuryProgressBarTrackerUI {
     protected void paintShapes(Graphics g, int barRectWidth, int barRectHeight, Insets insets) {
+        int sectorX = 0;
+        int sectorY = 0;
+        if(this.descriptor.isInvertMask()){
+            sectorY = (int) (barRectHeight * (1f - this.tracker.getPercentComplete()));
+        }
         Graphics2D g2 = (Graphics2D) g.create();
         float sectorHeight = barRectHeight * tracker.getPercentComplete();
         Shape outer  = new Rectangle2D.Double(0, 0,barRectWidth, barRectHeight);
-        Shape sector = new Rectangle2D.Double(insets.left, insets.top, barRectWidth - insets.right * 2, sectorHeight - insets.bottom * 2);
+        Shape sector = new Rectangle2D.Double(insets.left + sectorX, insets.top + sectorY, barRectWidth - insets.right * 2, sectorHeight - insets.bottom * 2);
         Area foreground = new Area(sector);
         Area background = new Area(outer);
 

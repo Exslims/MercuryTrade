@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.adr.components.panel.ui;
 
 import com.mercury.platform.shared.config.descriptor.adr.*;
-import com.mercury.platform.ui.adr.components.panel.ui.icon.*;
+import com.mercury.platform.ui.adr.components.panel.ui.impl.*;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -11,7 +11,6 @@ import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.callback.TimelineCallback;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicProgressBarUI;
 
 
 public class MercuryTracker extends JComponent {

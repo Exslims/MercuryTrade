@@ -1,9 +1,7 @@
-package com.mercury.platform.ui.adr.components.panel.ui.icon;
+package com.mercury.platform.ui.adr.components.panel.ui.impl;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.ui.adr.components.panel.ui.BasicMercuryIconTrackerUI;
-import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
-import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

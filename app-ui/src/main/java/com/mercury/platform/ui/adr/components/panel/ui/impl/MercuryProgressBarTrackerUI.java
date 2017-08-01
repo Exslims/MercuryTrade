@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.adr.components.panel.ui.icon;
+package com.mercury.platform.ui.adr.components.panel.ui.impl;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
 import com.mercury.platform.ui.adr.components.panel.ui.BasicMercuryIconTrackerUI;

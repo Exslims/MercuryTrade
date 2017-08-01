@@ -1,11 +1,11 @@
-package com.mercury.platform.ui.adr.components.panel.ui.icon;
+package com.mercury.platform.ui.adr.components.panel.ui.impl;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentOrientation;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconAlignment;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
 
 
-public enum ProgressBarUI implements ProgressBarUIStrategy{
+public enum ProgressBarUI implements ProgressBarUIFactory {
     HORIZONTAL_LEFT_ICON {
         @Override
         public boolean isSuitable(AdrProgressBarDescriptor descriptor) {

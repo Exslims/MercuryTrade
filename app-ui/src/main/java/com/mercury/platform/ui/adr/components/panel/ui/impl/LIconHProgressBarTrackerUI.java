@@ -1,4 +1,5 @@
-package com.mercury.platform.ui.adr.components.panel.ui.icon;
+package com.mercury.platform.ui.adr.components.panel.ui.impl;
+
 
 
 import javax.imageio.ImageIO;
@@ -9,15 +10,15 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 
-public class RIconHProgressBarTrackerUI extends MercuryProgressBarTrackerUI {
+public class LIconHProgressBarTrackerUI extends MercuryProgressBarTrackerUI {
     @Override
     protected void paintShapes(Graphics g, int barRectWidth, int barRectHeight, Insets insets) {
         Graphics2D g2 = (Graphics2D) g.create();
-        int iconX = barRectWidth - barRectHeight;
+        int iconX = 0;
         int iconY = 0;
         float sectorWidth = (barRectWidth - tracker.getHeight()) * tracker.getPercentComplete();
-        Shape outer = new Rectangle2D.Double(0, 0, barRectWidth - barRectHeight, barRectHeight);
-        Shape sector = new Rectangle2D.Double(insets.left, insets.top, sectorWidth - insets.right * 2, barRectHeight - insets.bottom * 2);
+        Shape outer = new Rectangle2D.Double(tracker.getHeight(), 0, barRectWidth, barRectHeight);
+        Shape sector = new Rectangle2D.Double(tracker.getHeight() + insets.left, insets.top, sectorWidth - insets.right * 2, barRectHeight - insets.bottom * 2);
         try {
             BufferedImage read = ImageIO.read(this.config.getIcon(descriptor.getIconPath()));
             g2.drawImage(read,iconX,iconY,tracker.getHeight(),tracker.getHeight(),null);
@@ -31,6 +32,6 @@ public class RIconHProgressBarTrackerUI extends MercuryProgressBarTrackerUI {
         g2.setPaint(descriptor.getForegroundColor());
         g2.fill(foreground);
         g2.dispose();
-        this.paintString(g, 0, 0, barRectWidth - barRectHeight, barRectHeight, 0);
+        this.paintString(g, barRectHeight / 2, 0, barRectWidth, barRectHeight, 0);
     }
 }
