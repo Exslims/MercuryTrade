@@ -46,7 +46,6 @@ public class AdrSingleComponentFrame extends AbstractAdrComponentFrame<AdrDurati
     public void enableSettings() {
         super.enableSettings();
         this.component.enableSettings();
-        this.component.setBorder(BorderFactory.createMatteBorder(0,0,1,0, AppThemeColor.BORDER));
         this.component.addMouseListener(this.mouseListener);
         this.component.addMouseListener(this.mouseOverListener);
         this.component.addMouseMotionListener(this.motionListener);
@@ -59,7 +58,6 @@ public class AdrSingleComponentFrame extends AbstractAdrComponentFrame<AdrDurati
         this.component.removeMouseListener(this.mouseListener);
         this.component.removeMouseMotionListener(this.motionListener);
         this.component.removeMouseListener(this.mouseOverListener);
-        this.component.setBorder(BorderFactory.createEmptyBorder(0,0,1,0));
         this.pack();
         this.repaint();
     }

@@ -51,7 +51,6 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
     @Override
     public void enableSettings() {
         super.enableSettings();
-        this.getRootPane().setBorder(BorderFactory.createMatteBorder(1,1,1,1,AppThemeColor.ADR_DEFAULT_BORDER));
         this.addMouseListener(this.mouseListener);
         this.addMouseListener(this.mouseOverListener);
         this.addMouseMotionListener(this.motionListener);
@@ -60,7 +59,6 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
     @Override
     public void disableSettings() {
         super.disableSettings();
-        this.getRootPane().setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
         this.removeMouseListener(this.mouseListener);
         this.removeMouseListener(this.mouseOverListener);
         this.removeMouseMotionListener(this.motionListener);
@@ -104,7 +102,6 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
                     setLocation(getLocationOnScreen().x, dimension.height - getSize().height);
                 }
                 descriptor.setLocation(getLocationOnScreen());
-                System.out.println(descriptor.getLocation());
                 MercuryStoreUI.adrUpdateSubject.onNext(descriptor);
                 MercuryStoreCore.saveConfigSubject.onNext(true);
             }

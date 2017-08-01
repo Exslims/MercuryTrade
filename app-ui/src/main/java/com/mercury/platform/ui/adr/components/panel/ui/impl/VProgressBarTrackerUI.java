@@ -7,9 +7,9 @@ import java.awt.geom.Rectangle2D;
 public class VProgressBarTrackerUI extends MercuryProgressBarTrackerUI {
     protected void paintShapes(Graphics g, int barRectWidth, int barRectHeight, Insets insets) {
         int sectorX = 0;
-        int sectorY = 0;
+        int sectorY = (int) (barRectHeight * (1f - this.tracker.getPercentComplete()));;
         if(this.descriptor.isInvertMask()){
-            sectorY = (int) (barRectHeight * (1f - this.tracker.getPercentComplete()));
+            sectorY = 0;
         }
         Graphics2D g2 = (Graphics2D) g.create();
         float sectorHeight = barRectHeight * tracker.getPercentComplete();

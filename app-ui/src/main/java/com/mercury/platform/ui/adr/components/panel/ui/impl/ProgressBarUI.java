@@ -80,6 +80,7 @@ public enum ProgressBarUI implements ProgressBarUIFactory {
             return new VProgressBarTrackerUI();
         }
     };
+
     public static MercuryProgressBarTrackerUI getUIBy(AdrProgressBarDescriptor descriptor){
         for (ProgressBarUI progressBarUI : ProgressBarUI.values()) {
             if (progressBarUI.isSuitable(descriptor)) {
