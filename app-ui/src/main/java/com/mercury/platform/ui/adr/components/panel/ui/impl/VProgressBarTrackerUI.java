@@ -11,7 +11,7 @@ public class VProgressBarTrackerUI extends MercuryProgressBarTrackerUI {
         if(this.descriptor.isInvertMask()){
             sectorY = 0;
         }
-        Graphics2D g2 = (Graphics2D) g.create();
+        Graphics2D g2 = this.prepareAdapter(g);
         float sectorHeight = barRectHeight * tracker.getPercentComplete();
         Shape outer  = new Rectangle2D.Double(0, 0,barRectWidth, barRectHeight);
         Shape sector = new Rectangle2D.Double(insets.left + sectorX, insets.top + sectorY, barRectWidth - insets.right * 2, sectorHeight - insets.bottom * 2);

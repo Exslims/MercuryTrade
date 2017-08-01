@@ -15,12 +15,17 @@ public class BIconVProgressBarTrackerUI extends VProgressBarTrackerUI{
             super.paintShapes(g,barRectWidth,barRectHeight,insets);
             return;
         }
-        Graphics2D g2 = (Graphics2D) g.create();
+        Graphics2D g2 = this.prepareAdapter(g);
         int iconX = 0;
         int iconY = barRectHeight - barRectWidth;
-        float sectorHeight = (barRectHeight - tracker.getWidth()) * tracker.getPercentComplete();
+        int sectorX = 0;
+        int sectorY = (int) ((barRectHeight - barRectWidth) * (1f - this.tracker.getPercentComplete()));
+        if(this.descriptor.isInvertMask()){
+            sectorY = (int) ((barRectHeight - barRectWidth) * this.tracker.getPercentComplete());
+        }
+        float sectorHeight = barRectHeight - sectorY - barRectWidth;
         Shape outer  = new Rectangle2D.Double(0, 0,barRectWidth, barRectHeight);
-        Shape sector = new Rectangle2D.Double(insets.left, insets.top, barRectWidth - insets.right * 2, sectorHeight - insets.bottom * 2);
+        Shape sector = new Rectangle2D.Double(insets.left + sectorX, insets.top + sectorY, barRectWidth - insets.right * 2, sectorHeight - insets.bottom * 2);
         try {
             BufferedImage read = ImageIO.read(this.config.getIcon(descriptor.getIconPath()));
             g2.drawImage(read,iconX,iconY,tracker.getWidth(),tracker.getWidth(),null);

@@ -18,9 +18,14 @@ public class TIconVProgressBarTrackerUI extends VProgressBarTrackerUI{
         Graphics2D g2 = (Graphics2D) g.create();
         int iconX = 0;
         int iconY = 0;
-        float sectorHeight = (barRectHeight - tracker.getWidth()) * tracker.getPercentComplete();
+        int sectorX = 0;
+        int sectorY = (int) ((barRectHeight - barRectWidth) * (1f - this.tracker.getPercentComplete())) + barRectWidth;
+        if(this.descriptor.isInvertMask()){
+            sectorY = (int) ((barRectHeight - barRectWidth) * this.tracker.getPercentComplete()) + barRectWidth;
+        }
+        float sectorHeight = barRectHeight - sectorY;
         Shape outer  = new Rectangle2D.Double(0, 0,barRectWidth, barRectHeight);
-        Shape sector = new Rectangle2D.Double(insets.left, insets.top + tracker.getWidth(), barRectWidth - insets.right * 2, sectorHeight - insets.bottom * 2);
+        Shape sector = new Rectangle2D.Double(insets.left + sectorX, insets.top + sectorY, barRectWidth - insets.right * 2, sectorHeight - insets.bottom * 2);
         try {
             BufferedImage read = ImageIO.read(this.config.getIcon(descriptor.getIconPath()));
             g2.drawImage(read,iconX,iconY,tracker.getWidth(),tracker.getWidth(),null);

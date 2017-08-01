@@ -58,6 +58,7 @@ public class AdrSingleComponentFrame extends AbstractAdrComponentFrame<AdrDurati
         this.component.removeMouseListener(this.mouseListener);
         this.component.removeMouseMotionListener(this.motionListener);
         this.component.removeMouseListener(this.mouseOverListener);
+        this.getRootPane().setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
         this.pack();
         this.repaint();
     }

@@ -13,7 +13,7 @@ import java.io.IOException;
 public class LIconHProgressBarTrackerUI extends MercuryProgressBarTrackerUI {
     @Override
     protected void paintShapes(Graphics g, int barRectWidth, int barRectHeight, Insets insets) {
-        Graphics2D g2 = (Graphics2D) g.create();
+        Graphics2D g2 = this.prepareAdapter(g);
         int iconX = 0;
         int iconY = 0;
         float sectorWidth = (barRectWidth - tracker.getHeight()) * tracker.getPercentComplete();

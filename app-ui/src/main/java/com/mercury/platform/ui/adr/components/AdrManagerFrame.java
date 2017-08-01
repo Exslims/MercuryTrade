@@ -122,7 +122,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
 
     @Override
     protected String getFrameTitle() {
-        return "Aura Duration Tracker";
+        return "Duration Tracker";
     }
 
     public void addNewNode(AdrComponentDescriptor descriptor, AdrComponentDescriptor parent) {

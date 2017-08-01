@@ -41,7 +41,7 @@ public class MercuryTracker extends JComponent {
         this.progressTl = new Timeline(this);
         this.progressTl.setDuration((int) (descriptor.getDuration() * 1000));
         if(this.descriptor.isInvertTimer()) {
-            this.setValue((int) (this.descriptor.getDuration() * 1000));
+            this.setValue(10000);
             this.progressTl.addPropertyToInterpolate("value", 0, this.getMaximum());
         }else {
             this.setValue(0);
