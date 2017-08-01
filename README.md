@@ -27,10 +27,10 @@ Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issue
 ---
 ## FUNCTIONALITY:
 ---
-&nbsp; *Major feature:* **Duration Tracker**
+&nbsp; *Major feature:* **Aura Duration Tracker**
 
 <p align="center">
-  <img src="http://i.imgur.com/h3aUpQg.png"/>
+  <img src="http://i.imgur.com/2KFkiwr.png"/>
 </p>
 
 todo 
