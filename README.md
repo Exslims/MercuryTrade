@@ -27,6 +27,13 @@ Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issue
 ---
 ## FUNCTIONALITY:
 ---
+&nbsp; *Major feature:* **Duration Tracker**
+
+<p align="center">
+  <img src="http://i.imgur.com/h3aUpQg.png"/>
+</p>
+
+todo 
 
 &nbsp; *Major feature:* **Notification**
 
