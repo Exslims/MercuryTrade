@@ -16,10 +16,6 @@ import java.io.IOException;
 
 
 public class EllipseIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescriptor>{
-    public EllipseIconTrackerUI(AdrIconDescriptor descriptor, MercuryTracker tracker) {
-        super(descriptor,tracker);
-    }
-
     @Override
     public void paint(Graphics g, JComponent c) {
         Insets b = tracker.getInsets();

@@ -25,6 +25,8 @@ public class AdrProgressBarNodePanel extends AdrNodePanel<AdrProgressBarDescript
 
     @Override
     protected void update() {
+        this.tracker.setMaximum((int) (this.descriptor.getDuration() * 1000));
+        this.tracker.setValue((int) (this.descriptor.getDuration() * 1000) / 2);
         this.tracker.updateUI();
     }
 

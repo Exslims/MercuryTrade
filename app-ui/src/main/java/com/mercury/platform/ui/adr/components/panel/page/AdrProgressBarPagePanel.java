@@ -104,6 +104,7 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         });
         JTextField textFormatField = this.adrComponentsFactory.getSmartField(this.payload.getTextFormat(), new DoubleFormatFieldValidator(), value -> {
             this.payload.setTextFormat(value);
+            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
         });
         JCheckBox invertTimerBox = this.componentsFactory.getCheckBox(this.payload.isInvertTimer());
         invertTimerBox.addActionListener(action -> {

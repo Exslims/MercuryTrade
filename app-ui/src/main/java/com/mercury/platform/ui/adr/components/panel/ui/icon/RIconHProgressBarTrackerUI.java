@@ -1,10 +1,7 @@
 package com.mercury.platform.ui.adr.components.panel.ui.icon;
 
-import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
-import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
@@ -13,10 +10,6 @@ import java.io.IOException;
 
 
 public class RIconHProgressBarTrackerUI extends MercuryProgressBarTrackerUI {
-    public RIconHProgressBarTrackerUI(AdrProgressBarDescriptor descriptor, MercuryTracker tracker) {
-        super(descriptor, tracker);
-    }
-
     @Override
     protected void paintShapes(Graphics g, int barRectWidth, int barRectHeight, Insets insets) {
         Graphics2D g2 = (Graphics2D) g.create();

@@ -2,7 +2,6 @@ package com.mercury.platform.ui.adr.components.panel.ui.icon;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
 import com.mercury.platform.ui.adr.components.panel.ui.BasicMercuryIconTrackerUI;
-import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,9 +10,6 @@ import java.awt.geom.Rectangle2D;
 
 
 public class MercuryProgressBarTrackerUI extends BasicMercuryIconTrackerUI<AdrProgressBarDescriptor> {
-    public MercuryProgressBarTrackerUI(AdrProgressBarDescriptor descriptor, MercuryTracker tracker) {
-        super(descriptor, tracker);
-    }
     @Override
     public void paint(Graphics g, JComponent c) {
         if(!tracker.isShowCase()){

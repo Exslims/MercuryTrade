@@ -18,13 +18,13 @@ import java.text.DecimalFormat;
 
 
 public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDescriptor> extends ComponentUI{
+    @Setter
     protected T descriptor;
+    @Setter
     protected MercuryTracker tracker;
-    protected  IconBundleConfigurationService config;
+    protected IconBundleConfigurationService config;
 
-    protected BasicMercuryIconTrackerUI(T descriptor, MercuryTracker tracker){
-        this.descriptor = descriptor;
-        this.tracker = tracker;
+    protected BasicMercuryIconTrackerUI(){
         this.config = Configuration.get().iconBundleConfiguration();
     }
     @Override

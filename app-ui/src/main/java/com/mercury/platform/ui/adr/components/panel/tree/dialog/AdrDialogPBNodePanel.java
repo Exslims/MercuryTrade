@@ -31,6 +31,7 @@ public class AdrDialogPBNodePanel extends AdrNodePanel<AdrProgressBarDescriptor>
         tracker.setValue((int) ((descriptor.getDuration()/2) * 1000));
         tracker.setStringPainted(false);
         tracker.setPreferredSize(new Dimension(180, 30));
+        tracker.setShowCase(true);
         root.add(tracker);
         this.add(root,BorderLayout.CENTER);
     }

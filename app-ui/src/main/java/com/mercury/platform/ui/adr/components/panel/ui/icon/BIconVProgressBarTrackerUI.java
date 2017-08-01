@@ -1,8 +1,5 @@
 package com.mercury.platform.ui.adr.components.panel.ui.icon;
 
-import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
-import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.Area;
@@ -12,10 +9,6 @@ import java.io.IOException;
 
 
 public class BIconVProgressBarTrackerUI extends VProgressBarTrackerUI{
-    public BIconVProgressBarTrackerUI(AdrProgressBarDescriptor descriptor, MercuryTracker tracker) {
-        super(descriptor, tracker);
-    }
-
     @Override
     protected void paintShapes(Graphics g, int barRectWidth, int barRectHeight, Insets insets) {
         if(tracker.isShowCase()){

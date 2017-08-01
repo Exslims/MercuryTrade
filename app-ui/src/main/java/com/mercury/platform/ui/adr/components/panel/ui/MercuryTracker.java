@@ -11,6 +11,7 @@ import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.callback.TimelineCallback;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicProgressBarUI;
 
 
 public class MercuryTracker extends JComponent {
@@ -33,7 +34,6 @@ public class MercuryTracker extends JComponent {
 
     public MercuryTracker(AdrDurationComponentDescriptor descriptor) {
         this.descriptor = descriptor;
-        //todo remove
         this.setMaximum((int) (this.descriptor.getDuration() * 1000));
         this.setFont(new ComponentsFactory().getFont(FontStyle.BOLD, this.descriptor.getFontSize()));
         this.setForeground(AppThemeColor.TEXT_DEFAULT);
@@ -49,52 +49,16 @@ public class MercuryTracker extends JComponent {
             this.progressTl.addPropertyToInterpolate("value", this.getMaximum(), 0);
         }
     }
-    private void initUI(){
-        switch (descriptor.getType()){
-            case ICON: {
-                if(((AdrIconDescriptor)descriptor).getIconType().equals(AdrIconType.SQUARE)){
-                    this.setUI(new SquareIconTrackerUI((AdrIconDescriptor) descriptor,this));
-                }else {
-                    this.setUI(new EllipseIconTrackerUI((AdrIconDescriptor) descriptor,this));
-                }
-                break;
-            }
-            case PROGRESS_BAR: {
-                if(descriptor.getOrientation().equals(AdrComponentOrientation.HORIZONTAL)) {
-                    if(descriptor.isIconEnable()){
-                        switch (((AdrProgressBarDescriptor) descriptor).getIconAlignment()){
-                            case LEFT:{
-                                this.setUI(new LIconHProgressBarTrackerUI((AdrProgressBarDescriptor) descriptor, this));
-                                break;
-                            }
-                            case RIGHT:{
-                                this.setUI(new RIconHProgressBarTrackerUI((AdrProgressBarDescriptor) descriptor, this));
-                            }
-                        }
-                    }else {
-                        this.setUI(new MercuryProgressBarTrackerUI((AdrProgressBarDescriptor) descriptor, this));
-                    }
-                }else {
-                    if(descriptor.isIconEnable()){
-                        switch (((AdrProgressBarDescriptor) descriptor).getIconAlignment()){
-                            case TOP:{
-                                this.setUI(new TIconVProgressBarTrackerUI((AdrProgressBarDescriptor) descriptor, this));
-                                break;
-                            }
-                            case BOTTOM:{
-                                this.setUI(new BIconVProgressBarTrackerUI((AdrProgressBarDescriptor) descriptor, this));
-                            }
-                        }
-                    }else {
-                        this.setUI(new VProgressBarTrackerUI((AdrProgressBarDescriptor) descriptor, this));
-                    }
-                }
-                break;
-            }
-            default:{
-                throw new IllegalArgumentException("AdrComponent for MercuryTracker must be ICON or PROGRESS_BAR");
-            }
+    private void initUI() {
+        BasicMercuryIconTrackerUI ui;
+        if (descriptor instanceof AdrIconDescriptor) {
+            ui = new SquareIconTrackerUI();
+        } else {
+            ui = ProgressBarUI.getUIBy((AdrProgressBarDescriptor) this.descriptor);
         }
+        ui.setDescriptor(this.descriptor);
+        ui.setTracker(this);
+        this.setUI(ui);
     }
 
     public void setUI(BasicMercuryIconTrackerUI ui){

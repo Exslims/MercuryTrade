@@ -16,10 +16,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class SquareIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescriptor> {
-    public SquareIconTrackerUI(AdrIconDescriptor descriptor, MercuryTracker tracker) {
-        super(descriptor,tracker);
-    }
-
     @Override
     public void paint(Graphics g, JComponent c) {
         if(!tracker.isShowCase()){

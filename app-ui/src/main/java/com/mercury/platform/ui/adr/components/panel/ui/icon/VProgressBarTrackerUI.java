@@ -1,16 +1,10 @@
 package com.mercury.platform.ui.adr.components.panel.ui.icon;
 
-import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
-import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
 import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 
 public class VProgressBarTrackerUI extends MercuryProgressBarTrackerUI {
-    public VProgressBarTrackerUI(AdrProgressBarDescriptor descriptor, MercuryTracker tracker) {
-        super(descriptor,tracker);
-    }
-
     protected void paintShapes(Graphics g, int barRectWidth, int barRectHeight, Insets insets) {
         Graphics2D g2 = (Graphics2D) g.create();
         float sectorHeight = barRectHeight * tracker.getPercentComplete();
