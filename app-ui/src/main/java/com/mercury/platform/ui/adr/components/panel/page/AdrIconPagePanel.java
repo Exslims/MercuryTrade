@@ -60,7 +60,7 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
             }
         });
         JPanel iconSizePanel = this.adrComponentsFactory.getComponentSizePanel(this.payload,this.fromGroup);
-        JButton hotKeyButton = this.adrComponentsFactory.getHotKeyButton(this.payload.getHotKeyDescriptor());
+        JButton hotKeyButton = this.adrComponentsFactory.getHotKeyButton(this.payload);
         JPanel locationPanel = this.adrComponentsFactory.getLocationPanel(this.payload, this.fromGroup);
         JPanel iconSelectPanel = this.adrComponentsFactory.getIconSelectPanel(this.payload);
         JTextField fontSizeField = this.adrComponentsFactory.getSmartField(this.payload.getFontSize(), new IntegerFieldValidator(4, 1000), value -> {

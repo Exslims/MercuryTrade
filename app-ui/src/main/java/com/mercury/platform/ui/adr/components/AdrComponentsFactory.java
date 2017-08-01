@@ -125,8 +125,8 @@ public class AdrComponentsFactory {
         return root;
     }
 
-    public JButton getHotKeyButton(HotKeyDescriptor descriptor){
-        JButton button = this.componentsFactory.getBorderedButton(this.getButtonText(descriptor));
+    public JButton getHotKeyButton(AdrComponentDescriptor descriptor){
+        JButton button = this.componentsFactory.getBorderedButton(this.getButtonText(descriptor.getHotKeyDescriptor()));
         button.setFont(this.componentsFactory.getFont(FontStyle.BOLD,18f));
         button.addMouseListener(new MouseAdapter() {
             @Override
@@ -139,16 +139,17 @@ public class AdrComponentsFactory {
         MercuryStoreCore.hotKeySubject.subscribe(hotKey -> {
             if(allowed) {
                 button.setBackground(AppThemeColor.BUTTON);
-
-                descriptor.setVirtualKeyCode(hotKey.getVirtualKeyCode());
-                descriptor.setKeyChar(hotKey.getKeyChar());
-                descriptor.setShiftPressed(hotKey.isShiftPressed());
-                descriptor.setMenuPressed(hotKey.isMenuPressed());
-                descriptor.setExtendedKey(hotKey.isExtendedKey());
-                descriptor.setControlPressed(hotKey.isControlPressed());
+                HotKeyDescriptor hotKeyDescriptor = descriptor.getHotKeyDescriptor();
+                hotKeyDescriptor.setVirtualKeyCode(hotKey.getVirtualKeyCode());
+                hotKeyDescriptor.setKeyChar(hotKey.getKeyChar());
+                hotKeyDescriptor.setShiftPressed(hotKey.isShiftPressed());
+                hotKeyDescriptor.setMenuPressed(hotKey.isMenuPressed());
+                hotKeyDescriptor.setExtendedKey(hotKey.isExtendedKey());
+                hotKeyDescriptor.setControlPressed(hotKey.isControlPressed());
 
                 button.setText(getButtonText(hotKey));
                 allowed = false;
+                MercuryStoreUI.adrReloadSubject.onNext(descriptor);
             }
         });
         return button;

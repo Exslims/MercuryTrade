@@ -8,6 +8,7 @@ import com.mercury.platform.ui.misc.MercuryStoreUI;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.callback.TimelineCallbackAdapter;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
@@ -56,6 +57,16 @@ public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescript
         this.tracker.setStringPainted(descriptor.isTextEnable());
         this.tracker.setMaskPainted(descriptor.isMaskEnable());
         this.tracker.play();
+        if(this.getParent() instanceof AdrTrackerGroupPanel){
+            AdrTrackerGroupPanel parent = (AdrTrackerGroupPanel) this.getParent();
+//            parent.remove(this);
+//            parent.add(this);
+//            parent.revalidate();
+
+            parent.setComponentZOrder(this,parent.getComponentCount() - 1);
+        }
+        JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
+        parent.pack();
     }
 
     @Override

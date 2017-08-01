@@ -25,6 +25,7 @@ public abstract class AdrPagePanel<T> extends JPanel {
 
     protected abstract void init();
     public void setPayload(T payload){
+        this.adrComponentsFactory = new AdrComponentsFactory(this.componentsFactory);
         this.payload = payload;
         this.removeAll();
         this.init();

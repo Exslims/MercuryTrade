@@ -105,6 +105,7 @@ public class AdrTrackerGroupPanel extends AdrComponentPanel<AdrTrackerGroupDescr
 
     @Override
     protected void onHotKeyPressed() {
+
     }
 
     @Override

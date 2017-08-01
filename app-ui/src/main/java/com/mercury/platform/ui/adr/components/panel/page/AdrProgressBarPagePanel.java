@@ -74,7 +74,7 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
             }
         });
         JPanel locationPanel = this.adrComponentsFactory.getLocationPanel(this.payload, this.fromGroup);
-        JButton hotKeyButton = this.adrComponentsFactory.getHotKeyButton(this.payload.getHotKeyDescriptor());
+        JButton hotKeyButton = this.adrComponentsFactory.getHotKeyButton(this.payload);
 
         JPanel iconSelectPanel = this.adrComponentsFactory.getIconSelectPanel(this.payload);
         JPanel iconPanel = this.componentsFactory.getJPanel(new BorderLayout());
