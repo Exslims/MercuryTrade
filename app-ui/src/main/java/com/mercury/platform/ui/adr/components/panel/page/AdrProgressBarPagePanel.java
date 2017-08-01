@@ -28,13 +28,15 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         JLabel locationLabel = this.componentsFactory.getTextLabel("Location:");
         JLabel sizeLabel = this.componentsFactory.getTextLabel("Progress bar size:");
         JLabel pbOrientationLabel = this.componentsFactory.getTextLabel("Orientation:");
-
         JLabel hotKeyLabel = this.componentsFactory.getTextLabel("HotKey:");
         JLabel iconLabel = this.componentsFactory.getTextLabel("Icon:");
+
+        JLabel insetsLabel = this.componentsFactory.getTextLabel("Insets:");
         JLabel iconAlignmentLabel = this.componentsFactory.getTextLabel("Icon alignment:");
         JLabel textFormatLabel = this.componentsFactory.getTextLabel("Text format:");
         JLabel fontSizeLabel = this.componentsFactory.getTextLabel("Font size:");
         JLabel durationLabel = this.componentsFactory.getTextLabel("Duration:");
+        JLabel delayLabel = this.componentsFactory.getTextLabel("Delay:");
         JLabel invertTimerLabel = this.componentsFactory.getTextLabel("Invert timer:");
         JLabel textColorLabel = this.componentsFactory.getTextLabel("Text color:");
         JLabel backgroundColorLabel = this.componentsFactory.getTextLabel("Background color:");
@@ -87,6 +89,7 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         });
         iconPanel.add(iconEnableBox,BorderLayout.LINE_START);
         iconPanel.add(iconSelectPanel,BorderLayout.CENTER);
+        JPanel insetsPanel = this.adrComponentsFactory.getInsetsPanel(this.payload);
         JComboBox iconAlignment = this.componentsFactory.getComboBox(new String[]{"Left","Right","Top","Bottom"});
         iconAlignment.setSelectedItem(this.payload.getIconAlignment().asPretty());
         iconAlignment.addItemListener(e -> {
@@ -100,6 +103,10 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         });
         JTextField durationField = this.adrComponentsFactory.getSmartField(this.payload.getDuration(), new DoubleFieldValidator(0.1, 1000.0), value -> {
             this.payload.setDuration(value);
+            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
+        });
+        JTextField delayField = this.adrComponentsFactory.getSmartField(this.payload.getDelay(), new DoubleFieldValidator(0.01, 1000.0), value -> {
+            this.payload.setDelay(value);
             MercuryStoreUI.adrReloadSubject.onNext(this.payload);
         });
         JTextField textFormatField = this.adrComponentsFactory.getSmartField(this.payload.getTextFormat(), new DoubleFormatFieldValidator(), value -> {
@@ -120,36 +127,36 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
                 () -> this.payload.getBackgroundColor(),
                 color -> {
                     this.payload.setBackgroundColor(color);
-                    MercuryStoreUI.adrManagerPack.onNext(true);
+                    MercuryStoreUI.adrReloadSubject.onNext(this.payload);
                 });
         JPanel foregroundColorPanel = this.adrComponentsFactory.getHexColorPickerPanel(
                 () ->this.payload.getForegroundColor(),
                 color -> {
                     this.payload.setForegroundColor(color);
-                    MercuryStoreUI.adrManagerPack.onNext(true);
+                    MercuryStoreUI.adrReloadSubject.onNext(this.payload);
                 });
         JPanel borderColorPanel = this.adrComponentsFactory.getBorderColorPanel(
                 this.payload,
                 color -> {
                     this.payload.setBorderColor(color);
-                    MercuryStoreUI.adrManagerPack.onNext(true);
+                    MercuryStoreUI.adrReloadSubject.onNext(this.payload);
                 });
-        JPanel textColorPanel = this.adrComponentsFactory.getTextColorPanel(this.payload);
-        JPanel textPanel = this.componentsFactory.getJPanel(new BorderLayout());
-        textPanel.setBackground(AppThemeColor.SLIDE_BG);
+        JPanel textColorPicker = this.adrComponentsFactory.getTextColorPanel(this.payload);
+        JPanel textColorPanel = this.componentsFactory.getJPanel(new BorderLayout());
+        textColorPanel.setBackground(AppThemeColor.ADR_BG);
         JCheckBox textEnableBox = this.componentsFactory.getCheckBox(this.payload.isTextEnable(),"Is text enable?");
         textEnableBox.addActionListener(state -> this.payload.setTextEnable(textEnableBox.isSelected()));
-        textPanel.add(textEnableBox,BorderLayout.LINE_START);
-        textPanel.add(textColorPanel,BorderLayout.CENTER);
+        textColorPanel.add(textEnableBox,BorderLayout.LINE_START);
+        textColorPanel.add(textColorPicker,BorderLayout.CENTER);
 
         JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 4 : 6, 2,0,6));
-        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 10 : 11, 2,0,6));
-        generalPanel.setBackground(AppThemeColor.SLIDE_BG);
+        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 12 : 13, 2,0,6));
+        generalPanel.setBackground(AppThemeColor.ADR_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK),
                 BorderFactory.createEmptyBorder(4,2,4,2)));
 
-        specPanel.setBackground(AppThemeColor.SLIDE_BG);
+        specPanel.setBackground(AppThemeColor.ADR_BG);
         specPanel.setBorder(BorderFactory.createEmptyBorder(0,0,4,2));
 
         generalPanel.add(titleLabel);
@@ -171,6 +178,8 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
             specPanel.add(opacityLabel);
             specPanel.add(opacitySlider);
         }
+        specPanel.add(delayLabel);
+        specPanel.add(delayField);
         specPanel.add(pbOrientationLabel);
         specPanel.add(pbOrientation);
         specPanel.add(iconAlignmentLabel);
@@ -180,7 +189,9 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         specPanel.add(foregroundColorLabel);
         specPanel.add(foregroundColorPanel);
         specPanel.add(textColorLabel);
-        specPanel.add(textPanel);
+        specPanel.add(textColorPanel);
+        specPanel.add(insetsLabel);
+        specPanel.add(insetsPanel);
         specPanel.add(fontSizeLabel);
         specPanel.add(fontSizeField);
         specPanel.add(borderColorLabel);

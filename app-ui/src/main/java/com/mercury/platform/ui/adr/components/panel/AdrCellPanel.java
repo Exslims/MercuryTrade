@@ -53,20 +53,13 @@ public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescript
 
     @Override
     protected void onHotKeyPressed() {
-        this.setVisible(true);
         this.tracker.setStringPainted(descriptor.isTextEnable());
         this.tracker.setMaskPainted(descriptor.isMaskEnable());
         this.tracker.play();
         if(this.getParent() instanceof AdrTrackerGroupPanel){
             AdrTrackerGroupPanel parent = (AdrTrackerGroupPanel) this.getParent();
-//            parent.remove(this);
-//            parent.add(this);
-//            parent.revalidate();
-
             parent.setComponentZOrder(this,parent.getComponentCount() - 1);
         }
-        JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
-        parent.pack();
     }
 
     @Override
@@ -91,6 +84,10 @@ public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescript
                         tracker.setMaskPainted(!descriptor.isAlwaysVisible());
                     }
                     MercuryStoreUI.adrRepaintSubject.onNext(true);
+                }else if(newState.equals(Timeline.TimelineState.PLAYING_FORWARD)){
+                    setVisible(true);
+                    JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(AdrCellPanel.this);
+                    parent.pack();
                 }
             }
         });

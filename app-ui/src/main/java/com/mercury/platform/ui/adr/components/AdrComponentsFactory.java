@@ -139,14 +139,7 @@ public class AdrComponentsFactory {
         MercuryStoreCore.hotKeySubject.subscribe(hotKey -> {
             if(allowed) {
                 button.setBackground(AppThemeColor.BUTTON);
-                HotKeyDescriptor hotKeyDescriptor = descriptor.getHotKeyDescriptor();
-                hotKeyDescriptor.setVirtualKeyCode(hotKey.getVirtualKeyCode());
-                hotKeyDescriptor.setKeyChar(hotKey.getKeyChar());
-                hotKeyDescriptor.setShiftPressed(hotKey.isShiftPressed());
-                hotKeyDescriptor.setMenuPressed(hotKey.isMenuPressed());
-                hotKeyDescriptor.setExtendedKey(hotKey.isExtendedKey());
-                hotKeyDescriptor.setControlPressed(hotKey.isControlPressed());
-
+                descriptor.setHotKeyDescriptor(hotKey);
                 button.setText(getButtonText(hotKey));
                 allowed = false;
                 MercuryStoreUI.adrReloadSubject.onNext(descriptor);
@@ -155,9 +148,48 @@ public class AdrComponentsFactory {
         return button;
     }
 
+    public JPanel getInsetsPanel(AdrDurationComponentDescriptor descriptor){
+        JLabel topLabel = this.componentsFactory.getTextLabel("T:");
+        JLabel leftLabel = this.componentsFactory.getTextLabel("L:");
+        JLabel bottomLabel = this.componentsFactory.getTextLabel("B:");
+        JLabel rightLabel = this.componentsFactory.getTextLabel("R:");
+
+        JTextField topField = this.getSmartField(descriptor.getInsets().top, new IntegerFieldValidator(0, 300), value -> {
+            Insets currentInsets = descriptor.getInsets();
+            descriptor.setInsets(new Insets(value, currentInsets.left, currentInsets.bottom, currentInsets.right));
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+        JTextField leftField = this.getSmartField(descriptor.getInsets().left, new IntegerFieldValidator(0, 300), value -> {
+            Insets currentInsets = descriptor.getInsets();
+            descriptor.setInsets(new Insets(currentInsets.top, value, currentInsets.bottom, currentInsets.right));
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+        JTextField bottomField = this.getSmartField(descriptor.getInsets().bottom, new IntegerFieldValidator(0, 300), value -> {
+            Insets currentInsets = descriptor.getInsets();
+            descriptor.setInsets(new Insets(currentInsets.top, currentInsets.left, value, currentInsets.right));
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+        JTextField rightField = this.getSmartField(descriptor.getInsets().right, new IntegerFieldValidator(0, 300), value -> {
+            Insets currentInsets = descriptor.getInsets();
+            descriptor.setInsets(new Insets(currentInsets.top, currentInsets.left, currentInsets.bottom, value));
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+        JPanel root = this.componentsFactory.getJPanel(new GridLayout(1,8,4,0));
+        root.setBackground(AppThemeColor.ADR_BG);
+        root.add(topLabel);
+        root.add(topField);
+        root.add(leftLabel);
+        root.add(leftField);
+        root.add(bottomLabel);
+        root.add(bottomField);
+        root.add(rightLabel);
+        root.add(rightField);
+        return root;
+    }
+
     public JPanel getIconSelectPanel(AdrDurationComponentDescriptor descriptor){
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
-        root.setBackground(AppThemeColor.SLIDE_BG);
+        root.setBackground(AppThemeColor.ADR_BG);
         JLabel iconLabel = this.componentsFactory.getIconLabel(this.config.getIcon(descriptor.getIconPath()), 26);
         JLabel iconPathLabel = this.componentsFactory.getTextLabel(descriptor.getIconPath());
         root.add(iconLabel, BorderLayout.LINE_START);

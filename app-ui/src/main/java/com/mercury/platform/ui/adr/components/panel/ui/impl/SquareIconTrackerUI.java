@@ -38,7 +38,8 @@ public class SquareIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescri
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
             try {
                 BufferedImage read = ImageIO.read(this.config.getIcon(descriptor.getIconPath()));
-                g2.drawImage(read, 0, 0, (int) sz, (int) sz, null);
+                g2.drawImage(read, this.descriptor.getInsets().left, this.descriptor.getInsets().top,
+                        (int) sz - this.descriptor.getInsets().bottom, (int) sz - this.descriptor.getInsets().right, null);
             } catch (IOException e) {
                 e.printStackTrace();
             }

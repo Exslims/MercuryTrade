@@ -8,5 +8,5 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class AdrIconDescriptor extends AdrDurationComponentDescriptor implements Serializable {
-    private AdrIconType iconType;
+    private AdrIconType iconType = AdrIconType.SQUARE;
 }

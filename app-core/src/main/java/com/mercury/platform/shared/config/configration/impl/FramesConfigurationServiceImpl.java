@@ -69,7 +69,7 @@ public class FramesConfigurationServiceImpl extends BaseConfigurationService<Map
         minimumFrameSize.put("ChatFilterSettingsFrame",new Dimension(300,200));
         minimumFrameSize.put("GamePathChooser",new Dimension(600,30));
         minimumFrameSize.put("CurrencySearchFrame",new Dimension(400,300));
-        minimumFrameSize.put("AdrManagerFrame",new Dimension(400,300));
+        minimumFrameSize.put("AdrManagerFrame",new Dimension(500,300));
         minimumFrameSize.put("AdrCellSettingsFrame",new Dimension(300,210));
     }
     private void initDefaultMap() {
@@ -86,7 +86,7 @@ public class FramesConfigurationServiceImpl extends BaseConfigurationService<Map
         defaultFramesSettings.put("ChatFilterSettingsFrame", new FrameDescriptor(new Point(400, 600), new Dimension(320, 200)));
         defaultFramesSettings.put("GamePathChooser", new FrameDescriptor(new Point(400, 600), new Dimension(520, 30)));
         defaultFramesSettings.put("CurrencySearchFrame", new FrameDescriptor(new Point(400, 600), new Dimension(400, 300)));
-        defaultFramesSettings.put("AdrManagerFrame", new FrameDescriptor(new Point(500, 500), new Dimension(700, 300)));
+        defaultFramesSettings.put("AdrManagerFrame", new FrameDescriptor(new Point(500, 500), new Dimension(700, 500)));
         defaultFramesSettings.put("AdrCellSettingsFrame", new FrameDescriptor(new Point(400, 600), new Dimension(300, 210)));
     }
 }

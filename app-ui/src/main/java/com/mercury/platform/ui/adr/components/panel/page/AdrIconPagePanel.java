@@ -27,13 +27,15 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         JLabel sizeLabel = this.componentsFactory.getTextLabel("Icon size:");
         JLabel locationLabel = this.componentsFactory.getTextLabel("Location:");
         JLabel alwaysVisibleLabel = this.componentsFactory.getTextLabel("Always visible:");
-
         JLabel hotKeyLabel = this.componentsFactory.getTextLabel("HotKey:");
         JLabel iconLabel = this.componentsFactory.getTextLabel("Icon:");
+
         JLabel textFormatLabel = this.componentsFactory.getTextLabel("Text format:");
         JLabel fontSizeLabel = this.componentsFactory.getTextLabel("Font size:");
         JLabel invertTimerLabel = this.componentsFactory.getTextLabel("Invert timer:");
         JLabel durationLabel = this.componentsFactory.getTextLabel("Duration:");
+        JLabel delayLabel = this.componentsFactory.getTextLabel("Delay:");
+        JLabel backgroundColorLabel = this.componentsFactory.getTextLabel("Background color:");
         JLabel textColorLabel = this.componentsFactory.getTextLabel("Text color:");
         JLabel borderColorLabel = this.componentsFactory.getTextLabel("Border color:");
         JLabel animationMaskLabel = this.componentsFactory.getTextLabel("Animation mask:");
@@ -71,10 +73,20 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
             this.payload.setDuration(value);
             MercuryStoreUI.adrReloadSubject.onNext(this.payload);
         });
+        JTextField delayField = this.adrComponentsFactory.getSmartField(this.payload.getDelay(), new DoubleFieldValidator(0.01, 1000.0), value -> {
+            this.payload.setDelay(value);
+            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
+        });
         JTextField textFormatField = this.adrComponentsFactory.getSmartField(this.payload.getTextFormat(), new DoubleFormatFieldValidator(), value -> {
             this.payload.setTextFormat(value);
             MercuryStoreUI.adrReloadSubject.onNext(this.payload);
         });
+        JPanel backgroundColorPanel = this.adrComponentsFactory.getHexColorPickerPanel(
+                () -> this.payload.getBackgroundColor(),
+                color -> {
+                    this.payload.setBackgroundColor(color);
+                    MercuryStoreUI.adrReloadSubject.onNext(this.payload);
+                });
         JCheckBox alwaysVisibleBox = this.componentsFactory.getCheckBox(this.payload.isAlwaysVisible());
         alwaysVisibleBox.addActionListener(action -> {
             this.payload.setAlwaysVisible(alwaysVisibleBox.isSelected());
@@ -109,7 +121,7 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
                 });
 
         JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 5 : 7, 2,0,6));
-        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 7 : 8, 2,0,6));
+        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 9 : 10, 2,0,6));
         generalPanel.setBackground(AppThemeColor.SLIDE_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK),
@@ -139,14 +151,18 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
             specPanel.add(opacityLabel);
             specPanel.add(opacitySlider);
         }
-        specPanel.add(textColorLabel);
-        specPanel.add(textPanel);
+        specPanel.add(delayLabel);
+        specPanel.add(delayField);
         specPanel.add(fontSizeLabel);
         specPanel.add(fontSizeField);
         specPanel.add(textFormatLabel);
         specPanel.add(textFormatField);
+        specPanel.add(textColorLabel);
+        specPanel.add(textPanel);
         specPanel.add(borderColorLabel);
         specPanel.add(borderColorPanel);
+        specPanel.add(backgroundColorLabel);
+        specPanel.add(backgroundColorPanel);
         specPanel.add(invertTimerLabel);
         specPanel.add(invertTimerBox);
         specPanel.add(animationMaskLabel);

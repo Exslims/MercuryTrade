@@ -39,6 +39,7 @@ public class MercuryTracker extends JComponent {
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.initUI();
         this.progressTl = new Timeline(this);
+        this.progressTl.setInitialDelay((long) (descriptor.getDelay() * 1000));
         this.progressTl.setDuration((int) (descriptor.getDuration() * 1000));
         if(this.descriptor.isInvertTimer()) {
             this.setValue(10000);

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.awt.*;
 import java.io.Serializable;
+import java.util.Random;
 import java.util.UUID;
 
 @Data
@@ -15,13 +16,13 @@ import java.util.UUID;
 @NoArgsConstructor
 public class AdrComponentDescriptor implements Serializable{
     private String componentId = UUID.randomUUID().toString();
-    private String title = "default";
+    private String title = "component";
     private AdrComponentType type;
-    private Point location;
-    private Dimension size;
-    private HotKeyDescriptor hotKeyDescriptor;
+    private Point location = new Point(new Random().nextInt(600), new Random().nextInt(600));
+    private Dimension size = new Dimension(64, 64);
+    private HotKeyDescriptor hotKeyDescriptor = new HotKeyDescriptor();
     private boolean visible = true;
     private float scale = 1f;
     private float opacity = 1f;
-    private AdrComponentOrientation orientation;
+    private AdrComponentOrientation orientation = AdrComponentOrientation.HORIZONTAL;
 }

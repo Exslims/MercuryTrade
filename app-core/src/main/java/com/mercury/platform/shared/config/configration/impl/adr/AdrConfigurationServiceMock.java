@@ -48,35 +48,15 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
     private AdrProfileDescriptor getDefaultProfile(String profileName){
         AdrProfileDescriptor profileDescriptor = new AdrProfileDescriptor();
         profileDescriptor.setProfileName(profileName);
-        profileDescriptor.setContents(new ArrayList<>());
-        profileDescriptor.setSelected(false);
-        AdrProgressBarDescriptor defaultProgressBar = this.getDefaultProgressBar();
-        defaultProgressBar.setTitle("ASDASDASDASD");
-        defaultProgressBar.setLocation(new Point(200,200));
-        profileDescriptor.getContents().add(defaultProgressBar);
+        profileDescriptor.setSelected(true);
+        profileDescriptor.getContents().add(this.getDefaultProgressBar());
         return profileDescriptor;
     }
 
     @Override
     public AdrIconDescriptor getDefaultIcon() {
         AdrIconDescriptor icon = new AdrIconDescriptor();
-        icon.setTitle("icon");
-        icon.setIconPath("default_icon.png");
-        icon.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
-        icon.setSize(new Dimension(64, 64));
-        icon.setDuration(6.0d);
-        icon.setHotKeyDescriptor(new HotKeyDescriptor());
-        icon.setIconType(AdrIconType.SQUARE);
-        icon.setOrientation(AdrComponentOrientation.HORIZONTAL);
         icon.setType(AdrComponentType.ICON);
-        icon.setDefaultValueTextColor(new Color(255,250,213));
-        icon.setMediumValueTextColor(new Color(255,211,78));
-        icon.setLowValueTextColor(new Color(224,86,60));
-        icon.setBorderColor(new Color(16,110,99));
-        icon.setLowValueTextThreshold(1.0);
-        icon.setMediumValueTextThreshold(3.0);
-        icon.setDefaultValueTextThreshold(5.0);
-        icon.setTextFormat("0.0");
         return icon;
     }
 
@@ -84,25 +64,8 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
     public AdrProgressBarDescriptor getDefaultProgressBar() {
         AdrProgressBarDescriptor progressBar = new AdrProgressBarDescriptor();
         progressBar.setTitle("progress bar");
-        progressBar.setIconPath("default_icon.png");
-        progressBar.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
         progressBar.setSize(new Dimension(240, 30));
-        progressBar.setDuration(6.0d);
-        progressBar.setOrientation(AdrComponentOrientation.HORIZONTAL);
-        progressBar.setHotKeyDescriptor(new HotKeyDescriptor(50,'2',false,false,false,false));
         progressBar.setType(AdrComponentType.PROGRESS_BAR);
-        progressBar.setDefaultValueTextColor(new Color(255,250,213));
-        progressBar.setMediumValueTextColor(new Color(255,211,78));
-        progressBar.setLowValueTextColor(new Color(224,86,60));
-        progressBar.setBackgroundColor(new Color(59, 59, 59));
-        progressBar.setForegroundColor(new Color(16,91,99));
-        progressBar.setBorderColor(new Color(16,110,99));
-        progressBar.setIconAlignment(AdrIconAlignment.LEFT);
-        progressBar.setLowValueTextThreshold(1.0);
-        progressBar.setMediumValueTextThreshold(3.0);
-        progressBar.setDefaultValueTextThreshold(5.0);
-        progressBar.setThickness(1);
-        progressBar.setTextFormat("0.0");
         return progressBar;
     }
 
@@ -110,10 +73,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
     public AdrTrackerGroupDescriptor getDefaultIconGroup() {
         AdrTrackerGroupDescriptor groupDescriptor = this.getDefaultGroup();
         groupDescriptor.setTitle("icon group");
-        groupDescriptor.setSize(new Dimension(64,64));
         groupDescriptor.setContentType(AdrTrackerGroupContentType.ICONS);
-        List<AdrComponentDescriptor> icons = new ArrayList<>();
-        groupDescriptor.setCells(icons);
         return groupDescriptor;
     }
 
@@ -123,24 +83,20 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         groupDescriptor.setTitle("progress bar group");
         groupDescriptor.setSize(new Dimension(240,30));
         groupDescriptor.setContentType(AdrTrackerGroupContentType.PROGRESS_BARS);
-        List<AdrComponentDescriptor> pbList = new ArrayList<>();
-        groupDescriptor.setCells(pbList);
         return groupDescriptor;
     }
     private AdrTrackerGroupDescriptor getDefaultGroup(){
         AdrTrackerGroupDescriptor groupDescriptor = new AdrTrackerGroupDescriptor();
         groupDescriptor.setTitle("group");
-        groupDescriptor.setLocation(new Point(new Random().nextInt(600), new Random().nextInt(600)));
         groupDescriptor.setType(AdrComponentType.TRACKER_GROUP);
         groupDescriptor.setOrientation(AdrComponentOrientation.VERTICAL);
-        groupDescriptor.setGroupType(AdrTrackerGroupType.STATIC);
         return groupDescriptor;
     }
     private AdrProfileDescriptor getShowcaseProfile(){
         AdrProfileDescriptor profile = new AdrProfileDescriptor();
         profile.setProfileName("Showcase");
         profile.setContents(new ArrayList<>());
-        profile.setSelected(true);
+        profile.setSelected(false);
 
         HotKeyDescriptor hotKey = new HotKeyDescriptor(50, '2', false, false, false, false);
 
