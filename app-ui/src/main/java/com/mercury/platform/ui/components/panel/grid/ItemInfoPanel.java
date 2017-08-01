@@ -59,6 +59,7 @@ public class ItemInfoPanel extends JPanel implements HasUI{
         tabInfoPanel.setBorder(BorderFactory.createEmptyBorder(-8,0,-6,0));
         if(stashTabDescriptor.isUndefined()) {
             JCheckBox isItQuad = componentsFactory.getCheckBox(TooltipConstants.IS_IT_QUAD);
+            isItQuad.setPreferredSize(new Dimension(16,16));
             tabInfoPanel.add(isItQuad);
 
             isItQuad.addActionListener(action->{

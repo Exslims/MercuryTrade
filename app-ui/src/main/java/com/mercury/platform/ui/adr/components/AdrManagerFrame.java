@@ -14,6 +14,7 @@ import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
 import com.mercury.platform.ui.adr.routing.AdrPageState;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
+import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
@@ -25,6 +26,8 @@ import javax.swing.plaf.InsetsUIResource;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +40,8 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
     private AdrProfileDescriptor selectedProfile;
     public AdrManagerFrame(AdrProfileDescriptor selectedProfile) {
         super();
+        this.processingHideEvent = false;
+        this.setTitle("MercuryTrade ADR");
         this.setFocusable(true);
         this.setFocusableWindowState(true);
         this.setAlwaysOnTop(false);
@@ -57,6 +62,14 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
     protected void initialize() {
         super.initialize();
         this.initRootPanel();
+        this.hideButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    FramesManager.INSTANCE.performAdr();
+                }
+            }
+        });
         this.add(this.root,BorderLayout.CENTER);
         this.add(this.getBottomPanel(),BorderLayout.PAGE_END);
 

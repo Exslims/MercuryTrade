@@ -51,12 +51,12 @@ public class GeneralSettings extends ConfigurationPanel {
         this.checkEnable.setBackground(AppThemeColor.TRANSPARENT);
         this.checkEnable.setSelected(this.applicationConfig.get().isCheckOutUpdate());
 
-        this.fadeTimeSlider = this.componentsFactory.getSlider(0,10, this.applicationConfig.get().getFadeTime());
+        this.fadeTimeSlider = this.componentsFactory.getSlider(0,10, this.applicationConfig.get().getFadeTime(),AppThemeColor.SLIDE_BG);
         this.fadeTimeSlider.addChangeListener(e -> {
             MercuryStoreUI.repaintSubject.onNext(SettingsFrame.class);
         });
 
-        this.minSlider = this.componentsFactory.getSlider(40,100,this.applicationConfig.get().getMinOpacity());
+        this.minSlider = this.componentsFactory.getSlider(40,100,this.applicationConfig.get().getMinOpacity(),AppThemeColor.SLIDE_BG);
         this.minSlider.addChangeListener(e -> {
             if(!(this.minSlider.getValue() > this.maxSlider.getValue())) {
                 MercuryStoreUI.repaintSubject.onNext(SettingsFrame.class);
@@ -65,7 +65,7 @@ public class GeneralSettings extends ConfigurationPanel {
             }
         });
 
-        this.maxSlider = this.componentsFactory.getSlider(40,100,this.applicationConfig.get().getMaxOpacity());
+        this.maxSlider = this.componentsFactory.getSlider(40,100,this.applicationConfig.get().getMaxOpacity(),AppThemeColor.SLIDE_BG);
         this.maxSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {

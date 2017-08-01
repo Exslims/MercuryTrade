@@ -57,7 +57,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
                 BorderFactory.createMatteBorder(0,0,1,0,AppThemeColor.MSG_HEADER_BORDER),
                 BorderFactory.createEmptyBorder(3,0,3,0)));
 
-        notificationSlider = componentsFactory.getSlider(-40, 6, map.get("notification").getDb().intValue());
+        notificationSlider = componentsFactory.getSlider(-40, 6, map.get("notification").getDb().intValue(),AppThemeColor.SETTINGS_BG);
         notificationSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -67,7 +67,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
                 ));
             }
         });
-        chatScannerSlider = componentsFactory.getSlider(-40, 6, map.get("chat_scanner").getDb().intValue());
+        chatScannerSlider = componentsFactory.getSlider(-40, 6, map.get("chat_scanner").getDb().intValue(),AppThemeColor.SETTINGS_BG);
         chatScannerSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -77,7 +77,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
                 ));
             }
         });
-        clicksSlider = componentsFactory.getSlider(-40, 6, map.get("clicks").getDb().intValue());
+        clicksSlider = componentsFactory.getSlider(-40, 6, map.get("clicks").getDb().intValue(),AppThemeColor.SETTINGS_BG);
         clicksSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -87,7 +87,7 @@ public class SoundSettingsPanel extends ConfigurationPanel {
                 ));
             }
         });
-        updateSlider = componentsFactory.getSlider(-40, 6, map.get("update").getDb().intValue());
+        updateSlider = componentsFactory.getSlider(-40, 6, map.get("update").getDb().intValue(),AppThemeColor.SETTINGS_BG);
         updateSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {

@@ -87,15 +87,11 @@ public class NotificationPanelSettings extends ConfigurationPanel{
     private JPanel closeOnKickPanel() {
         JPanel topPanel = componentsFactory.getTransparentPanel(new GridLayout(2,2));
         topPanel.add(componentsFactory.getTextLabel("Close Notification panel on Kick:", FontStyle.REGULAR));
-        dismissCheckBox = new JCheckBox();
-        dismissCheckBox.setBackground(AppThemeColor.TRANSPARENT);
-        dismissCheckBox.setSelected(this.notificationService.get().isDismissAfterKick());
+        dismissCheckBox = this.componentsFactory.getCheckBox(this.notificationService.get().isDismissAfterKick());
         topPanel.add(dismissCheckBox);
 
         topPanel.add(componentsFactory.getTextLabel("Show league:", FontStyle.REGULAR));
-        showLeagueCheckBox = new JCheckBox();
-        showLeagueCheckBox.setBackground(AppThemeColor.TRANSPARENT);
-        showLeagueCheckBox.setSelected(this.notificationService.get().isShowLeague());
+        showLeagueCheckBox = this.componentsFactory.getCheckBox(this.notificationService.get().isShowLeague());
         topPanel.add(showLeagueCheckBox);
 
         topPanel.setBorder(new CompoundBorder(
@@ -183,18 +179,14 @@ public class NotificationPanelSettings extends ConfigurationPanel{
         vC.gridy++;
 
         JPanel kickWrapper = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        JCheckBox kickCheckBox = new JCheckBox();
+        JCheckBox kickCheckBox = this.componentsFactory.getCheckBox(kick);
         kickCheckBox.setBackground(AppThemeColor.TRANSPARENT);
-        kickCheckBox.setSelected(kick);
         kickWrapper.add(kickCheckBox);
         kC.gridy++;
 
-        JPanel closeWrapper = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        JCheckBox closeCheckBox = componentsFactory.getCheckBox("Close notification panel on click");
-        closeCheckBox.setBackground(AppThemeColor.TRANSPARENT);
-        closeCheckBox.setSelected(close);
-        closeWrapper.add(closeCheckBox);
-        buttonsTable.add(closeWrapper,cC);
+        JCheckBox closeCheckBox = componentsFactory.getCheckBox(close,"Close notification panel on click");
+        closeCheckBox.setPreferredSize(new Dimension(32,32));
+        buttonsTable.add(closeCheckBox,cC);
         cC.gridy++;
         ValuePair pair = new ValuePair(titleFiled, valueField, kickCheckBox, closeCheckBox);
         inputs.add(pair);
@@ -208,7 +200,7 @@ public class NotificationPanelSettings extends ConfigurationPanel{
                     inputs.remove(pair);
                     buttonsTable.remove(titleFiled);
                     buttonsTable.remove(valueField);
-                    buttonsTable.remove(closeWrapper);
+                    buttonsTable.remove(closeCheckBox);
                     buttonsTable.remove(remove);
 
                     MercuryStoreUI.packSubject.onNext(SettingsFrame.class);

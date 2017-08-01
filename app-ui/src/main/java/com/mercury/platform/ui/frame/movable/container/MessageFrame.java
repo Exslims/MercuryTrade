@@ -125,6 +125,9 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
                     .collect(Collectors.toList()).get(0);
             if(messagePanel.isExpanded()){
                 this.currentUnfoldCount--;
+                if(this.currentUnfoldCount < 0){
+                    this.currentUnfoldCount = 0;
+                }
             }
             this.remove(messagePanel);
             this.currentMessages.remove(messagePanel);
@@ -167,7 +170,6 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
         this.pack();
         if (this.currentUnfoldCount < this.unfoldCount) {
             messagePanel.expand();
-            this.currentUnfoldCount++;
         }
         if(this.currentMessages.size() > this.limitMsgCount){
             if(!expanded) {
@@ -305,6 +307,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
     private void onExpandedCountChange(){
         this.currentUnfoldCount = 0;
         this.currentMessages.forEach(MessagePanel::collapse);
+        this.currentUnfoldCount = 0;
         this.currentMessages.stream().limit(this.unfoldCount).forEach(panel -> {
             panel.expand();
             this.currentUnfoldCount++;

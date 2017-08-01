@@ -503,6 +503,11 @@ public class ComponentsFactory{
         slider.setBackground(AppThemeColor.FRAME);
         return slider;
     }
+    public JSlider getSlider(int min, int max, int value, Color background){
+        JSlider slider = this.getSlider(min,max,value);
+        slider.setBackground(background);
+        return slider;
+    }
 
     public JScrollPane getVerticalContainer(JPanel container){
         JScrollPane scrollPane = new JScrollPane(container);

@@ -4,6 +4,7 @@ import com.mercury.platform.core.misc.SoundNotifier;
 import com.mercury.platform.core.update.UpdateClientStarter;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.HistoryManager;
+import com.mercury.platform.shared.config.descriptor.adr.AdrVisibleState;
 import com.mercury.platform.shared.hotkey.HotKeysInterceptor;
 import com.mercury.platform.shared.UpdateManager;
 import com.mercury.platform.shared.config.MercuryConfigManager;
@@ -44,46 +45,55 @@ public class AppStarter {
 
         MercuryStoreCore.uiLoadedSubject.subscribe((Boolean state) -> {
             Timer timer = new Timer();
-            APP_STATUS = FrameVisibleState.SHOW;
-            MercuryStoreCore.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
-//            timer.schedule(new TimerTask() {
-//                @Override
-//                public void run() {
-//                    if(shutdown){
-//                        timer.cancel();
-//                        updateClientStarter.shutdown();
-//                        if(updating){
-//                            updateManager.doUpdate();
-//                        }
-//                        System.exit(0);
-//                    }
-//                    char[] className = new char[512];
-//                    WinDef.HWND hwnd = User32.INSTANCE.GetForegroundWindow();
-//
-//                    User32.INSTANCE.GetClassName(hwnd, className, 512);
-//
-//                    if(!Native.toString(className).equals("POEWindowClass")){
-//                        if(APP_STATUS == FrameVisibleState.SHOW) {
-//                            APP_STATUS = FrameVisibleState.HIDE;
-//                            MercuryStoreCore.frameVisibleSubject.onNext(FrameVisibleState.HIDE);
-//                        }
-//                    }else{
-//                        if(APP_STATUS == FrameVisibleState.HIDE) {
-//                            try {
-//                                Thread.sleep(delay);
-//                                delay = 100;
-//                            } catch (InterruptedException e) {
-//                                logger.error(e);
-//                            }
-//                            APP_STATUS = FrameVisibleState.SHOW;
-//                            MercuryStoreCore.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
-//                        }
-//                    }
-//                }
-//            },0,150);
+//            APP_STATUS = FrameVisibleState.SHOW;
+//            MercuryStoreCore.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if(shutdown){
+                        timer.cancel();
+                        updateClientStarter.shutdown();
+                        if(updating){
+                            updateManager.doUpdate();
+                        }
+                        System.exit(0);
+                    }
+                    char[] className = new char[512];
+                    char[] title = new char[512];
+                    WinDef.HWND hwnd = User32.INSTANCE.GetForegroundWindow();
+
+                    User32.INSTANCE.GetClassName(hwnd, className, 512);
+                    User32.INSTANCE.GetWindowText(hwnd, title, 512);
+
+                    if(Native.toString(title).equals("MercuryTrade ADR")){
+                        MercuryStoreCore.adrVisibleSubject.onNext(AdrVisibleState.SHOW);
+                    }else {
+                        MercuryStoreCore.adrVisibleSubject.onNext(AdrVisibleState.HIDE);
+                    }
+
+                    if(!Native.toString(className).equals("POEWindowClass")){
+                        if(APP_STATUS == FrameVisibleState.SHOW) {
+                            APP_STATUS = FrameVisibleState.HIDE;
+                            MercuryStoreCore.frameVisibleSubject.onNext(FrameVisibleState.HIDE);
+                        }
+                    }else{
+                        if(APP_STATUS == FrameVisibleState.HIDE) {
+                            try {
+                                Thread.sleep(delay);
+                                delay = 100;
+                            } catch (InterruptedException e) {
+                                logger.error(e);
+                            }
+                            APP_STATUS = FrameVisibleState.SHOW;
+                            MercuryStoreCore.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
+                        }
+                    }
+                }
+            },0,150);
         });
         MercuryStoreCore.showingDelaySubject.subscribe(state -> this.delay = 300);
-        MercuryStoreCore.shutdownAppSubject.subscribe(state -> System.exit(0));
+        MercuryStoreCore.shutdownAppSubject.subscribe(state -> this.shutdown = true);
+//        MercuryStoreCore.shutdownAppSubject.subscribe(state -> System.exit(0));
         MercuryStoreCore.shutdownForUpdateSubject.subscribe(state -> {
             this.updating = true;
             this.shutdown = true;

@@ -133,7 +133,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
         JPanel root = componentsFactory.getTransparentPanel();
         root.setLayout(new BoxLayout(root,BoxLayout.Y_AXIS));
         navBar = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        navBar.setBorder(BorderFactory.createEmptyBorder(20,0,21,0));
+        navBar.setBorder(BorderFactory.createEmptyBorder(20,0,26,0));
         root.add(navBar);
         return root;
     }

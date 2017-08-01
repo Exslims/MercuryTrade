@@ -37,6 +37,7 @@ public class TabInfoPanel extends JPanel implements HasUI{
         tabInfoPanel.add(tabLabel);
         JCheckBox isItQuad = componentsFactory.getCheckBox("Is it Quad?");
         isItQuad.setSelected(stashTabDescriptor.isQuad());
+        isItQuad.setPreferredSize(new Dimension(16,16));
         isItQuad.addActionListener(action->{
             stashTabDescriptor.setQuad(isItQuad.isSelected());
         });

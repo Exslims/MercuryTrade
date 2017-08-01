@@ -45,6 +45,18 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
             this.repaint();
             this.pack();
         });
+        MercuryStoreCore.adrVisibleSubject.subscribe(state -> {
+            switch (state){
+                case SHOW:{
+                    this.processingHideEvent = false;
+                    break;
+                }
+                case HIDE:{
+                    this.processingHideEvent = true;
+                    break;
+                }
+            }
+        });
         MercuryStoreUI.onDestroySubject.subscribe(state -> this.onDestroy());
     }
 
