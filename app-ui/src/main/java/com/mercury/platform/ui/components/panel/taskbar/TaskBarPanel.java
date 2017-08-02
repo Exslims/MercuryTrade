@@ -72,10 +72,10 @@ public class TaskBarPanel extends JPanel implements HasUI{
             this.repaint();
         });
         JButton adr = componentsFactory.getIconButton(
-                "app/adr_icon.png",
+                "app/overseer_icon.png",
                 24,
                 AppThemeColor.FRAME_ALPHA,
-                TooltipConstants.HIDEOUT);
+                TooltipConstants.ADR_SETTINGS);
         adr.addActionListener(action -> {
             FramesManager.INSTANCE.performAdr();
             this.repaint();

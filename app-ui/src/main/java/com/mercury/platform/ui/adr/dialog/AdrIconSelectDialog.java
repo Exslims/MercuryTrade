@@ -79,7 +79,7 @@ public class AdrIconSelectDialog extends BaseDialog<String,String[]> {
                 MercuryStoreCore.saveConfigSubject.onNext(true);
             }
         });
-        root.add(addIconButton,BorderLayout.LINE_END);
+        root.add(this.componentsFactory.wrapToSlide(addIconButton,AppThemeColor.ADR_BG),BorderLayout.LINE_END);
         JPanel wrapper = this.componentsFactory.wrapToSlide(root);
         wrapper.setBorder(BorderFactory.createEmptyBorder(4,0,4,0));
         return wrapper;

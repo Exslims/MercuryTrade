@@ -29,7 +29,7 @@ public class AdrNewProfileDialog extends BaseDialog<String, List<String>> {
 
         ProfileNameValidator profileNameValidator = new ProfileNameValidator(this.payload);
         JTextField nameField = this.componentsFactory.getTextField("", FontStyle.REGULAR, 16f);
-        nameField.setPreferredSize(new Dimension(400,26));
+        nameField.setPreferredSize(new Dimension(300,20));
         JPanel fieldPanel = this.componentsFactory.getJPanel(new BorderLayout());
         fieldPanel.add(this.componentsFactory.getTextLabel("Profile name: "),BorderLayout.LINE_START);
         fieldPanel.add(nameField,BorderLayout.CENTER);

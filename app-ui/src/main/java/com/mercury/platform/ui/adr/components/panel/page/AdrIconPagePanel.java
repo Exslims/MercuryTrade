@@ -91,8 +91,8 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
             specPanel.add(opacityLabel);
             specPanel.add(opacitySlider);
         }
-        generalPanel.add(alwaysVisibleLabel);
-        generalPanel.add(alwaysVisibleBox);
+        specPanel.add(alwaysVisibleLabel);
+        specPanel.add(alwaysVisibleBox);
         specPanel.add(delayLabel);
         specPanel.add(delayField);
         specPanel.add(fontSizeLabel);

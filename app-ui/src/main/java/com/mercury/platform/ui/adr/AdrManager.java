@@ -189,9 +189,21 @@ public class AdrManager implements AsSubscriber{
             this.selectedProfile.setSelected(false);
             this.selectProfile(profileName);
         });
+        MercuryStoreUI.adrNewProfileSubject.subscribe(profileName -> {
+            AdrProfileDescriptor profileDescriptor = new AdrProfileDescriptor();
+            profileDescriptor.setProfileName(profileName);
+            profileDescriptor.setSelected(true);
+            this.selectedProfile.setSelected(false);
+            this.selectedProfile = profileDescriptor;
+
+            this.config.getEntities().add(profileDescriptor);
+            this.adrManagerFrame.addProfileToSelect(profileName);
+            this.selectProfile(profileName);
+            MercuryStoreCore.saveConfigSubject.onNext(true);
+        });
         MercuryStoreUI.adrRemoveProfileSubject.subscribe(profile -> {
             this.config.getEntities().remove(profile);
-            this.adrManagerFrame.removeProfile(profile);
+            this.adrManagerFrame.removeProfileFromSelect(profile);
             MercuryStoreCore.saveConfigSubject.onNext(true);
         });
         MercuryStoreUI.adrRenameProfileSubject.subscribe(state -> {

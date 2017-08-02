@@ -67,5 +67,6 @@ public class AdrSingleComponentFrame extends AbstractAdrComponentFrame<AdrDurati
     public void onDestroy() {
         super.onDestroy();
         this.adrReloadSubscription.unsubscribe();
+        this.component.onDestroy();
     }
 }

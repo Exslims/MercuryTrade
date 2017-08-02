@@ -116,5 +116,6 @@ public class AdrTrackerGroupPanel extends AdrComponentPanel<AdrTrackerGroupDescr
     @Override
     public void onDestroy() {
         this.adrPostOpSubscription.unsubscribe();
+        this.cells.forEach(AdrComponentPanel::onDestroy);
     }
 }

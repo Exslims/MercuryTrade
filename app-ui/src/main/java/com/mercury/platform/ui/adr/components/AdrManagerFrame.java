@@ -154,8 +154,14 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         this.pack();
         this.repaint();
     }
-    public void removeProfile(AdrProfileDescriptor profile) {
+    public void removeProfileFromSelect(AdrProfileDescriptor profile) {
         this.profileSelector.removeItem(profile.getProfileName());
+    }
+    public void addProfileToSelect(String profileName) {
+        this.profileSelector.removeItem("Create new");
+        this.profileSelector.addItem(profileName);
+        this.profileSelector.addItem("Create new");
+        this.profileSelector.setSelectedItem(profileName);
     }
     public void onProfileRename(List<AdrProfileDescriptor> entities){
         this.profileSelector.removeAllItems();
@@ -181,10 +187,11 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
                 .map(AdrProfileDescriptor::getProfileName)
                 .collect(Collectors.toList());
         profilesNames.add("Create new");
-        profileSelector = this.componentsFactory.getComboBox(profilesNames.toArray(new String[0]));
-        profileSelector.setBorder(BorderFactory.createLineBorder(AppThemeColor.MSG_HEADER_BORDER));
-        profileSelector.setSelectedItem(this.selectedProfile.getProfileName());
-        profileSelector.addItemListener(e -> {
+        this.profileSelector = this.componentsFactory.getComboBox(profilesNames.toArray(new String[0]));
+        this.profileSelector.setPreferredSize(new Dimension(120,20));
+        this.profileSelector.setBorder(BorderFactory.createLineBorder(AppThemeColor.MSG_HEADER_BORDER));
+        this.profileSelector.setSelectedItem(this.selectedProfile.getProfileName());
+        this.profileSelector.addItemListener(e -> {
             if(e.getStateChange() == ItemEvent.SELECTED) {
                 if(!profileSelector.getSelectedItem().equals("Create new")) {
                     if(!profileSelector.getSelectedItem().equals(this.selectedProfile.getProfileName())) {
@@ -193,9 +200,9 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
                     }
                 }else {
                     profileSelector.setSelectedItem(this.selectedProfile.getProfileName());
-                    new AdrNewProfileDialog(profileName -> {
-
-                    },profileSelector,profilesNames).setVisible(true);
+                    new AdrNewProfileDialog(
+                            MercuryStoreUI.adrNewProfileSubject::onNext,
+                            profileSelector,profilesNames).setVisible(true);
                 }
             }
         });
@@ -214,7 +221,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
 //            this.tree.updateTree();
 //        });
 //        profilePanel.add(reloadButton);
-        JButton profileSettingsButton = this.componentsFactory.getIconButton("app/adr/profile_settings_icon.png", 22, AppThemeColor.FRAME, TooltipConstants.ADR_EXPORT_BUTTON);
+        JButton profileSettingsButton = this.componentsFactory.getIconButton("app/adr/profile_settings_icon.png", 18, AppThemeColor.FRAME, TooltipConstants.ADR_EXPORT_BUTTON);
         profileSettingsButton.addActionListener(action -> {
             MercuryStoreUI.adrStateSubject.onNext(new AdrPageDefinition<>(AdrPageState.PROFILES_SETTINGS,null));
         });

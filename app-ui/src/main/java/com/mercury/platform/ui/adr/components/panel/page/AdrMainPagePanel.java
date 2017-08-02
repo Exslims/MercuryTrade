@@ -123,7 +123,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
     private JPanel getButton(String iconPath, String title) {
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setBackground(AppThemeColor.SLIDE_BG);
-        JLabel iconLabel = this.componentsFactory.getIconLabel(iconPath, 72);
+        JLabel iconLabel = this.componentsFactory.getIconLabel(iconPath, 64);
         iconLabel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(4,4,4,4),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK)

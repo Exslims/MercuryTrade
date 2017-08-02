@@ -61,14 +61,15 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
             }
             SwingUtilities2.drawString(tracker, g2, progressString,
                     renderLocation.x, renderLocation.y);
-
-            FontRenderContext frc = g2.getFontRenderContext();
-            TextLayout textTl = new TextLayout(progressString, tracker.getFont(), frc);
-            Shape outline = textTl.getOutline(null);
-            g2.translate(renderLocation.x,renderLocation.y);
-            g2.setStroke(new BasicStroke(this.descriptor.getOutlineThickness()));
-            g2.setColor(this.descriptor.getOutlineColor());
-            g2.draw(outline);
+            if(this.descriptor.getOutlineThickness() > 0) {
+                FontRenderContext frc = g2.getFontRenderContext();
+                TextLayout textTl = new TextLayout(progressString, tracker.getFont(), frc);
+                Shape outline = textTl.getOutline(null);
+                g2.translate(renderLocation.x, renderLocation.y);
+                g2.setStroke(new BasicStroke(this.descriptor.getOutlineThickness()));
+                g2.setColor(this.descriptor.getOutlineColor());
+                g2.draw(outline);
+            }
         }
     }
     protected void paintBorder(Graphics g){

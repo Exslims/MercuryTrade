@@ -5,6 +5,7 @@ import com.mercury.platform.ui.adr.validator.FieldValidator;
 import com.mercury.platform.ui.adr.validator.ProfileNameValidator;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
+import com.mercury.platform.ui.dialog.AlertDialog;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
@@ -63,12 +64,16 @@ public class AdrProfilePagePanel extends AdrPagePanel<List<AdrProfileDescriptor>
             descriptor.setProfileName(value);
             MercuryStoreUI.adrRenameProfileSubject.onNext(true);
         });
-        JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 19, AppThemeColor.FRAME, TooltipConstants.ADR_EXPORT_BUTTON);
+        JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 16, AppThemeColor.FRAME, TooltipConstants.ADR_EXPORT_BUTTON);
         removeButton.addActionListener(action -> {
-            MercuryStoreUI.adrRemoveProfileSubject.onNext(descriptor);
-            this.removeAll();
-            this.init();
-            MercuryStoreUI.adrManagerRepaint.onNext(true);
+            new AlertDialog(success -> {
+                if(success) {
+                    MercuryStoreUI.adrRemoveProfileSubject.onNext(descriptor);
+                    this.removeAll();
+                    this.init();
+                    MercuryStoreUI.adrManagerRepaint.onNext(true);
+                }
+            },"Do you want to delete this profile?",this).setVisible(true);
         });
         if(descriptor.isSelected()) {
             removeButton.setEnabled(false);

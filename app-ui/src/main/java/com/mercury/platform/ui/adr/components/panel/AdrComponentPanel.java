@@ -8,6 +8,7 @@ import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.Getter;
+import rx.Subscription;
 
 import javax.swing.*;
 
@@ -17,6 +18,10 @@ public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extend
     protected T descriptor;
     protected ComponentsFactory componentsFactory;
     protected boolean inSettings;
+
+    private Subscription adrReloadSubscription;
+    private Subscription adrSelectSubscription;
+    private Subscription adrHotKeySubscription;
     public AdrComponentPanel(T descriptor, ComponentsFactory componentsFactory) {
         this.descriptor = descriptor;
         this.componentsFactory = componentsFactory;
@@ -26,20 +31,20 @@ public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extend
 
     @Override
     public void subscribe() {
-        MercuryStoreUI.adrReloadSubject.subscribe(it -> {
+        this.adrReloadSubscription = MercuryStoreUI.adrReloadSubject.subscribe(it -> {
             if(this.descriptor.equals(it)){
                 this.onUpdate();
                 this.onSelect();
             }
         });
-        MercuryStoreUI.adrSelectSubject.subscribe(it -> {
+        this.adrSelectSubscription = MercuryStoreUI.adrSelectSubject.subscribe(it -> {
             if(this.descriptor.equals(it)){
                 this.onSelect();
             }else {
                 this.onUnSelect();
             }
         });
-        MercuryStoreCore.hotKeySubject.subscribe(hotKey -> {
+        this.adrHotKeySubscription = MercuryStoreCore.hotKeySubject.subscribe(hotKey -> {
             if(this.descriptor.getHotKeyDescriptor() != null) {
                 if (this.descriptor.getHotKeyDescriptor().equals(hotKey) && !this.inSettings) {
                     this.onHotKeyPressed();
@@ -58,4 +63,11 @@ public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extend
     public abstract void onUnSelect();
     protected abstract void onHotKeyPressed();
     protected abstract void onUpdate();
+
+    @Override
+    public void onDestroy() {
+        this.adrReloadSubscription.unsubscribe();
+        this.adrSelectSubscription.unsubscribe();
+        this.adrHotKeySubscription.unsubscribe();
+    }
 }

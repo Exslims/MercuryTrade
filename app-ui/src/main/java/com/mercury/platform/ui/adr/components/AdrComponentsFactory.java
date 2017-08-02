@@ -693,7 +693,7 @@ public class AdrComponentsFactory {
                 }
             }
         });
-        JMenuItem export = this.componentsFactory.getMenuItem("Export");
+        JMenuItem export = this.componentsFactory.getMenuItem("Share");
         export.setBorder(BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.ADR_DEFAULT_BORDER));
         export.addActionListener(action -> {
             ExportHelper.exportComponent(treeNode.getData());
@@ -703,17 +703,17 @@ public class AdrComponentsFactory {
     }
 
     public JPanel getRightComponentOperationsPanel(AdrComponentDescriptor descriptor) {
-        JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 15, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_REMOVE_BUTTON);
+        JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 14, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_REMOVE_BUTTON);
         removeButton.addActionListener(action -> {
             new AlertDialog(this.getRemoveCallback(descriptor),"Do you want to delete \"" + descriptor.getTitle() + "\"component?",removeButton).setVisible(true);
         });
-        JButton visibleButton = this.componentsFactory.getIconButton("app/adr/visible_node_on.png", 15, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_EXPORT_BUTTON);
+        JButton visibleButton = this.componentsFactory.getIconButton("app/adr/visible_node_on.png", 14, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_VISIBLE_BUTTON);
         visibleButton.addActionListener(action -> {
             if(descriptor.isVisible()){
-                visibleButton.setIcon(this.componentsFactory.getIcon("app/adr/visible_node_off.png",15));
+                visibleButton.setIcon(this.componentsFactory.getIcon("app/adr/visible_node_off.png",14));
                 descriptor.setVisible(false);
             }else {
-                visibleButton.setIcon(this.componentsFactory.getIcon("app/adr/visible_node_on.png",15));
+                visibleButton.setIcon(this.componentsFactory.getIcon("app/adr/visible_node_on.png",14));
                 descriptor.setVisible(true);
             }
             MercuryStoreUI.adrReloadSubject.onNext(descriptor);
@@ -725,7 +725,7 @@ public class AdrComponentsFactory {
         return buttonsPanel;
     }
     public JPanel getLeftComponentOperationsPanel(AdrTreeNode<AdrComponentDescriptor> treeNode) {
-        JButton duplicateButton = this.componentsFactory.getIconButton("app/adr/duplicate_node.png", 16, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_EXPORT_BUTTON);
+        JButton duplicateButton = this.componentsFactory.getIconButton("app/adr/duplicate_node.png", 14, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_DUPLICATE_BUTTON);
         duplicateButton.addActionListener(action -> {
             AdrComponentDescriptor cloned = CloneHelper.cloneObject(treeNode.getData());
             if(cloned != null) {
@@ -737,7 +737,7 @@ public class AdrComponentsFactory {
                                 treeNode.getParent().getData()));
             }
         });
-        JButton moveButton = this.componentsFactory.getIconButton("app/adr/move_node.png", 15, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_EXPORT_BUTTON);
+        JButton moveButton = this.componentsFactory.getIconButton("app/adr/move_node.png", 14, AppThemeColor.SLIDE_BG, TooltipConstants.ADR_MOVE_BUTTON);
         moveButton.addActionListener(action -> {
             JPopupMenu contextMenu = this.getContextMenu(treeNode);
             contextMenu.show(moveButton,8,8);

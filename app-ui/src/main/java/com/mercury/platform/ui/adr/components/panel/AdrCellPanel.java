@@ -99,8 +99,4 @@ public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescript
         });
         MercuryStoreUI.adrRepaintSubject.onNext(true);
     }
-
-    @Override
-    public void onDestroy() {
-    }
 }

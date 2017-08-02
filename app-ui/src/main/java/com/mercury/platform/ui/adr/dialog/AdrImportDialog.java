@@ -5,7 +5,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
 import com.mercury.platform.shared.config.json.deserializer.AdrComponentJsonAdapter;
 import com.mercury.platform.shared.config.json.deserializer.AdrTrackerGroupDeserializer;
@@ -25,6 +27,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class AdrImportDialog extends AdrDialog{
@@ -105,25 +108,50 @@ public class AdrImportDialog extends AdrDialog{
         importToCurrent.addActionListener(action -> {
             List<AdrComponentDescriptor> descriptors = this.adrTree.getDescriptors();
             if(descriptors != null) {
-                descriptors.forEach(it -> {
-                    it.setComponentId(UUID.randomUUID().toString());
-                    if(it instanceof AdrTrackerGroupDescriptor){
-                        ((AdrTrackerGroupDescriptor) it).getCells().forEach(cell-> cell.setComponentId(UUID.randomUUID().toString()));
-                    }
-                });
-                AdrComponentDefinition definition = new AdrComponentDefinition();
-                definition.setDescriptors(descriptors);
-                definition.setOperations(AdrComponentOperations.NEW_FROM_IMPORT);
+                AdrComponentDefinition definition = this.prepareDefinition(descriptors);
                 MercuryStoreUI.adrComponentStateSubject.onNext(definition);
                 this.setVisible(false);
                 this.dispose();
             }
         });
         JButton createAndImport = this.componentsFactory.getBorderedButton("Create new and import");
+        createAndImport.addActionListener(action -> {
+            List<AdrComponentDescriptor> descriptors = this.adrTree.getDescriptors();
+            if (descriptors != null) {
+                List<String> profilesNames = Configuration.get()
+                        .adrConfiguration()
+                        .getEntities()
+                        .stream()
+                        .map(AdrProfileDescriptor::getProfileName)
+                        .collect(Collectors.toList());
+                profilesNames.add("Create new");
+                new AdrNewProfileDialog(
+                        profileName -> {
+                            MercuryStoreUI.adrNewProfileSubject.onNext(profileName);
+                            AdrComponentDefinition definition = this.prepareDefinition(descriptors);
+                            MercuryStoreUI.adrComponentStateSubject.onNext(definition);
+                            this.setVisible(false);
+                            this.dispose();
+                        },
+                        null, profilesNames).setVisible(true);
+            }
+        });
         buttonsPanel.add(importToCurrent);
         buttonsPanel.add(createAndImport);
         this.viewPanel.add(this.componentsFactory.wrapToSlide(buttonsPanel),BorderLayout.PAGE_END);
         return this.componentsFactory.wrapToSlide(viewPanel);
+    }
+    private AdrComponentDefinition prepareDefinition(List<AdrComponentDescriptor> descriptors){
+        descriptors.forEach(it -> {
+            it.setComponentId(UUID.randomUUID().toString());
+            if(it instanceof AdrTrackerGroupDescriptor){
+                ((AdrTrackerGroupDescriptor) it).getCells().forEach(cell-> cell.setComponentId(UUID.randomUUID().toString()));
+            }
+        });
+        AdrComponentDefinition definition = new AdrComponentDefinition();
+        definition.setDescriptors(descriptors);
+        definition.setOperations(AdrComponentOperations.NEW_FROM_IMPORT);
+        return definition;
     }
     private List<AdrComponentDescriptor> getJsonAsObject(String jsonStr){
         try {
