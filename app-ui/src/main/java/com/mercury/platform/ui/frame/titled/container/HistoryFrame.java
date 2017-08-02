@@ -117,7 +117,7 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
 
     @Override
     protected String getFrameTitle() {
-        return "History";
+        return "Mercury: History";
     }
 
     @Override

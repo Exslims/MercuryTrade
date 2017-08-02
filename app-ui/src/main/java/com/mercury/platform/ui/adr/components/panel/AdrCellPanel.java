@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.adr.components.panel;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupType;
 import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -55,10 +56,15 @@ public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescript
     protected void onHotKeyPressed() {
         this.tracker.setStringPainted(descriptor.isTextEnable());
         this.tracker.setMaskPainted(descriptor.isMaskEnable());
+        if(this.descriptor.isHotKeyRefresh()) {
+            this.tracker.abort();
+        }
         this.tracker.play();
         if(this.getParent() instanceof AdrTrackerGroupPanel){
             AdrTrackerGroupPanel parent = (AdrTrackerGroupPanel) this.getParent();
-            parent.setComponentZOrder(this,parent.getComponentCount() - 1);
+            if(parent.getDescriptor().getGroupType().equals(AdrTrackerGroupType.DYNAMIC)) {
+                parent.setComponentZOrder(this, parent.getComponentCount() - 1);
+            }
         }
     }
 

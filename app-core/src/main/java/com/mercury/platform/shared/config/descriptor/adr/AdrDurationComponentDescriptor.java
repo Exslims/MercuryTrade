@@ -12,6 +12,8 @@ public class AdrDurationComponentDescriptor extends AdrComponentDescriptor imple
     private String iconPath = "default_icon.png";
     private Double duration = 1d;
     private Double delay = 0d;
+    private float outlineThickness = 0.3f;
+    private Color outlineColor = new Color(45, 55, 54);
     private int fontSize = 28;
     private boolean textEnable = true;
     private boolean iconEnable = true;

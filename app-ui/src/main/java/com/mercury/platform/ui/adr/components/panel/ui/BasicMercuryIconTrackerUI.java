@@ -14,6 +14,9 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
+import java.awt.geom.AffineTransform;
 import java.text.DecimalFormat;
 
 
@@ -39,16 +42,16 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
     }
 
     protected void paintString(Graphics g, int x, int y, int width, int height, int amountFull) {
+
         if(descriptor.isTextEnable() && tracker.isStringPainted()) {
             float value = tracker.getValue() / 1000f;
 
-            Graphics2D g2 = (Graphics2D) g;
+            Graphics2D g2 = this.prepareAdapter(g);
             DecimalFormat decimalFormat = new DecimalFormat(descriptor.getTextFormat());
             String progressString = String.valueOf(decimalFormat.format(value));
             g2.setFont(tracker.getFont());
             Point renderLocation = getStringPlacement(g2, progressString,
                     x, y, width, height);
-            Rectangle oldClip = g2.getClipBounds();
             if (value >= descriptor.getDefaultValueTextThreshold()) {
                 g2.setColor(this.descriptor.getDefaultValueTextColor());
             } else if (value >= this.descriptor.getMediumValueTextThreshold()) {
@@ -58,10 +61,14 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
             }
             SwingUtilities2.drawString(tracker, g2, progressString,
                     renderLocation.x, renderLocation.y);
-            g2.clipRect(width, y, amountFull, height);
-            SwingUtilities2.drawString(tracker, g2, progressString,
-                    renderLocation.x, renderLocation.y);
-            g2.setClip(oldClip);
+
+            FontRenderContext frc = g2.getFontRenderContext();
+            TextLayout textTl = new TextLayout(progressString, tracker.getFont(), frc);
+            Shape outline = textTl.getOutline(null);
+            g2.translate(renderLocation.x,renderLocation.y);
+            g2.setStroke(new BasicStroke(this.descriptor.getOutlineThickness()));
+            g2.setColor(this.descriptor.getOutlineColor());
+            g2.draw(outline);
         }
     }
     protected void paintBorder(Graphics g){
@@ -101,5 +108,13 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
                             fontSizer.getLeading() -
                             fontSizer.getDescent()) / 2));
         }
+    }
+    protected Graphics2D prepareAdapter(Graphics g){
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        return g2;
     }
 }

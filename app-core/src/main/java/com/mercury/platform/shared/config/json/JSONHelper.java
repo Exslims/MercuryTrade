@@ -8,8 +8,12 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
 import com.mercury.platform.shared.config.json.deserializer.AdrComponentJsonAdapter;
 import com.mercury.platform.shared.config.json.deserializer.AdrTrackerGroupDeserializer;
+import com.mercury.platform.shared.entity.message.MercuryError;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.awt.*;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -84,5 +88,19 @@ public class JSONHelper {
             logger.error(e);
         }
 
+    }
+    public static List<AdrComponentDescriptor> getJsonAsObject(String jsonStr){
+        try {
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(AdrComponentDescriptor.class,new AdrComponentJsonAdapter())
+                    .create();
+            JsonParser jsonParser = new JsonParser();
+            return gson.fromJson(
+                    jsonParser.parse(jsonStr),
+                    new TypeToken<List<AdrComponentDescriptor>>(){}.getType());
+        }catch (IllegalStateException | JsonSyntaxException e){
+            MercuryStoreCore.errorHandlerSubject.onNext(new MercuryError("Error while importing string: " + jsonStr,e));
+            return null;
+        }
     }
 }

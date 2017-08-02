@@ -2,6 +2,7 @@ package com.mercury.platform.ui.adr.components.panel.ui.impl;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
 import com.mercury.platform.ui.adr.components.panel.ui.BasicMercuryIconTrackerUI;
+import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,10 +44,19 @@ public class MercuryProgressBarTrackerUI extends BasicMercuryIconTrackerUI<AdrPr
         g2.dispose();
         this.paintString(g, 0, 0, barRectWidth, barRectHeight, 0);
     }
+    @Override
     protected Graphics2D prepareAdapter(Graphics g){
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
-        g2.setColor(descriptor.getBackgroundColor());
+        if(this.tracker.isShowCase()){
+            if (descriptor.getBackgroundColor().getAlpha() < 10){
+                g2.setColor(AppThemeColor.ADR_TEXT_ARE_BG);
+            }else {
+                g2.setColor(descriptor.getBackgroundColor());
+            }
+        }else {
+            g2.setColor(descriptor.getBackgroundColor());
+        }
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         return g2;

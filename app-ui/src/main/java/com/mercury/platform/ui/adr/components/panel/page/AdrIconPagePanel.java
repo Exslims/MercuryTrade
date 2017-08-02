@@ -31,6 +31,7 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         JLabel iconLabel = this.componentsFactory.getTextLabel("Icon:");
 
         JLabel textFormatLabel = this.componentsFactory.getTextLabel("Text format:");
+        JLabel textOutlineLabel = this.componentsFactory.getTextLabel("Text outline:");
         JLabel fontSizeLabel = this.componentsFactory.getTextLabel("Font size:");
         JLabel invertTimerLabel = this.componentsFactory.getTextLabel("Invert timer:");
         JLabel durationLabel = this.componentsFactory.getTextLabel("Duration:");
@@ -41,87 +42,28 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         JLabel animationMaskLabel = this.componentsFactory.getTextLabel("Animation mask:");
         JLabel invertMaskLabel = this.componentsFactory.getTextLabel("Invert mask:");
 
-        JTextField titleField = this.componentsFactory.getTextField(this.payload.getTitle(), FontStyle.REGULAR,18);
-        titleField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                payload.setTitle(titleField.getText());
-                MercuryStoreUI.adrReloadSubject.onNext(payload);
-            }
-        });
-        JSlider opacitySlider = this.componentsFactory.getSlider(20,100, (int) (this.payload.getOpacity() * 100));
-        opacitySlider.setBackground(AppThemeColor.SLIDE_BG);
-        if(this.fromGroup){
-            opacitySlider.setEnabled(false);
-        }
-        opacitySlider.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                payload.setOpacity(opacitySlider.getValue() / 100f);
-                MercuryStoreUI.adrReloadSubject.onNext(payload);
-            }
-        });
+        JTextField titleField = this.adrComponentsFactory.getTitleField(this.payload);
+        JSlider opacitySlider = this.adrComponentsFactory.getOpacitySlider(this.payload);
         JPanel iconSizePanel = this.adrComponentsFactory.getComponentSizePanel(this.payload,this.fromGroup);
-        JButton hotKeyButton = this.adrComponentsFactory.getHotKeyButton(this.payload);
+        JPanel hotKeyPanel = this.adrComponentsFactory.getHotKeyPanel(this.payload);
         JPanel locationPanel = this.adrComponentsFactory.getLocationPanel(this.payload, this.fromGroup);
-        JPanel iconSelectPanel = this.adrComponentsFactory.getIconSelectPanel(this.payload);
-        JTextField fontSizeField = this.adrComponentsFactory.getSmartField(this.payload.getFontSize(), new IntegerFieldValidator(4, 1000), value -> {
-            this.payload.setFontSize(value);
-            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-        });
-        JTextField durationField = this.adrComponentsFactory.getSmartField(this.payload.getDuration(), new DoubleFieldValidator(0.1, 1000.0), value -> {
-            this.payload.setDuration(value);
-            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-        });
-        JTextField delayField = this.adrComponentsFactory.getSmartField(this.payload.getDelay(), new DoubleFieldValidator(0.01, 1000.0), value -> {
-            this.payload.setDelay(value);
-            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-        });
-        JTextField textFormatField = this.adrComponentsFactory.getSmartField(this.payload.getTextFormat(), new DoubleFormatFieldValidator(), value -> {
-            this.payload.setTextFormat(value);
-            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-        });
-        JPanel backgroundColorPanel = this.adrComponentsFactory.getHexColorPickerPanel(
-                () -> this.payload.getBackgroundColor(),
-                color -> {
-                    this.payload.setBackgroundColor(color);
-                    MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-                });
-        JCheckBox alwaysVisibleBox = this.componentsFactory.getCheckBox(this.payload.isAlwaysVisible());
-        alwaysVisibleBox.addActionListener(action -> {
-            this.payload.setAlwaysVisible(alwaysVisibleBox.isSelected());
-            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-        });
-        JCheckBox invertTimerBox = this.componentsFactory.getCheckBox(this.payload.isInvertTimer());
-        invertTimerBox.addActionListener(action -> {
-            this.payload.setInvertTimer(invertTimerBox.isSelected());
-            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-        });
-        JCheckBox invertMaskBox = this.componentsFactory.getCheckBox(this.payload.isInvertMask());
-        invertMaskBox.addActionListener(action -> {
-            this.payload.setInvertMask(invertMaskBox.isSelected());
-            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-        });
-        JCheckBox animationBox = this.componentsFactory.getCheckBox(this.payload.isMaskEnable());
-        animationBox.addActionListener(e ->
-                this.payload.setMaskEnable(animationBox.isSelected()));
-        JPanel textColorPanel = this.adrComponentsFactory.getTextColorPanel(this.payload);
-        JPanel textPanel = this.componentsFactory.getJPanel(new BorderLayout());
-        textPanel.setBackground(AppThemeColor.SLIDE_BG);
-        JCheckBox textEnableBox = this.componentsFactory.getCheckBox(this.payload.isTextEnable(),"Is text enable?");
-        textEnableBox.addActionListener(state -> this.payload.setTextEnable(textEnableBox.isSelected()));
-        textPanel.add(textEnableBox,BorderLayout.LINE_START);
-        textPanel.add(textColorPanel,BorderLayout.CENTER);
+        JPanel iconSelectPanel = this.adrComponentsFactory.getIconPanel(this.payload);
+        JTextField fontSizeField = this.adrComponentsFactory.getFontSizeField(this.payload);
+        JPanel textOutlinePanel = this.adrComponentsFactory.getTextOutlinePanel(this.payload);
+        JTextField durationField = this.adrComponentsFactory.getDurationField(this.payload);
+        JTextField delayField = this.adrComponentsFactory.getDelayField(this.payload);
+        JComboBox textFormatBox = this.adrComponentsFactory.getTextFormatBox(this.payload);
+        JPanel backgroundColorPanel = this.adrComponentsFactory.getBackgroundColorPanel(this.payload);
+        JCheckBox alwaysVisibleBox = this.adrComponentsFactory.getAlwaysVisibleBox(this.payload);
+        JCheckBox invertTimerBox = this.adrComponentsFactory.getInvertTimerBox(this.payload);
+        JCheckBox invertMaskBox = this.adrComponentsFactory.getInvertMaskBox(this.payload);
+        JCheckBox animationBox = this.adrComponentsFactory.getMaskEnableBox(this.payload);
+        JPanel textColorPanel = this.adrComponentsFactory.getExTextColorPanel(this.payload);
 
-        JPanel borderColorPanel = this.adrComponentsFactory.getBorderColorPanel(
-                this.payload,
-                color -> {
-                    this.payload.setBorderColor(color);
-                    MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-                });
+        JPanel borderColorPanel = this.adrComponentsFactory.getBorderColorPanel(this.payload);
 
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 5 : 7, 2,0,6));
-        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 9 : 10, 2,0,6));
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2,0,6));
+        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2,0,6));
         generalPanel.setBackground(AppThemeColor.SLIDE_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK),
@@ -139,26 +81,28 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
             generalPanel.add(iconSizePanel);
         }
         generalPanel.add(hotKeyLabel);
-        generalPanel.add(hotKeyButton);
+        generalPanel.add(hotKeyPanel);
         generalPanel.add(iconLabel);
         generalPanel.add(iconSelectPanel);
         generalPanel.add(durationLabel);
         generalPanel.add(durationField);
-        generalPanel.add(alwaysVisibleLabel);
-        generalPanel.add(alwaysVisibleBox);
 
         if(!this.fromGroup) {
             specPanel.add(opacityLabel);
             specPanel.add(opacitySlider);
         }
+        generalPanel.add(alwaysVisibleLabel);
+        generalPanel.add(alwaysVisibleBox);
         specPanel.add(delayLabel);
         specPanel.add(delayField);
         specPanel.add(fontSizeLabel);
         specPanel.add(fontSizeField);
         specPanel.add(textFormatLabel);
-        specPanel.add(textFormatField);
+        specPanel.add(textFormatBox);
         specPanel.add(textColorLabel);
-        specPanel.add(textPanel);
+        specPanel.add(textColorPanel);
+        specPanel.add(textOutlineLabel);
+        specPanel.add(textOutlinePanel);
         specPanel.add(borderColorLabel);
         specPanel.add(borderColorPanel);
         specPanel.add(backgroundColorLabel);

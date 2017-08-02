@@ -136,7 +136,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
 
     @Override
     protected String getFrameTitle() {
-        return "Duration Tracker";
+        return "Mercury: Overseer";
     }
 
     public void addNewNode(AdrComponentDescriptor descriptor, AdrComponentDescriptor parent) {

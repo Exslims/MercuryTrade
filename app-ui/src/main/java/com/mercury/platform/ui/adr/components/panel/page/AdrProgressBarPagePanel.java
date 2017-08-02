@@ -34,6 +34,7 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         JLabel insetsLabel = this.componentsFactory.getTextLabel("Insets:");
         JLabel iconAlignmentLabel = this.componentsFactory.getTextLabel("Icon alignment:");
         JLabel textFormatLabel = this.componentsFactory.getTextLabel("Text format:");
+        JLabel textOutlineLabel = this.componentsFactory.getTextLabel("Text outline:");
         JLabel fontSizeLabel = this.componentsFactory.getTextLabel("Font size:");
         JLabel durationLabel = this.componentsFactory.getTextLabel("Duration:");
         JLabel delayLabel = this.componentsFactory.getTextLabel("Delay:");
@@ -44,113 +45,29 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         JLabel borderColorLabel = this.componentsFactory.getTextLabel("Border color:");
         JLabel invertMaskLabel = this.componentsFactory.getTextLabel("Invert mask:");
 
-        JTextField titleField = this.componentsFactory.getTextField(this.payload.getTitle(), FontStyle.REGULAR,18);
-        titleField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                payload.setTitle(titleField.getText());
-                MercuryStoreUI.adrReloadSubject.onNext(payload);
-            }
-        });
-        JSlider opacitySlider = this.componentsFactory.getSlider(20,100, (int) (this.payload.getOpacity() * 100));
-        opacitySlider.setBackground(AppThemeColor.SLIDE_BG);
-        if(this.fromGroup){
-            opacitySlider.setEnabled(false);
-        }
-        opacitySlider.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                payload.setOpacity(opacitySlider.getValue() / 100f);
-                MercuryStoreUI.adrReloadSubject.onNext(payload);
-            }
-        });
+        JTextField titleField = this.adrComponentsFactory.getTitleField(this.payload);
+        JSlider opacitySlider = this.adrComponentsFactory.getOpacitySlider(this.payload);
         JPanel sizePanel = this.adrComponentsFactory.getComponentSizePanel(this.payload,this.fromGroup);
-        JComboBox pbOrientation = this.componentsFactory.getComboBox(new String[]{"Horizontal", "Vertical"});
-        pbOrientation.setSelectedIndex(this.payload.getOrientation().ordinal());
-        pbOrientation.addItemListener(e -> {
-            if(e.getStateChange() == ItemEvent.SELECTED) {
-                this.swapSize(this.payload);
-                this.payload.setOrientation(AdrComponentOrientation.valueOfPretty((String) pbOrientation.getSelectedItem()));
-                MercuryStoreUI.adrUpdateSubject.onNext(this.payload);
-                MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-            }
-        });
+        JComboBox pbOrientation = this.adrComponentsFactory.getPbOrientationBox(this.payload);
         JPanel locationPanel = this.adrComponentsFactory.getLocationPanel(this.payload, this.fromGroup);
-        JButton hotKeyButton = this.adrComponentsFactory.getHotKeyButton(this.payload);
-
-        JPanel iconSelectPanel = this.adrComponentsFactory.getIconSelectPanel(this.payload);
-        JPanel iconPanel = this.componentsFactory.getJPanel(new BorderLayout());
-        iconPanel.setBackground(AppThemeColor.SLIDE_BG);
-        JCheckBox iconEnableBox = this.componentsFactory.getCheckBox(this.payload.isIconEnable(),"Is icon enable?");
-        iconEnableBox.addActionListener(state -> {
-            this.payload.setIconEnable(iconEnableBox.isSelected());
-            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-            MercuryStoreUI.adrManagerPack.onNext(true);
-        });
-        iconPanel.add(iconEnableBox,BorderLayout.LINE_START);
-        iconPanel.add(iconSelectPanel,BorderLayout.CENTER);
+        JPanel hotKeyPanel = this.adrComponentsFactory.getHotKeyPanel(this.payload);
+        JPanel iconPanel = this.adrComponentsFactory.getIconPanel(this.payload);
         JPanel insetsPanel = this.adrComponentsFactory.getInsetsPanel(this.payload);
-        JComboBox iconAlignment = this.componentsFactory.getComboBox(new String[]{"Left","Right","Top","Bottom"});
-        iconAlignment.setSelectedItem(this.payload.getIconAlignment().asPretty());
-        iconAlignment.addItemListener(e -> {
-                this.payload.setIconAlignment(AdrIconAlignment.valueOfPretty((String) iconAlignment.getSelectedItem()));
-                MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-                MercuryStoreUI.adrManagerPack.onNext(true);
-        });
-        JTextField fontSizeField = this.adrComponentsFactory.getSmartField(this.payload.getFontSize(), new IntegerFieldValidator(4, 1000), value -> {
-            this.payload.setFontSize(value);
-            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-        });
-        JTextField durationField = this.adrComponentsFactory.getSmartField(this.payload.getDuration(), new DoubleFieldValidator(0.1, 1000.0), value -> {
-            this.payload.setDuration(value);
-            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-        });
-        JTextField delayField = this.adrComponentsFactory.getSmartField(this.payload.getDelay(), new DoubleFieldValidator(0.01, 1000.0), value -> {
-            this.payload.setDelay(value);
-            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-        });
-        JTextField textFormatField = this.adrComponentsFactory.getSmartField(this.payload.getTextFormat(), new DoubleFormatFieldValidator(), value -> {
-            this.payload.setTextFormat(value);
-            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-        });
-        JCheckBox invertTimerBox = this.componentsFactory.getCheckBox(this.payload.isInvertTimer());
-        invertTimerBox.addActionListener(action -> {
-            this.payload.setInvertTimer(invertTimerBox.isSelected());
-            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-        });
-        JCheckBox invertMaskBox = this.componentsFactory.getCheckBox(this.payload.isInvertMask());
-        invertMaskBox.addActionListener(action -> {
-            this.payload.setInvertMask(invertMaskBox.isSelected());
-            MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-        });
-        JPanel backgroundColorPanel = this.adrComponentsFactory.getHexColorPickerPanel(
-                () -> this.payload.getBackgroundColor(),
-                color -> {
-                    this.payload.setBackgroundColor(color);
-                    MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-                });
-        JPanel foregroundColorPanel = this.adrComponentsFactory.getHexColorPickerPanel(
-                () ->this.payload.getForegroundColor(),
-                color -> {
-                    this.payload.setForegroundColor(color);
-                    MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-                });
-        JPanel borderColorPanel = this.adrComponentsFactory.getBorderColorPanel(
-                this.payload,
-                color -> {
-                    this.payload.setBorderColor(color);
-                    MercuryStoreUI.adrReloadSubject.onNext(this.payload);
-                });
-        JPanel textColorPicker = this.adrComponentsFactory.getTextColorPanel(this.payload);
-        JPanel textColorPanel = this.componentsFactory.getJPanel(new BorderLayout());
-        textColorPanel.setBackground(AppThemeColor.ADR_BG);
-        JCheckBox textEnableBox = this.componentsFactory.getCheckBox(this.payload.isTextEnable(),"Is text enable?");
-        textEnableBox.addActionListener(state -> this.payload.setTextEnable(textEnableBox.isSelected()));
-        textColorPanel.add(textEnableBox,BorderLayout.LINE_START);
-        textColorPanel.add(textColorPicker,BorderLayout.CENTER);
+        JComboBox iconAlignment = this.adrComponentsFactory.getIconAlignment(this.payload);
+        JTextField fontSizeField = this.adrComponentsFactory.getFontSizeField(this.payload);
+        JPanel textOutlinePanel = this.adrComponentsFactory.getTextOutlinePanel(this.payload);
+        JTextField durationField = this.adrComponentsFactory.getDurationField(this.payload);
+        JTextField delayField = this.adrComponentsFactory.getDelayField(this.payload);
+        JComboBox textFormatBox = this.adrComponentsFactory.getTextFormatBox(this.payload);
+        JCheckBox invertTimerBox = this.adrComponentsFactory.getInvertTimerBox(this.payload);
+        JCheckBox invertMaskBox = this.adrComponentsFactory.getInvertMaskBox(this.payload);
+        JPanel backgroundColorPanel = this.adrComponentsFactory.getBackgroundColorPanel(this.payload);
+        JPanel foregroundColorPanel = this.adrComponentsFactory.getForegroundColorPanel(this.payload);
+        JPanel borderColorPanel = this.adrComponentsFactory.getBorderColorPanel(this.payload);
+        JPanel textColorPanel = this.adrComponentsFactory.getExTextColorPanel(this.payload);
 
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 4 : 6, 2,0,6));
-        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(this.fromGroup? 12 : 13, 2,0,6));
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2,0,6));
+        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2,0,6));
         generalPanel.setBackground(AppThemeColor.ADR_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK),
@@ -168,7 +85,7 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
             generalPanel.add(sizePanel);
         }
         generalPanel.add(hotKeyLabel);
-        generalPanel.add(hotKeyButton);
+        generalPanel.add(hotKeyPanel);
         generalPanel.add(iconLabel);
         generalPanel.add(iconPanel);
         generalPanel.add(durationLabel);
@@ -190,6 +107,8 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         specPanel.add(foregroundColorPanel);
         specPanel.add(textColorLabel);
         specPanel.add(textColorPanel);
+        specPanel.add(textOutlineLabel);
+        specPanel.add(textOutlinePanel);
         specPanel.add(insetsLabel);
         specPanel.add(insetsPanel);
         specPanel.add(fontSizeLabel);
@@ -197,7 +116,7 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         specPanel.add(borderColorLabel);
         specPanel.add(borderColorPanel);
         specPanel.add(textFormatLabel);
-        specPanel.add(textFormatField);
+        specPanel.add(textFormatBox);
         specPanel.add(invertTimerLabel);
         specPanel.add(invertTimerBox);
         specPanel.add(invertMaskLabel);
@@ -229,9 +148,5 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
             }
         });
         this.add(verticalContainer,BorderLayout.CENTER);
-    }
-
-    private void swapSize(AdrProgressBarDescriptor payload) {
-        payload.setSize(new Dimension(payload.getSize().height,payload.getSize().width));
     }
 }

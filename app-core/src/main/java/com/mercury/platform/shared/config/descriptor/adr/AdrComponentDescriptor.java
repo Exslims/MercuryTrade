@@ -21,6 +21,7 @@ public class AdrComponentDescriptor implements Serializable{
     private Point location = new Point(new Random().nextInt(600), new Random().nextInt(600));
     private Dimension size = new Dimension(64, 64);
     private HotKeyDescriptor hotKeyDescriptor = new HotKeyDescriptor();
+    private boolean hotKeyRefresh = true;
     private boolean visible = true;
     private float scale = 1f;
     private float opacity = 1f;

@@ -13,10 +13,7 @@ import com.mercury.platform.ui.adr.components.panel.ui.ValueBinder;
 import com.mercury.platform.ui.adr.dialog.ExportHelper;
 import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
 import com.mercury.platform.ui.adr.routing.AdrComponentOperations;
-import com.mercury.platform.ui.adr.validator.DoubleFieldValidator;
-import com.mercury.platform.ui.adr.validator.FieldValidator;
-import com.mercury.platform.ui.adr.validator.HexFieldValidator;
-import com.mercury.platform.ui.adr.validator.IntegerFieldValidator;
+import com.mercury.platform.ui.adr.validator.*;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.dialog.AlertDialog;
@@ -147,6 +144,20 @@ public class AdrComponentsFactory {
         });
         return button;
     }
+    public JPanel getHotKeyPanel(AdrComponentDescriptor descriptor){
+        JButton hotKeyButton = this.getHotKeyButton(descriptor);
+        JPanel hotKeyPanel = this.componentsFactory.getJPanel(new BorderLayout());
+        hotKeyPanel.setBackground(AppThemeColor.SLIDE_BG);
+        JCheckBox refreshBox = this.componentsFactory.getCheckBox(descriptor.isHotKeyRefresh(),"Always refresh?");
+        refreshBox.addActionListener(state -> {
+            descriptor.setHotKeyRefresh(refreshBox.isSelected());
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+            MercuryStoreUI.adrManagerPack.onNext(true);
+        });
+        hotKeyPanel.add(refreshBox,BorderLayout.LINE_START);
+        hotKeyPanel.add(hotKeyButton,BorderLayout.CENTER);
+        return hotKeyPanel;
+    }
 
     public JPanel getInsetsPanel(AdrDurationComponentDescriptor descriptor){
         JLabel topLabel = this.componentsFactory.getTextLabel("T:");
@@ -177,13 +188,13 @@ public class AdrComponentsFactory {
         JPanel root = this.componentsFactory.getJPanel(new GridLayout(1,8,4,0));
         root.setBackground(AppThemeColor.ADR_BG);
         root.add(topLabel);
-        root.add(topField);
+        root.add(this.componentsFactory.wrapToSlide(topField,AppThemeColor.ADR_BG));
         root.add(leftLabel);
-        root.add(leftField);
+        root.add(this.componentsFactory.wrapToSlide(leftField,AppThemeColor.ADR_BG));
         root.add(bottomLabel);
-        root.add(bottomField);
+        root.add(this.componentsFactory.wrapToSlide(bottomField,AppThemeColor.ADR_BG));
         root.add(rightLabel);
-        root.add(rightField);
+        root.add(this.componentsFactory.wrapToSlide(rightField,AppThemeColor.ADR_BG));
         return root;
     }
 
@@ -211,7 +222,7 @@ public class AdrComponentsFactory {
         root.add(selectIcon,BorderLayout.LINE_END);
         return root;
     }
-    public JPanel getTextColorPanel(AdrDurationComponentDescriptor descriptor){
+    private JPanel getTextColorPanel(AdrDurationComponentDescriptor descriptor){
         JPanel root = this.componentsFactory.getJPanel(new GridLayout(1,7,2,0));
         root.setBackground(AppThemeColor.SLIDE_BG);
 
@@ -293,16 +304,191 @@ public class AdrComponentsFactory {
                 dialog.setVisible(true);
             }
         });
-        root.add(lowValuePanel);
+        root.add(this.componentsFactory.wrapToSlide(lowValuePanel,AppThemeColor.ADR_BG,4,0,4,0));
         root.add(conditionLabel);
-        root.add(mediumThreshold);
-        root.add(mediumValuePanel);
+        root.add(this.componentsFactory.wrapToSlide(mediumThreshold,AppThemeColor.ADR_BG,4,0,4,0));
+        root.add(this.componentsFactory.wrapToSlide(mediumValuePanel,AppThemeColor.ADR_BG,4,0,4,0));
         root.add(conditionLabel1);
-        root.add(defaultThreshold);
-        root.add(defaultValuePanel);
+        root.add(this.componentsFactory.wrapToSlide(defaultThreshold,AppThemeColor.ADR_BG,4,0,4,0));
+        root.add(this.componentsFactory.wrapToSlide(defaultValuePanel,AppThemeColor.ADR_BG,4,0,4,0));
         return root;
     }
 
+    public JComboBox getTextFormatBox(AdrDurationComponentDescriptor descriptor){
+        JComboBox textFormatBox = this.componentsFactory.getComboBox(new String[]{"0", "0.0","0.00","0.000"});
+        textFormatBox.setSelectedItem(descriptor.getTextFormat());
+        textFormatBox.addItemListener(e -> {
+            if(e.getStateChange() == ItemEvent.SELECTED) {
+                descriptor.setTextFormat((String) textFormatBox.getSelectedItem());
+                MercuryStoreUI.adrUpdateSubject.onNext(descriptor);
+                MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+            }
+        });
+        return textFormatBox;
+    }
+    public JTextField getTitleField(AdrComponentDescriptor descriptor){
+        JTextField titleField = this.componentsFactory.getTextField(descriptor.getTitle(), FontStyle.REGULAR,18);
+        titleField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                descriptor.setTitle(titleField.getText());
+                MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+            }
+        });
+        return titleField;
+    }
+    public JSlider getOpacitySlider(AdrComponentDescriptor descriptor){
+        JSlider opacitySlider = this.componentsFactory.getSlider(20,100, (int) (descriptor.getOpacity() * 100));
+        opacitySlider.setBackground(AppThemeColor.SLIDE_BG);
+        opacitySlider.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                descriptor.setOpacity(opacitySlider.getValue() / 100f);
+                MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+            }
+        });
+        return opacitySlider;
+    }
+    public JTextField getFontSizeField(AdrDurationComponentDescriptor descriptor){
+        return this.getSmartField(descriptor.getFontSize(), new IntegerFieldValidator(4, 1000), value -> {
+            descriptor.setFontSize(value);
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+    }
+    public JTextField getDurationField(AdrDurationComponentDescriptor descriptor){
+        return this.getSmartField(descriptor.getDuration(), new DoubleFieldValidator(0.1, 1000.0), value -> {
+            descriptor.setDuration(value);
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+    }
+    public JTextField getDelayField(AdrDurationComponentDescriptor descriptor){
+        return this.getSmartField(descriptor.getDelay(), new DoubleFieldValidator(0.0, 1000.0), value -> {
+            descriptor.setDelay(value);
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+    }
+    public JPanel getBackgroundColorPanel(AdrDurationComponentDescriptor descriptor){
+        return this.getHexColorPickerPanel(
+                descriptor::getBackgroundColor,
+                color -> {
+                    descriptor.setBackgroundColor(color);
+                    MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+                });
+    }
+    public JPanel getTextOutlinePanel(AdrDurationComponentDescriptor descriptor){
+        JPanel textPanel = this.componentsFactory.getJPanel(new BorderLayout());
+        textPanel.setBackground(AppThemeColor.SLIDE_BG);
+        JTextField outlineThicknessField = this.getSmartField(descriptor.getOutlineThickness(), new FloatFieldValidator(0f, 20f), value -> {
+            descriptor.setOutlineThickness(value);
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+        outlineThicknessField.setPreferredSize(new Dimension(40,20));
+        JPanel outlineColor = this.getHexColorPickerPanel(
+                descriptor::getOutlineColor,
+                color -> {
+                    descriptor.setOutlineColor(color);
+                    MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+                });
+        textPanel.add(this.componentsFactory.wrapToSlide(outlineThicknessField,AppThemeColor.ADR_BG,6,6,6,4),BorderLayout.LINE_START);
+        textPanel.add(outlineColor,BorderLayout.CENTER);
+        return textPanel;
+    }
+    public JPanel getForegroundColorPanel(AdrProgressBarDescriptor descriptor){
+        return this.getHexColorPickerPanel(
+                descriptor::getForegroundColor,
+                color -> {
+                    descriptor.setForegroundColor(color);
+                    MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+                });
+    }
+    public JCheckBox getAlwaysVisibleBox(AdrDurationComponentDescriptor descriptor){
+        JCheckBox alwaysVisibleBox = this.componentsFactory.getCheckBox(descriptor.isAlwaysVisible());
+        alwaysVisibleBox.addActionListener(action -> {
+            descriptor.setAlwaysVisible(alwaysVisibleBox.isSelected());
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+        return alwaysVisibleBox;
+    }
+    public JCheckBox getInvertTimerBox(AdrDurationComponentDescriptor descriptor){
+        JCheckBox invertTimerBox = this.componentsFactory.getCheckBox(descriptor.isInvertTimer());
+        invertTimerBox.addActionListener(action -> {
+            descriptor.setInvertTimer(invertTimerBox.isSelected());
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+        return invertTimerBox;
+    }
+    public JCheckBox getInvertMaskBox(AdrDurationComponentDescriptor descriptor){
+        JCheckBox invertMaskBox = this.componentsFactory.getCheckBox(descriptor.isInvertMask());
+        invertMaskBox.addActionListener(action -> {
+            descriptor.setInvertMask(invertMaskBox.isSelected());
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+        return invertMaskBox;
+    }
+    public JCheckBox getMaskEnableBox(AdrDurationComponentDescriptor descriptor){
+        JCheckBox animationBox = this.componentsFactory.getCheckBox(descriptor.isMaskEnable());
+        animationBox.addActionListener(e ->
+                descriptor.setMaskEnable(animationBox.isSelected()));
+        return animationBox;
+    }
+    public JPanel getExTextColorPanel(AdrDurationComponentDescriptor descriptor){
+        JPanel textColorPanel = this.getTextColorPanel(descriptor);
+        JPanel textPanel = this.componentsFactory.getJPanel(new BorderLayout());
+        textPanel.setBackground(AppThemeColor.SLIDE_BG);
+        JCheckBox textEnableBox = this.componentsFactory.getCheckBox(descriptor.isTextEnable(),"Is text enable?");
+        textEnableBox.addActionListener(state -> descriptor.setTextEnable(textEnableBox.isSelected()));
+        textPanel.add(textEnableBox,BorderLayout.LINE_START);
+        textPanel.add(textColorPanel,BorderLayout.CENTER);
+        return textPanel;
+    }
+    public JPanel getBorderColorPanel(AdrDurationComponentDescriptor descriptor){
+        return this.getBorderColorPanel(
+                descriptor,
+                color -> {
+                    descriptor.setBorderColor(color);
+                    MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+                });
+    }
+    public JComboBox getPbOrientationBox(AdrProgressBarDescriptor descriptor){
+        JComboBox pbOrientation = this.componentsFactory.getComboBox(new String[]{"Horizontal", "Vertical"});
+        pbOrientation.setSelectedIndex(descriptor.getOrientation().ordinal());
+        pbOrientation.addItemListener(e -> {
+            if(e.getStateChange() == ItemEvent.SELECTED) {
+                this.swapSize(descriptor);
+                descriptor.setOrientation(AdrComponentOrientation.valueOfPretty((String) pbOrientation.getSelectedItem()));
+                MercuryStoreUI.adrUpdateSubject.onNext(descriptor);
+                MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+            }
+        });
+        return pbOrientation;
+    }
+    private void swapSize(AdrProgressBarDescriptor payload) {
+        payload.setSize(new Dimension(payload.getSize().height,payload.getSize().width));
+    }
+    public JPanel getIconPanel(AdrDurationComponentDescriptor descriptor){
+        JPanel iconSelectPanel = this.getIconSelectPanel(descriptor);
+        JPanel iconPanel = this.componentsFactory.getJPanel(new BorderLayout());
+        iconPanel.setBackground(AppThemeColor.SLIDE_BG);
+        JCheckBox iconEnableBox = this.componentsFactory.getCheckBox(descriptor.isIconEnable(),"Is icon enable?");
+        iconEnableBox.addActionListener(state -> {
+            descriptor.setIconEnable(iconEnableBox.isSelected());
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+            MercuryStoreUI.adrManagerPack.onNext(true);
+        });
+        iconPanel.add(iconEnableBox,BorderLayout.LINE_START);
+        iconPanel.add(iconSelectPanel,BorderLayout.CENTER);
+        return iconPanel;
+    }
+    public JComboBox getIconAlignment(AdrProgressBarDescriptor descriptor){
+        JComboBox iconAlignment = this.componentsFactory.getComboBox(new String[]{"Left","Right","Top","Bottom"});
+        iconAlignment.setSelectedItem(descriptor.getIconAlignment().asPretty());
+        iconAlignment.addItemListener(e -> {
+            descriptor.setIconAlignment(AdrIconAlignment.valueOfPretty((String) iconAlignment.getSelectedItem()));
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+            MercuryStoreUI.adrManagerPack.onNext(true);
+        });
+        return iconAlignment;
+    }
     public JPanel getColorPickerPanel(ValueBinder<Color> binder, DialogCallback<Color> callback){
         JPanel root = this.componentsFactory.getJPanel(new GridLayout(1,1,6,0));
         root.setBackground(AppThemeColor.SLIDE_BG);
@@ -408,7 +594,7 @@ public class AdrComponentsFactory {
         root.setBackground(AppThemeColor.SLIDE_BG);
         JCheckBox checkBox = this.componentsFactory.getCheckBox(descriptor.isBindToTextColor(),"Bind to text color?");
         checkBox.addActionListener(e -> descriptor.setBindToTextColor(checkBox.isSelected()));
-        JPanel colorPickerPanel = this.getColorPickerPanel(descriptor::getBorderColor, value -> {
+        JPanel colorPickerPanel = this.getHexColorPickerPanel(descriptor::getBorderColor, value -> {
             checkBox.setSelected(false);
             callback.onAction(value);
         });

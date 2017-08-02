@@ -25,7 +25,11 @@ public class IconBundleConfigurationServiceImpl extends BaseConfigurationService
 
     @Override
     public URL getIcon(String iconPath) {
-        return this.iconBundle.get(iconPath);
+        URL url = this.iconBundle.get(iconPath);
+        if(url == null){
+            url = this.iconBundle.get("default_icon.png");
+        }
+        return url;
     }
 
     @Override
@@ -60,7 +64,6 @@ public class IconBundleConfigurationServiceImpl extends BaseConfigurationService
     @Override
     public List<String> getDefaultBundle(){
         return Arrays.stream(new String[] {
-                "no_icon.png",
                 "default_icon.png",
                 "Abyssal_Cry_skill_icon.png",
                 "Ancestral_Protector_skill_icon.png",

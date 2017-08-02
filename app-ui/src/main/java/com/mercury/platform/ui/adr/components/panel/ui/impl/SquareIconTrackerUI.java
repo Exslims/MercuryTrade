@@ -29,12 +29,21 @@ public class SquareIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescri
         }
 
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setComposite(AlphaComposite.getInstance(tracker.getBackground().equals(AppThemeColor.TRANSPARENT)? AlphaComposite.CLEAR : AlphaComposite.SRC_OVER));
-        g2.setColor(tracker.getBackground());
+        g2.setComposite(AlphaComposite.getInstance(descriptor.getBackgroundColor().getAlpha() == 0? AlphaComposite.CLEAR : AlphaComposite.SRC));
+        if(this.tracker.isShowCase()){
+            if (descriptor.getBackgroundColor().getAlpha() < 10){
+                g2.setColor(AppThemeColor.ADR_TEXT_ARE_BG);
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
+            }else {
+                g2.setColor(descriptor.getBackgroundColor());
+            }
+        }else {
+            g2.setColor(descriptor.getBackgroundColor());
+        }
         g2.fillRect(0,0,barRectWidth,barRectHeight);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         double sz = Math.max(barRectWidth, barRectHeight);
-        if(!descriptor.getIconPath().equals("no_icon.png")) {
+        if(descriptor.isIconEnable()) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
             try {
                 BufferedImage read = ImageIO.read(this.config.getIcon(descriptor.getIconPath()));

@@ -168,7 +168,7 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
 
     @Override
     protected String getFrameTitle() {
-        return "Chat scanner";
+        return "Mercury: Chat scanner";
     }
 
     @Override
