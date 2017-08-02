@@ -22,8 +22,8 @@ import java.util.TimerTask;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class AppStarter {
-    private static final Logger logger = LogManager.getLogger(AppStarter.class.getSimpleName());
+public class ProdStarter {
+    private static final Logger logger = LogManager.getLogger(ProdStarter.class.getSimpleName());
     public static FrameVisibleState APP_STATUS = FrameVisibleState.HIDE;
     private boolean shutdown = false;
     private volatile int delay = 100;
@@ -45,8 +45,6 @@ public class AppStarter {
 
         MercuryStoreCore.uiLoadedSubject.subscribe((Boolean state) -> {
             Timer timer = new Timer();
-//            APP_STATUS = FrameVisibleState.SHOW;
-//            MercuryStoreCore.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -93,7 +91,6 @@ public class AppStarter {
         });
         MercuryStoreCore.showingDelaySubject.subscribe(state -> this.delay = 300);
         MercuryStoreCore.shutdownAppSubject.subscribe(state -> this.shutdown = true);
-//        MercuryStoreCore.shutdownAppSubject.subscribe(state -> System.exit(0));
         MercuryStoreCore.shutdownForUpdateSubject.subscribe(state -> {
             this.updating = true;
             this.shutdown = true;

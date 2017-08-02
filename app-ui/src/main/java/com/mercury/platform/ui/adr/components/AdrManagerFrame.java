@@ -66,6 +66,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
+                    MercuryStoreCore.showingDelaySubject.onNext(true);
                     FramesManager.INSTANCE.performAdr();
                 }
             }

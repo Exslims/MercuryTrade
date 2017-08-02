@@ -4,11 +4,14 @@ import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
+import com.sun.jna.Native;
+import com.sun.jna.platform.win32.User32;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.util.*;
 
 public class ChatHelper implements AsSubscriber {
     private Robot robot;
@@ -23,6 +26,7 @@ public class ChatHelper implements AsSubscriber {
     }
 
     private void executeMessage(String message) {
+        this.gameToFront();
         StringSelection selection = new StringSelection(message);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(selection, null);
@@ -46,6 +50,7 @@ public class ChatHelper implements AsSubscriber {
         robot.keyRelease(KeyEvent.VK_ENTER);
     }
     private void openChat(String whisper) {
+        this.gameToFront();
         StringSelection selection = new StringSelection("@" + whisper);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(selection, selection);
@@ -68,7 +73,22 @@ public class ChatHelper implements AsSubscriber {
         robot.keyPress(KeyEvent.VK_SPACE);
         robot.keyRelease(KeyEvent.VK_SPACE);
     }
+    private void gameToFront(){;
+        User32.INSTANCE.EnumWindows((hWnd, arg1) -> {
+            char[] className = new char[512];
+            User32.INSTANCE.GetClassName(hWnd, className, 512);
+            String wText = Native.toString(className);
 
+            if (wText.isEmpty()) {
+                return true;
+            }
+            if (wText.equals("POEWindowClass")) {
+                User32.INSTANCE.SetForegroundWindow(hWnd);
+                return false;
+            }
+            return true;
+        }, null);
+    }
     @Override
     public void subscribe() {
         MercuryStoreCore.chatCommandSubject.subscribe(this::executeMessage);

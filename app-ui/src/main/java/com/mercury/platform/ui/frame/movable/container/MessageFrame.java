@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.frame.movable.container;
 
-import com.mercury.platform.core.AppStarter;
+import com.mercury.platform.core.ProdStarter;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
@@ -156,7 +156,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
                 style,
                 new NotificationMessageController(message),
                 this.componentsFactory);
-        if (!dnd && !this.isVisible() && AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
+        if (!dnd && !this.isVisible() && ProdStarter.APP_STATUS == FrameVisibleState.SHOW) {
             this.showComponent();
         } else {
             this.prevState = FrameVisibleState.SHOW;
@@ -175,7 +175,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
             if(!expanded) {
                 messagePanel.setVisible(false);
             }
-            if(AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
+            if(ProdStarter.APP_STATUS == FrameVisibleState.SHOW) {
                 this.setUpExpandButton();
             }
             this.expandAllFrame.incMessageCount();

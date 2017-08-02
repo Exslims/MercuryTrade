@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.frame.other;
 
-import com.mercury.platform.core.AppStarter;
+import com.mercury.platform.core.ProdStarter;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.entity.message.CurrencyMessage;
 import com.mercury.platform.shared.entity.message.ItemMessage;
@@ -119,7 +119,7 @@ public class OutMessageFrame extends AbstractComponentFrame {
     @Override
     public void subscribe() {
         MercuryStoreCore.outMessageSubject.subscribe(message -> {
-            if (!this.isVisible() && AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
+            if (!this.isVisible() && ProdStarter.APP_STATUS == FrameVisibleState.SHOW) {
                 this.setAlwaysOnTop(true);
                 this.setVisible(true);
             } else {

@@ -1,6 +1,7 @@
 package com.mercury.platform;
 
-import com.mercury.platform.core.AppStarter;
+import com.mercury.platform.core.DevStarter;
+import com.mercury.platform.core.ProdStarter;
 import com.mercury.platform.core.utils.FileMonitor;
 import com.mercury.platform.core.utils.error.ErrorHandler;
 import com.mercury.platform.shared.config.Configuration;
@@ -8,8 +9,6 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.frame.other.MercuryLoadingFrame;
 import com.mercury.platform.ui.frame.titled.GamePathChooser;
 import com.mercury.platform.ui.manager.FramesManager;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
@@ -20,7 +19,11 @@ public class AppMain {
         MercuryLoadingFrame mercuryLoadingFrame = new MercuryLoadingFrame();
         mercuryLoadingFrame.init();
         mercuryLoadingFrame.showComponent();
-        new AppStarter().startApplication();
+        if(args.length == 0) {
+            new ProdStarter().startApplication();
+        }else {
+            new DevStarter().startApplication();
+        }
         String gamePath = Configuration.get().applicationConfiguration().get().getGamePath();
         if(gamePath.equals("") || !isValidGamePath(gamePath)){
             MercuryStoreCore.appLoadingSubject.onNext(false);

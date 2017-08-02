@@ -22,7 +22,8 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
     protected AdrMouseOverListener mouseOverListener;
 
     private Subscription adrRepaintSubscription;
-    
+    private Subscription adrVisibleSubscription;
+
     public AbstractAdrComponentFrame(T descriptor) {
         super(descriptor);
         this.setBackground(AppThemeColor.TRANSPARENT);
@@ -45,13 +46,13 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
             this.repaint();
             this.pack();
         });
-        MercuryStoreCore.adrVisibleSubject.subscribe(state -> {
-            switch (state){
-                case SHOW:{
+        this.adrVisibleSubscription = MercuryStoreCore.adrVisibleSubject.subscribe(state -> {
+            switch (state) {
+                case SHOW: {
                     this.processingHideEvent = false;
                     break;
                 }
-                case HIDE:{
+                case HIDE: {
                     this.processingHideEvent = true;
                     break;
                 }
@@ -80,6 +81,7 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
     public void onDestroy() {
         this.mouseOverListener.onDestroy();
         this.adrRepaintSubscription.unsubscribe();
+        this.adrVisibleSubscription.unsubscribe();
     }
 
     @Override

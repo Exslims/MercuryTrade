@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.frame.other;
 
-import com.mercury.platform.core.AppStarter;
+import com.mercury.platform.core.ProdStarter;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
@@ -82,7 +82,7 @@ public class UpdateReadyFrame extends AbstractOverlaidFrame {
             if(deltaWidth < 0){
                 this.setLocation(tbLocation.x - Math.abs(deltaWidth), this.getLocation().y);
             }
-            if (!this.isVisible() && AppStarter.APP_STATUS == FrameVisibleState.SHOW) {
+            if (!this.isVisible() && ProdStarter.APP_STATUS == FrameVisibleState.SHOW) {
                 this.setVisible(true);
             } else {
                 this.prevState = FrameVisibleState.SHOW;

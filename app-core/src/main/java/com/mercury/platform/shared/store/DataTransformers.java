@@ -1,6 +1,6 @@
 package com.mercury.platform.shared.store;
 
-import com.mercury.platform.core.AppStarter;
+import com.mercury.platform.core.ProdStarter;
 import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import com.mercury.platform.shared.FrameVisibleState;
@@ -26,7 +26,7 @@ public class DataTransformers {
                     SoundDescriptor desc = soundService.get("notification");
                     WhisperNotifierStatus status = Configuration.get().applicationConfiguration().get().getNotifierStatus();
                     if (status == WhisperNotifierStatus.ALWAYS ||
-                            ((status == WhisperNotifierStatus.ALTAB) && (AppStarter.APP_STATUS == FrameVisibleState.HIDE))) {
+                            ((status == WhisperNotifierStatus.ALTAB) && (ProdStarter.APP_STATUS == FrameVisibleState.HIDE))) {
                         return desc;
                     }
                     return new SoundDescriptor(desc.getWavPath(),-80f);
