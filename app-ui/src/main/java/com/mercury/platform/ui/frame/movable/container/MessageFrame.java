@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 public class MessageFrame extends AbstractMovableComponentFrame implements MessagesContainer {
     private List<MessagePanel> currentMessages = new ArrayList<>();
-    private PlainConfigurationService<NotificationDescriptor> notificationService;
+    private PlainConfigurationService<NotificationDescriptor> notificationConfig;
     private boolean wasVisible;
     private FlowDirections flowDirections;
     private FlowDirections pikerDirection;
@@ -54,12 +54,12 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
         super();
         this.componentsFactory.setScale(this.scaleConfig.get("notification"));
         this.stubComponentsFactory.setScale(this.scaleConfig.get("notification"));
-        this.notificationService = Configuration.get().notificationConfiguration();
+        this.notificationConfig = Configuration.get().notificationConfiguration();
         this.processSEResize = false;
-        this.flowDirections = this.notificationService.get().getFlowDirections();
-        this.pikerDirection = this.notificationService.get().getFlowDirections();
-        this.limitMsgCount = this.notificationService.get().getLimitCount();
-        this.unfoldCount = this.notificationService.get().getUnfoldCount();
+        this.flowDirections = this.notificationConfig.get().getFlowDirections();
+        this.pikerDirection = this.notificationConfig.get().getFlowDirections();
+        this.limitMsgCount = this.notificationConfig.get().getLimitCount();
+        this.unfoldCount = this.notificationConfig.get().getUnfoldCount();
         this.currentUnfoldCount = 0;
         this.expandAllFrame = new ExpandAllFrame();
         this.buffer = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -237,14 +237,31 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
     @Override
     protected JPanel getPanelForPINSettings() {
         JPanel panel = componentsFactory.getTransparentPanel(new GridLayout(4,1));
-        panel.setBackground(AppThemeColor.FRAME);
-        JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        labelPanel.add(componentsFactory.getTextLabel(
+        panel.setBackground(AppThemeColor.ADR_BG);
+        JPanel labelPanel = componentsFactory.getTransparentPanel(new BorderLayout());
+        labelPanel.setBackground(AppThemeColor.ADR_BG);
+        JLabel headerLabel = componentsFactory.getTextLabel(
                 FontStyle.BOLD,
-                AppThemeColor.TEXT_MESSAGE,
+                this.notificationConfig.get().isNotificationEnable()?AppThemeColor.TEXT_MESSAGE:AppThemeColor.TEXT_DISABLE,
                 TextAlignment.CENTER,
                 18f,
-                "Notification panel"));
+                "Notification panel");
+        labelPanel.add(headerLabel,BorderLayout.CENTER);
+        JButton enableButton = this.componentsFactory.getBorderedButton(this.notificationConfig.get().isNotificationEnable() ? "Disable" : "Enable");
+        enableButton.addActionListener(action -> {
+            boolean notificationEnable = this.notificationConfig.get().isNotificationEnable();
+            this.notificationConfig.get().setNotificationEnable(!notificationEnable);
+            if(this.notificationConfig.get().isNotificationEnable()){
+                headerLabel.setForeground(AppThemeColor.TEXT_MESSAGE);
+            }else {
+                headerLabel.setForeground(AppThemeColor.TEXT_DISABLE);
+            }
+            enableButton.setText(!notificationEnable ? "Disable" : "Enable");
+            MercuryStoreCore.saveConfigSubject.onNext(true);
+        });
+        enableButton.setFont(this.componentsFactory.getFont(FontStyle.BOLD,18f));
+        enableButton.setPreferredSize(new Dimension(100,26));
+        labelPanel.add(this.componentsFactory.wrapToSlide(enableButton,AppThemeColor.ADR_BG),BorderLayout.LINE_END);
         panel.add(labelPanel);
         JComboBox flowDirectionPicker = componentsFactory.getComboBox(new String[]{"Upwards", "Downwards"});
         flowDirectionPicker.setSelectedIndex(FlowDirections.valueOf(flowDirections.toString()).ordinal());
@@ -259,16 +276,14 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
                     break;
                 }
             }
-            repaint();
         });
         flowDirectionPicker.setSelectedIndex(flowDirections.ordinal());
         panel.add(componentsFactory.getSettingsPanel(
                 componentsFactory.getTextLabel("Flow direction:"),flowDirectionPicker));
         JLabel limitCount = componentsFactory.getTextLabel(String.valueOf(limitMsgCount));
-        limitSlider = componentsFactory.getSlider(2, 20, limitMsgCount);
-        limitSlider.addChangeListener(e -> {
+        this.limitSlider = componentsFactory.getSlider(2, 20, limitMsgCount,AppThemeColor.ADR_BG);
+        this.limitSlider.addChangeListener(e -> {
             limitCount.setText(String.valueOf(limitSlider.getValue()));
-            repaint();
         });
         panel.add(componentsFactory.getSliderSettingsPanel(
                 componentsFactory.getTextLabel("Pre-group limit:"),
@@ -276,15 +291,14 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
                 limitSlider
                 ));
         JLabel unfoldCount = componentsFactory.getTextLabel(String.valueOf(this.unfoldCount));
-        unfoldSlider = componentsFactory.getSlider(0, 20, this.unfoldCount);
-        unfoldSlider.addChangeListener(e -> {
+        this.unfoldSlider = componentsFactory.getSlider(0, 20, this.unfoldCount,AppThemeColor.ADR_BG);
+        this.unfoldSlider.addChangeListener(e -> {
             unfoldCount.setText(String.valueOf(unfoldSlider.getValue()));
-            repaint();
         });
         panel.add(componentsFactory.getSliderSettingsPanel(
-                componentsFactory.getTextLabel("Unfold by default:"),
+                this.componentsFactory.getTextLabel("Unfold by default:"),
                 unfoldCount,
-                unfoldSlider
+                this.unfoldSlider
         ));
         panel.setPreferredSize(new Dimension((int)(400 * componentsFactory.getScale()), (int)(130*componentsFactory.getScale())));
         this.setMaximumSize(panel.getPreferredSize());
@@ -323,18 +337,18 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
     protected void onLock() {
         this.expandAllFrame.setLocationState(LocationState.DEFAULT);
         if(!this.flowDirections.equals(pikerDirection)){
-            this.notificationService.get().setFlowDirections(this.pikerDirection);
+            this.notificationConfig.get().setFlowDirections(this.pikerDirection);
             this.changeDirectionTo(pikerDirection);
             this.locationWasChanged = true;
         }
         if(this.limitMsgCount != this.limitSlider.getValue()) {
             this.limitMsgCount = this.limitSlider.getValue();
-            this.notificationService.get().setLimitCount(this.limitMsgCount);
+            this.notificationConfig.get().setLimitCount(this.limitMsgCount);
             this.onLimitCountChange();
         }
         if(this.unfoldCount != this.unfoldSlider.getValue()) {
             this.unfoldCount = this.unfoldSlider.getValue();
-            this.notificationService.get().setUnfoldCount(this.unfoldCount);
+            this.notificationConfig.get().setUnfoldCount(this.unfoldCount);
             this.onExpandedCountChange();
         }
         MercuryStoreCore.saveConfigSubject.onNext(true);
@@ -682,10 +696,11 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
                     this.setMinimumSize(null);
                     this.setVisible(true);
                     JPanel panel = componentsFactory.getTransparentPanel(new BorderLayout());
+                    panel.setBackground(AppThemeColor.ADR_BG);
                     panel.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER));
                     JLabel infoLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT,TextAlignment.LEFTOP,29f,"?");
                     infoLabel.setOpaque(true);
-                    infoLabel.setBackground(AppThemeColor.FRAME);
+                    infoLabel.setBackground(AppThemeColor.ADR_BG);
                     infoLabel.setBorder(BorderFactory.createEmptyBorder(0,3,0,0));
                     infoLabel.addMouseListener(new MouseAdapter() {
                         @Override

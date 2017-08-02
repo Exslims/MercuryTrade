@@ -33,7 +33,7 @@ public class AdrMouseOverListener<T extends AdrComponentDescriptor> extends Mous
         this.descriptor = descriptor;
         this.adrSelectSubscription = MercuryStoreUI.adrSelectSubject.subscribe(selected -> {
             if(!descriptor.equals(selected)){
-                this.source.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, AppThemeColor.ADR_DEFAULT_BORDER));
+                this.source.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
                 this.clicked = false;
             }else {
                 this.source.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER));
@@ -46,6 +46,7 @@ public class AdrMouseOverListener<T extends AdrComponentDescriptor> extends Mous
         this.source.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER));
         if(this.processSelect) {
             this.clicked = !this.clicked;
+            this.source.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER));
             MercuryStoreUI.adrSelectSubject.onNext(this.descriptor);
             MercuryStoreUI.adrComponentStateSubject.onNext(
                     new AdrComponentDefinition(
@@ -66,7 +67,7 @@ public class AdrMouseOverListener<T extends AdrComponentDescriptor> extends Mous
     @Override
     public void mouseExited(MouseEvent e) {
         if(!this.clicked) {
-            this.source.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, AppThemeColor.ADR_DEFAULT_BORDER));
+            this.source.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
         }
         this.source.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }

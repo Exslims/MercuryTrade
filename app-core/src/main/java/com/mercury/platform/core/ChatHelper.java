@@ -73,7 +73,7 @@ public class ChatHelper implements AsSubscriber {
         robot.keyPress(KeyEvent.VK_SPACE);
         robot.keyRelease(KeyEvent.VK_SPACE);
     }
-    private void gameToFront(){;
+    private void gameToFront(){
         User32.INSTANCE.EnumWindows((hWnd, arg1) -> {
             char[] className = new char[512];
             User32.INSTANCE.GetClassName(hWnd, className, 512);

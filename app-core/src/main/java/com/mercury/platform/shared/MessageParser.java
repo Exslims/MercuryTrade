@@ -9,17 +9,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 public class MessageParser {
     private final static String poeTradeStashTabPattern = "^(.*\\s)?(.+):.+ to buy your (.+) listed for (\\d+(\\.\\d+)?)? (.+) in (.*?)\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\)(.*|\\s*)$";
+    private final static String poeAppPattern = "^(.*\\s)?(.+):\\s*?wtb\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash\\s+?\"(.*?)\";\\s+?left\\s+?(\\d+?),\\s+?top\\s+(\\d+?)\\)\\s*?(.*)$";
     private final static String poeTradePattern = "^(.*\\s)?(.+):.+ to buy your (.+) listed for (\\d+(\\.\\d+)?)? (.+) in (.+)(\\.+|\\s+)(.*)$";
     private final static String poeCurrencyPattern = "^(.*\\s)?(.+):.+ to buy your (\\d+(\\.\\d+)?)? (.+) for my (\\d+(\\.\\d+)?)? (.+) in (.*?)\\.\\s*(.*)$";
     private final static String poeTradeNoBuyout = "^(.*\\s)?(.+):.+ to buy your (.+) in (.*?)\\.?\\s*\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\)\\s*(.*)$";
 
     private Pattern poeTradeItemPattern;
+    private Pattern poeAppItemPattern;
     private Pattern poeTradeStashItemPattern;
     private Pattern poeTradeCurrencyPattern;
     private Pattern poeTradeNoBuyoutPattern;
 
     public MessageParser() {
         poeTradeItemPattern = Pattern.compile(poeTradePattern);
+        poeAppItemPattern = Pattern.compile(poeAppPattern);
         poeTradeStashItemPattern = Pattern.compile(poeTradeStashTabPattern);
         poeTradeCurrencyPattern = Pattern.compile(poeCurrencyPattern);
         poeTradeNoBuyoutPattern = Pattern.compile(poeTradeNoBuyout);
@@ -27,6 +30,28 @@ public class MessageParser {
 
     public Message parse(String fullMessage){
         String sourceMessage = StringUtils.substringAfter(fullMessage, "From ");
+        Matcher poeAppItemMatcher = poeAppItemPattern.matcher(sourceMessage);
+        if(poeAppItemMatcher.find()){
+            ItemMessage message = new ItemMessage();
+            message.setSourceString(fullMessage);
+            message.setWhisperNickname(poeAppItemMatcher.group(2));
+            message.setItemName(poeAppItemMatcher.group(3));
+            if(poeAppItemMatcher.group(5) != null) {
+                message.setCurCount(Double.parseDouble(poeAppItemMatcher.group(5)));
+                message.setCurrency(poeAppItemMatcher.group(6));
+            }else {
+                message.setCurCount(0d);
+                message.setCurrency("???");
+            }
+            message.setLeague(poeAppItemMatcher.group(7));
+            if(poeAppItemMatcher.group(8) != null) {
+                message.setTabName(poeAppItemMatcher.group(8));
+                message.setLeft(Integer.parseInt(poeAppItemMatcher.group(9)));
+                message.setTop(Integer.parseInt(poeAppItemMatcher.group(10)));
+            }
+            message.setOffer(poeAppItemMatcher.group(11));
+            return message;
+        }
         Matcher poeTradeStashItemMatcher = poeTradeStashItemPattern.matcher(sourceMessage);
         if(poeTradeStashItemMatcher.find()){
             ItemMessage message = new ItemMessage();

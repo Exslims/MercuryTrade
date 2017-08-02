@@ -46,7 +46,7 @@ public class DevStarter {
             }
         });
         MercuryStoreCore.showingDelaySubject.subscribe(state -> this.delay = 300);
-        MercuryStoreCore.shutdownAppSubject.subscribe(state -> this.shutdown = true);
+        MercuryStoreCore.shutdownAppSubject.subscribe(state -> System.exit(0));
         MercuryStoreCore.shutdownForUpdateSubject.subscribe(state -> {
             this.updating = true;
             this.shutdown = true;

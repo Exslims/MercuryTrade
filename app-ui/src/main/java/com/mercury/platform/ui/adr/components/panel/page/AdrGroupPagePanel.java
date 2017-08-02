@@ -34,6 +34,7 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrTrackerGroupDescriptor> {
         }
         JLabel sizeLabel = this.componentsFactory.getTextLabel(sizeText);
         JLabel groupOrientationLabel = this.componentsFactory.getTextLabel("Group's orientation:");
+        JLabel pbOrientationLabel = this.componentsFactory.getTextLabel("Progress bar's orientation:");
 
         JTextField titleField = this.componentsFactory.getTextField(this.payload.getTitle(), FontStyle.BOLD,16);
         titleField.addFocusListener(new FocusAdapter() {
@@ -62,6 +63,21 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrTrackerGroupDescriptor> {
             this.payload.setGroupType(AdrTrackerGroupType.valueOfPretty((String) groupType.getSelectedItem()));
             MercuryStoreUI.adrReloadSubject.onNext(this.payload);
         });
+        JComboBox pbOrientation = this.componentsFactory.getComboBox(new String[]{"Horizontal", "Vertical"});
+        pbOrientation.setSelectedIndex(this.payload.getOrientation().ordinal());
+        pbOrientation.addItemListener(e -> {
+            if(e.getStateChange() == ItemEvent.SELECTED) {
+                AdrComponentOrientation selected = AdrComponentOrientation.valueOfPretty((String) pbOrientation.getSelectedItem());
+                Dimension dimension = new Dimension(this.payload.getSize().height, this.payload.getSize().width);
+                this.payload.setSize(dimension);
+                this.payload.getCells().forEach(it -> {
+                    it.setSize(dimension);
+                    it.setOrientation(selected);
+                });
+                MercuryStoreUI.adrUpdateSubject.onNext(this.payload);
+                MercuryStoreUI.adrReloadSubject.onNext(this.payload);
+            }
+        });
         JPanel iconSizePanel = this.adrComponentsFactory.getComponentSizePanel(this.payload,this.fromGroup);
         JComboBox groupOrientation = this.componentsFactory.getComboBox(new String[]{"Horizontal", "Vertical"});
         groupOrientation.setSelectedIndex(this.payload.getOrientation().ordinal());
@@ -69,8 +85,8 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrTrackerGroupDescriptor> {
             this.payload.setOrientation(AdrComponentOrientation.valueOfPretty((String) groupOrientation.getSelectedItem()));
             MercuryStoreUI.adrReloadSubject.onNext(this.payload);
         });
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(3, 2,0,6));
-        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(4, 2,0,6));
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2,0,6));
+        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2,0,6));
         generalPanel.setBackground(AppThemeColor.ADR_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER),
@@ -84,7 +100,10 @@ public class AdrGroupPagePanel extends AdrPagePanel<AdrTrackerGroupDescriptor> {
         generalPanel.add(locationPanel);
         generalPanel.add(sizeLabel);
         generalPanel.add(iconSizePanel);
-
+//        if(this.payload.getContentType().equals(AdrTrackerGroupContentType.PROGRESS_BARS)){
+//            generalPanel.add(pbOrientationLabel);
+//            generalPanel.add(pbOrientation);
+//        }
 
         specPanel.add(opacityLabel);
         specPanel.add(opacitySlider);

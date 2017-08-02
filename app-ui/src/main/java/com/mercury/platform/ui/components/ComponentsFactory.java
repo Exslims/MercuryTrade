@@ -432,6 +432,7 @@ public class ComponentsFactory{
         slider.setPreferredSize(elementsSize);
         countLabel.setPreferredSize(countSize);
         JPanel panel = getTransparentPanel(new GridBagLayout());
+        panel.setBackground(AppThemeColor.ADR_BG);
         GridBagConstraints titleGc = new GridBagConstraints();
         GridBagConstraints countGc = new GridBagConstraints();
         GridBagConstraints sliderGc = new GridBagConstraints();
@@ -454,23 +455,10 @@ public class ComponentsFactory{
         return panel;
     }
     public JPanel getSettingsPanel(JLabel titleLabel, Component component){
-        Dimension elementsSize = convertSize(new Dimension(130, 30));
-        titleLabel.setPreferredSize(elementsSize);
-        component.setPreferredSize(elementsSize);
-        JPanel panel = getTransparentPanel(new GridBagLayout());
-        GridBagConstraints titleGc = new GridBagConstraints();
-        GridBagConstraints sliderGc = new GridBagConstraints();
-        titleGc.weightx = 0.5f;
-        sliderGc.weightx = 0.5f;
-        titleGc.fill = GridBagConstraints.HORIZONTAL;
-        sliderGc.fill = GridBagConstraints.HORIZONTAL;
-        titleGc.anchor = GridBagConstraints.NORTHWEST;
-        sliderGc.anchor = GridBagConstraints.NORTHWEST;
-        titleGc.gridx = 0;
-        sliderGc.gridx = 1;
-
-        panel.add(titleLabel,titleGc);
-        panel.add(component,sliderGc);
+        JPanel panel = getTransparentPanel(new GridLayout(1,2));
+        panel.setBackground(AppThemeColor.ADR_BG);
+        panel.add(titleLabel);
+        panel.add(component);
         return panel;
     }
     public Font getFont(FontStyle style, float fontSize){

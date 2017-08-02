@@ -36,7 +36,6 @@ public class AdrIconNodePanel extends AdrNodePanel<AdrIconDescriptor> {
         this.tracker = new MercuryTracker(this.descriptor);
         this.tracker.setPreferredSize(new Dimension(48, 48));
         this.tracker.setShowCase(true);
-        this.tracker.setStringPainted(false);
         this.tracker.setValue(new Random().nextInt((int) (this.descriptor.getDuration() * 1000)));
         this.tracker.setFont(new ComponentsFactory().getFont(FontStyle.BOLD, 20));
         this.tracker.setBackground(AppThemeColor.ADR_TEXT_ARE_BG);
