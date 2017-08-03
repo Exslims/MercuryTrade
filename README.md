@@ -19,7 +19,7 @@ Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issue
 
 ---
  <p align="center">
- <img src="http://i.imgur.com/H6uieAC.png"/>
+ <img src="http://i.imgur.com/VjzWm5F.png"/>
   </p>
 
 **MercuryTrade** is an overlay application for Path of Exile written in Java. It's designed to facilitate all possible trading interactions providing a much better user experience for the players. The program went through countless design iterations and made by active Path of Exile players who use this tool themselves on a regular basis.
@@ -27,11 +27,17 @@ Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issue
 ---
 ## FUNCTIONALITY:
 ---
-&nbsp; *Major feature:* **Aura Duration Tracker**
+&nbsp; *Major feature:* **Mercury: Overseer**
 
-<p align="center">
-  <img src="http://i.imgur.com/2KFkiwr.png"/>
-</p>
+ <p align="center">
+ <img src="http://i.imgur.com/pZDTOlC.png"/>
+  </p>
+
+todo 
+
+ <p align="center">
+ <img src="http://i.imgur.com/wmQ788q.png"/>
+  </p>
 
 todo 
 
