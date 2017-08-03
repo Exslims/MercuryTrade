@@ -30,13 +30,13 @@ Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issue
 &nbsp; *Major feature:* **Mercury: Overseer**
 
 <p align="center">
-  <img src=" <img src="http://i.imgur.com/pZDTOlC.png""/>
+  <img src=" <img src="http://i.imgur.com/pZDTOlC.png"/>
 </p>
 
 todo 
 
 <p align="center">
-  <img src=" <img src="http://i.imgur.com/wmQ788q.png""/>
+  <img src=" <img src="http://i.imgur.com/wmQ788q.png"/>
 </p>
 
 todo 
