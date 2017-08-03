@@ -41,6 +41,7 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         JLabel borderColorLabel = this.componentsFactory.getTextLabel("Border color:");
         JLabel animationMaskLabel = this.componentsFactory.getTextLabel("Animation mask:");
         JLabel invertMaskLabel = this.componentsFactory.getTextLabel("Invert mask:");
+        JLabel maskColorLabel = this.componentsFactory.getTextLabel("Mask color:");
 
         JTextField titleField = this.adrComponentsFactory.getTitleField(this.payload);
         JSlider opacitySlider = this.adrComponentsFactory.getOpacitySlider(this.payload);
@@ -59,6 +60,7 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         JCheckBox invertMaskBox = this.adrComponentsFactory.getInvertMaskBox(this.payload);
         JCheckBox animationBox = this.adrComponentsFactory.getMaskEnableBox(this.payload);
         JPanel textColorPanel = this.adrComponentsFactory.getExTextColorPanel(this.payload);
+        JPanel maskColorPanel = this.adrComponentsFactory.getForegroundColorPanel(this.payload);
 
         JPanel borderColorPanel = this.adrComponentsFactory.getBorderColorPanel(this.payload);
 
@@ -107,6 +109,8 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         specPanel.add(borderColorPanel);
         specPanel.add(backgroundColorLabel);
         specPanel.add(backgroundColorPanel);
+        specPanel.add(maskColorLabel);
+        specPanel.add(maskColorPanel);
         specPanel.add(invertTimerLabel);
         specPanel.add(invertTimerBox);
         specPanel.add(animationMaskLabel);

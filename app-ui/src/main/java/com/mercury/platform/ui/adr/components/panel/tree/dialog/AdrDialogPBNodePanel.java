@@ -29,7 +29,6 @@ public class AdrDialogPBNodePanel extends AdrNodePanel<AdrProgressBarDescriptor>
         root.setBackground(AppThemeColor.SLIDE_BG);
         MercuryTracker tracker = new MercuryTracker(descriptor);
         tracker.setValue((int) ((descriptor.getDuration()/2) * 1000));
-        tracker.setStringPainted(false);
         tracker.setPreferredSize(new Dimension(180, 30));
         tracker.setShowCase(true);
         root.add(tracker);

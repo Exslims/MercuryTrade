@@ -68,8 +68,8 @@ public class SquareIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescri
 
             foreground.intersect(background);
 
-            g2.setPaint(new Color(59, 59, 59));
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+            g2.setPaint(this.descriptor.getForegroundColor());
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
             g2.fill(foreground);
         }
 

@@ -393,7 +393,7 @@ public class AdrComponentsFactory {
         textPanel.add(outlineColor,BorderLayout.CENTER);
         return textPanel;
     }
-    public JPanel getForegroundColorPanel(AdrProgressBarDescriptor descriptor){
+    public JPanel getForegroundColorPanel(AdrDurationComponentDescriptor descriptor){
         return this.getHexColorPickerPanel(
                 descriptor::getForegroundColor,
                 color -> {
@@ -436,7 +436,10 @@ public class AdrComponentsFactory {
         JPanel textPanel = this.componentsFactory.getJPanel(new BorderLayout());
         textPanel.setBackground(AppThemeColor.SLIDE_BG);
         JCheckBox textEnableBox = this.componentsFactory.getCheckBox(descriptor.isTextEnable(),"Is text enable?");
-        textEnableBox.addActionListener(state -> descriptor.setTextEnable(textEnableBox.isSelected()));
+        textEnableBox.addActionListener(state -> {
+            descriptor.setTextEnable(textEnableBox.isSelected());
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
         textPanel.add(textEnableBox,BorderLayout.LINE_START);
         textPanel.add(textColorPanel,BorderLayout.CENTER);
         return textPanel;

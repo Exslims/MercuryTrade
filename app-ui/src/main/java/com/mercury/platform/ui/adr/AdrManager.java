@@ -67,8 +67,8 @@ public class AdrManager implements AsSubscriber{
     }
     public void enableSettings(){
         this.state = AdrState.SETTINGS;
-        this.adrManagerFrame.showComponent();
         this.frames.forEach(AbstractAdrFrame::enableSettings);
+        this.adrManagerFrame.showComponent();
     }
     public void disableSettings(){
         this.state = AdrState.DEFAULT;

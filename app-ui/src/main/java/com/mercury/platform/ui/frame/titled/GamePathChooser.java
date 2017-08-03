@@ -2,6 +2,7 @@ package com.mercury.platform.ui.frame.titled;
 
 import com.mercury.platform.core.utils.FileMonitor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
+import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.apache.logging.log4j.LogManager;
@@ -80,15 +81,18 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
 
     private JPanel getMiscPanel(){
         JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton closeButton = componentsFactory.getBorderedButton("Close");
-        closeButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if(!readyToStart) {
-                    System.exit(0);
-                }
+        JButton cancelButton = componentsFactory.getButton(
+                FontStyle.BOLD,
+                AppThemeColor.FRAME,
+                BorderFactory.createLineBorder(AppThemeColor.BORDER),
+                "Cancel",
+                16f);
+        cancelButton.addActionListener(action -> {
+            if(!this.readyToStart) {
+                System.exit(0);
             }
         });
+        cancelButton.setPreferredSize(new Dimension(120,26));
         JButton saveButton = componentsFactory.getBorderedButton("Save");
         saveButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -98,7 +102,7 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
                         readyToStart = true;
                         statusLabel.setText("Success!");
                         saveButton.setEnabled(false);
-                        closeButton.setEnabled(false);
+                        cancelButton.setEnabled(false);
                         statusLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
                         pack();
                         repaint();
@@ -120,8 +124,9 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
                 }
             }
         });
+        saveButton.setPreferredSize(new Dimension(120,26));
         miscPanel.add(saveButton);
-        miscPanel.add(closeButton);
+        miscPanel.add(cancelButton);
         return miscPanel;
     }
     private boolean isValidGamePath(String gamePath){

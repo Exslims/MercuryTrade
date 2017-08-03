@@ -17,6 +17,7 @@ import java.awt.*;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,9 @@ public class JSONHelper {
     private String dataSource;
 
     public JSONHelper(String dataSource){
+        this.dataSource = dataSource;
+    }
+    public JSONHelper(){
         this.dataSource = dataSource;
     }
     public <T> List<T> readArrayData(TypeToken<List<T>> typeToken){
@@ -88,6 +92,25 @@ public class JSONHelper {
             logger.error(e);
         }
 
+    }
+    public List<AdrComponentDescriptor> getJsonAsObjectFromFile(String filePath){
+        try {
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(AdrComponentDescriptor.class,new AdrComponentJsonAdapter())
+                    .create();
+            JsonParser jsonParser = new JsonParser();
+            try(JsonReader reader = new JsonReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(filePath)))) {
+                return gson.fromJson(
+                        jsonParser.parse(reader),
+                        new TypeToken<List<AdrComponentDescriptor>>(){}.getType());
+            } catch (IOException e) {
+                MercuryStoreCore.errorHandlerSubject.onNext(new MercuryError("Error while importing from file:",e));
+            }
+        }catch (IllegalStateException | JsonSyntaxException e){
+            MercuryStoreCore.errorHandlerSubject.onNext(new MercuryError("Error while importing from file:",e));
+            return null;
+        }
+        return null;
     }
     public static List<AdrComponentDescriptor> getJsonAsObject(String jsonStr){
         try {

@@ -32,7 +32,6 @@ public class AdrDialogIconNodePanel extends AdrNodePanel<AdrIconDescriptor> {
         MercuryTracker tracker = new MercuryTracker(this.descriptor);
         tracker.setPreferredSize(new Dimension(48, 48));
         tracker.setShowCase(true);
-        tracker.setStringPainted(false);
         tracker.setValue(new Random().nextInt((int) (this.descriptor.getDuration() * 1000)));
         tracker.setFont(new ComponentsFactory().getFont(FontStyle.BOLD, 20));
         tracker.setBackground(AppThemeColor.ADR_TEXT_ARE_BG);

@@ -26,7 +26,7 @@ public class AdrDialogGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescrip
     @Override
     protected void update() {
         this.groupLabel.setText(descriptor.getTitle());
-        this.groupLabel.setIcon(componentsFactory.getIcon(this.adrComponentsFactory.getGroupTypeIconPath(this.descriptor), 48));
+        this.groupLabel.setIcon(componentsFactory.getIcon(this.adrComponentsFactory.getGroupTypeIconPath(this.descriptor), 36));
     }
 
     @Override
@@ -44,13 +44,13 @@ public class AdrDialogGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescrip
 
     private JPanel getTopPanel(){
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
-        JButton expandButton = this.componentsFactory.getIconButton("app/adr/node_expand.png", 20, AppThemeColor.FRAME, "");
+        JButton expandButton = this.componentsFactory.getIconButton("app/adr/node_expand.png", 16, AppThemeColor.FRAME, "");
         expandButton.addActionListener(action -> {
             if(this.container.isVisible()){
-                expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_expand.png",20));
+                expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_expand.png",16));
                 this.container.setVisible(false);
             }else {
-                expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_collapse.png",20));
+                expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_collapse.png",16));
                 this.container.setVisible(true);
             }
             MercuryStoreUI.adrManagerPack.onNext(true);
@@ -61,6 +61,7 @@ public class AdrDialogGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescrip
         this.groupLabel.setBackground(AppThemeColor.FRAME);
         this.groupLabel.setFont(componentsFactory.getFont(FontStyle.REGULAR, 16));
         this.groupLabel.setText(descriptor.getTitle());
+        this.groupLabel.setIcon(componentsFactory.getIcon(this.adrComponentsFactory.getGroupTypeIconPath(this.descriptor), 36));
         this.groupLabel.setPreferredSize(new Dimension(170, 30));
         this.groupLabel.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 2));
 
