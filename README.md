@@ -27,10 +27,16 @@ Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issue
 ---
 ## FUNCTIONALITY:
 ---
-&nbsp; *Major feature:* **Aura Duration Tracker**
+&nbsp; *Major feature:* **Mercury: Overseer**
 
 <p align="center">
-  <img src="http://i.imgur.com/2KFkiwr.png"/>
+  <img src=" <img src="http://i.imgur.com/pZDTOlC.png""/>
+</p>
+
+todo 
+
+<p align="center">
+  <img src=" <img src="http://i.imgur.com/wmQ788q.png""/>
 </p>
 
 todo 
