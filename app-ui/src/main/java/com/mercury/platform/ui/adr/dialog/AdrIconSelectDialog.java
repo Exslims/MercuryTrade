@@ -9,11 +9,13 @@ import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.dialog.BaseDialog;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AdrIconSelectDialog extends BaseDialog<String,String[]> {
     private JList iconsList;
@@ -56,7 +58,20 @@ public class AdrIconSelectDialog extends BaseDialog<String,String[]> {
     private JPanel getFilterPanel(){
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.add(this.componentsFactory.getTextLabel("Filter:"),BorderLayout.LINE_START);
-        root.add(this.componentsFactory.getTextField("Filter:", FontStyle.REGULAR,15),BorderLayout.CENTER);
+        JTextField filterField = this.componentsFactory.getTextField("Filter:", FontStyle.REGULAR, 15);
+        filterField.addActionListener(action -> {
+            List<String> entities = this.config.getDefaultBundle();
+            entities.addAll(this.config.getEntities());
+            if(filterField.getText().equals("")){
+                this.iconsList.setListData(entities.toArray());
+            }else {
+                List<String> collect = entities.stream()
+                        .filter(name -> StringUtils.containsIgnoreCase(name, filterField.getText()))
+                        .collect(Collectors.toList());
+                this.iconsList.setListData(collect.toArray());
+            }
+        });
+        root.add(filterField,BorderLayout.CENTER);
         root.setBackground(AppThemeColor.SLIDE_BG);
         root.setBorder(
                 BorderFactory.createCompoundBorder(

@@ -17,7 +17,7 @@ public class IconsListCellRenderer implements ListCellRenderer<String> {
     public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
-        JLabel iconLabel = this.componentsFactory.getIconLabel(this.config.getIcon(value), 64);
+        JLabel iconLabel = this.componentsFactory.getIconLabel(this.config.getIcon(value), 48);
         root.add(iconLabel,BorderLayout.CENTER);
 
         if(isSelected){
