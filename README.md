@@ -33,7 +33,9 @@ Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issue
  <img src="http://i.imgur.com/K79RBBK.png"/>
   </p>
 
-todo 
+**Overseer** is a huge platform within the app made specifically to track things. We are talking about tracking your flasks, vaal buffs, cooldowns and other things you tell it to. Incorporating this feature into your PoE toolbox will make your experience with Path of Exile more enjoyable than ever before as your durations won't be getting lost behind the whole garbage-clutter of the Buffs bar. Being extremely flexible and customizable you can tailor it however you want.
+
+Overseer is essentially "a customizable and nicely looking set of overlay timers": you press a button and it tracks the time since - that's it. It's obviously 100% legit as there is no interaction with the game whatsoever. It's basically a clever trick, but gets the job done.
 
 &nbsp; *Major feature:* **Notification**
 
