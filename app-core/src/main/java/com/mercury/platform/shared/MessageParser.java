@@ -22,8 +22,7 @@ public class MessageParser {
     }
 
     public Message parse(String fullMessage){
-        String sourceMessage = StringUtils.substringAfter(fullMessage, "From ");
-        Matcher poeAppItemMatcher = poeAppItemPattern.matcher(sourceMessage);
+        Matcher poeAppItemMatcher = poeAppItemPattern.matcher(fullMessage);
         if(poeAppItemMatcher.find()){
             ItemMessage message = new ItemMessage();
             message.setSourceString(fullMessage);
@@ -45,7 +44,7 @@ public class MessageParser {
             message.setOffer(poeAppItemMatcher.group(11));
             return message;
         }
-        Matcher poeTradeStashItemMatcher = poeTradeStashItemPattern.matcher(sourceMessage);
+        Matcher poeTradeStashItemMatcher = poeTradeStashItemPattern.matcher(fullMessage);
         if(poeTradeStashItemMatcher.find()){
             ItemMessage message = new ItemMessage();
             message.setSourceString(fullMessage);
@@ -65,7 +64,7 @@ public class MessageParser {
             message.setOffer(poeTradeStashItemMatcher.group(11));
             return message;
         }
-        Matcher poeTradeCurrencyMatcher = poeTradeCurrencyPattern.matcher(sourceMessage);
+        Matcher poeTradeCurrencyMatcher = poeTradeCurrencyPattern.matcher(fullMessage);
         if(poeTradeCurrencyMatcher.find()){
             CurrencyMessage message = new CurrencyMessage();
             message.setSourceString(fullMessage);

@@ -65,6 +65,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         progressBar.setTitle("progress bar");
         progressBar.setSize(new Dimension(240, 30));
         progressBar.setType(AdrComponentType.PROGRESS_BAR);
+        progressBar.setForegroundColor(new Color(22,126,138));
         return progressBar;
     }
 
