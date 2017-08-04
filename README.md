@@ -21,8 +21,8 @@ Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issue
  <p align="center">
  <img src="http://i.imgur.com/VjzWm5F.png"/>
   </p>
-
-**MercuryTrade** is an overlay application for Path of Exile written in Java. It's designed to facilitate all possible trading interactions providing a much better user experience for the players. The program went through countless design iterations and made by active Path of Exile players who use this tool themselves on a regular basis.
+  
+**MercuryTrade** is an overlay application for Path of Exile written in Java. Initially designed to facilitate trading interactions, today it's an immense platform that drastically improves user experience for the players. It went through countless design iterations and made by active Path of Exile players who use this tool themselves on a regular basis.
 
 ---
 ## FUNCTIONALITY:
@@ -33,7 +33,9 @@ Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issue
  <img src="http://i.imgur.com/K79RBBK.png"/>
   </p>
 
-todo 
+**Overseer** is a huge platform within the app made specifically to track things. We are talking about tracking your flasks, vaal buffs, cooldowns and other things you tell it to. Incorporating this feature into your PoE toolbox will make your experience with Path of Exile more enjoyable than ever before as your durations won't be getting lost behind the whole garbage-clutter of the Buffs bar. Being extremely flexible and customizable you can tailor it however you want.
+
+Overseer is essentially "a customizable and nicely looking set of overlay timers": you press a button and it tracks the time since - that's it. It's obviously 100% legit as there is no interaction with the game whatsoever. It's basically a clever trick, but gets the job done.
 
 &nbsp; *Major feature:* **Notification**
 
