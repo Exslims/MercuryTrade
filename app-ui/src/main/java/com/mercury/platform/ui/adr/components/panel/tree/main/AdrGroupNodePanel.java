@@ -4,7 +4,6 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrNodePanel;
 import com.mercury.platform.ui.adr.components.panel.tree.model.AdrTreeNode;
-import com.mercury.platform.ui.adr.dialog.ExportHelper;
 import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
 import com.mercury.platform.ui.adr.routing.AdrPageState;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -85,7 +84,7 @@ public class AdrGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescriptor> {
         });
         JButton exportButton = this.componentsFactory.getIconButton("app/adr/export_node.png", 14, AppThemeColor.FRAME, TooltipConstants.ADR_EXPORT_BUTTON);
         exportButton.addActionListener(action -> {
-            ExportHelper.exportComponent(this.descriptor);
+            MercuryStoreUI.adrExportSubject.onNext(this.descriptor);
         });
         JPanel buttonsPanel = this.componentsFactory.getJPanel(new GridLayout(1, 3));
         buttonsPanel.add(addButton);

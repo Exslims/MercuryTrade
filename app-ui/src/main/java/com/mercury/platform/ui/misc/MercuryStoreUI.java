@@ -47,6 +47,7 @@ public class MercuryStoreUI {
     public static final PublishSubject<Boolean> adrManagerPack = PublishSubject.create();
     public static final PublishSubject<Boolean> adrManagerRepaint = PublishSubject.create();
     public static final PublishSubject<Boolean> adrRepaintSubject = PublishSubject.create();
+    public static final PublishSubject<AdrComponentDescriptor> adrExportSubject = PublishSubject.create();
     public static final PublishSubject<AdrComponentDescriptor> adrUpdateSubject = PublishSubject.create();
 
     public static final PublishSubject<Boolean> onDestroySubject = PublishSubject.create();

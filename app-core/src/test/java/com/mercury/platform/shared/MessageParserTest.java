@@ -17,7 +17,7 @@ public class MessageParserTest {
         parser = new MessageParser();
     }
 
-
+    @Test
     public void testPoeTrade()  throws Exception{
         ItemMessage message1 = (ItemMessage) parser.parse("@From <TEST> Pubesmannen: Hi, I would like to buy your Bronn's Lithe Cutthroat's Garb listed for 1 alteration in Hardcore Legacy (stash tab \"Maps\"; position: left 5, top 6)");
         assertEquals(message1.getWhisperNickname(),"Pubesmannen");
@@ -33,36 +33,8 @@ public class MessageParserTest {
         assertEquals(message2.getCurCount(),new Double(15));
 
         assertEquals(message2.getOffer()," offer 32");
-
-//        ItemMessage message3 = (ItemMessage) parser.parse("@From <TEST> Pubesmannen: Hi, I would like to buy your Bronn's Lithe Cutthroat's Garb listed for 15 exalt in Legacy");
-//        assertEquals(message3.getWhisperNickname(),"Pubesmannen");
-//        assertEquals(message3.getItemName(),"Bronn's Lithe Cutthroat's Garb");
-//        assertEquals(message3.getCurrency(),"exalt");
-//        assertEquals(message3.getCurCount(),new Double(15));
-//        assertEquals(message3.getOffer(),"");
-
-        ItemMessage message4 = (ItemMessage) parser.parse("@From <TEST> Pubesmannen: Hi, I would like to buy your Bronn's Lithe Cutthroat's Garb listed for 15 exalt in Hardcore Legacy 123");
-        assertEquals(message4.getWhisperNickname(),"Pubesmannen");
-        assertEquals(message4.getItemName(),"Bronn's Lithe Cutthroat's Garb");
-        assertEquals(message4.getCurrency(),"exalt");
-        assertEquals(message4.getCurCount(),new Double(15));
-        assertEquals(message4.getOffer(),"123");
-
-//        ItemMessage message5 = (ItemMessage) parser.parse("@From <TEST> Pubesmannen: Hi, I would like to buy your Bronn's Lithe Cutthroat's Garb listed for 15 exalt in Standard,123123123");
-//        assertEquals(message5.getWhisperNickname(),"Pubesmannen");
-//        assertEquals(message5.getItemName(),"Bronn's Lithe Cutthroat's Garb");
-//        assertEquals(message5.getCurrency(),"exalt");
-//        assertEquals(message5.getCurCount(),new Double(15));
-//        assertEquals(message5.getOffer(),",123123123");
-
-//        ItemMessage message6 = (ItemMessage) parser.parse("@From <TEST> Pubesmannen: Hi, I would like to buy your Bronn's Lithe Cutthroat's Garb listed for 15 exalt in Hardcore,123123123");
-//        assertEquals(message6.getWhisperNickname(),"Pubesmannen");
-//        assertEquals(message6.getItemName(),"Bronn's Lithe Cutthroat's Garb");
-//        assertEquals(message6.getCurrency(),"exalt");
-//        assertEquals(message6.getCurCount(),new Double(15));
-//        assertEquals(message6.getOffer(),",123123123");
     }
-
+    @Test
     public void testPoeTradeNoBuyout()  throws Exception{
         ItemMessage message1 = (ItemMessage) parser.parse("@From Pubesmannen: Hi, I would like to buy your level 1 4% Reduced Mana Support in Hardcore Legacy (stash tab \"qgems\"; position: left 12, top 4)");
         assertEquals(message1.getWhisperNickname(),"Pubesmannen");
@@ -70,72 +42,16 @@ public class MessageParserTest {
         assertEquals(message1.getCurCount(),new Double(0d));
         assertEquals(message1.getCurrency(),"???");
         assertEquals(message1.getOffer(),"");
+        assertEquals(message1.getLeague(),"Hardcore Legacy");
 
-//        ItemMessage message2 = (ItemMessage) parser.parse("@From Pubesmannen: Hi, I would like to buy your level 1 4% Reduced Mana Support in Hardcore Legacy");
-//        assertEquals(message2.getWhisperNickname(),"Pubesmannen");
-//        assertEquals(message2.getItemName(),"level 1 4% Reduced Mana Support");
-//        assertEquals(message2.getCurCount(),new Double(0d));
-//        assertEquals(message2.getCurrency(),"???");
-//        assertEquals(message2.getOffer(),"");
-
-//        ItemMessage message3 = (ItemMessage) parser.parse("@From Pubesmannen: Hi, I would like to buy your level 1 4% Reduced Mana Support in Legacy 123");
-//        assertEquals(message3.getWhisperNickname(),"Pubesmannen");
-//        assertEquals(message3.getItemName(),"level 1 4% Reduced Mana Support");
-//        assertEquals(message3.getCurCount(),new Double(0d));
-//        assertEquals(message3.getCurrency(),"???");
-//        assertEquals(message3.getOffer(),"123");
-
-        ItemMessage message4 = (ItemMessage) parser.parse("@From Pubesmannen: Hi, I would like to buy your level 1 4% Reduced Mana Support in Hardcore 123");
-        assertEquals(message4.getWhisperNickname(),"Pubesmannen");
-        assertEquals(message4.getItemName(),"level 1 4% Reduced Mana Support");
-        assertEquals(message4.getCurCount(),new Double(0d));
-        assertEquals(message4.getCurrency(),"???");
-        assertEquals(message4.getOffer(),"123");
-
-        ItemMessage message5 = (ItemMessage) parser.parse("@From Pubesmannen: Hi, I would like to buy your level 1 4% Reduced Mana Support in Standard 123");
-        assertEquals(message5.getWhisperNickname(),"Pubesmannen");
-        assertEquals(message5.getItemName(),"level 1 4% Reduced Mana Support");
-        assertEquals(message5.getCurCount(),new Double(0d));
-        assertEquals(message5.getCurrency(),"???");
-        assertEquals(message5.getOffer(),"123");
-
-        ItemMessage message6 = (ItemMessage) parser.parse("@From Pubesmannen: Hi, I would like to buy your level 1 4% Reduced Mana Support in Standard");
-        assertEquals(message6.getWhisperNickname(),"Pubesmannen");
-        assertEquals(message6.getItemName(),"level 1 4% Reduced Mana Support");
-        assertEquals(message6.getCurCount(),new Double(0d));
-        assertEquals(message6.getCurrency(),"???");
-        assertEquals(message6.getOffer(),"");
+        ItemMessage message2 = (ItemMessage) parser.parse("@From Pubesmannen: Hi, I would like to buy your level 1 4% Reduced Mana Support in Hardcore (stash tab \"qgems\"; position: left 12, top 4)");
+        assertEquals(message2.getWhisperNickname(),"Pubesmannen");
+        assertEquals(message2.getItemName(),"level 1 4% Reduced Mana Support");
+        assertEquals(message2.getCurCount(),new Double(0d));
+        assertEquals(message2.getCurrency(),"???");
+        assertEquals(message2.getOffer(),"");
+        assertEquals(message2.getLeague(),"Hardcore");
     }
-
-//    @Test
-//    public void testPoeEyeNoBuyout()  throws Exception{
-//        ItemMessage message1 = (ItemMessage) parser.parse("@From Gibso: Hi, I would like to buy your Herald of Ice listed in Legacy, offer is ");
-//        assertEquals(message1.getWhisperNickname(),"Gibso");
-//        assertEquals(message1.getItemName(),"Herald of Ice");
-//        assertEquals(message1.getOffer(),"");
-//
-//        ItemMessage message2 = (ItemMessage) parser.parse("@From Gibso: Hi, I would like to buy your Herald of Ice listed in Legacy, offer is 123");
-//        assertEquals(message2.getWhisperNickname(),"Gibso");
-//        assertEquals(message2.getItemName(),"Herald of Ice");
-//        assertEquals(message2.getOffer(),"123");
-//    }
-
-//    @Test
-//    public void testPoeApp()  throws Exception{
-//        ItemMessage message1 = (ItemMessage) parser.parse("@From Gibso: wtb Corruption Mark Harbinger Bow in breach (Shop [left:3,top:8]) listed for 1 Chaos Orb");
-//        assertEquals(message1.getWhisperNickname(),"Gibso");
-//        assertEquals(message1.getItemName(),"Corruption Mark Harbinger Bow");
-//        assertEquals(message1.getCurrency(),"chaos");
-//        assertEquals(message1.getCurCount(),new Double(1));
-//        assertEquals(message1.getOffer(),"");
-//
-//        ItemMessage message2 = (ItemMessage) parser.parse("@From Gibso: wtb Corruption Mark Harbinger Bow in breach (Shop [left:3,top:8]) listed for 15 Exalted Orb 123123");
-//        assertEquals(message2.getWhisperNickname(),"Gibso");
-//        assertEquals(message2.getItemName(),"Corruption Mark Harbinger Bow");
-//        assertEquals(message2.getCurrency(),"exalted");
-//        assertEquals(message2.getCurCount(),new Double(15));
-//        assertEquals(message2.getOffer()," 123123");
-//    }
 
     @Test
     public void testPoeCurrency()  throws Exception{

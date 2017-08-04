@@ -112,7 +112,7 @@ public class SupportPanel extends JPanel implements HasUI{
     private List<DonationPair> getDonations(){
         List<DonationPair> donations = new ArrayList<>();
         donations.add(new DonationPair("StubenZocker",0d));
-        donations.add(new DonationPair("x8 Anonymus",0d));
+        donations.add(new DonationPair("SirKultan",0d));
         return donations;
     }
 

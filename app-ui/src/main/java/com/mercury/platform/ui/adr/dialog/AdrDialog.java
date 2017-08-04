@@ -3,6 +3,7 @@ package com.mercury.platform.ui.adr.dialog;
 
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +12,7 @@ import java.awt.event.ComponentEvent;
 
 public abstract class AdrDialog<T> extends JDialog{
     protected ComponentsFactory componentsFactory = new ComponentsFactory();
+    @Getter
     protected T payload;
     public AdrDialog(Component relative, T payload) {
         this.payload = payload;

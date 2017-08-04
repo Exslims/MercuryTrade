@@ -11,24 +11,37 @@ import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
+import rx.Subscription;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.*;
 import java.util.List;
 
 public class AdrExportDialog extends AdrDialog<List<AdrComponentDescriptor>> {
     private JTextArea jsonArea;
     private AdrTreePanel adrTree;
+
     public AdrExportDialog(Component relative, List<AdrComponentDescriptor> descriptor){
         super(relative, descriptor);
         this.setTitle("Export manager");
+        this.setModal(false);
 
         MercuryStoreUI.adrManagerPack.subscribe(state -> {
             this.pack();
             this.repaint();
+        });
+        MercuryStoreUI.adrExportSubject.subscribe(other -> {
+            if(!this.isVisible()){
+                this.setVisible(true);
+                this.setLocationRelativeTo(null);
+            }
+            this.payload.add(other);
+            this.postConstruct();
         });
         this.addComponentListener(new ComponentAdapter() {
             @Override
@@ -36,8 +49,15 @@ public class AdrExportDialog extends AdrDialog<List<AdrComponentDescriptor>> {
                 postConstruct();
             }
         });
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                payload.clear();
+            }
+        });
+
     }
-    private void postConstruct() {
+    public void postConstruct() {
         this.jsonArea.setText(this.getPayloadAsJson());
         this.adrTree.setVisible(true);
         this.adrTree.updateTree();

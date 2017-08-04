@@ -5,7 +5,7 @@
         "iconType": "SQUARE",
         "iconPath": "Vaal_Discipline_skill_icon.png",
         "duration": 3.0,
-        "delay": 1.0,
+        "delay": 0.0,
         "outlineThickness": 0.2,
         "outlineColor": {
           "value": -1272105162,
@@ -15,7 +15,7 @@
         "textEnable": true,
         "iconEnable": true,
         "maskEnable": true,
-        "alwaysVisible": true,
+        "alwaysVisible": false,
         "invertMask": false,
         "invertTimer": false,
         "textFormat": "0",
@@ -799,7 +799,7 @@
   },
   {
     "iconType": "SQUARE",
-    "iconPath": "Phase_Run_skill_icon.png",
+    "iconPath": "Flame_Dash_skill_icon.png",
     "duration": 8.0,
     "delay": 0.0,
     "outlineThickness": 0.2,
@@ -811,7 +811,7 @@
     "textEnable": true,
     "iconEnable": true,
     "maskEnable": true,
-    "alwaysVisible": true,
+    "alwaysVisible": false,
     "invertMask": false,
     "invertTimer": false,
     "textFormat": "0.0",
@@ -881,7 +881,7 @@
         "iconType": "SQUARE",
         "iconPath": "Sapphire_Flask_status_icon.png",
         "duration": 3.0,
-        "delay": 1.0,
+        "delay": 0.0,
         "outlineThickness": 0.2,
         "outlineColor": {
           "value": -1272105162,
@@ -891,7 +891,7 @@
         "textEnable": true,
         "iconEnable": true,
         "maskEnable": false,
-        "alwaysVisible": true,
+        "alwaysVisible": false,
         "invertMask": false,
         "invertTimer": false,
         "textFormat": "0",
@@ -1286,8 +1286,8 @@
           "height": 64
         },
         "hotKeyDescriptor": {
-          "virtualKeyCode": 118,
-          "keyChar": "\u0000",
+          "virtualKeyCode": 49,
+          "keyChar": "1",
           "menuPressed": false,
           "shiftPressed": false,
           "controlPressed": false,
@@ -1364,8 +1364,8 @@
           "height": 64
         },
         "hotKeyDescriptor": {
-          "virtualKeyCode": 118,
-          "keyChar": "\u0000",
+          "virtualKeyCode": 50,
+          "keyChar": "2",
           "menuPressed": false,
           "shiftPressed": false,
           "controlPressed": false,
@@ -1442,8 +1442,8 @@
           "height": 64
         },
         "hotKeyDescriptor": {
-          "virtualKeyCode": 118,
-          "keyChar": "\u0000",
+          "virtualKeyCode": 51,
+          "keyChar": "3",
           "menuPressed": false,
           "shiftPressed": false,
           "controlPressed": false,
@@ -1520,8 +1520,8 @@
           "height": 64
         },
         "hotKeyDescriptor": {
-          "virtualKeyCode": 0,
-          "keyChar": "\u0000",
+          "virtualKeyCode": 52,
+          "keyChar": "4",
           "menuPressed": false,
           "shiftPressed": false,
           "controlPressed": false,
@@ -1755,7 +1755,7 @@
     "iconType": "SQUARE",
     "iconPath": "kappa_icon.png",
     "duration": 8.0,
-    "delay": 1.0,
+    "delay": 0.0,
     "outlineThickness": 0.2,
     "outlineColor": {
       "value": -1272105162,
@@ -1765,7 +1765,7 @@
     "textEnable": false,
     "iconEnable": true,
     "maskEnable": true,
-    "alwaysVisible": true,
+    "alwaysVisible": false,
     "invertMask": false,
     "invertTimer": false,
     "textFormat": "0.0",
@@ -2377,7 +2377,7 @@
         "textEnable": true,
         "iconEnable": true,
         "maskEnable": true,
-        "alwaysVisible": true,
+        "alwaysVisible": false,
         "invertMask": false,
         "invertTimer": false,
         "textFormat": "0",

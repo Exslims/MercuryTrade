@@ -8,8 +8,8 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.page.AdrPagePanel;
 import com.mercury.platform.ui.adr.components.panel.tree.main.AdrMainTreeNodeRenderer;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrTreePanel;
+import com.mercury.platform.ui.adr.dialog.AdrExportDialog;
 import com.mercury.platform.ui.adr.dialog.AdrNewProfileDialog;
-import com.mercury.platform.ui.adr.dialog.ExportHelper;
 import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
 import com.mercury.platform.ui.adr.routing.AdrPageState;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -21,13 +21,12 @@ import com.mercury.platform.ui.misc.TooltipConstants;
 import lombok.Getter;
 
 import javax.swing.*;
-import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.InsetsUIResource;
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +35,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
     private JPanel root;
     private AdrTreePanel tree;
     private JComboBox profileSelector;
+    private AdrExportDialog exportDialog;
     @Getter
     private AdrProfileDescriptor selectedProfile;
     public AdrManagerFrame(AdrProfileDescriptor selectedProfile) {
@@ -46,6 +46,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         this.setFocusableWindowState(true);
         this.setAlwaysOnTop(false);
         this.selectedProfile = selectedProfile;
+        this.exportDialog = new AdrExportDialog(this,new ArrayList<>());
         FrameDescriptor frameDescriptor = this.framesConfig.get(this.getClass().getSimpleName());
         this.setPreferredSize(frameDescriptor.getFrameSize());
         UIManager.put("MenuItem.background", AppThemeColor.ADR_BG);
@@ -208,7 +209,9 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         });
         JButton exportButton = this.componentsFactory.getIconButton("app/adr/export_node.png", 15, AppThemeColor.FRAME, TooltipConstants.ADR_EXPORT_BUTTON);
         exportButton.addActionListener(action -> {
-            ExportHelper.exportProfile(this.selectedProfile);
+            this.exportDialog.getPayload().addAll(this.selectedProfile.getContents());
+            this.exportDialog.postConstruct();
+            this.exportDialog.setVisible(true);
         });
         exportButton.setBackground(AppThemeColor.ADR_FOOTER_BG);
         profilePanel.add(exportButton);

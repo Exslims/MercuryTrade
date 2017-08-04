@@ -1,9 +1,9 @@
 {
-  "version":"1.0.1.5",
+  "version":"1.0.1.6",
   "notes":[
     {
       "title" : "Update",
-      "text" : "- Minor improvements before major update \n- Added Week Race Events",
+      "text" : "- New feature: Mercury: Overseer (check reddit).\n- New configuration system based on profiles.\n- Now Notification panel can be disabled\n- Mercury now works nicely regardless of the localization you use.\n- Added poeapp.com trade messages templates.\n- Many inner improvements.\n\nDetail information you can find on reddit in related thread. Thank you for staying with us!",
       "image" : "",
       "layout" : "VERTICAL"
     }
