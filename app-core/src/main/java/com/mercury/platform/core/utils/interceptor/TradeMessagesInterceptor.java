@@ -22,6 +22,8 @@ public class TradeMessagesInterceptor extends MessageInterceptor {
         this.config = Configuration.get().notificationConfiguration();
         this.clients.add(new EngLocalizationMatcher());
         this.clients.add(new RuLocalizationMatcher());
+        this.clients.add(new ArabicLocalizationMatcher());
+        this.clients.add(new BZLocalizationMatcher());
     }
 
     @Override
@@ -30,7 +32,6 @@ public class TradeMessagesInterceptor extends MessageInterceptor {
             LocalizationMatcher localizationMatcher = this.clients.stream()
                     .filter(matcher -> matcher.isSuitableFor(message))
                     .findAny().orElse(null);
-            localizationMatcher.trimString(message);
             Message parsedMessage = messageParser.parse(localizationMatcher.trimString(message));
             if (parsedMessage != null) {
                 MercuryStoreCore.soundSubject.onNext(SoundType.MESSAGE);
@@ -76,5 +77,26 @@ public class TradeMessagesInterceptor extends MessageInterceptor {
             return StringUtils.substringAfter(src, "@От кого");
         }
     }
+    private class ArabicLocalizationMatcher extends LocalizationMatcher{
+        @Override
+        public boolean isSuitableFor(String message) {
+            return message.contains("@จาก") && super.isSuitableFor(message);
+        }
 
+        @Override
+        public String trimString(String src) {
+            return StringUtils.substringAfter(src, "@จาก");
+        }
+    }
+    private class BZLocalizationMatcher extends LocalizationMatcher{
+        @Override
+        public boolean isSuitableFor(String message) {
+            return message.contains("@De") && super.isSuitableFor(message);
+        }
+
+        @Override
+        public String trimString(String src) {
+            return StringUtils.substringAfter(src, "@De");
+        }
+    }
 }
