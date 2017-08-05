@@ -9,16 +9,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 public class MessageParser {
     private final static String poeTradeStashTabPattern = "^(.*\\s)?(.+):.+ to buy your\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\)\\s*?(.*)$";
+    private final static String poeTradePattern = "^(.*\\s)?(.+):.+ to buy your\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.*?)$";
     private final static String poeAppPattern = "^(.*\\s)?(.+):\\s*?wtb\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash\\s+?\"(.*?)\";\\s+?left\\s+?(\\d+?),\\s+?top\\s+(\\d+?)\\)\\s*?(.*)$";
     private final static String poeCurrencyPattern = "^(.*\\s)?(.+):.+ to buy your (\\d+(\\.\\d+)?)? (.+) for my (\\d+(\\.\\d+)?)? (.+) in (.*?)\\.\\s*(.*)$";
     private Pattern poeAppItemPattern;
     private Pattern poeTradeStashItemPattern;
+    private Pattern poeTradeItemPattern;
     private Pattern poeTradeCurrencyPattern;
 
     public MessageParser() {
-        poeAppItemPattern = Pattern.compile(poeAppPattern);
-        poeTradeStashItemPattern = Pattern.compile(poeTradeStashTabPattern);
-        poeTradeCurrencyPattern = Pattern.compile(poeCurrencyPattern);
+        this.poeAppItemPattern = Pattern.compile(poeAppPattern);
+        this.poeTradeStashItemPattern = Pattern.compile(poeTradeStashTabPattern);
+        this.poeTradeItemPattern = Pattern.compile(poeTradePattern);
+        this.poeTradeCurrencyPattern = Pattern.compile(poeCurrencyPattern);
     }
 
     public Message parse(String fullMessage){
@@ -75,6 +78,22 @@ public class MessageParser {
             message.setCurrency(poeTradeCurrencyMatcher.group(8));
             message.setLeague(poeTradeCurrencyMatcher.group(9));
             message.setOffer(poeTradeCurrencyMatcher.group(10));
+            return message;
+        }
+        Matcher poeTradeItemMatcher = poeTradeItemPattern.matcher(fullMessage);
+        if(poeTradeItemMatcher.find()){
+            ItemMessage message = new ItemMessage();
+            message.setSourceString(fullMessage);
+            message.setWhisperNickname(poeTradeItemMatcher.group(2));
+            message.setItemName(poeTradeItemMatcher.group(3));
+            if(poeTradeItemMatcher.group(4) != null){
+                message.setCurCount(Double.parseDouble(poeTradeItemMatcher.group(5)));
+                message.setCurrency(poeTradeItemMatcher.group(6));
+            }else {
+                message.setCurCount(0d);
+                message.setCurrency("???");
+            }
+            message.setLeague(poeTradeItemMatcher.group(7));
             return message;
         }
         return null;

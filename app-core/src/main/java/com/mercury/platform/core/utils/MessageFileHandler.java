@@ -10,17 +10,22 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class MessageFileHandler implements AsSubscriber {
+    private static final String dateRGPattern = "^\\n[0-9]{4}\\/(0[1-9]|1[0-2])\\/(0[1-9]|[1-2][0-9]|3[0-1])\\s([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$";
     private final Logger logger = LogManager.getLogger(MessageFileHandler.class);
     private String logFilePath;
     private Date lastMessageDate = new Date();
+    private Pattern datePattern;
 
     private List<MessageInterceptor> interceptors = new ArrayList<>();
 
     public MessageFileHandler(String logFilePath) {
         this.logFilePath = logFilePath;
+        this.datePattern = Pattern.compile(dateRGPattern);
 
         this.interceptors.add(new TradeMessagesInterceptor());
         this.interceptors.add(new PlayerJoinInterceptor());
@@ -63,8 +68,14 @@ public class MessageFileHandler implements AsSubscriber {
                 .collect(Collectors.toList());
 
         List<String> resultMessages = filteredMessages.stream().filter(message -> {
-            Date date = new Date(StringUtils.substring(message, 0, 20));
-            return date.after(lastMessageDate);
+            message = StringUtils.substring(message, 0, 20);
+            Matcher matcher = datePattern.matcher(message);
+            if(matcher.find()) {
+                Date date = new Date(StringUtils.substring(message, 0, 20));
+                return date.after(lastMessageDate);
+            }else {
+                return false;
+            }
         }).collect(Collectors.toList());
         Collections.reverse(resultMessages);
         this.interceptors.forEach(interceptor -> {

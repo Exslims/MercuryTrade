@@ -135,8 +135,12 @@ public class AdrComponentsFactory {
         MercuryStoreCore.hotKeySubject.subscribe(hotKey -> {
             if(allowed) {
                 button.setBackground(AppThemeColor.BUTTON);
-                descriptor.setHotKeyDescriptor(hotKey);
-                button.setText(getButtonText(hotKey));
+                if(hotKey.getVirtualKeyCode() == 27){
+                    descriptor.setHotKeyDescriptor(new HotKeyDescriptor());
+                }else {
+                    descriptor.setHotKeyDescriptor(hotKey);
+                }
+                button.setText(getButtonText( descriptor.getHotKeyDescriptor()));
                 allowed = false;
                 MercuryStoreUI.adrReloadSubject.onNext(descriptor);
             }
