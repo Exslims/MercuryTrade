@@ -1,6 +1,5 @@
 package com.mercury.platform.ui.adr.components;
 
-import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrMouseOverListener;

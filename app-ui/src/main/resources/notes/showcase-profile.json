@@ -1286,8 +1286,8 @@
           "height": 64
         },
         "hotKeyDescriptor": {
-          "virtualKeyCode": 49,
-          "keyChar": "1",
+          "virtualKeyCode": 0,
+          "keyChar": "\u0000",
           "menuPressed": false,
           "shiftPressed": false,
           "controlPressed": false,
@@ -1364,8 +1364,8 @@
           "height": 64
         },
         "hotKeyDescriptor": {
-          "virtualKeyCode": 50,
-          "keyChar": "2",
+          "virtualKeyCode": 0,
+          "keyChar": "\u0000",
           "menuPressed": false,
           "shiftPressed": false,
           "controlPressed": false,
@@ -1442,8 +1442,8 @@
           "height": 64
         },
         "hotKeyDescriptor": {
-          "virtualKeyCode": 51,
-          "keyChar": "3",
+          "virtualKeyCode": 0,
+          "keyChar": "\u0000",
           "menuPressed": false,
           "shiftPressed": false,
           "controlPressed": false,
@@ -1520,8 +1520,8 @@
           "height": 64
         },
         "hotKeyDescriptor": {
-          "virtualKeyCode": 52,
-          "keyChar": "4",
+          "virtualKeyCode": 0,
+          "keyChar": "\u0000",
           "menuPressed": false,
           "shiftPressed": false,
           "controlPressed": false,

@@ -174,6 +174,7 @@ public class AdrManager implements AsSubscriber{
                             .filter(it -> it.getDescriptor().equals(descriptor))
                             .findAny().orElse(null);
             if(targetFrame != null) {
+                targetFrame.onDestroy();
                 this.frames.remove(targetFrame);
                 this.selectedProfile.getContents().remove(descriptor);
                 targetFrame.dispose();
