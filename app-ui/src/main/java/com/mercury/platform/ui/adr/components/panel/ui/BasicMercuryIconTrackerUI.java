@@ -52,13 +52,7 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
             g2.setFont(tracker.getFont());
             Point renderLocation = getStringPlacement(g2, progressString,
                     x, y, width, height);
-            if (value >= descriptor.getDefaultValueTextThreshold()) {
-                g2.setColor(this.descriptor.getDefaultValueTextColor());
-            } else if (value >= this.descriptor.getMediumValueTextThreshold()) {
-                g2.setColor(this.descriptor.getMediumValueTextColor());
-            } else {
-                g2.setColor(this.descriptor.getLowValueTextColor());
-            }
+            g2.setColor(this.getColorByValue());
             SwingUtilities2.drawString(tracker, g2, progressString,
                     renderLocation.x, renderLocation.y);
             if(this.descriptor.getOutlineThickness() > 0) {
@@ -66,16 +60,21 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
                 TextLayout textTl = new TextLayout(progressString, tracker.getFont(), frc);
                 Shape outline = textTl.getOutline(null);
                 g2.translate(renderLocation.x, renderLocation.y);
+                Stroke oldStroke = g2.getStroke();
                 g2.setStroke(new BasicStroke(this.descriptor.getOutlineThickness()));
+                Color oldColor = g2.getColor();
                 g2.setColor(this.descriptor.getOutlineColor());
                 g2.draw(outline);
+                g2.setColor(oldColor);
+                g2.setStroke(oldStroke);
             }
         }
     }
     protected void paintBorder(Graphics g){
         int thickness = descriptor.getThickness();
         if(thickness > 0) {
-            Graphics2D g2 = (Graphics2D) g;
+            Graphics2D g2 = this.prepareAdapter(g);
+            g2.setColor(getColorByValue());
             Stroke oldStroke = g2.getStroke();
             if(!descriptor.isBindToTextColor()) {
                 g2.setPaint(this.descriptor.getBorderColor());
@@ -83,6 +82,16 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
             g2.setStroke(new BasicStroke(thickness));
             g2.drawRect(0, 0, tracker.getWidth() - thickness, tracker.getHeight() - thickness);
             g2.setStroke(oldStroke);
+        }
+    }
+    private Color getColorByValue(){
+        float value = tracker.getValue() / 1000f;
+        if (value >= descriptor.getDefaultValueTextThreshold()) {
+            return this.descriptor.getDefaultValueTextColor();
+        } else if (value >= this.descriptor.getMediumValueTextThreshold()) {
+            return this.descriptor.getMediumValueTextColor();
+        } else {
+            return this.descriptor.getLowValueTextColor();
         }
     }
 
