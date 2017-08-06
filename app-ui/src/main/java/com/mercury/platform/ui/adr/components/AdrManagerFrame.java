@@ -9,6 +9,7 @@ import com.mercury.platform.ui.adr.components.panel.page.AdrPagePanel;
 import com.mercury.platform.ui.adr.components.panel.tree.main.AdrMainTreeNodeRenderer;
 import com.mercury.platform.ui.adr.components.panel.tree.AdrTreePanel;
 import com.mercury.platform.ui.adr.dialog.AdrExportDialog;
+import com.mercury.platform.ui.adr.dialog.AdrIconSelectDialog;
 import com.mercury.platform.ui.adr.dialog.AdrNewProfileDialog;
 import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
 import com.mercury.platform.ui.adr.routing.AdrPageState;
@@ -36,6 +37,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
     private AdrTreePanel tree;
     private JComboBox profileSelector;
     private AdrExportDialog exportDialog;
+    private AdrIconSelectDialog iconSelectDialog;
     @Getter
     private AdrProfileDescriptor selectedProfile;
     public AdrManagerFrame(AdrProfileDescriptor selectedProfile) {
@@ -47,6 +49,8 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         this.setAlwaysOnTop(false);
         this.selectedProfile = selectedProfile;
         this.exportDialog = new AdrExportDialog(this,new ArrayList<>());
+        this.iconSelectDialog = new AdrIconSelectDialog();
+        this.iconSelectDialog.setLocationRelativeTo(null);
         FrameDescriptor frameDescriptor = this.framesConfig.get(this.getClass().getSimpleName());
         this.setPreferredSize(frameDescriptor.getFrameSize());
         UIManager.put("MenuItem.background", AppThemeColor.ADR_BG);
@@ -56,7 +60,6 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         UIManager.put("ComboBox.selectionBackground", AppThemeColor.HEADER);
         UIManager.put("ComboBox.selectionForeground", AppThemeColor.ADR_POPUP_BG);
         UIManager.put("ComboBox.disabledForeground",  AppThemeColor.ADR_FOOTER_BG);
-        this.subscribe();
     }
 
     @Override
@@ -124,6 +127,10 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         });
         MercuryStoreUI.adrManagerRepaint.subscribe(state -> {
             this.repaint();
+        });
+        MercuryStoreUI.adrOpenIconSelectSubject.subscribe(callback -> {
+            this.iconSelectDialog.setCallback(callback);
+            this.iconSelectDialog.setVisible(true);
         });
     }
 

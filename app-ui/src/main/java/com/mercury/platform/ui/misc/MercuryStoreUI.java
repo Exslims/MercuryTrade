@@ -10,6 +10,7 @@ import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
 import com.mercury.platform.ui.components.panel.grid.ItemInfoPanel;
 import com.mercury.platform.ui.components.panel.grid.TabInfoPanel;
 import com.mercury.platform.ui.components.panel.message.MessagePanel;
+import com.mercury.platform.ui.dialog.DialogCallback;
 import rx.subjects.PublishSubject;
 
 import java.util.Map;
@@ -49,6 +50,7 @@ public class MercuryStoreUI {
     public static final PublishSubject<Boolean> adrRepaintSubject = PublishSubject.create();
     public static final PublishSubject<AdrComponentDescriptor> adrExportSubject = PublishSubject.create();
     public static final PublishSubject<AdrComponentDescriptor> adrUpdateSubject = PublishSubject.create();
+    public static final PublishSubject<DialogCallback<String>> adrOpenIconSelectSubject = PublishSubject.create();
 
     public static final PublishSubject<Boolean> onDestroySubject = PublishSubject.create();
 }

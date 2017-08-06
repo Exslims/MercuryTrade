@@ -15,14 +15,11 @@ public class IconsListCellRenderer implements ListCellRenderer<String> {
     private IconBundleConfigurationService config = Configuration.get().iconBundleConfiguration();
     @Override
     public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
-        JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
-        root.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
-        JLabel iconLabel = this.componentsFactory.getIconLabel(this.config.getIcon(value), 48);
-        root.add(iconLabel,BorderLayout.CENTER);
-
+        JLabel iconLabel = this.componentsFactory.getIconLabel(this.config.getIcon(value), 64);
+        iconLabel.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
         if(isSelected){
             iconLabel.setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_MESSAGE));
         }
-        return root;
+        return iconLabel;
     }
 }

@@ -216,17 +216,13 @@ public class AdrComponentsFactory {
         root.add(iconPathLabel,BorderLayout.CENTER);
         JButton selectIcon = this.componentsFactory.getBorderedButton("Select");
         selectIcon.addActionListener(action -> {
-            AdrIconSelectDialog adrIconSelectDialog = new AdrIconSelectDialog();
-            adrIconSelectDialog.setSelectedIcon(descriptor.getIconPath());
-            adrIconSelectDialog.setCallback(selectedIconPath -> {
+            MercuryStoreUI.adrOpenIconSelectSubject.onNext(selectedIconPath -> {
                 descriptor.setIconPath(selectedIconPath);
                 iconLabel.setIcon(this.componentsFactory.getIcon(this.config.getIcon(selectedIconPath),26));
                 iconPathLabel.setText(descriptor.getIconPath());
 
                 MercuryStoreUI.adrReloadSubject.onNext(descriptor);
             });
-            adrIconSelectDialog.setLocationRelativeTo(root);
-            adrIconSelectDialog.setVisible(true);
         });
         root.add(selectIcon,BorderLayout.LINE_END);
         return root;
