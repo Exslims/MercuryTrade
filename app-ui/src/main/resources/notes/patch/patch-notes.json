@@ -1,9 +1,9 @@
 {
-  "version":"1.0.1.6",
+  "version":"1.0.1.6.1",
   "notes":[
     {
-      "title" : "Update",
-      "text" : "- New feature: Mercury: Overseer (check reddit).\n- New configuration system based on profiles.\n- Now Notification panel can be disabled\n- Mercury now works nicely regardless of the localization you use.\n- Added poeapp.com trade messages templates.\n- Many backend improvements.\n\nDetailed information you can find on reddit in related thread. Thank you for staying with us!",
+      "title" : "Hotfix",
+      "text" : "Overseer:\n- Fixed a bug with tracker not working properly with multiple simultanious key presses.\n- Fixed a bug with components not being removed properly.\n- Improved the icon selection dialog performance.\n- Now you can bind left/midle/right mouse buttons as a hotkey.\n\nThanks for your fast feedback and support. New features are coming soon!",
       "image" : "",
       "layout" : "VERTICAL"
     }

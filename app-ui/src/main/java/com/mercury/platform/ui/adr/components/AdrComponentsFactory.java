@@ -126,18 +126,18 @@ public class AdrComponentsFactory {
         button.setFont(this.componentsFactory.getFont(FontStyle.BOLD, 18f));
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
                     button.setBackground(AppThemeColor.SLIDE_BG);
                     button.setText("Press any key");
                     allowed = true;
+                    button.removeMouseListener(this);
                 }
             }
         };
         button.addMouseListener(mouseAdapter);
         MercuryStoreCore.hotKeySubject.subscribe(hotKey -> {
             if (allowed) {
-                button.removeMouseListener(mouseAdapter);
                 button.setBackground(AppThemeColor.BUTTON);
                 if (hotKey.getVirtualKeyCode() == 27) {
                     descriptor.setHotKeyDescriptor(new HotKeyDescriptor());
