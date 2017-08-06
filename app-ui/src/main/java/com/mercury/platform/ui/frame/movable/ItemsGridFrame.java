@@ -125,7 +125,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         });
         tabType.setPreferredSize(new Dimension((int)(componentsFactory.getScale() * 70),tabType.getHeight()));
 
-        labelPanel.add(tabType,BorderLayout.LINE_START);
+        labelPanel.add(this.componentsFactory.wrapToSlide(tabType,AppThemeColor.FRAME),BorderLayout.LINE_START);
         Color titleColor = this.applicationConfig.get().isItemsGridEnable()?AppThemeColor.TEXT_NICKNAME:AppThemeColor.TEXT_DISABLE;
         JLabel titleLabel = componentsFactory.getTextLabel(FontStyle.BOLD, titleColor, TextAlignment.LEFTOP, 20f, "Align this grid(approximately)");
         labelPanel.add(titleLabel,BorderLayout.CENTER);

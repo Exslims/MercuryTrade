@@ -121,32 +121,38 @@ public class AdrComponentsFactory {
         return root;
     }
 
-    public JButton getHotKeyButton(AdrComponentDescriptor descriptor){
+    public JButton getHotKeyButton(AdrComponentDescriptor descriptor) {
         JButton button = this.componentsFactory.getBorderedButton(this.getButtonText(descriptor.getHotKeyDescriptor()));
-        button.setFont(this.componentsFactory.getFont(FontStyle.BOLD,18f));
-        button.addMouseListener(new MouseAdapter() {
+        button.setFont(this.componentsFactory.getFont(FontStyle.BOLD, 18f));
+        MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                button.setBackground(AppThemeColor.SLIDE_BG);
-                button.setText("Press any key");
-                allowed = true;
+                if(SwingUtilities.isLeftMouseButton(e)) {
+                    button.setBackground(AppThemeColor.SLIDE_BG);
+                    button.setText("Press any key");
+                    allowed = true;
+                }
             }
-        });
+        };
+        button.addMouseListener(mouseAdapter);
         MercuryStoreCore.hotKeySubject.subscribe(hotKey -> {
-            if(allowed) {
+            if (allowed) {
+                button.removeMouseListener(mouseAdapter);
                 button.setBackground(AppThemeColor.BUTTON);
-                if(hotKey.getVirtualKeyCode() == 27){
+                if (hotKey.getVirtualKeyCode() == 27) {
                     descriptor.setHotKeyDescriptor(new HotKeyDescriptor());
-                }else {
+                } else {
                     descriptor.setHotKeyDescriptor(hotKey);
                 }
-                button.setText(getButtonText( descriptor.getHotKeyDescriptor()));
+                button.setText(getButtonText(descriptor.getHotKeyDescriptor()));
                 allowed = false;
                 MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+                button.addMouseListener(mouseAdapter);
             }
         });
         return button;
     }
+
     public JPanel getHotKeyPanel(AdrComponentDescriptor descriptor){
         JButton hotKeyButton = this.getHotKeyButton(descriptor);
         JPanel hotKeyPanel = this.componentsFactory.getJPanel(new BorderLayout());
@@ -820,6 +826,9 @@ public class AdrComponentsFactory {
         return colorChooser;
     }
     private String getButtonText(HotKeyDescriptor descriptor){
+        if(!descriptor.getTitle().equals("")){
+            return descriptor.getTitle();
+        }
         if(descriptor.getKeyChar() == '\u0000') {
             return "...";
         }

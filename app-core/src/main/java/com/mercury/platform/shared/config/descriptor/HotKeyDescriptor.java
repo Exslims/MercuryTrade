@@ -10,6 +10,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HotKeyDescriptor implements Serializable{
+    private String title = "";
     private int virtualKeyCode;
     private char keyChar;
     private boolean menuPressed;
