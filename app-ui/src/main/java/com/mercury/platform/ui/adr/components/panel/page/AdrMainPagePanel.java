@@ -60,6 +60,17 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
                 );
             }
         });
+        JPanel createCaptureComponent = this.getButton(
+                "app/adr/create_pb_group.png",
+                "Capture");
+        createCaptureComponent.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                MercuryStoreUI.adrComponentStateSubject.onNext(
+                        new AdrComponentDefinition(config.getDefaultCapture(), AdrComponentOperations.NEW_COMPONENT,payload)
+                );
+            }
+        });
         JPanel createIcon = this.getButton(
                 "app/adr/create_icon.png",
                 TooltipConstants.ADR_CREATE_ICON);
@@ -116,6 +127,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
             container.add(this.componentsFactory.wrapToSlide(createIconsGroup));
             container.add(this.componentsFactory.wrapToSlide(createPbGroup));
         }
+        container.add(this.componentsFactory.wrapToSlide(createCaptureComponent));
         container.add(this.componentsFactory.wrapToSlide(importButton));
         this.add(verticalContainer,BorderLayout.CENTER);
     }

@@ -25,6 +25,9 @@ public class AdrMainTreeNodeRenderer implements AdrTreeNodeRenderer {
             case TRACKER_GROUP: {
                 return this.componentsFactory.wrapToAdrSlide(new AdrGroupNodePanel(treeNode), 2, 4, 2, 4);
             }
+            case CAPTURE:{
+                return this.componentsFactory.wrapToSlide(new AdrCaptureNodePanel(treeNode),2,4,2,4);
+            }
         }
         return new JPanel();
     }

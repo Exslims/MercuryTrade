@@ -7,7 +7,12 @@ import com.mercury.platform.shared.config.configration.AdrConfigurationService;
 import com.mercury.platform.shared.config.descriptor.adr.*;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.*;
+import com.mercury.platform.ui.adr.components.factory.FrameProviderFactory;
+import com.mercury.platform.ui.adr.components.factory.frame.FrameProvider;
+import com.mercury.platform.ui.adr.components.panel.AdrCaptureOutPanel;
+import com.mercury.platform.ui.adr.components.panel.AdrCapturePanel;
 import com.mercury.platform.ui.adr.components.panel.page.*;
+import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.Getter;
 
@@ -15,6 +20,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AdrManager implements AsSubscriber{
     private List<AbstractAdrFrame> frames = new ArrayList<>();
@@ -28,20 +34,24 @@ public class AdrManager implements AsSubscriber{
     private AdrPagePanel<AdrIconDescriptor> iconSettingsPanel;
     private AdrPagePanel<AdrProgressBarDescriptor> progressBarSettingsPanel;
     private AdrPagePanel<List<AdrProfileDescriptor>> profileSettingsPanel;
+    private AdrPagePanel<AdrCaptureDescriptor> captureSettingsPanel;
 
     private AdrLoadingPage loadingPage;
 
-    private SwingWorker<Void,Void> worker;
+    private FrameProviderFactory frameProviderFactory;
     @Getter
     private AdrState state = AdrState.DEFAULT;
     public void load(){
         this.config = Configuration.get().adrConfiguration();
+
+        this.frameProviderFactory = new FrameProviderFactory();
 
         this.groupSettingsPanel = new AdrGroupPagePanel();
         this.mainPanel = new AdrMainPagePanel(this.config);
         this.iconSettingsPanel = new AdrIconPagePanel();
         this.progressBarSettingsPanel = new AdrProgressBarPagePanel();
         this.profileSettingsPanel = new AdrProfilePagePanel();
+        this.captureSettingsPanel = new AdrCapturePagePanel();
 
         this.loadingPage = new AdrLoadingPage();
 
@@ -50,12 +60,8 @@ public class AdrManager implements AsSubscriber{
                 .filter(AdrProfileDescriptor::isSelected)
                 .findAny().orElse(null);
         this.adrManagerFrame = new AdrManagerFrame(this.selectedProfile);
-        this.initComponents();
+        this.initComponents(false);
         this.adrManagerFrame.init();
-        this.frames.forEach(it -> {
-            it.init();
-            it.disableSettings();
-        });
 
         this.subscribe();
 
@@ -99,23 +105,19 @@ public class AdrManager implements AsSubscriber{
                case NEW_COMPONENT:{
                    if(definition.getDescriptor() instanceof AdrTrackerGroupDescriptor){
                        this.selectedProfile.getContents().add(definition.getDescriptor());
-                       AdrTrackerGroupFrame adrTrackerGroupFrame =
-                               new AdrTrackerGroupFrame((AdrTrackerGroupDescriptor) definition.getDescriptor());
-                       adrTrackerGroupFrame.init();
-                       adrTrackerGroupFrame.showComponent();
-                       adrTrackerGroupFrame.enableSettings();
-                       this.frames.add(adrTrackerGroupFrame);
+                       AbstractAdrFrame frame = this.frameProviderFactory
+                               .getProviderFor(definition.getDescriptor())
+                               .getFrame(true);
+                       this.frames.add(frame);
                        this.groupSettingsPanel.setPayload((AdrTrackerGroupDescriptor) definition.getDescriptor());
                        this.adrManagerFrame.setPage(this.groupSettingsPanel);
                    }
                    if(definition.getDescriptor() instanceof AdrDurationComponentDescriptor){
                        if(definition.getParent() == null){
                            this.selectedProfile.getContents().add(definition.getDescriptor());
-                           AdrSingleComponentFrame componentFrame =
-                                   new AdrSingleComponentFrame((AdrDurationComponentDescriptor) definition.getDescriptor());
-                           componentFrame.init();
-                           componentFrame.showComponent();
-                           componentFrame.enableSettings();
+                           AbstractAdrFrame componentFrame = this.frameProviderFactory
+                                   .getProviderFor(definition.getDescriptor())
+                                   .getFrame(true);
                            this.frames.add(componentFrame);
                        }else {
                            ((AdrTrackerGroupDescriptor)definition.getParent()).getCells().add(definition.getDescriptor());
@@ -129,6 +131,22 @@ public class AdrManager implements AsSubscriber{
                            this.progressBarSettingsPanel.setPayload((AdrProgressBarDescriptor) definition.getDescriptor());
                            this.adrManagerFrame.setPage(this.progressBarSettingsPanel);
                        }
+                   }
+                   if(definition.getDescriptor() instanceof AdrCaptureDescriptor){
+                       AdrCaptureDescriptor descriptor = (AdrCaptureDescriptor) definition.getDescriptor();
+                       this.frames.add(this.frameProviderFactory.getProviderFor(descriptor).getFrame(true));
+
+                       AdrCaptureOutComponentFrame outFrame = new AdrCaptureOutComponentFrame((AdrCaptureDescriptor) descriptor);
+                       outFrame.setPanel(new AdrCaptureOutPanel((AdrCaptureDescriptor) descriptor,new ComponentsFactory()));
+                       outFrame.init();
+                       outFrame.showComponent();
+                       outFrame.enableSettings();
+                       this.frames.add(outFrame);
+
+                       this.captureSettingsPanel.setPayload((AdrCaptureDescriptor) definition.getDescriptor());
+                       this.adrManagerFrame.setPage(this.captureSettingsPanel);
+
+                       this.selectedProfile.getContents().add(definition.getDescriptor());
                    }
                    this.adrManagerFrame.addNewNode(definition.getDescriptor(),definition.getParent());
                    MercuryStoreUI.adrSelectSubject.onNext(definition.getDescriptor());
@@ -151,6 +169,10 @@ public class AdrManager implements AsSubscriber{
                        this.progressBarSettingsPanel.setPayload((AdrProgressBarDescriptor) definition.getDescriptor());
                        this.adrManagerFrame.setPage(this.progressBarSettingsPanel);
                    }
+                   if(definition.getDescriptor() instanceof AdrCaptureDescriptor){
+                       this.captureSettingsPanel.setPayload((AdrCaptureDescriptor) definition.getDescriptor());
+                       this.adrManagerFrame.setPage(this.captureSettingsPanel);
+                   }
                    break;
                }
                case DUPLICATE_COMPONENT:{
@@ -169,18 +191,17 @@ public class AdrManager implements AsSubscriber{
            }
         });
         MercuryStoreUI.adrRemoveComponentSubject.subscribe(descriptor -> {
-            AbstractAdrFrame targetFrame =
+            List<AbstractAdrFrame> targetFrames =
                     this.frames.stream()
-                            .filter(it -> it.getDescriptor().equals(descriptor))
-                            .findAny().orElse(null);
-            if(targetFrame != null) {
+                            .filter(it -> it.getDescriptor().equals(descriptor)).collect(Collectors.toList());
+            targetFrames.forEach(targetFrame -> {
                 targetFrame.onDestroy();
                 targetFrame.disableSettings();
                 targetFrame.setVisible(false);
                 this.frames.remove(targetFrame);
                 this.selectedProfile.getContents().remove(descriptor);
                 targetFrame.dispose();
-            }
+            });
             this.mainPanel.setFromGroup(false);
             this.mainPanel.setPayload(null);
             this.adrManagerFrame.removeNode(descriptor);
@@ -224,15 +245,10 @@ public class AdrManager implements AsSubscriber{
         selectedProfile.setSelected(true);
         this.selectedProfile = selectedProfile;
 
-        this.worker = new SwingWorker<Void, Void>() {
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                initComponents();
-                frames.forEach(it -> {
-                    it.init();
-                    it.showComponent();
-                    it.enableSettings();
-                });
+                initComponents(true);
                 return null;
             }
 
@@ -246,27 +262,34 @@ public class AdrManager implements AsSubscriber{
                 MercuryStoreUI.adrManagerPack.onNext(true);
             }
         };
-        this.worker.execute();
+        worker.execute();
         this.adrManagerFrame.setSelectedProfile(selectedProfile);
+        MercuryStoreCore.saveConfigSubject.onNext(true);
     }
-    private void initComponents(){
+    private void initComponents(boolean showSettings){
         MercuryStoreUI.onDestroySubject.onNext(true);
-        this.frames.forEach(Window::dispose);
+        this.frames.forEach(it -> {
+            it.onDestroy();
+            it.disableSettings();
+            it.setVisible(false);
+            it.dispose();
+        });
         this.frames.clear();
         this.selectedProfile.getContents().forEach(component -> {
-            switch (component.getType()){
-                case TRACKER_GROUP: {
-                    this.frames.add(new AdrTrackerGroupFrame((AdrTrackerGroupDescriptor) component));
-                    break;
+            if(component instanceof AdrCaptureDescriptor){
+                this.frames.add(this.frameProviderFactory.getProviderFor(component).getFrame(showSettings));
+                AdrCaptureOutComponentFrame outFrame = new AdrCaptureOutComponentFrame((AdrCaptureDescriptor) component);
+                outFrame.setPanel(new AdrCaptureOutPanel((AdrCaptureDescriptor) component,new ComponentsFactory()));
+                outFrame.init();
+                if(showSettings) {
+                    outFrame.showComponent();
+                    outFrame.enableSettings();
+                }else {
+                    outFrame.disableSettings();
                 }
-                case PROGRESS_BAR:{
-                    this.frames.add(new AdrSingleComponentFrame((AdrProgressBarDescriptor) component));
-                    break;
-                }
-                case ICON:{
-                    this.frames.add(new AdrSingleComponentFrame((AdrIconDescriptor) component));
-                    break;
-                }
+                this.frames.add(outFrame);
+            }else {
+                this.frames.add(this.frameProviderFactory.getProviderFor(component).getFrame(showSettings));
             }
         });
     }

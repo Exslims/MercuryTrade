@@ -34,4 +34,5 @@ public class AppThemeColor {
     public static final Color ADR_PANEL_BORDER = new Color(23, 103, 115);
     public static final Color ADR_TEXT_ARE_BG = new Color(50, 52, 51);
     public static final Color ADR_FOOTER_BG = new Color(55,65,64);
+    public static final Color ADR_CAPTURE_BG = new Color(42, 44, 43,1);
 }

@@ -101,8 +101,7 @@ public class SupportPanel extends JPanel implements HasUI{
 
         getDonations().forEach(pair -> {
             JPanel item = componentsFactory.getTransparentPanel(new BorderLayout());
-            item.add(componentsFactory.getTextLabel(pair.name, FontStyle.REGULAR),BorderLayout.CENTER);
-//            item.add(componentsFactory.getTextLabel(pair.value.intValue() + "$", FontStyle.REGULAR),BorderLayout.LINE_END);
+            item.add(componentsFactory.getTextLabel(pair.name, FontStyle.REGULAR,pair.color),BorderLayout.CENTER);
             donationsList.add(item);
         });
 
@@ -111,18 +110,19 @@ public class SupportPanel extends JPanel implements HasUI{
     }
     private List<DonationPair> getDonations(){
         List<DonationPair> donations = new ArrayList<>();
-        donations.add(new DonationPair("StubenZocker",0d));
-        donations.add(new DonationPair("SirKultan",0d));
+        donations.add(new DonationPair("222Craft",AppThemeColor.TEXT_IMPORTANT));
+        donations.add(new DonationPair("StubenZocker",AppThemeColor.TEXT_DEFAULT));
+        donations.add(new DonationPair("SirKultan",AppThemeColor.TEXT_DEFAULT));
         return donations;
     }
 
     private class DonationPair{
         private String name;
-        private Double value;
+        private Color color;
 
-        DonationPair(String name, Double value) {
+        DonationPair(String name, Color color) {
             this.name = name;
-            this.value = value;
+            this.color = color;
         }
     }
 }

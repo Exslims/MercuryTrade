@@ -13,11 +13,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
-public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescriptor>{
+public class AdrDurationCellPanel extends AdrDurationComponentPanel<AdrDurationComponentDescriptor>{
     private MercuryTracker tracker;
-    public AdrCellPanel(AdrDurationComponentDescriptor cellDescriptor, ComponentsFactory componentsFactory) {
+    public AdrDurationCellPanel(AdrDurationComponentDescriptor cellDescriptor, ComponentsFactory componentsFactory) {
         super(cellDescriptor,componentsFactory);
-        this.setLayout(new GridLayout(1,1));
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.setBorder(null);
         this.setVisible(false);
@@ -76,9 +75,10 @@ public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescript
 
     @Override
     public void createUI() {
+        this.setLayout(new GridLayout(1,1));
         this.setPreferredSize(this.descriptor.getSize());
         this.tracker = new MercuryTracker(this.descriptor);
-        this.add(this.tracker, BorderLayout.CENTER);
+        this.add(this.tracker);
         this.tracker.addTimelineCallback(new TimelineCallbackAdapter() {
             @Override
             public void onTimelineStateChanged(Timeline.TimelineState oldState, Timeline.TimelineState newState, float durationFraction, float timelinePosition) {
@@ -92,7 +92,7 @@ public class AdrCellPanel extends AdrComponentPanel<AdrDurationComponentDescript
                     MercuryStoreUI.adrRepaintSubject.onNext(true);
                 }else if(newState.equals(Timeline.TimelineState.PLAYING_FORWARD)){
                     setVisible(true);
-                    JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(AdrCellPanel.this);
+                    JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(AdrDurationCellPanel.this);
                     parent.pack();
                 }
             }

@@ -80,6 +80,27 @@ public class AdrComponentsFactory {
         return root;
     }
 
+    public JPanel getCaptureSizePanel(AdrCaptureDescriptor descriptor){
+        JPanel root = this.componentsFactory.getJPanel(new GridLayout(1, 4,4,0));
+        root.setBackground(AppThemeColor.SLIDE_BG);
+        JLabel widthLabel = this.componentsFactory.getTextLabel("Width:");
+        JLabel heightLabel = this.componentsFactory.getTextLabel("Height:");
+        JTextField widthField = this.getSmartField(descriptor.getCaptureSize().width, new IntegerFieldValidator(10,2000), value -> {
+            descriptor.setCaptureSize(new Dimension(value, descriptor.getCaptureSize().height));
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+        JTextField heightField = this.getSmartField(descriptor.getCaptureSize().height, new IntegerFieldValidator(10,1000), value -> {
+            descriptor.setCaptureSize(new Dimension(descriptor.getCaptureSize().width,value));
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+
+        root.add(widthLabel);
+        root.add(widthField);
+        root.add(heightLabel);
+        root.add(heightField);
+        return root;
+    }
+
     public JPanel getLocationPanel(AdrComponentDescriptor descriptor, boolean fromGroup){
         JPanel root = this.componentsFactory.getJPanel(new GridLayout(1, 4,4,0));
         root.setBackground(AppThemeColor.SLIDE_BG);
@@ -121,7 +142,34 @@ public class AdrComponentsFactory {
         return root;
     }
 
-    public JButton getHotKeyButton(AdrComponentDescriptor descriptor) {
+    public JPanel getCaptureLocationPanel(AdrCaptureDescriptor descriptor){
+        JPanel root = this.componentsFactory.getJPanel(new GridLayout(1, 4,4,0));
+        root.setBackground(AppThemeColor.SLIDE_BG);
+        JLabel xLabel = this.componentsFactory.getTextLabel("X:");
+        JLabel yLabel = this.componentsFactory.getTextLabel("Y:");
+        JTextField xField = this.getSmartField(descriptor.getCaptureLocation().x,new IntegerFieldValidator(0,10000),value -> {
+            descriptor.setCaptureLocation(new Point(value, descriptor.getCaptureLocation().y));
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+        JTextField yField = this.getSmartField(descriptor.getCaptureLocation().y,new IntegerFieldValidator(0,5000),value -> {
+            descriptor.setCaptureLocation(new Point(descriptor.getCaptureLocation().x,value));
+            MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+        });
+        root.add(xLabel);
+        root.add(xField);
+        root.add(yLabel);
+        root.add(yField);
+
+        MercuryStoreUI.adrUpdateSubject.subscribe(source -> {
+            if(source.equals(descriptor)){
+                xField.setText(String.valueOf(descriptor.getCaptureLocation().x));
+                yField.setText(String.valueOf(descriptor.getCaptureLocation().y));
+            }
+        });
+        return root;
+    }
+
+    public JButton getHotKeyButton(AdrDurationComponentDescriptor descriptor) {
         JButton button = this.componentsFactory.getBorderedButton(this.getButtonText(descriptor.getHotKeyDescriptor()));
         button.setFont(this.componentsFactory.getFont(FontStyle.BOLD, 18f));
         MouseAdapter mouseAdapter = new MouseAdapter() {
@@ -153,7 +201,7 @@ public class AdrComponentsFactory {
         return button;
     }
 
-    public JPanel getHotKeyPanel(AdrComponentDescriptor descriptor){
+    public JPanel getHotKeyPanel(AdrDurationComponentDescriptor descriptor){
         JButton hotKeyButton = this.getHotKeyButton(descriptor);
         JPanel hotKeyPanel = this.componentsFactory.getJPanel(new BorderLayout());
         hotKeyPanel.setBackground(AppThemeColor.SLIDE_BG);
@@ -349,6 +397,18 @@ public class AdrComponentsFactory {
             @Override
             public void mouseReleased(MouseEvent e) {
                 descriptor.setOpacity(opacitySlider.getValue() / 100f);
+                MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+            }
+        });
+        return opacitySlider;
+    }
+    public JSlider getFpsSlider(AdrCaptureDescriptor descriptor){
+        JSlider opacitySlider = this.componentsFactory.getSlider(1,60, descriptor.getFps());
+        opacitySlider.setBackground(AppThemeColor.SLIDE_BG);
+        opacitySlider.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                descriptor.setFps(opacitySlider.getValue());
                 MercuryStoreUI.adrReloadSubject.onNext(descriptor);
             }
         });

@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.adr.components;
 
 import com.mercury.platform.shared.config.descriptor.adr.*;
+import com.mercury.platform.ui.adr.components.panel.AdrComponentPanel;
 import com.mercury.platform.ui.adr.components.panel.AdrTrackerGroupPanel;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.NonNull;
@@ -18,10 +19,14 @@ public class AdrTrackerGroupFrame extends AbstractAdrComponentFrame<AdrTrackerGr
     }
 
     @Override
+    public void setPanel(AdrComponentPanel panel) {
+        this.trackerGroupPanel = new AdrTrackerGroupPanel(this.descriptor,this.componentsFactory);
+    }
+
+    @Override
     protected void initialize() {
         super.initialize();
-        this.trackerGroupPanel = new AdrTrackerGroupPanel(this.descriptor,this.componentsFactory);
-        this.add(this.trackerGroupPanel,BorderLayout.CENTER);
+        this.add(this.trackerGroupPanel);
         this.pack();
     }
 

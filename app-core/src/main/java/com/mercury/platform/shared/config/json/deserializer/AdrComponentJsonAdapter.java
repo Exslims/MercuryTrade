@@ -23,6 +23,9 @@ public class AdrComponentJsonAdapter implements JsonDeserializer<AdrComponentDes
             case PROGRESS_BAR: {
                 return gson.fromJson(jsonElement.getAsJsonObject(), AdrProgressBarDescriptor.class);
             }
+            case CAPTURE:{
+                return gson.fromJson(jsonElement.getAsJsonObject(), AdrCaptureDescriptor.class);
+            }
         }
         return null;
     }
@@ -39,6 +42,9 @@ public class AdrComponentJsonAdapter implements JsonDeserializer<AdrComponentDes
             }
             case PROGRESS_BAR: {
                 return gson.toJsonTree(descriptor, AdrProgressBarDescriptor.class);
+            }
+            case CAPTURE:{
+                return gson.toJsonTree(descriptor, AdrCaptureDescriptor.class);
             }
         }
         return null;

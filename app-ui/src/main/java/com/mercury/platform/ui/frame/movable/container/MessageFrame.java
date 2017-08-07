@@ -247,7 +247,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
                 18f,
                 "Notification panel");
         labelPanel.add(headerLabel,BorderLayout.CENTER);
-        JButton enableButton = this.componentsFactory.getBorderedButton(this.notificationConfig.get().isNotificationEnable() ? "Disable" : "Enable");
+        JButton enableButton = this.componentsFactory.getBorderedButton(this.notificationConfig.get().isNotificationEnable() ? "Switch-off" : "Switch-on");
         enableButton.addActionListener(action -> {
             boolean notificationEnable = this.notificationConfig.get().isNotificationEnable();
             this.notificationConfig.get().setNotificationEnable(!notificationEnable);
@@ -256,7 +256,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
             }else {
                 headerLabel.setForeground(AppThemeColor.TEXT_DISABLE);
             }
-            enableButton.setText(!notificationEnable ? "Disable" : "Enable");
+            enableButton.setText(!notificationEnable ? "Switch-off" : "Switch-on");
             MercuryStoreCore.saveConfigSubject.onNext(true);
         });
         enableButton.setFont(this.componentsFactory.getFont(FontStyle.BOLD,18f));
