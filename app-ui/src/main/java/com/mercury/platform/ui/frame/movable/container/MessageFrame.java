@@ -12,7 +12,7 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.components.panel.message.MessagePanel;
+import com.mercury.platform.ui.components.panel.message.InMessagePanel;
 import com.mercury.platform.ui.components.panel.message.MessagePanelController;
 import com.mercury.platform.ui.components.panel.message.NotificationMessageController;
 import com.mercury.platform.ui.components.panel.message.MessagePanelStyle;
@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MessageFrame extends AbstractMovableComponentFrame implements MessagesContainer {
-    private List<MessagePanel> currentMessages = new ArrayList<>();
+    private List<InMessagePanel> currentMessages = new ArrayList<>();
     private PlainConfigurationService<NotificationDescriptor> notificationConfig;
     private boolean wasVisible;
     private FlowDirections flowDirections;
@@ -112,7 +112,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
             }
         });
         MercuryStoreCore.messageSubject.subscribe(message -> SwingUtilities.invokeLater(()-> {
-            List<MessagePanel> collect = this.currentMessages.stream()
+            List<InMessagePanel> collect = this.currentMessages.stream()
                     .filter(panel -> panel.getMessage().equals(message))
                     .collect(Collectors.toList());
             if(collect.size() == 0) {
@@ -120,17 +120,17 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
             }
         }));
         MercuryStoreUI.closeMessage.subscribe(message -> {
-            MessagePanel messagePanel = this.currentMessages.stream()
+            InMessagePanel inMessagePanel = this.currentMessages.stream()
                     .filter(panel -> panel.getMessage().equals(message))
                     .collect(Collectors.toList()).get(0);
-            if(messagePanel.isExpanded()){
+            if(inMessagePanel.isExpanded()){
                 this.currentUnfoldCount--;
                 if(this.currentUnfoldCount < 0){
                     this.currentUnfoldCount = 0;
                 }
             }
-            this.remove(messagePanel);
-            this.currentMessages.remove(messagePanel);
+            this.remove(inMessagePanel);
+            this.currentMessages.remove(inMessagePanel);
 
             if (this.currentMessages.size() == 0) {
                 this.setVisible(false);
@@ -150,8 +150,8 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
 
     private void addMessage(Message message){
         MessagePanelStyle style = flowDirections.equals(FlowDirections.DOWNWARDS)?
-                MessagePanelStyle.DOWNWARDS_SMALL: MessagePanelStyle.UPWARDS_SMALL;
-        MessagePanel messagePanel = new MessagePanel(
+                MessagePanelStyle.IN_DOWNWARDS : MessagePanelStyle.IN_UPWARDS;
+        InMessagePanel inMessagePanel = new InMessagePanel(
                 message,
                 style,
                 new NotificationMessageController(message),
@@ -162,18 +162,18 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
             this.prevState = FrameVisibleState.SHOW;
         }
         if (flowDirections.equals(FlowDirections.UPWARDS)) {
-            this.mainContainer.add(messagePanel, 1);
+            this.mainContainer.add(inMessagePanel, 1);
         } else {
-            this.mainContainer.add(messagePanel);
+            this.mainContainer.add(inMessagePanel);
         }
-        this.currentMessages.add(messagePanel);
+        this.currentMessages.add(inMessagePanel);
         this.pack();
         if (this.currentUnfoldCount < this.unfoldCount) {
-            messagePanel.expand();
+            inMessagePanel.expand();
         }
         if(this.currentMessages.size() > this.limitMsgCount){
             if(!expanded) {
-                messagePanel.setVisible(false);
+                inMessagePanel.setVisible(false);
             }
             if(ProdStarter.APP_STATUS == FrameVisibleState.SHOW) {
                 this.setUpExpandButton();
@@ -320,7 +320,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
 
     private void onExpandedCountChange(){
         this.currentUnfoldCount = 0;
-        this.currentMessages.forEach(MessagePanel::collapse);
+        this.currentMessages.forEach(InMessagePanel::collapse);
         this.currentUnfoldCount = 0;
         this.currentMessages.stream().limit(this.unfoldCount).forEach(panel -> {
             panel.expand();
@@ -410,7 +410,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
                 this.mainContainer.remove(this.buffer);
                 Component[] components = this.mainContainer.getComponents();
                 for (Component component : components) {
-                    ((MessagePanel) component).setStyle(MessagePanelStyle.DOWNWARDS_SMALL);
+                    ((InMessagePanel) component).setStyle(MessagePanelStyle.IN_DOWNWARDS);
                     this.mainContainer.remove(component);
                     this.mainContainer.add(component, 0);
                 }
@@ -420,7 +420,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
                 this.mainContainer.add(buffer,0);
                 Component[] components = this.mainContainer.getComponents();
                 for (int i = 1; i < components.length; i++) {
-                    ((MessagePanel) components[i]).setStyle(MessagePanelStyle.UPWARDS_SMALL);
+                    ((InMessagePanel) components[i]).setStyle(MessagePanelStyle.IN_UPWARDS);
                     this.mainContainer.remove(components[i]);
                     this.mainContainer.add(components[i], 1);
                 }
@@ -535,11 +535,11 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
             @Override
             public void showITH() {}
             @Override
-            public void reloadMessage(MessagePanel panel1) {}
+            public void reloadMessage(InMessagePanel panel1) {}
         };
-        MessagePanel messagePanel = new MessagePanel(message, MessagePanelStyle.DOWNWARDS_SMALL, stubController, factory);
-        messagePanel.expand();
-        panel.add(messagePanel);
+        InMessagePanel inMessagePanel = new InMessagePanel(message, MessagePanelStyle.IN_DOWNWARDS, stubController, factory);
+        inMessagePanel.expand();
+        panel.add(inMessagePanel);
         return panel;
     }
 

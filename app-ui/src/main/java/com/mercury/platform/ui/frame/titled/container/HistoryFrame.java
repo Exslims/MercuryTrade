@@ -6,7 +6,7 @@ import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
-import com.mercury.platform.ui.components.panel.message.MessagePanel;
+import com.mercury.platform.ui.components.panel.message.InMessagePanel;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.components.panel.message.NotificationMessageController;
 import com.mercury.platform.ui.components.panel.message.MessagePanelStyle;
@@ -64,13 +64,13 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
             MessageParser parser = new MessageParser();
             Message parsedMessage = parser.parse(message);
             if(parsedMessage != null) {
-                MessagePanel messagePanel = new MessagePanel(
+                InMessagePanel inMessagePanel = new InMessagePanel(
                         parsedMessage,
                         MessagePanelStyle.HISTORY,
                         new NotificationMessageController(parsedMessage),
                         this.componentsFactory);
-                messagePanel.disableTime();
-                mainContainer.add(messagePanel);
+                inMessagePanel.disableTime();
+                mainContainer.add(inMessagePanel);
             }
         }
         this.miscPanel.add(getClearButton(),0);
@@ -83,13 +83,13 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
                     MessageParser parser = new MessageParser();
                     Message parsedMessage = parser.parse(message);
                     if(parsedMessage != null) {
-                        MessagePanel messagePanel = new MessagePanel(
+                        InMessagePanel inMessagePanel = new InMessagePanel(
                                 parsedMessage,
                                 MessagePanelStyle.HISTORY,
                                 new NotificationMessageController(parsedMessage),
                                 this.componentsFactory);
-                        messagePanel.disableTime();
-                        this.mainContainer.add(messagePanel, 0);
+                        inMessagePanel.disableTime();
+                        this.mainContainer.add(inMessagePanel, 0);
                     }
                     vBar.setValue(vBar.getValue() + 100);
                 }
@@ -124,12 +124,12 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
     public void subscribe() {
         MercuryStoreCore.messageSubject.subscribe(message -> SwingUtilities.invokeLater(()-> {
             HistoryManager.INSTANCE.add(message);
-            MessagePanel messagePanel = new MessagePanel(
+            InMessagePanel inMessagePanel = new InMessagePanel(
                     message,
                     MessagePanelStyle.HISTORY,
                     new NotificationMessageController(message),
                     this.componentsFactory);
-            this.mainContainer.add(messagePanel);
+            this.mainContainer.add(inMessagePanel);
             this.trimContainer();
             this.pack();
         }));
@@ -145,9 +145,9 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
     }
 
     @Override
-    public void onReloadMessage(MessagePanel messagePanel) {
-        messagePanel.setStyle(MessagePanelStyle.SP_MODE);
-        messagePanel.setPreferredSize(new Dimension(this.getWidth()-10,messagePanel.getPreferredSize().height));
+    public void onReloadMessage(InMessagePanel inMessagePanel) {
+        inMessagePanel.setStyle(MessagePanelStyle.RELOADED);
+        inMessagePanel.setPreferredSize(new Dimension(this.getWidth()-10, inMessagePanel.getPreferredSize().height));
         this.pack();
         this.repaint();
     }

@@ -170,7 +170,7 @@ public class AdrComponentsFactory {
     }
 
     public JButton getHotKeyButton(AdrDurationComponentDescriptor descriptor) {
-        JButton button = this.componentsFactory.getBorderedButton(this.getButtonText(descriptor.getHotKeyDescriptor()));
+        JButton button = this.componentsFactory.getBorderedButton(descriptor.getHotKeyDescriptor().getTitle());
         button.setFont(this.componentsFactory.getFont(FontStyle.BOLD, 18f));
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
@@ -192,7 +192,7 @@ public class AdrComponentsFactory {
                 } else {
                     descriptor.setHotKeyDescriptor(hotKey);
                 }
-                button.setText(getButtonText(descriptor.getHotKeyDescriptor()));
+                button.setText(hotKey.getTitle());
                 allowed = false;
                 MercuryStoreUI.adrReloadSubject.onNext(descriptor);
                 button.addMouseListener(mouseAdapter);
@@ -880,22 +880,6 @@ public class AdrComponentsFactory {
             }
         }
         return colorChooser;
-    }
-    private String getButtonText(HotKeyDescriptor descriptor){
-        if(!descriptor.getTitle().equals("")){
-            return descriptor.getTitle();
-        }
-        if(descriptor.getKeyChar() == '\u0000') {
-            return "...";
-        }
-        String text = String.valueOf(descriptor.getKeyChar());
-        if(descriptor.isShiftPressed())
-            text = "Shift + " + text;
-        if(descriptor.isMenuPressed())
-            text = "Alt + " + text;
-        if(descriptor.isControlPressed())
-            text = "Ctrl + " + text;
-        return text;
     }
 
     private class ColorChooserMouseListener extends MouseAdapter {

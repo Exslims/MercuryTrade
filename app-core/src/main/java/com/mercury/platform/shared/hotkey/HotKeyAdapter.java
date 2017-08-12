@@ -16,7 +16,6 @@ public class HotKeyAdapter extends GlobalKeyAdapter {
         descriptor.setKeyChar(event.getKeyChar());
         descriptor.setVirtualKeyCode(event.getVirtualKeyCode());
         descriptor.setControlPressed(event.isControlPressed());
-        descriptor.setExtendedKey(event.isExtendedKey());
         descriptor.setMenuPressed(event.isMenuPressed());
         descriptor.setShiftPressed(event.isShiftPressed());
         return descriptor;
