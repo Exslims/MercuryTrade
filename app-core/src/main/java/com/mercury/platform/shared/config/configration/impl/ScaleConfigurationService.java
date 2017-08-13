@@ -50,4 +50,9 @@ public class ScaleConfigurationService extends BaseConfigurationService<Map<Stri
     public Map<String, Float> getMap() {
         return this.selectedProfile.getScaleDataMap();
     }
+
+    @Override
+    public void set(Map<String, Float> map) {
+        this.selectedProfile.setScaleDataMap(map);
+    }
 }

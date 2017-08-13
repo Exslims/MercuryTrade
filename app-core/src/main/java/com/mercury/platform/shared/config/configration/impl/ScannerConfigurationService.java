@@ -34,4 +34,9 @@ public class ScannerConfigurationService extends BaseConfigurationService<Scanne
     public ScannerDescriptor get() {
         return this.selectedProfile.getScannerDescriptor();
     }
+
+    @Override
+    public void set(ScannerDescriptor descriptor) {
+        this.selectedProfile.setScannerDescriptor(descriptor);
+    }
 }

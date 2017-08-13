@@ -127,7 +127,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
             container.add(this.componentsFactory.wrapToSlide(createIconsGroup));
             container.add(this.componentsFactory.wrapToSlide(createPbGroup));
         }
-        container.add(this.componentsFactory.wrapToSlide(createCaptureComponent));
+//        container.add(this.componentsFactory.wrapToSlide(createCaptureComponent));
         container.add(this.componentsFactory.wrapToSlide(importButton));
         this.add(verticalContainer,BorderLayout.CENTER);
     }

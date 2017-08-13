@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.components;
 
 import com.mercury.platform.core.misc.SoundType;
+import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.style.MercuryComboBoxUI;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -52,6 +53,9 @@ public class ComponentsFactory{
         this.scale = 1.0f;
 
 //        UIManager.getDefaults().put("Slider.horizontalThumbIcon",this.getImage("app/slider_thumb.png"));
+        UIManager.put("ComboBox.selectionBackground", AppThemeColor.HEADER);
+        UIManager.put("ComboBox.selectionForeground", AppThemeColor.ADR_POPUP_BG);
+        UIManager.put("ComboBox.disabledForeground",  AppThemeColor.ADR_FOOTER_BG);
     }
 
     /**
@@ -616,6 +620,11 @@ public class ComponentsFactory{
     public JPanel getJPanel(LayoutManager layoutManager) {
         JPanel panel = new JPanel(layoutManager);
         panel.setBackground(AppThemeColor.FRAME_RGB);
+        return panel;
+    }
+    public JPanel getJPanel(LayoutManager layoutManager,Color bg) {
+        JPanel panel = new JPanel(layoutManager);
+        panel.setBackground(bg);
         return panel;
     }
     public JPanel wrapToSlide(JComponent panel){

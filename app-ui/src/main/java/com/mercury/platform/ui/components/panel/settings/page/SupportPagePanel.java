@@ -1,10 +1,9 @@
-package com.mercury.platform.ui.components.panel.settings;
+package com.mercury.platform.ui.components.panel.settings.page;
 
-import com.mercury.platform.ui.components.ComponentsFactory;
+
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.frame.titled.SettingsFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
@@ -18,22 +17,13 @@ import java.net.URI;
 import java.util.*;
 import java.util.List;
 
-public class SupportPanel extends JPanel implements HasUI{
-    private ComponentsFactory componentsFactory;
-    public SupportPanel() {
-        super();
-        componentsFactory = new ComponentsFactory();
-        this.setBackground(AppThemeColor.SLIDE_BG);
-        this.createUI();
-    }
-
+public class SupportPagePanel extends SettingsPagePanel{
     @Override
     public void createUI() {
-        this.setLayout(new BorderLayout());
-
         JPanel donatePanel = componentsFactory.getTransparentPanel();
-        donatePanel.setLayout(new BoxLayout(donatePanel,BoxLayout.Y_AXIS));
-        donatePanel.setBackground(AppThemeColor.SLIDE_BG);
+        donatePanel.setBackground(AppThemeColor.ADR_BG);
+        donatePanel.setLayout(new GridLayout(0,1,5,5));
+        donatePanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
 
         JButton donate = componentsFactory.getIconifiedTransparentButton("app/paypal.png","Donate");
         donate.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
@@ -58,22 +48,26 @@ public class SupportPanel extends JPanel implements HasUI{
                 }
             }
         });
-        JTextArea donateText = componentsFactory.getSimpleTextArea("We aimed to create a convenience tool in form of an easy-to-use application, primarily for trading purposes. If MercuryTrade successfully managed to save your time or improve your experience, you can thank us by donating and telling your friends.");
+        JTextArea donateText = componentsFactory.getSimpleTextArea("We aimed to create a convenience tool in form of an easy-to-use application, primarily for trading purposes. If MercuryTrade successfully managed to save your time or improve your experience, you can thank us by donating or telling your friends. If you want your name to be featured in our in-app Hall of Fame please provide this information within the transaction!");
         donateText.setPreferredSize(new Dimension(300,150));
-        JPanel donateTextPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         JPanel donateButtonPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        donateButtonPanel.setBorder(BorderFactory.createEmptyBorder(30,0,0,0));
-        donateTextPanel.add(donateText);
+        donateButtonPanel.setBorder(BorderFactory.createEmptyBorder(60,0,0,0));
         donateButtonPanel.add(donate);
         donatePanel.add(donateButtonPanel);
-        donatePanel.add(donateTextPanel);
-        this.add(donatePanel,BorderLayout.CENTER);
-        this.add(getDonationsPanel(),BorderLayout.LINE_END);
+        donatePanel.add(this.componentsFactory.wrapToSlide(donateText,AppThemeColor.ADR_BG,4,14,4,14));
+
+        JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
+        root.setBackground(AppThemeColor.FRAME);
+        root.add(this.componentsFactory.wrapToSlide(donatePanel),BorderLayout.CENTER);
+        root.add(this.componentsFactory.wrapToSlide(getDonationsPanel()),BorderLayout.LINE_END);
+        this.add(root,BorderLayout.CENTER);
     }
+
     private JPanel getDonationsPanel() {
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
-        root.setBorder(BorderFactory.createEmptyBorder(20,0,10,20));
-        root.add(componentsFactory.getTextLabel("Thanks a lot for support:          "),BorderLayout.PAGE_START);
+        root.setBackground(AppThemeColor.ADR_BG);
+        root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
+        root.add(componentsFactory.getTextLabel("Thanks a lot for support:"),BorderLayout.PAGE_START);
 
         JPanel donationsList = new VerticalScrollContainer();
         donationsList.setBackground(AppThemeColor.TRANSPARENT);
@@ -110,7 +104,8 @@ public class SupportPanel extends JPanel implements HasUI{
     }
     private List<DonationPair> getDonations(){
         List<DonationPair> donations = new ArrayList<>();
-        donations.add(new DonationPair("222Craft",AppThemeColor.TEXT_IMPORTANT));
+        donations.add(new DonationPair("222Craft",AppThemeColor.TEXT_DEFAULT));
+        donations.add(new DonationPair("Blightsand",AppThemeColor.TEXT_DEFAULT));
         donations.add(new DonationPair("StubenZocker",AppThemeColor.TEXT_DEFAULT));
         donations.add(new DonationPair("SirKultan",AppThemeColor.TEXT_DEFAULT));
         return donations;
@@ -124,5 +119,15 @@ public class SupportPanel extends JPanel implements HasUI{
             this.name = name;
             this.color = color;
         }
+    }
+
+    @Override
+    public void onSave() {
+
+    }
+
+    @Override
+    public void restore() {
+
     }
 }

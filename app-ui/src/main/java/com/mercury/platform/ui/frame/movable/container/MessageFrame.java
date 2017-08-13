@@ -120,29 +120,33 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
             }
         }));
         MercuryStoreUI.closeMessage.subscribe(message -> {
-            InMessagePanel inMessagePanel = this.currentMessages.stream()
+            List<InMessagePanel> panels = this.currentMessages.stream()
                     .filter(panel -> panel.getMessage().equals(message))
-                    .collect(Collectors.toList()).get(0);
-            if(inMessagePanel.isExpanded()){
-                this.currentUnfoldCount--;
-                if(this.currentUnfoldCount < 0){
-                    this.currentUnfoldCount = 0;
+                    .collect(Collectors.toList());
+            if(panels.size() > 0) {
+                InMessagePanel inMessagePanel = panels.get(0);
+                if (inMessagePanel.isExpanded()) {
+                    this.currentUnfoldCount--;
+                    if (this.currentUnfoldCount < 0) {
+                        this.currentUnfoldCount = 0;
+                    }
                 }
-            }
-            this.remove(inMessagePanel);
-            this.currentMessages.remove(inMessagePanel);
+                this.remove(inMessagePanel);
+                this.currentMessages.remove(inMessagePanel);
 
-            if (this.currentMessages.size() == 0) {
-                this.setVisible(false);
-            } else if (this.currentMessages.size() >= this.limitMsgCount) {
-                if(this.currentMessages.size() == this.limitMsgCount) {
-                    this.expandAllFrame.setVisible(false);
+                if (this.currentMessages.size() == 0) {
+                    this.setVisible(false);
+                } else if (this.currentMessages.size() >= this.limitMsgCount) {
+                    if (this.currentMessages.size() == this.limitMsgCount) {
+                        this.expandAllFrame.setVisible(false);
+                    }
+                    this.currentMessages.get(this.limitMsgCount - 1).setVisible(true);
+                    this.expandAllFrame.decMessageCount();
                 }
-                this.currentMessages.get(this.limitMsgCount - 1).setVisible(true);
-                this.expandAllFrame.decMessageCount();
+                this.pack();
+                this.repaint();
+                this.setUpExpandButton();
             }
-            this.pack();
-            this.setUpExpandButton();
         });
         MercuryStoreUI.expandMessageSubject.subscribe(state -> this.onExpandMessage());
         MercuryStoreUI.collapseMessageSubject.subscribe(state -> this.onCollapseMessage());
@@ -168,6 +172,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
         }
         this.currentMessages.add(inMessagePanel);
         this.pack();
+        this.repaint();
         if (this.currentUnfoldCount < this.unfoldCount) {
             inMessagePanel.expand();
         }

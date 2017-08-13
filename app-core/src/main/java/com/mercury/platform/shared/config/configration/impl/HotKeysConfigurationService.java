@@ -8,6 +8,7 @@ import com.mercury.platform.shared.config.descriptor.HotKeyType;
 import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import lc.kra.system.keyboard.event.GlobalKeyEvent;
+import org.jnativehook.keyboard.NativeKeyEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,16 +21,11 @@ public class HotKeysConfigurationService extends BaseConfigurationService<Map<St
     @Override
     public Map<String, HotKeyDescriptor> getDefault() {
         Map<String, HotKeyDescriptor> keyMap = new HashMap<>();
-        keyMap.put(HotKeyType.INVITE_PLAYER.name(),new HotKeyDescriptor("",GlobalKeyEvent.VK_1,'1',true,false,false));
-        keyMap.put(HotKeyType.TRADE_PLAYER.name(),new HotKeyDescriptor("",GlobalKeyEvent.VK_2,'2',true,false,false));
-        keyMap.put(HotKeyType.KICK_PLAYER.name(),new HotKeyDescriptor("",GlobalKeyEvent.VK_3,'3',true,false,false));
-        keyMap.put(HotKeyType.STILL_INTERESTING.name(),new HotKeyDescriptor("",GlobalKeyEvent.VK_4,'4',true,false,false));
-        keyMap.put(HotKeyType.CLOSE_NOTIFICATION.name(),new HotKeyDescriptor("",GlobalKeyEvent.VK_5,'5',true,false,false));
-        keyMap.put(HotKeyType.EXPAND_ALL.name(),new HotKeyDescriptor("",GlobalKeyEvent.VK_1,'1',false,false,true));
-        keyMap.put("button_1",new HotKeyDescriptor("",GlobalKeyEvent.VK_1,'1',false,true,false));
-        keyMap.put("button_2",new HotKeyDescriptor("",GlobalKeyEvent.VK_1,'2',false,true,false));
-        keyMap.put("button_3",new HotKeyDescriptor("",GlobalKeyEvent.VK_1,'3',false,true,false));
-        keyMap.put("button_4",new HotKeyDescriptor("",GlobalKeyEvent.VK_1,'4',false,true,false));
+        keyMap.put(HotKeyType.INVITE_PLAYER.name(),new HotKeyDescriptor("Alt + 1", NativeKeyEvent.VC_1,'1',true,false,false));
+        keyMap.put(HotKeyType.TRADE_PLAYER.name(),new HotKeyDescriptor("Alt + 2",NativeKeyEvent.VC_2,'2',true,false,false));
+        keyMap.put(HotKeyType.KICK_PLAYER.name(),new HotKeyDescriptor("Alt + 3",NativeKeyEvent.VC_3,'3',true,false,false));
+        keyMap.put(HotKeyType.STILL_INTERESTING.name(),new HotKeyDescriptor("Alt + 4",NativeKeyEvent.VC_4,'4',true,false,false));
+        keyMap.put(HotKeyType.CLOSE_NOTIFICATION.name(),new HotKeyDescriptor("Alt + 5",NativeKeyEvent.VC_5,'5',true,false,false));
         return keyMap;
     }
 
@@ -53,9 +49,19 @@ public class HotKeysConfigurationService extends BaseConfigurationService<Map<St
     }
 
     @Override
+    public void set(Map<String, HotKeyDescriptor> map) {
+        this.selectedProfile.setHotKeysDataMap(map);
+    }
+
+    @Override
     public void validate() {
         if (this.selectedProfile.getHotKeysDataMap() == null){
             this.selectedProfile.setHotKeysDataMap(this.getDefault());
         }
+        this.getMap().values().forEach(it -> {
+            if(it.getTitle().equals("")){
+                it.setTitle("...");
+            }
+        });
     }
 }

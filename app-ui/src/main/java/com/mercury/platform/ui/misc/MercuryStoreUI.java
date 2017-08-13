@@ -11,6 +11,7 @@ import com.mercury.platform.ui.components.panel.grid.ItemInfoPanel;
 import com.mercury.platform.ui.components.panel.grid.TabInfoPanel;
 import com.mercury.platform.ui.components.panel.message.InMessagePanel;
 import com.mercury.platform.ui.dialog.DialogCallback;
+import com.mercury.platform.ui.manager.routing.SettingsPage;
 import rx.subjects.PublishSubject;
 
 import java.util.Map;
@@ -51,6 +52,13 @@ public class MercuryStoreUI {
     public static final PublishSubject<AdrComponentDescriptor> adrExportSubject = PublishSubject.create();
     public static final PublishSubject<AdrComponentDescriptor> adrUpdateSubject = PublishSubject.create();
     public static final PublishSubject<DialogCallback<String>> adrOpenIconSelectSubject = PublishSubject.create();
+
+    public static final PublishSubject<SettingsPage> settingsStateSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> settingsRepaintSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> settingsPackSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> settingsSaveSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> settingsRestoreSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> settingsPostSubject = PublishSubject.create();
 
     public static final PublishSubject<Boolean> onDestroySubject = PublishSubject.create();
 }

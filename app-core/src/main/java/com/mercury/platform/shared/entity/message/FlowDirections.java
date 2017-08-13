@@ -1,5 +1,7 @@
 package com.mercury.platform.shared.entity.message;
 
-public enum FlowDirections {
+import java.io.Serializable;
+
+public enum FlowDirections implements Serializable{
     UPWARDS, DOWNWARDS
 }

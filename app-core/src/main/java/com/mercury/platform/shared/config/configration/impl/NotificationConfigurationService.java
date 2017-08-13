@@ -2,6 +2,7 @@ package com.mercury.platform.shared.config.configration.impl;
 
 import com.mercury.platform.shared.config.configration.BaseConfigurationService;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
+import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.config.descriptor.NotificationDescriptor;
 import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
 import com.mercury.platform.shared.config.descriptor.ResponseButtonDescriptor;
@@ -20,10 +21,10 @@ public class NotificationConfigurationService extends BaseConfigurationService<N
     public NotificationDescriptor getDefault() {
         NotificationDescriptor notificationDescriptor = new NotificationDescriptor();
         List<ResponseButtonDescriptor> defaultButtons = new ArrayList<>();
-        defaultButtons.add(new ResponseButtonDescriptor(0,false,false,"1m","one minute"));
-        defaultButtons.add(new ResponseButtonDescriptor(1,true,false,"thx","thanks"));
-        defaultButtons.add(new ResponseButtonDescriptor(2,false,false,"no thx", "no thanks"));
-        defaultButtons.add(new ResponseButtonDescriptor(3,false,false,"sold", "sold"));
+        defaultButtons.add(new ResponseButtonDescriptor(0,false,"1m","one minute", new HotKeyDescriptor()));
+        defaultButtons.add(new ResponseButtonDescriptor(1,true,"thx","thanks",new HotKeyDescriptor()));
+        defaultButtons.add(new ResponseButtonDescriptor(2,false,"no thx", "no thanks",new HotKeyDescriptor()));
+        defaultButtons.add(new ResponseButtonDescriptor(3,false,"sold", "sold",new HotKeyDescriptor()));
         notificationDescriptor.setButtons(defaultButtons);
         notificationDescriptor.setNotificationEnable(true);
         notificationDescriptor.setLimitCount(3);
@@ -44,10 +45,20 @@ public class NotificationConfigurationService extends BaseConfigurationService<N
         if(this.selectedProfile.getNotificationDescriptor() == null) {
             this.selectedProfile.setNotificationDescriptor(this.getDefault());
         }
+        this.get().getButtons().forEach(it -> {
+            if(it.getHotKeyDescriptor() == null) {
+                it.setHotKeyDescriptor(new HotKeyDescriptor());
+            }
+        });
     }
 
     @Override
     public NotificationDescriptor get() {
         return this.selectedProfile.getNotificationDescriptor();
+    }
+
+    @Override
+    public void set(NotificationDescriptor descriptor) {
+        this.selectedProfile.setNotificationDescriptor(descriptor);
     }
 }

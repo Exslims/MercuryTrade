@@ -1,57 +1,42 @@
-package com.mercury.platform.ui.components.panel.settings;
+package com.mercury.platform.ui.components.panel.settings.page;
+
 
 import com.mercury.platform.core.MercuryConstants;
-import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
-/**
- * Created by Константин on 05.01.2017.
- */
-public class AboutPanel extends JPanel implements HasUI {
-    private ComponentsFactory componentsFactory;
-    public AboutPanel() {
-        super();
-        componentsFactory = new ComponentsFactory();
-        this.setBackground(AppThemeColor.TRANSPARENT);
-        createUI();
-    }
-
+public class AboutPagePanel extends SettingsPagePanel {
     @Override
     public void createUI() {
+        super.createUI();
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         JPanel imgPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         imgPanel.add(componentsFactory.getIconLabel("app/app-icon-big.png"));
-        this.add(imgPanel);
-
-        JPanel aboutPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        aboutPanel.add(getInfoPanel());
-
-        this.add(aboutPanel);
+//        this.add(imgPanel,BorderLayout.CENTER);
+        this.container.add(this.componentsFactory.wrapToSlide(getInfoPanel()));
     }
 
     private JPanel getInfoPanel(){
         JPanel panel = componentsFactory.getTransparentPanel();
+        panel.setBackground(AppThemeColor.ADR_BG);
+        panel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
 
         JPanel titlePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        titlePanel.add(componentsFactory.getTextLabel("MercuryTrade", FontStyle.REGULAR));
+        titlePanel.add(componentsFactory.getTextLabel("MercuryTrade", FontStyle.REGULAR,15));
         panel.add(titlePanel);
         JPanel versionPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        versionPanel.add(componentsFactory.getTextLabel("App version: " + MercuryConstants.APP_VERSION, FontStyle.REGULAR));
+        versionPanel.add(componentsFactory.getTextLabel("App version: " + MercuryConstants.APP_VERSION, FontStyle.REGULAR,15));
         panel.add(versionPanel);
 
-        JLabel redditButton = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,16f,"Reddit");
+        JLabel redditButton = componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,16f,"Reddit");
         redditButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -115,12 +100,20 @@ public class AboutPanel extends JPanel implements HasUI {
         });
 
         JPanel feedbackPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        feedbackPanel.add(componentsFactory.getTextLabel("Feedback & Suggestions: ", FontStyle.REGULAR));
+        feedbackPanel.add(componentsFactory.getTextLabel("Feedback & Suggestions: ", FontStyle.REGULAR,15));
         feedbackPanel.add(redditButton);
         feedbackPanel.add(githubButton);
         feedbackPanel.add(discordButton);
 
         panel.add(feedbackPanel);
         return panel;
+    }
+
+    @Override
+    public void onSave() {
+    }
+
+    @Override
+    public void restore() {
     }
 }

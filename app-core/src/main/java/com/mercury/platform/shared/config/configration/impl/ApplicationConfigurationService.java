@@ -28,6 +28,11 @@ public class ApplicationConfigurationService extends BaseConfigurationService<Ap
     }
 
     @Override
+    public void set(ApplicationDescriptor descriptor) {
+        this.selectedProfile.setApplicationDescriptor(descriptor);
+    }
+
+    @Override
     public ApplicationDescriptor getDefault() {
         ApplicationDescriptor descriptor = new ApplicationDescriptor();
         descriptor.setNotifierStatus(WhisperNotifierStatus.ALWAYS);

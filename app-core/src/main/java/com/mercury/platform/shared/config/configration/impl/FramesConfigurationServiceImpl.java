@@ -41,6 +41,11 @@ public class FramesConfigurationServiceImpl extends BaseConfigurationService<Map
     }
 
     @Override
+    public void set(Map<String, FrameDescriptor> map) {
+        this.selectedProfile.setFrameDescriptorMap(map);
+    }
+
+    @Override
     public Map<String, FrameDescriptor> getDefault() {
         return defaultFramesSettings;
     }
@@ -77,7 +82,7 @@ public class FramesConfigurationServiceImpl extends BaseConfigurationService<Map
         defaultFramesSettings.put("MessageFrame", new FrameDescriptor(new Point(700, 600), new Dimension(315, 0)));
         defaultFramesSettings.put("OutMessageFrame", new FrameDescriptor(new Point(200, 500), new Dimension(280, 115)));
         defaultFramesSettings.put("TestCasesFrame", new FrameDescriptor(new Point(1400, 500), new Dimension(400, 100)));
-        defaultFramesSettings.put("SettingsFrame", new FrameDescriptor(new Point(600, 600), new Dimension(600,400)));
+        defaultFramesSettings.put("SettingsFrame", new FrameDescriptor(new Point(600, 600), new Dimension(800,600)));
         defaultFramesSettings.put("HistoryFrame", new FrameDescriptor(new Point(600, 500), new Dimension(280, 400)));
         defaultFramesSettings.put("TimerFrame", new FrameDescriptor(new Point(400, 600), new Dimension(240, 102)));
         defaultFramesSettings.put("ChatFilterFrame", new FrameDescriptor(new Point(400, 600), new Dimension(500, 300)));

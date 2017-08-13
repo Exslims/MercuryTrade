@@ -106,6 +106,9 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
         frameDescriptor.setFrameLocation(location);
         MercuryStoreCore.saveConfigSubject.onNext(true);
     }
+    public void onSizeChange(){
+        MercuryStoreCore.saveConfigSubject.onNext(true);
+    }
     protected void onFrameDragged(Point location){
         this.setLocation(location);
     }
@@ -166,12 +169,12 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
                 }else {
                     frameDescriptor.setFrameSize(size);
                 }
-                MercuryStoreCore.saveConfigSubject.onNext(true);
+                onSizeChange();
             }else if(SEResizeSpace){
                 AbstractComponentFrame.this.setMinimumSize(size);
                 AbstractComponentFrame.this.setMaximumSize(size);
                 frameDescriptor.setFrameSize(AbstractComponentFrame.this.getSize());
-                MercuryStoreCore.saveConfigSubject.onNext(true);
+                onSizeChange();
             }
             EResizeSpace = false;
             SEResizeSpace = false;
