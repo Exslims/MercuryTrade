@@ -36,6 +36,11 @@ public class SoundConfigurationService extends BaseConfigurationService<Map<Stri
     }
 
     @Override
+    public void set(Map<String, SoundDescriptor> map) {
+        this.selectedProfile.setSoundDescriptorMap(map);
+    }
+
+    @Override
     public Map<String, SoundDescriptor> getDefault() {
         Map<String,SoundDescriptor> defaultSettings = new HashMap<>();
         defaultSettings.put("notification",new SoundDescriptor("app/notification.wav",0f));

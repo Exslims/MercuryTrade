@@ -21,9 +21,6 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
     protected DraggedFrameMotionListener motionListener;
     protected AdrMouseOverListener mouseOverListener;
 
-    private Subscription adrRepaintSubscription;
-    private Subscription adrVisibleSubscription;
-
     public AbstractAdrComponentFrame(T descriptor) {
         super(descriptor);
         this.setBackground(AppThemeColor.TRANSPARENT);
@@ -33,33 +30,6 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
         this.mouseOverListener = new AdrMouseOverListener<>(this.getRootPane(),this.descriptor,false);
     }
 
-    @Override
-    protected void initialize() {
-        this.setLocation(descriptor.getLocation());
-        this.setOpacity(descriptor.getOpacity());
-        this.componentsFactory.setScale(descriptor.getScale());
-    }
-
-    @Override
-    public void subscribe() {
-        this.adrRepaintSubscription = MercuryStoreUI.adrRepaintSubject.subscribe(state -> {
-            this.repaint();
-            this.pack();
-        });
-        this.adrVisibleSubscription = MercuryStoreCore.adrVisibleSubject.subscribe(state -> {
-            switch (state) {
-                case SHOW: {
-                    this.processingHideEvent = false;
-                    break;
-                }
-                case HIDE: {
-                    this.processingHideEvent = true;
-                    break;
-                }
-            }
-        });
-        MercuryStoreUI.onDestroySubject.subscribe(state -> this.onDestroy());
-    }
 
     @Override
     public void enableSettings() {
@@ -79,14 +49,13 @@ public abstract class AbstractAdrComponentFrame<T extends AdrComponentDescriptor
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         this.mouseOverListener.onDestroy();
-        this.adrRepaintSubscription.unsubscribe();
-        this.adrVisibleSubscription.unsubscribe();
     }
 
     @Override
     protected LayoutManager getFrameLayout() {
-        return new BorderLayout();
+        return new GridLayout(1,1);
     }
 
     public class DraggedFrameMotionListener extends MouseAdapter {

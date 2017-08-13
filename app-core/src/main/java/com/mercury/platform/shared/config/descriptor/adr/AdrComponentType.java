@@ -5,4 +5,5 @@ public enum AdrComponentType {
     ICON,
     TRACKER_GROUP,
     PROGRESS_BAR,
+    CAPTURE
 }

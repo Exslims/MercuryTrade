@@ -3,17 +3,14 @@ package com.mercury.platform.shared.config.configration.impl.adr;
 
 import com.mercury.platform.shared.config.configration.AdrConfigurationService;
 import com.mercury.platform.shared.config.configration.BaseConfigurationService;
-import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.*;
+import com.mercury.platform.shared.config.descriptor.adr.AdrCaptureDescriptor;
 import com.mercury.platform.shared.config.json.JSONHelper;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class AdrConfigurationServiceMock extends BaseConfigurationService<List<AdrProfileDescriptor>> implements AdrConfigurationService {
@@ -99,5 +96,14 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         JSONHelper jsonHelper = new JSONHelper();
         profileDescriptor.setContents(jsonHelper.getJsonAsObjectFromFile("notes/showcase-profile.json"));
         return profileDescriptor;
+    }
+
+    @Override
+    public AdrCaptureDescriptor getDefaultCapture() {
+        AdrCaptureDescriptor descriptor = new AdrCaptureDescriptor();
+        descriptor.setTitle("Capture");
+        descriptor.setType(AdrComponentType.CAPTURE);
+        descriptor.setCaptureLocation(new Point(descriptor.getLocation().x + 80,descriptor.getLocation().y));
+        return descriptor;
     }
 }

@@ -22,6 +22,7 @@ import com.mercury.platform.ui.frame.setup.location.SetUpLocationCommander;
 import com.mercury.platform.ui.frame.other.SetUpLocationFrame;
 import com.mercury.platform.ui.frame.titled.chat.ChatFilterFrame;
 import com.mercury.platform.ui.frame.titled.container.HistoryFrame;
+import com.mercury.platform.ui.manager.routing.SettingsRoutManager;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.note.Note;
 import com.mercury.platform.ui.misc.note.NotesLoader;
@@ -73,7 +74,8 @@ public class FramesManager implements AsSubscriber {
         this.framesMap.put(NotesFrame.class, new NotesFrame(notesOnFirstStart, NotesFrame.NotesType.INFO));
 
         this.framesMap.put(HistoryFrame.class,new HistoryFrame());
-        this.framesMap.put(SettingsFrame.class,new SettingsFrame());
+        SettingsFrame settingsFrame = new SettingsFrame();
+        this.framesMap.put(SettingsFrame.class,settingsFrame);
         this.framesMap.put(TestCasesFrame.class,new TestCasesFrame());
         this.framesMap.put(TooltipFrame.class,new TooltipFrame());
         this.framesMap.put(NotificationFrame.class,new NotificationFrame());
@@ -98,6 +100,7 @@ public class FramesManager implements AsSubscriber {
                 }
             }
         });
+        new SettingsRoutManager(settingsFrame);
         this.subscribe();
         this.adrManager.load();
         MercuryStoreCore.uiLoadedSubject.onNext(true);

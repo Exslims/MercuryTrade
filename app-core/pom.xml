@@ -20,8 +20,8 @@
             <version>1.0.0.5</version>
         </dependency>
         <dependency>
-            <groupId>lc.kra.system</groupId>
-            <artifactId>system-hook</artifactId>
+            <groupId>com.1stleg</groupId>
+            <artifactId>jnativehook</artifactId>
         </dependency>
         <dependency>
             <groupId>net.java.dev.jna</groupId>

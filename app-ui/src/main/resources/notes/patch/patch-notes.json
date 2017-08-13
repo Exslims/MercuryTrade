@@ -1,9 +1,9 @@
 {
-  "version":"1.0.1.6.1",
+  "version":"1.0.1.7.0",
   "notes":[
     {
-      "title" : "Hotfix",
-      "text" : "Overseer:\n- Fixed a bug with tracker not working properly with multiple simultanious key presses.\n- Fixed a bug with components not being removed properly.\n- Improved the icon selection dialog performance.\n- Now you can bind left/midle/right mouse buttons as a hotkey.\n\nThanks for your fast feedback and support. New features are coming soon!",
+      "title" : "Update",
+      "text" : "More than 5000 unique users this week! Here is an update for you!\n-Completely reworked Settings GUI.\n-All the issues with non-English keyboard layouts should be gone. Also now you can bind absolutely any mouse / keyboard button you have.\n-Fixed an issue when you couldn't close Notification panel.\n-Now components are cleaned up properly on a profile switch.\nCheck out the Overseer channel on Discord - post your setups, share profiles and converse!\n\nStay with us as there are more mind-blowing features to come. And don't forget to support the app, judging from all the activity looks like it's probably worth some!",
       "image" : "",
       "layout" : "VERTICAL"
     }

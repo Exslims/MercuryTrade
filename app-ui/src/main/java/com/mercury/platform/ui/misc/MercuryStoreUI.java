@@ -9,8 +9,9 @@ import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
 import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
 import com.mercury.platform.ui.components.panel.grid.ItemInfoPanel;
 import com.mercury.platform.ui.components.panel.grid.TabInfoPanel;
-import com.mercury.platform.ui.components.panel.message.MessagePanel;
+import com.mercury.platform.ui.components.panel.message.InMessagePanel;
 import com.mercury.platform.ui.dialog.DialogCallback;
+import com.mercury.platform.ui.manager.routing.SettingsPage;
 import rx.subjects.PublishSubject;
 
 import java.util.Map;
@@ -22,7 +23,7 @@ public class MercuryStoreUI {
     public static final PublishSubject<TabInfoPanel> dismissTabInfoPanelSubject = PublishSubject.create();
     public static final PublishSubject<Boolean> expandMessageSubject = PublishSubject.create();
     public static final PublishSubject<ItemInfoPanel> itemCellStateSubject = PublishSubject.create();
-    public static final PublishSubject<MessagePanel> reloadMessageSubject = PublishSubject.create();
+    public static final PublishSubject<InMessagePanel> reloadMessageSubject = PublishSubject.create();
     //Scale
     public static final PublishSubject<Map<String,Float>> saveScaleSubject = PublishSubject.create();
     public static final PublishSubject<Float> notificationScaleSubject = PublishSubject.create();
@@ -51,6 +52,13 @@ public class MercuryStoreUI {
     public static final PublishSubject<AdrComponentDescriptor> adrExportSubject = PublishSubject.create();
     public static final PublishSubject<AdrComponentDescriptor> adrUpdateSubject = PublishSubject.create();
     public static final PublishSubject<DialogCallback<String>> adrOpenIconSelectSubject = PublishSubject.create();
+
+    public static final PublishSubject<SettingsPage> settingsStateSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> settingsRepaintSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> settingsPackSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> settingsSaveSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> settingsRestoreSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> settingsPostSubject = PublishSubject.create();
 
     public static final PublishSubject<Boolean> onDestroySubject = PublishSubject.create();
 }

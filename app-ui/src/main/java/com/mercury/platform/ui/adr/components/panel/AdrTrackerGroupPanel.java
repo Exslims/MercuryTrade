@@ -72,11 +72,11 @@ public class AdrTrackerGroupPanel extends AdrComponentPanel<AdrTrackerGroupDescr
         this.cells = new ArrayList<>();
         this.setLayout(new GridLayout());
         this.descriptor.getCells().forEach(component -> {
-            AdrCellPanel adrCellPanel = new AdrCellPanel((AdrDurationComponentDescriptor) component, this.componentsFactory);
-            this.add(adrCellPanel);
-            this.cells.add(adrCellPanel);
+            AdrDurationCellPanel adrDurationCellPanel = new AdrDurationCellPanel((AdrDurationComponentDescriptor) component, this.componentsFactory);
+            this.add(adrDurationCellPanel);
+            this.cells.add(adrDurationCellPanel);
             if(inSettings){
-                adrCellPanel.enableSettings();
+                adrDurationCellPanel.enableSettings();
             }
         });
         this.init();
@@ -101,11 +101,6 @@ public class AdrTrackerGroupPanel extends AdrComponentPanel<AdrTrackerGroupDescr
 
     @Override
     public void onUnSelect() {
-    }
-
-    @Override
-    protected void onHotKeyPressed() {
-
     }
 
     @Override

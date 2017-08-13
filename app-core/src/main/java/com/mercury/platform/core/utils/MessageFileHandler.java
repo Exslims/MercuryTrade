@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class MessageFileHandler implements AsSubscriber {
-    private static final String dateRGPattern = "^\\n[0-9]{4}\\/(0[1-9]|1[0-2])\\/(0[1-9]|[1-2][0-9]|3[0-1])\\s([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$";
+    private static final String dateRGPattern = "^\\n?[0-9]{4}\\/(0[1-9]|1[0-2])\\/(0[1-9]|[1-2][0-9]|3[0-1])\\s([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$";
     private final Logger logger = LogManager.getLogger(MessageFileHandler.class);
     private String logFilePath;
     private Date lastMessageDate = new Date();
@@ -68,9 +68,7 @@ public class MessageFileHandler implements AsSubscriber {
                 .collect(Collectors.toList());
 
         List<String> resultMessages = filteredMessages.stream().filter(message -> {
-            message = StringUtils.substring(message, 0, 20);
-            Matcher matcher = datePattern.matcher(message);
-            if(matcher.find()) {
+            if(message.contains("2017") || message.contains("2018")) { //todo
                 Date date = new Date(StringUtils.substring(message, 0, 20));
                 return date.after(lastMessageDate);
             }else {

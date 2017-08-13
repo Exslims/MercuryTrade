@@ -2,15 +2,19 @@ package com.mercury.platform.shared.config.descriptor;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
-public class ResponseButtonDescriptor implements Comparable<ResponseButtonDescriptor>{
+@NoArgsConstructor
+public class ResponseButtonDescriptor implements Comparable<ResponseButtonDescriptor>,Serializable{
     private long id;
-    private boolean kick;
     private boolean close;
-    private String title;
-    private String responseText;
+    private String title = "label";
+    private String responseText = "response";
+    private HotKeyDescriptor hotKeyDescriptor = new HotKeyDescriptor();
 
     @Override
     public int compareTo(ResponseButtonDescriptor o) {

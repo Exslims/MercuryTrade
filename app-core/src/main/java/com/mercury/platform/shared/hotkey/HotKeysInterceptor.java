@@ -1,49 +1,37 @@
 package com.mercury.platform.shared.hotkey;
 
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
 
-import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
-import com.mercury.platform.shared.store.MercuryStoreCore;
-import lc.kra.system.keyboard.GlobalKeyboardHook;
-import lc.kra.system.mouse.GlobalMouseHook;
-import lc.kra.system.mouse.event.GlobalMouseAdapter;
-import lc.kra.system.mouse.event.GlobalMouseEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HotKeysInterceptor {
     public HotKeysInterceptor() {
-        GlobalKeyboardHook keyboardHook = new GlobalKeyboardHook(false);
-        keyboardHook.addKeyListener(new HotKeyAdapter());
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.OFF);
 
-        GlobalMouseHook mouseHook = new GlobalMouseHook(false);
-        mouseHook.addMouseListener(new GlobalMouseAdapter() {
-            @Override
-            public void mousePressed(GlobalMouseEvent globalMouseEvent) {
-                MercuryStoreCore.hotKeySubject.onNext(this.convert(globalMouseEvent));
-            }
-            private HotKeyDescriptor convert(GlobalMouseEvent event) {
-                HotKeyDescriptor descriptor = new HotKeyDescriptor();
-                switch (event.getButton()){
-                    case 1: {
-                        descriptor.setVirtualKeyCode(1000);
-                        descriptor.setTitle("Mouse left");
-                        break;
-                    }
-                    case 2: {
-                        descriptor.setVirtualKeyCode(1002);
-                        descriptor.setTitle("Mouse right");
-                        break;
-                    }
-                    case 16: {
-                        descriptor.setVirtualKeyCode(1016);
-                        descriptor.setTitle("Mouse middle");
-                        break;
-                    }
-                }
-                return descriptor;
-            }
-        });
+        logger.setUseParentHandlers(false);
+        try {
+            GlobalScreen.registerNativeHook();
+        } catch (NativeHookException e) {
+            e.printStackTrace();
+        }
+        GlobalScreen.addNativeKeyListener(new MercuryNativeKeyListener());
+        GlobalScreen.addNativeMouseListener(new MercuryNativeMouseListener());
     }
 
     public static void main(String[] args) {
-        new HotKeysInterceptor();
+//        new HotKeysInterceptor();
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.OFF);
+
+        logger.setUseParentHandlers(false);
+        try {
+            GlobalScreen.registerNativeHook();
+        } catch (NativeHookException e) {
+            e.printStackTrace();
+        }
+        GlobalScreen.addNativeMouseListener(new MercuryNativeMouseListener());
     }
 }

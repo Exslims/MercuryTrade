@@ -21,7 +21,6 @@ public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extend
 
     private Subscription adrReloadSubscription;
     private Subscription adrSelectSubscription;
-    private Subscription adrHotKeySubscription;
     public AdrComponentPanel(T descriptor, ComponentsFactory componentsFactory) {
         this.descriptor = descriptor;
         this.componentsFactory = componentsFactory;
@@ -44,13 +43,6 @@ public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extend
                 this.onUnSelect();
             }
         });
-        this.adrHotKeySubscription = MercuryStoreCore.hotKeySubject.subscribe(hotKey -> {
-            if(this.descriptor.getHotKeyDescriptor() != null) {
-                if (this.descriptor.getHotKeyDescriptor().equals(hotKey) && !this.inSettings) {
-                    this.onHotKeyPressed();
-                }
-            }
-        });
     }
 
     public void enableSettings() {
@@ -61,13 +53,11 @@ public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extend
     }
     public abstract void onSelect();
     public abstract void onUnSelect();
-    protected abstract void onHotKeyPressed();
     protected abstract void onUpdate();
 
     @Override
     public void onDestroy() {
         this.adrReloadSubscription.unsubscribe();
         this.adrSelectSubscription.unsubscribe();
-        this.adrHotKeySubscription.unsubscribe();
     }
 }
