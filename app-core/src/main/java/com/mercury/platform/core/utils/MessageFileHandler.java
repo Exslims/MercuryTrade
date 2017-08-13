@@ -68,9 +68,7 @@ public class MessageFileHandler implements AsSubscriber {
                 .collect(Collectors.toList());
 
         List<String> resultMessages = filteredMessages.stream().filter(message -> {
-            message = StringUtils.substring(message, 0, 20);
-            Matcher matcher = datePattern.matcher(message);
-            if(matcher.find()) {
+            if(message.contains("2017") || message.contains("2018")) { //todo
                 Date date = new Date(StringUtils.substring(message, 0, 20));
                 return date.after(lastMessageDate);
             }else {

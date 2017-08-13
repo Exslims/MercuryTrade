@@ -10,9 +10,6 @@ import io.netty.handler.codec.serialization.ObjectEncoder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * Created by Frost on 14.01.2017.
- */
 public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> {
 
     private static final Logger LOGGER = LogManager.getLogger(ClientChannelInitializer.class.getSimpleName());

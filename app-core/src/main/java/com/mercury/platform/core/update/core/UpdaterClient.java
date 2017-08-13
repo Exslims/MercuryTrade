@@ -12,11 +12,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.net.InetSocketAddress;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by Frost on 14.01.2017.
- */
 public class UpdaterClient {
 
     private static final Logger LOGGER = LogManager.getLogger(UpdaterClient.class.getSimpleName());
@@ -71,7 +69,7 @@ public class UpdaterClient {
                         future.channel().close();
                         future.channel().eventLoop().schedule(() -> {
                             bootstrap.connect().addListener(this);
-                        },3,TimeUnit.MINUTES);
+                        },new Random().nextInt(5),TimeUnit.MINUTES);
                     } else {
                         channel = future.channel();
                         connectionEstablished = true;

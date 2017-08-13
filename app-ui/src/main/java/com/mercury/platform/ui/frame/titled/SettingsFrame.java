@@ -9,9 +9,12 @@ import com.mercury.platform.ui.components.panel.settings.*;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
+import com.mercury.platform.ui.misc.note.Note;
+import com.mercury.platform.ui.misc.note.NotesLoader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
@@ -114,6 +117,23 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         root.add(this.componentsFactory.wrapToSlide(openTutorial));
         root.add(this.componentsFactory.wrapToSlide(checkUpdates));
         root.add(this.componentsFactory.wrapToSlide(openTests));
+
+        JButton patchNotes = componentsFactory.getBorderedButton("Open patch notes");
+        patchNotes.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e)){
+                    NotesLoader notesLoader = new NotesLoader();
+                    java.util.List<Note> patchNotes = notesLoader.getPatchNotes();
+                    if(patchNotes.size() != 0){
+                        NotesFrame patchNotesFrame = new NotesFrame(patchNotes, NotesFrame.NotesType.PATCH);
+                        patchNotesFrame.init();
+                        patchNotesFrame.showComponent();
+                    }
+                }
+            }
+        });
+//        root.add(patchNotes);
         return root;
     }
 

@@ -7,7 +7,6 @@ import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.config.descriptor.HotKeyType;
 import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
-import lc.kra.system.keyboard.event.GlobalKeyEvent;
 import org.jnativehook.keyboard.NativeKeyEvent;
 
 import java.util.HashMap;

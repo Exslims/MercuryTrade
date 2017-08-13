@@ -9,7 +9,6 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrVisibleState;
 import com.mercury.platform.shared.entity.message.MercuryError;
 import com.mercury.platform.shared.entity.message.Message;
 import com.mercury.platform.shared.config.descriptor.SoundDescriptor;
-import lc.kra.system.keyboard.event.GlobalKeyEvent;
 import rx.subjects.PublishSubject;
 
 
