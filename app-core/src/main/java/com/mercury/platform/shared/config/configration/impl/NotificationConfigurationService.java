@@ -25,8 +25,11 @@ public class NotificationConfigurationService extends BaseConfigurationService<N
         defaultButtons.add(new ResponseButtonDescriptor(1,true,"thx","thanks",new HotKeyDescriptor()));
         defaultButtons.add(new ResponseButtonDescriptor(2,false,"no thx", "no thanks",new HotKeyDescriptor()));
         defaultButtons.add(new ResponseButtonDescriptor(3,false,"sold", "sold",new HotKeyDescriptor()));
+
+        List<ResponseButtonDescriptor> defaultOutButtons = new ArrayList<>();
+        defaultOutButtons.add(new ResponseButtonDescriptor(0,false,"thanks","thanks", new HotKeyDescriptor()));
+
         notificationSettingsDescriptor.setButtons(defaultButtons);
-        notificationSettingsDescriptor.setNotificationEnable(true);
         notificationSettingsDescriptor.setLimitCount(3);
         notificationSettingsDescriptor.setUnfoldCount(2);
         notificationSettingsDescriptor.setDismissAfterKick(true);
@@ -50,6 +53,9 @@ public class NotificationConfigurationService extends BaseConfigurationService<N
                 it.setHotKeyDescriptor(new HotKeyDescriptor());
             }
         });
+        if(this.get().getOutButtons().size() == 0){
+            this.get().getOutButtons().add(new ResponseButtonDescriptor(0,false,"thanks","thanks", new HotKeyDescriptor()));
+        }
     }
 
     @Override

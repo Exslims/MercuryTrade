@@ -1,8 +1,9 @@
-package com.mercury.platform.ui.components.panel.notification;
+package com.mercury.platform.ui.components.panel.notification.controller;
 
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
+import com.mercury.platform.ui.components.panel.notification.InMessagePanel;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.NonNull;
 import org.apache.logging.log4j.LogManager;
@@ -14,10 +15,10 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 
 //todo proxy
-public class NotificationMessageController implements MessagePanelController {
-    private static final Logger log = LogManager.getLogger(NotificationMessageController.class);
+public class NotificationIncomingController implements IncomingPanelController {
+    private static final Logger log = LogManager.getLogger(NotificationIncomingController.class);
     private NotificationDescriptor notificationDescriptor;
-    public NotificationMessageController(NotificationDescriptor notificationDescriptor){
+    public NotificationIncomingController(NotificationDescriptor notificationDescriptor){
         this.notificationDescriptor = notificationDescriptor;
     }
     @Override

@@ -14,6 +14,7 @@ import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.notification.*;
+import com.mercury.platform.ui.components.panel.notification.controller.IncomingPanelController;
 import com.mercury.platform.ui.components.panel.notification.factory.NotificationPanelFactory;
 import com.mercury.platform.ui.frame.movable.AbstractMovableComponentFrame;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
@@ -526,7 +527,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
         JPanel panel = factory.getTransparentPanel();
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
         panel.setBackground(AppThemeColor.FRAME);
-        MessagePanelController stubController = new MessagePanelController() {
+        IncomingPanelController stubController = new IncomingPanelController() {
             @Override
             public void performInvite() {}
             @Override
@@ -568,8 +569,8 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
             this.componentsFactory = MessageFrame.this.componentsFactory;
             this.setBackground(AppThemeColor.MSG_HEADER);
             this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
-                            BorderFactory.createMatteBorder(1,1,1,0,AppThemeColor.TRANSPARENT),
-                            BorderFactory.createMatteBorder(1,1,1,1,AppThemeColor.BORDER)));
+                    BorderFactory.createMatteBorder(1,1,1,0,AppThemeColor.TRANSPARENT),
+                    BorderFactory.createMatteBorder(1,1,1,1,AppThemeColor.BORDER)));
 
             labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
             labelPanel.setBackground(AppThemeColor.MSG_HEADER);

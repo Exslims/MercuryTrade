@@ -8,12 +8,12 @@ import com.mercury.platform.shared.config.descriptor.ResponseButtonDescriptor;
 import com.mercury.platform.shared.entity.message.TradeNotificationDescriptor;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
+import com.mercury.platform.ui.components.panel.notification.controller.IncomingPanelController;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import javax.swing.Timer;
-import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,7 +22,7 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
-public abstract class IncomingNotificationPanel<T extends TradeNotificationDescriptor> extends NotificationPanel<T,MessagePanelController>{
+public abstract class IncomingNotificationPanel<T extends TradeNotificationDescriptor> extends NotificationPanel<T,IncomingPanelController>{
     private PlainConfigurationService<NotificationSettingsDescriptor> config;
     @Override
     public void onViewInit() {
@@ -31,7 +31,7 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
         this.setBackground(AppThemeColor.FRAME);
         this.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(1,1,1,1),
-                BorderFactory.createLineBorder(AppThemeColor.BORDER, 1)));
+                BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON_BORDER, 1)));
 
         this.add(this.getHeader(),BorderLayout.PAGE_START);
         this.add(this.getMessagePanel(),BorderLayout.CENTER);
@@ -43,31 +43,29 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
 
         JLabel nicknameLabel = this.componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,15f,this.getNicknameText());
         nicknameLabel.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
-
-        root.add(this.getExpandButton(),BorderLayout.LINE_START);
         root.add(nicknameLabel,BorderLayout.CENTER);
 
-        JPanel interactionPanel = new JPanel(new GridLayout(1,0));
-        interactionPanel.setPreferredSize(new Dimension(220, 16));
+        JPanel opPanel = this.componentsFactory.getJPanel(new BorderLayout(),AppThemeColor.MSG_HEADER);
+        JPanel interactionPanel = new JPanel(new GridLayout(1,0,4,0));
+        interactionPanel.setPreferredSize(new Dimension(200,26));
         interactionPanel.setBackground(AppThemeColor.MSG_HEADER);
-        JButton inviteButton = componentsFactory.getIconButton("app/invite.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.INVITE);
+        JButton inviteButton = componentsFactory.getIconButton("app/invite.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.INVITE);
         inviteButton.addActionListener(e -> this.controller.performInvite());
-        JButton kickButton = componentsFactory.getIconButton("app/kick.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.KICK);
+        JButton kickButton = componentsFactory.getIconButton("app/kick.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.KICK);
         kickButton.addActionListener(e -> {
             this.controller.performKick();
             if(this.config.get().isDismissAfterKick()){
                 this.controller.performHide();
             }
         });
-        JButton tradeButton = componentsFactory.getIconButton("app/trade.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
+        JButton tradeButton = componentsFactory.getIconButton("app/trade.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
         tradeButton.addActionListener(e -> this.controller.performOfferTrade());
-        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
+        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
         openChatButton.addActionListener(e -> controller.performOpenChat());
-        JButton hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.HIDE_PANEL);
+        JButton hideButton = componentsFactory.getIconButton("app/close.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.HIDE_PANEL);
         hideButton.addActionListener(action -> {
             this.controller.performHide();
         });
-        interactionPanel.add(this.getTimePanel());
         interactionPanel.add(inviteButton);
         interactionPanel.add(kickButton);
         interactionPanel.add(tradeButton);
@@ -75,7 +73,12 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
         interactionPanel.add(openChatButton);
         interactionPanel.add(hideButton);
 
-        root.add(interactionPanel,BorderLayout.LINE_END);
+        JPanel timePanel = this.getTimePanel();
+        timePanel.setPreferredSize(new Dimension(50,26));
+        opPanel.add(timePanel,BorderLayout.CENTER);
+        opPanel.add(interactionPanel,BorderLayout.LINE_END);
+
+        root.add(opPanel,BorderLayout.LINE_END);
         return root;
     }
     @Override
@@ -93,7 +96,7 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
         forPanel.setBackground(AppThemeColor.FRAME);
         JLabel separator = componentsFactory.getTextLabel(
                 FontStyle.BOLD,
-                AppThemeColor.TEXT_MESSAGE,
+                AppThemeColor.TEXT_DEFAULT,
                 TextAlignment.CENTER,
                 18f,
                 "=>");
@@ -113,10 +116,10 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
                     String.valueOf(curCount);
         }
         if(!Objects.equals(curCountStr, "") && curIconPath != null) {
-            JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + curIconPath + ".png", 26);
+            JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + curIconPath + ".png", 28);
             JPanel curPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             curPanel.setBackground(AppThemeColor.FRAME);
-            curPanel.add(this.componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER,17f,null, curCountStr));
+            curPanel.add(this.componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER,17f,null, curCountStr));
             curPanel.add(currencyLabel);
             return curPanel;
         }
@@ -125,7 +128,7 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
     protected JLabel getOfferLabel(){
         String offer = this.data.getOffer();
         if(offer != null && offer.trim().length() > 0) {
-            JLabel offerLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, offer);
+            JLabel offerLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER, 16f, offer);
             offerLabel.setHorizontalAlignment(SwingConstants.CENTER);
             return offerLabel;
         }
@@ -139,24 +142,24 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
         List<ResponseButtonDescriptor> buttonsConfig = this.config.get().getButtons();
         Collections.sort(buttonsConfig);
         buttonsConfig.forEach((buttonConfig)->{
-            JButton button = componentsFactory.getBorderedButton(buttonConfig.getTitle(),16f);
+            JButton button = componentsFactory.getBorderedButton(buttonConfig.getTitle(),16f,AppThemeColor.RESPONSE_BUTTON, AppThemeColor.RESPONSE_BUTTON_BORDER,AppThemeColor.RESPONSE_BUTTON);
             if(buttonConfig.getTitle().length() < 10) {
-                button.setPreferredSize(new Dimension(70, 26));
+                button.setPreferredSize(new Dimension(60, 26));
             }
             button.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     button.setBorder( BorderFactory.createCompoundBorder(
                             BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER, 1),
-                            BorderFactory.createLineBorder(AppThemeColor.BUTTON, 3)
+                            BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON, 3)
                     ));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     button.setBorder( BorderFactory.createCompoundBorder(
-                            BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
-                            BorderFactory.createLineBorder(AppThemeColor.BUTTON, 3)
+                            BorderFactory.createLineBorder(AppThemeColor.MSG_HEADER_BORDER, 1),
+                            BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON, 3)
                     ));
                 }
             });

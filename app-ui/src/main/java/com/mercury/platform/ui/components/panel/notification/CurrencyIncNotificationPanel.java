@@ -1,19 +1,13 @@
 package com.mercury.platform.ui.components.panel.notification;
 
 import com.mercury.platform.shared.entity.message.CurrencyTradeNotificationDescriptor;
-import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.frame.movable.container.MessageFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 
 
@@ -46,14 +40,14 @@ public class CurrencyIncNotificationPanel extends IncomingNotificationPanel<Curr
         DecimalFormat decimalFormat = new DecimalFormat("#.####");
         JPanel ratePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         ratePanel.add(componentsFactory.
-                getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 18f, null,"("));
+                getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER, 18f, null,"("));
         JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + this.data.getCurrency() + ".png", 26);
         currencyLabel.setBorder(null);
         ratePanel.add(currencyLabel);
         ratePanel.add(componentsFactory.
-                getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 18f, null,decimalFormat.format(rate)));
+                getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER, 18f, null,decimalFormat.format(rate)));
         ratePanel.add(componentsFactory.
-                getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 18f, null,")"));
+                getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER, 18f, null,")"));
         ratePanel.setBorder(BorderFactory.createEmptyBorder(-5,0,-5,0));
         return ratePanel;
     }

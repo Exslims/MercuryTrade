@@ -8,7 +8,7 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.notification.InMessagePanel;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
-import com.mercury.platform.ui.components.panel.notification.NotificationMessageController;
+import com.mercury.platform.ui.components.panel.notification.controller.NotificationIncomingController;
 import com.mercury.platform.ui.components.panel.notification.MessagePanelStyle;
 import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -65,7 +65,7 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
                 InMessagePanel inMessagePanel = new InMessagePanel(
                         parsedNotificationDescriptor,
                         MessagePanelStyle.HISTORY,
-                        new NotificationMessageController(parsedNotificationDescriptor),
+                        new NotificationIncomingController(parsedNotificationDescriptor),
                         this.componentsFactory);
                 inMessagePanel.disableTime();
                 mainContainer.add(inMessagePanel);
@@ -84,7 +84,7 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
                         InMessagePanel inMessagePanel = new InMessagePanel(
                                 parsedNotificationDescriptor,
                                 MessagePanelStyle.HISTORY,
-                                new NotificationMessageController(parsedNotificationDescriptor),
+                                new NotificationIncomingController(parsedNotificationDescriptor),
                                 this.componentsFactory);
                         inMessagePanel.disableTime();
                         this.mainContainer.add(inMessagePanel, 0);
@@ -125,7 +125,7 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
             InMessagePanel inMessagePanel = new InMessagePanel(
                     message,
                     MessagePanelStyle.HISTORY,
-                    new NotificationMessageController(message),
+                    new NotificationIncomingController(message),
                     this.componentsFactory);
             this.mainContainer.add(inMessagePanel);
             this.trimContainer();

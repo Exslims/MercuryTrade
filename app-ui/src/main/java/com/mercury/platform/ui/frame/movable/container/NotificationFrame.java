@@ -3,6 +3,7 @@ package com.mercury.platform.ui.frame.movable.container;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
+import com.mercury.platform.shared.entity.message.FlowDirections;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
@@ -95,6 +96,26 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
     }
 
     private JPanel getExpandPanel(){
-        return new JPanel();
+        JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
+        root.setBackground(AppThemeColor.MSG_HEADER);
+        root.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(1,1,1,0,AppThemeColor.FRAME),
+                BorderFactory.createMatteBorder(1,1,1,1,AppThemeColor.RESPONSE_BUTTON_BORDER)));
+
+        JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        labelPanel.setBackground(AppThemeColor.MSG_HEADER);
+        labelPanel.setPreferredSize(new Dimension((int)(10 * componentsFactory.getScale()),(int)(22 * componentsFactory.getScale())));
+        labelPanel.setBorder(BorderFactory.createEmptyBorder(-4,0,0,0));
+        JLabel msgCountLabel = componentsFactory.getTextLabel("+" + String.valueOf("12"));
+        String iconPath = "app/collapse-all.png";
+        JButton expandButton = componentsFactory.getIconButton(iconPath,22,AppThemeColor.MSG_HEADER,"");
+        expandButton.addActionListener(action -> {
+
+        });
+        expandButton.setAlignmentY(SwingConstants.CENTER);
+        labelPanel.add(msgCountLabel);
+        root.add(expandButton,BorderLayout.CENTER);
+        root.add(labelPanel,BorderLayout.PAGE_END);
+        return root;
     }
 }

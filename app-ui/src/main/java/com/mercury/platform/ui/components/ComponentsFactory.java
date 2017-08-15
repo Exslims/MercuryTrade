@@ -159,6 +159,13 @@ public class ComponentsFactory{
         );
         return getButton(FontStyle.BOLD, AppThemeColor.BUTTON, compoundBorder, text, scale*fontSize);
     }
+    public JButton getBorderedButton(String text, float fontSize, Color background, Color outerBorderColor, Color innerBorderColor){
+        CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(outerBorderColor, 1),
+                BorderFactory.createLineBorder(innerBorderColor, 3)
+        );
+        return getButton(FontStyle.BOLD, background, compoundBorder, text, scale*fontSize);
+    }
 
     public Component setUpToggleCallbacks(Component button,ToggleCallback firstState, ToggleCallback secondState, boolean initialState){
         button.addMouseListener(new MouseAdapter() {

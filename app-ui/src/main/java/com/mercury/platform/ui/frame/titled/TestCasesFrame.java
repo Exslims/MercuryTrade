@@ -3,6 +3,7 @@ package com.mercury.platform.ui.frame.titled;
 import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
+import com.mercury.platform.shared.entity.message.NotificationType;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -183,7 +184,7 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
         });
         testPanel.add(button,buttonColumn);
         buttonColumn.gridy++;
-        JLabel textLabel = componentsFactory.getTextLabel("Random item message");
+        JLabel textLabel = componentsFactory.getTextLabel("Random incoming item message");
         testPanel.add(textLabel,titleColumn);
         titleColumn.gridy++;
 
@@ -249,41 +250,30 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
         testPanel.add(textLabel2,titleColumn);
         titleColumn.gridy++;
 
-//        JButton button3 = componentsFactory.getBorderedButton("Click");
-//        button3.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mousePressed(MouseEvent e) {
-//                EventRouter.CORE.fireEvent(new UpdateReadyEvent());
-//            }
-//        });
-//        testPanel.add(button3,buttonColumn);
-//        buttonColumn.gridy++;
-//        JLabel textLabel3 = componentsFactory.getTextLabel("Test update frame");
-//        testPanel.add(textLabel3,titleColumn);
-//        titleColumn.gridy++;
-//        testPanel.setBackground(AppThemeColor.TRANSPARENT);
-
-//        JButton button4 = componentsFactory.getBorderedButton("Click");
-//        button4.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mousePressed(MouseEvent e) {
-//                Message message = parser.parse(String.format(poeTradeTemplate,
-//                        "Example",
-//                        items.get(random.nextInt(items.size())),
-//                        random.nextInt(200),
-//                        "chaos",
-//                        random.nextInt(12) + 1,
-//                        random.nextInt(12) + 1,
-//                        "can sell cheaper??"
-//                ));
-//                EventRouter.CORE.fireEvent(new NewWhispersEvent(message));
-//            }
-//        });
-//        testPanel.add(button4,buttonColumn);
-//        buttonColumn.gridy++;
-//        JLabel textLabel4 = componentsFactory.getTextLabel("Placeholder");
-//        testPanel.add(textLabel4,titleColumn);
-//        titleColumn.gridy++;
+        JButton outItemButton = componentsFactory.getBorderedButton("Click");
+        outItemButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                NotificationDescriptor notificationDescriptor = parser.parse(String.format(poeTradeTemplate,
+                        nickNames.get(random.nextInt(nickNames.size())),
+                        items.get(random.nextInt(items.size())),
+                        random.nextInt(200),
+                        currency.get(random.nextInt(currency.size())),
+                        leagues.get(random.nextInt(leagues.size())),
+                        random.nextInt(30),
+                        random.nextInt(12) + 1,
+                        random.nextInt(12) + 1,
+                        offer.get(random.nextInt(offer.size()))
+                ));
+                notificationDescriptor.setType(NotificationType.OUT_ITEM_MESSAGE);
+                MercuryStoreCore.newNotificationSubject.onNext(notificationDescriptor);
+            }
+        });
+        testPanel.add(outItemButton,buttonColumn);
+        buttonColumn.gridy++;
+        JLabel outItemLabel = componentsFactory.getTextLabel("Random outgoing item message");
+        testPanel.add(outItemLabel,titleColumn);
+        titleColumn.gridy++;
         testPanel.setBackground(AppThemeColor.TRANSPARENT);
 
         return testPanel;

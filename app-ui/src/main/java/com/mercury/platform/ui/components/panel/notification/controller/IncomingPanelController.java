@@ -1,8 +1,9 @@
-package com.mercury.platform.ui.components.panel.notification;
+package com.mercury.platform.ui.components.panel.notification.controller;
 
+import com.mercury.platform.ui.components.panel.notification.InMessagePanel;
 import lombok.NonNull;
 
-public interface MessagePanelController {
+public interface IncomingPanelController {
     void performInvite();
     void performKick();
     void performOfferTrade();

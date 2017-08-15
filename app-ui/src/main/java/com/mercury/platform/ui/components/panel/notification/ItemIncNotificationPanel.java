@@ -24,7 +24,7 @@ public class ItemIncNotificationPanel extends IncomingNotificationPanel<ItemTrad
                 FontStyle.BOLD,
                 AppThemeColor.BUTTON,
                 BorderFactory.createEmptyBorder(0,4,0,2),
-                this.data.getItemName(), 17f);
+                this.data.getItemName(), 16f);
 
         itemButton.setForeground(AppThemeColor.TEXT_IMPORTANT);
         itemButton.setBackground(AppThemeColor.TRANSPARENT);

@@ -16,6 +16,7 @@ import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.misc.ViewInit;
+import com.mercury.platform.ui.components.panel.notification.controller.IncomingPanelController;
 import com.mercury.platform.ui.frame.movable.container.MessageFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.HasHotkey;
@@ -45,7 +46,7 @@ public class InMessagePanel extends JPanel implements AsSubscriber, ViewInit,Has
 
     private ComponentsFactory componentsFactory;
     private PlainConfigurationService<NotificationSettingsDescriptor> notificationService;
-    private MessagePanelController controller;
+    private IncomingPanelController controller;
     private MessagePanelStyle style;
 
     private String whisper;
@@ -76,7 +77,7 @@ public class InMessagePanel extends JPanel implements AsSubscriber, ViewInit,Has
             this.initHotKeyListeners();
         }
     }
-    public InMessagePanel(NotificationDescriptor notificationDescriptor, MessagePanelStyle style, MessagePanelController controller, ComponentsFactory componentsFactory){
+    public InMessagePanel(NotificationDescriptor notificationDescriptor, MessagePanelStyle style, IncomingPanelController controller, ComponentsFactory componentsFactory){
         this(notificationDescriptor,style);
         this.componentsFactory = componentsFactory;
         this.controller = controller;

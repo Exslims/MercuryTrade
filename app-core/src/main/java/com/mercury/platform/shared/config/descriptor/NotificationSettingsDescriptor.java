@@ -4,6 +4,7 @@ import com.mercury.platform.shared.entity.message.FlowDirections;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -14,5 +15,6 @@ public class NotificationSettingsDescriptor implements Serializable{
     private FlowDirections flowDirections;
     private boolean dismissAfterKick;
     private boolean showLeague;
-    private List<ResponseButtonDescriptor> buttons;
+    private List<ResponseButtonDescriptor> buttons = new ArrayList<>();
+    private List<ResponseButtonDescriptor> outButtons = new ArrayList<>();
 }
