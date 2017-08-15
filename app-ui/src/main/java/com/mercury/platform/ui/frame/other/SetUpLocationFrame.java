@@ -19,6 +19,10 @@ public class SetUpLocationFrame extends AbstractOverlaidFrame {
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1)));
+    }
+
+    @Override
+    public void onViewInit() {
 
         JPanel rootPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         rootPanel.setBorder(BorderFactory.createEmptyBorder(6,6,0,6));

@@ -101,6 +101,11 @@ public class AdrCaptureOutComponentFrame extends AbstractAdrFrame<AdrCaptureDesc
         this.component.onDestroy();
     }
 
+    @Override
+    public void onViewInit() {
+
+    }
+
 
     public class CaptureDraggedFrameMotionListener extends MouseAdapter {
         @Override

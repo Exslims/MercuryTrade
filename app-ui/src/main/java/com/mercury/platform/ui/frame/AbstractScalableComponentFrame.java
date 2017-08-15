@@ -1,7 +1,6 @@
 package com.mercury.platform.ui.frame;
 
 import com.mercury.platform.ui.components.ComponentsFactory;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.frame.setup.scale.ScaleState;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 
@@ -9,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 //todo need generalization
-public abstract class AbstractScalableComponentFrame extends AbstractComponentFrame implements HasUI{
+public abstract class AbstractScalableComponentFrame extends AbstractComponentFrame {
     protected Container mainContainer;
     private ScaleState scaleState = ScaleState.DEFAULT;
     protected ComponentsFactory stubComponentsFactory;
@@ -24,7 +23,6 @@ public abstract class AbstractScalableComponentFrame extends AbstractComponentFr
         MercuryStoreUI.saveScaleSubject.subscribe(this::performScaling);
         this.registerDirectScaleHandler();
     }
-
 
     protected void onScaleLock(){
         this.pack();

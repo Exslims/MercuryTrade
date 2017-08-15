@@ -33,7 +33,7 @@ public class AdrTrackerGroupPanel extends AdrComponentPanel<AdrTrackerGroupDescr
                     .collect(Collectors.toList())
                     .size() != this.descriptor.getCells().size()){
                 this.removeAll();
-                this.createUI();
+                this.onViewInit();
                 MercuryStoreCore.saveConfigSubject.onNext(true);
             }
             MercuryStoreUI.adrRepaintSubject.onNext(true);
@@ -68,7 +68,7 @@ public class AdrTrackerGroupPanel extends AdrComponentPanel<AdrTrackerGroupDescr
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         this.cells = new ArrayList<>();
         this.setLayout(new GridLayout());
         this.descriptor.getCells().forEach(component -> {

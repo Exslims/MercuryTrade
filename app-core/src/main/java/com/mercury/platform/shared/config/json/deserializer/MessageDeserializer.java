@@ -5,13 +5,13 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import com.mercury.platform.shared.entity.message.Message;
+import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 
 import java.lang.reflect.Type;
 
-public class MessageDeserializer implements JsonDeserializer<Message>{
+public class MessageDeserializer implements JsonDeserializer<NotificationDescriptor>{
     @Override
-    public Message deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+    public NotificationDescriptor deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         return null;
     }
 }

@@ -26,7 +26,7 @@ public class AdrDialogIconNodePanel extends AdrNodePanel<AdrIconDescriptor> {
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setBackground(AppThemeColor.ADR_BG);
         MercuryTracker tracker = new MercuryTracker(this.descriptor);

@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class NotificationDescriptor implements Serializable{
+public class NotificationSettingsDescriptor implements Serializable{
     private boolean notificationEnable;
     private int limitCount;
     private int unfoldCount;

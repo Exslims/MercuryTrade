@@ -1,9 +1,9 @@
 package com.mercury.platform.ui.components.panel.grid;
 
-import com.mercury.platform.shared.entity.message.ItemMessage;
+import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
 import com.mercury.platform.ui.components.ComponentsFactory;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
+import com.mercury.platform.ui.components.panel.misc.ViewInit;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
@@ -17,7 +17,7 @@ import java.util.*;
 import java.util.List;
 
 
-public class ItemsGridPanel extends JPanel implements HasUI {
+public class ItemsGridPanel extends JPanel implements ViewInit {
     private ComponentsFactory componentsFactory;
     private List<ItemCell> defaultCells;
     private List<ItemCell> quadCells;
@@ -35,7 +35,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
         quadCells = new ArrayList<>();
         tabButtons = new HashMap<>();
         stashTabsContainer = new StashTabsContainer();
-        createUI();
+        onViewInit();
     }
     public ItemsGridPanel(@NonNull ComponentsFactory factory){
         super(new BorderLayout());
@@ -44,11 +44,11 @@ public class ItemsGridPanel extends JPanel implements HasUI {
         quadCells = new ArrayList<>();
         tabButtons = new HashMap<>();
         stashTabsContainer = new StashTabsContainer();
-        createUI();
+        onViewInit();
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.setBorder(null);
 
@@ -85,7 +85,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
         this.setPreferredSize(this.getMaximumSize());
     }
 
-    public void add(@NonNull ItemMessage message, ItemInfoPanelController controller){
+    public void add(@NonNull ItemTradeNotificationDescriptor message, ItemInfoPanelController controller){
         String nickname = message.getWhisperNickname();
         if (!tabButtons.containsKey(nickname + message.getTabName())) {
             int x = message.getLeft();
@@ -108,7 +108,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
             }
         }
     }
-    public void remove(@NonNull ItemMessage message){
+    public void remove(@NonNull ItemTradeNotificationDescriptor message){
         closeGridItem(message);
     }
     public void changeTabType(@NonNull ItemInfoPanel itemInfoPanel){
@@ -157,7 +157,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
         return targetCell;
     }
 
-    private ItemInfoPanel createGridItem(@NonNull ItemMessage message, @NonNull ItemCell cell, @NonNull StashTabDescriptor stashTabDescriptor){
+    private ItemInfoPanel createGridItem(@NonNull ItemTradeNotificationDescriptor message, @NonNull ItemCell cell, @NonNull StashTabDescriptor stashTabDescriptor){
         ItemInfoPanel itemInfoPanel = new ItemInfoPanel(message,cell, stashTabDescriptor,componentsFactory);
         itemInfoPanel.setAlignmentY(SwingConstants.CENTER);
         itemInfoPanel.addMouseListener(new MouseAdapter() {
@@ -175,7 +175,7 @@ public class ItemsGridPanel extends JPanel implements HasUI {
         });
         return itemInfoPanel;
     }
-    private void closeGridItem(@NonNull ItemMessage message) {
+    private void closeGridItem(@NonNull ItemTradeNotificationDescriptor message) {
         String nickname = message.getWhisperNickname();
         ItemInfoPanel itemInfoPanel = tabButtons.get(nickname + message.getTabName());
         if (itemInfoPanel != null) {

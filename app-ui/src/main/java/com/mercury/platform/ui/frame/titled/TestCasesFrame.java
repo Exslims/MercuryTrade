@@ -2,7 +2,7 @@ package com.mercury.platform.ui.frame.titled;
 
 import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.shared.MessageParser;
-import com.mercury.platform.shared.entity.message.Message;
+import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -133,10 +133,9 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
     }
 
     @Override
-    protected void initialize() {
-        super.initialize();
-        add(getTestCasesPanel(), BorderLayout.CENTER);
-        pack();
+    public void onViewInit() {
+        this.add(getTestCasesPanel(), BorderLayout.CENTER);
+        this.pack();
     }
 
     @Override
@@ -168,7 +167,7 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                Message message = parser.parse(String.format(poeTradeTemplate,
+                NotificationDescriptor notificationDescriptor = parser.parse(String.format(poeTradeTemplate,
                         nickNames.get(random.nextInt(nickNames.size())),
                         items.get(random.nextInt(items.size())),
                         random.nextInt(200),
@@ -179,7 +178,7 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
                         random.nextInt(12) + 1,
                         offer.get(random.nextInt(offer.size()))
                 ));
-                MercuryStoreCore.messageSubject.onNext(message);
+                MercuryStoreCore.newNotificationSubject.onNext(notificationDescriptor);
             }
         });
         testPanel.add(button,buttonColumn);
@@ -192,7 +191,7 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
         button1.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                Message message = parser.parse(String.format(currencyTemplate,
+                NotificationDescriptor notificationDescriptor = parser.parse(String.format(currencyTemplate,
                         nickNames.get(random.nextInt(nickNames.size())),
                         random.nextInt(200),
                         currency.get(random.nextInt(currency.size())),
@@ -201,7 +200,7 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
                         leagues.get(random.nextInt(leagues.size())),
                         offer.get(random.nextInt(offer.size()))
                 ));
-                MercuryStoreCore.messageSubject.onNext(message);
+                MercuryStoreCore.newNotificationSubject.onNext(notificationDescriptor);
             }
         });
         testPanel.add(button1,buttonColumn);
@@ -217,7 +216,7 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 String nickname = nickNames.get(random.nextInt(nickNames.size()));
-                Message message = parser.parse(String.format(currencyTemplate,
+                NotificationDescriptor notificationDescriptor = parser.parse(String.format(currencyTemplate,
                         nickname,
                         random.nextInt(200),
                         currency.get(random.nextInt(currency.size())),
@@ -226,7 +225,7 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
                         leagues.get(random.nextInt(leagues.size())),
                         offer.get(random.nextInt(offer.size()))
                 ));
-                MercuryStoreCore.messageSubject.onNext(message);
+                MercuryStoreCore.newNotificationSubject.onNext(notificationDescriptor);
                 MercuryStoreCore.soundSubject.onNext(SoundType.MESSAGE);
 
                 Timer joinedTimer = new Timer(1000,null);

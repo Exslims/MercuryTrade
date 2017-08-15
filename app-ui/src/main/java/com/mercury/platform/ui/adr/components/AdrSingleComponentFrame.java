@@ -71,4 +71,9 @@ public class AdrSingleComponentFrame extends AbstractAdrComponentFrame<AdrCompon
         this.adrReloadSubscription.unsubscribe();
         this.component.onDestroy();
     }
+
+    @Override
+    public void onViewInit() {
+
+    }
 }

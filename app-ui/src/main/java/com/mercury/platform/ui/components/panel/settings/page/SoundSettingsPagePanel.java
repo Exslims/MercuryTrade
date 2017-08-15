@@ -28,8 +28,8 @@ public class SoundSettingsPagePanel extends SettingsPagePanel {
     Map<String, SoundDescriptor> soundSnapshot;
     KeyValueConfigurationService<String,SoundDescriptor> soundConfiguration;
     @Override
-    public void createUI() {
-        super.createUI();
+    public void onViewInit() {
+        super.onViewInit();
         this.wavPaths = new HashMap<>();
         this.wavPaths.put("notification","app/notification.wav");
         this.wavPaths.put("chat_scanner","app/chat-filter.wav");
@@ -119,6 +119,6 @@ public class SoundSettingsPagePanel extends SettingsPagePanel {
     public void restore() {
         this.soundSnapshot = CloneHelper.cloneObject(this.soundConfiguration.getMap());
         this.removeAll();
-        this.createUI();
+        this.onViewInit();
     }
 }

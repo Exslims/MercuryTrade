@@ -1,14 +1,11 @@
 package com.mercury.platform.shared.entity.message;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.util.Date;
-
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class Message {
-    private String sourceString;
-    private Date messageDate;
-    private String whisperNickname;
+public class TradeNotificationDescriptor extends NotificationDescriptor {
     private String offer;
     private Double curCount;
     private String currency;

@@ -1,9 +1,9 @@
 package com.mercury.platform.shared;
 
-import com.mercury.platform.shared.entity.message.CurrencyMessage;
-import com.mercury.platform.shared.entity.message.ItemMessage;
-import com.mercury.platform.shared.entity.message.Message;
-import org.apache.commons.lang3.StringUtils;
+import com.mercury.platform.shared.entity.message.CurrencyTradeNotificationDescriptor;
+import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
+import com.mercury.platform.shared.entity.message.NotificationDescriptor;
+import com.mercury.platform.shared.entity.message.NotificationType;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,77 +24,81 @@ public class MessageParser {
         this.poeTradeCurrencyPattern = Pattern.compile(poeCurrencyPattern);
     }
 
-    public Message parse(String fullMessage){
+    public NotificationDescriptor parse(String fullMessage){
         Matcher poeAppItemMatcher = poeAppItemPattern.matcher(fullMessage);
         if(poeAppItemMatcher.find()){
-            ItemMessage message = new ItemMessage();
-            message.setSourceString(fullMessage);
-            message.setWhisperNickname(poeAppItemMatcher.group(2));
-            message.setItemName(poeAppItemMatcher.group(3));
+            ItemTradeNotificationDescriptor tradeNotification = new ItemTradeNotificationDescriptor();
+            tradeNotification.setSourceString(fullMessage);
+            tradeNotification.setWhisperNickname(poeAppItemMatcher.group(2));
+            tradeNotification.setItemName(poeAppItemMatcher.group(3));
             if(poeAppItemMatcher.group(5) != null) {
-                message.setCurCount(Double.parseDouble(poeAppItemMatcher.group(5)));
-                message.setCurrency(poeAppItemMatcher.group(6));
+                tradeNotification.setCurCount(Double.parseDouble(poeAppItemMatcher.group(5)));
+                tradeNotification.setCurrency(poeAppItemMatcher.group(6));
             }else {
-                message.setCurCount(0d);
-                message.setCurrency("???");
+                tradeNotification.setCurCount(0d);
+                tradeNotification.setCurrency("???");
             }
-            message.setLeague(poeAppItemMatcher.group(7));
+            tradeNotification.setLeague(poeAppItemMatcher.group(7));
             if(poeAppItemMatcher.group(8) != null) {
-                message.setTabName(poeAppItemMatcher.group(8));
-                message.setLeft(Integer.parseInt(poeAppItemMatcher.group(9)));
-                message.setTop(Integer.parseInt(poeAppItemMatcher.group(10)));
+                tradeNotification.setTabName(poeAppItemMatcher.group(8));
+                tradeNotification.setLeft(Integer.parseInt(poeAppItemMatcher.group(9)));
+                tradeNotification.setTop(Integer.parseInt(poeAppItemMatcher.group(10)));
             }
-            message.setOffer(poeAppItemMatcher.group(11));
-            return message;
+            tradeNotification.setOffer(poeAppItemMatcher.group(11));
+            tradeNotification.setType(NotificationType.INC_ITEM_MESSAGE);
+            return tradeNotification;
         }
         Matcher poeTradeStashItemMatcher = poeTradeStashItemPattern.matcher(fullMessage);
         if(poeTradeStashItemMatcher.find()){
-            ItemMessage message = new ItemMessage();
-            message.setSourceString(fullMessage);
-            message.setWhisperNickname(poeTradeStashItemMatcher.group(2));
-            message.setItemName(poeTradeStashItemMatcher.group(3));
+            ItemTradeNotificationDescriptor tradeNotification = new ItemTradeNotificationDescriptor();
+            tradeNotification.setSourceString(fullMessage);
+            tradeNotification.setWhisperNickname(poeTradeStashItemMatcher.group(2));
+            tradeNotification.setItemName(poeTradeStashItemMatcher.group(3));
             if(poeTradeStashItemMatcher.group(4) != null){
-                message.setCurCount(Double.parseDouble(poeTradeStashItemMatcher.group(5)));
-                message.setCurrency(poeTradeStashItemMatcher.group(6));
+                tradeNotification.setCurCount(Double.parseDouble(poeTradeStashItemMatcher.group(5)));
+                tradeNotification.setCurrency(poeTradeStashItemMatcher.group(6));
             }else {
-                message.setCurCount(0d);
-                message.setCurrency("???");
+                tradeNotification.setCurCount(0d);
+                tradeNotification.setCurrency("???");
             }
-            message.setLeague(poeTradeStashItemMatcher.group(7));
-            message.setTabName(poeTradeStashItemMatcher.group(8));
-            message.setLeft(Integer.parseInt(poeTradeStashItemMatcher.group(9)));
-            message.setTop(Integer.parseInt(poeTradeStashItemMatcher.group(10)));
-            message.setOffer(poeTradeStashItemMatcher.group(11));
-            return message;
+            tradeNotification.setLeague(poeTradeStashItemMatcher.group(7));
+            tradeNotification.setTabName(poeTradeStashItemMatcher.group(8));
+            tradeNotification.setLeft(Integer.parseInt(poeTradeStashItemMatcher.group(9)));
+            tradeNotification.setTop(Integer.parseInt(poeTradeStashItemMatcher.group(10)));
+            tradeNotification.setOffer(poeTradeStashItemMatcher.group(11));
+            tradeNotification.setType(NotificationType.INC_ITEM_MESSAGE);
+            return tradeNotification;
         }
         Matcher poeTradeCurrencyMatcher = poeTradeCurrencyPattern.matcher(fullMessage);
         if(poeTradeCurrencyMatcher.find()){
-            CurrencyMessage message = new CurrencyMessage();
-            message.setSourceString(fullMessage);
-            message.setWhisperNickname(poeTradeCurrencyMatcher.group(2));
-            message.setCurrForSaleCount(Double.parseDouble(poeTradeCurrencyMatcher.group(3)));
-            message.setCurrForSaleTitle(poeTradeCurrencyMatcher.group(5));
-            message.setCurCount(Double.parseDouble(poeTradeCurrencyMatcher.group(6)));
-            message.setCurrency(poeTradeCurrencyMatcher.group(8));
-            message.setLeague(poeTradeCurrencyMatcher.group(9));
-            message.setOffer(poeTradeCurrencyMatcher.group(10));
-            return message;
+            CurrencyTradeNotificationDescriptor tradeNotification = new CurrencyTradeNotificationDescriptor();
+            tradeNotification.setSourceString(fullMessage);
+            tradeNotification.setWhisperNickname(poeTradeCurrencyMatcher.group(2));
+            tradeNotification.setCurrForSaleCount(Double.parseDouble(poeTradeCurrencyMatcher.group(3)));
+            tradeNotification.setCurrForSaleTitle(poeTradeCurrencyMatcher.group(5));
+            tradeNotification.setCurCount(Double.parseDouble(poeTradeCurrencyMatcher.group(6)));
+            tradeNotification.setCurrency(poeTradeCurrencyMatcher.group(8));
+            tradeNotification.setLeague(poeTradeCurrencyMatcher.group(9));
+            tradeNotification.setOffer(poeTradeCurrencyMatcher.group(10));
+            tradeNotification.setType(NotificationType.INC_CURRENCY_MESSAGE);
+            return tradeNotification;
         }
         Matcher poeTradeItemMatcher = poeTradeItemPattern.matcher(fullMessage);
         if(poeTradeItemMatcher.find()){
-            ItemMessage message = new ItemMessage();
-            message.setSourceString(fullMessage);
-            message.setWhisperNickname(poeTradeItemMatcher.group(2));
-            message.setItemName(poeTradeItemMatcher.group(3));
+            ItemTradeNotificationDescriptor tradeNotification = new ItemTradeNotificationDescriptor();
+            tradeNotification.setSourceString(fullMessage);
+            tradeNotification.setWhisperNickname(poeTradeItemMatcher.group(2));
+            tradeNotification.setItemName(poeTradeItemMatcher.group(3));
             if(poeTradeItemMatcher.group(4) != null){
-                message.setCurCount(Double.parseDouble(poeTradeItemMatcher.group(5)));
-                message.setCurrency(poeTradeItemMatcher.group(6));
+                tradeNotification.setCurCount(Double.parseDouble(poeTradeItemMatcher.group(5)));
+                tradeNotification.setCurrency(poeTradeItemMatcher.group(6));
             }else {
-                message.setCurCount(0d);
-                message.setCurrency("???");
+                tradeNotification.setCurCount(0d);
+                tradeNotification.setCurrency("???");
             }
-            message.setLeague(poeTradeItemMatcher.group(7));
-            return message;
+            tradeNotification.setLeague(poeTradeItemMatcher.group(7));
+            tradeNotification.setType(NotificationType.INC_ITEM_MESSAGE);
+            return tradeNotification;
         }
         return null;
     }

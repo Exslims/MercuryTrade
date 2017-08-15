@@ -9,6 +9,7 @@ import com.mercury.platform.shared.config.configration.PlainConfigurationService
 import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
+import com.mercury.platform.ui.components.panel.misc.ViewInit;
 import com.mercury.platform.ui.frame.other.MercuryLoadingFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -17,7 +18,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscriber {
+public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscriber,ViewInit {
     protected FrameVisibleState prevState;
     protected boolean processingHideEvent = true;
 
@@ -78,6 +79,7 @@ public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscrib
         this.layout = getFrameLayout();
         this.setLayout(layout);
         this.initialize();
+        this.onViewInit();
         this.subscribe();
     }
 

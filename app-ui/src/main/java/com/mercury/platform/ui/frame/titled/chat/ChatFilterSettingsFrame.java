@@ -29,9 +29,7 @@ public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
     }
 
     @Override
-    protected void initialize() {
-        super.initialize();
-        this.setPreferredSize(new Dimension(350,300));
+    public void onViewInit() {
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
         JPanel setupArea = componentsFactory.getTransparentPanel(new BorderLayout());
         setupArea.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
@@ -90,6 +88,12 @@ public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
         this.add(root,BorderLayout.CENTER);
         this.add(navBar,BorderLayout.PAGE_END);
         this.pack();
+    }
+
+    @Override
+    protected void initialize() {
+        super.initialize();
+        this.setPreferredSize(new Dimension(350,300));
     }
     private JPanel getResponsePanel(){
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());

@@ -12,6 +12,7 @@ import com.mercury.platform.ui.frame.AbstractScalableComponentFrame;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
 import com.mercury.platform.ui.frame.movable.AbstractMovableComponentFrame;
 import com.mercury.platform.ui.frame.movable.container.MessageFrame;
+import com.mercury.platform.ui.frame.movable.container.NotificationFrame;
 import com.mercury.platform.ui.frame.other.*;
 import com.mercury.platform.ui.frame.movable.TaskBarFrame;
 import com.mercury.platform.ui.adr.AdrState;
@@ -55,8 +56,8 @@ public class FramesManager implements AsSubscriber {
     public void start(){
         this.createTrayIcon();
 
-        AbstractOverlaidFrame incMessageFrame = new MessageFrame();
-        this.framesMap.put(MessageFrame.class,incMessageFrame);
+        AbstractOverlaidFrame incMessageFrame = new NotificationFrame();
+        this.framesMap.put(NotificationFrame.class,incMessageFrame);
         AbstractOverlaidFrame taskBarFrame = new TaskBarFrame();
         AbstractOverlaidFrame itemsMeshFrame = new ItemsGridFrame();
         this.framesMap.put(ItemsGridFrame.class,itemsMeshFrame);
@@ -78,7 +79,7 @@ public class FramesManager implements AsSubscriber {
         this.framesMap.put(SettingsFrame.class,settingsFrame);
         this.framesMap.put(TestCasesFrame.class,new TestCasesFrame());
         this.framesMap.put(TooltipFrame.class,new TooltipFrame());
-        this.framesMap.put(NotificationFrame.class,new NotificationFrame());
+        this.framesMap.put(NotificationAlertFrame.class,new NotificationAlertFrame());
         this.framesMap.put(MercuryLoadingFrame.class,new MercuryLoadingFrame());
         this.framesMap.put(ChatFilterFrame.class,new ChatFilterFrame());
         this.framesMap.put(UpdateReadyFrame.class,new UpdateReadyFrame());

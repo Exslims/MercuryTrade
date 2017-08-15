@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class CurrencyMessage extends Message {
+public class CurrencyTradeNotificationDescriptor extends TradeNotificationDescriptor {
     private Double currForSaleCount;
     private String currForSaleTitle;
 }

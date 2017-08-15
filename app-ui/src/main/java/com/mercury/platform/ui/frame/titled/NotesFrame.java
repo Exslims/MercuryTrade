@@ -42,10 +42,8 @@ public class NotesFrame extends AbstractTitledComponentFrame {
             }
         }
     }
-
     @Override
-    protected void initialize() {
-        super.initialize();
+    public void onViewInit() {
         JPanel rootPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         rootPanel.setBorder(BorderFactory.createEmptyBorder(6,6,6,6));
 
@@ -267,10 +265,6 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         protected void initialize() {
             this.setMinimumSize(new Dimension(310, 60));
             this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER));
-            this.add(getProgressBarPanel(),BorderLayout.CENTER);
-            this.pack();
-            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-            this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         }
 
         private JPanel getProgressBarPanel() {
@@ -322,6 +316,14 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         @Override
         protected LayoutManager getFrameLayout() {
             return new BorderLayout();
+        }
+
+        @Override
+        public void onViewInit() {
+            this.add(getProgressBarPanel(),BorderLayout.CENTER);
+            this.pack();
+            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+            this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         }
     }
 }

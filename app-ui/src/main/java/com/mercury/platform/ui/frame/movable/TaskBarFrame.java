@@ -33,36 +33,6 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
         this.prevState = FrameVisibleState.SHOW;
     }
 
-    @Override
-    protected void initialize() {
-        super.initialize();
-        createUI();
-        this.setMaximumSize(taskBarPanel.getPreferredSize());
-        collapseListener = new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                TaskBarFrame.this.repaint();
-                if (collapseAnimation != null) {
-                    collapseAnimation.abort();
-                }
-                initCollapseAnimations("expand");
-                collapseAnimation.play();
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                TaskBarFrame.this.repaint();
-                if(isVisible() && !withInPanel((JPanel)TaskBarFrame.this.getContentPane()) && !EResizeSpace) {
-                    if (collapseAnimation != null) {
-                        collapseAnimation.abort();
-                    }
-                    initCollapseAnimations("collapse");
-                    collapseAnimation.play();
-                }
-            }
-        };
-        enableCollapseAnimation();
-    }
     private void enableCollapseAnimation(){
         this.setWidth(MIN_WIDTH);
         this.addMouseListener(collapseListener);
@@ -131,11 +101,11 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
     @Override
     protected void performScaling(Map<String,Float> scaleData) {
         this.componentsFactory.setScale(scaleData.get("taskbar"));
-        createUI();
+        onViewInit();
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         JPanel panel = componentsFactory.getTransparentPanel(new BorderLayout());
         taskBarPanel = new TaskBarPanel(new MercuryTaskBarController(),componentsFactory);
         panel.add(taskBarPanel, BorderLayout.CENTER);
@@ -147,6 +117,32 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
         this.MIN_WIDTH = taskBarPanel.getWidthOf(4);
         this.MAX_WIDTH = taskBarPanel.getPreferredSize().width;
         this.setWidth(MIN_WIDTH);
+
+        this.setMaximumSize(taskBarPanel.getPreferredSize());
+        collapseListener = new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                TaskBarFrame.this.repaint();
+                if (collapseAnimation != null) {
+                    collapseAnimation.abort();
+                }
+                initCollapseAnimations("expand");
+                collapseAnimation.play();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                TaskBarFrame.this.repaint();
+                if(isVisible() && !withInPanel((JPanel)TaskBarFrame.this.getContentPane()) && !EResizeSpace) {
+                    if (collapseAnimation != null) {
+                        collapseAnimation.abort();
+                    }
+                    initCollapseAnimations("collapse");
+                    collapseAnimation.play();
+                }
+            }
+        };
+        this.enableCollapseAnimation();
     }
 
     @Override

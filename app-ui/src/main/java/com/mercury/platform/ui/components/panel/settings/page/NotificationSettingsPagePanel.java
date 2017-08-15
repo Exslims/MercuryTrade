@@ -6,7 +6,7 @@ import com.mercury.platform.shared.config.configration.KeyValueConfigurationServ
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.config.descriptor.HotKeyType;
-import com.mercury.platform.shared.config.descriptor.NotificationDescriptor;
+import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
 import com.mercury.platform.shared.config.descriptor.ResponseButtonDescriptor;
 import com.mercury.platform.shared.entity.message.FlowDirections;
 import com.mercury.platform.shared.store.MercuryStoreCore;
@@ -21,15 +21,15 @@ import java.awt.event.*;
 import java.util.Map;
 
 public class NotificationSettingsPagePanel extends SettingsPagePanel {
-    private PlainConfigurationService<NotificationDescriptor> notificationService;
+    private PlainConfigurationService<NotificationSettingsDescriptor> notificationService;
     private KeyValueConfigurationService<String,HotKeyDescriptor> hotKeyService;
-    private NotificationDescriptor generalSnapshot;
+    private NotificationSettingsDescriptor generalSnapshot;
     private Map<String, HotKeyDescriptor> hotKeySnapshot;
     private JPanel buttonsTable;
 
     @Override
-    public void createUI() {
-        super.createUI();
+    public void onViewInit() {
+        super.onViewInit();
         this.notificationService = Configuration.get().notificationConfiguration();
         this.hotKeyService = Configuration.get().hotKeysConfiguration();
         this.generalSnapshot = CloneHelper.cloneObject(notificationService.get());
@@ -55,7 +55,7 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         this.generalSnapshot = CloneHelper.cloneObject(notificationService.get());
         this.hotKeySnapshot = CloneHelper.cloneObject(hotKeyService.getMap());
         this.removeAll();
-        this.createUI();
+        this.onViewInit();
     }
 
     private JPanel getIncomingPanel() {
@@ -167,7 +167,6 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
             @Override
             public void focusLost(FocusEvent e) {
                 descriptor.setTitle(titleField.getText());
-                System.out.println(".qwe");
             }
         });
         titleField.setPreferredSize(new Dimension(120,26));

@@ -4,7 +4,7 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.ui.adr.components.AdrComponentsFactory;
 import com.mercury.platform.ui.adr.components.panel.tree.model.AdrTreeNode;
 import com.mercury.platform.ui.components.ComponentsFactory;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
+import com.mercury.platform.ui.components.panel.misc.ViewInit;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public abstract class AdrNodePanel<D extends AdrComponentDescriptor> extends JPanel implements HasUI {
+public abstract class AdrNodePanel<D extends AdrComponentDescriptor> extends JPanel implements ViewInit {
     @Getter
     protected D descriptor;
     protected ComponentsFactory componentsFactory = new ComponentsFactory();
@@ -34,7 +34,7 @@ public abstract class AdrNodePanel<D extends AdrComponentDescriptor> extends JPa
         this.setLayout(new BorderLayout());
         this.setBackground(AppThemeColor.SLIDE_BG);
         this.setBorder(BorderFactory.createLineBorder(AppThemeColor.MSG_HEADER_BORDER));
-        this.createUI();
+        this.onViewInit();
     }
     protected abstract void update();
 }

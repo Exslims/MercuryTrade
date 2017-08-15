@@ -13,7 +13,7 @@ public class ProfileDescriptor {
     private Map<String,FrameDescriptor> frameDescriptorMap;
     private Map<String,SoundDescriptor> soundDescriptorMap;
     private ApplicationDescriptor applicationDescriptor;
-    private NotificationDescriptor notificationDescriptor;
+    private NotificationSettingsDescriptor notificationSettingsDescriptor;
     private ScannerDescriptor scannerDescriptor;
     private Map<String,Float> scaleDataMap;
     private Map<String,HotKeyDescriptor> hotKeysDataMap;

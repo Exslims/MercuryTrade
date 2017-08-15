@@ -18,7 +18,7 @@ public class AdrCaptureNodePanel extends AdrNodePanel<AdrCaptureDescriptor> {
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setBackground(AppThemeColor.ADR_BG);
         this.titleLabel = this.componentsFactory.getTextLabel(this.descriptor.getTitle());

@@ -17,6 +17,9 @@ public class AlertFrame extends AbstractOverlaidFrame {
     @Override
     protected void initialize() {
         this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER));
+    }
+    @Override
+    public void onViewInit() {
         JPanel messagePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         messageLabel = componentsFactory.getTextLabel("");
         messagePanel.add(messageLabel);

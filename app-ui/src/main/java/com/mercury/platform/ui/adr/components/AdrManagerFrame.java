@@ -61,10 +61,8 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         UIManager.put("ComboBox.selectionForeground", AppThemeColor.ADR_POPUP_BG);
         UIManager.put("ComboBox.disabledForeground",  AppThemeColor.ADR_FOOTER_BG);
     }
-
     @Override
-    protected void initialize() {
-        super.initialize();
+    public void onViewInit() {
         this.initRootPanel();
         this.hideButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -77,7 +75,6 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame{
         });
         this.add(this.root,BorderLayout.CENTER);
         this.add(this.getBottomPanel(),BorderLayout.PAGE_END);
-
     }
     public void setPage(AdrPagePanel page){
         if(currentPage != null){

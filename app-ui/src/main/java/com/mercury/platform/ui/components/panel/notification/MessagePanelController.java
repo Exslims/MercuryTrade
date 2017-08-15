@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.components.panel.message;
+package com.mercury.platform.ui.components.panel.notification;
 
 import lombok.NonNull;
 
@@ -9,10 +9,6 @@ public interface MessagePanelController {
     void performOpenChat();
     void performResponse(@NonNull String responseText);
     void performHide();
-
-    /**
-     * Show Item Stash Highlights
-     */
     void showITH();
     void reloadMessage(@NonNull InMessagePanel panel);
 }

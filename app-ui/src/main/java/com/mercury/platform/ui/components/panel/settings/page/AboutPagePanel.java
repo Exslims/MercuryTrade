@@ -14,8 +14,8 @@ import java.net.URI;
 
 public class AboutPagePanel extends SettingsPagePanel {
     @Override
-    public void createUI() {
-        super.createUI();
+    public void onViewInit() {
+        super.onViewInit();
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         JPanel imgPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         imgPanel.add(componentsFactory.getIconLabel("app/app-icon-big.png"));

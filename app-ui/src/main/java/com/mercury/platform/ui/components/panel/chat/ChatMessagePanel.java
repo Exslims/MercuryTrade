@@ -7,7 +7,7 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
+import com.mercury.platform.ui.components.panel.misc.ViewInit;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import lombok.NonNull;
@@ -18,7 +18,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 
-public class ChatMessagePanel extends JPanel implements HasUI{
+public class ChatMessagePanel extends JPanel implements ViewInit {
     private ComponentsFactory componentsFactory;
     private PlainConfigurationService<ScannerDescriptor> scannerService;
     private String message;
@@ -37,11 +37,11 @@ public class ChatMessagePanel extends JPanel implements HasUI{
         this.componentsFactory = componentsFactory;
         this.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
         this.setBackground(AppThemeColor.TRANSPARENT);
-        createUI();
+        onViewInit();
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
         root.setBorder(BorderFactory.createMatteBorder(1,1,1,1,AppThemeColor.HEADER));
         root.setBackground(AppThemeColor.SLIDE_BG);

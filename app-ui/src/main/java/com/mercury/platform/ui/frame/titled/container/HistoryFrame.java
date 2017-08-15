@@ -3,13 +3,13 @@ package com.mercury.platform.ui.frame.titled.container;
 import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
-import com.mercury.platform.shared.entity.message.Message;
+import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
-import com.mercury.platform.ui.components.panel.message.InMessagePanel;
+import com.mercury.platform.ui.components.panel.notification.InMessagePanel;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
-import com.mercury.platform.ui.components.panel.message.NotificationMessageController;
-import com.mercury.platform.ui.components.panel.message.MessagePanelStyle;
+import com.mercury.platform.ui.components.panel.notification.NotificationMessageController;
+import com.mercury.platform.ui.components.panel.notification.MessagePanelStyle;
 import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
@@ -28,10 +28,8 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
         this.setPreferredSize(frameDescriptor.getFrameSize());
         this.componentsFactory.setScale(this.scaleConfig.get("other"));
     }
-
     @Override
-    protected void initialize() {
-        super.initialize();
+    public void onViewInit() {
         this.mainContainer = new VerticalScrollContainer();
         this.mainContainer.setBackground(AppThemeColor.TRANSPARENT);
         this.mainContainer.setLayout(new BoxLayout(this.mainContainer,BoxLayout.Y_AXIS));
@@ -62,12 +60,12 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
         ArrayUtils.reverse(messages);
         for (String message : messages) {
             MessageParser parser = new MessageParser();
-            Message parsedMessage = parser.parse(message);
-            if(parsedMessage != null) {
+            NotificationDescriptor parsedNotificationDescriptor = parser.parse(message);
+            if(parsedNotificationDescriptor != null) {
                 InMessagePanel inMessagePanel = new InMessagePanel(
-                        parsedMessage,
+                        parsedNotificationDescriptor,
                         MessagePanelStyle.HISTORY,
-                        new NotificationMessageController(parsedMessage),
+                        new NotificationMessageController(parsedNotificationDescriptor),
                         this.componentsFactory);
                 inMessagePanel.disableTime();
                 mainContainer.add(inMessagePanel);
@@ -81,12 +79,12 @@ public class HistoryFrame extends AbstractTitledComponentFrame implements Histor
                 String[] nextMessages = HistoryManager.INSTANCE.fetchNext(5);
                 for (String message : nextMessages) {
                     MessageParser parser = new MessageParser();
-                    Message parsedMessage = parser.parse(message);
-                    if(parsedMessage != null) {
+                    NotificationDescriptor parsedNotificationDescriptor = parser.parse(message);
+                    if(parsedNotificationDescriptor != null) {
                         InMessagePanel inMessagePanel = new InMessagePanel(
-                                parsedMessage,
+                                parsedNotificationDescriptor,
                                 MessagePanelStyle.HISTORY,
-                                new NotificationMessageController(parsedMessage),
+                                new NotificationMessageController(parsedNotificationDescriptor),
                                 this.componentsFactory);
                         inMessagePanel.disableTime();
                         this.mainContainer.add(inMessagePanel, 0);

@@ -21,7 +21,7 @@ public class AdrCapturePanel extends AdrComponentPanel<AdrCaptureDescriptor>{
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         this.setLayout(new GridLayout(1,1));
         this.setPreferredSize(this.descriptor.getSize());
         this.captureLabel = new JLabel();

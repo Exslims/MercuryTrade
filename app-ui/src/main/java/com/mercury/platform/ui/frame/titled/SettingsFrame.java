@@ -36,6 +36,11 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
     @Override
     protected void initialize() {
         super.initialize();
+        this.setPreferredSize(new Dimension(1000,600));
+    }
+
+    @Override
+    public void onViewInit() {
         this.root = new JPanel(new BorderLayout());
         this.menuPanel = new MenuPanel();
         JPanel leftPanel = this.componentsFactory.getJPanel(new BorderLayout());

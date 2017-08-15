@@ -187,4 +187,9 @@ public class TimerFrame extends AbstractTitledComponentFrame {
     protected String getFrameTitle() {
         return "Timer";
     }
+
+    @Override
+    public void onViewInit() {
+
+    }
 }

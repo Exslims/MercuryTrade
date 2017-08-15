@@ -15,7 +15,6 @@ public abstract class AbstractTitledComponentFrame extends AbstractComponentFram
     private JLabel frameTitleLabel;
     protected AbstractTitledComponentFrame() {
         super();
-        this.miscPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     }
 
     @Override
@@ -26,6 +25,7 @@ public abstract class AbstractTitledComponentFrame extends AbstractComponentFram
 
     private void initHeaderPanel(){
         if(layout instanceof BorderLayout) {
+            this.miscPanel = new JPanel(new GridLayout(1,0,5,0));
             this.headerPanel = new JPanel(new BorderLayout());
             this.headerPanel.setBackground(AppThemeColor.HEADER);
             this.headerPanel.setPreferredSize(new Dimension(100,26));

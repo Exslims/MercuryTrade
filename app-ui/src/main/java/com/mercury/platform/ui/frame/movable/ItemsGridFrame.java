@@ -6,7 +6,7 @@ import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.HorizontalScrollContainer;
 import com.mercury.platform.ui.components.panel.grid.*;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
-import com.mercury.platform.shared.entity.message.ItemMessage;
+import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.manager.FramesManager;
@@ -28,13 +28,17 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         stubComponentsFactory.setScale(this.scaleConfig.get("itemcell"));
         enableMouseOverBorder = false;
         processHideEffect = false;
-        itemsGridPanel = new ItemsGridPanel(componentsFactory);
-        stashTabsContainer = new StashTabsContainer();
     }
 
     @Override
     protected void initialize() {
         super.initialize();
+        this.itemsGridPanel = new ItemsGridPanel(componentsFactory);
+        this.stashTabsContainer = new StashTabsContainer();
+    }
+
+    @Override
+    public void onViewInit() {
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.getRootPane().setBorder(null);
         this.add(itemsGridPanel,BorderLayout.CENTER);
@@ -54,8 +58,8 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
             }
         });
         MercuryStoreUI.closeMessage.subscribe(message -> {
-            if(message instanceof ItemMessage) {
-                this.itemsGridPanel.remove((ItemMessage) message);
+            if(message instanceof ItemTradeNotificationDescriptor) {
+                this.itemsGridPanel.remove((ItemTradeNotificationDescriptor) message);
                 if (itemsGridPanel.getActiveTabsCount() == 0) {
                     this.setVisible(false);
                 }
@@ -247,7 +251,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         JPanel root = factory.getTransparentPanel(new BorderLayout());
         root.setSize(this.getSize());
         ItemsGridPanel defaultView = new ItemsGridPanel(factory);
-        ItemMessage message = new ItemMessage();
+        ItemTradeNotificationDescriptor message = new ItemTradeNotificationDescriptor();
         message.setWhisperNickname("Example1");
         message.setTabName("Example");
         message.setLeft(5);
@@ -267,11 +271,6 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
     @Override
     protected void performScaling(Map<String,Float> scaleData) {
         this.componentsFactory.setScale(scaleData.get("itemcell"));
-    }
-
-    @Override
-    public void createUI() {
-
     }
 
     private class ResizeByWidthMouseMotionListener extends MouseMotionAdapter {

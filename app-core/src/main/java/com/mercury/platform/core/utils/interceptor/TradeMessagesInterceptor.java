@@ -5,8 +5,8 @@ import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
-import com.mercury.platform.shared.config.descriptor.NotificationDescriptor;
-import com.mercury.platform.shared.entity.message.Message;
+import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
+import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class TradeMessagesInterceptor extends MessageInterceptor {
     private MessageParser messageParser = new MessageParser();
-    private PlainConfigurationService<NotificationDescriptor> config;
+    private PlainConfigurationService<NotificationSettingsDescriptor> config;
     private List<LocalizationMatcher> clients = new ArrayList<>();
 
     public TradeMessagesInterceptor() {
@@ -32,10 +32,10 @@ public class TradeMessagesInterceptor extends MessageInterceptor {
             LocalizationMatcher localizationMatcher = this.clients.stream()
                     .filter(matcher -> matcher.isSuitableFor(message))
                     .findAny().orElse(null);
-            Message parsedMessage = messageParser.parse(localizationMatcher.trimString(message));
-            if (parsedMessage != null) {
+            NotificationDescriptor notificationDescriptor = messageParser.parse(localizationMatcher.trimString(message));
+            if (notificationDescriptor != null) {
                 MercuryStoreCore.soundSubject.onNext(SoundType.MESSAGE);
-                MercuryStoreCore.messageSubject.onNext(parsedMessage);
+                MercuryStoreCore.newNotificationSubject.onNext(notificationDescriptor);
             }
         }
     }

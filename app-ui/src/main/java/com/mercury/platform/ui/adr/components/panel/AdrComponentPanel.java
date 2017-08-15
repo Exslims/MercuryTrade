@@ -3,9 +3,8 @@ package com.mercury.platform.ui.adr.components.panel;
 import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.store.DestroySubscription;
-import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
+import com.mercury.platform.ui.components.panel.misc.ViewInit;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.Getter;
 import rx.Subscription;
@@ -13,7 +12,7 @@ import rx.Subscription;
 import javax.swing.*;
 
 
-public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extends JPanel implements HasUI,AsSubscriber,DestroySubscription {
+public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extends JPanel implements ViewInit,AsSubscriber,DestroySubscription {
     @Getter
     protected T descriptor;
     protected ComponentsFactory componentsFactory;
@@ -25,7 +24,7 @@ public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extend
         this.descriptor = descriptor;
         this.componentsFactory = componentsFactory;
         this.subscribe();
-        this.createUI();
+        this.onViewInit();
     }
 
     @Override

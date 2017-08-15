@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.components.panel.message;
+package com.mercury.platform.ui.components.panel.notification;
 
 import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.config.Configuration;
@@ -6,16 +6,16 @@ import com.mercury.platform.shared.config.configration.KeyValueConfigurationServ
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.config.descriptor.HotKeyType;
-import com.mercury.platform.shared.config.descriptor.NotificationDescriptor;
-import com.mercury.platform.shared.entity.message.CurrencyMessage;
-import com.mercury.platform.shared.entity.message.ItemMessage;
-import com.mercury.platform.shared.entity.message.Message;
+import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
+import com.mercury.platform.shared.entity.message.CurrencyTradeNotificationDescriptor;
+import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
+import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.config.descriptor.ResponseButtonDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
+import com.mercury.platform.ui.components.panel.misc.ViewInit;
 import com.mercury.platform.ui.frame.movable.container.MessageFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.HasHotkey;
@@ -40,11 +40,11 @@ import java.util.*;
 import java.util.List;
 
 
-public class InMessagePanel extends JPanel implements AsSubscriber, HasUI,HasHotkey{
+public class InMessagePanel extends JPanel implements AsSubscriber, ViewInit,HasHotkey{
     private static final Logger logger = LogManager.getLogger(InMessagePanel.class.getSimpleName());
 
     private ComponentsFactory componentsFactory;
-    private PlainConfigurationService<NotificationDescriptor> notificationService;
+    private PlainConfigurationService<NotificationSettingsDescriptor> notificationService;
     private MessagePanelController controller;
     private MessagePanelStyle style;
 
@@ -54,7 +54,7 @@ public class InMessagePanel extends JPanel implements AsSubscriber, HasUI,HasHot
     private JButton expandButton;
 
     @Getter
-    private Message message;
+    private NotificationDescriptor notificationDescriptor;
 
     private Timer timeAgo;
     private String cachedTime = "0m";
@@ -66,25 +66,25 @@ public class InMessagePanel extends JPanel implements AsSubscriber, HasUI,HasHot
 
     private boolean expanded = false;
 
-    private InMessagePanel(Message message, MessagePanelStyle style) {
+    private InMessagePanel(NotificationDescriptor notificationDescriptor, MessagePanelStyle style) {
         super(new BorderLayout());
-        this.message = message;
+        this.notificationDescriptor = notificationDescriptor;
         this.style = style;
-        this.whisper = message.getWhisperNickname();
+        this.whisper = notificationDescriptor.getWhisperNickname();
         this.notificationService = Configuration.get().notificationConfiguration();
         if(!style.equals(MessagePanelStyle.HISTORY)) {
             this.initHotKeyListeners();
         }
     }
-    public InMessagePanel(Message message, MessagePanelStyle style, MessagePanelController controller, ComponentsFactory componentsFactory){
-        this(message,style);
+    public InMessagePanel(NotificationDescriptor notificationDescriptor, MessagePanelStyle style, MessagePanelController controller, ComponentsFactory componentsFactory){
+        this(notificationDescriptor,style);
         this.componentsFactory = componentsFactory;
         this.controller = controller;
-        createUI();
+        onViewInit();
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         this.setBackground(AppThemeColor.FRAME);
         this.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,1),
@@ -144,12 +144,12 @@ public class InMessagePanel extends JPanel implements AsSubscriber, HasUI,HasHot
         JPanel tradePanel = new JPanel(new BorderLayout());
         tradePanel.setBackground(AppThemeColor.TRANSPARENT);
         tradePanel.setBorder(BorderFactory.createEmptyBorder(-11,2,-11,0));
-        if(message instanceof ItemMessage) {
+        if(notificationDescriptor instanceof ItemTradeNotificationDescriptor) {
             JButton itemButton = componentsFactory.getButton(
                     FontStyle.BOLD,
                     AppThemeColor.BUTTON,
                     BorderFactory.createEmptyBorder(0,4,0,2),
-                    ((ItemMessage) message).getItemName(), 17f);
+                    ((ItemTradeNotificationDescriptor) notificationDescriptor).getItemName(), 17f);
 
             itemButton.setForeground(AppThemeColor.TEXT_IMPORTANT);
             itemButton.setBackground(AppThemeColor.TRANSPARENT);
@@ -182,10 +182,10 @@ public class InMessagePanel extends JPanel implements AsSubscriber, HasUI,HasHot
                 }
             });
             tradePanel.add(itemButton,BorderLayout.CENTER);
-        }else if(message instanceof CurrencyMessage){
+        }else if(notificationDescriptor instanceof CurrencyTradeNotificationDescriptor){
             JPanel fromPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             fromPanel.setBackground(AppThemeColor.TRANSPARENT);
-            CurrencyMessage message = (CurrencyMessage) this.message;
+            CurrencyTradeNotificationDescriptor message = (CurrencyTradeNotificationDescriptor) this.notificationDescriptor;
 
             String curCount = message.getCurrForSaleCount() % 1 == 0 ?
                     String.valueOf(message.getCurrForSaleCount().intValue()) :
@@ -212,30 +212,30 @@ public class InMessagePanel extends JPanel implements AsSubscriber, HasUI,HasHot
                 "=>");
         separator.setHorizontalAlignment(SwingConstants.CENTER);
         String curCount = " ";
-        if(message.getCurCount() > 0) {
-            curCount = message.getCurCount() % 1 == 0 ?
-                    String.valueOf(message.getCurCount().intValue()) :
-                    String.valueOf(message.getCurCount());
-        }
-        String currency = message.getCurrency();
-        if(!Objects.equals(curCount, "") && currency != null) {
-            JPanel curCountPanel = getCurrencyPanel(curCount);
-            JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + currency + ".png", 26);
-            JPanel curPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            curPanel.setBackground(AppThemeColor.TRANSPARENT);
-            curPanel.add(separator);
-            curPanel.add(curCountPanel);
-            curPanel.add(currencyLabel);
-            forPanel.add(curPanel);
-        }
-        tradePanel.add(forPanel,BorderLayout.LINE_END);
-        labelsPanel.add(tradePanel);
-        String offer = message.getOffer();
-        if(offer != null && offer.trim().length() > 0) {
-            JLabel offerLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, offer);
-            offerLabel.setAlignmentY(Component.TOP_ALIGNMENT);
-            labelsPanel.add(offerLabel);
-        }
+//        if(notificationDescriptor.getCurCount() > 0) {
+//            curCount = notificationDescriptor.getCurCount() % 1 == 0 ?
+//                    String.valueOf(notificationDescriptor.getCurCount().intValue()) :
+//                    String.valueOf(notificationDescriptor.getCurCount());
+//        }
+//        String currency = notificationDescriptor.getCurrency();
+//        if(!Objects.equals(curCount, "") && currency != null) {
+//            JPanel curCountPanel = getCurrencyPanel(curCount);
+//            JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + currency + ".png", 26);
+//            JPanel curPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+//            curPanel.setBackground(AppThemeColor.TRANSPARENT);
+//            curPanel.add(separator);
+//            curPanel.add(curCountPanel);
+//            curPanel.add(currencyLabel);
+//            forPanel.add(curPanel);
+//        }
+//        tradePanel.add(forPanel,BorderLayout.LINE_END);
+//        labelsPanel.add(tradePanel);
+//        String offer = notificationDescriptor.getOffer();
+//        if(offer != null && offer.trim().length() > 0) {
+//            JLabel offerLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MESSAGE, TextAlignment.CENTER, 17f, offer);
+//            offerLabel.setAlignmentY(Component.TOP_ALIGNMENT);
+//            labelsPanel.add(offerLabel);
+//        }
         return labelsPanel;
     }
     private JPanel getCurrencyPanel(String curCount){
@@ -248,7 +248,7 @@ public class InMessagePanel extends JPanel implements AsSubscriber, HasUI,HasHot
         return curCountPanel;
     }
     private JPanel getCurrencyRatePanel(){
-        CurrencyMessage message = (CurrencyMessage) this.message;
+        CurrencyTradeNotificationDescriptor message = (CurrencyTradeNotificationDescriptor) this.notificationDescriptor;
         Double currForSaleCount = message.getCurrForSaleCount();
         Double curCount = message.getCurCount();
         double rate = curCount / currForSaleCount;
@@ -336,27 +336,27 @@ public class InMessagePanel extends JPanel implements AsSubscriber, HasUI,HasHot
         return topPanel;
     }
     private String getNicknameLabel(){
-        String whisperNickname = message.getWhisperNickname();
+        String whisperNickname = notificationDescriptor.getWhisperNickname();
         String result = whisperNickname + ":";
-        if(this.notificationService.get().isShowLeague()) {
-            if (message.getLeague() != null) {
-                String league = message.getLeague().trim();
-                if (league.length() == 0) {
-                    return result;
-                }
-                if (league.contains("Hardcore")) {
-                    if (league.equals("Hardcore")) {
-                        result = "HC " + result;
-                    } else {
-                        result = String.valueOf(league.split(" ")[1].charAt(0)) + "HC " + result;
-                    }
-                } else if (league.contains("Standard")) {
-                    result = "Standard " + result;
-                } else {
-                    result = String.valueOf(league.charAt(0)) + "SC " + result;
-                }
-            }
-        }
+//        if(this.notificationService.get().isShowLeague()) {
+//            if (notificationDescriptor.getLeague() != null) {
+//                String league = notificationDescriptor.getLeague().trim();
+//                if (league.length() == 0) {
+//                    return result;
+//                }
+//                if (league.contains("Hardcore")) {
+//                    if (league.equals("Hardcore")) {
+//                        result = "HC " + result;
+//                    } else {
+//                        result = String.valueOf(league.split(" ")[1].charAt(0)) + "HC " + result;
+//                    }
+//                } else if (league.contains("Standard")) {
+//                    result = "Standard " + result;
+//                } else {
+//                    result = String.valueOf(league.charAt(0)) + "SC " + result;
+//                }
+//            }
+//        }
         return result;
     }
     private JPanel getTimePanel(){
@@ -526,31 +526,31 @@ public class InMessagePanel extends JPanel implements AsSubscriber, HasUI,HasHot
     }
     private JButton getStillInterestedButton(){
         JButton stillIntButton = componentsFactory.getIconButton("app/still-interesting.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.STILL_INTERESTED);
-
-        String curCount = message.getCurCount() % 1 == 0 ?
-                String.valueOf(message.getCurCount().intValue()) :
-                String.valueOf(message.getCurCount());
-        String responseText = "Hi, are you still interested in ";
-        if(message instanceof ItemMessage){
-            ItemMessage message = (ItemMessage) this.message;
-            if(message.getCurrency().equals("???")){
-                responseText += message.getItemName() + "?";
-            }else {
-                responseText += message.getItemName() +
-                        " for " + curCount + " " + message.getCurrency() + "?";
-            }
-        }else {
-            CurrencyMessage message = (CurrencyMessage) this.message;
-            String curForSaleCount = message.getCurCount() % 1 == 0 ?
-                    String.valueOf(message.getCurrForSaleCount().intValue()) :
-                    String.valueOf(message.getCurrForSaleCount());
-            responseText += curForSaleCount + " " + message.getCurrForSaleTitle() + " for " +
-                    curCount + " " + message.getCurrency() + "?";
-        }
-        String finalResponseText = responseText; // hate java
-        stillIntButton.addActionListener(
-                (action)->controller.performResponse(finalResponseText)
-        );
+//
+//        String curCount = notificationDescriptor.getCurCount() % 1 == 0 ?
+//                String.valueOf(notificationDescriptor.getCurCount().intValue()) :
+//                String.valueOf(notificationDescriptor.getCurCount());
+//        String responseText = "Hi, are you still interested in ";
+//        if(notificationDescriptor instanceof ItemTradeNotificationDescriptor){
+//            ItemTradeNotificationDescriptor message = (ItemTradeNotificationDescriptor) this.notificationDescriptor;
+//            if(message.getCurrency().equals("???")){
+//                responseText += message.getItemName() + "?";
+//            }else {
+//                responseText += message.getItemName() +
+//                        " for " + curCount + " " + message.getCurrency() + "?";
+//            }
+//        }else {
+//            CurrencyTradeNotificationDescriptor message = (CurrencyTradeNotificationDescriptor) this.notificationDescriptor;
+//            String curForSaleCount = message.getCurCount() % 1 == 0 ?
+//                    String.valueOf(message.getCurrForSaleCount().intValue()) :
+//                    String.valueOf(message.getCurrForSaleCount());
+//            responseText += curForSaleCount + " " + message.getCurrForSaleTitle() + " for " +
+//                    curCount + " " + message.getCurrency() + "?";
+//        }
+//        String finalResponseText = responseText; // hate java
+//        stillIntButton.addActionListener(
+//                (action)->controller.performResponse(finalResponseText)
+//        );
         return stillIntButton;
     }
 

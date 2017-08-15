@@ -102,6 +102,15 @@ public class ComponentsFactory{
                     MercuryStoreCore.soundSubject.onNext(SoundType.CLICKS);
                 }
             }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
         });
         if(isAscii(text)){
             button.setFont(getSelectedFont(fontStyle).deriveFont(scale*fontSize));
@@ -193,6 +202,7 @@ public class ComponentsFactory{
         if(tooltip.length() > 0) {
             button.addMouseListener(new TooltipMouseListener(tooltip));
         }
+        button.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -200,6 +210,20 @@ public class ComponentsFactory{
                     MercuryStoreCore.soundSubject.onNext(SoundType.CLICKS);
                 }
             }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER),
+                        BorderFactory.createEmptyBorder(3,3,3,3)));
+                button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+                button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+
         });
         button.setBorder(BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,4));
         button.setVerticalAlignment(SwingConstants.CENTER);

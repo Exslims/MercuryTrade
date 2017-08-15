@@ -3,7 +3,7 @@ package com.mercury.platform.shared.config.configration.impl;
 import com.mercury.platform.shared.config.configration.BaseConfigurationService;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
-import com.mercury.platform.shared.config.descriptor.NotificationDescriptor;
+import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
 import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
 import com.mercury.platform.shared.config.descriptor.ResponseButtonDescriptor;
 import com.mercury.platform.shared.entity.message.FlowDirections;
@@ -12,38 +12,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class NotificationConfigurationService extends BaseConfigurationService<NotificationDescriptor> implements PlainConfigurationService<NotificationDescriptor> {
+public class NotificationConfigurationService extends BaseConfigurationService<NotificationSettingsDescriptor> implements PlainConfigurationService<NotificationSettingsDescriptor> {
     public NotificationConfigurationService(ProfileDescriptor selectedProfile) {
         super(selectedProfile);
     }
 
     @Override
-    public NotificationDescriptor getDefault() {
-        NotificationDescriptor notificationDescriptor = new NotificationDescriptor();
+    public NotificationSettingsDescriptor getDefault() {
+        NotificationSettingsDescriptor notificationSettingsDescriptor = new NotificationSettingsDescriptor();
         List<ResponseButtonDescriptor> defaultButtons = new ArrayList<>();
         defaultButtons.add(new ResponseButtonDescriptor(0,false,"1m","one minute", new HotKeyDescriptor()));
         defaultButtons.add(new ResponseButtonDescriptor(1,true,"thx","thanks",new HotKeyDescriptor()));
         defaultButtons.add(new ResponseButtonDescriptor(2,false,"no thx", "no thanks",new HotKeyDescriptor()));
         defaultButtons.add(new ResponseButtonDescriptor(3,false,"sold", "sold",new HotKeyDescriptor()));
-        notificationDescriptor.setButtons(defaultButtons);
-        notificationDescriptor.setNotificationEnable(true);
-        notificationDescriptor.setLimitCount(3);
-        notificationDescriptor.setUnfoldCount(2);
-        notificationDescriptor.setDismissAfterKick(true);
-        notificationDescriptor.setShowLeague(false);
-        notificationDescriptor.setFlowDirections(FlowDirections.DOWNWARDS);
-        return notificationDescriptor;
+        notificationSettingsDescriptor.setButtons(defaultButtons);
+        notificationSettingsDescriptor.setNotificationEnable(true);
+        notificationSettingsDescriptor.setLimitCount(3);
+        notificationSettingsDescriptor.setUnfoldCount(2);
+        notificationSettingsDescriptor.setDismissAfterKick(true);
+        notificationSettingsDescriptor.setShowLeague(false);
+        notificationSettingsDescriptor.setFlowDirections(FlowDirections.DOWNWARDS);
+        return notificationSettingsDescriptor;
     }
 
     @Override
     public void toDefault() {
-        this.selectedProfile.setNotificationDescriptor(this.getDefault());
+        this.selectedProfile.setNotificationSettingsDescriptor(this.getDefault());
     }
 
     @Override
     public void validate() {
-        if(this.selectedProfile.getNotificationDescriptor() == null) {
-            this.selectedProfile.setNotificationDescriptor(this.getDefault());
+        if(this.selectedProfile.getNotificationSettingsDescriptor() == null) {
+            this.selectedProfile.setNotificationSettingsDescriptor(this.getDefault());
         }
         this.get().getButtons().forEach(it -> {
             if(it.getHotKeyDescriptor() == null) {
@@ -53,12 +53,12 @@ public class NotificationConfigurationService extends BaseConfigurationService<N
     }
 
     @Override
-    public NotificationDescriptor get() {
-        return this.selectedProfile.getNotificationDescriptor();
+    public NotificationSettingsDescriptor get() {
+        return this.selectedProfile.getNotificationSettingsDescriptor();
     }
 
     @Override
-    public void set(NotificationDescriptor descriptor) {
-        this.selectedProfile.setNotificationDescriptor(descriptor);
+    public void set(NotificationSettingsDescriptor descriptor) {
+        this.selectedProfile.setNotificationSettingsDescriptor(descriptor);
     }
 }

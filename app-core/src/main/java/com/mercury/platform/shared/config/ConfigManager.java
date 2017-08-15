@@ -11,7 +11,7 @@ import java.util.List;
 public interface ConfigManager {
     FramesConfigurationService framesConfiguration();
     PlainConfigurationService<ApplicationDescriptor> applicationConfiguration();
-    PlainConfigurationService<NotificationDescriptor> notificationConfiguration();
+    PlainConfigurationService<NotificationSettingsDescriptor> notificationConfiguration();
     PlainConfigurationService<ScannerDescriptor> scannerConfiguration();
     KeyValueConfigurationService<String,SoundDescriptor> soundConfiguration();
     KeyValueConfigurationService<String,Float> scaleConfiguration();

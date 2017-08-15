@@ -1,5 +1,5 @@
 package com.mercury.platform.ui.components.panel.misc;
 
-public interface HasUI {
-    void createUI();
+public interface ViewInit {
+    void onViewInit();
 }

@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ItemMessage extends Message {
+public class ItemTradeNotificationDescriptor extends TradeNotificationDescriptor {
     private String itemName;
     private String tabName;
     private int left;

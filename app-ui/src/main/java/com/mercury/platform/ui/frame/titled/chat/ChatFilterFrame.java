@@ -34,7 +34,6 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
 
     public ChatFilterFrame() {
         super();
-        this.scannerService = Configuration.get().scannerConfiguration();
         FrameDescriptor frameDescriptor = this.framesConfig.get(this.getClass().getSimpleName());
         this.setPreferredSize(frameDescriptor.getFrameSize());
         this.settingsFrame = new ChatFilterSettingsFrame(strings -> {
@@ -47,7 +46,11 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
     @Override
     protected void initialize() {
         super.initialize();
+        this.scannerService = Configuration.get().scannerConfiguration();
+    }
 
+    @Override
+    public void onViewInit() {
         this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {

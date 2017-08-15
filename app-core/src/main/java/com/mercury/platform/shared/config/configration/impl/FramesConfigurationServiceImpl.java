@@ -62,7 +62,7 @@ public class FramesConfigurationServiceImpl extends BaseConfigurationService<Map
 
     private void initMinimumMap() {
         minimumFrameSize.put("TaskBarFrame",new Dimension(109,20));
-        minimumFrameSize.put("MessageFrame",new Dimension(360,10));
+        minimumFrameSize.put("NotificationFrame",new Dimension(360,10));
         minimumFrameSize.put("OutMessageFrame",new Dimension(280,115));
         minimumFrameSize.put("TestCasesFrame",new Dimension(400,100));
         minimumFrameSize.put("SettingsFrame",new Dimension(600,400));
@@ -79,7 +79,7 @@ public class FramesConfigurationServiceImpl extends BaseConfigurationService<Map
     }
     private void initDefaultMap() {
         defaultFramesSettings.put("TaskBarFrame", new FrameDescriptor(new Point(400, 500), new Dimension(109, 20)));
-        defaultFramesSettings.put("MessageFrame", new FrameDescriptor(new Point(700, 600), new Dimension(315, 0)));
+        defaultFramesSettings.put("NotificationFrame", new FrameDescriptor(new Point(700, 600), new Dimension(315, 0)));
         defaultFramesSettings.put("OutMessageFrame", new FrameDescriptor(new Point(200, 500), new Dimension(280, 115)));
         defaultFramesSettings.put("TestCasesFrame", new FrameDescriptor(new Point(1400, 500), new Dimension(400, 100)));
         defaultFramesSettings.put("SettingsFrame", new FrameDescriptor(new Point(600, 600), new Dimension(800,600)));

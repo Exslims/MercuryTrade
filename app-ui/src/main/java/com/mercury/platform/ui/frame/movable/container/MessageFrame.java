@@ -4,18 +4,17 @@ import com.mercury.platform.core.ProdStarter;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
-import com.mercury.platform.shared.config.descriptor.NotificationDescriptor;
+import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
 import com.mercury.platform.shared.entity.message.FlowDirections;
-import com.mercury.platform.shared.entity.message.ItemMessage;
-import com.mercury.platform.shared.entity.message.Message;
+import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
+import com.mercury.platform.shared.entity.message.NotificationDescriptor;
+import com.mercury.platform.shared.entity.message.NotificationType;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.components.panel.message.InMessagePanel;
-import com.mercury.platform.ui.components.panel.message.MessagePanelController;
-import com.mercury.platform.ui.components.panel.message.NotificationMessageController;
-import com.mercury.platform.ui.components.panel.message.MessagePanelStyle;
+import com.mercury.platform.ui.components.panel.notification.*;
+import com.mercury.platform.ui.components.panel.notification.factory.NotificationPanelFactory;
 import com.mercury.platform.ui.frame.movable.AbstractMovableComponentFrame;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.frame.setup.location.LocationState;
@@ -31,11 +30,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MessageFrame extends AbstractMovableComponentFrame implements MessagesContainer {
-    private List<InMessagePanel> currentMessages = new ArrayList<>();
-    private PlainConfigurationService<NotificationDescriptor> notificationConfig;
+    private List<NotificationPanel> currentMessages = new ArrayList<>();
+    private PlainConfigurationService<NotificationSettingsDescriptor> notificationConfig;
     private boolean wasVisible;
     private FlowDirections flowDirections;
     private FlowDirections pikerDirection;
@@ -70,11 +68,10 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
     @Override
     protected void initialize() {
         super.initialize();
-        this.createUI();
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.getRootPane().setBorder(null);
         if(this.currentMessages.size() > 0){
@@ -112,54 +109,59 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
             }
         });
         MercuryStoreCore.messageSubject.subscribe(message -> SwingUtilities.invokeLater(()-> {
-            List<InMessagePanel> collect = this.currentMessages.stream()
-                    .filter(panel -> panel.getMessage().equals(message))
-                    .collect(Collectors.toList());
-            if(collect.size() == 0) {
+//            List<InMessagePanel> collect = this.currentMessages.stream()
+//                    .filter(panel -> panel.getMessage().equals(message))
+//                    .collect(Collectors.toList());
+//            if(collect.size() == 0) {
                 this.addMessage(message);
-            }
+//            }
         }));
-        MercuryStoreUI.closeMessage.subscribe(message -> {
-            List<InMessagePanel> panels = this.currentMessages.stream()
-                    .filter(panel -> panel.getMessage().equals(message))
-                    .collect(Collectors.toList());
-            if(panels.size() > 0) {
-                InMessagePanel inMessagePanel = panels.get(0);
-                if (inMessagePanel.isExpanded()) {
-                    this.currentUnfoldCount--;
-                    if (this.currentUnfoldCount < 0) {
-                        this.currentUnfoldCount = 0;
-                    }
-                }
-                this.remove(inMessagePanel);
-                this.currentMessages.remove(inMessagePanel);
-
-                if (this.currentMessages.size() == 0) {
-                    this.setVisible(false);
-                } else if (this.currentMessages.size() >= this.limitMsgCount) {
-                    if (this.currentMessages.size() == this.limitMsgCount) {
-                        this.expandAllFrame.setVisible(false);
-                    }
-                    this.currentMessages.get(this.limitMsgCount - 1).setVisible(true);
-                    this.expandAllFrame.decMessageCount();
-                }
-                this.pack();
-                this.repaint();
-                this.setUpExpandButton();
-            }
-        });
+//        MercuryStoreUI.closeMessage.subscribe(message -> {
+//            List<InMessagePanel> panels = this.currentMessages.stream()
+//                    .filter(panel -> panel.getMessage().equals(message))
+//                    .collect(Collectors.toList());
+//            if(panels.size() > 0) {
+//                InMessagePanel inMessagePanel = panels.get(0);
+//                if (inMessagePanel.isExpanded()) {
+//                    this.currentUnfoldCount--;
+//                    if (this.currentUnfoldCount < 0) {
+//                        this.currentUnfoldCount = 0;
+//                    }
+//                }
+//                this.remove(inMessagePanel);
+//                this.currentMessages.remove(inMessagePanel);
+//
+//                if (this.currentMessages.size() == 0) {
+//                    this.setVisible(false);
+//                } else if (this.currentMessages.size() >= this.limitMsgCount) {
+//                    if (this.currentMessages.size() == this.limitMsgCount) {
+//                        this.expandAllFrame.setVisible(false);
+//                    }
+//                    this.currentMessages.get(this.limitMsgCount - 1).setVisible(true);
+//                    this.expandAllFrame.decMessageCount();
+//                }
+//                this.pack();
+//                this.repaint();
+//                this.setUpExpandButton();
+//            }
+//        });
         MercuryStoreUI.expandMessageSubject.subscribe(state -> this.onExpandMessage());
         MercuryStoreUI.collapseMessageSubject.subscribe(state -> this.onCollapseMessage());
     }
 
-    private void addMessage(Message message){
+    private void addMessage(NotificationDescriptor notificationDescriptor){
         MessagePanelStyle style = flowDirections.equals(FlowDirections.DOWNWARDS)?
                 MessagePanelStyle.IN_DOWNWARDS : MessagePanelStyle.IN_UPWARDS;
-        InMessagePanel inMessagePanel = new InMessagePanel(
-                message,
-                style,
-                new NotificationMessageController(message),
-                this.componentsFactory);
+        NotificationPanelFactory factory = new NotificationPanelFactory();
+        NotificationPanel inMessagePanel = factory.getProviderFor(NotificationType.INC_ITEM_MESSAGE)
+                .setData(notificationDescriptor)
+                .setComponentsFactory(this.componentsFactory)
+                .build();
+//        InMessagePanel inMessagePanel = new InMessagePanel(
+//                message,
+//                style,
+//                new NotificationMessageController(message),
+//                this.componentsFactory);
         if (!dnd && !this.isVisible() && ProdStarter.APP_STATUS == FrameVisibleState.SHOW) {
             this.showComponent();
         } else {
@@ -174,7 +176,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
         this.pack();
         this.repaint();
         if (this.currentUnfoldCount < this.unfoldCount) {
-            inMessagePanel.expand();
+//            inMessagePanel.expand();
         }
         if(this.currentMessages.size() > this.limitMsgCount){
             if(!expanded) {
@@ -325,10 +327,10 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
 
     private void onExpandedCountChange(){
         this.currentUnfoldCount = 0;
-        this.currentMessages.forEach(InMessagePanel::collapse);
+//        this.currentMessages.forEach(InMessagePanel::collapse);
         this.currentUnfoldCount = 0;
         this.currentMessages.stream().limit(this.unfoldCount).forEach(panel -> {
-            panel.expand();
+//            panel.expand();
             this.currentUnfoldCount++;
         });
     }
@@ -494,7 +496,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
         this.componentsFactory.setScale(scaleData.get("notification"));
         this.currentMessages.forEach(panel -> {
             panel.setComponentsFactory(this.componentsFactory);
-            panel.setStyle(panel.getStyle());
+//            panel.setStyle(panel.getStyle());
         });
         if(this.wasVisible) {
             this.showComponent();
@@ -513,7 +515,7 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
 
     @Override
     protected JPanel defaultView(ComponentsFactory factory) {
-        ItemMessage message = new ItemMessage();
+        ItemTradeNotificationDescriptor message = new ItemTradeNotificationDescriptor();
         message.setWhisperNickname("Example1");
         message.setItemName("Example example example");
         message.setCurrency("chaos");
@@ -758,6 +760,11 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
         @Override
         protected LayoutManager getFrameLayout() {
             return new BorderLayout();
+        }
+
+        @Override
+        public void onViewInit() {
+
         }
 
         private class ExpandAllFrameConstraints {

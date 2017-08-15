@@ -16,8 +16,8 @@ public class TaskBarSettingsPagePanel extends SettingsPagePanel {
     private ApplicationDescriptor applicationSnapshot;
 
     @Override
-    public void createUI() {
-        super.createUI();
+    public void onViewInit() {
+        super.onViewInit();
         this.applicationConfig = Configuration.get().applicationConfiguration();
         this.applicationSnapshot = CloneHelper.cloneObject(this.applicationConfig.get());
 
@@ -47,6 +47,6 @@ public class TaskBarSettingsPagePanel extends SettingsPagePanel {
     public void restore() {
         this.applicationSnapshot = CloneHelper.cloneObject(this.applicationConfig.get());
         this.removeAll();
-        this.createUI();
+        this.onViewInit();
     }
 }

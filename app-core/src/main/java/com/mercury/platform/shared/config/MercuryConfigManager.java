@@ -30,7 +30,7 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
     private ProfileDescriptor selectedProfile;
     private FramesConfigurationService framesConfigurationService;
     private PlainConfigurationService<ApplicationDescriptor> applicationConfigurationService;
-    private PlainConfigurationService<NotificationDescriptor> notificationConfigurationService;
+    private PlainConfigurationService<NotificationSettingsDescriptor> notificationConfigurationService;
     private PlainConfigurationService<ScannerDescriptor> scannerConfigurationService;
     private KeyValueConfigurationService<String,SoundDescriptor> soundConfigurationService;
     private KeyValueConfigurationService<String,Float> scaleConfigurationService;
@@ -57,7 +57,7 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
     }
 
     @Override
-    public PlainConfigurationService<NotificationDescriptor> notificationConfiguration() {
+    public PlainConfigurationService<NotificationSettingsDescriptor> notificationConfiguration() {
         return this.notificationConfigurationService;
     }
 

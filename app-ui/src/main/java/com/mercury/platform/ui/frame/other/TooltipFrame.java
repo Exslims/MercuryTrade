@@ -13,10 +13,6 @@ public class TooltipFrame extends AbstractOverlaidFrame {
     private Timer tooltipTimer;
     public TooltipFrame() {
         super();
-        this.setOpacity(this.applicationConfig.get().getMaxOpacity()/100f);
-        this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
-                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2)));
     }
 
     @Override
@@ -72,5 +68,13 @@ public class TooltipFrame extends AbstractOverlaidFrame {
     @Override
     protected LayoutManager getFrameLayout() {
         return new BorderLayout();
+    }
+
+    @Override
+    public void onViewInit() {
+        this.setOpacity(this.applicationConfig.get().getMaxOpacity()/100f);
+        this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2)));
     }
 }

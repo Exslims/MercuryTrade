@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.components.panel.taskbar;
 
 import com.mercury.platform.ui.components.ComponentsFactory;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
+import com.mercury.platform.ui.components.panel.misc.ViewInit;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
@@ -12,22 +12,22 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class TaskBarPanel extends JPanel implements HasUI{
+public class TaskBarPanel extends JPanel implements ViewInit {
     private ComponentsFactory componentsFactory;
     private TaskBarController controller;
     public TaskBarPanel(@NonNull TaskBarController controller){
         this.controller = controller;
         this.componentsFactory = new ComponentsFactory();
-        createUI();
+        onViewInit();
     }
     public TaskBarPanel(@NonNull TaskBarController controller, @NonNull ComponentsFactory factory){
         this.controller = controller;
         this.componentsFactory = factory;
-        createUI();
+        onViewInit();
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 
