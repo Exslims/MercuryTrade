@@ -2,7 +2,6 @@ package com.mercury.platform.ui.components.panel.notification;
 
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
-import com.mercury.platform.shared.config.descriptor.ResponseButtonDescriptor;
 import com.mercury.platform.shared.config.descriptor.ScannerDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -19,19 +18,15 @@ public class ScannerNotificationPanel extends NotificationPanel<NotificationDesc
     private PlainConfigurationService<ScannerDescriptor> config;
     @Override
     public void onViewInit() {
+        super.onViewInit();
         this.config = Configuration.get().scannerConfiguration();
-        this.setBackground(AppThemeColor.FRAME);
-        this.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(1,1,1,1),
-                BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON_BORDER, 1)));
-        this.setLayout(new BorderLayout());
         this.add(this.getHeader(),BorderLayout.PAGE_START);
-        JLabel sourceLabel = this.componentsFactory.getTextLabel(this.data.getSourceString(),FontStyle.BOLD,16f);
-        sourceLabel.setMaximumSize(new Dimension(200,56));
+        JLabel sourceLabel = this.componentsFactory.getTextLabel(this.data.getSourceString(),FontStyle.BOLD,17f);
         sourceLabel.setBackground(AppThemeColor.FRAME);
         sourceLabel.setHorizontalAlignment(SwingConstants.LEFT);
         sourceLabel.setVerticalAlignment(SwingConstants.TOP);
         this.add(this.componentsFactory.wrapToSlide(sourceLabel,AppThemeColor.FRAME,2,2,2,2),BorderLayout.CENTER);
+        this.validate();
     }
     private JPanel getHeader(){
         JPanel root = new JPanel(new BorderLayout());

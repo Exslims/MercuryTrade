@@ -23,12 +23,8 @@ public abstract class OutgoingNotificationPanel<T extends TradeNotificationDescr
     private PlainConfigurationService<NotificationSettingsDescriptor> config;
     @Override
     public void onViewInit() {
+        super.onViewInit();
         this.config = Configuration.get().notificationConfiguration();
-        this.setBackground(AppThemeColor.FRAME);
-        this.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(1,1,1,1),
-                BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON_BORDER, 1)));
-        this.setLayout(new BorderLayout());
         this.add(this.getHeader(),BorderLayout.PAGE_START);
         JPanel bottomPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.FRAME);
         bottomPanel.add(this.getContentPanel(),BorderLayout.CENTER);

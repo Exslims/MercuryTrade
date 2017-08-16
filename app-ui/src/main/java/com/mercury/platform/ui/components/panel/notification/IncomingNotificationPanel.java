@@ -26,13 +26,8 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
     private PlainConfigurationService<NotificationSettingsDescriptor> config;
     @Override
     public void onViewInit() {
+        super.onViewInit();
         this.config = Configuration.get().notificationConfiguration();
-        this.setLayout(new BorderLayout());
-        this.setBackground(AppThemeColor.FRAME);
-        this.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(1,1,1,1),
-                BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON_BORDER, 1)));
-
         this.add(this.getHeader(),BorderLayout.PAGE_START);
         this.add(this.getMessagePanel(),BorderLayout.CENTER);
         this.add(this.getResponseButtonsPanel(),BorderLayout.PAGE_END);
@@ -59,7 +54,10 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
             }
         });
         JButton tradeButton = componentsFactory.getIconButton("app/trade.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
-        tradeButton.addActionListener(e -> this.controller.performOfferTrade());
+        tradeButton.addActionListener(e -> {
+            this.controller.performOfferTrade();
+            this.onBlur();
+        });
         JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
         openChatButton.addActionListener(e -> controller.performOpenChat());
         JButton hideButton = componentsFactory.getIconButton("app/close.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.HIDE_PANEL);
@@ -67,8 +65,8 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
             this.controller.performHide();
         });
         interactionPanel.add(inviteButton);
-        interactionPanel.add(kickButton);
         interactionPanel.add(tradeButton);
+        interactionPanel.add(kickButton);
         interactionPanel.add(getStillInterestedButton());
         interactionPanel.add(openChatButton);
         interactionPanel.add(hideButton);

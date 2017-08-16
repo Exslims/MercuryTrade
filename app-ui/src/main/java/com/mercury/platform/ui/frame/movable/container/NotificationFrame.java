@@ -21,6 +21,8 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
     private PlainConfigurationService<NotificationSettingsDescriptor> config;
     private NotificationPanelFactory factory;
     private JPanel container;
+    private JPanel expandPanel;
+    private boolean expanded;
     @Override
     protected void initialize() {
         super.initialize();
@@ -39,8 +41,9 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         this.container = new JPanel();
         this.container.setBackground(AppThemeColor.TRANSPARENT);
         this.container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
-
-        this.add(this.getExpandPanel(),BorderLayout.LINE_START);
+        this.expandPanel = this.getExpandPanel();
+        this.expandPanel.setVisible(false);
+        this.add(this.expandPanel,BorderLayout.LINE_START);
         this.add(this.container,BorderLayout.CENTER);
         this.setVisible(true);
         this.pack();
@@ -50,24 +53,42 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
     @SuppressWarnings("all")
     public void subscribe() {
         MercuryStoreCore.newNotificationSubject.subscribe(notification -> {
-            NotificationPanel notificationPanel = this.factory.getProviderFor(notification.getType())
-                    .setData(notification)
-                    .setComponentsFactory(this.componentsFactory)
-                    .build();
-            this.notificationPanels.add(notificationPanel);
-            this.container.add(notificationPanel);
-            this.pack();
-            this.repaint();
+            SwingUtilities.invokeLater(() -> {
+                NotificationPanel notificationPanel = this.factory.getProviderFor(notification.getType())
+                        .setData(notification)
+                        .setComponentsFactory(this.componentsFactory)
+                        .build();
+                this.notificationPanels.add(notificationPanel);
+                this.container.add(notificationPanel);
+                if(this.notificationPanels.size() > this.config.get().getLimitCount()){
+                    if(!this.expanded) {
+                        notificationPanel.setPaintAlphaValue(1f);
+                        notificationPanel.setVisible(false);
+                    }
+                    this.expandPanel.setVisible(true);
+                }
+                this.pack();
+                this.repaint();
+            });
         });
         MercuryStoreCore.removeNotificationSubject.subscribe(notification -> {
-            NotificationPanel notificationPanel = this.notificationPanels.stream()
-                    .filter(it -> it.getData().equals(notification))
-                    .findAny().orElse(null);
-            notificationPanel.onViewDestroy();
-            this.container.remove(notificationPanel);
-            this.notificationPanels.remove(notificationPanel);
-            this.pack();
-            this.repaint();
+            SwingUtilities.invokeLater(() -> {
+                NotificationPanel notificationPanel = this.notificationPanels.stream()
+                        .filter(it -> it.getData().equals(notification))
+                        .findAny().orElse(null);
+                notificationPanel.onViewDestroy();
+                int limitCount = this.config.get().getLimitCount();
+                if(!this.expanded && this.notificationPanels.size() > limitCount){
+                    this.notificationPanels.get(limitCount).setVisible(true);
+                }
+                this.container.remove(notificationPanel);
+                this.notificationPanels.remove(notificationPanel);
+                if(this.notificationPanels.size() - 1 < this.config.get().getLimitCount()){
+                    this.expandPanel.setVisible(false);
+                }
+                this.pack();
+                this.repaint();
+            });
         });
     }
 
@@ -99,21 +120,29 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         root.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1,1,1,0,AppThemeColor.FRAME),
                 BorderFactory.createMatteBorder(1,1,1,1,AppThemeColor.RESPONSE_BUTTON_BORDER)));
-
-        JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        labelPanel.setBackground(AppThemeColor.MSG_HEADER);
-        labelPanel.setPreferredSize(new Dimension((int)(10 * componentsFactory.getScale()),(int)(22 * componentsFactory.getScale())));
-        labelPanel.setBorder(BorderFactory.createEmptyBorder(-4,0,0,0));
-        JLabel msgCountLabel = componentsFactory.getTextLabel("+" + String.valueOf("12"));
         String iconPath = "app/collapse-all.png";
         JButton expandButton = componentsFactory.getIconButton(iconPath,22,AppThemeColor.MSG_HEADER,"");
         expandButton.addActionListener(action -> {
-
+            if(this.expanded) {
+                expandButton.setIcon(this.componentsFactory.getIcon("app/collapse-all.png",22));
+                this.notificationPanels
+                        .stream()
+                        .skip(this.config.get().getLimitCount())
+                        .forEach(it -> it.setVisible(false));
+            }else {
+                expandButton.setIcon(this.componentsFactory.getIcon("app/expand-all.png",22));
+                this.notificationPanels.forEach(it -> {
+                    if (!it.isVisible()) {
+                        it.setVisible(true);
+                    }
+                });
+            }
+            this.expanded = !this.expanded;
+            this.pack();
+            this.repaint();
         });
         expandButton.setAlignmentY(SwingConstants.CENTER);
-        labelPanel.add(msgCountLabel);
         root.add(expandButton,BorderLayout.CENTER);
-        root.add(labelPanel,BorderLayout.PAGE_END);
         return root;
     }
 }
