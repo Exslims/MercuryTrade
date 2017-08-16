@@ -25,5 +25,16 @@ public abstract class NotificationPanelProvider<T extends NotificationDescriptor
         return this;
     }
 
-    public abstract NotificationPanel<T,C> build();
+    public NotificationPanel<T,C> build() {
+        NotificationPanel<T,C> panel = this.getPanel();
+        panel.setData(this.data);
+        if(this.controller != null){
+            panel.setController(this.controller);
+        }
+        panel.setComponentsFactory(this.componentsFactory);
+        panel.subscribe();
+        panel.onViewInit();
+        return panel;
+    }
+    protected abstract NotificationPanel<T,C> getPanel();
 }

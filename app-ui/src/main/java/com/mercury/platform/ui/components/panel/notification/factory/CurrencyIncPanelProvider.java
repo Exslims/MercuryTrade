@@ -14,17 +14,9 @@ public class CurrencyIncPanelProvider extends NotificationPanelProvider<Currency
     }
 
     @Override
-    public NotificationPanel<CurrencyTradeNotificationDescriptor, IncomingPanelController> build() {
+    protected NotificationPanel<CurrencyTradeNotificationDescriptor, IncomingPanelController> getPanel() {
         CurrencyIncNotificationPanel panel = new CurrencyIncNotificationPanel();
-        panel.setData(this.data);
-        if(this.controller != null){
-            panel.setController(this.controller);
-        }else {
-            panel.setController(new NotificationIncomingController(this.data));
-        }
-        panel.setComponentsFactory(this.componentsFactory);
-        panel.subscribe();
-        panel.onViewInit();
+        panel.setController(new NotificationIncomingController(this.data));
         return panel;
     }
 }

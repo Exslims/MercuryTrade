@@ -1,6 +1,8 @@
 package com.mercury.platform.ui.components.panel.chat;
 
 import com.mercury.platform.core.misc.SoundType;
+import com.mercury.platform.shared.entity.message.NotificationDescriptor;
+import com.mercury.platform.shared.entity.message.NotificationType;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
@@ -104,6 +106,11 @@ public class ChatFilterPanel extends JPanel {
                         this.componentsFactory,
                         nickname,
                         messageBuilder.build(messageContent));
+                NotificationDescriptor notificationDescriptor = new NotificationDescriptor();
+                notificationDescriptor.setType(NotificationType.SCANNER_MESSAGE);
+                notificationDescriptor.setSourceString(messageBuilder.build(messageContent));
+                notificationDescriptor.setWhisperNickname(nickname);
+                MercuryStoreCore.newNotificationSubject.onNext(notificationDescriptor);
                 container.add(chatMessagePanel);
                 trimContainer();
                 expiresMessages.put(nickname,message);

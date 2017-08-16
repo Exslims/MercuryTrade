@@ -15,17 +15,9 @@ public class ItemIncPanelProvider extends NotificationPanelProvider<ItemTradeNot
     }
 
     @Override
-    public NotificationPanel<ItemTradeNotificationDescriptor, IncomingPanelController> build() {
+    protected NotificationPanel<ItemTradeNotificationDescriptor, IncomingPanelController> getPanel() {
         ItemIncNotificationPanel panel = new ItemIncNotificationPanel();
-        panel.setData(this.data);
-        if(this.controller != null){
-            panel.setController(this.controller);
-        }else {
-            panel.setController(new NotificationIncomingController(this.data));
-        }
-        panel.setComponentsFactory(this.componentsFactory);
-        panel.subscribe();
-        panel.onViewInit();
+        panel.setController(new NotificationIncomingController(this.data));
         return panel;
     }
 }

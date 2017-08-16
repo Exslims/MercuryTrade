@@ -3,10 +3,8 @@ package com.mercury.platform.ui.frame.movable.container;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
-import com.mercury.platform.shared.entity.message.FlowDirections;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
-import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.components.panel.notification.NotificationPanel;
 import com.mercury.platform.ui.components.panel.notification.factory.NotificationPanelFactory;
 import com.mercury.platform.ui.frame.movable.AbstractMovableComponentFrame;
@@ -38,7 +36,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
     public void onViewInit() {
         this.getRootPane().setBorder(null);
         this.setBackground(AppThemeColor.TRANSPARENT);
-        this.container = new VerticalScrollContainer();
+        this.container = new JPanel();
         this.container.setBackground(AppThemeColor.TRANSPARENT);
         this.container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
 

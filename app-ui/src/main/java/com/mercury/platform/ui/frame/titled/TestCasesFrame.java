@@ -5,7 +5,9 @@ import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;
 import com.mercury.platform.shared.store.MercuryStoreCore;
+import com.mercury.platform.ui.components.panel.chat.HtmlMessageBuilder;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -21,8 +23,9 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
     private List<String> nickNames;
     private List<String> offer;
     private List<String> leagues;
-    private String poeTradeTemplate = "2017/02/11 18:40:32 9029890 951 [INFO Client 8980] @From %s: Hi, I would like to buy your %s listed for %d %s in %s (stash tab \"%d\"; position: left %d, top %d) %s";
-    private String currencyTemplate = "2017/02/11 18:56:15 9973390 951 [INFO Client 8980] @From %s: Hi, I'd like to buy your %d %s for my %d %s in %s. %s";
+    private HtmlMessageBuilder messageBuilder;
+    private String poeTradeTemplate = "%s: Hi, I would like to buy your %s listed for %d %s in %s (stash tab \"%d\"; position: left %d, top %d) %s";
+    private String currencyTemplate = "%s: Hi, I'd like to buy your %d %s for my %d %s in %s. %s";
 
     public TestCasesFrame() {
         super();
@@ -31,6 +34,8 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
         nickNames = new ArrayList<>();
         offer = new ArrayList<>();
         leagues = new ArrayList<>();
+        this.messageBuilder = new HtmlMessageBuilder();
+        this.messageBuilder.setChunkStrings(Arrays.asList("Hi","buy","listed","like"));
         items.add("Wondertrap Velvet Slippers");
         items.add("Rain of Arrows");
         items.add("Dreadarc Cleaver");
@@ -194,9 +199,9 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
             public void mousePressed(MouseEvent e) {
                 NotificationDescriptor notificationDescriptor = parser.parse(String.format(currencyTemplate,
                         nickNames.get(random.nextInt(nickNames.size())),
-                        random.nextInt(200),
+                        random.nextInt(200) + 1,
                         currency.get(random.nextInt(currency.size())),
-                        random.nextInt(200),
+                        random.nextInt(200) + 1,
                         currency.get(random.nextInt(currency.size())),
                         leagues.get(random.nextInt(leagues.size())),
                         offer.get(random.nextInt(offer.size()))
@@ -206,49 +211,47 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
         });
         testPanel.add(button1,buttonColumn);
         buttonColumn.gridy++;
-        JLabel textLabel1 = componentsFactory.getTextLabel("Random currency message");
+        JLabel textLabel1 = componentsFactory.getTextLabel("Random incoming currency message");
         testPanel.add(textLabel1,titleColumn);
         titleColumn.gridy++;
 
-
-
-        JButton button2 = componentsFactory.getBorderedButton("Click");
-        button2.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                String nickname = nickNames.get(random.nextInt(nickNames.size()));
-                NotificationDescriptor notificationDescriptor = parser.parse(String.format(currencyTemplate,
-                        nickname,
-                        random.nextInt(200),
-                        currency.get(random.nextInt(currency.size())),
-                        random.nextInt(200),
-                        currency.get(random.nextInt(currency.size())),
-                        leagues.get(random.nextInt(leagues.size())),
-                        offer.get(random.nextInt(offer.size()))
-                ));
-                MercuryStoreCore.newNotificationSubject.onNext(notificationDescriptor);
-                MercuryStoreCore.soundSubject.onNext(SoundType.MESSAGE);
-
-                Timer joinedTimer = new Timer(1000,null);
-                joinedTimer.addActionListener(e1 -> {
-                    MercuryStoreCore.playerJoinSubject.onNext(nickname);
-                    joinedTimer.stop();
-                });
-                joinedTimer.start();
-
-                Timer leftTimer = new Timer(2000,null);
-                leftTimer.addActionListener(e1 -> {
-                    MercuryStoreCore.playerLeftSubject.onNext(nickname);
-                    leftTimer.stop();
-                });
-                leftTimer.start();
-            }
-        });
-        testPanel.add(button2,buttonColumn);
-        buttonColumn.gridy++;
-        JLabel textLabel2 = componentsFactory.getTextLabel("Test accessibility status");
-        testPanel.add(textLabel2,titleColumn);
-        titleColumn.gridy++;
+//        JButton button2 = componentsFactory.getBorderedButton("Click");
+//        button2.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+//                String nickname = nickNames.get(random.nextInt(nickNames.size()));
+//                NotificationDescriptor notificationDescriptor = parser.parse(String.format(currencyTemplate,
+//                        nickname,
+//                        random.nextInt(200),
+//                        currency.get(random.nextInt(currency.size())),
+//                        random.nextInt(200),
+//                        currency.get(random.nextInt(currency.size())),
+//                        leagues.get(random.nextInt(leagues.size())),
+//                        offer.get(random.nextInt(offer.size()))
+//                ));
+//                MercuryStoreCore.newNotificationSubject.onNext(notificationDescriptor);
+//                MercuryStoreCore.soundSubject.onNext(SoundType.MESSAGE);
+//
+//                Timer joinedTimer = new Timer(1000,null);
+//                joinedTimer.addActionListener(e1 -> {
+//                    MercuryStoreCore.playerJoinSubject.onNext(nickname);
+//                    joinedTimer.stop();
+//                });
+//                joinedTimer.start();
+//
+//                Timer leftTimer = new Timer(2000,null);
+//                leftTimer.addActionListener(e1 -> {
+//                    MercuryStoreCore.playerLeftSubject.onNext(nickname);
+//                    leftTimer.stop();
+//                });
+//                leftTimer.start();
+//            }
+//        });
+//        testPanel.add(button2,buttonColumn);
+//        buttonColumn.gridy++;
+//        JLabel textLabel2 = componentsFactory.getTextLabel("Test accessibility status");
+//        testPanel.add(textLabel2,titleColumn);
+//        titleColumn.gridy++;
 
         JButton outItemButton = componentsFactory.getBorderedButton("Click");
         outItemButton.addMouseListener(new MouseAdapter() {
@@ -273,6 +276,57 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
         buttonColumn.gridy++;
         JLabel outItemLabel = componentsFactory.getTextLabel("Random outgoing item message");
         testPanel.add(outItemLabel,titleColumn);
+        titleColumn.gridy++;
+
+        JButton outCurrencyButton = componentsFactory.getBorderedButton("Click");
+        outCurrencyButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                NotificationDescriptor notificationDescriptor = parser.parse(String.format(currencyTemplate,
+                        nickNames.get(random.nextInt(nickNames.size())),
+                        random.nextInt(200) + 1,
+                        currency.get(random.nextInt(currency.size())),
+                        random.nextInt(200) + 1,
+                        currency.get(random.nextInt(currency.size())),
+                        leagues.get(random.nextInt(leagues.size())),
+                        offer.get(random.nextInt(offer.size()))
+                ));
+                notificationDescriptor.setType(NotificationType.OUT_CURRENCY_MESSAGE);
+                MercuryStoreCore.newNotificationSubject.onNext(notificationDescriptor);
+            }
+        });
+        testPanel.add(outCurrencyButton,buttonColumn);
+        buttonColumn.gridy++;
+        JLabel outCurrencyLabel = componentsFactory.getTextLabel("Random outgoing currency message");
+        testPanel.add(outCurrencyLabel,titleColumn);
+        titleColumn.gridy++;
+        testPanel.setBackground(AppThemeColor.TRANSPARENT);
+
+        JButton chatScannerButton = componentsFactory.getBorderedButton("Click");
+        chatScannerButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                NotificationDescriptor notificationDescriptor = parser.parse(String.format(poeTradeTemplate,
+                        nickNames.get(random.nextInt(nickNames.size())),
+                        items.get(random.nextInt(items.size())),
+                        random.nextInt(200),
+                        currency.get(random.nextInt(currency.size())),
+                        leagues.get(random.nextInt(leagues.size())),
+                        random.nextInt(30),
+                        random.nextInt(12) + 1,
+                        random.nextInt(12) + 1,
+                        offer.get(random.nextInt(offer.size()))
+                ));
+                String source = StringUtils.substringAfter(notificationDescriptor.getSourceString(), ": ");
+                notificationDescriptor.setSourceString(messageBuilder.build(source));
+                notificationDescriptor.setType(NotificationType.SCANNER_MESSAGE);
+                MercuryStoreCore.newNotificationSubject.onNext(notificationDescriptor);
+            }
+        });
+        testPanel.add(chatScannerButton,buttonColumn);
+        buttonColumn.gridy++;
+        JLabel chatScannerLabel = componentsFactory.getTextLabel("Random chat scanner message");
+        testPanel.add(chatScannerLabel,titleColumn);
         titleColumn.gridy++;
         testPanel.setBackground(AppThemeColor.TRANSPARENT);
 
