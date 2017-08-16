@@ -12,7 +12,7 @@ Download MercuryTrade.jar: [Latest release](https://github.com/Exslims/MercuryTr
 
 **ALTERNATIVE LAUNCHER**: MercuryTrade.**RAR**: [Latest release](https://github.com/Exslims/MercuryTrade/releases). Unpack and run the attached .exe as administrator! Try this launcher when **something is not working**.
 
-I have a problem: [Troubleshooting](https://github.com/Exslims/MercuryTrade/wiki/Troubleshooting)
+I have a problem: [Troubleshooting](https://github.com/Exslims/MercuryTrade/wiki)
 
 Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issues) [Discord](https://discord.gg/aG9C8XJ)
 
