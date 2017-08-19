@@ -56,13 +56,9 @@ public class CurrencyIncNotificationPanel extends IncomingNotificationPanel<Curr
     protected JButton getStillInterestedButton() {
         JButton stillIntButton = componentsFactory.getIconButton("app/still-interesting.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.STILL_INTERESTED);
         stillIntButton.addActionListener(action -> {
-            String curCount = this.data.getCurCount() % 1 == 0 ?
-                    String.valueOf(this.data.getCurCount().intValue()) :
-                    String.valueOf(this.data.getCurCount());
+            String curCount = this.data.getCurCount().toString();
             String responseText = "Hi, are you still interested in ";
-            String curForSaleCount = this.data.getCurCount() % 1 == 0 ?
-                    String.valueOf(this.data.getCurrForSaleCount().intValue()) :
-                    String.valueOf(this.data.getCurrForSaleCount());
+            String curForSaleCount = this.data.getCurrForSaleCount().toString();
             responseText += curForSaleCount + " " + this.data.getCurrForSaleTitle() + " for " +
                     curCount + " " + this.data.getCurrency() + "?";
             this.controller.performResponse(responseText);

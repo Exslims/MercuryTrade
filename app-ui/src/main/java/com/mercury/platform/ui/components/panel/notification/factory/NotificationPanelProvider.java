@@ -34,6 +34,9 @@ public abstract class NotificationPanelProvider<T extends NotificationDescriptor
         panel.setComponentsFactory(this.componentsFactory);
         panel.subscribe();
         panel.onViewInit();
+        this.componentsFactory = null;
+        this.controller = null;
+        this.data = null;
         return panel;
     }
     protected abstract NotificationPanel<T,C> getPanel();

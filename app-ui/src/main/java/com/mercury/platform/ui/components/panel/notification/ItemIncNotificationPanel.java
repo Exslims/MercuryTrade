@@ -49,9 +49,7 @@ public class ItemIncNotificationPanel extends IncomingNotificationPanel<ItemTrad
     protected JButton getStillInterestedButton() {
         JButton stillIntButton = componentsFactory.getIconButton("app/still-interesting.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.STILL_INTERESTED);
         stillIntButton.addActionListener(action-> {
-            String curCount = this.data.getCurCount() % 1 == 0 ?
-                    String.valueOf(this.data.getCurCount().intValue()) :
-                    String.valueOf(this.data.getCurCount());
+            String curCount = this.data.getCurCount().toString();
             String responseText = "Hi, are you still interested in ";
             if(this.data.getCurrency().equals("???")){
                 responseText += this.data.getItemName() + "?";

@@ -28,7 +28,6 @@ public abstract class NotificationPanel<T,C> extends JPanel implements AsSubscri
     protected T data;
     @Setter
     protected C controller;
-    @Setter
     protected ComponentsFactory componentsFactory;
     protected Map<HotKeyDescriptor,JButton> hotKeysPool = new HashMap<>();
     protected Map<HotKeyType,JButton> interactButtonMap = new HashMap<>();
@@ -48,6 +47,11 @@ public abstract class NotificationPanel<T,C> extends JPanel implements AsSubscri
         this.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(1,1,1,1),
                 BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON_BORDER, 1)));
+    }
+    public void setComponentsFactory(ComponentsFactory factory){
+        this.componentsFactory = factory;
+        this.removeAll();
+        this.onViewInit();
     }
 
     public void onHotKeyPressed(HotKeyDescriptor descriptor){

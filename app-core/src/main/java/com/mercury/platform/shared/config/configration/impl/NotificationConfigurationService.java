@@ -27,7 +27,8 @@ public class NotificationConfigurationService extends BaseConfigurationService<N
         defaultButtons.add(new ResponseButtonDescriptor(3,false,"sold", "sold",new HotKeyDescriptor()));
         List<ResponseButtonDescriptor> defaultOutButtons = new ArrayList<>();
         defaultOutButtons.add(new ResponseButtonDescriptor(0,false,"thanks","thanks", new HotKeyDescriptor()));
-        notificationSettingsDescriptor.setButtons(defaultOutButtons);
+        notificationSettingsDescriptor.setButtons(defaultButtons);
+        notificationSettingsDescriptor.setOutButtons(defaultOutButtons);
         return notificationSettingsDescriptor;
     }
 

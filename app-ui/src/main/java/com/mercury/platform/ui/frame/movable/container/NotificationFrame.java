@@ -6,15 +6,23 @@ import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
 import com.mercury.platform.shared.entity.message.FlowDirections;
+import com.mercury.platform.shared.entity.message.NotificationType;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
+import com.mercury.platform.ui.components.panel.notification.InMessagePanel;
 import com.mercury.platform.ui.components.panel.notification.NotificationPanel;
 import com.mercury.platform.ui.components.panel.notification.ScannerNotificationPanel;
+import com.mercury.platform.ui.components.panel.notification.controller.IncomingPanelController;
+import com.mercury.platform.ui.components.panel.notification.controller.stub.IncStubController;
+import com.mercury.platform.ui.components.panel.notification.controller.stub.OutStubController;
+import com.mercury.platform.ui.components.panel.notification.controller.stub.ScannerStubController;
 import com.mercury.platform.ui.components.panel.notification.factory.NotificationPanelFactory;
 import com.mercury.platform.ui.frame.movable.AbstractMovableComponentFrame;
+import com.mercury.platform.ui.frame.titled.TestEngine;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -26,7 +34,7 @@ import java.util.List;
 public class NotificationFrame extends AbstractMovableComponentFrame {
     private List<NotificationPanel> notificationPanels;
     private PlainConfigurationService<NotificationSettingsDescriptor> config;
-    private NotificationPanelFactory factory;
+    private NotificationPanelFactory providersFactory;
     private JPanel container;
     private JPanel expandPanel;
     private boolean expanded;
@@ -38,7 +46,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         this.config = Configuration.get().notificationConfiguration();
         this.componentsFactory.setScale(this.scaleConfig.get("notification"));
         this.stubComponentsFactory.setScale(this.scaleConfig.get("notification"));
-        this.factory = new NotificationPanelFactory();
+        this.providersFactory = new NotificationPanelFactory();
     }
 
     @Override
@@ -61,7 +69,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
     public void subscribe() {
         MercuryStoreCore.newNotificationSubject.subscribe(notification -> {
             SwingUtilities.invokeLater(() -> {
-                NotificationPanel notificationPanel = this.factory.getProviderFor(notification.getType())
+                NotificationPanel notificationPanel = this.providersFactory.getProviderFor(notification.getType())
                         .setData(notification)
                         .setComponentsFactory(this.componentsFactory)
                         .build();
@@ -136,14 +144,49 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
 
     @Override
     protected void registerDirectScaleHandler() {
+        MercuryStoreUI.notificationScaleSubject.subscribe(this::changeScale);
     }
 
     @Override
     protected void performScaling(Map<String, Float> scaleData) {
+        this.componentsFactory.setScale(scaleData.get("notification"));
+        this.notificationPanels.forEach(it -> {
+            it.setComponentsFactory(this.componentsFactory);
+        });
+        this.pack();
+        this.repaint();
     }
     @Override
+    @SuppressWarnings("all")
     protected JPanel defaultView(ComponentsFactory factory) {
-        return null;
+        TestEngine testEngine = new TestEngine();
+        JPanel root = factory.getJPanel(new BorderLayout());
+        root.setLayout(new BoxLayout(root,BoxLayout.Y_AXIS));
+
+        root.add(this.providersFactory
+                .getProviderFor(NotificationType.INC_ITEM_MESSAGE)
+                .setData(testEngine.getRandomItemIncMessage())
+                .setComponentsFactory(factory)
+                .setController(new IncStubController())
+                .build());
+        root.add(this.providersFactory
+                .getProviderFor(NotificationType.OUT_ITEM_MESSAGE)
+                .setData(testEngine.getRandomItemOutMessage())
+                .setComponentsFactory(factory)
+                .setController(new OutStubController())
+                .build());
+        root.add(this.providersFactory
+                .getProviderFor(NotificationType.SCANNER_MESSAGE)
+                .setData(testEngine.getRandomScannerMessage())
+                .setComponentsFactory(factory)
+                .setController(new ScannerStubController())
+                .build());
+        Timer packTimer = new Timer(10, action -> {
+            this.pack();
+        });
+        packTimer.start();
+
+        return root;
     }
 
     @Override

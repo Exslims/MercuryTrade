@@ -276,7 +276,6 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
     private class ResizeByWidthMouseMotionListener extends MouseMotionAdapter {
         @Override
         public void mouseDragged(MouseEvent e) {
-            sizeWasChanged = true;
             JPanel source = (JPanel) e.getSource();
             Point frameLocation = getLocation();
             setSize(new Dimension(e.getLocationOnScreen().x - frameLocation.x + source.getWidth(), getHeight()));
@@ -285,7 +284,6 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
     private class ResizeByHeightMouseMotionListener extends MouseMotionAdapter {
         @Override
         public void mouseDragged(MouseEvent e) {
-            sizeWasChanged = true;
             JPanel source = (JPanel) e.getSource();
             Point frameLocation = getLocation();
             setSize(new Dimension(getWidth(),e.getLocationOnScreen().y - frameLocation.y + source.getHeight()));

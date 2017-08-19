@@ -40,9 +40,7 @@ public abstract class AbstractMovableComponentFrame extends AbstractScalableComp
                         this.isVisible(),
                         this.getBackground(),
                         this.getRootPane().getBorder(),
-                        this.getLocation(),
-                        this.getMinimumSize(),
-                        this.getMaximumSize()
+                        this.getLocation()
                 );
                 this.processEResize = false;
                 this.processSEResize = false;
@@ -50,7 +48,6 @@ public abstract class AbstractMovableComponentFrame extends AbstractScalableComp
                 this.setBackground(panelForPin.getBackground());
                 this.setLocation(this.framesConfig.get(this.getClass().getSimpleName()).getFrameLocation());
                 this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
-                this.setMinimumSize(null);
                 this.setContentPane(panelForPin);
                 this.setVisible(true);
                 this.setAlwaysOnTop(true);
@@ -66,15 +63,6 @@ public abstract class AbstractMovableComponentFrame extends AbstractScalableComp
                 this.setBackground(prevConstraints.bgColor);
                 this.getRootPane().setBorder(prevConstraints.border);
                 this.setLocation(prevConstraints.location);
-                if(sizeWasChanged){
-                    this.setPreferredSize(this.getSize());
-                    this.setMinimumSize(this.getSize());
-                    this.setMaximumSize(this.getSize());
-                    sizeWasChanged = false;
-                }else {
-                    this.setMinimumSize(prevConstraints.minSize);
-                    this.setMaximumSize(prevConstraints.maxSize);
-                }
                 inMoveMode = false;
                 this.onLock();
                 break;
@@ -126,25 +114,19 @@ public abstract class AbstractMovableComponentFrame extends AbstractScalableComp
         private Color bgColor;
         private Border border;
         private Point location;
-        private Dimension minSize;
-        private Dimension maxSize;
 
         MovableFrameConstraints(boolean processSEResize,
                                 boolean processEResize,
                                 boolean visible,
                                 Color bgColor,
                                 Border border,
-                                Point location,
-                                Dimension minSize,
-                                Dimension maxSize) {
+                                Point location) {
             this.processSEResize = processSEResize;
             this.processEResize = processEResize;
             this.visible = visible;
             this.bgColor = bgColor;
             this.border = border;
             this.location = location;
-            this.minSize = minSize;
-            this.maxSize = maxSize;
         }
 
         public void setLocation(Point location) {
