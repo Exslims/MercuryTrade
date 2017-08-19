@@ -61,15 +61,9 @@ If you've received multiple notifications before dismissing your current one, th
 
 <p> The box on the left - "Group" - will appear if "Pre-group limit" is exceeded (this limit is also customizable). All consecutive notifications will be grouped together to save screen space. Toggling this button will expand the whole group. </p>
 
-<p align="center">
-  <img src="http://i.imgur.com/ljIOEYk.png"/>
-</p>
-
-<p align="center"> <i>Notification Panel settings (unlocked mode)</i> </p>
-
 
 <p align="center">
-  <img src="http://i.imgur.com/Y00d0FF.png"/>
+  <img src="http://i.imgur.com/Iw2kDCO.png"/>
 </p>
 
 <p align="center"> <i>Response buttons are fully customizable</i> </p>
