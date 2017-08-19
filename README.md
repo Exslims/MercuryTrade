@@ -46,7 +46,7 @@ Overseer is essentially "a customizable and nicely looking set of overlay timers
 When you receive a trade related message this notification panel pops up. It contains all the information you need to make a decision. It offers a set of fully customizable "quick response buttons" - such as "Sold" / "No" / "Wait 3m" / etc - as well as buttons to invite, kick and trade with the person who made the offer. 
 
 <p align="center">
-  <img src="http://i.imgur.com/6WyeA9D.png"/>
+  <img src="http://i.imgur.com/UPncdtt.png"/>
 </p>
 
 <p align="center"> <i>Multiple notifications</i> </p>
