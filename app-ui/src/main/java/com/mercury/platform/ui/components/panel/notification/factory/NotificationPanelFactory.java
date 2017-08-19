@@ -16,6 +16,7 @@ public class NotificationPanelFactory {
         this.providers.add(new ItemOutPanelProvider());
         this.providers.add(new CurrencyOutPanelProvider());
         this.providers.add(new ScannerPanelProvider());
+        this.providers.add(new HistoryPanelProvider());
     }
 
     public NotificationPanelProvider getProviderFor(NotificationType type){

@@ -30,7 +30,6 @@ public class NotificationIncomingController implements IncomingPanelController {
     @Override
     public void performKick() {
         MercuryStoreCore.chatCommandSubject.onNext("/kick " + notificationDescriptor.getWhisperNickname());
-
     }
 
     @Override

@@ -2,15 +2,25 @@ package com.mercury.platform.ui.components.panel.notification;
 
 
 import com.mercury.platform.shared.AsSubscriber;
+import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
+import com.mercury.platform.shared.config.descriptor.HotKeyType;
 import com.mercury.platform.ui.components.ComponentsFactory;
+import com.mercury.platform.ui.components.fields.font.FontStyle;
+import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.misc.ViewDestroy;
 import com.mercury.platform.ui.components.panel.misc.ViewInit;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.Getter;
 import lombok.Setter;
+import rx.Subscription;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class NotificationPanel<T,C> extends JPanel implements AsSubscriber, ViewInit,ViewDestroy {
     @Setter
@@ -20,12 +30,16 @@ public abstract class NotificationPanel<T,C> extends JPanel implements AsSubscri
     protected C controller;
     @Setter
     protected ComponentsFactory componentsFactory;
+    protected Map<HotKeyDescriptor,JButton> hotKeysPool = new HashMap<>();
+    protected Map<HotKeyType,JButton> interactButtonMap = new HashMap<>();
     @Setter
     private float paintAlphaValue = 0f;
     @Setter
-    private float paintBorderValue = 0f;
-    private boolean blurEffect;
-    private boolean blurReverse;
+    protected float paintBorderValue = 0f;
+    protected boolean blurEffect;
+    protected boolean blurReverse;
+
+    private Subscription settingsPostSubscription;
 
     @Override
     public void onViewInit() {
@@ -34,6 +48,26 @@ public abstract class NotificationPanel<T,C> extends JPanel implements AsSubscri
         this.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(1,1,1,1),
                 BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON_BORDER, 1)));
+    }
+
+    public void onHotKeyPressed(HotKeyDescriptor descriptor){
+        JButton button = this.hotKeysPool.get(descriptor);
+        if(button != null){
+            button.doClick();
+        }
+    }
+
+    @Override
+    public void subscribe() {
+        this.settingsPostSubscription = MercuryStoreUI.settingsPostSubject.subscribe(state -> {
+            this.updateHotKeyPool();
+        });
+    }
+    protected abstract void updateHotKeyPool();
+
+    @Override
+    public void onViewDestroy() {
+        this.settingsPostSubscription.unsubscribe();
     }
 
     @Override
@@ -51,6 +85,41 @@ public abstract class NotificationPanel<T,C> extends JPanel implements AsSubscri
             }
             this.repaint();
         }
+    }
+    protected JPanel getTimePanel() {
+        JPanel root = new JPanel(new BorderLayout());
+        root.setBackground(AppThemeColor.MSG_HEADER);
+        JLabel timeLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MISC, TextAlignment.CENTER, 14, "0m");
+        Timer timeAgo = new Timer(60000, new ActionListener() {
+            private int minute = 0;
+            private int hours = 0;
+            private int day = 0;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String labelText = "";
+                minute++;
+                if (minute > 60) {
+                    hours++;
+                    minute = 0;
+                    if (hours > 24) {
+                        day++;
+                        hours = 0;
+                    }
+                }
+                if (hours == 0 && day == 0) {
+                    labelText = minute + "m";
+                } else if (hours > 0) {
+                    labelText = hours + "h " + minute + "m";
+                } else if (day > 0) {
+                    labelText = day + "d " + hours + "h " + minute + "m";
+                }
+                timeLabel.setText(labelText);
+            }
+        });
+        timeAgo.start();
+        root.add(timeLabel,BorderLayout.CENTER);
+        return root;
     }
     protected void onBlur(){
         this.blurEffect = true;

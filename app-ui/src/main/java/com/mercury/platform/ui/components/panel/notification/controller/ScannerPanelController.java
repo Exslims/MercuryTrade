@@ -1,11 +1,6 @@
 package com.mercury.platform.ui.components.panel.notification.controller;
 
-public interface ScannerPanelController {
+public interface ScannerPanelController extends NotificationController{
     void visitHideout();
-    void backToHideout();
-    void performTrade();
-    void performLeave();
-    void performHide();
-    void performOpenChat();
-    void performResponse(String response);
+    void performLeave(String nickName);
 }

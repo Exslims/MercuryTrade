@@ -6,5 +6,6 @@ public enum NotificationType {
     INC_CURRENCY_MESSAGE,
     OUT_ITEM_MESSAGE,
     OUT_CURRENCY_MESSAGE,
-    SCANNER_MESSAGE
+    SCANNER_MESSAGE,
+    HISTORY
 }

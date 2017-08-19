@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class AppThemeColor {
     public static final Color BUTTON = new Color(52, 62, 61);
-    public static final Color SCROLL_BAR = new Color(44, 70, 80);
+    public static final Color SCROLL_BAR = new Color(71, 81, 80);
     public static final Color TEXT_DEFAULT = new Color(255,250,250);
     public static final Color TEXT_MESSAGE = new Color(255,250,213);
     public static final Color TEXT_MISC = new Color(219,158,54);
@@ -14,6 +14,7 @@ public class AppThemeColor {
     public static final Color TEXT_DISABLE = new Color(126,130,122);
     public static final Color BORDER = new Color(70, 81, 80);
     public static final Color BORDER_DARK = new Color(62, 73, 72);
+    public static final Color HEADER_SELECTED_BORDER = new Color(128, 123, 95);
     public static final Color FRAME = new Color(42, 44, 43,254);
     public static final Color FRAME_RGB = new Color(42, 44, 43);
     public static final Color FRAME_ALPHA = new Color(42, 44, 43,1);

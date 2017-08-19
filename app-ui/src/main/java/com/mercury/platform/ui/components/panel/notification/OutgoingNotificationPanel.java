@@ -1,10 +1,9 @@
 package com.mercury.platform.ui.components.panel.notification;
 
 import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.KeyValueConfigurationService;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
-import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
-import com.mercury.platform.shared.config.descriptor.ResponseButtonDescriptor;
-import com.mercury.platform.shared.entity.message.NotificationDescriptor;
+import com.mercury.platform.shared.config.descriptor.*;
 import com.mercury.platform.shared.entity.message.TradeNotificationDescriptor;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -21,42 +20,51 @@ import java.util.List;
 
 public abstract class OutgoingNotificationPanel<T extends TradeNotificationDescriptor> extends NotificationPanel<T,OutgoingPanelController> {
     private PlainConfigurationService<NotificationSettingsDescriptor> config;
+    private PlainConfigurationService<HotKeysSettingsDescriptor> hotKeysConfig;
+    private JPanel responseButtonsPanel;
+    private JPanel bottomPanel;
     @Override
     public void onViewInit() {
         super.onViewInit();
         this.config = Configuration.get().notificationConfiguration();
+        this.hotKeysConfig = Configuration.get().hotKeysConfiguration();
         this.add(this.getHeader(),BorderLayout.PAGE_START);
-        JPanel bottomPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.FRAME);
-        bottomPanel.add(this.getContentPanel(),BorderLayout.CENTER);
-        bottomPanel.add(this.componentsFactory.wrapToSlide(this.getResponseButtonsPanel(),AppThemeColor.FRAME),BorderLayout.LINE_END);
+
+        this.responseButtonsPanel = new JPanel(new GridLayout(1,0,0,5));
+        this.responseButtonsPanel.setBackground(AppThemeColor.FRAME);
+        this.bottomPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.FRAME);
+        this.bottomPanel.add(this.getContentPanel(),BorderLayout.CENTER);
+        this.bottomPanel.add(this.componentsFactory.wrapToSlide(this.responseButtonsPanel,AppThemeColor.FRAME),BorderLayout.LINE_END);
         this.add(bottomPanel,BorderLayout.CENTER);
+        this.updateHotKeyPool();
     }
 
     private JPanel getHeader(){
         JPanel root = new JPanel(new BorderLayout());
         root.setBackground(AppThemeColor.MSG_HEADER);
 
+        JPanel nickNamePanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.MSG_HEADER);
         JLabel nicknameLabel = this.componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,15f,this.data.getWhisperNickname());
         nicknameLabel.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
+        nickNamePanel.add(this.getExpandButton(),BorderLayout.LINE_START);
+        nickNamePanel.add(nicknameLabel,BorderLayout.CENTER);
+        root.add(nickNamePanel,BorderLayout.CENTER);
 
-        root.add(nicknameLabel,BorderLayout.CENTER);
-
-        JPanel interactionPanel = new JPanel(new GridLayout(1,0,4,0));
-        interactionPanel.setPreferredSize(new Dimension(200,26));
+        JPanel interactionPanel = new JPanel(new GridLayout(1,0,6,0));
         interactionPanel.setBackground(AppThemeColor.MSG_HEADER);
         JButton visiteHideout = componentsFactory.getIconButton("app/visiteHideout.png", 17, AppThemeColor.MSG_HEADER, TooltipConstants.INVITE);
         visiteHideout.addActionListener(e -> this.controller.visitHideout());
         JButton tradeButton = componentsFactory.getIconButton("app/trade.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
-        tradeButton.addActionListener(e -> this.controller.performTrade());
+        tradeButton.addActionListener(e -> this.controller.performOfferTrade());
         JButton leaveButton = componentsFactory.getIconButton("app/leave.png", 17, AppThemeColor.MSG_HEADER, TooltipConstants.KICK);
         leaveButton.addActionListener(e -> {
-            this.controller.performLeave();
-            if(this.config.get().isDismissAfterKick()){
+            this.controller.performLeave(this.config.get().getPlayerNickname());
+            if(this.config.get().isDismissAfterLeave()){
                 this.controller.performHide();
             }
         });
-        JButton backToHo = componentsFactory.getIconButton("app/backToHideout.png", 17, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
-        backToHo.addActionListener(e -> controller.backToHideout());
+//        JButton backToHo = componentsFactory.getIconButton("app/backToHideout.png", 17, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
+//        backToHo.addActionListener(e -> controller.backToHideout());
         JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
         openChatButton.addActionListener(e -> controller.performOpenChat());
         JButton hideButton = componentsFactory.getIconButton("app/close.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.HIDE_PANEL);
@@ -66,16 +74,40 @@ public abstract class OutgoingNotificationPanel<T extends TradeNotificationDescr
         interactionPanel.add(visiteHideout);
         interactionPanel.add(tradeButton);
         interactionPanel.add(leaveButton);
-        interactionPanel.add(backToHo);
+//        interactionPanel.add(backToHo);
         interactionPanel.add(openChatButton);
         interactionPanel.add(hideButton);
+        this.interactButtonMap.put(HotKeyType.N_VISITE_HIDEOUT,visiteHideout);
+        this.interactButtonMap.put(HotKeyType.N_TRADE_PLAYER,tradeButton);
+        this.interactButtonMap.put(HotKeyType.N_LEAVE,leaveButton);
+//        this.interactButtonMap.put(HotKeyType.N_BACK_TO_HIDEOUT,backToHo);
+        this.interactButtonMap.put(HotKeyType.N_OPEN_CHAT,openChatButton);
+        this.interactButtonMap.put(HotKeyType.N_CLOSE_NOTIFICATION,hideButton);
 
         root.add(interactionPanel,BorderLayout.LINE_END);
         return root;
     }
-    private JPanel getResponseButtonsPanel(){
-        JPanel root = new JPanel(new GridLayout(1,0,0,5));
-        root.setBackground(AppThemeColor.FRAME);
+
+    @Override
+    protected void updateHotKeyPool() {
+        this.hotKeysPool.clear();
+        this.interactButtonMap.forEach((type, button) -> {
+            HotKeyPair hotKeyPair = this.hotKeysConfig.get()
+                    .getOutNHotKeysList()
+                    .stream()
+                    .filter(it -> it.getType().equals(type))
+                    .findAny().orElse(null);
+            this.hotKeysPool.put(hotKeyPair.getDescriptor(),button);
+        });
+        this.initResponseButtonPanel();
+        Window windowAncestor = SwingUtilities.getWindowAncestor(OutgoingNotificationPanel.this);
+        if(windowAncestor != null) {
+            windowAncestor.pack();
+        }
+    }
+
+    private void initResponseButtonPanel(){
+        this.responseButtonsPanel.removeAll();
         List<ResponseButtonDescriptor> buttonsConfig = this.config.get().getOutButtons();
         Collections.sort(buttonsConfig);
         buttonsConfig.forEach((buttonConfig)->{
@@ -97,15 +129,21 @@ public abstract class OutgoingNotificationPanel<T extends TradeNotificationDescr
                     ));
                 }
             });
+            button.addActionListener(action -> {
+                button.setBorder( BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER, 1),
+                        BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON, 3)
+                ));
+            });
             button.addActionListener(e -> {
                 this.controller.performResponse(buttonConfig.getResponseText());
                 if(buttonConfig.isClose()){
                     this.controller.performHide();
                 }
             });
-            root.add(button);
+            this.responseButtonsPanel.add(button);
+            this.hotKeysPool.put(buttonConfig.getHotKeyDescriptor(),button);
         });
-        return root;
     }
     protected JPanel getFromPanel(){
         JPanel forPanel = new JPanel(new BorderLayout());
@@ -144,13 +182,28 @@ public abstract class OutgoingNotificationPanel<T extends TradeNotificationDescr
     }
     @Override
     public void subscribe() {
-
+        super.subscribe();
     }
 
     protected abstract JPanel getContentPanel();
 
     @Override
     public void onViewDestroy() {
-
+        super.onViewDestroy();
+    }
+    private JButton getExpandButton(){
+        String iconPath = "app/expand-mp.png";
+        JButton expandButton = componentsFactory.getIconButton(iconPath, 18f, AppThemeColor.MSG_HEADER,"");
+        expandButton.addActionListener(action -> {
+            if(this.bottomPanel.isVisible()){
+                this.bottomPanel.setVisible(false);
+                expandButton.setIcon(this.componentsFactory.getIcon("app/default-mp.png",18f));
+            }else {
+                this.bottomPanel.setVisible(true);
+                expandButton.setIcon(this.componentsFactory.getIcon("app/expand-mp.png",18f));
+            }
+            SwingUtilities.getWindowAncestor(OutgoingNotificationPanel.this).pack();
+        });
+        return expandButton;
     }
 }

@@ -25,28 +25,21 @@ public class NotificationConfigurationService extends BaseConfigurationService<N
         defaultButtons.add(new ResponseButtonDescriptor(1,true,"thx","thanks",new HotKeyDescriptor()));
         defaultButtons.add(new ResponseButtonDescriptor(2,false,"no thx", "no thanks",new HotKeyDescriptor()));
         defaultButtons.add(new ResponseButtonDescriptor(3,false,"sold", "sold",new HotKeyDescriptor()));
-
         List<ResponseButtonDescriptor> defaultOutButtons = new ArrayList<>();
         defaultOutButtons.add(new ResponseButtonDescriptor(0,false,"thanks","thanks", new HotKeyDescriptor()));
-
-        notificationSettingsDescriptor.setButtons(defaultButtons);
-        notificationSettingsDescriptor.setLimitCount(3);
-        notificationSettingsDescriptor.setUnfoldCount(2);
-        notificationSettingsDescriptor.setDismissAfterKick(true);
-        notificationSettingsDescriptor.setShowLeague(false);
-        notificationSettingsDescriptor.setFlowDirections(FlowDirections.DOWNWARDS);
+        notificationSettingsDescriptor.setButtons(defaultOutButtons);
         return notificationSettingsDescriptor;
     }
 
     @Override
     public void toDefault() {
-        this.selectedProfile.setNotificationSettingsDescriptor(this.getDefault());
+        this.selectedProfile.setNotificationDescriptor(this.getDefault());
     }
 
     @Override
     public void validate() {
-        if(this.selectedProfile.getNotificationSettingsDescriptor() == null) {
-            this.selectedProfile.setNotificationSettingsDescriptor(this.getDefault());
+        if(this.selectedProfile.getNotificationDescriptor() == null) {
+            this.selectedProfile.setNotificationDescriptor(this.getDefault());
         }
         this.get().getButtons().forEach(it -> {
             if(it.getHotKeyDescriptor() == null) {
@@ -60,11 +53,11 @@ public class NotificationConfigurationService extends BaseConfigurationService<N
 
     @Override
     public NotificationSettingsDescriptor get() {
-        return this.selectedProfile.getNotificationSettingsDescriptor();
+        return this.selectedProfile.getNotificationDescriptor();
     }
 
     @Override
     public void set(NotificationSettingsDescriptor descriptor) {
-        this.selectedProfile.setNotificationSettingsDescriptor(descriptor);
+        this.selectedProfile.setNotificationDescriptor(descriptor);
     }
 }

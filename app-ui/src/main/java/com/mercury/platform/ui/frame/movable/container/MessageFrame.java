@@ -250,16 +250,16 @@ public class MessageFrame extends AbstractMovableComponentFrame implements Messa
         labelPanel.setBackground(AppThemeColor.ADR_BG);
         JLabel headerLabel = componentsFactory.getTextLabel(
                 FontStyle.BOLD,
-                this.notificationConfig.get().isNotificationEnable()?AppThemeColor.TEXT_MESSAGE:AppThemeColor.TEXT_DISABLE,
+                this.notificationConfig.get().isIncNotificationEnable()?AppThemeColor.TEXT_MESSAGE:AppThemeColor.TEXT_DISABLE,
                 TextAlignment.CENTER,
                 18f,
                 "Notification panel");
         labelPanel.add(headerLabel,BorderLayout.CENTER);
-        JButton enableButton = this.componentsFactory.getBorderedButton(this.notificationConfig.get().isNotificationEnable() ? "Switch-off" : "Switch-on");
+        JButton enableButton = this.componentsFactory.getBorderedButton(this.notificationConfig.get().isIncNotificationEnable() ? "Switch-off" : "Switch-on");
         enableButton.addActionListener(action -> {
-            boolean notificationEnable = this.notificationConfig.get().isNotificationEnable();
-            this.notificationConfig.get().setNotificationEnable(!notificationEnable);
-            if(this.notificationConfig.get().isNotificationEnable()){
+            boolean notificationEnable = this.notificationConfig.get().isIncNotificationEnable();
+            this.notificationConfig.get().setIncNotificationEnable(!notificationEnable);
+            if(this.notificationConfig.get().isIncNotificationEnable()){
                 headerLabel.setForeground(AppThemeColor.TEXT_MESSAGE);
             }else {
                 headerLabel.setForeground(AppThemeColor.TEXT_DISABLE);

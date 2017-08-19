@@ -36,11 +36,11 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
         super();
         FrameDescriptor frameDescriptor = this.framesConfig.get(this.getClass().getSimpleName());
         this.setPreferredSize(frameDescriptor.getFrameSize());
-        this.settingsFrame = new ChatFilterSettingsFrame(strings -> {
-            if(chatEnable){
-                performNewStrings(strings);
-            }
-        });
+//        this.settingsFrame = new ChatFilterSettingsFrame(strings -> {
+//            if(chatEnable){
+////                performNewStrings(strings);
+//            }
+//        });
     }
 
     @Override
@@ -199,10 +199,10 @@ public class ChatFilterFrame extends AbstractTitledComponentFrame {
                 17,
                 AppThemeColor.TRANSPARENT,
                 "Chat Scanner settings");
-        edit.addActionListener(
-                action -> this.settingsFrame.showAuxiliaryFrame(
-                        new Point(this.getLocation().x,this.getLocation().y),
-                        this.getPreferredSize().height));
+//        edit.addActionListener(
+//                action -> this.settingsFrame.showAuxiliaryFrame(
+//                        new Point(this.getLocation().x,this.getLocation().y),
+//                        this.getPreferredSize().height));
         JButton clear = componentsFactory.getIconButton(
                 "app/clear-history.png",
                 18,

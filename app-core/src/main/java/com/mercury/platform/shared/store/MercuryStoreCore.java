@@ -47,6 +47,8 @@ public class MercuryStoreCore {
     public static final PublishSubject<Boolean> toDefaultSubject = PublishSubject.create();
     public static final PublishSubject<ProfileDescriptor> changeProfileSubject = PublishSubject.create();
     public static final PublishSubject<HotKeyDescriptor> hotKeySubject = PublishSubject.create();
+    public static final PublishSubject<HotKeyDescriptor> hotKeyReleaseSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> blockHotkeySubject = PublishSubject.create();
     public static final PublishSubject<MercuryError> errorHandlerSubject = PublishSubject.create();
     public static final PublishSubject<AdrVisibleState> adrVisibleSubject = PublishSubject.create();
 

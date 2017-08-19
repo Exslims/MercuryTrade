@@ -15,22 +15,17 @@ public class NotificationOutgoingController implements OutgoingPanelController{
 
     @Override
     public void visitHideout() {
-
+        MercuryStoreCore.chatCommandSubject.onNext("/hideout " + notificationDescriptor.getWhisperNickname());
     }
 
     @Override
-    public void backToHideout() {
-
+    public void performLeave(String nickName) {
+        MercuryStoreCore.chatCommandSubject.onNext("/kick " + nickName);
     }
 
     @Override
-    public void performTrade() {
-
-    }
-
-    @Override
-    public void performLeave() {
-
+    public void performOfferTrade() {
+        MercuryStoreCore.chatCommandSubject.onNext("/tradewith " + notificationDescriptor.getWhisperNickname());
     }
 
     @Override
@@ -40,12 +35,12 @@ public class NotificationOutgoingController implements OutgoingPanelController{
 
     @Override
     public void performOpenChat() {
-
+        MercuryStoreCore.openChatSubject.onNext(notificationDescriptor.getWhisperNickname());
     }
 
     @Override
     public void performResponse(String response) {
-
+        MercuryStoreCore.chatCommandSubject.onNext("@" + notificationDescriptor.getWhisperNickname() + " " + response);
     }
 
     private void closeMessagePanel(){

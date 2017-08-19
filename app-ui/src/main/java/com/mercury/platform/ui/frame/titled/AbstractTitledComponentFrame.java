@@ -42,16 +42,10 @@ public abstract class AbstractTitledComponentFrame extends AbstractComponentFram
             this.headerPanel.add(appIcon,BorderLayout.LINE_START);
             this.headerPanel.add(this.frameTitleLabel, BorderLayout.CENTER);
 
-            this.miscPanel.setBackground(AppThemeColor.TRANSPARENT);
-            this.hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.FRAME_ALPHA, "");
-            this.hideButton.setBorder(BorderFactory.createEmptyBorder(0,0,0,2));
-            this.hideButton.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if(SwingUtilities.isLeftMouseButton(e)) {
-                        hideComponent();
-                    }
-                }
+            this.miscPanel.setBackground(AppThemeColor.HEADER);
+            this.hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.HEADER, "");
+            this.hideButton.addActionListener(action -> {
+                this.hideComponent();
             });
             this.miscPanel.add(hideButton);
             this.headerPanel.add(miscPanel, BorderLayout.LINE_END);

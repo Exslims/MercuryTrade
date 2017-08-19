@@ -25,12 +25,12 @@ public class TabInfoPanel extends JPanel implements ViewInit {
     public void onViewInit() {
         this.setLayout(new BorderLayout());
         this.setBackground(AppThemeColor.FRAME);
-        JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_ALPHA, "Dismiss");
+        JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME, "Dismiss");
         hideButton.addActionListener((action)->{
             stashTabDescriptor.setUndefined(true);
             MercuryStoreUI.dismissTabInfoPanelSubject.onNext(this);
         });
-        JPanel tabInfoPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel tabInfoPanel = componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel tabLabel = componentsFactory.getTextLabel(stashTabDescriptor.getTitle());
         tabLabel.setBorder(null);
         tabLabel.setFont(componentsFactory.getFont(FontStyle.BOLD,15f));

@@ -561,12 +561,12 @@ public class InMessagePanel extends JPanel implements AsSubscriber, ViewInit,Has
 
     @Override
     public void initHotKeyListeners() {
-        KeyValueConfigurationService<String, HotKeyDescriptor> config = Configuration.get().hotKeysConfiguration();
-        MercuryStoreCore.hotKeySubject.subscribe(descriptor -> {
-            HotKeyDescriptor hotKeyDescriptor = config.get(HotKeyType.CLOSE_NOTIFICATION.name());
-            if(descriptor.equals(hotKeyDescriptor)) {
-                this.controller.performHide();
-            }
-        });
+//        KeyValueConfigurationService<String, HotKeyDescriptor> config = Configuration.get().hotKeysConfiguration();
+//        MercuryStoreCore.hotKeySubject.subscribe(descriptor -> {
+//            HotKeyDescriptor hotKeyDescriptor = config.get(HotKeyType.N_CLOSE_NOTIFICATION.name());
+//            if(descriptor.equals(hotKeyDescriptor)) {
+//                this.controller.performHide();
+//            }
+//        });
     }
 }

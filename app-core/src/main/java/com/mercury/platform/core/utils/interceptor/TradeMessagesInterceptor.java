@@ -28,7 +28,7 @@ public class TradeMessagesInterceptor extends MessageInterceptor {
 
     @Override
     protected void process(String message) {
-        if(this.config.get().isNotificationEnable()) {
+        if(this.config.get().isIncNotificationEnable()) {
             LocalizationMatcher localizationMatcher = this.clients.stream()
                     .filter(matcher -> matcher.isSuitableFor(message))
                     .findAny().orElse(null);

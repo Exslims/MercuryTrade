@@ -41,19 +41,19 @@ public class ItemInfoPanel extends JPanel implements ViewInit {
         this.setBackground(AppThemeColor.FRAME);
 
         JLabel nicknameLabel = componentsFactory.getTextLabel(message.getWhisperNickname());
-        JPanel nicknamePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel nicknamePanel = componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER));
         nicknameLabel.setForeground(AppThemeColor.TEXT_NICKNAME);
         nicknamePanel.add(nicknameLabel);
         nicknamePanel.setBorder(BorderFactory.createEmptyBorder(-6,0,-6,0));
         this.add(nicknamePanel,BorderLayout.CENTER);
 
-        JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_ALPHA, "Close");
+        JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME, "Close");
         hideButton.addActionListener((action)-> {
             controller.hidePanel();
         });
         this.add(hideButton,BorderLayout.LINE_END);
 
-        JPanel tabInfoPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel tabInfoPanel = componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel tabLabel = componentsFactory.getTextLabel("Tab: " + message.getTabName());
         tabInfoPanel.add(tabLabel);
         tabInfoPanel.setBorder(BorderFactory.createEmptyBorder(-8,0,-6,0));

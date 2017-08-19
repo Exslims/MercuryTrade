@@ -95,20 +95,20 @@ public abstract class AbstractMovableComponentFrame extends AbstractScalableComp
         panel.addMouseMotionListener(new DraggedFrameMotionListener());
         panel.addMouseListener(new DraggedFrameMouseListener());
 
-        if(enableMouseOverBorder) {
+        if(this.enableMouseOverBorder) {
             panel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
+                    panel.setCursor(new Cursor(Cursor.MOVE_CURSOR));
                     getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.TEXT_MESSAGE, 1));
-                    AbstractMovableComponentFrame.this.repaint();
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
+                    panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                     if (!AbstractMovableComponentFrame.this.getBounds().contains(e.getPoint())) {
                         getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
                     }
-                    AbstractMovableComponentFrame.this.repaint();
                 }
             });
         }

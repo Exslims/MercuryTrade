@@ -7,7 +7,6 @@ import com.mercury.platform.shared.config.configration.impl.*;
 import com.mercury.platform.shared.config.configration.impl.adr.AdrConfigurationServiceMock;
 import com.mercury.platform.shared.config.descriptor.*;
 import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
-import com.mercury.platform.shared.config.descriptor.adr.AdrProfileDescriptor;
 import com.mercury.platform.shared.config.json.JSONHelper;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.commons.io.FileUtils;
@@ -34,7 +33,7 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
     private PlainConfigurationService<ScannerDescriptor> scannerConfigurationService;
     private KeyValueConfigurationService<String,SoundDescriptor> soundConfigurationService;
     private KeyValueConfigurationService<String,Float> scaleConfigurationService;
-    private KeyValueConfigurationService<String,HotKeyDescriptor> hotKeyConfigurationService;
+    private PlainConfigurationService<HotKeysSettingsDescriptor> hotKeyConfigurationService;
     private ListConfigurationService<StashTabDescriptor> stashTabConfigurationService;
     private IconBundleConfigurationService iconBundleConfigurationService;
     private AdrConfigurationService adrConfigurationService;
@@ -92,7 +91,7 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
     }
 
     @Override
-    public KeyValueConfigurationService<String, HotKeyDescriptor> hotKeysConfiguration() {
+    public PlainConfigurationService<HotKeysSettingsDescriptor> hotKeysConfiguration() {
         return this.hotKeyConfigurationService;
     }
 
@@ -143,7 +142,7 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
             this.notificationConfigurationService = new NotificationConfigurationService(selectedProfile);
             this.scaleConfigurationService = new ScaleConfigurationService(selectedProfile);
             this.stashTabConfigurationService = new StashTabConfigurationService(selectedProfile);
-            this.hotKeyConfigurationService = new HotKeysConfigurationService(selectedProfile);
+            this.hotKeyConfigurationService = new HotKeyConfigurationService(selectedProfile);
             this.adrConfigurationService = new AdrConfigurationServiceMock(selectedProfile);
             this.iconBundleConfigurationService = new IconBundleConfigurationServiceImpl(selectedProfile);
 

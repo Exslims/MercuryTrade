@@ -13,7 +13,7 @@ public class MercuryComboBoxUI extends BasicComboBoxUI {
     }
 
     @Override protected JButton createArrowButton() {
-        return new ComponentsFactory().getIconButton("app/expand-combobox.png",16, AppThemeColor.FRAME_ALPHA,"Expand.");
+        return new ComponentsFactory().getIconButton("app/expand-combobox.png",16, AppThemeColor.HEADER,"Expand.");
     }
 
 }

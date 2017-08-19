@@ -9,6 +9,7 @@ import com.mercury.platform.ui.components.panel.taskbar.TaskBarController;
 import com.mercury.platform.ui.components.panel.taskbar.TaskBarPanel;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
+import lombok.Getter;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.ease.Spline;
 
@@ -19,6 +20,7 @@ import java.util.Map;
 
 public class TaskBarFrame extends AbstractMovableComponentFrame {
     private Timeline collapseAnimation;
+    @Getter
     private int MIN_WIDTH;
     private int MAX_WIDTH;
     private MouseListener collapseListener;
@@ -83,13 +85,12 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
 
     @Override
     protected JPanel getPanelForPINSettings() {
-        disableCollapseAnimation();
-        JPanel panel = componentsFactory.getTransparentPanel();
-        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
-        JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,20f,"Task Bar"));
-        panel.add(labelPanel);
-        panel.setBackground(AppThemeColor.ADR_BG);
+        this.disableCollapseAnimation();
+        JPanel panel = this.componentsFactory.getJPanel(new BorderLayout(),AppThemeColor.FRAME);
+        JLabel textLabel = this.componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER, 22f, "Task Bar");
+        textLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        panel.add(textLabel);
+        panel.setPreferredSize(this.getPreferredSize());
         return panel;
     }
 
@@ -119,7 +120,7 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
         this.setWidth(MIN_WIDTH);
 
         this.setMaximumSize(taskBarPanel.getPreferredSize());
-        collapseListener = new MouseAdapter() {
+        this.collapseListener = new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 TaskBarFrame.this.repaint();

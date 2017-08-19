@@ -1,16 +1,23 @@
 package com.mercury.platform.ui.frame.movable.container;
 
+import com.mercury.platform.core.ProdStarter;
+import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
+import com.mercury.platform.shared.entity.message.FlowDirections;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
+import com.mercury.platform.ui.components.fields.font.FontStyle;
+import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.notification.NotificationPanel;
+import com.mercury.platform.ui.components.panel.notification.ScannerNotificationPanel;
 import com.mercury.platform.ui.components.panel.notification.factory.NotificationPanelFactory;
 import com.mercury.platform.ui.frame.movable.AbstractMovableComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -69,6 +76,20 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                 }
                 this.pack();
                 this.repaint();
+                if(this.config.get().getFlowDirections().equals(FlowDirections.UPWARDS)
+                        && !(notificationPanel instanceof ScannerNotificationPanel)){
+                    this.setLocation(new Point(this.getLocation().x,this.getLocation().y - notificationPanel.getSize().height));
+                }
+                if(notificationPanel instanceof ScannerNotificationPanel){
+                    Timer packTimer = new Timer(5, action -> {
+                        this.pack();
+                        if(this.config.get().getFlowDirections().equals(FlowDirections.UPWARDS)){
+                            this.setLocation(new Point(this.getLocation().x,this.getLocation().y - notificationPanel.getSize().height));
+                        }
+                    });
+                    packTimer.setRepeats(false);
+                    packTimer.start();
+                }
             });
         });
         MercuryStoreCore.removeNotificationSubject.subscribe(notification -> {
@@ -88,13 +109,29 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                 }
                 this.pack();
                 this.repaint();
+                if(this.config.get().getFlowDirections().equals(FlowDirections.UPWARDS)
+                        && this.notificationPanels.size() == 0){
+                    this.setLocation(this.framesConfig.get("NotificationFrame").getFrameLocation());
+                }
+            });
+        });
+        MercuryStoreCore.hotKeySubject.subscribe(hotkeyDescriptor -> {
+            SwingUtilities.invokeLater(() -> {
+                if(this.notificationPanels.size() > 0 && ProdStarter.APP_STATUS.equals(FrameVisibleState.SHOW)){
+                    this.notificationPanels.get(0).onHotKeyPressed(hotkeyDescriptor);
+                }
             });
         });
     }
 
     @Override
     protected JPanel getPanelForPINSettings() {
-        return new JPanel();
+        JPanel panel = this.componentsFactory.getJPanel(new BorderLayout(),AppThemeColor.FRAME);
+        JLabel textLabel = this.componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER, 22f, "Notification panel");
+        textLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        panel.add(textLabel);
+        panel.setPreferredSize(new Dimension((int)(400 * componentsFactory.getScale()), (int)(130*componentsFactory.getScale())));
+        return panel;
     }
 
     @Override

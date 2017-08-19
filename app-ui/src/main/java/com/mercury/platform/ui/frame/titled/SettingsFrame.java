@@ -96,8 +96,8 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         });
         saveButton.setPreferredSize(new Dimension(110, 26));
         cancelButton.setPreferredSize(new Dimension(110, 26));
-        root.add(this.componentsFactory.wrapToSlide(saveButton,AppThemeColor.HEADER,2,2,2,2));
         root.add(this.componentsFactory.wrapToSlide(cancelButton,AppThemeColor.HEADER,2,2,2,2));
+        root.add(this.componentsFactory.wrapToSlide(saveButton,AppThemeColor.HEADER,2,2,2,2));
         return root;
     }
 
