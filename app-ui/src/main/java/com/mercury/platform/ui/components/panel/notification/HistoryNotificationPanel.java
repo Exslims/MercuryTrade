@@ -1,13 +1,12 @@
 package com.mercury.platform.ui.components.panel.notification;
 
-import com.mercury.platform.shared.config.Configuration;
-import com.mercury.platform.shared.config.descriptor.HotKeyType;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.notification.controller.HistoryController;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +17,7 @@ public class HistoryNotificationPanel extends NotificationPanel<NotificationDesc
     public void onViewInit() {
         super.onViewInit();
         this.add(this.getHeader(),BorderLayout.PAGE_START);
-        JLabel sourceLabel = this.componentsFactory.getTextLabel(this.data.getSourceString(),FontStyle.REGULAR,17f);
+        JLabel sourceLabel = this.componentsFactory.getTextLabel(StringUtils.substringAfter(this.data.getSourceString(),":"),FontStyle.REGULAR,17f);
         sourceLabel.setBackground(AppThemeColor.FRAME);
         sourceLabel.setHorizontalAlignment(SwingConstants.LEFT);
         sourceLabel.setVerticalAlignment(SwingConstants.TOP);

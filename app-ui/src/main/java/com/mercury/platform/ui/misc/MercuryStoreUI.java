@@ -9,7 +9,6 @@ import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
 import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
 import com.mercury.platform.ui.components.panel.grid.ItemInfoPanel;
 import com.mercury.platform.ui.components.panel.grid.TabInfoPanel;
-import com.mercury.platform.ui.components.panel.notification.InMessagePanel;
 import com.mercury.platform.ui.dialog.DialogCallback;
 import com.mercury.platform.ui.manager.routing.SettingsPage;
 import rx.subjects.PublishSubject;
@@ -23,7 +22,6 @@ public class MercuryStoreUI {
     public static final PublishSubject<TabInfoPanel> dismissTabInfoPanelSubject = PublishSubject.create();
     public static final PublishSubject<Boolean> expandMessageSubject = PublishSubject.create();
     public static final PublishSubject<ItemInfoPanel> itemCellStateSubject = PublishSubject.create();
-    public static final PublishSubject<InMessagePanel> reloadMessageSubject = PublishSubject.create();
     //Scale
     public static final PublishSubject<Map<String,Float>> saveScaleSubject = PublishSubject.create();
     public static final PublishSubject<Float> notificationScaleSubject = PublishSubject.create();

@@ -87,7 +87,7 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
 
         JButton chatScannerButton = componentsFactory.getBorderedButton("Click");
         chatScannerButton.addActionListener(action -> {
-            MercuryStoreCore.newNotificationSubject.onNext(this.testEngine.getRandomScannerMessage());
+            MercuryStoreCore.newScannerMessageSubject.onNext(this.testEngine.getRandomScannerMessage());
         });
         testPanel.add(chatScannerButton,buttonColumn);
         buttonColumn.gridy++;

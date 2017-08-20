@@ -40,7 +40,6 @@ public abstract class AbstractScalableComponentFrame extends AbstractComponentFr
         this.initDefaultView();
     }
     public void setState(ScaleState state){
-        System.out.println(this.mainContainer.getPreferredSize());
         switch (state){
             case DEFAULT:{
                 this.scaleState = ScaleState.DEFAULT;

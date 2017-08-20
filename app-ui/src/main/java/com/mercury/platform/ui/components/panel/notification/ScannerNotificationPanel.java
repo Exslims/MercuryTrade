@@ -5,6 +5,7 @@ import com.mercury.platform.shared.config.configration.KeyValueConfigurationServ
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.*;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
+import com.mercury.platform.shared.entity.message.PlainMessageDescriptor;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.notification.controller.ScannerPanelController;
@@ -15,7 +16,7 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class ScannerNotificationPanel extends NotificationPanel<NotificationDescriptor,ScannerPanelController> {
+public class ScannerNotificationPanel extends NotificationPanel<PlainMessageDescriptor,ScannerPanelController> {
     private PlainConfigurationService<ScannerDescriptor> config;
     private PlainConfigurationService<NotificationSettingsDescriptor> nConfig;
     private PlainConfigurationService<HotKeysSettingsDescriptor> hotKeysConfig;
@@ -27,7 +28,7 @@ public class ScannerNotificationPanel extends NotificationPanel<NotificationDesc
         this.nConfig = Configuration.get().notificationConfiguration();
         this.hotKeysConfig = Configuration.get().hotKeysConfiguration();
         this.add(this.getHeader(),BorderLayout.PAGE_START);
-        JLabel sourceLabel = this.componentsFactory.getTextLabel(this.data.getSourceString(),FontStyle.REGULAR,17f);
+        JLabel sourceLabel = this.componentsFactory.getTextLabel(this.data.getMessage(),FontStyle.REGULAR,17f);
         sourceLabel.setBackground(AppThemeColor.FRAME);
         sourceLabel.setHorizontalAlignment(SwingConstants.LEFT);
         sourceLabel.setVerticalAlignment(SwingConstants.TOP);
@@ -40,7 +41,7 @@ public class ScannerNotificationPanel extends NotificationPanel<NotificationDesc
         root.setBackground(AppThemeColor.MSG_HEADER);
 
         JPanel nickNamePanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.MSG_HEADER);
-        JLabel nicknameLabel = this.componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,15f,this.data.getWhisperNickname());
+        JLabel nicknameLabel = this.componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,15f,this.data.getNickName());
         nicknameLabel.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
         nickNamePanel.add(this.getExpandButton(),BorderLayout.LINE_START);
         nickNamePanel.add(nicknameLabel,BorderLayout.CENTER);

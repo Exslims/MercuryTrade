@@ -1,6 +1,5 @@
 package com.mercury.platform.ui.components.panel.notification.controller.stub;
 
-import com.mercury.platform.ui.components.panel.notification.InMessagePanel;
 import com.mercury.platform.ui.components.panel.notification.controller.IncomingPanelController;
 
 public class IncStubController implements IncomingPanelController {
@@ -36,11 +35,6 @@ public class IncStubController implements IncomingPanelController {
 
     @Override
     public void showITH() {
-
-    }
-
-    @Override
-    public void reloadMessage(InMessagePanel panel) {
 
     }
 }

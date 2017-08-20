@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.frame.movable.container;
+package com.mercury.platform.ui.frame.movable;
 
 import com.mercury.platform.core.ProdStarter;
 import com.mercury.platform.shared.FrameVisibleState;
@@ -11,15 +11,12 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
-import com.mercury.platform.ui.components.panel.notification.InMessagePanel;
 import com.mercury.platform.ui.components.panel.notification.NotificationPanel;
 import com.mercury.platform.ui.components.panel.notification.ScannerNotificationPanel;
-import com.mercury.platform.ui.components.panel.notification.controller.IncomingPanelController;
 import com.mercury.platform.ui.components.panel.notification.controller.stub.IncStubController;
 import com.mercury.platform.ui.components.panel.notification.controller.stub.OutStubController;
 import com.mercury.platform.ui.components.panel.notification.controller.stub.ScannerStubController;
 import com.mercury.platform.ui.components.panel.notification.factory.NotificationPanelFactory;
-import com.mercury.platform.ui.frame.movable.AbstractMovableComponentFrame;
 import com.mercury.platform.ui.frame.titled.TestEngine;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
@@ -73,31 +70,29 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                         .setData(notification)
                         .setComponentsFactory(this.componentsFactory)
                         .build();
-                this.notificationPanels.add(notificationPanel);
-                this.container.add(notificationPanel);
-                if(this.notificationPanels.size() > this.config.get().getLimitCount()){
-                    if(!this.expanded) {
-                        notificationPanel.setPaintAlphaValue(1f);
-                        notificationPanel.setVisible(false);
-                    }
-                    this.expandPanel.setVisible(true);
-                }
-                this.pack();
-                this.repaint();
-                if(this.config.get().getFlowDirections().equals(FlowDirections.UPWARDS)
+                this.addNotification(notificationPanel);
+                if(this.notificationPanels.size() > 1
+                        && this.config.get().getFlowDirections().equals(FlowDirections.UPWARDS)
                         && !(notificationPanel instanceof ScannerNotificationPanel)){
                     this.setLocation(new Point(this.getLocation().x,this.getLocation().y - notificationPanel.getSize().height));
                 }
-                if(notificationPanel instanceof ScannerNotificationPanel){
-                    Timer packTimer = new Timer(5, action -> {
-                        this.pack();
-                        if(this.config.get().getFlowDirections().equals(FlowDirections.UPWARDS)){
-                            this.setLocation(new Point(this.getLocation().x,this.getLocation().y - notificationPanel.getSize().height));
-                        }
-                    });
-                    packTimer.setRepeats(false);
-                    packTimer.start();
-                }
+            });
+        });
+        MercuryStoreCore.newScannerMessageSubject.subscribe(message -> {
+            SwingUtilities.invokeLater(()-> {
+                NotificationPanel notificationPanel = this.providersFactory.getProviderFor(NotificationType.SCANNER_MESSAGE)
+                        .setData(message)
+                        .setComponentsFactory(this.componentsFactory)
+                        .build();
+                this.addNotification(notificationPanel);
+                Timer packTimer = new Timer(5, action -> {
+                    this.pack();
+                    if(this.notificationPanels.size() > 1 && this.config.get().getFlowDirections().equals(FlowDirections.UPWARDS)){
+                        this.setLocation(new Point(this.getLocation().x,this.getLocation().y - notificationPanel.getSize().height));
+                    }
+                });
+                packTimer.setRepeats(false);
+                packTimer.start();
             });
         });
         MercuryStoreCore.removeNotificationSubject.subscribe(notification -> {
@@ -105,22 +100,15 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                 NotificationPanel notificationPanel = this.notificationPanels.stream()
                         .filter(it -> it.getData().equals(notification))
                         .findAny().orElse(null);
-                notificationPanel.onViewDestroy();
-                int limitCount = this.config.get().getLimitCount();
-                if(!this.expanded && this.notificationPanels.size() > limitCount){
-                    this.notificationPanels.get(limitCount).setVisible(true);
-                }
-                this.container.remove(notificationPanel);
-                this.notificationPanels.remove(notificationPanel);
-                if(this.notificationPanels.size() - 1 < this.config.get().getLimitCount()){
-                    this.expandPanel.setVisible(false);
-                }
-                this.pack();
-                this.repaint();
-                if(this.config.get().getFlowDirections().equals(FlowDirections.UPWARDS)
-                        && this.notificationPanels.size() == 0){
-                    this.setLocation(this.framesConfig.get("NotificationFrame").getFrameLocation());
-                }
+                this.removeNotification(notificationPanel);
+            });
+        });
+        MercuryStoreCore.removeScannerNotificationSubject.subscribe(message -> {
+            SwingUtilities.invokeLater(() -> {
+                NotificationPanel notificationPanel = this.notificationPanels.stream()
+                        .filter(it -> it.getData().equals(message))
+                        .findAny().orElse(null);
+                this.removeNotification(notificationPanel);
             });
         });
         MercuryStoreCore.hotKeySubject.subscribe(hotkeyDescriptor -> {
@@ -130,6 +118,48 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                 }
             });
         });
+        MercuryStoreUI.settingsPostSubject.subscribe(state -> {
+            if(this.config.get().getFlowDirections().equals(FlowDirections.DOWNWARDS)){
+                this.setLocation(this.framesConfig.get("NotificationFrame").getFrameLocation());
+            }
+        });
+    }
+
+    private void addNotification(NotificationPanel notificationPanel){
+        this.notificationPanels.add(notificationPanel);
+        this.container.add(notificationPanel);
+        if(this.notificationPanels.size() > this.config.get().getLimitCount()){
+            if(!this.expanded) {
+                notificationPanel.setPaintAlphaValue(1f);
+                notificationPanel.setVisible(false);
+            }
+            this.expandPanel.setVisible(true);
+        }
+        this.pack();
+        this.repaint();
+        if(this.notificationPanels.size() > 1
+                && this.config.get().getFlowDirections().equals(FlowDirections.UPWARDS)
+                && !(notificationPanel instanceof ScannerNotificationPanel)){
+            this.setLocation(new Point(this.getLocation().x,this.getLocation().y - notificationPanel.getSize().height));
+        }
+    }
+    private void removeNotification(NotificationPanel notificationPanel){
+        notificationPanel.onViewDestroy();
+        int limitCount = this.config.get().getLimitCount();
+        if(!this.expanded && this.notificationPanels.size() > limitCount){
+            this.notificationPanels.get(limitCount).setVisible(true);
+        }
+        this.container.remove(notificationPanel);
+        this.notificationPanels.remove(notificationPanel);
+        if(this.notificationPanels.size() - 1 < this.config.get().getLimitCount()){
+            this.expandPanel.setVisible(false);
+        }
+        this.pack();
+        this.repaint();
+        if(this.config.get().getFlowDirections().equals(FlowDirections.UPWARDS)
+                && this.notificationPanels.size() == 0){
+            this.setLocation(this.framesConfig.get("NotificationFrame").getFrameLocation());
+        }
     }
 
     @Override

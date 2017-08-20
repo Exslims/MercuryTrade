@@ -1,4 +1,4 @@
-package com.mercury.platform.ui.frame.titled.container;
+package com.mercury.platform.ui.frame.titled;
 
 import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.MessageParser;
@@ -7,15 +7,10 @@ import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
-import com.mercury.platform.ui.components.panel.notification.InMessagePanel;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.components.panel.notification.NotificationPanel;
-import com.mercury.platform.ui.components.panel.notification.controller.NotificationIncomingController;
-import com.mercury.platform.ui.components.panel.notification.MessagePanelStyle;
 import com.mercury.platform.ui.components.panel.notification.factory.NotificationPanelFactory;
-import com.mercury.platform.ui.frame.titled.AbstractTitledComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.MercuryStoreUI;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.swing.*;
@@ -57,7 +52,7 @@ public class HistoryFrame extends AbstractTitledComponentFrame{
         JScrollBar vBar = scrollPane.getVerticalScrollBar();
         vBar.setBackground(AppThemeColor.SLIDE_BG);
         vBar.setUI(new MercuryScrollBarUI());
-        vBar.setPreferredSize(new Dimension(14, Integer.MAX_VALUE));
+        vBar.setPreferredSize(new Dimension(16, Integer.MAX_VALUE));
         vBar.setUnitIncrement(3);
         vBar.setBorder(BorderFactory.createEmptyBorder(1,1,1,2));
         vBar.addAdjustmentListener(e -> repaint());
@@ -130,6 +125,7 @@ public class HistoryFrame extends AbstractTitledComponentFrame{
                         .setComponentsFactory(this.componentsFactory)
                         .build();
                 mainContainer.add(panel);
+                this.currentMessages.add(message);
                 this.trimContainer();
                 this.pack();
             }

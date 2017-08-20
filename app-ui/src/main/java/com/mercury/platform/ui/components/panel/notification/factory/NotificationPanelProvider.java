@@ -6,7 +6,7 @@ import com.mercury.platform.shared.entity.message.NotificationType;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.notification.NotificationPanel;
 
-public abstract class NotificationPanelProvider<T extends NotificationDescriptor,C> {
+public abstract class NotificationPanelProvider<T,C> {
     protected T data;
     protected C controller;
     protected ComponentsFactory componentsFactory;
@@ -36,7 +36,6 @@ public abstract class NotificationPanelProvider<T extends NotificationDescriptor
         panel.onViewInit();
         this.componentsFactory = null;
         this.controller = null;
-        this.data = null;
         return panel;
     }
     protected abstract NotificationPanel<T,C> getPanel();

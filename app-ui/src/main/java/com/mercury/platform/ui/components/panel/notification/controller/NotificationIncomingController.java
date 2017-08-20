@@ -3,7 +3,6 @@ package com.mercury.platform.ui.components.panel.notification.controller;
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
-import com.mercury.platform.ui.components.panel.notification.InMessagePanel;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.NonNull;
 import org.apache.logging.log4j.LogManager;
@@ -60,11 +59,6 @@ public class NotificationIncomingController implements IncomingPanelController {
                 MercuryStoreUI.showItemGridSubject.onNext((ItemTradeNotificationDescriptor) notificationDescriptor);
             }
         }
-    }
-
-    @Override
-    public void reloadMessage(InMessagePanel panel) {
-        MercuryStoreUI.reloadMessageSubject.onNext(panel);
     }
 
     private void copyItemNameToClipboard(@NonNull String itemName){

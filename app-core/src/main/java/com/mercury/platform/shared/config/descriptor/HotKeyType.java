@@ -1,10 +1,11 @@
 package com.mercury.platform.shared.config.descriptor;
 
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public enum HotKeyType {
+public enum HotKeyType implements Serializable{
     N_TRADE_PLAYER {
         @Override
         public String getIconPath() {

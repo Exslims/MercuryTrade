@@ -4,6 +4,7 @@ package com.mercury.platform.ui.frame.titled;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;
+import com.mercury.platform.shared.entity.message.PlainMessageDescriptor;
 import com.mercury.platform.ui.components.panel.chat.HtmlMessageBuilder;
 import org.apache.commons.lang3.StringUtils;
 
@@ -183,7 +184,7 @@ public class TestEngine {
         notificationDescriptor.setType(NotificationType.OUT_CURRENCY_MESSAGE);
         return notificationDescriptor;
     }
-    public NotificationDescriptor getRandomScannerMessage(){
+    public PlainMessageDescriptor getRandomScannerMessage(){
         NotificationDescriptor notificationDescriptor = parser.parse(String.format(poeTradeTemplate,
                 nickNames.get(random.nextInt(nickNames.size())),
                 items.get(random.nextInt(items.size())),
@@ -195,10 +196,10 @@ public class TestEngine {
                 random.nextInt(12) + 1,
                 offer.get(random.nextInt(offer.size()))
         ));
-        String source = StringUtils.substringAfter(notificationDescriptor.getSourceString(), ": ");
-        notificationDescriptor.setSourceString(messageBuilder.build(source));
-        notificationDescriptor.setType(NotificationType.SCANNER_MESSAGE);
-        return notificationDescriptor;
+        PlainMessageDescriptor descriptor = new PlainMessageDescriptor();
+        descriptor.setMessage(messageBuilder.build(StringUtils.substringAfter(notificationDescriptor.getSourceString(),notificationDescriptor.getWhisperNickname()+":")));
+        descriptor.setNickName(notificationDescriptor.getWhisperNickname());
+        return descriptor;
     }
 
 }

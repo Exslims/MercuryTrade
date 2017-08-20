@@ -23,7 +23,9 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
     private PlainConfigurationService<HotKeysSettingsDescriptor> hotKeyService;
     private PlainConfigurationService<ScannerDescriptor> scannerService;
     private NotificationSettingsDescriptor generalSnapshot;
-    private HotKeysSettingsDescriptor hotKeySnapshot;
+    private List<HotKeyPair> incHotKeySnapshot;
+    private List<HotKeyPair> outHotKeySnapshot;
+    private List<HotKeyPair> scannerHotKeySnapshot;
     private ScannerDescriptor scannerSnapshot;
 
     @Override
@@ -33,7 +35,9 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         this.hotKeyService = Configuration.get().hotKeysConfiguration();
         this.scannerService = Configuration.get().scannerConfiguration();
         this.generalSnapshot = CloneHelper.cloneObject(notificationService.get());
-        this.hotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get());
+        this.incHotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getIncNHotKeysList());
+        this.outHotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getOutNHotKeysList());
+        this.scannerHotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getScannerNHotKeysList());
         this.scannerSnapshot = CloneHelper.cloneObject(scannerService.get());
         JPanel inPanel = this.adrComponentsFactory.getCounterPanel(this.getIncomingPanel(), "Incoming notification:", AppThemeColor.ADR_BG,true);
         inPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
@@ -42,24 +46,30 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         JPanel scannerPanel = this.adrComponentsFactory.getCounterPanel(this.getChatScannerPanel(), "Chat scanner notification:", AppThemeColor.ADR_BG,true);
         scannerPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
         this.container.add(this.componentsFactory.wrapToSlide(this.getGeneralPanel()));
-        this.container.add(this.componentsFactory.wrapToSlide(inPanel));
-        this.container.add(this.componentsFactory.wrapToSlide(outPanel));
-        this.container.add(this.componentsFactory.wrapToSlide(scannerPanel));
+        this.container.add(this.componentsFactory.wrapToSlide(inPanel,2,4,2,4));
+        this.container.add(this.componentsFactory.wrapToSlide(outPanel,2,4,2,4));
+        this.container.add(this.componentsFactory.wrapToSlide(scannerPanel,2,4,2,4));
     }
 
     @Override
     public void onSave() {
         this.notificationService.set(CloneHelper.cloneObject(this.generalSnapshot));
-        this.hotKeyService.set(CloneHelper.cloneObject(this.hotKeySnapshot));
+        this.hotKeyService.get().setIncNHotKeysList(CloneHelper.cloneObject(this.incHotKeySnapshot));
+        this.hotKeyService.get().setOutNHotKeysList(CloneHelper.cloneObject(this.outHotKeySnapshot));
+        this.hotKeyService.get().setScannerNHotKeysList(CloneHelper.cloneObject(this.scannerHotKeySnapshot));
         this.scannerService.set(CloneHelper.cloneObject(this.scannerSnapshot));
+
+        //protect
+        this.scannerSnapshot = CloneHelper.cloneObject(scannerService.get());
+
         MercuryStoreCore.buttonsChangedSubject.onNext(true);
     }
 
     @Override
     public void restore() {
-        this.generalSnapshot = CloneHelper.cloneObject(notificationService.get());
-        this.hotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get());
-        this.scannerSnapshot = CloneHelper.cloneObject(scannerService.get());
+        this.incHotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getIncNHotKeysList());
+        this.outHotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getOutNHotKeysList());
+        this.scannerHotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getScannerNHotKeysList());
         this.removeAll();
         this.onViewInit();
     }
@@ -81,21 +91,21 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
                 }
             }
         });
+        JLabel limitLabel = this.componentsFactory.getTextLabel(String.valueOf(this.generalSnapshot.getLimitCount()), FontStyle.REGULAR, 16);
+        limitLabel.setPreferredSize(new Dimension(30,26));
         JSlider limitSlider = componentsFactory.getSlider(2, 20, this.generalSnapshot.getLimitCount(),AppThemeColor.ADR_BG);
         limitSlider.addChangeListener(e -> {
+            limitLabel.setText(String.valueOf(limitSlider.getValue()));
             this.generalSnapshot.setLimitCount(limitSlider.getValue());
-        });
-        JSlider unfoldSlider = componentsFactory.getSlider(0, 20, this.generalSnapshot.getUnfoldCount(),AppThemeColor.ADR_BG);
-        unfoldSlider.addChangeListener(e -> {
-            this.generalSnapshot.setUnfoldCount(unfoldSlider.getValue());
         });
         flowDirectionPicker.setSelectedIndex(this.generalSnapshot.getFlowDirections().ordinal());
         propertiesPanel.add(this.componentsFactory.getTextLabel("Flow direction:", FontStyle.REGULAR,16));
         propertiesPanel.add(flowDirectionPicker);
         propertiesPanel.add(this.componentsFactory.getTextLabel("Pre-group limit:", FontStyle.REGULAR,16));
-        propertiesPanel.add(limitSlider);
-        propertiesPanel.add(this.componentsFactory.getTextLabel("Unfold by default:", FontStyle.REGULAR,16));
-        propertiesPanel.add(unfoldSlider);
+        JPanel limitPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.ADR_BG);
+        limitPanel.add(limitLabel,BorderLayout.LINE_START);
+        limitPanel.add(limitSlider,BorderLayout.CENTER);
+        propertiesPanel.add(limitPanel);
         propertiesPanel.add(this.componentsFactory.getTextLabel("Your nickname(for leave option):", FontStyle.REGULAR,16));
         JTextField nickNameField = this.componentsFactory.getTextField(this.generalSnapshot.getPlayerNickname(), FontStyle.DEFAULT, 15f);
         nickNameField.addFocusListener(new FocusAdapter() {
@@ -134,6 +144,7 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
 
         root.add(this.wrapToCounter(this.componentsFactory.wrapToSlide(this.getResponseButtonsPanel(this.generalSnapshot.getButtons()),AppThemeColor.ADR_BG),"Response buttons:"),BorderLayout.CENTER);
         root.add(this.wrapToCounter(this.componentsFactory.wrapToSlide(this.getInNotificationHotKeysPanel(),AppThemeColor.ADR_BG),"Hotkeys"),BorderLayout.PAGE_END);
+        root.setVisible(false);
         return root;
     }
     private JPanel wrapToCounter(JPanel inner, String title){
@@ -235,7 +246,7 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
     private JPanel getInNotificationHotKeysPanel(){
         JPanel root = this.componentsFactory.getJPanel(new GridLayout(0, 2, 4, 4),AppThemeColor.SETTINGS_BG);
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
-        this.hotKeySnapshot.getIncNHotKeysList().forEach(pair -> {
+        this.incHotKeySnapshot.forEach(pair -> {
             root.add(this.componentsFactory.getIconLabel(pair.getType().getIconPath(), 18,SwingConstants.CENTER));
             root.add(this.componentsFactory.wrapToSlide(new HotKeyPanel(pair.getDescriptor()),AppThemeColor.SETTINGS_BG,2,4,1,1));
 
@@ -245,17 +256,16 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
     private JPanel getOutNotificationHotKeysPanel(){
         JPanel root = this.componentsFactory.getJPanel(new GridLayout(0, 2, 4, 4),AppThemeColor.SETTINGS_BG);
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
-        this.hotKeySnapshot.getOutNHotKeysList().forEach(pair -> {
+        this.outHotKeySnapshot.forEach(pair -> {
             root.add(this.componentsFactory.getIconLabel(pair.getType().getIconPath(), 18,SwingConstants.CENTER));
             root.add(this.componentsFactory.wrapToSlide(new HotKeyPanel(pair.getDescriptor()),AppThemeColor.SETTINGS_BG,2,4,1,1));
-
         });
         return root;
     }
     private JPanel getScannerNotificationHotKeysPanel(){
         JPanel root = this.componentsFactory.getJPanel(new GridLayout(0, 2, 4, 4),AppThemeColor.SETTINGS_BG);
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
-        this.hotKeySnapshot.getScannerNHotKeysList().forEach(pair-> {
+        this.scannerHotKeySnapshot.forEach(pair-> {
             root.add(this.componentsFactory.getIconLabel(pair.getType().getIconPath(), 18,SwingConstants.CENTER));
             root.add(this.componentsFactory.wrapToSlide(new HotKeyPanel(pair.getDescriptor()),AppThemeColor.SETTINGS_BG,2,4,1,1));
 
@@ -282,6 +292,7 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         root.add(propertiesPanel,BorderLayout.PAGE_START);
         root.add(this.wrapToCounter(this.componentsFactory.wrapToSlide(this.getResponseButtonsPanel(this.generalSnapshot.getOutButtons()),AppThemeColor.ADR_BG),"Response buttons:"),BorderLayout.CENTER);
         root.add(this.wrapToCounter(this.componentsFactory.wrapToSlide(this.getOutNotificationHotKeysPanel(),AppThemeColor.ADR_BG),"Hotkeys:"),BorderLayout.PAGE_END);
+        root.setVisible(false);
         return root;
     }
     private JPanel getChatScannerPanel() {
@@ -309,6 +320,7 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         propertiesPanel.add(this.componentsFactory.wrapToSlide(quickResponseField,AppThemeColor.ADR_BG,0,0,0,4));
         root.add(propertiesPanel,BorderLayout.PAGE_START);
         root.add(this.wrapToCounter(this.componentsFactory.wrapToSlide(this.getScannerNotificationHotKeysPanel(),AppThemeColor.ADR_BG),"Hotkeys"),BorderLayout.CENTER);
+        root.setVisible(false);
         return root;
     }
 }

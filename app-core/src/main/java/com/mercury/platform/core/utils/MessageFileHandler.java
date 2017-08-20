@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.util.*;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -27,7 +26,8 @@ public class MessageFileHandler implements AsSubscriber {
         this.logFilePath = logFilePath;
         this.datePattern = Pattern.compile(dateRGPattern);
 
-        this.interceptors.add(new TradeMessagesInterceptor());
+        this.interceptors.add(new TradeIncMessagesInterceptor());
+        this.interceptors.add(new PlainMessageInterceptor());
         this.interceptors.add(new PlayerJoinInterceptor());
         this.interceptors.add(new PlayerLeftInterceptor());
 

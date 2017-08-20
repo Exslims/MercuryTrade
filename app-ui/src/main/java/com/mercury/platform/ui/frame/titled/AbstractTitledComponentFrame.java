@@ -25,7 +25,6 @@ public abstract class AbstractTitledComponentFrame extends AbstractComponentFram
 
     private void initHeaderPanel(){
         if(layout instanceof BorderLayout) {
-            this.miscPanel = new JPanel(new GridLayout(1,0,5,0));
             this.headerPanel = new JPanel(new BorderLayout());
             this.headerPanel.setBackground(AppThemeColor.HEADER);
             this.headerPanel.setPreferredSize(new Dimension(100,26));
@@ -42,12 +41,12 @@ public abstract class AbstractTitledComponentFrame extends AbstractComponentFram
             this.headerPanel.add(appIcon,BorderLayout.LINE_START);
             this.headerPanel.add(this.frameTitleLabel, BorderLayout.CENTER);
 
-            this.miscPanel.setBackground(AppThemeColor.HEADER);
+            this.miscPanel = this.componentsFactory.getJPanel(new BorderLayout(),AppThemeColor.HEADER);
             this.hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.HEADER, "");
             this.hideButton.addActionListener(action -> {
                 this.hideComponent();
             });
-            this.miscPanel.add(hideButton);
+            this.miscPanel.add(hideButton,BorderLayout.LINE_END);
             this.headerPanel.add(miscPanel, BorderLayout.LINE_END);
             this.add(headerPanel, BorderLayout.PAGE_START);
         }

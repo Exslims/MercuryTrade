@@ -6,12 +6,15 @@ import com.mercury.platform.shared.config.configration.KeyValueConfigurationServ
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.*;
 import com.mercury.platform.shared.entity.message.TradeNotificationDescriptor;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.components.panel.notification.controller.IncomingPanelController;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
+import org.apache.commons.lang3.StringUtils;
+import rx.Subscription;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -28,6 +31,7 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
     private JPanel responseButtonsPanel;
     private JPanel chatPanel;
     private JPanel chatContainer;
+    private Subscription chatSubscription;
     @Override
     public void onViewInit() {
         super.onViewInit();
@@ -142,19 +146,24 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
     @Override
     public void subscribe() {
         super.subscribe();
+        this.chatSubscription = MercuryStoreCore.plainMessageSubject.subscribe(message -> {
+           if(this.data.getWhisperNickname().equals(message.getNickName())){
+               this.chatContainer.add(this.componentsFactory.getTextLabel((message.isIncoming()? "From: ":"To: ") + message.getMessage()));
+               SwingUtilities.getWindowAncestor(IncomingNotificationPanel.this).pack();
+           }
+        });
     }
 
     @Override
     public void onViewDestroy() {
         super.onViewDestroy();
+        this.chatSubscription.unsubscribe();
     }
     private JPanel getChatPanel(){
         this.chatContainer = new VerticalScrollContainer();
         this.chatContainer.setLayout(new BoxLayout(this.chatContainer,BoxLayout.Y_AXIS));
         this.chatContainer.setBackground(AppThemeColor.FRAME);
-        this.chatContainer.add(this.componentsFactory.getTextLabel(this.data.getSourceString()));
-        this.chatContainer.add(this.componentsFactory.getTextLabel(this.data.getSourceString()));
-        this.chatContainer.add(this.componentsFactory.getTextLabel(this.data.getSourceString()));
+        this.chatContainer.add(this.componentsFactory.getTextLabel("From:" + StringUtils.substringAfter(this.data.getSourceString(),this.data.getWhisperNickname() +":")));
         return this.componentsFactory.wrapToSlide(this.chatContainer,AppThemeColor.FRAME);
     }
     protected JPanel getForPanel(){

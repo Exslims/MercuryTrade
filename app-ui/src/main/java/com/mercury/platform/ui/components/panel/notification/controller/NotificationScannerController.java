@@ -1,21 +1,21 @@
 package com.mercury.platform.ui.components.panel.notification.controller;
 
 
-import com.mercury.platform.shared.entity.message.NotificationDescriptor;
+import com.mercury.platform.shared.entity.message.PlainMessageDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 
 import javax.swing.*;
 
 public class NotificationScannerController implements ScannerPanelController {
-    private NotificationDescriptor notificationDescriptor;
+    private PlainMessageDescriptor notificationDescriptor;
 
-    public NotificationScannerController(NotificationDescriptor notificationDescriptor) {
+    public NotificationScannerController(PlainMessageDescriptor notificationDescriptor) {
         this.notificationDescriptor = notificationDescriptor;
     }
 
     @Override
     public void visitHideout() {
-        MercuryStoreCore.chatCommandSubject.onNext("/hideout " + notificationDescriptor.getWhisperNickname());
+        MercuryStoreCore.chatCommandSubject.onNext("/hideout " + notificationDescriptor.getNickName());
     }
 
     @Override
@@ -25,7 +25,7 @@ public class NotificationScannerController implements ScannerPanelController {
 
     @Override
     public void performOfferTrade() {
-        MercuryStoreCore.chatCommandSubject.onNext("/tradewith " + notificationDescriptor.getWhisperNickname());
+        MercuryStoreCore.chatCommandSubject.onNext("/tradewith " + notificationDescriptor.getNickName());
     }
 
     @Override
@@ -35,16 +35,16 @@ public class NotificationScannerController implements ScannerPanelController {
 
     @Override
     public void performOpenChat() {
-        MercuryStoreCore.openChatSubject.onNext(notificationDescriptor.getWhisperNickname());
+        MercuryStoreCore.openChatSubject.onNext(notificationDescriptor.getNickName());
     }
 
     @Override
     public void performResponse(String response) {
-        MercuryStoreCore.chatCommandSubject.onNext("@" + notificationDescriptor.getWhisperNickname() + " " + response);
+        MercuryStoreCore.chatCommandSubject.onNext("@" + notificationDescriptor.getNickName() + " " + response);
     }
     private void closeMessagePanel(){
         Timer timer = new Timer(30, action -> {
-            MercuryStoreCore.removeNotificationSubject.onNext(notificationDescriptor);
+            MercuryStoreCore.removeScannerNotificationSubject.onNext(notificationDescriptor);
         });
         timer.setRepeats(false);
         timer.start();
