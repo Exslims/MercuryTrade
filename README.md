@@ -40,13 +40,13 @@ Overseer is essentially "a customizable and nicely looking set of overlay timers
 &nbsp; *Major feature:* **Notification**
 
 <p align="center">
-  <img src="http://i.imgur.com/Sv2Iod9.png"/>
+  <img src="http://i.imgur.com/qOZZB96.png"/>
 </p>
 
 When you receive a trade related message this notification panel pops up. It contains all the information you need to make a decision. It offers a set of fully customizable "quick response buttons" - such as "Sold" / "No" / "Wait 3m" / etc - as well as buttons to invite, kick and trade with the person who made the offer. 
 
 <p align="center">
-  <img src="http://i.imgur.com/6WyeA9D.png"/>
+  <img src="http://i.imgur.com/UPncdtt.png"/>
 </p>
 
 <p align="center"> <i>Multiple notifications</i> </p>
@@ -61,15 +61,9 @@ If you've received multiple notifications before dismissing your current one, th
 
 <p> The box on the left - "Group" - will appear if "Pre-group limit" is exceeded (this limit is also customizable). All consecutive notifications will be grouped together to save screen space. Toggling this button will expand the whole group. </p>
 
-<p align="center">
-  <img src="http://i.imgur.com/ljIOEYk.png"/>
-</p>
-
-<p align="center"> <i>Notification Panel settings (unlocked mode)</i> </p>
-
 
 <p align="center">
-  <img src="http://i.imgur.com/Y00d0FF.png"/>
+  <img src="http://i.imgur.com/Iw2kDCO.png"/>
 </p>
 
 <p align="center"> <i>Response buttons are fully customizable</i> </p>
