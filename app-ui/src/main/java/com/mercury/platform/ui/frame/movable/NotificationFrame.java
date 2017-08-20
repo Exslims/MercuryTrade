@@ -1,12 +1,15 @@
 package com.mercury.platform.ui.frame.movable;
 
 import com.mercury.platform.core.ProdStarter;
+import com.mercury.platform.core.utils.interceptor.TradeIncMessagesInterceptor;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
 import com.mercury.platform.shared.entity.message.FlowDirections;
+import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;
+import com.mercury.platform.shared.entity.message.TradeNotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -20,16 +23,21 @@ import com.mercury.platform.ui.components.panel.notification.factory.Notificatio
 import com.mercury.platform.ui.frame.titled.TestEngine;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
+import net.jodah.expiringmap.ExpiringMap;
+import net.jodah.expiringmap.ExpiringValue;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class NotificationFrame extends AbstractMovableComponentFrame {
     private List<NotificationPanel> notificationPanels;
+    private List<String> currentOffers;
     private PlainConfigurationService<NotificationSettingsDescriptor> config;
     private NotificationPanelFactory providersFactory;
     private JPanel container;
@@ -50,6 +58,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
     public void onViewInit() {
         this.getRootPane().setBorder(null);
         this.setBackground(AppThemeColor.TRANSPARENT);
+        this.currentOffers = new ArrayList<>();
         this.container = new JPanel();
         this.container.setBackground(AppThemeColor.TRANSPARENT);
         this.container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
@@ -70,6 +79,12 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                         .setData(notification)
                         .setComponentsFactory(this.componentsFactory)
                         .build();
+                String message = StringUtils.substringAfter(notification.getSourceString(), ":");
+                if(this.currentOffers.contains(message)){
+                    notificationPanel.setDuplicate(true);
+                }else {
+                    this.currentOffers.add(message);
+                }
                 this.addNotification(notificationPanel);
                 if(this.notificationPanels.size() > 1
                         && this.config.get().getFlowDirections().equals(FlowDirections.UPWARDS)
@@ -100,6 +115,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                 NotificationPanel notificationPanel = this.notificationPanels.stream()
                         .filter(it -> it.getData().equals(notification))
                         .findAny().orElse(null);
+                this.currentOffers.remove(StringUtils.substringAfter(notification.getSourceString(), ":"));
                 this.removeNotification(notificationPanel);
             });
         });

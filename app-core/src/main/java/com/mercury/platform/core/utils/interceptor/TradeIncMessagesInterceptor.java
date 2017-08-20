@@ -10,15 +10,20 @@ import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescripto
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;
 import com.mercury.platform.shared.store.MercuryStoreCore;
+import net.jodah.expiringmap.ExpiringMap;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class TradeIncMessagesInterceptor extends MessageInterceptor {
     private MessageParser messageParser = new MessageParser();
     private PlainConfigurationService<NotificationSettingsDescriptor> config;
     private List<LocalizationMatcher> clients = new ArrayList<>();
+    private Map<String,String> expiresMessages;
 
     public TradeIncMessagesInterceptor() {
         this.config = Configuration.get().notificationConfiguration();
@@ -26,6 +31,12 @@ public class TradeIncMessagesInterceptor extends MessageInterceptor {
         this.clients.add(new RuIncLocalizationMatcher());
         this.clients.add(new ArabicInLocalizationMatcher());
         this.clients.add(new BZIncLocalizationMatcher());
+        this.expiresMessages = ExpiringMap.builder()
+                .expiration(1, TimeUnit.HOURS)
+                .build();
+        MercuryStoreCore.expiredNotificationSubject.subscribe(notificationDescriptor -> {
+           this.expiresMessages.put(UUID.randomUUID().toString(),StringUtils.substringAfter(notificationDescriptor.getSourceString(),":"));
+        });
     }
 
     @Override
@@ -60,8 +71,10 @@ public class TradeIncMessagesInterceptor extends MessageInterceptor {
         public void processMessage(String message){
             NotificationDescriptor notificationDescriptor = this.getDescriptor(message);
             if (notificationDescriptor != null) {
-                MercuryStoreCore.soundSubject.onNext(SoundType.MESSAGE);
-                MercuryStoreCore.newNotificationSubject.onNext(notificationDescriptor);
+                if(!expiresMessages.containsValue(StringUtils.substringAfter(notificationDescriptor.getSourceString(),":"))) {
+                    MercuryStoreCore.soundSubject.onNext(SoundType.MESSAGE);
+                    MercuryStoreCore.newNotificationSubject.onNext(notificationDescriptor);
+                }
             }
         }
     }

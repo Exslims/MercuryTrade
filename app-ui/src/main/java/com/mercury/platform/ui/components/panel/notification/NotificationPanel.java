@@ -37,6 +37,8 @@ public abstract class NotificationPanel<T,C> extends JPanel implements AsSubscri
     protected float paintBorderValue = 0f;
     protected boolean blurEffect;
     protected boolean blurReverse;
+    @Setter
+    protected boolean duplicate;
 
     private Subscription settingsPostSubscription;
 
