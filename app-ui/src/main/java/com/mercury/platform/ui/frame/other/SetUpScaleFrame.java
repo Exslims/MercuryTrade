@@ -25,8 +25,11 @@ public class SetUpScaleFrame extends AbstractOverlaidFrame {
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1)));
-
         this.scaleData = this.scaleConfig.getMap();
+    }
+
+    @Override
+    public void onViewInit() {
 
         JPanel rootPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         rootPanel.setBorder(BorderFactory.createEmptyBorder(6,6,0,6));
@@ -182,4 +185,5 @@ public class SetUpScaleFrame extends AbstractOverlaidFrame {
     protected LayoutManager getFrameLayout() {
         return new BorderLayout();
     }
+
 }

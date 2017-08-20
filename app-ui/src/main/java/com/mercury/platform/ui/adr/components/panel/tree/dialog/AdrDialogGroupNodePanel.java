@@ -30,7 +30,7 @@ public class AdrDialogGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescrip
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         this.container = this.componentsFactory.getJPanel(new GridLayout(descriptor.getCells().size(), 1));
         this.container.setVisible(false);
         this.add(this.container,BorderLayout.CENTER);

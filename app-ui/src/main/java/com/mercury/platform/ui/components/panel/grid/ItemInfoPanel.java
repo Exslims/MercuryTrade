@@ -4,9 +4,9 @@ import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
-import com.mercury.platform.shared.entity.message.ItemMessage;
+import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.ui.components.ComponentsFactory;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
+import com.mercury.platform.ui.components.panel.misc.ViewInit;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
@@ -14,9 +14,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class ItemInfoPanel extends JPanel implements HasUI{
+public class ItemInfoPanel extends JPanel implements ViewInit {
     private ComponentsFactory componentsFactory;
-    private ItemMessage message;
+    private ItemTradeNotificationDescriptor message;
     private JPanel cell;
     private StashTabDescriptor stashTabDescriptor;
     private ItemCell itemCell;
@@ -24,7 +24,7 @@ public class ItemInfoPanel extends JPanel implements HasUI{
 
     private ItemInfoPanelController controller;
 
-    public ItemInfoPanel(ItemMessage message, ItemCell itemCell, StashTabDescriptor stashTabDescriptor, ComponentsFactory factory){
+    public ItemInfoPanel(ItemTradeNotificationDescriptor message, ItemCell itemCell, StashTabDescriptor stashTabDescriptor, ComponentsFactory factory){
         this.componentsFactory = factory;
         this.controller = new ItemInfoPanelControllerImpl(message);
         this.message = message;
@@ -32,28 +32,28 @@ public class ItemInfoPanel extends JPanel implements HasUI{
         this.itemCell = itemCell;
         this.stashTabDescriptor = stashTabDescriptor;
         setupMouseOverListener();
-        createUI();
+        onViewInit();
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         this.setLayout(new BorderLayout());
         this.setBackground(AppThemeColor.FRAME);
 
         JLabel nicknameLabel = componentsFactory.getTextLabel(message.getWhisperNickname());
-        JPanel nicknamePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel nicknamePanel = componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER));
         nicknameLabel.setForeground(AppThemeColor.TEXT_NICKNAME);
         nicknamePanel.add(nicknameLabel);
         nicknamePanel.setBorder(BorderFactory.createEmptyBorder(-6,0,-6,0));
         this.add(nicknamePanel,BorderLayout.CENTER);
 
-        JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_ALPHA, "Close");
+        JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME, "Close");
         hideButton.addActionListener((action)-> {
             controller.hidePanel();
         });
         this.add(hideButton,BorderLayout.LINE_END);
 
-        JPanel tabInfoPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel tabInfoPanel = componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel tabLabel = componentsFactory.getTextLabel("Tab: " + message.getTabName());
         tabInfoPanel.add(tabLabel);
         tabInfoPanel.setBorder(BorderFactory.createEmptyBorder(-8,0,-6,0));

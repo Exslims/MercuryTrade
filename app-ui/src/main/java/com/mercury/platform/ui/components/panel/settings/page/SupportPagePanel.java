@@ -19,7 +19,7 @@ import java.util.List;
 
 public class SupportPagePanel extends SettingsPagePanel{
     @Override
-    public void createUI() {
+    public void onViewInit() {
         JPanel donatePanel = componentsFactory.getTransparentPanel();
         donatePanel.setBackground(AppThemeColor.ADR_BG);
         donatePanel.setLayout(new GridLayout(0,1,5,5));

@@ -1,51 +1,96 @@
 package com.mercury.platform.shared.config.descriptor;
 
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public enum HotKeyType {
-    INVITE_PLAYER {
-        @Override
-        public String getIconPath() {
-            return "app/invite.png";
-        }
-    },
-    TRADE_PLAYER {
+public enum HotKeyType implements Serializable{
+    N_TRADE_PLAYER {
         @Override
         public String getIconPath() {
             return "app/trade.png";
         }
     },
-    KICK_PLAYER {
+    N_OPEN_CHAT {
+        @Override
+        public String getIconPath() {
+            return "app/openChat.png";
+        }
+    },
+    N_CLOSE_NOTIFICATION {
+        @Override
+        public String getIconPath() {
+            return "app/close.png";
+        }
+    },
+    //Incoming notification
+    N_INVITE_PLAYER {
+        @Override
+        public String getIconPath() {
+            return "app/invite.png";
+        }
+    },
+    N_KICK_PLAYER {
         @Override
         public String getIconPath() {
             return "app/kick.png";
         }
     },
-    STILL_INTERESTING {
+    N_STILL_INTERESTING {
         @Override
         public String getIconPath() {
             return "app/still-interesting.png";
         }
     },
-    CLOSE_NOTIFICATION {
+    N_SWITCH_CHAT {
         @Override
         public String getIconPath() {
-            return "app/close.png";
+            return "app/chat_history.png";
+        }
+    },
+    //Outgoing/scanner notification
+    N_VISITE_HIDEOUT {
+        @Override
+        public String getIconPath() {
+            return "app/visiteHideout.png";
+        }
+    },
+    N_LEAVE {
+        @Override
+        public String getIconPath() {
+            return "app/leave.png";
+        }
+    },
+    N_BACK_TO_HIDEOUT {
+        @Override
+        public String getIconPath() {
+            return "app/backToHideout.png";
+        }
+    },
+    //scanner
+    N_QUICK_RESPONSE {
+        @Override
+        public String getIconPath() {
+            return "app/chat_scanner_response.png";
+        }
+    },
+    T_TO_HIDEOUT {
+        @Override
+        public String getIconPath() {
+            return "app/hideout.png";
+        }
+    },
+    T_DND {
+        @Override
+        public String getIconPath() {
+            return "app/visible-dnd-mode.png";
         }
     };
-//    EXPAND_ALL {
-//        @Override
-//        public String getIconPath() {
-//            return null;
-//        }
-//    };
-
     public abstract String getIconPath();
-    public static boolean contains(String entry){
+    public static boolean contains(HotKeyType entry){
         return Arrays.stream(HotKeyType.values())
-                .filter(it -> it.name().equals(entry))
+                .filter(it -> it.equals(entry))
                 .collect(Collectors.toList())
                 .size() != 0;
     }

@@ -37,42 +37,38 @@ Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issue
 
 Overseer is essentially "a customizable and nicely looking set of overlay timers": you press a button and it tracks the time since - that's it. It's obviously 100% legit as there is no interaction with the game whatsoever. It's basically a clever trick, but gets the job done.
 
+Recently Overseer has got a new component: **Capture** - allows you to literally duplicate a part of your screen to display it somewhere else. This feature is especially neat for Vaal Skills for more convenient tracking. Also flasks, charge based abilities, UI counters etc.
+
 &nbsp; *Major feature:* **Notification**
 
 <p align="center">
-  <img src="http://i.imgur.com/Sv2Iod9.png"/>
+  <img src="http://i.imgur.com/qOZZB96.png"/>
 </p>
 
-When you receive a trade related message this notification panel pops up. It contains all the information you need to make a decision. It offers a set of fully customizable "quick response buttons" - such as "Sold" / "No" / "Wait 3m" / etc - as well as buttons to invite, kick and trade with the person who made the offer. 
+When you receive a trade related message or scanner message this notification panel pops up. It contains all the information you need to make a decision. It offers a set of fully customizable "quick response buttons" - such as "Sold" / "No" / "Wait 3m" / etc - as well as buttons to invite, kick and trade with the person who made the offer. There are also "?" - "Still Interested?" and a chat-history button. 
+
+**All the buttons are hotkeyable!**
+
+You can ignore an item: sold an item 5 hours ago yet people are still spamming you with trade offers? We can't filter out this from chat, but we can make MercuryTrade ignore it! Notifications for ignored items won't appear.
+
+
+Outgoing trade offers and messages from chat scanner to be diplayed as notifications as well. It has a different panel layout for the essentials such as "Visit Hideout" and "Leave" buttons.
 
 <p align="center">
-  <img src="http://i.imgur.com/6WyeA9D.png"/>
+  <img src="http://i.imgur.com/UPncdtt.png"/>
 </p>
 
 <p align="center"> <i>Multiple notifications</i> </p>
 
-If you've received multiple notifications before dismissing your current one, they will stack up like a deck of cards underneath (or on top) of each other and won't clutter the screen. Notification panels can be set up to fade out after X seconds - a customizable option.
-
-<p align="center">
-  <img src="http://i.imgur.com/KZuAT7I.png"/>
-</p>
-
-<p align="center"> <i>"Group" showcase: you received 5 notifications</i> </p>
-
+If you've received multiple notifications before dismissing your current one, they will stack up like a deck of cards underneath (or on top) of each other and won't clutter the screen.
 <p> The box on the left - "Group" - will appear if "Pre-group limit" is exceeded (this limit is also customizable). All consecutive notifications will be grouped together to save screen space. Toggling this button will expand the whole group. </p>
 
-<p align="center">
-  <img src="http://i.imgur.com/ljIOEYk.png"/>
-</p>
-
-<p align="center"> <i>Notification Panel settings (unlocked mode)</i> </p>
-
 
 <p align="center">
-  <img src="http://i.imgur.com/Y00d0FF.png"/>
+  <img src="http://i.imgur.com/Iw2kDCO.png"/>
 </p>
 
-<p align="center"> <i>Response buttons are fully customizable</i> </p>
+<p align="center"> <i>Not only Response buttons are fully customizable, look how many things you can actually tweak to your taste!</i> </p>
 
 
 
@@ -82,21 +78,23 @@ If you've received multiple notifications before dismissing your current one, th
 &nbsp; *Minor feature:* **History**
 
 <p align="center">
-  <img src="http://i.imgur.com/hQarj9q.png"/>
+  <img src="http://i.imgur.com/wO82SbG.png"/>
 </p>
 
 <p align="center"> <i>History</i> </p>
 
 Each notification you receive is stored in a separate file by **MercuryTrade**. History allows you to access that file in a useful way to interact with customers. Comes in handy if you want to reach a person you traded with some time ago or in case your client has crashed - your in-game chat will be lost, but History will not.
 
+Use "Restore" button to bring back related notification.
+
 #
 
 &nbsp; *Major feature:* **Chat scanner**
 <p align="center">
-  <img src="http://i.imgur.com/4IRGeWG.png"/>
+  <img src="http://i.imgur.com/qglL2Fb.png"/>
 </p>
 
-Set up words to look for (or not!) in chat. Extremely useful for when buying something specific from chat.
+Set up words to look for (or not!) in chat. Extremely useful for when buying something specific from chat, looking for Trials, specific challenged and other things you might be interested in. Works in conjunction with the notification panel.
 
 #
 
@@ -118,22 +116,6 @@ Mercury can highlight the stash location of the item somebody's buying. You will
 
 <p align="center"> <i>Item Grid set up.</i> </p>
 
-
-#
-
-&nbsp; *Minor feature:* **Accessibility status**
-<p align="center">
-  <img src="http://i.imgur.com/dTUrF7v.png"/>
-</p>
-
-<p align="center"> <i>Name will change its color accordingly</i> </p>
-
-
-**MercuryTrade** notifications have an **indication for when a person comes in or leaves your hideout** - that way you can offer a trade as soon as possible and keep track of all the people without even closing your stash. Especially useful for SuperTrade mode.
-
-
-Important to mention: in Path of Exile when you use your stash you can't click on party frames, because they're hidden behind the stash window. **MercuryTrade** solves this inconvenience as you can interact with the person through a related notification panel.
-
 #
 
 &nbsp; *Minor feature:* **Do not Disturb**
@@ -153,48 +135,3 @@ Activate this mode if you don't want to see (and hear!) anything from the applic
 Download and install Java on your computer, then open MercuryTrade.jar. Because the program operates on top of a Path of Exile window as an overlay, **make sure your client is not in fullscreen mode**.
 
 Upon launch you'll be greeted with a short overview of the application (identical to this ReadMe) and patch notes. Afterwards you should see **Task Panel** and **Notification Panel**.
-
-
-<br/>
-
-**Task panel**:
-
-<p align="center">
-  <img src="http://i.imgur.com/SPMqNhC.png"/>
-</p>
-
-
-* (1) **Travel to Hideout**.
-
-* (2) **Do Not Disturb** mode button switch.
-
-* (3) **Chat scanner**.
-
-* (4) **History**.
-
-* (5) **Item Grid** set up.
-
-* (6) **Panel unlock**.
-
-* (7) **Scale setting**.
-
-* (8) **Settings**.
-  
-* (9) **Exit**.
-
-<br/>
-
-**Notification panel** *(unlocked mode)*
-
-<p align="center">
-  <img src="http://i.imgur.com/ljIOEYk.png"/>
-</p>
-
-<br/>
-
-After you go through the overview, panels will be in "Unlocked" mode. This will allow you to reposition them to your taste.
-
-
-
-
-

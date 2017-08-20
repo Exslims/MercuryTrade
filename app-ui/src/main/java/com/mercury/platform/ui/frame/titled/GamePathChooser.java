@@ -29,8 +29,7 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
     }
 
     @Override
-    protected void initialize() {
-        super.initialize();
+    public void onViewInit() {
         this.removeHideButton();
         this.add(getChooserPanel(),BorderLayout.CENTER);
         this.add(getMiscPanel(),BorderLayout.PAGE_END);

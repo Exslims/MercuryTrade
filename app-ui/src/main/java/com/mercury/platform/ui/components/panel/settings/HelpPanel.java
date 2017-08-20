@@ -3,7 +3,7 @@ package com.mercury.platform.ui.components.panel.settings;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
+import com.mercury.platform.ui.components.panel.misc.ViewInit;
 import com.mercury.platform.ui.frame.titled.NotesFrame;
 import com.mercury.platform.ui.frame.titled.SettingsFrame;
 import com.mercury.platform.ui.frame.titled.TestCasesFrame;
@@ -17,17 +17,17 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class HelpPanel extends JPanel implements HasUI {
+public class HelpPanel extends JPanel implements ViewInit {
     private ComponentsFactory componentsFactory;
     public HelpPanel() {
         super();
         componentsFactory = new ComponentsFactory();
         this.setBackground(AppThemeColor.TRANSPARENT);
-        createUI();
+        onViewInit();
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         this.setLayout(new FlowLayout(FlowLayout.CENTER));
         JButton openTutorial = componentsFactory.getBorderedButton("Open tutorial");
         openTutorial.addMouseListener(new MouseAdapter() {

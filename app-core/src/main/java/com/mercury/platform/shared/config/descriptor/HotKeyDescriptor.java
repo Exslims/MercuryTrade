@@ -12,7 +12,6 @@ import java.io.Serializable;
 public class HotKeyDescriptor implements Serializable{
     private String title = "...";
     private int virtualKeyCode;
-    private char keyChar;
     private boolean menuPressed;
     private boolean shiftPressed;
     private boolean controlPressed;

@@ -70,11 +70,11 @@ public class AdrDurationCellPanel extends AdrDurationComponentPanel<AdrDurationC
     @Override
     protected void onUpdate() {
         this.remove(this.tracker);
-        this.createUI();
+        this.onViewInit();
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         this.setLayout(new GridLayout(1,1));
         this.setPreferredSize(this.descriptor.getSize());
         this.tracker = new MercuryTracker(this.descriptor);

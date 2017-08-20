@@ -30,7 +30,7 @@ public class AdrIconNodePanel extends AdrNodePanel<AdrIconDescriptor> {
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setBackground(AppThemeColor.ADR_BG);
         this.tracker = new MercuryTracker(this.descriptor);

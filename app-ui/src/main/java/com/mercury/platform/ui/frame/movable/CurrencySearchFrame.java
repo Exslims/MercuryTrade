@@ -120,7 +120,7 @@ public class CurrencySearchFrame extends AbstractMovableComponentFrame {
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
 
     }
 

@@ -30,6 +30,8 @@ public class ChatHelper implements AsSubscriber {
         StringSelection selection = new StringSelection(message);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(selection, null);
+        MercuryStoreCore.blockHotkeySubject.onNext(true);
+        robot.keyRelease(KeyEvent.VK_ALT);
 
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.keyRelease(KeyEvent.VK_ENTER);
@@ -48,13 +50,15 @@ public class ChatHelper implements AsSubscriber {
         robot.keyRelease(KeyEvent.VK_CONTROL);
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.keyRelease(KeyEvent.VK_ENTER);
+        MercuryStoreCore.blockHotkeySubject.onNext(false);
     }
     private void openChat(String whisper) {
         this.gameToFront();
         StringSelection selection = new StringSelection("@" + whisper);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(selection, selection);
-
+        MercuryStoreCore.blockHotkeySubject.onNext(true);
+        robot.keyRelease(KeyEvent.VK_ALT);
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.keyRelease(KeyEvent.VK_ENTER);
 
@@ -72,6 +76,7 @@ public class ChatHelper implements AsSubscriber {
         robot.keyRelease(KeyEvent.VK_CONTROL);
         robot.keyPress(KeyEvent.VK_SPACE);
         robot.keyRelease(KeyEvent.VK_SPACE);
+        MercuryStoreCore.blockHotkeySubject.onNext(false);
     }
     private void gameToFront(){
         User32.INSTANCE.EnumWindows((hWnd, arg1) -> {

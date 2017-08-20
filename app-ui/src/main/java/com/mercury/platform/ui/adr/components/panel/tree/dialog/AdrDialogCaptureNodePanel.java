@@ -19,7 +19,7 @@ public class AdrDialogCaptureNodePanel extends AdrNodePanel<AdrCaptureDescriptor
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setPreferredSize(new Dimension(180, 30));
         root.setBackground(AppThemeColor.ADR_BG);

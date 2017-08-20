@@ -24,6 +24,7 @@ import java.util.List;
 public class AppMain {
     public static void main(String[] args) {
         System.setProperty("sun.java2d.d3d","false");
+        System.setProperty("jna.nosys","true");
         new ErrorHandler();
         MercuryLoadingFrame mercuryLoadingFrame = new MercuryLoadingFrame();
         mercuryLoadingFrame.init();

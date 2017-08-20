@@ -2,6 +2,7 @@ package com.mercury.platform.ui.frame;
 
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
+import com.mercury.platform.ui.components.panel.misc.ViewInit;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.manager.HideSettingsManager;
 import org.pushingpixels.trident.Timeline;
@@ -13,7 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
+public abstract class AbstractComponentFrame extends AbstractOverlaidFrame implements ViewInit {
     private final int HIDE_TIME = 200;
     private final int SHOW_TIME = 150;
     private final int BORDER_THICKNESS = 1;
@@ -162,11 +163,13 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame {
             Dimension size = AbstractComponentFrame.this.getSize();
             FrameDescriptor frameDescriptor = framesConfig.getMap().get(AbstractComponentFrame.this.getClass().getSimpleName());
             if(EResizeSpace){
-                AbstractComponentFrame.this.setMaximumSize(size);
-                AbstractComponentFrame.this.setMinimumSize(size);
-                if(AbstractComponentFrame.this.getClass().getSimpleName().equals("MessageFrame")){
+                if(AbstractComponentFrame.this.getClass().getSimpleName().equals("NotificationFrame")){
+                    AbstractComponentFrame.this.setMaximumSize(new Dimension(size.width,0));
+                    AbstractComponentFrame.this.setMinimumSize(new Dimension(size.width,0));
                     frameDescriptor.setFrameSize(new Dimension(size.width,0));
                 }else {
+                    AbstractComponentFrame.this.setMaximumSize(size);
+                    AbstractComponentFrame.this.setMinimumSize(size);
                     frameDescriptor.setFrameSize(size);
                 }
                 onSizeChange();

@@ -9,6 +9,7 @@ import com.mercury.platform.ui.components.panel.taskbar.TaskBarController;
 import com.mercury.platform.ui.components.panel.taskbar.TaskBarPanel;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
+import lombok.Getter;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.ease.Spline;
 
@@ -19,6 +20,7 @@ import java.util.Map;
 
 public class TaskBarFrame extends AbstractMovableComponentFrame {
     private Timeline collapseAnimation;
+    @Getter
     private int MIN_WIDTH;
     private int MAX_WIDTH;
     private MouseListener collapseListener;
@@ -33,36 +35,6 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
         this.prevState = FrameVisibleState.SHOW;
     }
 
-    @Override
-    protected void initialize() {
-        super.initialize();
-        createUI();
-        this.setMaximumSize(taskBarPanel.getPreferredSize());
-        collapseListener = new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                TaskBarFrame.this.repaint();
-                if (collapseAnimation != null) {
-                    collapseAnimation.abort();
-                }
-                initCollapseAnimations("expand");
-                collapseAnimation.play();
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                TaskBarFrame.this.repaint();
-                if(isVisible() && !withInPanel((JPanel)TaskBarFrame.this.getContentPane()) && !EResizeSpace) {
-                    if (collapseAnimation != null) {
-                        collapseAnimation.abort();
-                    }
-                    initCollapseAnimations("collapse");
-                    collapseAnimation.play();
-                }
-            }
-        };
-        enableCollapseAnimation();
-    }
     private void enableCollapseAnimation(){
         this.setWidth(MIN_WIDTH);
         this.addMouseListener(collapseListener);
@@ -113,13 +85,12 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
 
     @Override
     protected JPanel getPanelForPINSettings() {
-        disableCollapseAnimation();
-        JPanel panel = componentsFactory.getTransparentPanel();
-        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
-        JPanel labelPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        labelPanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,20f,"Task Bar"));
-        panel.add(labelPanel);
-        panel.setBackground(AppThemeColor.ADR_BG);
+        this.disableCollapseAnimation();
+        JPanel panel = this.componentsFactory.getJPanel(new BorderLayout(),AppThemeColor.FRAME);
+        JLabel textLabel = this.componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER, 22f, "Task Bar");
+        textLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        panel.add(textLabel);
+        panel.setPreferredSize(this.getPreferredSize());
         return panel;
     }
 
@@ -131,11 +102,11 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
     @Override
     protected void performScaling(Map<String,Float> scaleData) {
         this.componentsFactory.setScale(scaleData.get("taskbar"));
-        createUI();
+        onViewInit();
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         JPanel panel = componentsFactory.getTransparentPanel(new BorderLayout());
         taskBarPanel = new TaskBarPanel(new MercuryTaskBarController(),componentsFactory);
         panel.add(taskBarPanel, BorderLayout.CENTER);
@@ -147,6 +118,32 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
         this.MIN_WIDTH = taskBarPanel.getWidthOf(4);
         this.MAX_WIDTH = taskBarPanel.getPreferredSize().width;
         this.setWidth(MIN_WIDTH);
+
+        this.setMaximumSize(taskBarPanel.getPreferredSize());
+        this.collapseListener = new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                TaskBarFrame.this.repaint();
+                if (collapseAnimation != null) {
+                    collapseAnimation.abort();
+                }
+                initCollapseAnimations("expand");
+                collapseAnimation.play();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                TaskBarFrame.this.repaint();
+                if(isVisible() && !withInPanel((JPanel)TaskBarFrame.this.getContentPane()) && !EResizeSpace) {
+                    if (collapseAnimation != null) {
+                        collapseAnimation.abort();
+                    }
+                    initCollapseAnimations("collapse");
+                    collapseAnimation.play();
+                }
+            }
+        };
+        this.enableCollapseAnimation();
     }
 
     @Override

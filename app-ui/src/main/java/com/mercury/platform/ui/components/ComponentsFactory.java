@@ -15,6 +15,7 @@ import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,6 +46,7 @@ public class ComponentsFactory{
     private Font ITALIC_FONT;
     private Font REGULAR_FONT;
     private Font SMALLCAPS_FONT;
+    @Getter
     private Font DEFAULT_FONT;
     private float scale = 1f;
 
@@ -96,12 +98,26 @@ public class ComponentsFactory{
         button.setForeground(AppThemeColor.TEXT_DEFAULT);
         button.setFocusPainted(false);
         button.addMouseListener(new MouseAdapter() {
+            Border prevBorder;
             @Override
-            public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
-                    MercuryStoreCore.soundSubject.onNext(SoundType.CLICKS);
-                }
+            public void mouseEntered(MouseEvent e) {
+                this.prevBorder = button.getBorder();
+                CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER, 1),
+                        BorderFactory.createLineBorder(button.getBackground(), 3)
+                );
+                button.setBorder(compoundBorder);
+                button.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBorder(prevBorder);
+                button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+        });
+        button.addActionListener(action -> {
+            MercuryStoreCore.soundSubject.onNext(SoundType.CLICKS);
         });
         if(isAscii(text)){
             button.setFont(getSelectedFont(fontStyle).deriveFont(scale*fontSize));
@@ -150,6 +166,13 @@ public class ComponentsFactory{
         );
         return getButton(FontStyle.BOLD, AppThemeColor.BUTTON, compoundBorder, text, scale*fontSize);
     }
+    public JButton getBorderedButton(String text, float fontSize, Color background, Color outerBorderColor, Color innerBorderColor){
+        CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(outerBorderColor, 1),
+                BorderFactory.createLineBorder(innerBorderColor, 3)
+        );
+        return getButton(FontStyle.BOLD, background, compoundBorder, text, scale*fontSize);
+    }
 
     public Component setUpToggleCallbacks(Component button,ToggleCallback firstState, ToggleCallback secondState, boolean initialState){
         button.addMouseListener(new MouseAdapter() {
@@ -193,13 +216,28 @@ public class ComponentsFactory{
         if(tooltip.length() > 0) {
             button.addMouseListener(new TooltipMouseListener(tooltip));
         }
+        button.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+        button.addActionListener(action -> {
+            MercuryStoreCore.soundSubject.onNext(SoundType.CLICKS);
+            button.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+        });
         button.addMouseListener(new MouseAdapter() {
+            Border prevBorder;
             @Override
-            public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
-                    MercuryStoreCore.soundSubject.onNext(SoundType.CLICKS);
-                }
+            public void mouseEntered(MouseEvent e) {
+                prevBorder = button.getBorder();
+                button.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER),
+                        BorderFactory.createEmptyBorder(3,3,3,3)));
+                button.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBorder(prevBorder);
+                button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+
         });
         button.setBorder(BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,4));
         button.setVerticalAlignment(SwingConstants.CENTER);
@@ -331,6 +369,16 @@ public class ComponentsFactory{
         }
         return iconLabel;
     }
+    public JLabel getIconLabel(String iconPath, int size, int aligment){
+        JLabel iconLabel = new JLabel();
+        try {
+            iconLabel.setIcon(getIcon(iconPath,(int)(scale*size)));
+        } catch (Exception e) {
+            return getTextLabel(StringUtils.substringBetween(iconPath,"/","."));
+        }
+        iconLabel.setHorizontalAlignment(aligment);
+        return iconLabel;
+    }
     public JLabel getIconLabel(URL url, int size){
         JLabel iconLabel = new JLabel();
         try {
@@ -407,14 +455,14 @@ public class ComponentsFactory{
         JCheckBox checkBox = new JCheckBox();
         checkBox.setFocusPainted(false);
         checkBox.setBackground(AppThemeColor.TRANSPARENT);
-        checkBox.setUI(new WindowsButtonUI());
+//        checkBox.setUI(new WindowsButtonUI());
         checkBox.addMouseListener(new TooltipMouseListener(tooltip));
         return checkBox;
     }
     public JCheckBox getCheckBox(boolean value){
         JCheckBox checkBox = new JCheckBox();
         checkBox.setSelected(value);
-        checkBox.setUI(new WindowsButtonUI());
+//        checkBox.setUI(new WindowsButtonUI());
         checkBox.setFocusPainted(false);
         checkBox.setBackground(AppThemeColor.TRANSPARENT);
         return checkBox;
@@ -485,7 +533,7 @@ public class ComponentsFactory{
         slider.setMajorTickSpacing(10);
         slider.setMinorTickSpacing(1);
 //        slider.setPaintLabels(true);
-        slider.setUI(new WindowsSliderUI(slider));
+//        slider.setUI(new WindowsSliderUI(slider));
         slider.setForeground(AppThemeColor.TEXT_DEFAULT);
         slider.setFont(REGULAR_FONT.deriveFont(15f));
         slider.setRequestFocusEnabled(false);
@@ -619,7 +667,7 @@ public class ComponentsFactory{
 
     public JPanel getJPanel(LayoutManager layoutManager) {
         JPanel panel = new JPanel(layoutManager);
-        panel.setBackground(AppThemeColor.FRAME_RGB);
+        panel.setBackground(AppThemeColor.FRAME);
         return panel;
     }
     public JPanel getJPanel(LayoutManager layoutManager,Color bg) {
@@ -660,7 +708,7 @@ public class ComponentsFactory{
                 return panel.add(comp);
             }
         };
-        wrapper.setBackground(AppThemeColor.FRAME_RGB);
+        wrapper.setBackground(AppThemeColor.FRAME);
         wrapper.setBorder(BorderFactory.createEmptyBorder(top,left,bottom,right));
         wrapper.add(panel,BorderLayout.CENTER);
         return wrapper;

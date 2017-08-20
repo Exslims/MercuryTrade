@@ -1,12 +1,15 @@
 package com.mercury.platform.ui.components.panel.chat;
 
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class HtmlMessageBuilder {
     private List<String> chunkStrings;
+    private String stubMessage;
 
     public HtmlMessageBuilder() {
         this.chunkStrings = new ArrayList<>();
@@ -18,18 +21,17 @@ public class HtmlMessageBuilder {
      * @return html equivalent
      */
     public String build(String message) {
-        List<String> resultStrs = new ArrayList<>();
-        resultStrs.add("<html>");
-        String[] words = message.split("((?<=\\s)|(?=\\s)|(?<=\\.)|(?=\\.)|(?<=,)|(?<=\\?)|(?=\\?)|(?=,)|(?<=!)|(?=!)|(?<=/)|(?=/)|(?<=>)|(?=>))");
-        Arrays.stream(words).forEach(word -> {
-            if(chunkStrings.stream().noneMatch(word::equalsIgnoreCase)){
-                resultStrs.add(word);
-            }else {
-                resultStrs.add("<font color=\"#FFD393\">" + word + "</font>");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("<html>");
+        this.stubMessage = message;
+        this.chunkStrings.forEach(it -> {
+            if(StringUtils.containsIgnoreCase(message,it)){
+                this.stubMessage = stubMessage.replaceAll("(?i)" + it,"<font color=\"#FFD393\">" + it + "</font>");
             }
         });
-        resultStrs.add("</html>");
-        return String.join("",resultStrs);
+        stringBuilder.append(this.stubMessage);
+        stringBuilder.append("</html>");
+        return stringBuilder.toString();
     }
 
     public List<String> getChunkStrings() {

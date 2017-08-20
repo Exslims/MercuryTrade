@@ -72,4 +72,9 @@ public class AdrTrackerGroupFrame extends AbstractAdrComponentFrame<AdrTrackerGr
         this.adrReloadSubscription.unsubscribe();
         this.trackerGroupPanel.onDestroy();
     }
+
+    @Override
+    public void onViewInit() {
+
+    }
 }

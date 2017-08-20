@@ -15,11 +15,11 @@ public class AdrCaptureOutPanel extends AdrComponentPanel<AdrCaptureDescriptor> 
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         this.setLayout(new GridLayout(1,1));
         this.setPreferredSize(this.descriptor.getCaptureSize());
         this.setBackground(AppThemeColor.ADR_CAPTURE_BG);
-        this.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,4));
+        this.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER_GREEN,4));
         MercuryStoreUI.adrRepaintSubject.onNext(true);
     }
     @Override

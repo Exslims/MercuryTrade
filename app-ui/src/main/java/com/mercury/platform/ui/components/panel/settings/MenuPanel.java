@@ -2,7 +2,7 @@ package com.mercury.platform.ui.components.panel.settings;
 
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
+import com.mercury.platform.ui.components.panel.misc.ViewInit;
 import com.mercury.platform.ui.manager.routing.SettingsPage;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
@@ -12,17 +12,17 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MenuPanel extends JPanel implements HasUI {
+public class MenuPanel extends JPanel implements ViewInit {
     private ComponentsFactory componentsFactory = new ComponentsFactory();
     public MenuPanel() {
         super();
         this.setBackground(AppThemeColor.FRAME);
         this.setPreferredSize(new Dimension(220, 20));
         this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, AppThemeColor.ADR_PANEL_BORDER));
-        this.createUI();
+        this.onViewInit();
     }
     @Override
-    public void createUI() {
+    public void onViewInit() {
         JList<MenuEntry> list = new JList<>(getEntries());
         list.addMouseListener(new MouseAdapter() {
             @Override

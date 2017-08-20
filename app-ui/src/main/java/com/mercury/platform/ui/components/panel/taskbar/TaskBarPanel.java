@@ -1,9 +1,20 @@
 package com.mercury.platform.ui.components.panel.taskbar;
 
+import com.mercury.platform.core.ProdStarter;
+import com.mercury.platform.shared.FrameVisibleState;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.PlainConfigurationService;
+import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
+import com.mercury.platform.shared.config.descriptor.HotKeyPair;
+import com.mercury.platform.shared.config.descriptor.HotKeyType;
+import com.mercury.platform.shared.config.descriptor.HotKeysSettingsDescriptor;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
+import com.mercury.platform.ui.components.panel.misc.ViewInit;
+import com.mercury.platform.ui.frame.movable.TaskBarFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import lombok.NonNull;
 
@@ -11,30 +22,56 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
+import java.util.Map;
 
-public class TaskBarPanel extends JPanel implements HasUI{
+public class TaskBarPanel extends JPanel implements ViewInit {
     private ComponentsFactory componentsFactory;
     private TaskBarController controller;
-    public TaskBarPanel(@NonNull TaskBarController controller){
-        this.controller = controller;
-        this.componentsFactory = new ComponentsFactory();
-        createUI();
-    }
+    private Map<HotKeyType,JButton> interactButtonMap = new HashMap<>();
+    private Map<HotKeyDescriptor,JButton> hotKeysPool = new HashMap<>();
+    private PlainConfigurationService<HotKeysSettingsDescriptor> hotKeysConfig;
     public TaskBarPanel(@NonNull TaskBarController controller, @NonNull ComponentsFactory factory){
         this.controller = controller;
         this.componentsFactory = factory;
-        createUI();
-    }
+        this.onViewInit();
 
+        MercuryStoreCore.hotKeySubject.subscribe(hotkeyDescriptor -> {
+            SwingUtilities.invokeLater(() -> {
+                if(ProdStarter.APP_STATUS.equals(FrameVisibleState.SHOW)){
+                    JButton button = this.hotKeysPool.get(hotkeyDescriptor);
+                    if(button != null){
+                        button.doClick();
+                    }
+                }
+            });
+        });
+        MercuryStoreUI.settingsPostSubject.subscribe(state -> {
+            this.updateHotKeyPool();
+        });
+    }
+    private void updateHotKeyPool(){
+        this.hotKeysPool.clear();
+        this.interactButtonMap.forEach((type, button) -> {
+            HotKeyPair hotKeyPair = this.hotKeysConfig.get()
+                    .getTaskBarNHotKeysList()
+                    .stream()
+                    .filter(it -> it.getType().equals(type))
+                    .findAny().orElse(null);
+            this.hotKeysPool.put(hotKeyPair.getDescriptor(),button);
+        });
+    }
     @Override
-    public void createUI() {
-        this.setBackground(AppThemeColor.TRANSPARENT);
+    public void onViewInit() {
+        this.hotKeysConfig = Configuration.get().hotKeysConfiguration();
+
+        this.setBackground(AppThemeColor.FRAME);
         this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 
         JButton visibleMode = componentsFactory.getIconButton(
                 "app/visible-always-mode.png",
                 24,
-                AppThemeColor.FRAME_ALPHA,
+                AppThemeColor.FRAME,
                 TooltipConstants.VISIBLE_MODE);
         componentsFactory.setUpToggleCallbacks(visibleMode,
                 () -> {
@@ -51,7 +88,7 @@ public class TaskBarPanel extends JPanel implements HasUI{
         JButton itemGrid = componentsFactory.getIconButton(
                 "app/item-grid-enable.png",
                 24,
-                AppThemeColor.FRAME_ALPHA,
+                AppThemeColor.FRAME,
                 TooltipConstants.ITEM_GRID);
         itemGrid.addMouseListener(new MouseAdapter() {
             @Override
@@ -65,7 +102,7 @@ public class TaskBarPanel extends JPanel implements HasUI{
         JButton toHideOut = componentsFactory.getIconButton(
                 "app/hideout.png",
                 24,
-                AppThemeColor.FRAME_ALPHA,
+                AppThemeColor.FRAME,
                 TooltipConstants.HIDEOUT);
         toHideOut.addActionListener(action -> {
             this.controller.performHideout();
@@ -74,37 +111,37 @@ public class TaskBarPanel extends JPanel implements HasUI{
         JButton adr = componentsFactory.getIconButton(
                 "app/overseer_icon.png",
                 24,
-                AppThemeColor.FRAME_ALPHA,
+                AppThemeColor.FRAME,
                 TooltipConstants.ADR_SETTINGS);
         adr.addActionListener(action -> {
             FramesManager.INSTANCE.performAdr();
-            this.repaint();
+            TaskBarFrame windowAncestor = (TaskBarFrame) SwingUtilities.getWindowAncestor(TaskBarPanel.this);
+            windowAncestor.setSize(new Dimension(windowAncestor.getMIN_WIDTH(),windowAncestor.getHeight()));
+            windowAncestor.pack();
         });
 
         JButton chatFilter = componentsFactory.getIconButton(
                 "app/chat-filter.png",
                 24,
-                AppThemeColor.FRAME_ALPHA,
+                AppThemeColor.FRAME,
                 TooltipConstants.CHAT_FILTER);
         chatFilter.addActionListener(action -> {
             this.controller.showChatFiler();
-            this.repaint();
         });
 
         JButton historyButton = componentsFactory.getIconButton(
                 "app/history.png",
                 24,
-                AppThemeColor.FRAME_ALPHA,
+                AppThemeColor.FRAME,
                 TooltipConstants.HISTORY);
         historyButton.addActionListener(action -> {
             this.controller.showHistory();
-            this.repaint();
         });
 
         JButton pinButton = componentsFactory.getIconButton(
                 "app/drag_and_drop.png",
                 24,
-                AppThemeColor.FRAME_ALPHA,
+                AppThemeColor.FRAME,
                 TooltipConstants.SETUP_FRAMES_LOCATION);
         pinButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -118,7 +155,7 @@ public class TaskBarPanel extends JPanel implements HasUI{
         JButton scaleButton = componentsFactory.getIconButton(
                 "app/scale-settings.png",
                 24,
-                AppThemeColor.FRAME_ALPHA,
+                AppThemeColor.FRAME,
                 TooltipConstants.SCALE_SETTINGS);
         scaleButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -132,13 +169,16 @@ public class TaskBarPanel extends JPanel implements HasUI{
         JButton settingsButton = componentsFactory.getIconButton(
                 "app/settings.png",
                 26,
-                AppThemeColor.FRAME_ALPHA,
+                AppThemeColor.FRAME,
                 "");
         settingsButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(SwingUtilities.isLeftMouseButton(e)) {
                     controller.showSettings();
+                    TaskBarFrame windowAncestor = (TaskBarFrame) SwingUtilities.getWindowAncestor(TaskBarPanel.this);
+                    windowAncestor.setSize(new Dimension(windowAncestor.getMIN_WIDTH(),windowAncestor.getHeight()));
+                    windowAncestor.pack();
                 }
             }
         });
@@ -146,7 +186,7 @@ public class TaskBarPanel extends JPanel implements HasUI{
         JButton exitButton = componentsFactory.getIconButton(
                 "app/exit.png",
                 24,
-                AppThemeColor.FRAME_ALPHA,
+                AppThemeColor.FRAME,
                 "");
         exitButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -177,6 +217,10 @@ public class TaskBarPanel extends JPanel implements HasUI{
         this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(exitButton);
         this.add(Box.createRigidArea(new Dimension(3, 4)));
+
+        this.interactButtonMap.put(HotKeyType.T_TO_HIDEOUT,toHideOut);
+//        this.interactButtonMap.put(HotKeyType.T_DND,visibleMode);
+        this.updateHotKeyPool();
     }
 
     public int getWidthOf(int elementCount){

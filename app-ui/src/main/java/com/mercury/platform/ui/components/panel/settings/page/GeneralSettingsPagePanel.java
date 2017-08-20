@@ -6,12 +6,9 @@ import com.mercury.platform.shared.CloneHelper;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
-import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
-import com.mercury.platform.ui.frame.titled.SettingsFrame;
 import com.mercury.platform.ui.manager.HideSettingsManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,8 +24,8 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
     private JSlider minSlider;
     private JSlider maxSlider;
     @Override
-    public void createUI() {
-        super.createUI();
+    public void onViewInit() {
+        super.onViewInit();
         this.applicationConfig = Configuration.get().applicationConfiguration();
         this.applicationSnapshot = CloneHelper.cloneObject(this.applicationConfig.get());
 
@@ -124,6 +121,6 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
     public void restore() {
         this.applicationSnapshot = CloneHelper.cloneObject(this.applicationConfig.get());
         this.removeAll();
-        this.createUI();
+        this.onViewInit();
     }
 }

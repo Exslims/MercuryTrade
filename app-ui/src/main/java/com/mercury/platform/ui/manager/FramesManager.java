@@ -11,7 +11,7 @@ import com.mercury.platform.ui.frame.AbstractComponentFrame;
 import com.mercury.platform.ui.frame.AbstractScalableComponentFrame;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
 import com.mercury.platform.ui.frame.movable.AbstractMovableComponentFrame;
-import com.mercury.platform.ui.frame.movable.container.MessageFrame;
+import com.mercury.platform.ui.frame.movable.NotificationFrame;
 import com.mercury.platform.ui.frame.other.*;
 import com.mercury.platform.ui.frame.movable.TaskBarFrame;
 import com.mercury.platform.ui.adr.AdrState;
@@ -20,8 +20,8 @@ import com.mercury.platform.ui.frame.titled.*;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.frame.setup.location.SetUpLocationCommander;
 import com.mercury.platform.ui.frame.other.SetUpLocationFrame;
-import com.mercury.platform.ui.frame.titled.chat.ChatFilterFrame;
-import com.mercury.platform.ui.frame.titled.container.HistoryFrame;
+import com.mercury.platform.ui.frame.titled.ChatScannerFrame;
+import com.mercury.platform.ui.frame.titled.HistoryFrame;
 import com.mercury.platform.ui.manager.routing.SettingsRoutManager;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.note.Note;
@@ -55,8 +55,8 @@ public class FramesManager implements AsSubscriber {
     public void start(){
         this.createTrayIcon();
 
-        AbstractOverlaidFrame incMessageFrame = new MessageFrame();
-        this.framesMap.put(MessageFrame.class,incMessageFrame);
+        AbstractOverlaidFrame incMessageFrame = new NotificationFrame();
+        this.framesMap.put(NotificationFrame.class,incMessageFrame);
         AbstractOverlaidFrame taskBarFrame = new TaskBarFrame();
         AbstractOverlaidFrame itemsMeshFrame = new ItemsGridFrame();
         this.framesMap.put(ItemsGridFrame.class,itemsMeshFrame);
@@ -78,9 +78,9 @@ public class FramesManager implements AsSubscriber {
         this.framesMap.put(SettingsFrame.class,settingsFrame);
         this.framesMap.put(TestCasesFrame.class,new TestCasesFrame());
         this.framesMap.put(TooltipFrame.class,new TooltipFrame());
-        this.framesMap.put(NotificationFrame.class,new NotificationFrame());
+        this.framesMap.put(NotificationAlertFrame.class,new NotificationAlertFrame());
         this.framesMap.put(MercuryLoadingFrame.class,new MercuryLoadingFrame());
-        this.framesMap.put(ChatFilterFrame.class,new ChatFilterFrame());
+        this.framesMap.put(ChatScannerFrame.class,new ChatScannerFrame());
         this.framesMap.put(UpdateReadyFrame.class,new UpdateReadyFrame());
         this.framesMap.put(TaskBarFrame.class,taskBarFrame);
         this.framesMap.put(SetUpLocationFrame.class,new SetUpLocationFrame());

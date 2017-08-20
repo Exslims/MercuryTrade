@@ -1,6 +1,6 @@
 package com.mercury.platform.shared;
 
-import com.mercury.platform.shared.entity.message.Message;
+import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -60,12 +60,12 @@ public class HistoryManager {
             logger.error("Error during creating history file: ", e);
         }
     }
-    public void add(Message message){
+    public void add(NotificationDescriptor notificationDescriptor){
         JSONParser parser = new JSONParser();
         try {
             JSONObject root = (JSONObject)parser.parse(new FileReader(HISTORY_FILE));
             JSONArray msgsArray = (JSONArray) root.get("messages");
-            msgsArray.add(0,message.getSourceString());
+            msgsArray.add(0, notificationDescriptor.getSourceString());
             root.replace("messages",msgsArray);
             FileWriter fileWriter = new FileWriter(HISTORY_FILE);
             fileWriter.write(root.toJSONString());

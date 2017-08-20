@@ -1,7 +1,6 @@
 package com.mercury.platform.ui.frame;
 
 import com.mercury.platform.ui.components.ComponentsFactory;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
 import com.mercury.platform.ui.frame.setup.scale.ScaleState;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 
@@ -9,12 +8,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 //todo need generalization
-public abstract class AbstractScalableComponentFrame extends AbstractComponentFrame implements HasUI{
+public abstract class AbstractScalableComponentFrame extends AbstractComponentFrame {
     protected Container mainContainer;
     private ScaleState scaleState = ScaleState.DEFAULT;
     protected ComponentsFactory stubComponentsFactory;
     private ScalableFrameConstraints prevConstraints;
-    protected boolean sizeWasChanged = false;
     protected boolean inScaleSettings = false;
 
     protected AbstractScalableComponentFrame() {
@@ -24,7 +22,6 @@ public abstract class AbstractScalableComponentFrame extends AbstractComponentFr
         MercuryStoreUI.saveScaleSubject.subscribe(this::performScaling);
         this.registerDirectScaleHandler();
     }
-
 
     protected void onScaleLock(){
         this.pack();
@@ -48,17 +45,8 @@ public abstract class AbstractScalableComponentFrame extends AbstractComponentFr
                 this.scaleState = ScaleState.DEFAULT;
                 this.setContentPane(mainContainer);
                 this.setVisible(prevConstraints.visible);
+                this.processEResize = prevConstraints.processEResize;
                 this.setBackground(prevConstraints.bgColor);
-                this.setLocation(prevConstraints.location);
-                if(sizeWasChanged){
-                    this.setPreferredSize(this.getSize());
-                    this.setMinimumSize(this.getSize());
-                    this.setMaximumSize(this.getSize());
-                    sizeWasChanged = false;
-                }else {
-                    this.setMinimumSize(prevConstraints.minSize);
-                    this.setMaximumSize(prevConstraints.maxSize);
-                }
                 this.inScaleSettings = false;
                 this.onScaleLock();
                 break;
@@ -68,14 +56,10 @@ public abstract class AbstractScalableComponentFrame extends AbstractComponentFr
                 this.scaleState = ScaleState.ENABLE;
                 this.prevConstraints = new ScalableFrameConstraints(
                         this.isVisible(),
-                        this.getMinimumSize(),
-                        this.getMaximumSize(),
-                        this.getLocation(),
-                        this.getBackground()
+                        this.processEResize, this.getBackground()
                 );
+                this.processEResize = false;
                 initDefaultView();
-                this.setLocation(this.framesConfig.get(this.getClass().getSimpleName()).getFrameLocation());
-                this.setMinimumSize(null);
                 this.setVisible(true);
                 this.onScaleUnlock();
                 break;
@@ -94,21 +78,14 @@ public abstract class AbstractScalableComponentFrame extends AbstractComponentFr
 
     protected class ScalableFrameConstraints {
         private boolean visible;
-        private Dimension minSize;
-        private Dimension maxSize;
-        private Point location;
+        private boolean processEResize;
         private Color bgColor;
 
         ScalableFrameConstraints(
-                        boolean visible,
-                        Dimension minSize,
-                        Dimension maxSize,
-                        Point location,
-                        Color bgColor) {
+                boolean visible,
+                boolean processEResize, Color bgColor) {
             this.visible = visible;
-            this.minSize = minSize;
-            this.maxSize = maxSize;
-            this.location = location;
+            this.processEResize = processEResize;
             this.bgColor = bgColor;
         }
     }

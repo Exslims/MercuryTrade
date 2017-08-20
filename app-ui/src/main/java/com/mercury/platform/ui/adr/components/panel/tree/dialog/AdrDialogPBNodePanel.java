@@ -24,7 +24,7 @@ public class AdrDialogPBNodePanel extends AdrNodePanel<AdrProgressBarDescriptor>
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         JPanel root = this.componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER));
         root.setBackground(AppThemeColor.SLIDE_BG);
         MercuryTracker tracker = new MercuryTracker(descriptor);

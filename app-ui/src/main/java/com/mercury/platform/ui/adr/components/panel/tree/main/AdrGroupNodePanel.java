@@ -33,7 +33,7 @@ public class AdrGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescriptor> {
 
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         MercuryStoreUI.adrSelectSubject.subscribe(descriptor -> {
             if(this.descriptor.equals(descriptor)){
                 this.container.setVisible(true);

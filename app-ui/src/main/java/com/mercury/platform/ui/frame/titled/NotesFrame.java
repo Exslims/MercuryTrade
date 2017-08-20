@@ -42,10 +42,8 @@ public class NotesFrame extends AbstractTitledComponentFrame {
             }
         }
     }
-
     @Override
-    protected void initialize() {
-        super.initialize();
+    public void onViewInit() {
         JPanel rootPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         rootPanel.setBorder(BorderFactory.createEmptyBorder(6,6,6,6));
 
@@ -53,9 +51,12 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         rootPanel.add(contentPanel,BorderLayout.CENTER);
         JPanel miscPanel = componentsFactory.getTransparentPanel(new BorderLayout());
 
-        showOnStartUp = new JCheckBox();
-        showOnStartUp.setBackground(AppThemeColor.TRANSPARENT);
-        showOnStartUp.setSelected(this.applicationConfig.get().isShowOnStartUp());
+        this.showOnStartUp = new JCheckBox();
+        this.showOnStartUp.setBackground(AppThemeColor.TRANSPARENT);
+        this.showOnStartUp.setSelected(this.applicationConfig.get().isShowOnStartUp());
+        this.showOnStartUp.addActionListener(action -> {
+            this.applicationConfig.get().setShowOnStartUp(showOnStartUp.isSelected());
+        });
 
         JPanel showOnStartPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         showOnStartPanel.add(showOnStartUp);
@@ -92,7 +93,7 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         JButton donate = componentsFactory.getBorderedButton("Donate");
         donate.addActionListener(action -> {
             try {
-                Desktop.getDesktop().browse(new URI("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HJVSYP4YR7V88&lc=US&item_name=MercuryTrade&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"));
+                Desktop.getDesktop().browse(new URI("https://www.paypal.me/mercurytrade"));
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
@@ -148,12 +149,11 @@ public class NotesFrame extends AbstractTitledComponentFrame {
                 if(SwingUtilities.isLeftMouseButton(e)) {
                     NotesFrame.this.setVisible(false);
                     if (type.equals(NotesType.INFO)) {
-                        applicationConfig.get().setShowOnStartUp(showOnStartUp.isSelected());
-                        MercuryStoreCore.saveConfigSubject.onNext(true);
                         FramesManager.INSTANCE.enableMovementExclude(ItemsGridFrame.class);
                     }
                     prevState = FrameVisibleState.HIDE;
                 }
+                MercuryStoreCore.saveConfigSubject.onNext(true);
             }
         });
         close.setBackground(AppThemeColor.FRAME);
@@ -267,10 +267,6 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         protected void initialize() {
             this.setMinimumSize(new Dimension(310, 60));
             this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER));
-            this.add(getProgressBarPanel(),BorderLayout.CENTER);
-            this.pack();
-            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-            this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         }
 
         private JPanel getProgressBarPanel() {
@@ -322,6 +318,14 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         @Override
         protected LayoutManager getFrameLayout() {
             return new BorderLayout();
+        }
+
+        @Override
+        public void onViewInit() {
+            this.add(getProgressBarPanel(),BorderLayout.CENTER);
+            this.pack();
+            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+            this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         }
     }
 }

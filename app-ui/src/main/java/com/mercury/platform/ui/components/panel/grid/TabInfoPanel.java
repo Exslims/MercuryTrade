@@ -3,7 +3,7 @@ package com.mercury.platform.ui.components.panel.grid;
 import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
-import com.mercury.platform.ui.components.panel.misc.HasUI;
+import com.mercury.platform.ui.components.panel.misc.ViewInit;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.NonNull;
@@ -11,26 +11,26 @@ import lombok.NonNull;
 import javax.swing.*;
 import java.awt.*;
 
-public class TabInfoPanel extends JPanel implements HasUI{
+public class TabInfoPanel extends JPanel implements ViewInit {
     private ComponentsFactory componentsFactory;
     private StashTabDescriptor stashTabDescriptor;
 
     public TabInfoPanel(@NonNull StashTabDescriptor stashTabDescriptor, @NonNull ComponentsFactory componentsFactory) {
         this.stashTabDescriptor = stashTabDescriptor;
         this.componentsFactory = componentsFactory;
-        createUI();
+        onViewInit();
     }
 
     @Override
-    public void createUI() {
+    public void onViewInit() {
         this.setLayout(new BorderLayout());
         this.setBackground(AppThemeColor.FRAME);
-        JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME_ALPHA, "Dismiss");
+        JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME, "Dismiss");
         hideButton.addActionListener((action)->{
             stashTabDescriptor.setUndefined(true);
             MercuryStoreUI.dismissTabInfoPanelSubject.onNext(this);
         });
-        JPanel tabInfoPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel tabInfoPanel = componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel tabLabel = componentsFactory.getTextLabel(stashTabDescriptor.getTitle());
         tabLabel.setBorder(null);
         tabLabel.setFont(componentsFactory.getFont(FontStyle.BOLD,15f));

@@ -5,6 +5,8 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import rx.Subscription;
 
+import javax.swing.*;
+
 
 public abstract class AdrDurationComponentPanel<T extends AdrDurationComponentDescriptor> extends AdrComponentPanel<T>{
     private Subscription adrHotKeySubscription;
@@ -16,11 +18,13 @@ public abstract class AdrDurationComponentPanel<T extends AdrDurationComponentDe
     public void subscribe() {
         super.subscribe();
         this.adrHotKeySubscription = MercuryStoreCore.hotKeySubject.subscribe(hotKey -> {
-            if(this.descriptor.getHotKeyDescriptor() != null) {
-                if (this.descriptor.getHotKeyDescriptor().equals(hotKey) && !this.inSettings) {
-                    this.onHotKeyPressed();
+            SwingUtilities.invokeLater(()-> {
+                if(this.descriptor.getHotKeyDescriptor() != null) {
+                    if (this.descriptor.getHotKeyDescriptor().equals(hotKey) && !this.inSettings) {
+                        this.onHotKeyPressed();
+                    }
                 }
-            }
+            });
         });
     }
     protected abstract void onHotKeyPressed();

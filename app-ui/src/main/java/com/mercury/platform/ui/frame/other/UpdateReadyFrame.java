@@ -24,6 +24,9 @@ public class UpdateReadyFrame extends AbstractOverlaidFrame {
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1)));
+    }
+    @Override
+    public void onViewInit() {
         this.add(getUpdatePanel());
         this.setOpacity(this.applicationConfig.get().getMaxOpacity()/100f);
         this.pack();
@@ -95,5 +98,4 @@ public class UpdateReadyFrame extends AbstractOverlaidFrame {
     protected LayoutManager getFrameLayout() {
         return new FlowLayout(FlowLayout.LEFT);
     }
-
 }

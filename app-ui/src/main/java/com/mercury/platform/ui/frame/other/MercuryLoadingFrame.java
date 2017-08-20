@@ -16,19 +16,45 @@ public class MercuryLoadingFrame extends AbstractOverlaidFrame {
     private MercuryLoading loadingTracker;
     public MercuryLoadingFrame() {
         super();
-        this.setOpacity(0f);
-        this.setBackground(AppThemeColor.TRANSPARENT);
         processingHideEvent = false;
     }
 
     @Override
     protected void initialize() {
+        this.setOpacity(0f);
+        this.setBackground(AppThemeColor.TRANSPARENT);
+    }
+
+    @Override
+    public void subscribe() {
+        MercuryStoreCore.appLoadingSubject
+                .subscribe(state -> {
+                    hideAnimation.play();
+                });
+        MercuryStoreCore.errorHandlerSubject.subscribe(error -> {
+            this.loadingTracker.abort();
+        });
+    }
+
+    @Override
+    public void showComponent() {
+        super.showComponent();
+        showAnimation.play();
+    }
+
+    @Override
+    protected LayoutManager getFrameLayout() {
+        return new FlowLayout();
+    }
+
+    @Override
+    public void onViewInit() {
         this.loadingTracker = new MercuryLoading();
         this.loadingTracker.setSwapEnable(true);
         this.loadingTracker.setLoadingUI(new MercuryAppLoadingUI(this.loadingTracker));
         this.loadingTracker.playLoop();
         this.loadingTracker.setForeground(AppThemeColor.ADR_FOOTER_BG);
-        this.loadingTracker.setBackground(AppThemeColor.BORDER_DARK);
+        this.loadingTracker.setBackground(AppThemeColor.BORDER_GREEN);
         this.loadingTracker.setPreferredSize(new Dimension(200,200));
         hideAnimation = new Timeline(this);
         hideAnimation.setDuration(400);
@@ -54,27 +80,5 @@ public class MercuryLoadingFrame extends AbstractOverlaidFrame {
         this.pack();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
-    }
-
-    @Override
-    public void subscribe() {
-        MercuryStoreCore.appLoadingSubject
-                .subscribe(state -> {
-                    hideAnimation.play();
-                });
-        MercuryStoreCore.errorHandlerSubject.subscribe(error -> {
-            this.loadingTracker.abort();
-        });
-    }
-
-    @Override
-    public void showComponent() {
-        super.showComponent();
-        showAnimation.play();
-    }
-
-    @Override
-    protected LayoutManager getFrameLayout() {
-        return new FlowLayout();
     }
 }

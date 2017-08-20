@@ -13,10 +13,10 @@ public class ProfileDescriptor {
     private Map<String,FrameDescriptor> frameDescriptorMap;
     private Map<String,SoundDescriptor> soundDescriptorMap;
     private ApplicationDescriptor applicationDescriptor;
-    private NotificationDescriptor notificationDescriptor;
+    private NotificationSettingsDescriptor notificationDescriptor;
     private ScannerDescriptor scannerDescriptor;
     private Map<String,Float> scaleDataMap;
-    private Map<String,HotKeyDescriptor> hotKeysDataMap;
+    private HotKeysSettingsDescriptor hotKeysSettingsDescriptor;
     private List<StashTabDescriptor> stashTabDescriptors;
     private List<AdrProfileDescriptor> adrProfileDescriptorList;
     private List<String> iconBundleList;

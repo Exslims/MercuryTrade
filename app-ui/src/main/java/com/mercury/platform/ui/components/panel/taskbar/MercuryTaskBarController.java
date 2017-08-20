@@ -3,8 +3,8 @@ package com.mercury.platform.ui.components.panel.taskbar;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
 import com.mercury.platform.ui.frame.movable.TaskBarFrame;
-import com.mercury.platform.ui.frame.titled.chat.ChatFilterFrame;
-import com.mercury.platform.ui.frame.titled.container.HistoryFrame;
+import com.mercury.platform.ui.frame.titled.ChatScannerFrame;
+import com.mercury.platform.ui.frame.titled.HistoryFrame;
 import com.mercury.platform.ui.frame.titled.SettingsFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
@@ -13,14 +13,14 @@ public class MercuryTaskBarController implements TaskBarController {
     @Override
     public void enableDND() {
         MercuryStoreUI.repaintSubject.onNext(TaskBarFrame.class);
-        MercuryStoreCore.notificationSubject.onNext("DND on");
+        MercuryStoreCore.alertSubject.onNext("DND on");
         MercuryStoreCore.dndSubject.onNext(true);
     }
 
     @Override
     public void disableDND() {
         MercuryStoreUI.repaintSubject.onNext(TaskBarFrame.class);
-        MercuryStoreCore.notificationSubject.onNext("DND off");
+        MercuryStoreCore.alertSubject.onNext("DND off");
         MercuryStoreCore.dndSubject.onNext(false);
     }
 
@@ -36,7 +36,7 @@ public class MercuryTaskBarController implements TaskBarController {
 
     @Override
     public void showChatFiler() {
-        FramesManager.INSTANCE.hideOrShowFrame(ChatFilterFrame.class);
+        FramesManager.INSTANCE.hideOrShowFrame(ChatScannerFrame.class);
     }
 
     @Override
