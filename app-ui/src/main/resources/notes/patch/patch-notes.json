@@ -1,9 +1,9 @@
 {
-  "version":"1.0.1.8.0",
+  "version":"1.0.1.8.1",
   "notes":[
     {
-      "title" : "Update",
-      "text" : "Just this week we've got more than 6000 new users which is insane. The update we're rolling out today affects every aspect of the application - basically a big rework of the core systems.\n\n- Notification panel rework (more info on reddit)\n- Overseer: new component \"Capture\".\n- All the buttons are now hotkeyable.\n- Chat scanner and history rework.\n- More responsive interface.\n\nA lot of work has been done, but that's it for today. Stay with us!",
+      "title" : "Hotfix",
+      "text" : "Hotfixes for the recent big update (check github/reddit):\n\n1. Now \"Escape\" is not a viable hotkey (lmao), will clear the hotkey instead.\n2. Fixed a bug with Item Grid boxes not being removed properly.\n3. Fixed a bug with panel resizing not working.\n4. Fixed Notification's Upwards Flow Direction option is not working properly.",
       "image" : "",
       "layout" : "VERTICAL"
     }

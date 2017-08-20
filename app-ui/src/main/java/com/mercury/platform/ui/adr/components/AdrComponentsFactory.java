@@ -187,12 +187,12 @@ public class AdrComponentsFactory {
         MercuryStoreCore.hotKeySubject.subscribe(hotKey -> {
             if (allowed) {
                 button.setBackground(AppThemeColor.BUTTON);
-                if (hotKey.getVirtualKeyCode() == 27) {
+                if (hotKey.getVirtualKeyCode() == 1) {
                     descriptor.setHotKeyDescriptor(new HotKeyDescriptor());
                 } else {
                     descriptor.setHotKeyDescriptor(hotKey);
                 }
-                button.setText(hotKey.getTitle());
+                button.setText(descriptor.getTitle());
                 allowed = false;
                 MercuryStoreUI.adrReloadSubject.onNext(descriptor);
                 button.addMouseListener(mouseAdapter);

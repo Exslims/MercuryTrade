@@ -77,6 +77,7 @@ public abstract class OutgoingNotificationPanel<T extends TradeNotificationDescr
 //        interactionPanel.add(backToHo);
         interactionPanel.add(openChatButton);
         interactionPanel.add(hideButton);
+        this.interactButtonMap.clear();
         this.interactButtonMap.put(HotKeyType.N_VISITE_HIDEOUT,visiteHideout);
         this.interactButtonMap.put(HotKeyType.N_TRADE_PLAYER,tradeButton);
         this.interactButtonMap.put(HotKeyType.N_LEAVE,leaveButton);
@@ -97,7 +98,9 @@ public abstract class OutgoingNotificationPanel<T extends TradeNotificationDescr
                     .stream()
                     .filter(it -> it.getType().equals(type))
                     .findAny().orElse(null);
-            this.hotKeysPool.put(hotKeyPair.getDescriptor(),button);
+            if(!hotKeyPair.getDescriptor().getTitle().equals("...")) {
+                this.hotKeysPool.put(hotKeyPair.getDescriptor(), button);
+            }
         });
         this.initResponseButtonPanel();
         Window windowAncestor = SwingUtilities.getWindowAncestor(OutgoingNotificationPanel.this);

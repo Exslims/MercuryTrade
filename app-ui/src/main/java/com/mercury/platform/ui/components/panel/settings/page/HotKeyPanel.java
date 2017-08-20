@@ -38,9 +38,9 @@ public class HotKeyPanel extends JPanel {
         MercuryStoreCore.hotKeySubject.subscribe(hotKey -> {
             if (hotKeyAllowed) {
                 button.setBackground(AppThemeColor.BUTTON);
-                if (hotKey.getVirtualKeyCode() == 27) {
+                if (hotKey.getVirtualKeyCode() == 1) {
                     this.descriptor.setTitle("...");
-                    this.descriptor.setVirtualKeyCode(0);
+                    this.descriptor.setVirtualKeyCode(-1);
                     this.descriptor.setMenuPressed(false);
                     this.descriptor.setShiftPressed(false);
                     this.descriptor.setControlPressed(false);
@@ -51,7 +51,7 @@ public class HotKeyPanel extends JPanel {
                     this.descriptor.setShiftPressed(hotKey.isShiftPressed());
                     this.descriptor.setControlPressed(hotKey.isControlPressed());
                 }
-                button.setText(hotKey.getTitle());
+                button.setText(this.descriptor.getTitle());
                 hotKeyAllowed = false;
                 button.addMouseListener(mouseAdapter);
             }

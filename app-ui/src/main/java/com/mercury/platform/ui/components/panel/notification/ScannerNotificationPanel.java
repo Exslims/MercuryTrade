@@ -76,6 +76,7 @@ public class ScannerNotificationPanel extends NotificationPanel<PlainMessageDesc
         interactionPanel.add(openChatButton);
         interactionPanel.add(hideButton);
 
+        this.interactButtonMap.clear();
         this.interactButtonMap.put(HotKeyType.N_QUICK_RESPONSE,inviteMeButton);
         this.interactButtonMap.put(HotKeyType.N_VISITE_HIDEOUT,visiteHideout);
         this.interactButtonMap.put(HotKeyType.N_TRADE_PLAYER,tradeButton);
@@ -106,7 +107,9 @@ public class ScannerNotificationPanel extends NotificationPanel<PlainMessageDesc
                     .stream()
                     .filter(it -> it.getType().equals(type))
                     .findAny().orElse(null);
-            this.hotKeysPool.put(hotKeyPair.getDescriptor(),button);
+            if(!hotKeyPair.getDescriptor().getTitle().equals("...")) {
+                this.hotKeysPool.put(hotKeyPair.getDescriptor(), button);
+            }
         });
     }
 
