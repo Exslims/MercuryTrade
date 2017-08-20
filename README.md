@@ -52,7 +52,7 @@ When you receive a trade related message or scanner message this notification pa
 You can ignore an item: sold an item 5 hours ago yet people are still spamming you with trade offers? We can't filter out this from chat, but we can make MercuryTrade ignore it! Notifications for ignored items won't appear.
 
 
-Players can enable outgoing trade offers to be diplayed as notifications as well. It has a different panel layout for the essentials such as "Visit Hideout" and "Leave" buttons.
+Outgoing trade offers and messages from chat scanner to be diplayed as notifications as well. It has a different panel layout for the essentials such as "Visit Hideout" and "Leave" buttons.
 
 <p align="center">
   <img src="http://i.imgur.com/UPncdtt.png"/>
