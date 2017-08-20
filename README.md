@@ -116,22 +116,6 @@ Mercury can highlight the stash location of the item somebody's buying. You will
 
 <p align="center"> <i>Item Grid set up.</i> </p>
 
-
-#
-
-&nbsp; *Minor feature:* **Accessibility status**
-<p align="center">
-  <img src="http://i.imgur.com/dTUrF7v.png"/>
-</p>
-
-<p align="center"> <i>Name will change its color accordingly</i> </p>
-
-
-**MercuryTrade** notifications have an **indication for when a person comes in or leaves your hideout** - that way you can offer a trade as soon as possible and keep track of all the people without even closing your stash. Especially useful for SuperTrade mode.
-
-
-Important to mention: in Path of Exile when you use your stash you can't click on party frames, because they're hidden behind the stash window. **MercuryTrade** solves this inconvenience as you can interact with the person through a related notification panel.
-
 #
 
 &nbsp; *Minor feature:* **Do not Disturb**
@@ -151,48 +135,3 @@ Activate this mode if you don't want to see (and hear!) anything from the applic
 Download and install Java on your computer, then open MercuryTrade.jar. Because the program operates on top of a Path of Exile window as an overlay, **make sure your client is not in fullscreen mode**.
 
 Upon launch you'll be greeted with a short overview of the application (identical to this ReadMe) and patch notes. Afterwards you should see **Task Panel** and **Notification Panel**.
-
-
-<br/>
-
-**Task panel**:
-
-<p align="center">
-  <img src="http://i.imgur.com/SPMqNhC.png"/>
-</p>
-
-
-* (1) **Travel to Hideout**.
-
-* (2) **Do Not Disturb** mode button switch.
-
-* (3) **Chat scanner**.
-
-* (4) **History**.
-
-* (5) **Item Grid** set up.
-
-* (6) **Panel unlock**.
-
-* (7) **Scale setting**.
-
-* (8) **Settings**.
-  
-* (9) **Exit**.
-
-<br/>
-
-**Notification panel** *(unlocked mode)*
-
-<p align="center">
-  <img src="http://i.imgur.com/ljIOEYk.png"/>
-</p>
-
-<br/>
-
-After you go through the overview, panels will be in "Unlocked" mode. This will allow you to reposition them to your taste.
-
-
-
-[![Donate](https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_150x38.png)](https://www.paypal.me/mercurytrade) 
-
