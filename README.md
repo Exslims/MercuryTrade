@@ -37,13 +37,25 @@ Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issue
 
 Overseer is essentially "a customizable and nicely looking set of overlay timers": you press a button and it tracks the time since - that's it. It's obviously 100% legit as there is no interaction with the game whatsoever. It's basically a clever trick, but gets the job done.
 
+Recently Overseer has got a new component: **Capture** - allows you to literally duplicate a part of your screen to display it somewhere else. This feature is especially neat for Vaal Skills for more convenient tracking. Also flasks, charge based abilities, UI counters etc.
+
 &nbsp; *Major feature:* **Notification**
 
 <p align="center">
   <img src="http://i.imgur.com/qOZZB96.png"/>
 </p>
 
-When you receive a trade related message this notification panel pops up. It contains all the information you need to make a decision. It offers a set of fully customizable "quick response buttons" - such as "Sold" / "No" / "Wait 3m" / etc - as well as buttons to invite, kick and trade with the person who made the offer. 
+When you receive a trade related message this notification panel pops up. It contains all the information you need to make a decision. It offers a set of fully customizable "quick response buttons" - such as "Sold" / "No" / "Wait 3m" / etc - as well as buttons to invite, kick and trade with the person who made the offer. There are also "?" - "Still Interested?" and a chat-history button. 
+
+**All the buttons are hotkeyable!**
+
+You can ignore an item: sold an item 5 hours ago yet people are still spamming you with trade offers? We can't filter out this from chat, but we can make MercuryTrade ignore it! Notifications for ignored items won't appear.
+
+
+Players can enable outgoing trade offers to be diplayed as notifications as well. It has a different panel layout for the essentials such as "Visit Hideout" and "Leave" buttons.
+
+
+
 
 <p align="center">
   <img src="http://i.imgur.com/UPncdtt.png"/>
@@ -66,7 +78,7 @@ If you've received multiple notifications before dismissing your current one, th
   <img src="http://i.imgur.com/Iw2kDCO.png"/>
 </p>
 
-<p align="center"> <i>Response buttons are fully customizable</i> </p>
+<p align="center"> <i>Not only Response buttons are fully customizable, look how many things you can actually tweak to your taste!</i> </p>
 
 
 
@@ -83,6 +95,8 @@ If you've received multiple notifications before dismissing your current one, th
 
 Each notification you receive is stored in a separate file by **MercuryTrade**. History allows you to access that file in a useful way to interact with customers. Comes in handy if you want to reach a person you traded with some time ago or in case your client has crashed - your in-game chat will be lost, but History will not.
 
+Use "Restore" button to bring back related notification.
+
 #
 
 &nbsp; *Major feature:* **Chat scanner**
@@ -90,7 +104,7 @@ Each notification you receive is stored in a separate file by **MercuryTrade**. 
   <img src="http://i.imgur.com/4IRGeWG.png"/>
 </p>
 
-Set up words to look for (or not!) in chat. Extremely useful for when buying something specific from chat.
+Set up words to look for (or not!) in chat. Extremely useful for when buying something specific from chat, looking for Trials, specific challenged and other things you might be interested in.
 
 #
 
@@ -190,5 +204,5 @@ After you go through the overview, panels will be in "Unlocked" mode. This will 
 
 
 
-
+[![Donate](https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_150x38.png)](https://www.paypal.me/mercurytrade) 
 
