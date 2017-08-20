@@ -402,17 +402,23 @@ public class AdrComponentsFactory {
         });
         return opacitySlider;
     }
-    public JSlider getFpsSlider(AdrCaptureDescriptor descriptor){
-        JSlider opacitySlider = this.componentsFactory.getSlider(1,60, descriptor.getFps());
-        opacitySlider.setBackground(AppThemeColor.SLIDE_BG);
-        opacitySlider.addMouseListener(new MouseAdapter() {
+    public JPanel getFpsSliderPanel(AdrCaptureDescriptor descriptor){
+        JPanel fpsPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.ADR_BG);
+        JLabel fpsCountLabel = this.componentsFactory.getTextLabel(String.valueOf(descriptor.getFps()));
+        fpsCountLabel.setPreferredSize(new Dimension(30,26));
+        JSlider fpsSlider = this.componentsFactory.getSlider(1,60, descriptor.getFps());
+        fpsSlider.setBackground(AppThemeColor.SLIDE_BG);
+        fpsSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                descriptor.setFps(opacitySlider.getValue());
+                descriptor.setFps(fpsSlider.getValue());
+                fpsCountLabel.setText(String.valueOf(fpsSlider.getValue()));
                 MercuryStoreUI.adrReloadSubject.onNext(descriptor);
             }
         });
-        return opacitySlider;
+        fpsPanel.add(fpsCountLabel,BorderLayout.LINE_START);
+        fpsPanel.add(fpsSlider,BorderLayout.CENTER);
+        return fpsPanel;
     }
     public JTextField getFontSizeField(AdrDurationComponentDescriptor descriptor){
         return this.getSmartField(descriptor.getFontSize(), new IntegerFieldValidator(4, 1000), value -> {

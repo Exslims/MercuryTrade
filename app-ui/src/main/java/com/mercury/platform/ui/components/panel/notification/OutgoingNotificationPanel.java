@@ -52,11 +52,11 @@ public abstract class OutgoingNotificationPanel<T extends TradeNotificationDescr
 
         JPanel interactionPanel = new JPanel(new GridLayout(1,0,6,0));
         interactionPanel.setBackground(AppThemeColor.MSG_HEADER);
-        JButton visiteHideout = componentsFactory.getIconButton("app/visiteHideout.png", 17, AppThemeColor.MSG_HEADER, TooltipConstants.INVITE);
+        JButton visiteHideout = componentsFactory.getIconButton("app/visiteHideout.png", 17, AppThemeColor.MSG_HEADER, TooltipConstants.VISIT_HO);
         visiteHideout.addActionListener(e -> this.controller.visitHideout());
         JButton tradeButton = componentsFactory.getIconButton("app/trade.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
         tradeButton.addActionListener(e -> this.controller.performOfferTrade());
-        JButton leaveButton = componentsFactory.getIconButton("app/leave.png", 17, AppThemeColor.MSG_HEADER, TooltipConstants.KICK);
+        JButton leaveButton = componentsFactory.getIconButton("app/leave.png", 17, AppThemeColor.MSG_HEADER, TooltipConstants.LEAVE);
         leaveButton.addActionListener(e -> {
             this.controller.performLeave(this.config.get().getPlayerNickname());
             if(this.config.get().isDismissAfterLeave()){

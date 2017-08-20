@@ -61,7 +61,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
             }
         });
         JPanel createCaptureComponent = this.getButton(
-                "app/adr/create_pb_group.png",
+                "app/adr/capture_icon.png",
                 "Capture");
         createCaptureComponent.addMouseListener(new MouseAdapter() {
             @Override
@@ -108,27 +108,29 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
                 new AdrImportDialog(importButton).setVisible(true);
             }
         });
+        JPanel root = this.componentsFactory.getJPanel(new GridLayout(0, 1), AppThemeColor.FRAME);
         if(this.fromGroup) {
             switch (((AdrTrackerGroupDescriptor) this.payload).getContentType()){
                 case ICONS:{
-                    container.add(this.componentsFactory.wrapToSlide(createIcon));
+                    root.add(this.componentsFactory.wrapToSlide(createIcon));
                     break;
                 }
                 case PROGRESS_BARS:{
-                    container.add(this.componentsFactory.wrapToSlide(createPb));
+                    root.add(this.componentsFactory.wrapToSlide(createPb));
                     break;
                 }
             }
         }else {
-            container.add(this.componentsFactory.wrapToSlide(createIcon));
-            container.add(this.componentsFactory.wrapToSlide(createPb));
+            root.add(this.componentsFactory.wrapToSlide(createIcon));
+            root.add(this.componentsFactory.wrapToSlide(createPb));
         }
         if(!this.fromGroup) {
-            container.add(this.componentsFactory.wrapToSlide(createIconsGroup));
-            container.add(this.componentsFactory.wrapToSlide(createPbGroup));
+            root.add(this.componentsFactory.wrapToSlide(createCaptureComponent));
+            root.add(this.componentsFactory.wrapToSlide(createIconsGroup));
+            root.add(this.componentsFactory.wrapToSlide(createPbGroup));
         }
-        container.add(this.componentsFactory.wrapToSlide(createCaptureComponent));
-        container.add(this.componentsFactory.wrapToSlide(importButton));
+        root.add(this.componentsFactory.wrapToSlide(importButton));
+        container.add(root);
         this.add(verticalContainer,BorderLayout.CENTER);
     }
 

@@ -202,6 +202,7 @@ public class AdrManager implements AsSubscriber{
                 this.selectedProfile.getContents().remove(descriptor);
                 targetFrame.dispose();
             });
+
             this.mainPanel.setFromGroup(false);
             this.mainPanel.setPayload(null);
             this.adrManagerFrame.removeNode(descriptor);

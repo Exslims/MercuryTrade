@@ -1,10 +1,20 @@
 package com.mercury.platform.ui.components.panel.taskbar;
 
+import com.mercury.platform.core.ProdStarter;
+import com.mercury.platform.shared.FrameVisibleState;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.PlainConfigurationService;
+import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
+import com.mercury.platform.shared.config.descriptor.HotKeyPair;
+import com.mercury.platform.shared.config.descriptor.HotKeyType;
+import com.mercury.platform.shared.config.descriptor.HotKeysSettingsDescriptor;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.ViewInit;
 import com.mercury.platform.ui.frame.movable.TaskBarFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import lombok.NonNull;
 
@@ -12,23 +22,49 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TaskBarPanel extends JPanel implements ViewInit {
     private ComponentsFactory componentsFactory;
     private TaskBarController controller;
-    public TaskBarPanel(@NonNull TaskBarController controller){
-        this.controller = controller;
-        this.componentsFactory = new ComponentsFactory();
-        onViewInit();
-    }
+    private Map<HotKeyType,JButton> interactButtonMap = new HashMap<>();
+    private Map<HotKeyDescriptor,JButton> hotKeysPool = new HashMap<>();
+    private PlainConfigurationService<HotKeysSettingsDescriptor> hotKeysConfig;
     public TaskBarPanel(@NonNull TaskBarController controller, @NonNull ComponentsFactory factory){
         this.controller = controller;
         this.componentsFactory = factory;
-        onViewInit();
-    }
+        this.onViewInit();
 
+        MercuryStoreCore.hotKeySubject.subscribe(hotkeyDescriptor -> {
+            SwingUtilities.invokeLater(() -> {
+                if(ProdStarter.APP_STATUS.equals(FrameVisibleState.SHOW)){
+                    JButton button = this.hotKeysPool.get(hotkeyDescriptor);
+                    if(button != null){
+                        button.doClick();
+                    }
+                }
+            });
+        });
+        MercuryStoreUI.settingsPostSubject.subscribe(state -> {
+            this.updateHotKeyPool();
+        });
+    }
+    private void updateHotKeyPool(){
+        this.hotKeysPool.clear();
+        this.interactButtonMap.forEach((type, button) -> {
+            HotKeyPair hotKeyPair = this.hotKeysConfig.get()
+                    .getTaskBarNHotKeysList()
+                    .stream()
+                    .filter(it -> it.getType().equals(type))
+                    .findAny().orElse(null);
+            this.hotKeysPool.put(hotKeyPair.getDescriptor(),button);
+        });
+    }
     @Override
     public void onViewInit() {
+        this.hotKeysConfig = Configuration.get().hotKeysConfiguration();
+
         this.setBackground(AppThemeColor.FRAME);
         this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 
@@ -181,6 +217,10 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(exitButton);
         this.add(Box.createRigidArea(new Dimension(3, 4)));
+
+        this.interactButtonMap.put(HotKeyType.T_TO_HIDEOUT,toHideOut);
+//        this.interactButtonMap.put(HotKeyType.T_DND,visibleMode);
+        this.updateHotKeyPool();
     }
 
     public int getWidthOf(int elementCount){

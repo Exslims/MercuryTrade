@@ -34,7 +34,7 @@ public class AdrCapturePagePanel extends AdrPagePanel<AdrCaptureDescriptor> {
         JPanel locationPanel = this.adrComponentsFactory.getLocationPanel(this.payload, false);
         JPanel sectorSizePanel = this.adrComponentsFactory.getCaptureSizePanel(this.payload);
         JPanel sectorLocationPanel = this.adrComponentsFactory.getCaptureLocationPanel(this.payload);
-        JSlider fpsSlider = this.adrComponentsFactory.getFpsSlider(this.payload);
+        JPanel fpsPanel = this.adrComponentsFactory.getFpsSliderPanel(this.payload);
 
         JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2,0,6));
         JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2,0,6));
@@ -50,17 +50,17 @@ public class AdrCapturePagePanel extends AdrPagePanel<AdrCaptureDescriptor> {
         generalPanel.add(titleField);
         generalPanel.add(sizeLabel);
         generalPanel.add(componentSizePanel);
-        generalPanel.add(locationLabel);
-        generalPanel.add(locationPanel);
         generalPanel.add(sectorSizeLabel);
         generalPanel.add(sectorSizePanel);
+        generalPanel.add(locationLabel);
+        generalPanel.add(locationPanel);
         generalPanel.add(sectorLocationLabel);
         generalPanel.add(sectorLocationPanel);
         generalPanel.add(fpsLabel);
-        generalPanel.add(fpsSlider);
+        generalPanel.add(fpsPanel);
 
-        specPanel.add(opacityLabel);
-        specPanel.add(opacitySlider);
+        generalPanel.add(opacityLabel);
+        generalPanel.add(opacitySlider);
 
         specPanel.setVisible(this.advancedExpanded);
 
@@ -80,7 +80,7 @@ public class AdrCapturePagePanel extends AdrPagePanel<AdrCaptureDescriptor> {
         advancedPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
 
         container.add(this.componentsFactory.wrapToSlide(generalPanel));
-        container.add(this.componentsFactory.wrapToSlide(advancedPanel));
+//        container.add(this.componentsFactory.wrapToSlide(advancedPanel));
         container.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

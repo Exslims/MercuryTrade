@@ -39,13 +39,13 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         this.outHotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getOutNHotKeysList());
         this.scannerHotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getScannerNHotKeysList());
         this.scannerSnapshot = CloneHelper.cloneObject(scannerService.get());
-        JPanel inPanel = this.adrComponentsFactory.getCounterPanel(this.getIncomingPanel(), "Incoming notification:", AppThemeColor.ADR_BG,true);
+        JPanel inPanel = this.adrComponentsFactory.getCounterPanel(this.getIncomingPanel(), "Incoming notification:", AppThemeColor.ADR_BG,false);
         inPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
-        JPanel outPanel = this.adrComponentsFactory.getCounterPanel(this.getOutgoingPanel(), "Outgoing notification:", AppThemeColor.ADR_BG,true);
+        JPanel outPanel = this.adrComponentsFactory.getCounterPanel(this.getOutgoingPanel(), "Outgoing notification:", AppThemeColor.ADR_BG,false);
         outPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
-        JPanel scannerPanel = this.adrComponentsFactory.getCounterPanel(this.getChatScannerPanel(), "Chat scanner notification:", AppThemeColor.ADR_BG,true);
+        JPanel scannerPanel = this.adrComponentsFactory.getCounterPanel(this.getChatScannerPanel(), "Chat scanner notification:", AppThemeColor.ADR_BG,false);
         scannerPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
-        this.container.add(this.componentsFactory.wrapToSlide(this.getGeneralPanel()));
+        this.container.add(this.componentsFactory.wrapToSlide(this.getGeneralPanel(),4,4,2,4));
         this.container.add(this.componentsFactory.wrapToSlide(inPanel,2,4,2,4));
         this.container.add(this.componentsFactory.wrapToSlide(outPanel,2,4,2,4));
         this.container.add(this.componentsFactory.wrapToSlide(scannerPanel,2,4,2,4));

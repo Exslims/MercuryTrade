@@ -5,6 +5,7 @@ import com.mercury.platform.core.utils.interceptor.MessageInterceptor;
 import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
+import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
 import com.mercury.platform.shared.config.descriptor.ScannerDescriptor;
 import com.mercury.platform.shared.entity.message.PlainMessageDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
@@ -25,6 +26,7 @@ import java.util.regex.Pattern;
 
 public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
     private PlainConfigurationService<ScannerDescriptor> scannerService;
+    private PlainConfigurationService<NotificationSettingsDescriptor> notificationConfig;
     private MessageInterceptor currentInterceptor;
     private Map<String,String> expiresMessages;
     private HtmlMessageBuilder messageBuilder;
@@ -41,6 +43,7 @@ public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
     @Override
     public void onViewInit() {
         this.scannerService = Configuration.get().scannerConfiguration();
+        this.notificationConfig = Configuration.get().notificationConfiguration();
         this.expiresMessages = ExpiringMap.builder()
                 .expiration(10, TimeUnit.SECONDS)
                 .build();
@@ -165,7 +168,9 @@ public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
                             descriptor.setMessage(messageBuilder.build(matcher.group(3)));
 
                             expiresMessages.put(descriptor.getNickName(), message);
-                            MercuryStoreCore.newScannerMessageSubject.onNext(descriptor);
+                            if(notificationConfig.get().isScannerNotificationEnable()) {
+                                MercuryStoreCore.newScannerMessageSubject.onNext(descriptor);
+                            }
                             MercuryStoreCore.soundSubject.onNext(SoundType.CHAT_SCANNER);
                         }
                     }

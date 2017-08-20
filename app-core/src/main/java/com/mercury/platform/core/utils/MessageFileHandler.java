@@ -27,6 +27,7 @@ public class MessageFileHandler implements AsSubscriber {
         this.datePattern = Pattern.compile(dateRGPattern);
 
         this.interceptors.add(new TradeIncMessagesInterceptor());
+        this.interceptors.add(new TradeOutMessagesInterceptor());
         this.interceptors.add(new PlainMessageInterceptor());
         this.interceptors.add(new PlayerJoinInterceptor());
         this.interceptors.add(new PlayerLeftInterceptor());

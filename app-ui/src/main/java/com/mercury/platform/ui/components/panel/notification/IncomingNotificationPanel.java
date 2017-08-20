@@ -78,7 +78,7 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
         tradeButton.addActionListener(e -> {
             this.controller.performOfferTrade();
         });
-        JButton showChatButton = componentsFactory.getIconButton("app/chat_history.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
+        JButton showChatButton = componentsFactory.getIconButton("app/chat_history.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.SWITCH_CHAT);
         showChatButton.addActionListener(e -> {
             if(this.chatPanel.isVisible()){
                 this.chatPanel.setVisible(false);

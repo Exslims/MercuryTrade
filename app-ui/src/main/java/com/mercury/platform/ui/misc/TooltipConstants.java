@@ -30,6 +30,10 @@ public class TooltipConstants {
     public static final String TRADE = "Offer Trade";
     public static final String EXPAND_COLLAPSE = "Expand / collapse";
     public static final String OPEN_CHAT = "Message this player";
+    public static final String SWITCH_CHAT = "Show chat history";
+    public static final String VISIT_HO = "Visit player's hideout";
+    public static final String LEAVE = "Leave from party";
+    public static final String QUICK_RESPONSE = "Quick response";
     public static final String HIDE_PANEL = "Close";
 
     //OutMessage tooltips

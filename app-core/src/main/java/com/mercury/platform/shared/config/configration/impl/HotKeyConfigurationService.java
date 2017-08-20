@@ -44,7 +44,7 @@ public class HotKeyConfigurationService extends BaseConfigurationService<HotKeys
 
         List<HotKeyPair> taskBarNDataList = new ArrayList<>();
         taskBarNDataList.add(new HotKeyPair(HotKeyType.T_TO_HIDEOUT,new HotKeyDescriptor("F1",NativeKeyEvent.VC_F1,false,false,false)));
-        taskBarNDataList.add(new HotKeyPair(HotKeyType.T_DND,new HotKeyDescriptor("F2",NativeKeyEvent.VC_F2,false,false,false)));
+//        taskBarNDataList.add(new HotKeyPair(HotKeyType.T_DND,new HotKeyDescriptor("F2",NativeKeyEvent.VC_F2,false,false,false)));
 
         hotKeysSettingsDescriptor.setIncNHotKeysList(incNDataList);
         hotKeysSettingsDescriptor.setOutNHotKeysList(outNDataList);

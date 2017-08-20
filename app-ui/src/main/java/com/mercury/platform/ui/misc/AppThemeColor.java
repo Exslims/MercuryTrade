@@ -13,6 +13,7 @@ public class AppThemeColor {
     public static final Color TEXT_SUCCESS = new Color(111, 173, 39);
     public static final Color TEXT_DISABLE = new Color(126,130,122);
     public static final Color BORDER = new Color(70, 81, 80);
+    public static final Color BORDER_GREEN = new Color(20, 113, 122);
     public static final Color BORDER_DARK = new Color(62, 73, 72);
     public static final Color HEADER_SELECTED_BORDER = new Color(128, 123, 95);
     public static final Color FRAME = new Color(42, 44, 43,254);

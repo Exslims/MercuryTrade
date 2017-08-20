@@ -54,7 +54,7 @@ public class MercuryLoadingFrame extends AbstractOverlaidFrame {
         this.loadingTracker.setLoadingUI(new MercuryAppLoadingUI(this.loadingTracker));
         this.loadingTracker.playLoop();
         this.loadingTracker.setForeground(AppThemeColor.ADR_FOOTER_BG);
-        this.loadingTracker.setBackground(AppThemeColor.BORDER_DARK);
+        this.loadingTracker.setBackground(AppThemeColor.BORDER_GREEN);
         this.loadingTracker.setPreferredSize(new Dimension(200,200));
         hideAnimation = new Timeline(this);
         hideAnimation.setDuration(400);

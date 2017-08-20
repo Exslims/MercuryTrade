@@ -49,13 +49,13 @@ public class ScannerNotificationPanel extends NotificationPanel<PlainMessageDesc
 
         JPanel interactionPanel = new JPanel(new GridLayout(1,0,6,0));
         interactionPanel.setBackground(AppThemeColor.MSG_HEADER);
-        JButton inviteMeButton = componentsFactory.getIconButton("app/chat_scanner_response.png", 17, AppThemeColor.MSG_HEADER, TooltipConstants.INVITE);
+        JButton inviteMeButton = componentsFactory.getIconButton("app/chat_scanner_response.png", 17, AppThemeColor.MSG_HEADER, TooltipConstants.QUICK_RESPONSE);
         inviteMeButton.addActionListener(e -> this.controller.performResponse(this.config.get().getResponseMessage()));
-        JButton visiteHideout = componentsFactory.getIconButton("app/visiteHideout.png", 17, AppThemeColor.MSG_HEADER, TooltipConstants.INVITE);
+        JButton visiteHideout = componentsFactory.getIconButton("app/visiteHideout.png", 17, AppThemeColor.MSG_HEADER, TooltipConstants.VISIT_HO);
         visiteHideout.addActionListener(e -> this.controller.visitHideout());
         JButton tradeButton = componentsFactory.getIconButton("app/trade.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
         tradeButton.addActionListener(e -> this.controller.performOfferTrade());
-        JButton leaveButton = componentsFactory.getIconButton("app/leave.png", 17, AppThemeColor.MSG_HEADER, TooltipConstants.KICK);
+        JButton leaveButton = componentsFactory.getIconButton("app/leave.png", 17, AppThemeColor.MSG_HEADER, TooltipConstants.LEAVE);
         leaveButton.addActionListener(e -> {
             this.controller.performLeave(this.nConfig.get().getPlayerNickname());
             if(this.nConfig.get().isDismissAfterLeave()){

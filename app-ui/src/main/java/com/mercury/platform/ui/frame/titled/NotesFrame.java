@@ -51,9 +51,12 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         rootPanel.add(contentPanel,BorderLayout.CENTER);
         JPanel miscPanel = componentsFactory.getTransparentPanel(new BorderLayout());
 
-        showOnStartUp = new JCheckBox();
-        showOnStartUp.setBackground(AppThemeColor.TRANSPARENT);
-        showOnStartUp.setSelected(this.applicationConfig.get().isShowOnStartUp());
+        this.showOnStartUp = new JCheckBox();
+        this.showOnStartUp.setBackground(AppThemeColor.TRANSPARENT);
+        this.showOnStartUp.setSelected(this.applicationConfig.get().isShowOnStartUp());
+        this.showOnStartUp.addActionListener(action -> {
+            this.applicationConfig.get().setShowOnStartUp(showOnStartUp.isSelected());
+        });
 
         JPanel showOnStartPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         showOnStartPanel.add(showOnStartUp);
@@ -146,12 +149,11 @@ public class NotesFrame extends AbstractTitledComponentFrame {
                 if(SwingUtilities.isLeftMouseButton(e)) {
                     NotesFrame.this.setVisible(false);
                     if (type.equals(NotesType.INFO)) {
-                        applicationConfig.get().setShowOnStartUp(showOnStartUp.isSelected());
-                        MercuryStoreCore.saveConfigSubject.onNext(true);
                         FramesManager.INSTANCE.enableMovementExclude(ItemsGridFrame.class);
                     }
                     prevState = FrameVisibleState.HIDE;
                 }
+                MercuryStoreCore.saveConfigSubject.onNext(true);
             }
         });
         close.setBackground(AppThemeColor.FRAME);
