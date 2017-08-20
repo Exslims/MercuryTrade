@@ -45,7 +45,7 @@ Recently Overseer has got a new component: **Capture** - allows you to literally
   <img src="http://i.imgur.com/qOZZB96.png"/>
 </p>
 
-When you receive a trade related message this notification panel pops up. It contains all the information you need to make a decision. It offers a set of fully customizable "quick response buttons" - such as "Sold" / "No" / "Wait 3m" / etc - as well as buttons to invite, kick and trade with the person who made the offer. There are also "?" - "Still Interested?" and a chat-history button. 
+When you receive a trade related message or scanner message this notification panel pops up. It contains all the information you need to make a decision. It offers a set of fully customizable "quick response buttons" - such as "Sold" / "No" / "Wait 3m" / etc - as well as buttons to invite, kick and trade with the person who made the offer. There are also "?" - "Still Interested?" and a chat-history button. 
 
 **All the buttons are hotkeyable!**
 
@@ -54,23 +54,13 @@ You can ignore an item: sold an item 5 hours ago yet people are still spamming y
 
 Players can enable outgoing trade offers to be diplayed as notifications as well. It has a different panel layout for the essentials such as "Visit Hideout" and "Leave" buttons.
 
-
-
-
 <p align="center">
   <img src="http://i.imgur.com/UPncdtt.png"/>
 </p>
 
 <p align="center"> <i>Multiple notifications</i> </p>
 
-If you've received multiple notifications before dismissing your current one, they will stack up like a deck of cards underneath (or on top) of each other and won't clutter the screen. Notification panels can be set up to fade out after X seconds - a customizable option.
-
-<p align="center">
-  <img src="http://i.imgur.com/KZuAT7I.png"/>
-</p>
-
-<p align="center"> <i>"Group" showcase: you received 5 notifications</i> </p>
-
+If you've received multiple notifications before dismissing your current one, they will stack up like a deck of cards underneath (or on top) of each other and won't clutter the screen.
 <p> The box on the left - "Group" - will appear if "Pre-group limit" is exceeded (this limit is also customizable). All consecutive notifications will be grouped together to save screen space. Toggling this button will expand the whole group. </p>
 
 
@@ -88,7 +78,7 @@ If you've received multiple notifications before dismissing your current one, th
 &nbsp; *Minor feature:* **History**
 
 <p align="center">
-  <img src="http://i.imgur.com/hQarj9q.png"/>
+  <img src="http://i.imgur.com/wO82SbG.png"/>
 </p>
 
 <p align="center"> <i>History</i> </p>
@@ -101,10 +91,10 @@ Use "Restore" button to bring back related notification.
 
 &nbsp; *Major feature:* **Chat scanner**
 <p align="center">
-  <img src="http://i.imgur.com/4IRGeWG.png"/>
+  <img src="http://i.imgur.com/qglL2Fb.png"/>
 </p>
 
-Set up words to look for (or not!) in chat. Extremely useful for when buying something specific from chat, looking for Trials, specific challenged and other things you might be interested in.
+Set up words to look for (or not!) in chat. Extremely useful for when buying something specific from chat, looking for Trials, specific challenged and other things you might be interested in. Works in conjunction with the notification panel.
 
 #
 
