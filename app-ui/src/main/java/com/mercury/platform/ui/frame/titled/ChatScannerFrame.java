@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
+public class ChatScannerFrame extends AbstractTitledComponentFrame {
     private PlainConfigurationService<ScannerDescriptor> scannerService;
     private PlainConfigurationService<NotificationSettingsDescriptor> notificationConfig;
     private MessageInterceptor currentInterceptor;
@@ -32,7 +32,7 @@ public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
     private HtmlMessageBuilder messageBuilder;
     private boolean running;
 
-    public ChatFilterSettingsFrame() {
+    public ChatScannerFrame() {
         super();
         this.processingHideEvent = false;
         this.setFocusableWindowState(true);
@@ -219,7 +219,7 @@ public class ChatFilterSettingsFrame extends AbstractTitledComponentFrame {
 
     @Override
     protected String getFrameTitle() {
-        return "Chat filter settings";
+        return "Chat scanner";
     }
 
     @Override

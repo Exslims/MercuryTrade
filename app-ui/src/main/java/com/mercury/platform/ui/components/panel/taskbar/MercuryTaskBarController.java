@@ -3,7 +3,7 @@ package com.mercury.platform.ui.components.panel.taskbar;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
 import com.mercury.platform.ui.frame.movable.TaskBarFrame;
-import com.mercury.platform.ui.frame.titled.ChatFilterSettingsFrame;
+import com.mercury.platform.ui.frame.titled.ChatScannerFrame;
 import com.mercury.platform.ui.frame.titled.HistoryFrame;
 import com.mercury.platform.ui.frame.titled.SettingsFrame;
 import com.mercury.platform.ui.manager.FramesManager;
@@ -36,7 +36,7 @@ public class MercuryTaskBarController implements TaskBarController {
 
     @Override
     public void showChatFiler() {
-        FramesManager.INSTANCE.hideOrShowFrame(ChatFilterSettingsFrame.class);
+        FramesManager.INSTANCE.hideOrShowFrame(ChatScannerFrame.class);
     }
 
     @Override

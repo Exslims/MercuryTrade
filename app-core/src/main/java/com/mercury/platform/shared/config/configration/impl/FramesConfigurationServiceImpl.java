@@ -68,7 +68,7 @@ public class FramesConfigurationServiceImpl extends BaseConfigurationService<Map
         minimumFrameSize.put("SettingsFrame",new Dimension(600,400));
         minimumFrameSize.put("HistoryFrame",new Dimension(280,400));
         minimumFrameSize.put("TimerFrame",new Dimension(240,102));
-        minimumFrameSize.put("ChatFilterFrame",new Dimension(400,100));
+        minimumFrameSize.put("ChatScannerFrame",new Dimension(450,100));
         minimumFrameSize.put("ItemsGridFrame",new Dimension(150,150));
         minimumFrameSize.put("NotesFrame",new Dimension(540,100));
         minimumFrameSize.put("ChatFilterSettingsFrame",new Dimension(300,200));
@@ -85,7 +85,7 @@ public class FramesConfigurationServiceImpl extends BaseConfigurationService<Map
         defaultFramesSettings.put("SettingsFrame", new FrameDescriptor(new Point(600, 600), new Dimension(800,600)));
         defaultFramesSettings.put("HistoryFrame", new FrameDescriptor(new Point(600, 500), new Dimension(280, 400)));
         defaultFramesSettings.put("TimerFrame", new FrameDescriptor(new Point(400, 600), new Dimension(240, 102)));
-        defaultFramesSettings.put("ChatFilterFrame", new FrameDescriptor(new Point(400, 600), new Dimension(500, 300)));
+        defaultFramesSettings.put("ChatScannerFrame", new FrameDescriptor(new Point(400, 600), new Dimension(550, 220)));
         defaultFramesSettings.put("ItemsGridFrame", new FrameDescriptor(new Point(12, 79), new Dimension(641, 718)));
         defaultFramesSettings.put("NotesFrame", new FrameDescriptor(new Point(400, 600), new Dimension(540, 100)));
         defaultFramesSettings.put("ChatFilterSettingsFrame", new FrameDescriptor(new Point(400, 600), new Dimension(320, 200)));

@@ -20,7 +20,7 @@ import com.mercury.platform.ui.frame.titled.*;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.frame.setup.location.SetUpLocationCommander;
 import com.mercury.platform.ui.frame.other.SetUpLocationFrame;
-import com.mercury.platform.ui.frame.titled.ChatFilterSettingsFrame;
+import com.mercury.platform.ui.frame.titled.ChatScannerFrame;
 import com.mercury.platform.ui.frame.titled.HistoryFrame;
 import com.mercury.platform.ui.manager.routing.SettingsRoutManager;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
@@ -80,7 +80,7 @@ public class FramesManager implements AsSubscriber {
         this.framesMap.put(TooltipFrame.class,new TooltipFrame());
         this.framesMap.put(NotificationAlertFrame.class,new NotificationAlertFrame());
         this.framesMap.put(MercuryLoadingFrame.class,new MercuryLoadingFrame());
-        this.framesMap.put(ChatFilterSettingsFrame.class,new ChatFilterSettingsFrame());
+        this.framesMap.put(ChatScannerFrame.class,new ChatScannerFrame());
         this.framesMap.put(UpdateReadyFrame.class,new UpdateReadyFrame());
         this.framesMap.put(TaskBarFrame.class,taskBarFrame);
         this.framesMap.put(SetUpLocationFrame.class,new SetUpLocationFrame());

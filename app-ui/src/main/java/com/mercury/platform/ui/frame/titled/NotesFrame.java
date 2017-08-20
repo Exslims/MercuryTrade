@@ -93,7 +93,7 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         JButton donate = componentsFactory.getBorderedButton("Donate");
         donate.addActionListener(action -> {
             try {
-                Desktop.getDesktop().browse(new URI("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=HJVSYP4YR7V88&lc=US&item_name=MercuryTrade&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"));
+                Desktop.getDesktop().browse(new URI("https://www.paypal.me/mercurytrade"));
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
