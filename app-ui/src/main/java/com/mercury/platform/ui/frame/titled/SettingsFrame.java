@@ -79,9 +79,9 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         JPanel root = componentsFactory.getTransparentPanel(new GridLayout(1,0));
         JButton saveButton = componentsFactory.getBorderedButton("Save",16);
         saveButton.addActionListener(e -> {
+            MercuryStoreUI.settingsSaveSubject.onNext(true);
             MercuryStoreCore.showingDelaySubject.onNext(true);
             this.hideComponent();
-            MercuryStoreUI.settingsSaveSubject.onNext(true);
         });
         JButton cancelButton = componentsFactory.getButton(
                 FontStyle.BOLD,
@@ -117,7 +117,8 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         JButton openTests = this.getOperationButton("Open tests","app/open-tests.png");
         openTests.addActionListener(action -> {
             FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
-            FramesManager.INSTANCE.preShowFrame(TestCasesFrame.class);
+            FramesManager.INSTANCE.showFrame(TestCasesFrame.class);
+//            FramesManager.INSTANCE.preShowFrame(TestCasesFrame.class);
         });
         root.add(this.componentsFactory.wrapToSlide(openTutorial));
         root.add(this.componentsFactory.wrapToSlide(checkUpdates));

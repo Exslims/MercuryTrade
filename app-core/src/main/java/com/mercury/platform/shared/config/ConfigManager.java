@@ -12,6 +12,7 @@ public interface ConfigManager {
     FramesConfigurationService framesConfiguration();
     PlainConfigurationService<ApplicationDescriptor> applicationConfiguration();
     PlainConfigurationService<NotificationSettingsDescriptor> notificationConfiguration();
+    PlainConfigurationService<TaskBarDescriptor> taskBarConfiguration();
     PlainConfigurationService<ScannerDescriptor> scannerConfiguration();
     KeyValueConfigurationService<String,SoundDescriptor> soundConfiguration();
     KeyValueConfigurationService<String,Float> scaleConfiguration();

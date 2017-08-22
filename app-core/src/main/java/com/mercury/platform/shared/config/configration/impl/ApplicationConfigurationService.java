@@ -42,9 +42,6 @@ public class ApplicationConfigurationService extends BaseConfigurationService<Ap
         descriptor.setShowOnStartUp(true);
         descriptor.setItemsGridEnable(true);
         descriptor.setCheckOutUpdate(true);
-        descriptor.setInGameDnd(false);
-        descriptor.setDndResponseText("Response text");
-        System.out.println("qwe");
         return descriptor;
     }
 

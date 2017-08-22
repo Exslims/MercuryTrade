@@ -30,6 +30,7 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
     private FramesConfigurationService framesConfigurationService;
     private PlainConfigurationService<ApplicationDescriptor> applicationConfigurationService;
     private PlainConfigurationService<NotificationSettingsDescriptor> notificationConfigurationService;
+    private PlainConfigurationService<TaskBarDescriptor> taskBarConfigurationService;
     private PlainConfigurationService<ScannerDescriptor> scannerConfigurationService;
     private KeyValueConfigurationService<String,SoundDescriptor> soundConfigurationService;
     private KeyValueConfigurationService<String,Float> scaleConfigurationService;
@@ -58,6 +59,11 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
     @Override
     public PlainConfigurationService<NotificationSettingsDescriptor> notificationConfiguration() {
         return this.notificationConfigurationService;
+    }
+
+    @Override
+    public PlainConfigurationService<TaskBarDescriptor> taskBarConfiguration() {
+        return this.taskBarConfigurationService;
     }
 
     @Override
@@ -138,6 +144,7 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
             this.framesConfigurationService = new FramesConfigurationServiceImpl(selectedProfile);
             this.soundConfigurationService = new SoundConfigurationService(selectedProfile);
             this.applicationConfigurationService = new ApplicationConfigurationService(selectedProfile);
+            this.taskBarConfigurationService = new TaskBarConfigurationService(selectedProfile);
             this.scannerConfigurationService = new ScannerConfigurationService(selectedProfile);
             this.notificationConfigurationService = new NotificationConfigurationService(selectedProfile);
             this.scaleConfigurationService = new ScaleConfigurationService(selectedProfile);
@@ -150,6 +157,7 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
             this.services.add((BaseConfigurationService) this.soundConfigurationService);
             this.services.add((BaseConfigurationService) this.applicationConfigurationService);
             this.services.add((BaseConfigurationService) this.scannerConfigurationService);
+            this.services.add((BaseConfigurationService) this.taskBarConfigurationService);
             this.services.add((BaseConfigurationService) this.notificationConfigurationService);
             this.services.add((BaseConfigurationService) this.scaleConfigurationService);
             this.services.add((BaseConfigurationService) this.stashTabConfigurationService);

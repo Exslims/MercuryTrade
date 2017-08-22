@@ -124,7 +124,7 @@ public abstract class OutgoingNotificationPanel<T extends TradeNotificationDescr
                 @Override
                 public void mouseExited(MouseEvent e) {
                     button.setBorder( BorderFactory.createCompoundBorder(
-                            BorderFactory.createLineBorder(AppThemeColor.MSG_HEADER_BORDER, 1),
+                            BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON_BORDER, 1),
                             BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON, 3)
                     ));
                 }

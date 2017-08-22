@@ -3,6 +3,7 @@ package com.mercury.platform.core;
 import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
+import com.mercury.platform.shared.config.descriptor.TaskBarDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.User32;
@@ -99,7 +100,7 @@ public class ChatHelper implements AsSubscriber {
         MercuryStoreCore.chatCommandSubject.subscribe(this::executeMessage);
         MercuryStoreCore.openChatSubject.subscribe(this::openChat);
         MercuryStoreCore.dndSubject.subscribe(state -> {
-            ApplicationDescriptor config = Configuration.get().applicationConfiguration().get();
+            TaskBarDescriptor config = Configuration.get().taskBarConfiguration().get();
             if(config.isInGameDnd()){
                 if(state) {
                     executeMessage("/dnd " + config.getDndResponseText());

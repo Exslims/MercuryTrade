@@ -14,6 +14,7 @@ public class ProfileDescriptor {
     private Map<String,SoundDescriptor> soundDescriptorMap;
     private ApplicationDescriptor applicationDescriptor;
     private NotificationSettingsDescriptor notificationDescriptor;
+    private TaskBarDescriptor taskBarDescriptor;
     private ScannerDescriptor scannerDescriptor;
     private Map<String,Float> scaleDataMap;
     private HotKeysSettingsDescriptor hotKeysSettingsDescriptor;

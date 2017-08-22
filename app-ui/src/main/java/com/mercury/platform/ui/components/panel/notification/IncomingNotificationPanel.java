@@ -218,30 +218,31 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
         Collections.sort(buttonsConfig);
         buttonsConfig.forEach((buttonConfig)->{
             JButton button = componentsFactory.getBorderedButton(buttonConfig.getTitle(),16f,AppThemeColor.RESPONSE_BUTTON, AppThemeColor.RESPONSE_BUTTON_BORDER,AppThemeColor.RESPONSE_BUTTON);
-            if(buttonConfig.getTitle().length() < 10) {
-                button.setPreferredSize(new Dimension(60, 26));
-            }
+            button.setBorder( BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON_BORDER, 1),
+                    BorderFactory.createMatteBorder(3,9,3,9, AppThemeColor.RESPONSE_BUTTON)
+            ));
             button.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     button.setBorder( BorderFactory.createCompoundBorder(
                             BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER, 1),
-                            BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON, 3)
+                            BorderFactory.createMatteBorder(3,9,3,9, AppThemeColor.RESPONSE_BUTTON)
                     ));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     button.setBorder( BorderFactory.createCompoundBorder(
-                            BorderFactory.createLineBorder(AppThemeColor.MSG_HEADER_BORDER, 1),
-                            BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON, 3)
+                            BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON_BORDER, 1),
+                            BorderFactory.createMatteBorder(3,9,3,9, AppThemeColor.RESPONSE_BUTTON)
                     ));
                 }
             });
             button.addActionListener(action -> {
                 button.setBorder( BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER, 1),
-                        BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON, 3)
+                        BorderFactory.createMatteBorder(3,9,3,9, AppThemeColor.RESPONSE_BUTTON)
                 ));
             });
             button.addActionListener(e -> {

@@ -4,10 +4,7 @@ import com.mercury.platform.core.ProdStarter;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
-import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
-import com.mercury.platform.shared.config.descriptor.HotKeyPair;
-import com.mercury.platform.shared.config.descriptor.HotKeyType;
-import com.mercury.platform.shared.config.descriptor.HotKeysSettingsDescriptor;
+import com.mercury.platform.shared.config.descriptor.*;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.ViewInit;
@@ -28,9 +25,8 @@ import java.util.Map;
 public class TaskBarPanel extends JPanel implements ViewInit {
     private ComponentsFactory componentsFactory;
     private TaskBarController controller;
-    private Map<HotKeyType,JButton> interactButtonMap = new HashMap<>();
-    private Map<HotKeyDescriptor,JButton> hotKeysPool = new HashMap<>();
-    private PlainConfigurationService<HotKeysSettingsDescriptor> hotKeysConfig;
+    private PlainConfigurationService<TaskBarDescriptor> taskBarService;
+    private JButton toHideout;
     public TaskBarPanel(@NonNull TaskBarController controller, @NonNull ComponentsFactory factory){
         this.controller = controller;
         this.componentsFactory = factory;
@@ -39,31 +35,16 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         MercuryStoreCore.hotKeySubject.subscribe(hotkeyDescriptor -> {
             SwingUtilities.invokeLater(() -> {
                 if(ProdStarter.APP_STATUS.equals(FrameVisibleState.SHOW)){
-                    JButton button = this.hotKeysPool.get(hotkeyDescriptor);
-                    if(button != null){
-                        button.doClick();
+                    if(this.taskBarService.get().getHideoutHotkey().equals(hotkeyDescriptor)){
+                        this.toHideout.doClick();
                     }
                 }
             });
         });
-        MercuryStoreUI.settingsPostSubject.subscribe(state -> {
-            this.updateHotKeyPool();
-        });
-    }
-    private void updateHotKeyPool(){
-        this.hotKeysPool.clear();
-        this.interactButtonMap.forEach((type, button) -> {
-            HotKeyPair hotKeyPair = this.hotKeysConfig.get()
-                    .getTaskBarNHotKeysList()
-                    .stream()
-                    .filter(it -> it.getType().equals(type))
-                    .findAny().orElse(null);
-            this.hotKeysPool.put(hotKeyPair.getDescriptor(),button);
-        });
     }
     @Override
     public void onViewInit() {
-        this.hotKeysConfig = Configuration.get().hotKeysConfiguration();
+        this.taskBarService = Configuration.get().taskBarConfiguration();
 
         this.setBackground(AppThemeColor.FRAME);
         this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
@@ -99,14 +80,13 @@ public class TaskBarPanel extends JPanel implements ViewInit {
             }
         });
 
-        JButton toHideOut = componentsFactory.getIconButton(
+        this.toHideout = componentsFactory.getIconButton(
                 "app/hideout.png",
                 24,
                 AppThemeColor.FRAME,
                 TooltipConstants.HIDEOUT);
-        toHideOut.addActionListener(action -> {
+        this.toHideout.addActionListener(action -> {
             this.controller.performHideout();
-            this.repaint();
         });
         JButton adr = componentsFactory.getIconButton(
                 "app/overseer_icon.png",
@@ -197,7 +177,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
             }
         });
 
-        this.add(toHideOut);
+        this.add(this.toHideout);
         this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(adr);
         this.add(Box.createRigidArea(new Dimension(3, 4)));
@@ -217,10 +197,6 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(exitButton);
         this.add(Box.createRigidArea(new Dimension(3, 4)));
-
-        this.interactButtonMap.put(HotKeyType.T_TO_HIDEOUT,toHideOut);
-//        this.interactButtonMap.put(HotKeyType.T_DND,visibleMode);
-        this.updateHotKeyPool();
     }
 
     public int getWidthOf(int elementCount){

@@ -75,7 +75,7 @@ public class SettingsRoutManager implements AsSubscriber{
             this.notificationSettings.onSave();
             this.soundSettings.onSave();
             this.taskBarSettings.onSave();
-            MercuryStoreCore.saveConfigSubject.onNext(true);
+            new Thread(() -> MercuryStoreCore.saveConfigSubject.onNext(true)).start();
             MercuryStoreUI.settingsPostSubject.onNext(true);
         });
     }

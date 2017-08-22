@@ -15,14 +15,15 @@ import java.awt.event.MouseEvent;
 public class HotKeyPanel extends JPanel {
     private HotKeyDescriptor descriptor;
     private boolean hotKeyAllowed;
-    private ComponentsFactory componentsFactory = new ComponentsFactory();
+
     public HotKeyPanel(HotKeyDescriptor descriptor) {
         super(new BorderLayout());
         this.descriptor = descriptor;
-        this.setPreferredSize(new Dimension(100,26));
+        this.setPreferredSize(new Dimension(110,26));
 
-        JButton button = this.componentsFactory.getBorderedButton(this.descriptor.getTitle());
-        button.setFont(this.componentsFactory.getFont(FontStyle.BOLD, 17f));
+        ComponentsFactory componentsFactory = new ComponentsFactory();
+        JButton button = componentsFactory.getBorderedButton(this.descriptor.getTitle());
+        button.setFont(componentsFactory.getFont(FontStyle.BOLD, 17f));
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

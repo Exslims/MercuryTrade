@@ -21,24 +21,20 @@ import java.util.List;
 public class NotificationSettingsPagePanel extends SettingsPagePanel {
     private PlainConfigurationService<NotificationSettingsDescriptor> notificationService;
     private PlainConfigurationService<HotKeysSettingsDescriptor> hotKeyService;
-    private PlainConfigurationService<ScannerDescriptor> scannerService;
     private NotificationSettingsDescriptor generalSnapshot;
     private List<HotKeyPair> incHotKeySnapshot;
     private List<HotKeyPair> outHotKeySnapshot;
     private List<HotKeyPair> scannerHotKeySnapshot;
-    private ScannerDescriptor scannerSnapshot;
 
     @Override
     public void onViewInit() {
         super.onViewInit();
         this.notificationService = Configuration.get().notificationConfiguration();
         this.hotKeyService = Configuration.get().hotKeysConfiguration();
-        this.scannerService = Configuration.get().scannerConfiguration();
         this.generalSnapshot = CloneHelper.cloneObject(notificationService.get());
         this.incHotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getIncNHotKeysList());
         this.outHotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getOutNHotKeysList());
         this.scannerHotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getScannerNHotKeysList());
-        this.scannerSnapshot = CloneHelper.cloneObject(scannerService.get());
         JPanel inPanel = this.adrComponentsFactory.getCounterPanel(this.getIncomingPanel(), "Incoming notification:", AppThemeColor.ADR_BG,false);
         inPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
         JPanel outPanel = this.adrComponentsFactory.getCounterPanel(this.getOutgoingPanel(), "Outgoing notification:", AppThemeColor.ADR_BG,false);
@@ -57,16 +53,11 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         this.hotKeyService.get().setIncNHotKeysList(CloneHelper.cloneObject(this.incHotKeySnapshot));
         this.hotKeyService.get().setOutNHotKeysList(CloneHelper.cloneObject(this.outHotKeySnapshot));
         this.hotKeyService.get().setScannerNHotKeysList(CloneHelper.cloneObject(this.scannerHotKeySnapshot));
-        this.scannerService.set(CloneHelper.cloneObject(this.scannerSnapshot));
-
-        //protect
-        this.scannerSnapshot = CloneHelper.cloneObject(scannerService.get());
-
-        MercuryStoreCore.buttonsChangedSubject.onNext(true);
     }
 
     @Override
     public void restore() {
+        this.generalSnapshot = CloneHelper.cloneObject(notificationService.get());
         this.incHotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getIncNHotKeysList());
         this.outHotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getOutNHotKeysList());
         this.scannerHotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getScannerNHotKeysList());
@@ -142,7 +133,9 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         propertiesPanel.add(showLeague);
         root.add(propertiesPanel,BorderLayout.PAGE_START);
 
-        root.add(this.wrapToCounter(this.componentsFactory.wrapToSlide(this.getResponseButtonsPanel(this.generalSnapshot.getButtons()),AppThemeColor.ADR_BG),"Response buttons:"),BorderLayout.CENTER);
+        ResponseButtonsPanel responseButtonsPanel = new ResponseButtonsPanel(this.generalSnapshot.getButtons());
+        responseButtonsPanel.onViewInit();
+        root.add(this.wrapToCounter(this.componentsFactory.wrapToSlide(responseButtonsPanel,AppThemeColor.ADR_BG),"Response buttons:"),BorderLayout.CENTER);
         root.add(this.wrapToCounter(this.componentsFactory.wrapToSlide(this.getInNotificationHotKeysPanel(),AppThemeColor.ADR_BG),"Hotkeys"),BorderLayout.PAGE_END);
         root.setVisible(false);
         return root;
@@ -152,96 +145,6 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         inner.setVisible(false);
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
         return this.componentsFactory.wrapToSlide(root,AppThemeColor.ADR_BG);
-    }
-    private JPanel getResponseButtonsPanel(List<ResponseButtonDescriptor> buttons){
-        JPanel root = this.componentsFactory.getJPanel(new BorderLayout(4,4), AppThemeColor.SETTINGS_BG);
-        JPanel buttonsTable = this.componentsFactory.getJPanel(new GridLayout(0, 1, 4, 4),AppThemeColor.SETTINGS_BG);
-        buttonsTable.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
-
-        JPanel headerPanel = this.componentsFactory.getJPanel(new BorderLayout(),AppThemeColor.SETTINGS_BG);
-
-        JLabel titleLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,"Label");
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        titleLabel.setPreferredSize(new Dimension(120,26));
-        JLabel valueLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,"Response text");
-        valueLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JLabel hotKeyLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,"");
-        hotKeyLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        hotKeyLabel.setPreferredSize(new Dimension(130,20));
-
-        JLabel closeLabel = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_DEFAULT, null,15f,"");
-        closeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        headerPanel.add(titleLabel,BorderLayout.LINE_START);
-        headerPanel.add(valueLabel,BorderLayout.CENTER);
-
-        JPanel miscPanel = this.componentsFactory.getJPanel(new BorderLayout(),AppThemeColor.SETTINGS_BG);
-        miscPanel.add(hotKeyLabel,BorderLayout.CENTER);
-        miscPanel.add(closeLabel,BorderLayout.LINE_END);
-        headerPanel.add(miscPanel,BorderLayout.LINE_END);
-
-        buttonsTable.add(headerPanel);
-
-        buttons.forEach(it -> {
-            buttonsTable.add(this.getResponseRow(it));
-        });
-        root.add(buttonsTable,BorderLayout.CENTER);
-        JButton addButton = this.componentsFactory.getIconButton("app/add_button.png", 22, AppThemeColor.HEADER, "Add button");
-        addButton.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(AppThemeColor.BORDER),
-                BorderFactory.createEmptyBorder(3,3,3,3)));
-        addButton.addActionListener(action -> {
-            ResponseButtonDescriptor descriptor = new ResponseButtonDescriptor();
-            int size = buttons.size();
-            descriptor.setId(++size);
-            buttons.add(descriptor);
-            buttonsTable.add(this.getResponseRow(descriptor));
-            MercuryStoreUI.settingsRepaintSubject.onNext(true);
-            MercuryStoreUI.settingsPackSubject.onNext(true);
-        });
-        root.add(addButton,BorderLayout.PAGE_END);
-        return root;
-    }
-    private JPanel getResponseRow(ResponseButtonDescriptor descriptor){
-        JPanel root = this.componentsFactory.getJPanel(new BorderLayout(4,4), AppThemeColor.SETTINGS_BG);
-        JTextField titleField = this.componentsFactory.getTextField(descriptor.getTitle(), FontStyle.REGULAR, 15f);
-        titleField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                descriptor.setTitle(titleField.getText());
-            }
-        });
-        titleField.setPreferredSize(new Dimension(120,26));
-        JTextField responseField = this.componentsFactory.getTextField(descriptor.getResponseText(), FontStyle.REGULAR, 15f);
-        responseField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                descriptor.setResponseText(responseField.getText());
-            }
-        });
-        root.add(this.componentsFactory.wrapToSlide(titleField,AppThemeColor.SETTINGS_BG,0,2,2,0),BorderLayout.LINE_START);
-        root.add(this.componentsFactory.wrapToSlide(responseField,AppThemeColor.SETTINGS_BG,0,0,2,0),BorderLayout.CENTER);
-
-        JPanel miscPanel = this.componentsFactory.getJPanel(new BorderLayout(4, 4),AppThemeColor.SETTINGS_BG);
-        JCheckBox checkBox = this.componentsFactory.getCheckBox(descriptor.isClose(),"Close notification panel after click?");
-        checkBox.addActionListener(action -> {
-            descriptor.setClose(checkBox.isSelected());
-        });
-        miscPanel.add(checkBox, BorderLayout.LINE_START);
-        miscPanel.add(this.componentsFactory.wrapToSlide(new HotKeyPanel(descriptor.getHotKeyDescriptor()),AppThemeColor.SETTINGS_BG,0,0,2,0),BorderLayout.CENTER);
-
-        JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 17, AppThemeColor.SETTINGS_BG, "Remove button");
-        removeButton.addActionListener(action -> {
-            root.getParent().remove(root);
-            this.generalSnapshot.getButtons().remove(descriptor);
-            MercuryStoreUI.settingsPackSubject.onNext(true);
-            MercuryStoreUI.settingsRepaintSubject.onNext(true);
-        });
-        miscPanel.add(removeButton,BorderLayout.LINE_END);
-
-        root.add(miscPanel,BorderLayout.LINE_END);
-        return root;
     }
     private JPanel getInNotificationHotKeysPanel(){
         JPanel root = this.componentsFactory.getJPanel(new GridLayout(0, 2, 4, 4),AppThemeColor.SETTINGS_BG);
@@ -289,8 +192,10 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         });
         propertiesPanel.add(closeAfterLeave);
 
+        ResponseButtonsPanel responseButtonsPanel = new ResponseButtonsPanel(this.generalSnapshot.getOutButtons());
+        responseButtonsPanel.onViewInit();
         root.add(propertiesPanel,BorderLayout.PAGE_START);
-        root.add(this.wrapToCounter(this.componentsFactory.wrapToSlide(this.getResponseButtonsPanel(this.generalSnapshot.getOutButtons()),AppThemeColor.ADR_BG),"Response buttons:"),BorderLayout.CENTER);
+        root.add(this.wrapToCounter(this.componentsFactory.wrapToSlide(responseButtonsPanel,AppThemeColor.ADR_BG),"Response buttons:"),BorderLayout.CENTER);
         root.add(this.wrapToCounter(this.componentsFactory.wrapToSlide(this.getOutNotificationHotKeysPanel(),AppThemeColor.ADR_BG),"Hotkeys:"),BorderLayout.PAGE_END);
         root.setVisible(false);
         return root;
@@ -304,20 +209,20 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         });
         propertiesPanel.add(this.componentsFactory.getTextLabel("Enabled:", FontStyle.REGULAR,16));
         propertiesPanel.add(enabled);
-        JLabel quickResponseLabel = this.componentsFactory.getIconLabel(HotKeyType.N_QUICK_RESPONSE.getIconPath(), 18);
-        quickResponseLabel.setFont(this.componentsFactory.getFont(FontStyle.REGULAR,16));
-        quickResponseLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
-        quickResponseLabel.setBorder(BorderFactory.createEmptyBorder(0,4,0,0));
-        quickResponseLabel.setText("Response message:");
-        propertiesPanel.add(quickResponseLabel);
-        JTextField quickResponseField = this.componentsFactory.getTextField(this.scannerSnapshot.getResponseMessage(), FontStyle.BOLD, 15f);
-        quickResponseField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                scannerSnapshot.setResponseMessage(quickResponseField.getText());
-            }
-        });
-        propertiesPanel.add(this.componentsFactory.wrapToSlide(quickResponseField,AppThemeColor.ADR_BG,0,0,0,4));
+//        JLabel quickResponseLabel = this.componentsFactory.getIconLabel(HotKeyType.N_QUICK_RESPONSE.getIconPath(), 18);
+//        quickResponseLabel.setFont(this.componentsFactory.getFont(FontStyle.REGULAR,16));
+//        quickResponseLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
+//        quickResponseLabel.setBorder(BorderFactory.createEmptyBorder(0,4,0,0));
+//        quickResponseLabel.setText("Response message:");
+//        propertiesPanel.add(quickResponseLabel);
+//        JTextField quickResponseField = this.componentsFactory.getTextField(this.scannerSnapshot.getResponseMessage(), FontStyle.BOLD, 15f);
+//        quickResponseField.addFocusListener(new FocusAdapter() {
+//            @Override
+//            public void focusLost(FocusEvent e) {
+//                scannerSnapshot.setResponseMessage(quickResponseField.getText());
+//            }
+//        });
+//        propertiesPanel.add(this.componentsFactory.wrapToSlide(quickResponseField,AppThemeColor.ADR_BG,0,0,0,4));
         root.add(propertiesPanel,BorderLayout.PAGE_START);
         root.add(this.wrapToCounter(this.componentsFactory.wrapToSlide(this.getScannerNotificationHotKeysPanel(),AppThemeColor.ADR_BG),"Hotkeys"),BorderLayout.CENTER);
         root.setVisible(false);

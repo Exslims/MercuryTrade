@@ -245,7 +245,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         root.setBackground(AppThemeColor.MSG_HEADER);
         root.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1,1,1,0,AppThemeColor.FRAME),
-                BorderFactory.createMatteBorder(1,1,1,1,AppThemeColor.RESPONSE_BUTTON_BORDER)));
+                BorderFactory.createMatteBorder(1,1,1,1,AppThemeColor.MSG_HEADER_BORDER)));
         String iconPath = "app/collapse-all.png";
         JButton expandButton = componentsFactory.getIconButton(iconPath,22,AppThemeColor.MSG_HEADER,"");
         expandButton.addActionListener(action -> {

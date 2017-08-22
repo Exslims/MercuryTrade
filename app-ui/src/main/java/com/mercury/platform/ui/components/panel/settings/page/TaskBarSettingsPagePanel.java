@@ -6,6 +6,7 @@ import com.mercury.platform.shared.config.configration.PlainConfigurationService
 import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
 import com.mercury.platform.shared.config.descriptor.HotKeyPair;
 import com.mercury.platform.shared.config.descriptor.HotKeysSettingsDescriptor;
+import com.mercury.platform.shared.config.descriptor.TaskBarDescriptor;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -16,27 +17,23 @@ import java.util.List;
 
 
 public class TaskBarSettingsPagePanel extends SettingsPagePanel {
-    private PlainConfigurationService<ApplicationDescriptor> applicationConfig;
-    private PlainConfigurationService<HotKeysSettingsDescriptor> hotKeyService;
-    private List<HotKeyPair> hotKeySnapshot;
-    private ApplicationDescriptor applicationSnapshot;
+    private PlainConfigurationService<TaskBarDescriptor> taskBarService;
+    private TaskBarDescriptor taskBarSnapshot;
 
     @Override
     public void onViewInit() {
         super.onViewInit();
-        this.applicationConfig = Configuration.get().applicationConfiguration();
-        this.hotKeyService = Configuration.get().hotKeysConfiguration();
-        this.applicationSnapshot = CloneHelper.cloneObject(this.applicationConfig.get());
-        this.hotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getTaskBarNHotKeysList());
+        this.taskBarService = Configuration.get().taskBarConfiguration();
+        this.taskBarSnapshot = CloneHelper.cloneObject(this.taskBarService.get());
 
         JPanel root = componentsFactory.getJPanel(new GridLayout(0,2),AppThemeColor.ADR_BG);
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
 
-        JTextField responseField = componentsFactory.getTextField(this.applicationConfig.get().getDndResponseText(), FontStyle.REGULAR, 16f);
-        responseField.setEnabled(this.applicationConfig.get().isInGameDnd());
-        JCheckBox inGameDND = this.componentsFactory.getCheckBox(this.applicationSnapshot.isInGameDnd());
+        JTextField responseField = componentsFactory.getTextField(this.taskBarSnapshot.getDndResponseText(), FontStyle.REGULAR, 16f);
+        responseField.setEnabled(this.taskBarSnapshot.isInGameDnd());
+        JCheckBox inGameDND = this.componentsFactory.getCheckBox(this.taskBarSnapshot.isInGameDnd());
         inGameDND.addActionListener(action -> {
-            this.applicationSnapshot.setInGameDnd(inGameDND.isSelected());
+            this.taskBarSnapshot.setInGameDnd(inGameDND.isSelected());
             responseField.setEnabled(inGameDND.isSelected());
         });
         root.add(componentsFactory.getTextLabel("Enable in-game dnd:", FontStyle.REGULAR));
@@ -46,25 +43,20 @@ public class TaskBarSettingsPagePanel extends SettingsPagePanel {
 
         JPanel hotKeysPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2, 4, 4),AppThemeColor.SETTINGS_BG);
         hotKeysPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
-        this.hotKeySnapshot.forEach(pair -> {
-            root.add(this.componentsFactory.getIconLabel(pair.getType().getIconPath(), 24,SwingConstants.CENTER));
-            root.add(this.componentsFactory.wrapToSlide(new HotKeyPanel(pair.getDescriptor()),AppThemeColor.SETTINGS_BG,2,4,1,1));
-
-        });
+        root.add(this.componentsFactory.getIconLabel("app/hideout.png", 24,SwingConstants.CENTER));
+        root.add(this.componentsFactory.wrapToSlide(new HotKeyPanel(this.taskBarSnapshot.getHideoutHotkey()),AppThemeColor.SETTINGS_BG,2,4,1,1));
         this.container.add(this.componentsFactory.wrapToSlide(root));
         this.container.add(this.componentsFactory.wrapToSlide(hotKeysPanel));
     }
 
     @Override
     public void onSave() {
-        this.applicationConfig.set(CloneHelper.cloneObject(this.applicationSnapshot));
-        this.hotKeyService.get().setTaskBarNHotKeysList(CloneHelper.cloneObject(this.hotKeySnapshot));
+        this.taskBarService.set(CloneHelper.cloneObject(this.taskBarSnapshot));
     }
 
     @Override
     public void restore() {
-        this.applicationSnapshot = CloneHelper.cloneObject(this.applicationConfig.get());
-        this.hotKeySnapshot = CloneHelper.cloneObject(this.hotKeyService.get().getTaskBarNHotKeysList());
+        this.taskBarSnapshot = CloneHelper.cloneObject(this.taskBarService.get());
         this.removeAll();
         this.onViewInit();
     }

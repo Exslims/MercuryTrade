@@ -25,8 +25,8 @@ public class SoundSettingsPagePanel extends SettingsPagePanel {
     private JSlider clicksSlider;
     private JSlider updateSlider;
 
-    Map<String, SoundDescriptor> soundSnapshot;
-    KeyValueConfigurationService<String,SoundDescriptor> soundConfiguration;
+    private Map<String, SoundDescriptor> soundSnapshot;
+    private KeyValueConfigurationService<String,SoundDescriptor> soundConfiguration;
     @Override
     public void onViewInit() {
         super.onViewInit();

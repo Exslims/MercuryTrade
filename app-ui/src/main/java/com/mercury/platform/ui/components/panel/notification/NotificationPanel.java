@@ -48,7 +48,7 @@ public abstract class NotificationPanel<T,C> extends JPanel implements AsSubscri
         this.setBackground(AppThemeColor.FRAME);
         this.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(1,1,1,1),
-                BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON_BORDER, 1)));
+                BorderFactory.createLineBorder(AppThemeColor.MSG_HEADER_BORDER, 1)));
     }
     public void setComponentsFactory(ComponentsFactory factory){
         this.componentsFactory = factory;

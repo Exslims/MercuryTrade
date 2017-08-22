@@ -11,5 +11,4 @@ public class HotKeysSettingsDescriptor implements Serializable {
     private List<HotKeyPair> incNHotKeysList = new ArrayList<>();
     private List<HotKeyPair> outNHotKeysList = new ArrayList<>();
     private List<HotKeyPair> scannerNHotKeysList = new ArrayList<>();
-    private List<HotKeyPair> taskBarNHotKeysList = new ArrayList<>();
 }

@@ -19,37 +19,32 @@ public class HotKeyConfigurationService extends BaseConfigurationService<HotKeys
     public HotKeysSettingsDescriptor getDefault() {
         HotKeysSettingsDescriptor hotKeysSettingsDescriptor = new HotKeysSettingsDescriptor();
         List<HotKeyPair> incNDataList = new ArrayList<>();
-        incNDataList.add(new HotKeyPair(HotKeyType.N_INVITE_PLAYER,new HotKeyDescriptor("F1", NativeKeyEvent.VC_F1,false,false,false)));
-        incNDataList.add(new HotKeyPair(HotKeyType.N_TRADE_PLAYER,new HotKeyDescriptor("F2",NativeKeyEvent.VC_F2,false,false,false)));
-        incNDataList.add(new HotKeyPair(HotKeyType.N_KICK_PLAYER,new HotKeyDescriptor("F3",NativeKeyEvent.VC_F3,false,false,false)));
-        incNDataList.add(new HotKeyPair(HotKeyType.N_STILL_INTERESTING,new HotKeyDescriptor("F4",NativeKeyEvent.VC_F4,false,false,false)));
-        incNDataList.add(new HotKeyPair(HotKeyType.N_OPEN_CHAT,new HotKeyDescriptor("F5",NativeKeyEvent.VC_F5,false,false,false)));
-        incNDataList.add(new HotKeyPair(HotKeyType.N_SWITCH_CHAT,new HotKeyDescriptor("F6",NativeKeyEvent.VC_F6,false,false,false)));
-        incNDataList.add(new HotKeyPair(HotKeyType.N_CLOSE_NOTIFICATION,new HotKeyDescriptor("F7",NativeKeyEvent.VC_F7,false,false,false)));
+        incNDataList.add(new HotKeyPair(HotKeyType.N_INVITE_PLAYER,new HotKeyDescriptor()));
+        incNDataList.add(new HotKeyPair(HotKeyType.N_TRADE_PLAYER,new HotKeyDescriptor()));
+        incNDataList.add(new HotKeyPair(HotKeyType.N_KICK_PLAYER,new HotKeyDescriptor()));
+        incNDataList.add(new HotKeyPair(HotKeyType.N_STILL_INTERESTING,new HotKeyDescriptor()));
+        incNDataList.add(new HotKeyPair(HotKeyType.N_OPEN_CHAT,new HotKeyDescriptor()));
+        incNDataList.add(new HotKeyPair(HotKeyType.N_SWITCH_CHAT,new HotKeyDescriptor()));
+        incNDataList.add(new HotKeyPair(HotKeyType.N_CLOSE_NOTIFICATION,new HotKeyDescriptor()));
 
         List<HotKeyPair> outNDataList = new ArrayList<>();
-        outNDataList.add(new HotKeyPair(HotKeyType.N_VISITE_HIDEOUT,new HotKeyDescriptor("F1", NativeKeyEvent.VC_F1,false,false,false)));
-        outNDataList.add(new HotKeyPair(HotKeyType.N_TRADE_PLAYER,new HotKeyDescriptor("F2",NativeKeyEvent.VC_F2,false,false,false)));
-        outNDataList.add(new HotKeyPair(HotKeyType.N_LEAVE,new HotKeyDescriptor("F3",NativeKeyEvent.VC_F3,false,false,false)));
-        outNDataList.add(new HotKeyPair(HotKeyType.N_OPEN_CHAT,new HotKeyDescriptor("F4",NativeKeyEvent.VC_F4,false,false,false)));
-        outNDataList.add(new HotKeyPair(HotKeyType.N_CLOSE_NOTIFICATION,new HotKeyDescriptor("F5",NativeKeyEvent.VC_F5,false,false,false)));
+        outNDataList.add(new HotKeyPair(HotKeyType.N_VISITE_HIDEOUT,new HotKeyDescriptor()));
+        outNDataList.add(new HotKeyPair(HotKeyType.N_TRADE_PLAYER,new HotKeyDescriptor()));
+        outNDataList.add(new HotKeyPair(HotKeyType.N_LEAVE,new HotKeyDescriptor()));
+        outNDataList.add(new HotKeyPair(HotKeyType.N_OPEN_CHAT,new HotKeyDescriptor()));
+        outNDataList.add(new HotKeyPair(HotKeyType.N_CLOSE_NOTIFICATION,new HotKeyDescriptor()));
 
         List<HotKeyPair> scannerNDataList = new ArrayList<>();
-        scannerNDataList.add(new HotKeyPair(HotKeyType.N_QUICK_RESPONSE,new HotKeyDescriptor("F1", NativeKeyEvent.VC_F1,false,false,false)));
-        scannerNDataList.add(new HotKeyPair(HotKeyType.N_VISITE_HIDEOUT,new HotKeyDescriptor("F2", NativeKeyEvent.VC_F2,false,false,false)));
-        scannerNDataList.add(new HotKeyPair(HotKeyType.N_TRADE_PLAYER,new HotKeyDescriptor("F3",NativeKeyEvent.VC_F3,false,false,false)));
-        scannerNDataList.add(new HotKeyPair(HotKeyType.N_LEAVE,new HotKeyDescriptor("F4",NativeKeyEvent.VC_F4,false,false,false)));
-        scannerNDataList.add(new HotKeyPair(HotKeyType.N_OPEN_CHAT,new HotKeyDescriptor("F5",NativeKeyEvent.VC_F5,false,false,false)));
-        scannerNDataList.add(new HotKeyPair(HotKeyType.N_CLOSE_NOTIFICATION,new HotKeyDescriptor("F6",NativeKeyEvent.VC_F6,false,false,false)));
-
-        List<HotKeyPair> taskBarNDataList = new ArrayList<>();
-        taskBarNDataList.add(new HotKeyPair(HotKeyType.T_TO_HIDEOUT,new HotKeyDescriptor("F1",NativeKeyEvent.VC_F1,false,false,false)));
-//        taskBarNDataList.add(new HotKeyPair(HotKeyType.T_DND,new HotKeyDescriptor("F2",NativeKeyEvent.VC_F2,false,false,false)));
+        scannerNDataList.add(new HotKeyPair(HotKeyType.N_QUICK_RESPONSE,new HotKeyDescriptor()));
+        scannerNDataList.add(new HotKeyPair(HotKeyType.N_VISITE_HIDEOUT,new HotKeyDescriptor()));
+        scannerNDataList.add(new HotKeyPair(HotKeyType.N_TRADE_PLAYER,new HotKeyDescriptor()));
+        scannerNDataList.add(new HotKeyPair(HotKeyType.N_LEAVE,new HotKeyDescriptor()));
+        scannerNDataList.add(new HotKeyPair(HotKeyType.N_OPEN_CHAT,new HotKeyDescriptor()));
+        scannerNDataList.add(new HotKeyPair(HotKeyType.N_CLOSE_NOTIFICATION,new HotKeyDescriptor()));
 
         hotKeysSettingsDescriptor.setIncNHotKeysList(incNDataList);
         hotKeysSettingsDescriptor.setOutNHotKeysList(outNDataList);
         hotKeysSettingsDescriptor.setScannerNHotKeysList(scannerNDataList);
-        hotKeysSettingsDescriptor.setTaskBarNHotKeysList(taskBarNDataList);
         return hotKeysSettingsDescriptor;
     }
 

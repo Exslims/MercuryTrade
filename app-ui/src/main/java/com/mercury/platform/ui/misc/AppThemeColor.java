@@ -27,8 +27,8 @@ public class AppThemeColor {
     public static final Color MSG_HEADER = new Color(52, 62, 61);
     public static final Color MSG_HEADER_BORDER = new Color(62, 73, 72);
 
-    public static final Color RESPONSE_BUTTON = new Color(52, 62, 61);
-    public static final Color RESPONSE_BUTTON_BORDER = new Color(70, 81, 80);
+    public static final Color RESPONSE_BUTTON = new Color(70, 80, 79);
+    public static final Color RESPONSE_BUTTON_BORDER = new Color(96, 106, 105);
 
     public static final Color ADR_SELECTED_BORDER = new Color(198, 193, 154);
     public static final Color ADR_POPUP_BG = new Color(212, 207, 171);
