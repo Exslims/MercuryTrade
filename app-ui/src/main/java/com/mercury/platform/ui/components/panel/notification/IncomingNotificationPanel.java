@@ -108,6 +108,7 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
         interactionPanel.add(openChatButton);
         interactionPanel.add(hideButton);
 
+        this.interactButtonMap.clear();
         this.interactButtonMap.put(HotKeyType.N_INVITE_PLAYER,inviteButton);
         this.interactButtonMap.put(HotKeyType.N_TRADE_PLAYER,tradeButton);
         this.interactButtonMap.put(HotKeyType.N_KICK_PLAYER,kickButton);
@@ -134,7 +135,9 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
                     .stream()
                     .filter(it -> it.getType().equals(type))
                     .findAny().orElse(null);
-            this.hotKeysPool.put(hotKeyPair.getDescriptor(),button);
+            if(!hotKeyPair.getDescriptor().getTitle().equals("...")) {
+                this.hotKeysPool.put(hotKeyPair.getDescriptor(), button);
+            }
         });
         this.initResponseButtonsPanel();
         Window windowAncestor = SwingUtilities.getWindowAncestor(IncomingNotificationPanel.this);

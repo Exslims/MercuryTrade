@@ -45,7 +45,6 @@ public abstract class AbstractScalableComponentFrame extends AbstractComponentFr
                 this.scaleState = ScaleState.DEFAULT;
                 this.setContentPane(mainContainer);
                 this.setVisible(prevConstraints.visible);
-                this.processEResize = prevConstraints.processEResize;
                 this.setBackground(prevConstraints.bgColor);
                 this.inScaleSettings = false;
                 this.onScaleLock();
@@ -58,7 +57,6 @@ public abstract class AbstractScalableComponentFrame extends AbstractComponentFr
                         this.isVisible(),
                         this.processEResize, this.getBackground()
                 );
-                this.processEResize = false;
                 initDefaultView();
                 this.setVisible(true);
                 this.onScaleUnlock();

@@ -57,7 +57,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
                 this.pack();
             }
         });
-        MercuryStoreUI.closeMessage.subscribe(message -> {
+        MercuryStoreCore.removeNotificationSubject.subscribe(message -> {
             if(message instanceof ItemTradeNotificationDescriptor) {
                 this.itemsGridPanel.remove((ItemTradeNotificationDescriptor) message);
                 if (itemsGridPanel.getActiveTabsCount() == 0) {

@@ -1,6 +1,6 @@
 [![Donate](https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_150x38.png)](https://www.paypal.me/mercurytrade) 
 
-If you want your name to be featured in our in-app Hall of Fame (see Support tab) please provide this information within the transaction!
+Already more than 10k happy users! Don't forget to support it! And if you want your name to be featured in our in-app Hall of Fame (see Support tab) please provide this information within the transaction!
 
 
 
@@ -12,7 +12,7 @@ Download MercuryTrade.jar: [Latest release](https://github.com/Exslims/MercuryTr
 
 **ALTERNATIVE LAUNCHER**: MercuryTrade.**RAR**: [Latest release](https://github.com/Exslims/MercuryTrade/releases). Unpack and run the attached .exe as administrator! Try this launcher when **something is not working**.
 
-I have a problem: [Troubleshooting](https://github.com/Exslims/MercuryTrade/wiki/Troubleshooting)
+I have a problem: [Troubleshooting](https://github.com/Exslims/MercuryTrade/wiki)
 
 Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issues) [Discord](https://discord.gg/aG9C8XJ)
 

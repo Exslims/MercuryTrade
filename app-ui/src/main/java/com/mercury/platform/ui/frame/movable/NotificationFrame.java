@@ -86,11 +86,6 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                     this.currentOffers.add(message);
                 }
                 this.addNotification(notificationPanel);
-                if(this.notificationPanels.size() > 1
-                        && this.config.get().getFlowDirections().equals(FlowDirections.UPWARDS)
-                        && !(notificationPanel instanceof ScannerNotificationPanel)){
-                    this.setLocation(new Point(this.getLocation().x,this.getLocation().y - notificationPanel.getSize().height));
-                }
             });
         });
         MercuryStoreCore.newScannerMessageSubject.subscribe(message -> {
@@ -154,8 +149,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         this.pack();
         this.repaint();
         if(this.notificationPanels.size() > 1
-                && this.config.get().getFlowDirections().equals(FlowDirections.UPWARDS)
-                && !(notificationPanel instanceof ScannerNotificationPanel)){
+                && this.config.get().getFlowDirections().equals(FlowDirections.UPWARDS)){
             this.setLocation(new Point(this.getLocation().x,this.getLocation().y - notificationPanel.getSize().height));
         }
     }
@@ -221,17 +215,6 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                 .setComponentsFactory(factory)
                 .setController(new OutStubController())
                 .build());
-        root.add(this.providersFactory
-                .getProviderFor(NotificationType.SCANNER_MESSAGE)
-                .setData(testEngine.getRandomScannerMessage())
-                .setComponentsFactory(factory)
-                .setController(new ScannerStubController())
-                .build());
-        Timer packTimer = new Timer(10, action -> {
-            this.pack();
-        });
-        packTimer.start();
-
         return root;
     }
 

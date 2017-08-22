@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.components.panel.notification.controller;
 
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
+import com.mercury.platform.shared.entity.message.MercuryError;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
@@ -63,9 +64,13 @@ public class NotificationIncomingController implements IncomingPanelController {
 
     private void copyItemNameToClipboard(@NonNull String itemName){
         Timer timer = new Timer(30, action -> {
-            StringSelection selection = new StringSelection(itemName);
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboard.setContents(selection, null);
+            try {
+                StringSelection selection = new StringSelection(itemName);
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(selection, null);
+            }catch (IllegalStateException e){
+                MercuryStoreCore.errorHandlerSubject.onNext(new MercuryError(e));
+            }
         });
         timer.setRepeats(false);
         timer.start();
