@@ -29,6 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.Timer;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -42,6 +43,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
     private NotificationPanelFactory providersFactory;
     private JPanel container;
     private JPanel expandPanel;
+    private JPanel stubExpandPanel;
     private boolean expanded;
     @Override
     protected void initialize() {
@@ -63,8 +65,9 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         this.container.setBackground(AppThemeColor.TRANSPARENT);
         this.container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
         this.expandPanel = this.getExpandPanel();
-        this.expandPanel.setVisible(false);
-        this.add(this.expandPanel,BorderLayout.LINE_START);
+        this.stubExpandPanel = this.componentsFactory.getJPanel(new BorderLayout(),AppThemeColor.TRANSPARENT);
+        this.stubExpandPanel.setPreferredSize(this.expandPanel.getPreferredSize());
+        this.add(this.stubExpandPanel, BorderLayout.LINE_START);
         this.add(this.container,BorderLayout.CENTER);
         this.setVisible(true);
         this.pack();
@@ -141,10 +144,10 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         this.container.add(notificationPanel);
         if(this.notificationPanels.size() > this.config.get().getLimitCount()){
             if(!this.expanded) {
-                notificationPanel.setPaintAlphaValue(1f);
                 notificationPanel.setVisible(false);
             }
-            this.expandPanel.setVisible(true);
+            this.remove(this.stubExpandPanel);
+            this.add(this.expandPanel,BorderLayout.LINE_START);
         }
         this.pack();
         this.repaint();
@@ -162,7 +165,8 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         this.container.remove(notificationPanel);
         this.notificationPanels.remove(notificationPanel);
         if(this.notificationPanels.size() - 1 < this.config.get().getLimitCount()){
-            this.expandPanel.setVisible(false);
+            this.remove(this.expandPanel);
+            this.add(this.stubExpandPanel,BorderLayout.LINE_START);
         }
         this.pack();
         this.repaint();
@@ -173,13 +177,34 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
     }
 
     @Override
+    protected void onScaleLock() {
+        JPanel var = this.expandPanel;
+        this.expandPanel = this.getExpandPanel();
+        this.stubExpandPanel.setPreferredSize(this.expandPanel.getPreferredSize());
+        if(this.notificationPanels.size() > this.config.get().getLimitCount()){
+            this.remove(var);
+            this.add(this.expandPanel,BorderLayout.LINE_START);
+        }
+        super.onScaleLock();
+    }
+
+    @Override
     protected JPanel getPanelForPINSettings() {
+        JPanel root = this.componentsFactory.getJPanel(new BorderLayout(),AppThemeColor.FRAME);
         JPanel panel = this.componentsFactory.getJPanel(new BorderLayout(),AppThemeColor.FRAME);
+        panel.setBorder(BorderFactory.createMatteBorder(0,1,0,0,AppThemeColor.BORDER));
         JLabel textLabel = this.componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER, 22f, "Notification panel");
         textLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        panel.add(textLabel);
-        panel.setPreferredSize(new Dimension((int)(400 * componentsFactory.getScale()), (int)(130*componentsFactory.getScale())));
-        return panel;
+        panel.add(textLabel,BorderLayout.CENTER);
+
+        JPanel limitPanel = this.componentsFactory.getJPanel(new BorderLayout(),AppThemeColor.FRAME);
+        limitPanel.setPreferredSize(this.expandPanel.getPreferredSize());
+        JLabel expandIconLabel = componentsFactory.getIconLabel("app/expand_button_pin.png",24,SwingConstants.CENTER);
+        limitPanel.add(expandIconLabel, BorderLayout.CENTER);
+        root.add(panel,BorderLayout.CENTER);
+        root.add(limitPanel,BorderLayout.LINE_START);
+        root.setPreferredSize(new Dimension((int)(400 * componentsFactory.getScale()), (int)(110*componentsFactory.getScale())));
+        return root;
     }
 
     @Override

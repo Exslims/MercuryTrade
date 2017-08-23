@@ -20,8 +20,6 @@ public class ItemIncNotificationPanel extends IncomingNotificationPanel<ItemTrad
         this.labelsPanel.setLayout(new BorderLayout());
         this.labelsPanel.setBackground(AppThemeColor.FRAME);
 
-        JPanel tradePanel = new JPanel(new BorderLayout());
-        tradePanel.setBackground(AppThemeColor.FRAME);
         JButton itemButton = componentsFactory.getButton(
                 FontStyle.BOLD,
                 AppThemeColor.BUTTON,
@@ -36,14 +34,20 @@ public class ItemIncNotificationPanel extends IncomingNotificationPanel<ItemTrad
         itemButton.addActionListener(action -> {
             this.controller.showITH();
         });
-        tradePanel.add(itemButton,BorderLayout.CENTER);
-        tradePanel.add(this.getForPanel(),BorderLayout.LINE_END);
+        this.labelsPanel.add(itemButton,BorderLayout.CENTER);
 
-        this.labelsPanel.add(tradePanel,BorderLayout.CENTER);
+        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.FRAME, TooltipConstants.OPEN_CHAT);
+        openChatButton.addActionListener(e -> controller.performOpenChat());
+        JButton stillInterestedButton = getStillInterestedButton();
+        JPanel buttons = this.componentsFactory.getJPanel(new GridLayout(1, 0, 5, 0), AppThemeColor.FRAME);
+        buttons.add(stillInterestedButton);
+        buttons.add(openChatButton);
+
         JLabel offerLabel = this.getOfferLabel();
         if(offerLabel != null) {
             this.labelsPanel.add(offerLabel, BorderLayout.PAGE_END);
         }
+        labelsPanel.add(buttons,BorderLayout.LINE_END);
         return labelsPanel;
     }
 
@@ -61,7 +65,7 @@ public class ItemIncNotificationPanel extends IncomingNotificationPanel<ItemTrad
 
     @Override
     protected JButton getStillInterestedButton() {
-        JButton stillIntButton = componentsFactory.getIconButton("app/still-interesting.png", 14, AppThemeColor.MSG_HEADER, TooltipConstants.STILL_INTERESTED);
+        JButton stillIntButton = componentsFactory.getIconButton("app/still-interesting.png", 14, AppThemeColor.FRAME, TooltipConstants.STILL_INTERESTED);
         stillIntButton.addActionListener(action-> {
             String curCount = this.data.getCurCount().toString();
             String responseText = "Hi, are you still interested in ";

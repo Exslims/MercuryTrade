@@ -37,14 +37,24 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
         super.onViewInit();
         this.config = Configuration.get().notificationConfiguration();
         this.hotKeysConfig = Configuration.get().hotKeysConfiguration();
-        this.add(this.getHeader(),BorderLayout.PAGE_START);
         this.messagePanel = this.getMessagePanel();
         this.responseButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,5,2));
         this.responseButtonsPanel.setBackground(AppThemeColor.FRAME);
         this.chatPanel = this.getChatPanel();
         this.chatPanel.setVisible(false);
+        switch (config.get().getFlowDirections()){
+            case DOWNWARDS:{
+                this.add(this.getHeader(),BorderLayout.PAGE_START);
+                this.add(this.responseButtonsPanel,BorderLayout.PAGE_END);
+                break;
+            }
+            case UPWARDS:{
+                this.add(this.getHeader(),BorderLayout.PAGE_END);
+                this.add(this.responseButtonsPanel,BorderLayout.PAGE_START);
+                break;
+            }
+        }
         this.add(this.messagePanel,BorderLayout.CENTER);
-        this.add(this.responseButtonsPanel,BorderLayout.PAGE_END);
         this.updateHotKeyPool();
     }
     private JPanel getHeader(){
@@ -57,6 +67,7 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
         nicknameLabel.setBorder(BorderFactory.createEmptyBorder(0,4,0,5));
         nickNamePanel.add(this.getExpandButton(),BorderLayout.LINE_START);
         nickNamePanel.add(nicknameLabel,BorderLayout.CENTER);
+        nickNamePanel.add(this.getForPanel(),BorderLayout.LINE_END);
         root.add(nickNamePanel,BorderLayout.CENTER);
 
         JPanel opPanel = this.componentsFactory.getJPanel(new BorderLayout(),AppThemeColor.MSG_HEADER);
@@ -103,9 +114,9 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
         interactionPanel.add(inviteButton);
         interactionPanel.add(tradeButton);
         interactionPanel.add(kickButton);
-        interactionPanel.add(stillInterestedButton);
+//        interactionPanel.add(stillInterestedButton);
         interactionPanel.add(showChatButton);
-        interactionPanel.add(openChatButton);
+//        interactionPanel.add(openChatButton);
         interactionPanel.add(hideButton);
 
         this.interactButtonMap.clear();
@@ -118,7 +129,6 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
         this.interactButtonMap.put(HotKeyType.N_CLOSE_NOTIFICATION,hideButton);
 
         JPanel timePanel = this.getTimePanel();
-        timePanel.setPreferredSize(new Dimension(50,26));
         opPanel.add(timePanel,BorderLayout.CENTER);
         opPanel.add(interactionPanel,BorderLayout.LINE_END);
 
@@ -171,8 +181,8 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
     }
     protected JPanel getForPanel(){
         JPanel forPanel = new JPanel(new BorderLayout());
-        forPanel.setPreferredSize(new Dimension(110,36));
-        forPanel.setBackground(AppThemeColor.FRAME);
+//        forPanel.setPreferredSize(new Dimension((int) (110 * this.componentsFactory.getScale()),(int) (36 * this.componentsFactory.getScale())));
+        forPanel.setBackground(AppThemeColor.MSG_HEADER);
         JLabel separator = componentsFactory.getTextLabel(
                 FontStyle.BOLD,
                 AppThemeColor.TEXT_DEFAULT,
@@ -195,9 +205,10 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
                     String.valueOf(curCount);
         }
         if(!Objects.equals(curCountStr, "") && curIconPath != null) {
-            JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + curIconPath + ".png", 28);
-            JPanel curPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-            curPanel.setBackground(AppThemeColor.FRAME);
+            JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + curIconPath + ".png", 26);
+            JPanel curPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,4,0));
+            curPanel.setPreferredSize(new Dimension((int)(this.componentsFactory.getScale() * 66),(int)(this.componentsFactory.getScale() * 26)));
+            curPanel.setBackground(AppThemeColor.MSG_HEADER);
             curPanel.add(this.componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER,17f,null, curCountStr));
             curPanel.add(currencyLabel);
             return curPanel;

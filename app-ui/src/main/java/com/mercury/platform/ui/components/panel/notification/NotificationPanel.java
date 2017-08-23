@@ -32,7 +32,7 @@ public abstract class NotificationPanel<T,C> extends JPanel implements AsSubscri
     protected Map<HotKeyDescriptor,JButton> hotKeysPool = new HashMap<>();
     protected Map<HotKeyType,JButton> interactButtonMap = new HashMap<>();
     @Setter
-    private float paintAlphaValue = 0f;
+    private float paintAlphaValue = 1f;
     @Setter
     protected float paintBorderValue = 0f;
     protected boolean blurEffect;
@@ -94,32 +94,15 @@ public abstract class NotificationPanel<T,C> extends JPanel implements AsSubscri
     }
     protected JPanel getTimePanel() {
         JPanel root = new JPanel(new BorderLayout());
+        root.setPreferredSize(new Dimension((int) (46 * this.componentsFactory.getScale()),(int) (26 * this.componentsFactory.getScale())));
         root.setBackground(AppThemeColor.MSG_HEADER);
-        JLabel timeLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MISC, TextAlignment.CENTER, 14, "0m");
-        Timer timeAgo = new Timer(60000, new ActionListener() {
-            private int minute = 0;
-            private int hours = 0;
-            private int day = 0;
-
+        JLabel timeLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MISC, TextAlignment.CENTER, 14, "0s");
+        Timer timeAgo = new Timer(1000, new ActionListener() {
+            private int seconds = 0;
             @Override
             public void actionPerformed(ActionEvent e) {
-                String labelText = "";
-                minute++;
-                if (minute > 60) {
-                    hours++;
-                    minute = 0;
-                    if (hours > 24) {
-                        day++;
-                        hours = 0;
-                    }
-                }
-                if (hours == 0 && day == 0) {
-                    labelText = minute + "m";
-                } else if (hours > 0) {
-                    labelText = hours + "h " + minute + "m";
-                } else if (day > 0) {
-                    labelText = day + "d " + hours + "h " + minute + "m";
-                }
+                seconds++;
+                String labelText = seconds + "s ";
                 timeLabel.setText(labelText);
             }
         });
