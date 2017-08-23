@@ -5,5 +5,6 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescripto
 
 public interface ProgressBarUIFactory {
     boolean isSuitable(AdrProgressBarDescriptor descriptor);
+
     MercuryProgressBarTrackerUI getUI();
 }

@@ -20,13 +20,14 @@ public enum WhisperNotifierStatus {
         }
     };
 
-    public abstract String asPretty();
-    public static WhisperNotifierStatus valueOfPretty(String s){
+    public static WhisperNotifierStatus valueOfPretty(String s) {
         for (WhisperNotifierStatus status : WhisperNotifierStatus.values()) {
-            if(status.asPretty().equals(s)){
+            if (status.asPretty().equals(s)) {
                 return status;
             }
         }
         return null;
     }
+
+    public abstract String asPretty();
 }

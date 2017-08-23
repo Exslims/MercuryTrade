@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PlainMessageInterceptor extends MessageInterceptor{
+public class PlainMessageInterceptor extends MessageInterceptor {
     private List<LocalizationMatcher> clients = new ArrayList<>();
 
     public PlainMessageInterceptor() {
@@ -30,7 +30,7 @@ public class PlainMessageInterceptor extends MessageInterceptor{
         LocalizationMatcher localizationMatcher = this.clients.stream()
                 .filter(matcher -> matcher.isSuitableFor(message))
                 .findAny().orElse(null);
-        if(localizationMatcher != null){
+        if (localizationMatcher != null) {
             localizationMatcher.processMessage(message);
         }
     }
@@ -42,14 +42,18 @@ public class PlainMessageInterceptor extends MessageInterceptor{
                         .filter(matcher -> matcher.isSuitableFor(message))
                         .findAny().orElse(null) != null;
     }
+
     private abstract class LocalizationMatcher {
         public abstract boolean isSuitableFor(String message);
+
         public abstract boolean isIncoming();
+
         public abstract String trimString(String message);
-        public void processMessage(String message){
+
+        public void processMessage(String message) {
             Pattern pattern = Pattern.compile("^(\\<.+?\\>)?\\s?(.+?):(.+)$");
             Matcher matcher = pattern.matcher(this.trimString(message));
-            if(matcher.find()){
+            if (matcher.find()) {
                 PlainMessageDescriptor descriptor = new PlainMessageDescriptor();
                 descriptor.setNickName(matcher.group(2));
                 descriptor.setMessage(matcher.group(3));
@@ -58,6 +62,7 @@ public class PlainMessageInterceptor extends MessageInterceptor{
             }
         }
     }
+
     private class EngIncLocalizationMatcher extends LocalizationMatcher {
         @Override
         public boolean isSuitableFor(String message) {
@@ -71,10 +76,11 @@ public class PlainMessageInterceptor extends MessageInterceptor{
 
         @Override
         public String trimString(String message) {
-            return StringUtils.substringAfter(message,"@From ");
+            return StringUtils.substringAfter(message, "@From ");
         }
     }
-    private class EngOutLocalizationMatcher extends LocalizationMatcher{
+
+    private class EngOutLocalizationMatcher extends LocalizationMatcher {
         @Override
         public boolean isSuitableFor(String message) {
             return message.contains("@To");
@@ -87,10 +93,11 @@ public class PlainMessageInterceptor extends MessageInterceptor{
 
         @Override
         public String trimString(String message) {
-            return StringUtils.substringAfter(message,"@To ");
+            return StringUtils.substringAfter(message, "@To ");
         }
     }
-    private class RuIncLocalizationMatcher extends LocalizationMatcher{
+
+    private class RuIncLocalizationMatcher extends LocalizationMatcher {
         @Override
         public boolean isSuitableFor(String message) {
             return message.contains("@От кого");
@@ -103,10 +110,11 @@ public class PlainMessageInterceptor extends MessageInterceptor{
 
         @Override
         public String trimString(String message) {
-            return StringUtils.substringAfter(message,"@От кого ");
+            return StringUtils.substringAfter(message, "@От кого ");
         }
     }
-    private class RuOutLocalizationMatcher extends LocalizationMatcher{
+
+    private class RuOutLocalizationMatcher extends LocalizationMatcher {
         @Override
         public boolean isSuitableFor(String message) {
             return message.contains("@Кому");
@@ -123,7 +131,8 @@ public class PlainMessageInterceptor extends MessageInterceptor{
         }
 
     }
-    private class ArabicInLocalizationMatcher extends LocalizationMatcher{
+
+    private class ArabicInLocalizationMatcher extends LocalizationMatcher {
         @Override
         public boolean isSuitableFor(String message) {
             return message.contains("@จาก");
@@ -139,7 +148,8 @@ public class PlainMessageInterceptor extends MessageInterceptor{
             return StringUtils.substringAfter(src, "@จาก");
         }
     }
-    private class ArabicOutLocalizationMatcher extends LocalizationMatcher{
+
+    private class ArabicOutLocalizationMatcher extends LocalizationMatcher {
         @Override
         public boolean isSuitableFor(String message) {
             return message.contains("@ถึง");
@@ -155,7 +165,8 @@ public class PlainMessageInterceptor extends MessageInterceptor{
             return StringUtils.substringAfter(src, "@ถึง");
         }
     }
-    private class BZIncLocalizationMatcher extends LocalizationMatcher{
+
+    private class BZIncLocalizationMatcher extends LocalizationMatcher {
         @Override
         public boolean isSuitableFor(String message) {
             return message.contains("@De");
@@ -171,7 +182,8 @@ public class PlainMessageInterceptor extends MessageInterceptor{
             return StringUtils.substringAfter(src, "@De");
         }
     }
-    private class BZOutLocalizationMatcher extends LocalizationMatcher{
+
+    private class BZOutLocalizationMatcher extends LocalizationMatcher {
         @Override
         public boolean isSuitableFor(String message) {
             return message.contains("@Para");

@@ -8,7 +8,7 @@ import com.mercury.platform.ui.components.panel.notification.controller.Notifica
 import com.mercury.platform.ui.components.panel.notification.controller.OutgoingPanelController;
 
 
-public class ItemOutPanelProvider extends NotificationPanelProvider<ItemTradeNotificationDescriptor,OutgoingPanelController> {
+public class ItemOutPanelProvider extends NotificationPanelProvider<ItemTradeNotificationDescriptor, OutgoingPanelController> {
     @Override
     public boolean isSuitable(NotificationType type) {
         return type.equals(NotificationType.OUT_ITEM_MESSAGE);

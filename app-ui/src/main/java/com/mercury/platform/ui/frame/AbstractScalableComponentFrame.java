@@ -7,13 +7,14 @@ import com.mercury.platform.ui.misc.MercuryStoreUI;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
+
 //todo need generalization
 public abstract class AbstractScalableComponentFrame extends AbstractComponentFrame {
     protected Container mainContainer;
-    private ScaleState scaleState = ScaleState.DEFAULT;
     protected ComponentsFactory stubComponentsFactory;
-    private ScalableFrameConstraints prevConstraints;
     protected boolean inScaleSettings = false;
+    private ScaleState scaleState = ScaleState.DEFAULT;
+    private ScalableFrameConstraints prevConstraints;
 
     protected AbstractScalableComponentFrame() {
         super();
@@ -23,25 +24,28 @@ public abstract class AbstractScalableComponentFrame extends AbstractComponentFr
         this.registerDirectScaleHandler();
     }
 
-    protected void onScaleLock(){
+    protected void onScaleLock() {
         this.pack();
         this.repaint();
     }
-    protected void onScaleUnlock(){
+
+    protected void onScaleUnlock() {
         this.repaint();
         this.pack();
     }
 
     protected abstract void registerDirectScaleHandler();
-    protected abstract void performScaling(Map<String,Float> scaleData);
 
-    protected void changeScale(float scale){
+    protected abstract void performScaling(Map<String, Float> scaleData);
+
+    protected void changeScale(float scale) {
         this.stubComponentsFactory.setScale(scale);
         this.initDefaultView();
     }
-    public void setState(ScaleState state){
-        switch (state){
-            case DEFAULT:{
+
+    public void setState(ScaleState state) {
+        switch (state) {
+            case DEFAULT: {
                 this.scaleState = ScaleState.DEFAULT;
                 this.setContentPane(mainContainer);
                 this.setVisible(prevConstraints.visible);
@@ -64,14 +68,16 @@ public abstract class AbstractScalableComponentFrame extends AbstractComponentFr
             }
         }
     }
-    private void initDefaultView(){
-        if(scaleState.equals(ScaleState.ENABLE)){
+
+    private void initDefaultView() {
+        if (scaleState.equals(ScaleState.ENABLE)) {
             JPanel panel = defaultView(stubComponentsFactory);
             this.setContentPane(panel);
             this.repaint();
             this.pack();
         }
     }
+
     protected abstract JPanel defaultView(ComponentsFactory factory);
 
     protected class ScalableFrameConstraints {

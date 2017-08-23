@@ -17,13 +17,15 @@ public class AdrTrackerGroupDeserializer implements JsonDeserializer<AdrTrackerG
         JsonArray cellsObj = jsonElement.getAsJsonObject().getAsJsonArray("cells");
         Gson gson = new Gson();
         AdrTrackerGroupDescriptor descriptor = gson.fromJson(jsonElement.getAsJsonObject(), AdrTrackerGroupDescriptor.class);
-        switch (AdrTrackerGroupContentType.valueOf(jsonObj.getAsString())){
-            case PROGRESS_BARS:{
-                descriptor.setCells(gson.fromJson(cellsObj,new TypeToken<List<AdrProgressBarDescriptor>>(){}.getType()));
+        switch (AdrTrackerGroupContentType.valueOf(jsonObj.getAsString())) {
+            case PROGRESS_BARS: {
+                descriptor.setCells(gson.fromJson(cellsObj, new TypeToken<List<AdrProgressBarDescriptor>>() {
+                }.getType()));
                 break;
             }
-            case ICONS:{
-                descriptor.setCells(gson.fromJson(cellsObj,new TypeToken<List<AdrIconDescriptor>>(){}.getType()));
+            case ICONS: {
+                descriptor.setCells(gson.fromJson(cellsObj, new TypeToken<List<AdrIconDescriptor>>() {
+                }.getType()));
             }
         }
         return descriptor;

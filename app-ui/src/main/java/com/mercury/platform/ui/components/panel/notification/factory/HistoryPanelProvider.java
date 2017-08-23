@@ -8,7 +8,7 @@ import com.mercury.platform.ui.components.panel.notification.NotificationPanel;
 import com.mercury.platform.ui.components.panel.notification.controller.HistoryController;
 
 
-public class HistoryPanelProvider extends NotificationPanelProvider<NotificationDescriptor,HistoryController> {
+public class HistoryPanelProvider extends NotificationPanelProvider<NotificationDescriptor, HistoryController> {
     @Override
     public boolean isSuitable(NotificationType type) {
         return type.equals(NotificationType.HISTORY);

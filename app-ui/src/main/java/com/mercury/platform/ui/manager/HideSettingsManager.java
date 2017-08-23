@@ -9,15 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HideSettingsManager {
-    private static class HideSettingsManagerHolder {
-        static final HideSettingsManager HOLDER_INSTANCE = new HideSettingsManager();
-    }
     public static HideSettingsManager INSTANCE = HideSettingsManagerHolder.HOLDER_INSTANCE;
     private List<AbstractComponentFrame> frames = new ArrayList<>();
-    public void registerFrame(AbstractComponentFrame frame){
+
+    public void registerFrame(AbstractComponentFrame frame) {
         this.frames.add(frame);
     }
-    public void apply(int fadeTime, int minOpacity, int maxOpacity){
+
+    public void apply(int fadeTime, int minOpacity, int maxOpacity) {
         ApplicationDescriptor config = Configuration.get().applicationConfiguration().get();
         config.setMaxOpacity(maxOpacity);
         config.setMinOpacity(minOpacity);
@@ -25,12 +24,16 @@ public class HideSettingsManager {
         MercuryStoreCore.saveConfigSubject.onNext(true);
 
         this.frames.forEach(frame -> {
-            if(fadeTime > 0){
-                frame.enableHideEffect(fadeTime,minOpacity,maxOpacity);
-            }else {
+            if (fadeTime > 0) {
+                frame.enableHideEffect(fadeTime, minOpacity, maxOpacity);
+            } else {
                 frame.disableHideEffect();
-                frame.setOpacity(maxOpacity/100f);
+                frame.setOpacity(maxOpacity / 100f);
             }
         });
+    }
+
+    private static class HideSettingsManagerHolder {
+        static final HideSettingsManager HOLDER_INSTANCE = new HideSettingsManager();
     }
 }

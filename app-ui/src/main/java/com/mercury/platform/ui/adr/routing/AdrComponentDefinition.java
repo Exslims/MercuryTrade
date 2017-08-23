@@ -1,7 +1,6 @@
 package com.mercury.platform.ui.adr.routing;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +20,7 @@ public class AdrComponentDefinition {
         this.operations = operations;
         this.fromGroup = fromGroup;
     }
+
     public AdrComponentDefinition(AdrComponentDescriptor descriptor, AdrComponentOperations operations, AdrComponentDescriptor parent) {
         this.descriptor = descriptor;
         this.operations = operations;

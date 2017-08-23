@@ -11,8 +11,9 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class AdrDialogCaptureNodePanel extends AdrNodePanel<AdrCaptureDescriptor>{
+public class AdrDialogCaptureNodePanel extends AdrNodePanel<AdrCaptureDescriptor> {
     private JLabel titleLabel;
+
     public AdrDialogCaptureNodePanel(AdrTreeNode<AdrComponentDescriptor> treeNode) {
         super(treeNode);
         this.mouseListener.setProcessSelect(false);
@@ -26,13 +27,13 @@ public class AdrDialogCaptureNodePanel extends AdrNodePanel<AdrCaptureDescriptor
         this.titleLabel = this.componentsFactory.getTextLabel(this.descriptor.getTitle());
         this.titleLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
         this.titleLabel.setFont(componentsFactory.getFont(FontStyle.REGULAR, 16));
-        this.titleLabel.setBorder(BorderFactory.createEmptyBorder(0,4,0,0));
+        this.titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
 
-        JLabel iconLabel = this.componentsFactory.getIconLabel("app/adr/capture_icon.png",44);
+        JLabel iconLabel = this.componentsFactory.getIconLabel("app/adr/capture_icon.png", 44);
 
-        root.add(iconLabel,BorderLayout.LINE_START);
-        root.add(titleLabel,BorderLayout.CENTER);
-        this.add(root,BorderLayout.CENTER);
+        root.add(iconLabel, BorderLayout.LINE_START);
+        root.add(titleLabel, BorderLayout.CENTER);
+        this.add(root, BorderLayout.CENTER);
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class NotificationSettingsDescriptor implements Serializable{
+public class NotificationSettingsDescriptor implements Serializable {
     private boolean incNotificationEnable = true;
     private boolean outNotificationEnable = true;
     private boolean scannerNotificationEnable = true;

@@ -8,17 +8,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
-public class MercuryTabbedPane extends JPanel{
+public class MercuryTabbedPane extends JPanel {
     private ComponentsFactory componentsFactory;
     private List<JButton> headerButtons;
 
     private JFrame owner;
     private JPanel headersPanel;
     private JPanel tabPanel;
-    public MercuryTabbedPane(JFrame owner){
+
+    public MercuryTabbedPane(JFrame owner) {
         this.owner = owner;
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.setLayout(new BorderLayout());
@@ -26,26 +27,26 @@ public class MercuryTabbedPane extends JPanel{
         headerButtons = new ArrayList<>();
         componentsFactory = new ComponentsFactory();
         headersPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        headersPanel.setBorder(BorderFactory.createEmptyBorder(0,0,-5,0));
+        headersPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, -5, 0));
 
         tabPanel = componentsFactory.getTransparentPanel(new BorderLayout());
 
-        this.add(headersPanel,BorderLayout.PAGE_START);
-        this.add(tabPanel,BorderLayout.CENTER);
+        this.add(headersPanel, BorderLayout.PAGE_START);
+        this.add(tabPanel, BorderLayout.CENTER);
     }
 
-    public void addTab(String title, JPanel component){
+    public void addTab(String title, JPanel component) {
         component.setBackground(AppThemeColor.SLIDE_BG);
         JButton tabButton = componentsFactory.getButton(
                 FontStyle.BOLD,
                 AppThemeColor.TRANSPARENT,
-                BorderFactory.createMatteBorder(1,1,0,1,AppThemeColor.HEADER),
-                title,15f);
-        tabButton.setPreferredSize(new Dimension(tabButton.getPreferredSize().width + 14,30));
+                BorderFactory.createMatteBorder(1, 1, 0, 1, AppThemeColor.HEADER),
+                title, 15f);
+        tabButton.setPreferredSize(new Dimension(tabButton.getPreferredSize().width + 14, 30));
         tabButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     tabButton.setBackground(AppThemeColor.SLIDE_BG);
 
                     headerButtons.forEach(button -> {
@@ -60,9 +61,9 @@ public class MercuryTabbedPane extends JPanel{
                 }
             }
         });
-        if(headerButtons.size() == 0){
+        if (headerButtons.size() == 0) {
             tabButton.setBackground(AppThemeColor.SLIDE_BG);
-            tabPanel.add(component,BorderLayout.CENTER);
+            tabPanel.add(component, BorderLayout.CENTER);
         }
 
         headerButtons.add(tabButton);

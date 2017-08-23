@@ -6,8 +6,12 @@ import java.util.Map;
 
 public interface IconBundleConfigurationService extends ListConfigurationService<String> {
     URL getIcon(String iconPath);
+
     List<String> getDefaultBundle();
-    Map<String,URL> getIconBundle();
+
+    Map<String, URL> getIconBundle();
+
     void addIcon(String iconPath);
+
     void removeIcon(String iconPath);
 }

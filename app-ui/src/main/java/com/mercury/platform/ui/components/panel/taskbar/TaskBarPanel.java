@@ -4,14 +4,13 @@ import com.mercury.platform.core.ProdStarter;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
-import com.mercury.platform.shared.config.descriptor.*;
+import com.mercury.platform.shared.config.descriptor.TaskBarDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.ViewInit;
 import com.mercury.platform.ui.frame.movable.TaskBarFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
 import lombok.NonNull;
 
@@ -19,35 +18,35 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TaskBarPanel extends JPanel implements ViewInit {
     private ComponentsFactory componentsFactory;
     private TaskBarController controller;
     private PlainConfigurationService<TaskBarDescriptor> taskBarService;
     private JButton toHideout;
-    public TaskBarPanel(@NonNull TaskBarController controller, @NonNull ComponentsFactory factory){
+
+    public TaskBarPanel(@NonNull TaskBarController controller, @NonNull ComponentsFactory factory) {
         this.controller = controller;
         this.componentsFactory = factory;
         this.onViewInit();
 
         MercuryStoreCore.hotKeySubject.subscribe(hotkeyDescriptor -> {
             SwingUtilities.invokeLater(() -> {
-                if(ProdStarter.APP_STATUS.equals(FrameVisibleState.SHOW)){
-                    if(this.taskBarService.get().getHideoutHotkey().equals(hotkeyDescriptor)){
+                if (ProdStarter.APP_STATUS.equals(FrameVisibleState.SHOW)) {
+                    if (this.taskBarService.get().getHideoutHotkey().equals(hotkeyDescriptor)) {
                         this.toHideout.doClick();
                     }
                 }
             });
         });
     }
+
     @Override
     public void onViewInit() {
         this.taskBarService = Configuration.get().taskBarConfiguration();
 
         this.setBackground(AppThemeColor.FRAME);
-        this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
         JButton visibleMode = componentsFactory.getIconButton(
                 "app/visible-always-mode.png",
@@ -74,7 +73,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         itemGrid.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     controller.showITH();
                 }
             }
@@ -96,7 +95,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         adr.addActionListener(action -> {
             FramesManager.INSTANCE.performAdr();
             TaskBarFrame windowAncestor = (TaskBarFrame) SwingUtilities.getWindowAncestor(TaskBarPanel.this);
-            windowAncestor.setSize(new Dimension(windowAncestor.getMIN_WIDTH(),windowAncestor.getHeight()));
+            windowAncestor.setSize(new Dimension(windowAncestor.getMIN_WIDTH(), windowAncestor.getHeight()));
             windowAncestor.pack();
         });
 
@@ -126,7 +125,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         pinButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     controller.openPINSettings();
                 }
             }
@@ -140,7 +139,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         scaleButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     controller.openScaleSettings();
                 }
             }
@@ -154,10 +153,10 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         settingsButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     controller.showSettings();
                     TaskBarFrame windowAncestor = (TaskBarFrame) SwingUtilities.getWindowAncestor(TaskBarPanel.this);
-                    windowAncestor.setSize(new Dimension(windowAncestor.getMIN_WIDTH(),windowAncestor.getHeight()));
+                    windowAncestor.setSize(new Dimension(windowAncestor.getMIN_WIDTH(), windowAncestor.getHeight()));
                     windowAncestor.pack();
                 }
             }
@@ -171,7 +170,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         exitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     controller.exit();
                 }
             }
@@ -199,8 +198,8 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         this.add(Box.createRigidArea(new Dimension(3, 4)));
     }
 
-    public int getWidthOf(int elementCount){
-        int size = this.getPreferredSize().width / (this.getComponentCount()/2);
+    public int getWidthOf(int elementCount) {
+        int size = this.getPreferredSize().width / (this.getComponentCount() / 2);
         return size * elementCount + 3;
     }
 }

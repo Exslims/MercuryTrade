@@ -1,17 +1,14 @@
 package com.mercury.platform.ui.components;
 
 import com.mercury.platform.core.misc.SoundType;
-import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
-import com.mercury.platform.ui.components.fields.style.MercuryComboBoxUI;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
+import com.mercury.platform.ui.components.fields.style.MercuryComboBoxUI;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.misc.ToggleCallback;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
-import com.sun.java.swing.plaf.windows.WindowsButtonUI;
-import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -39,7 +36,7 @@ import java.text.NumberFormat;
 /**
  * Factory for each element which uses in application
  */
-public class ComponentsFactory{
+public class ComponentsFactory {
     private final static Logger log = LogManager.getLogger(ComponentsFactory.class);
 
     private Font BOLD_FONT;
@@ -57,19 +54,19 @@ public class ComponentsFactory{
 //        UIManager.getDefaults().put("Slider.horizontalThumbIcon",this.getImage("app/slider_thumb.png"));
         UIManager.put("ComboBox.selectionBackground", AppThemeColor.HEADER);
         UIManager.put("ComboBox.selectionForeground", AppThemeColor.ADR_POPUP_BG);
-        UIManager.put("ComboBox.disabledForeground",  AppThemeColor.ADR_FOOTER_BG);
+        UIManager.put("ComboBox.disabledForeground", AppThemeColor.ADR_FOOTER_BG);
     }
 
     /**
      * Loading all application fonts
      */
-    private void loadFonts(){
+    private void loadFonts() {
         try {
             BOLD_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-Bold.ttf"));
             ITALIC_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-Italic.ttf"));
             REGULAR_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-Regular.ttf"));
             SMALLCAPS_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-SmallCaps.ttf"));
-            DEFAULT_FONT = new Font("Tahoma", Font.BOLD, (int)(scale*16));
+            DEFAULT_FONT = new Font("Tahoma", Font.BOLD, (int) (scale * 16));
 
         } catch (Exception e) {
             log.error(e);
@@ -78,18 +75,19 @@ public class ComponentsFactory{
 
     /**
      * Get button with custom params
-     * @param fontStyle path of exile font type
+     *
+     * @param fontStyle  path of exile font type
      * @param background button background
-     * @param border button border
-     * @param text default text
-     * @param fontSize font size
+     * @param border     button border
+     * @param text       default text
+     * @param fontSize   font size
      * @return JButton object
      */
-    public JButton getButton(FontStyle fontStyle, Color background, Border border, String text, float fontSize){
-        JButton button = new JButton(text){
+    public JButton getButton(FontStyle fontStyle, Color background, Border border, String text, float fontSize) {
+        JButton button = new JButton(text) {
             @Override
             protected void paintBorder(Graphics g) {
-                if(!this.getModel().isPressed()) {
+                if (!this.getModel().isPressed()) {
                     super.paintBorder(g);
                 }
             }
@@ -99,6 +97,7 @@ public class ComponentsFactory{
         button.setFocusPainted(false);
         button.addMouseListener(new MouseAdapter() {
             Border prevBorder;
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 this.prevBorder = button.getBorder();
@@ -119,14 +118,14 @@ public class ComponentsFactory{
         button.addActionListener(action -> {
             MercuryStoreCore.soundSubject.onNext(SoundType.CLICKS);
         });
-        if(isAscii(text)){
-            button.setFont(getSelectedFont(fontStyle).deriveFont(scale*fontSize));
-        }else {
-            button.setFont(DEFAULT_FONT.deriveFont(scale*fontSize));
+        if (isAscii(text)) {
+            button.setFont(getSelectedFont(fontStyle).deriveFont(scale * fontSize));
+        } else {
+            button.setFont(DEFAULT_FONT.deriveFont(scale * fontSize));
         }
         button.setBorder(border);
-        button.addChangeListener(e->{
-            if(!button.getModel().isPressed()){
+        button.addChangeListener(e -> {
+            if (!button.getModel().isPressed()) {
                 button.setBackground(button.getBackground());
             }
         });
@@ -135,54 +134,59 @@ public class ComponentsFactory{
 
     /**
      * Get button with default properties
+     *
      * @param text text on button
      * @return Default app button
      */
-    public JButton getButton(String text){
+    public JButton getButton(String text) {
         CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 1),
                 BorderFactory.createLineBorder(AppThemeColor.BUTTON, 3)
         );
 
-        return getButton(FontStyle.BOLD, AppThemeColor.BUTTON, compoundBorder, text, scale*14f);
+        return getButton(FontStyle.BOLD, AppThemeColor.BUTTON, compoundBorder, text, scale * 14f);
     }
 
     /**
      * Get bordered button with default properties.
+     *
      * @param text text on button
      * @return Default bordered app button
      */
-    public JButton getBorderedButton(String text){
+    public JButton getBorderedButton(String text) {
         CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
                 BorderFactory.createLineBorder(AppThemeColor.BUTTON, 3)
         );
-        return getButton(FontStyle.BOLD, AppThemeColor.BUTTON, compoundBorder, text, scale*14f);
+        return getButton(FontStyle.BOLD, AppThemeColor.BUTTON, compoundBorder, text, scale * 14f);
     }
-    public JButton getBorderedButton(String text, float fontSize){
+
+    public JButton getBorderedButton(String text, float fontSize) {
         CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
                 BorderFactory.createLineBorder(AppThemeColor.BUTTON, 3)
         );
-        return getButton(FontStyle.BOLD, AppThemeColor.BUTTON, compoundBorder, text, scale*fontSize);
+        return getButton(FontStyle.BOLD, AppThemeColor.BUTTON, compoundBorder, text, scale * fontSize);
     }
-    public JButton getBorderedButton(String text, float fontSize, Color background, Color outerBorderColor, Color innerBorderColor){
+
+    public JButton getBorderedButton(String text, float fontSize, Color background, Color outerBorderColor, Color innerBorderColor) {
         CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(outerBorderColor, 1),
                 BorderFactory.createLineBorder(innerBorderColor, 3)
         );
-        return getButton(FontStyle.BOLD, background, compoundBorder, text, scale*fontSize);
+        return getButton(FontStyle.BOLD, background, compoundBorder, text, scale * fontSize);
     }
 
-    public Component setUpToggleCallbacks(Component button,ToggleCallback firstState, ToggleCallback secondState, boolean initialState){
+    public Component setUpToggleCallbacks(Component button, ToggleCallback firstState, ToggleCallback secondState, boolean initialState) {
         button.addMouseListener(new MouseAdapter() {
             private boolean state = initialState;
+
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(state){
+                if (state) {
                     firstState.onToggle();
                     state = false;
-                }else {
+                } else {
                     secondState.onToggle();
                     state = true;
                 }
@@ -193,42 +197,44 @@ public class ComponentsFactory{
 
     /**
      * Get button with icon
+     *
      * @param iconPath icon path from maven resources
      * @param iconSize icon size
      * @return JButton object with icon
      */
-    public JButton getIconButton(String iconPath, float iconSize, Color background, String tooltip){
-        JButton button = new JButton(""){
+    public JButton getIconButton(String iconPath, float iconSize, Color background, String tooltip) {
+        JButton button = new JButton("") {
             @Override
             protected void paintBorder(Graphics g) {
-                if(!this.getModel().isPressed()) {
+                if (!this.getModel().isPressed()) {
                     super.paintBorder(g);
                 }
             }
         };
         button.setBackground(background);
         button.setFocusPainted(false);
-        button.addChangeListener(e->{
-            if(!button.getModel().isPressed()){
+        button.addChangeListener(e -> {
+            if (!button.getModel().isPressed()) {
                 button.setBackground(button.getBackground());
             }
         });
-        if(tooltip.length() > 0) {
+        if (tooltip.length() > 0) {
             button.addMouseListener(new TooltipMouseListener(tooltip));
         }
-        button.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+        button.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
         button.addActionListener(action -> {
             MercuryStoreCore.soundSubject.onNext(SoundType.CLICKS);
-            button.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+            button.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
         });
         button.addMouseListener(new MouseAdapter() {
             Border prevBorder;
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 prevBorder = button.getBorder();
                 button.setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER),
-                        BorderFactory.createEmptyBorder(3,3,3,3)));
+                        BorderFactory.createEmptyBorder(3, 3, 3, 3)));
                 button.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
 
@@ -239,50 +245,53 @@ public class ComponentsFactory{
             }
 
         });
-        button.setBorder(BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,4));
+        button.setBorder(BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 4));
         button.setVerticalAlignment(SwingConstants.CENTER);
         BufferedImage icon = null;
         try {
             BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
-            icon = Scalr.resize(buttonIcon, (int)(scale*iconSize));
+            icon = Scalr.resize(buttonIcon, (int) (scale * iconSize));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(icon != null){
+        if (icon != null) {
             button.setIcon(new ImageIcon(icon));
         }
         return button;
     }
 
-    public JButton getIconifiedTransparentButton(String iconPath, String tooltip){
+    public JButton getIconifiedTransparentButton(String iconPath, String tooltip) {
         JButton iconButton = getIconButton(iconPath, 10, AppThemeColor.FRAME_RGB, tooltip);
         iconButton.setIcon(getImage(iconPath));
         return iconButton;
     }
+
     /**
      * Get bordered default button with icon
+     *
      * @param iconPath icon path from maven resources
      * @param iconSize icon size
      * @return bordered JButton with icon
      */
-    public JButton getBorderedIconButton(String iconPath, int iconSize, String tooltip){
+    public JButton getBorderedIconButton(String iconPath, int iconSize, String tooltip) {
         CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
                 BorderFactory.createLineBorder(AppThemeColor.BUTTON, 2)
         );
-        JButton iconButton = getIconButton(iconPath, iconSize, AppThemeColor.FRAME_ALPHA,tooltip);
+        JButton iconButton = getIconButton(iconPath, iconSize, AppThemeColor.FRAME_ALPHA, tooltip);
         iconButton.setBorder(BorderFactory.createLineBorder(AppThemeColor.BUTTON, 2));
         return iconButton;
     }
 
     /**
      * Get icon button with custom size
-     * @param iconPath icon path from maven resources
-     * @param iconSize icon size
+     *
+     * @param iconPath   icon path from maven resources
+     * @param iconSize   icon size
      * @param buttonSize button size (its only preferred)
      * @return JButton with icon
      */
-    public JButton getIconButton(String iconPath, int iconSize, Dimension buttonSize, String tooltip){
+    public JButton getIconButton(String iconPath, int iconSize, Dimension buttonSize, String tooltip) {
         JButton iconButton = getIconButton(iconPath, iconSize, AppThemeColor.FRAME_ALPHA, tooltip);
         iconButton.setPreferredSize(buttonSize); //todo scale
         iconButton.setSize(buttonSize);
@@ -291,25 +300,26 @@ public class ComponentsFactory{
 
     /**
      * Get label with custom params
+     *
      * @param fontStyle path of exile font type
-     * @param frColor foreground color
+     * @param frColor   foreground color
      * @param alignment font alignment
-     * @param size font size
-     * @param text initial text on font
+     * @param size      font size
+     * @param text      initial text on font
      * @return JLabel object
      */
-    public JLabel getTextLabel(FontStyle fontStyle, Color frColor, TextAlignment alignment, float size, String text){
+    public JLabel getTextLabel(FontStyle fontStyle, Color frColor, TextAlignment alignment, float size, String text) {
         JLabel label = new JLabel(text);
-        if(isAscii(text)){
-            label.setFont(getSelectedFont(fontStyle).deriveFont(scale*size));
-        }else {
-            label.setFont(DEFAULT_FONT.deriveFont(scale*size));
+        if (isAscii(text)) {
+            label.setFont(getSelectedFont(fontStyle).deriveFont(scale * size));
+        } else {
+            label.setFont(DEFAULT_FONT.deriveFont(scale * size));
         }
         label.setForeground(frColor);
         Border border = label.getBorder();
-        label.setBorder(new CompoundBorder(border,new EmptyBorder(0,5,0,5)));
+        label.setBorder(new CompoundBorder(border, new EmptyBorder(0, 5, 0, 5)));
 
-        if(alignment != null) {
+        if (alignment != null) {
             switch (alignment) {
                 case LEFTOP: {
                     label.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -320,7 +330,7 @@ public class ComponentsFactory{
                     label.setAlignmentX(Component.RIGHT_ALIGNMENT);
                     label.setAlignmentY(Component.TOP_ALIGNMENT);
                 }
-                case CENTER:{
+                case CENTER: {
                     label.setAlignmentX(Component.CENTER_ALIGNMENT);
                     label.setAlignmentY(Component.TOP_ALIGNMENT);
                 }
@@ -330,7 +340,7 @@ public class ComponentsFactory{
         return label;
     }
 
-    public JLabel getTextLabel(FontStyle fontStyle, Color frColor, TextAlignment alignment, float size, Border border,String text){
+    public JLabel getTextLabel(FontStyle fontStyle, Color frColor, TextAlignment alignment, float size, Border border, String text) {
         JLabel textLabel = getTextLabel(fontStyle, frColor, alignment, size, text);
         textLabel.setBorder(border);
         return textLabel;
@@ -338,83 +348,93 @@ public class ComponentsFactory{
 
     /**
      * Get default label
+     *
      * @param text font text
      * @return JLabel object
      */
-    public JLabel getTextLabel(String text){
-        return getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT,TextAlignment.LEFTOP,scale*15f,text);
+    public JLabel getTextLabel(String text) {
+        return getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_DEFAULT, TextAlignment.LEFTOP, scale * 15f, text);
     }
-    public JLabel getTextLabel(String text, FontStyle style){
-        return getTextLabel(style,AppThemeColor.TEXT_DEFAULT,TextAlignment.LEFTOP,scale*15f,text);
+
+    public JLabel getTextLabel(String text, FontStyle style) {
+        return getTextLabel(style, AppThemeColor.TEXT_DEFAULT, TextAlignment.LEFTOP, scale * 15f, text);
     }
-    public JLabel getTextLabel(String text, FontStyle style,Color color){
-        return getTextLabel(style,color,TextAlignment.LEFTOP,scale*15f,text);
+
+    public JLabel getTextLabel(String text, FontStyle style, Color color) {
+        return getTextLabel(style, color, TextAlignment.LEFTOP, scale * 15f, text);
     }
-    public JLabel getTextLabel(String text, FontStyle style, float size){
-        return getTextLabel(style,AppThemeColor.TEXT_DEFAULT,TextAlignment.LEFTOP,size,text);
+
+    public JLabel getTextLabel(String text, FontStyle style, float size) {
+        return getTextLabel(style, AppThemeColor.TEXT_DEFAULT, TextAlignment.LEFTOP, size, text);
     }
 
     /**
      * Get label with icon
+     *
      * @param iconPath icon path from maven resources
-     * @param size icon size
+     * @param size     icon size
      * @return JLabel object with icon
      */
-    public JLabel getIconLabel(String iconPath, int size){
+    public JLabel getIconLabel(String iconPath, int size) {
         JLabel iconLabel = new JLabel();
         try {
-            iconLabel.setIcon(getIcon(iconPath,(int)(scale*size)));
+            iconLabel.setIcon(getIcon(iconPath, (int) (scale * size)));
         } catch (Exception e) {
-            return getTextLabel(StringUtils.substringBetween(iconPath,"/","."));
+            return getTextLabel(StringUtils.substringBetween(iconPath, "/", "."));
         }
         return iconLabel;
     }
-    public JLabel getIconLabel(String iconPath, int size, int aligment){
+
+    public JLabel getIconLabel(String iconPath, int size, int aligment) {
         JLabel iconLabel = new JLabel();
         try {
-            iconLabel.setIcon(getIcon(iconPath,(int)(scale*size)));
+            iconLabel.setIcon(getIcon(iconPath, (int) (scale * size)));
         } catch (Exception e) {
-            return getTextLabel(StringUtils.substringBetween(iconPath,"/","."));
+            return getTextLabel(StringUtils.substringBetween(iconPath, "/", "."));
         }
         iconLabel.setHorizontalAlignment(aligment);
         return iconLabel;
     }
-    public JLabel getIconLabel(URL url, int size){
+
+    public JLabel getIconLabel(URL url, int size) {
         JLabel iconLabel = new JLabel();
         try {
-            iconLabel.setIcon(getIcon(url,(int)(scale*size)));
+            iconLabel.setIcon(getIcon(url, (int) (scale * size)));
         } catch (Exception e) {
-            return getTextLabel(StringUtils.substringBetween(url.getPath(),"/","."));
+            return getTextLabel(StringUtils.substringBetween(url.getPath(), "/", "."));
         }
         return iconLabel;
     }
-    public JLabel getIconLabel(String iconPath, int size, String tooltip){
+
+    public JLabel getIconLabel(String iconPath, int size, String tooltip) {
         JLabel iconLabel = new JLabel();
         try {
-            iconLabel.setIcon(getIcon(iconPath,(int)(scale*size)));
+            iconLabel.setIcon(getIcon(iconPath, (int) (scale * size)));
         } catch (Exception e) {
-            return getTextLabel(StringUtils.substringBetween(iconPath,"/","."));
+            return getTextLabel(StringUtils.substringBetween(iconPath, "/", "."));
         }
         iconLabel.addMouseListener(new TooltipMouseListener(tooltip));
         return iconLabel;
     }
-    public JLabel getIconLabel(String iconPath){
+
+    public JLabel getIconLabel(String iconPath) {
         JLabel iconLabel = new JLabel();
         try {
             BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
             iconLabel.setIcon(new ImageIcon(buttonIcon));
         } catch (Exception e) {
-            return getTextLabel(StringUtils.substringBetween(iconPath,"/","."));
+            return getTextLabel(StringUtils.substringBetween(iconPath, "/", "."));
         }
         return iconLabel;
     }
 
-    public JTextField getTextField(String text){
-        JTextField textField = getTextField(text,null,scale*16);
+    public JTextField getTextField(String text) {
+        JTextField textField = getTextField(text, null, scale * 16);
         textField.setFont(DEFAULT_FONT);
         return textField;
     }
-    public JFormattedTextField getIntegerTextField(Integer min, Integer max, Integer value){
+
+    public JFormattedTextField getIntegerTextField(Integer min, Integer max, Integer value) {
         NumberFormat format = NumberFormat.getInstance();
         NumberFormatter formatter = new NumberFormatter(format);
         formatter.setValueClass(Integer.class);
@@ -425,33 +445,34 @@ public class ComponentsFactory{
 
         JFormattedTextField field = new JFormattedTextField(formatter);
         field.setValue(value);
-        field.setFont(REGULAR_FONT.deriveFont(scale*18));
+        field.setFont(REGULAR_FONT.deriveFont(scale * 18));
         field.setFocusLostBehavior(JFormattedTextField.PERSIST);
         field.setForeground(AppThemeColor.TEXT_DEFAULT);
         field.setCaretColor(AppThemeColor.TEXT_DEFAULT);
         field.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(AppThemeColor.BORDER,1),
-                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,3)
+                BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 3)
         ));
         field.setBackground(AppThemeColor.HEADER);
         return field;
     }
-    public JTextField getTextField(String text, FontStyle style, float fontSize){
+
+    public JTextField getTextField(String text, FontStyle style, float fontSize) {
         JTextField textField = new JTextField(text);
-        if(style != null) {
-            textField.setFont(getSelectedFont(style).deriveFont(scale*fontSize));
+        if (style != null) {
+            textField.setFont(getSelectedFont(style).deriveFont(scale * fontSize));
         }
         textField.setForeground(AppThemeColor.TEXT_DEFAULT);
         textField.setCaretColor(AppThemeColor.TEXT_DEFAULT);
         textField.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(AppThemeColor.BORDER,1),
-                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,3)
+                BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 3)
         ));
         textField.setBackground(AppThemeColor.HEADER);
         return textField;
     }
 
-    public JCheckBox getCheckBox(String tooltip){
+    public JCheckBox getCheckBox(String tooltip) {
         JCheckBox checkBox = new JCheckBox();
         checkBox.setFocusPainted(false);
         checkBox.setBackground(AppThemeColor.TRANSPARENT);
@@ -459,7 +480,8 @@ public class ComponentsFactory{
         checkBox.addMouseListener(new TooltipMouseListener(tooltip));
         return checkBox;
     }
-    public JCheckBox getCheckBox(boolean value){
+
+    public JCheckBox getCheckBox(boolean value) {
         JCheckBox checkBox = new JCheckBox();
         checkBox.setSelected(value);
 //        checkBox.setUI(new WindowsButtonUI());
@@ -467,20 +489,23 @@ public class ComponentsFactory{
         checkBox.setBackground(AppThemeColor.TRANSPARENT);
         return checkBox;
     }
-    public JCheckBox getCheckBox(boolean value,String tooltip){
+
+    public JCheckBox getCheckBox(boolean value, String tooltip) {
         JCheckBox checkBox = this.getCheckBox(tooltip);
         checkBox.setSelected(value);
         return checkBox;
     }
-    public Font getFontByLang(String text,FontStyle style){
-        if(style != null) {
-            if(isAscii(text)){
+
+    public Font getFontByLang(String text, FontStyle style) {
+        if (style != null) {
+            if (isAscii(text)) {
                 return getSelectedFont(style);
             }
         }
         return DEFAULT_FONT;
     }
-    public JPanel getSliderSettingsPanel(JLabel titleLabel, JLabel countLabel, JSlider slider){
+
+    public JPanel getSliderSettingsPanel(JLabel titleLabel, JLabel countLabel, JSlider slider) {
         Dimension elementsSize = convertSize(new Dimension(160, 30));
         Dimension countSize = convertSize(new Dimension(40, 30));
         titleLabel.setPreferredSize(elementsSize);
@@ -504,32 +529,36 @@ public class ComponentsFactory{
         countGc.gridx = 1;
         sliderGc.gridx = 2;
 
-        panel.add(titleLabel,titleGc);
-        panel.add(countLabel,countGc);
-        panel.add(slider,sliderGc);
+        panel.add(titleLabel, titleGc);
+        panel.add(countLabel, countGc);
+        panel.add(slider, sliderGc);
         return panel;
     }
-    public JPanel getSettingsPanel(JLabel titleLabel, Component component){
-        JPanel panel = getTransparentPanel(new GridLayout(1,2));
+
+    public JPanel getSettingsPanel(JLabel titleLabel, Component component) {
+        JPanel panel = getTransparentPanel(new GridLayout(1, 2));
         panel.setBackground(AppThemeColor.ADR_BG);
         panel.add(titleLabel);
         panel.add(component);
         return panel;
     }
-    public Font getFont(FontStyle style, float fontSize){
+
+    public Font getFont(FontStyle style, float fontSize) {
         return getSelectedFont(style).deriveFont(scale * fontSize);
     }
-    public JComboBox getComboBox(String[] child){
+
+    public JComboBox getComboBox(String[] child) {
         JComboBox comboBox = new JComboBox<>(child);
         comboBox.setBackground(AppThemeColor.HEADER);
         comboBox.setForeground(AppThemeColor.TEXT_DEFAULT);
-        comboBox.setFont(BOLD_FONT.deriveFont(scale*16f));
-        comboBox.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
+        comboBox.setFont(BOLD_FONT.deriveFont(scale * 16f));
+        comboBox.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
         comboBox.setUI(MercuryComboBoxUI.createUI(comboBox));
         return comboBox;
     }
-    public JSlider getSlider(int min, int max, int value){
-        JSlider slider = new JSlider(JSlider.HORIZONTAL,min,max,value);
+
+    public JSlider getSlider(int min, int max, int value) {
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, min, max, value);
         slider.setMajorTickSpacing(10);
         slider.setMinorTickSpacing(1);
 //        slider.setPaintLabels(true);
@@ -546,13 +575,14 @@ public class ComponentsFactory{
         slider.setBackground(AppThemeColor.FRAME);
         return slider;
     }
-    public JSlider getSlider(int min, int max, int value, Color background){
-        JSlider slider = this.getSlider(min,max,value);
+
+    public JSlider getSlider(int min, int max, int value, Color background) {
+        JSlider slider = this.getSlider(min, max, value);
         slider.setBackground(background);
         return slider;
     }
 
-    public JScrollPane getVerticalContainer(JPanel container){
+    public JScrollPane getVerticalContainer(JPanel container) {
         JScrollPane scrollPane = new JScrollPane(container);
         scrollPane.setBorder(null);
         scrollPane.setBackground(AppThemeColor.FRAME);
@@ -566,47 +596,52 @@ public class ComponentsFactory{
         vBar.setUI(new MercuryScrollBarUI());
         vBar.setPreferredSize(new Dimension(15, Integer.MAX_VALUE));
         vBar.setUnitIncrement(3);
-        vBar.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+        vBar.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         return scrollPane;
     }
-    public JPanel getTransparentPanel(LayoutManager layout){
+
+    public JPanel getTransparentPanel(LayoutManager layout) {
         JPanel panel = new JPanel(layout);
         panel.setBackground(AppThemeColor.TRANSPARENT);
         return panel;
     }
-    public JPanel getTransparentPanel(){
+
+    public JPanel getTransparentPanel() {
         JPanel panel = new JPanel();
         panel.setBackground(AppThemeColor.TRANSPARENT);
         return panel;
     }
 
-    public JPanel getBorderedTransparentPanel(Border border, LayoutManager layout){
+    public JPanel getBorderedTransparentPanel(Border border, LayoutManager layout) {
         JPanel panel = new JPanel(layout);
         panel.setBackground(AppThemeColor.TRANSPARENT);
         panel.setBorder(border);
         return panel;
     }
-    public ImageIcon getIcon(String iconPath, float size){
+
+    public ImageIcon getIcon(String iconPath, float size) {
         BufferedImage icon = null;
         try {
             BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
-            icon = Scalr.resize(buttonIcon, (int)(scale * size));
+            icon = Scalr.resize(buttonIcon, (int) (scale * size));
         } catch (IOException e) {
             log.error(e);
         }
         return new ImageIcon(icon);
     }
-    public ImageIcon getIcon(URL iconPath, float size){
+
+    public ImageIcon getIcon(URL iconPath, float size) {
         BufferedImage icon = null;
         try {
             BufferedImage buttonIcon = ImageIO.read(iconPath);
-            icon = Scalr.resize(buttonIcon, (int)(scale * size));
+            icon = Scalr.resize(buttonIcon, (int) (scale * size));
         } catch (IOException e) {
             log.error(e);
         }
         return new ImageIcon(icon);
     }
-    public ImageIcon getImage(String iconPath){
+
+    public ImageIcon getImage(String iconPath) {
         BufferedImage icon = null;
         try {
             icon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
@@ -615,17 +650,19 @@ public class ComponentsFactory{
         }
         return new ImageIcon(icon);
     }
-    public Dimension convertSize(Dimension initialSize){
-        return new Dimension((int)(initialSize.width * scale),(int)(initialSize.height*scale));
+
+    public Dimension convertSize(Dimension initialSize) {
+        return new Dimension((int) (initialSize.width * scale), (int) (initialSize.height * scale));
     }
-    public JTextArea getSimpleTextArea(String text){
+
+    public JTextArea getSimpleTextArea(String text) {
         JTextArea area = new JTextArea(text);
         area.setEditable(false);
         area.setWrapStyleWord(true);
         area.setLineWrap(true);
         area.setBackground(AppThemeColor.TRANSPARENT);
         area.setBorder(null);
-        area.setFont(REGULAR_FONT.deriveFont(scale*16f));
+        area.setFont(REGULAR_FONT.deriveFont(scale * 16f));
         area.setForeground(AppThemeColor.TEXT_DEFAULT);
         return area;
     }
@@ -638,7 +675,7 @@ public class ComponentsFactory{
         this.scale = scale;
     }
 
-    private Font getSelectedFont(FontStyle fontStyle){
+    private Font getSelectedFont(FontStyle fontStyle) {
         switch (fontStyle) {
             case BOLD:
                 return BOLD_FONT;
@@ -651,8 +688,9 @@ public class ComponentsFactory{
         }
         return DEFAULT_FONT;
     }
-    private boolean isAscii(CharSequence sequence){
-        if(sequence != null) {
+
+    private boolean isAscii(CharSequence sequence) {
+        if (sequence != null) {
             for (int i = sequence.length() - 1; i >= 0; i--) {
                 if (!matches(sequence.charAt(i))) {
                     return false;
@@ -661,6 +699,7 @@ public class ComponentsFactory{
         }
         return true;
     }
+
     private boolean matches(char c) {
         return c <= '\u007f';
     }
@@ -670,33 +709,39 @@ public class ComponentsFactory{
         panel.setBackground(AppThemeColor.FRAME);
         return panel;
     }
-    public JPanel getJPanel(LayoutManager layoutManager,Color bg) {
+
+    public JPanel getJPanel(LayoutManager layoutManager, Color bg) {
         JPanel panel = new JPanel(layoutManager);
         panel.setBackground(bg);
         return panel;
     }
-    public JPanel wrapToSlide(JComponent panel){
+
+    public JPanel wrapToSlide(JComponent panel) {
         JPanel wrapper = this.getJPanel(new BorderLayout());
-        wrapper.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
-        wrapper.add(panel,BorderLayout.CENTER);
+        wrapper.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        wrapper.add(panel, BorderLayout.CENTER);
         return wrapper;
     }
-    public JPanel wrapToSlide(JComponent panel,Color bg){
+
+    public JPanel wrapToSlide(JComponent panel, Color bg) {
         JPanel wrapper = this.wrapToSlide(panel);
         wrapper.setBackground(bg);
         return wrapper;
     }
-    public JPanel wrapToSlide(JComponent panel,Color bg,int top,int left,int bottom,int righ){
-        JPanel wrapper = this.wrapToSlide(panel,top,left,bottom,righ);
+
+    public JPanel wrapToSlide(JComponent panel, Color bg, int top, int left, int bottom, int righ) {
+        JPanel wrapper = this.wrapToSlide(panel, top, left, bottom, righ);
         wrapper.setBackground(bg);
         return wrapper;
     }
-    public JPanel wrapToSlide(JComponent panel,int top,int left,int bottom,int right){
+
+    public JPanel wrapToSlide(JComponent panel, int top, int left, int bottom, int right) {
         JPanel wrapper = this.wrapToSlide(panel);
-        wrapper.setBorder(BorderFactory.createEmptyBorder(top,left,bottom,right));
+        wrapper.setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
         return wrapper;
     }
-    public JPanel wrapToAdrSlide(JComponent panel,int top,int left,int bottom,int right){
+
+    public JPanel wrapToAdrSlide(JComponent panel, int top, int left, int bottom, int right) {
         JPanel wrapper = new JPanel(new BorderLayout()) {
             @Override
             public void remove(Component comp) {
@@ -709,8 +754,8 @@ public class ComponentsFactory{
             }
         };
         wrapper.setBackground(AppThemeColor.FRAME);
-        wrapper.setBorder(BorderFactory.createEmptyBorder(top,left,bottom,right));
-        wrapper.add(panel,BorderLayout.CENTER);
+        wrapper.setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
+        wrapper.add(panel, BorderLayout.CENTER);
         return wrapper;
     }
 
@@ -718,20 +763,21 @@ public class ComponentsFactory{
         JPopupMenu contextMenu = new JPopupMenu();
         contextMenu.setBackground(AppThemeColor.FRAME);
         contextMenu.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER));
-        contextMenu.setFont(REGULAR_FONT.deriveFont(scale*16f));
+        contextMenu.setFont(REGULAR_FONT.deriveFont(scale * 16f));
         contextMenu.setForeground(AppThemeColor.TEXT_DEFAULT);
         return contextMenu;
     }
 
     public JMenuItem getMenuItem(String text) {
         JMenuItem menuItem = new JMenuItem(text);
-        menuItem.setFont(REGULAR_FONT.deriveFont(scale*16f));
+        menuItem.setFont(REGULAR_FONT.deriveFont(scale * 16f));
         menuItem.setForeground(AppThemeColor.TEXT_DEFAULT);
         return menuItem;
     }
+
     public JMenuItem getMenu(String text) {
         JMenu menu = new JMenu(text);
-        menu.setFont(REGULAR_FONT.deriveFont(scale*16f));
+        menu.setFont(REGULAR_FONT.deriveFont(scale * 16f));
         menu.setForeground(AppThemeColor.TEXT_DEFAULT);
         return menu;
     }
@@ -741,6 +787,7 @@ public class ComponentsFactory{
     @AllArgsConstructor
     private class TooltipMouseListener extends MouseAdapter {
         private String tooltip;
+
         @Override
         public void mouseEntered(MouseEvent e) {
             MercuryStoreCore.tooltipSubject.onNext(tooltip);

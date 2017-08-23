@@ -14,6 +14,7 @@ import java.awt.*;
 public class NotificationAlertFrame extends AbstractOverlaidFrame {
     private JLabel messageLabel;
     private Timeline showAnimation;
+
     public NotificationAlertFrame() {
         super();
     }
@@ -30,7 +31,7 @@ public class NotificationAlertFrame extends AbstractOverlaidFrame {
             this.messageLabel.setText(message);
             this.pack();
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-            this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+            this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
             this.setAlwaysOnTop(true);
             this.setVisible(true);
             this.showAnimation.abort();
@@ -45,7 +46,7 @@ public class NotificationAlertFrame extends AbstractOverlaidFrame {
 
     @Override
     public void onViewInit() {
-        this.messageLabel = componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER,38,"");
+        this.messageLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER, 38, "");
 
         this.showAnimation = new Timeline(this);
         this.showAnimation.setDuration(1400);
@@ -53,13 +54,14 @@ public class NotificationAlertFrame extends AbstractOverlaidFrame {
         this.showAnimation.addCallback(new TimelineCallback() {
             @Override
             public void onTimelineStateChanged(Timeline.TimelineState oldState, Timeline.TimelineState newState, float durationFraction, float timelinePosition) {
-                if(newState.equals(Timeline.TimelineState.DONE)){
+                if (newState.equals(Timeline.TimelineState.DONE)) {
                     NotificationAlertFrame.this.setAlwaysOnTop(false);
                     NotificationAlertFrame.this.setVisible(false);
                     NotificationAlertFrame.this.setOpacity(0.9f);
                     messageLabel.setText("");
                 }
             }
+
             @Override
             public void onTimelinePulse(float durationFraction, float timelinePosition) {
             }

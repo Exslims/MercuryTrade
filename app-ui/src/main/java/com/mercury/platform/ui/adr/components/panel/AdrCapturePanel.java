@@ -13,27 +13,28 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 
-public class AdrCapturePanel extends AdrComponentPanel<AdrCaptureDescriptor>{
+public class AdrCapturePanel extends AdrComponentPanel<AdrCaptureDescriptor> {
     private Timeline progressTl;
     private JLabel captureLabel;
+
     public AdrCapturePanel(AdrCaptureDescriptor groupDescriptor, ComponentsFactory componentsFactory) {
         super(groupDescriptor, componentsFactory);
     }
 
     @Override
     public void onViewInit() {
-        this.setLayout(new GridLayout(1,1));
+        this.setLayout(new GridLayout(1, 1));
         this.setPreferredSize(this.descriptor.getSize());
         this.captureLabel = new JLabel();
         this.setBackground(AppThemeColor.ADR_CAPTURE_BG);
-        this.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER,1));
+        this.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
         this.progressTl = new Timeline(this);
-        this.progressTl.addPropertyToInterpolate("captureCount",0,this.descriptor.getFps());
-        this.captureLabel.setIcon(new ImageIcon(Scalr.resize(getCapture(),descriptor.getSize().width,descriptor.getSize().height)));
-        this.progressTl.addCallback(new TimelineCallbackAdapter(){
+        this.progressTl.addPropertyToInterpolate("captureCount", 0, this.descriptor.getFps());
+        this.captureLabel.setIcon(new ImageIcon(Scalr.resize(getCapture(), descriptor.getSize().width, descriptor.getSize().height)));
+        this.progressTl.addCallback(new TimelineCallbackAdapter() {
             @Override
             public void onTimelineStateChanged(Timeline.TimelineState oldState, Timeline.TimelineState newState, float durationFraction, float timelinePosition) {
-                captureLabel.setIcon(new ImageIcon(Scalr.resize(getCapture(),descriptor.getSize().width,descriptor.getSize().height)));
+                captureLabel.setIcon(new ImageIcon(Scalr.resize(getCapture(), descriptor.getSize().width, descriptor.getSize().height)));
             }
         });
         this.progressTl.setDuration(1000 / this.descriptor.getFps());
@@ -56,6 +57,7 @@ public class AdrCapturePanel extends AdrComponentPanel<AdrCaptureDescriptor>{
         this.progressTl.playLoop(Timeline.RepeatBehavior.LOOP);
         this.setVisible(this.descriptor.isVisible());
     }
+
     @Override
     public void onSelect() {
         this.progressTl.playLoop(Timeline.RepeatBehavior.LOOP);
@@ -76,12 +78,13 @@ public class AdrCapturePanel extends AdrComponentPanel<AdrCaptureDescriptor>{
 
     public void setCaptureCount(int captureCount) {
     }
-    private BufferedImage getCapture(){
+
+    private BufferedImage getCapture() {
         try {
             Robot robot = new Robot();
             Dimension size = this.descriptor.getCaptureSize();
             Point location = this.descriptor.getCaptureLocation();
-            return robot.createScreenCapture(new Rectangle(location.x +5, location.y+5, size.width-10, size.height-10));
+            return robot.createScreenCapture(new Rectangle(location.x + 5, location.y + 5, size.width - 10, size.height - 10));
         } catch (AWTException e) {
             e.printStackTrace();
         }

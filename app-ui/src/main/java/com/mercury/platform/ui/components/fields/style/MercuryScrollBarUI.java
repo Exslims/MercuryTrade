@@ -13,6 +13,7 @@ public class MercuryScrollBarUI extends BasicScrollBarUI {
     public MercuryScrollBarUI(Color color) {
         this.scrollColor = color;
     }
+
     public MercuryScrollBarUI() {
         this.scrollColor = AppThemeColor.SCROLL_BAR;
     }

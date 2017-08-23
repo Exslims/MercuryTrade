@@ -13,6 +13,7 @@ import javax.sound.sampled.FloatControl;
 public class SoundNotifier {
     private final Logger logger = LogManager.getLogger(SoundNotifier.class);
     private boolean dnd = false;
+
     public SoundNotifier() {
         MercuryStoreCore.soundSubject
                 .compose(DataTransformers.transformSoundData())
@@ -23,20 +24,20 @@ public class SoundNotifier {
                 .subscribe(value -> this.dnd = value);
     }
 
-    private void play(String wavPath, float db){
-        if(!dnd && db > -40) {
+    private void play(String wavPath, float db) {
+        if (!dnd && db > -40) {
             ClassLoader classLoader = getClass().getClassLoader();
             try (AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource(wavPath))) {
                 Clip clip = AudioSystem.getClip();
                 clip.open(stream);
-                if(db != 0.0) {
+                if (db != 0.0) {
                     FloatControl gainControl =
                             (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
                     gainControl.setValue(db);
                 }
                 clip.start();
             } catch (Exception e) {
-                logger.error("Cannot start playing wav file: ",e);
+                logger.error("Cannot start playing wav file: ", e);
             }
         }
     }

@@ -15,7 +15,7 @@ public class ItemOutNotificationPanel extends OutgoingNotificationPanel<ItemTrad
         JButton itemButton = componentsFactory.getButton(
                 FontStyle.BOLD,
                 AppThemeColor.BUTTON,
-                BorderFactory.createEmptyBorder(0,4,0,2),
+                BorderFactory.createEmptyBorder(0, 4, 0, 2),
                 this.data.getItemName(), 16f);
 
         itemButton.setForeground(AppThemeColor.TEXT_IMPORTANT);
@@ -25,8 +25,8 @@ public class ItemOutNotificationPanel extends OutgoingNotificationPanel<ItemTrad
         itemButton.setRolloverEnabled(false);
         itemButton.addActionListener(action -> {
         });
-        root.add(this.getFromPanel(),BorderLayout.LINE_START);
-        root.add(itemButton,BorderLayout.CENTER);
+        root.add(this.getFromPanel(), BorderLayout.LINE_START);
+        root.add(itemButton, BorderLayout.CENTER);
         return root;
     }
 }

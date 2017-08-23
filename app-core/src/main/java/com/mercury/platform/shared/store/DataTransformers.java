@@ -13,7 +13,8 @@ import java.util.Random;
 
 
 public class DataTransformers {
-    private static final KeyValueConfigurationService<String,SoundDescriptor> soundService = Configuration.get().soundConfiguration();
+    private static final KeyValueConfigurationService<String, SoundDescriptor> soundService = Configuration.get().soundConfiguration();
+
     public static Observable.Transformer<SoundType, SoundDescriptor> transformSoundData() {
         String[] clicks = {
                 "app/sounds/click1/button-pressed-10.wav",
@@ -21,15 +22,15 @@ public class DataTransformers {
                 "app/sounds/click1/button-pressed-30.wav"};
         return obs -> obs.map(soundType -> {
             SoundDescriptor descriptor = new SoundDescriptor();
-            switch (soundType){
-                case MESSAGE:{
+            switch (soundType) {
+                case MESSAGE: {
                     SoundDescriptor desc = soundService.get("notification");
                     WhisperNotifierStatus status = Configuration.get().applicationConfiguration().get().getNotifierStatus();
                     if (status == WhisperNotifierStatus.ALWAYS ||
                             ((status == WhisperNotifierStatus.ALTAB) && (ProdStarter.APP_STATUS == FrameVisibleState.HIDE))) {
                         return desc;
                     }
-                    return new SoundDescriptor(desc.getWavPath(),-80f);
+                    return new SoundDescriptor(desc.getWavPath(), -80f);
                 }
                 case CHAT_SCANNER: {
                     return soundService.get("chat_scanner");

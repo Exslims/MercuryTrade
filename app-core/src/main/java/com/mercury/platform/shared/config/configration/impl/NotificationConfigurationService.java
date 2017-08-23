@@ -6,7 +6,6 @@ import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
 import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
 import com.mercury.platform.shared.config.descriptor.ResponseButtonDescriptor;
-import com.mercury.platform.shared.entity.message.FlowDirections;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +20,12 @@ public class NotificationConfigurationService extends BaseConfigurationService<N
     public NotificationSettingsDescriptor getDefault() {
         NotificationSettingsDescriptor notificationSettingsDescriptor = new NotificationSettingsDescriptor();
         List<ResponseButtonDescriptor> defaultButtons = new ArrayList<>();
-        defaultButtons.add(new ResponseButtonDescriptor(0,false,"1m","one minute", new HotKeyDescriptor()));
-        defaultButtons.add(new ResponseButtonDescriptor(1,true,"thx","thanks",new HotKeyDescriptor()));
-        defaultButtons.add(new ResponseButtonDescriptor(2,false,"no thx", "no thanks",new HotKeyDescriptor()));
-        defaultButtons.add(new ResponseButtonDescriptor(3,false,"sold", "sold",new HotKeyDescriptor()));
+        defaultButtons.add(new ResponseButtonDescriptor(0, false, "1m", "one minute", new HotKeyDescriptor()));
+        defaultButtons.add(new ResponseButtonDescriptor(1, true, "thx", "thanks", new HotKeyDescriptor()));
+        defaultButtons.add(new ResponseButtonDescriptor(2, false, "no thx", "no thanks", new HotKeyDescriptor()));
+        defaultButtons.add(new ResponseButtonDescriptor(3, false, "sold", "sold", new HotKeyDescriptor()));
         List<ResponseButtonDescriptor> defaultOutButtons = new ArrayList<>();
-        defaultOutButtons.add(new ResponseButtonDescriptor(0,false,"thanks","thanks", new HotKeyDescriptor()));
+        defaultOutButtons.add(new ResponseButtonDescriptor(0, false, "thanks", "thanks", new HotKeyDescriptor()));
         notificationSettingsDescriptor.setButtons(defaultButtons);
         notificationSettingsDescriptor.setOutButtons(defaultOutButtons);
         return notificationSettingsDescriptor;
@@ -39,16 +38,16 @@ public class NotificationConfigurationService extends BaseConfigurationService<N
 
     @Override
     public void validate() {
-        if(this.selectedProfile.getNotificationDescriptor() == null) {
+        if (this.selectedProfile.getNotificationDescriptor() == null) {
             this.selectedProfile.setNotificationDescriptor(this.getDefault());
         }
         this.get().getButtons().forEach(it -> {
-            if(it.getHotKeyDescriptor() == null) {
+            if (it.getHotKeyDescriptor() == null) {
                 it.setHotKeyDescriptor(new HotKeyDescriptor());
             }
         });
-        if(this.get().getOutButtons().size() == 0){
-            this.get().getOutButtons().add(new ResponseButtonDescriptor(0,false,"thanks","thanks", new HotKeyDescriptor()));
+        if (this.get().getOutButtons().size() == 0) {
+            this.get().getOutButtons().add(new ResponseButtonDescriptor(0, false, "thanks", "thanks", new HotKeyDescriptor()));
         }
     }
 

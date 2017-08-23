@@ -7,9 +7,11 @@ import lombok.NonNull;
 
 public class ItemInfoPanelControllerImpl implements ItemInfoPanelController {
     private ItemTradeNotificationDescriptor message;
+
     public ItemInfoPanelControllerImpl(@NonNull ItemTradeNotificationDescriptor message) {
         this.message = message;
     }
+
     @Override
     public void hidePanel() {
         MercuryStoreUI.closeGridItemSubject.onNext(message);

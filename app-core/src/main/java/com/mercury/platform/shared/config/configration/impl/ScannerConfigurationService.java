@@ -25,7 +25,7 @@ public class ScannerConfigurationService extends BaseConfigurationService<Scanne
 
     @Override
     public void validate() {
-        if(this.selectedProfile.getScannerDescriptor() == null){
+        if (this.selectedProfile.getScannerDescriptor() == null) {
             this.selectedProfile.setScannerDescriptor(this.getDefault());
         }
     }

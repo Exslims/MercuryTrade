@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.frame;
 
-import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.AsSubscriber;
+import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.FramesConfigurationService;
 import com.mercury.platform.shared.config.configration.KeyValueConfigurationService;
@@ -18,19 +18,20 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscriber,ViewInit {
+public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscriber, ViewInit {
     protected FrameVisibleState prevState;
     protected boolean processingHideEvent = true;
 
     protected ComponentsFactory componentsFactory = new ComponentsFactory();
     protected FramesConfigurationService framesConfig;
     protected PlainConfigurationService<ApplicationDescriptor> applicationConfig;
-    protected KeyValueConfigurationService<String,Float> scaleConfig;
+    protected KeyValueConfigurationService<String, Float> scaleConfig;
 
     protected LayoutManager layout;
-    protected AbstractOverlaidFrame(){
+
+    protected AbstractOverlaidFrame() {
         super("MercuryTrade");
-        if(!this.getClass().equals(MercuryLoadingFrame.class)) {
+        if (!this.getClass().equals(MercuryLoadingFrame.class)) {
             this.framesConfig = Configuration.get().framesConfiguration();
             this.applicationConfig = Configuration.get().applicationConfiguration();
             this.scaleConfig = Configuration.get().scaleConfiguration();
@@ -53,9 +54,10 @@ public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscrib
         });
 
         MercuryStoreCore.frameVisibleSubject.subscribe(state ->
-                SwingUtilities.invokeLater(()-> this.changeVisible(state)));
+                SwingUtilities.invokeLater(() -> this.changeVisible(state)));
     }
-    protected void changeVisible(FrameVisibleState state){
+
+    protected void changeVisible(FrameVisibleState state) {
         if (this.processingHideEvent) {
             switch (state) {
                 case SHOW: {
@@ -67,7 +69,7 @@ public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscrib
                 case HIDE: {
                     if (AbstractOverlaidFrame.this.isVisible()) {
                         this.prevState = FrameVisibleState.SHOW;
-                    }else {
+                    } else {
                         this.prevState = FrameVisibleState.HIDE;
                     }
                     this.hideComponent();
@@ -76,7 +78,8 @@ public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscrib
             }
         }
     }
-    public void init(){
+
+    public void init() {
         this.layout = getFrameLayout();
         this.setLayout(layout);
         this.initialize();
@@ -85,16 +88,19 @@ public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscrib
     }
 
     protected abstract LayoutManager getFrameLayout();
+
     protected abstract void initialize();
 
-    protected boolean isMouseWithInFrame(){
+    protected boolean isMouseWithInFrame() {
         return this.getBounds().contains(MouseInfo.getPointerInfo().getLocation());
     }
-    public void showComponent(){
+
+    public void showComponent() {
         this.setAlwaysOnTop(true);
         this.setVisible(true);
     }
-    public void hideComponent(){
+
+    public void hideComponent() {
         this.setVisible(false);
     }
 

@@ -22,24 +22,23 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class NotificationPanel<T,C> extends JPanel implements AsSubscriber, ViewInit,ViewDestroy {
+public abstract class NotificationPanel<T, C> extends JPanel implements AsSubscriber, ViewInit, ViewDestroy {
     @Setter
     @Getter
     protected T data;
     @Setter
     protected C controller;
     protected ComponentsFactory componentsFactory;
-    protected Map<HotKeyDescriptor,JButton> hotKeysPool = new HashMap<>();
-    protected Map<HotKeyType,JButton> interactButtonMap = new HashMap<>();
-    @Setter
-    private float paintAlphaValue = 1f;
+    protected Map<HotKeyDescriptor, JButton> hotKeysPool = new HashMap<>();
+    protected Map<HotKeyType, JButton> interactButtonMap = new HashMap<>();
     @Setter
     protected float paintBorderValue = 0f;
     protected boolean blurEffect;
     protected boolean blurReverse;
     @Setter
     protected boolean duplicate;
-
+    @Setter
+    private float paintAlphaValue = 1f;
     private Subscription settingsPostSubscription;
 
     @Override
@@ -47,18 +46,19 @@ public abstract class NotificationPanel<T,C> extends JPanel implements AsSubscri
         this.setLayout(new BorderLayout());
         this.setBackground(AppThemeColor.FRAME);
         this.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(1,1,1,1),
+                BorderFactory.createEmptyBorder(1, 1, 1, 1),
                 BorderFactory.createLineBorder(AppThemeColor.MSG_HEADER_BORDER, 1)));
     }
-    public void setComponentsFactory(ComponentsFactory factory){
+
+    public void setComponentsFactory(ComponentsFactory factory) {
         this.componentsFactory = factory;
         this.removeAll();
         this.onViewInit();
     }
 
-    public void onHotKeyPressed(HotKeyDescriptor descriptor){
+    public void onHotKeyPressed(HotKeyDescriptor descriptor) {
         JButton button = this.hotKeysPool.get(descriptor);
-        if(button != null){
+        if (button != null) {
             button.doClick();
         }
     }
@@ -69,6 +69,7 @@ public abstract class NotificationPanel<T,C> extends JPanel implements AsSubscri
             this.updateHotKeyPool();
         });
     }
+
     protected abstract void updateHotKeyPool();
 
     @Override
@@ -79,26 +80,28 @@ public abstract class NotificationPanel<T,C> extends JPanel implements AsSubscri
     @Override
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,this.paintAlphaValue));
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.paintAlphaValue));
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         super.paint(g2);
         if (this.paintAlphaValue < 1.0f) {
             this.paintAlphaValue += 0.004;
-            if(this.paintAlphaValue > 1.0f){
+            if (this.paintAlphaValue > 1.0f) {
                 this.paintAlphaValue = 1.0f;
             }
             this.repaint();
         }
     }
+
     protected JPanel getTimePanel() {
         JPanel root = new JPanel(new BorderLayout());
-        root.setPreferredSize(new Dimension((int) (46 * this.componentsFactory.getScale()),(int) (26 * this.componentsFactory.getScale())));
+        root.setPreferredSize(new Dimension((int) (46 * this.componentsFactory.getScale()), (int) (26 * this.componentsFactory.getScale())));
         root.setBackground(AppThemeColor.MSG_HEADER);
         JLabel timeLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MISC, TextAlignment.CENTER, 14, "0s");
         Timer timeAgo = new Timer(1000, new ActionListener() {
             private int seconds = 0;
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 seconds++;
@@ -107,27 +110,28 @@ public abstract class NotificationPanel<T,C> extends JPanel implements AsSubscri
             }
         });
         timeAgo.start();
-        root.add(timeLabel,BorderLayout.CENTER);
+        root.add(timeLabel, BorderLayout.CENTER);
         return root;
     }
-    protected void onBlur(){
+
+    protected void onBlur() {
         this.blurEffect = true;
         this.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(1,1,1,1),
+                BorderFactory.createEmptyBorder(1, 1, 1, 1),
                 BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER, 1)));
         this.repaint();
     }
 
     @Override
     protected void paintBorder(Graphics g) {
-        if(this.blurEffect) {
+        if (this.blurEffect) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.paintBorderValue));
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
             g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
             super.paintBorder(g2);
-            if(this.blurReverse){
+            if (this.blurReverse) {
                 if (this.paintBorderValue <= 1.0f) {
                     this.paintBorderValue += 0.002;
                     if (this.paintBorderValue >= 1.0f) {
@@ -135,7 +139,7 @@ public abstract class NotificationPanel<T,C> extends JPanel implements AsSubscri
                         this.paintBorderValue = 1.0f;
                     }
                 }
-            }else {
+            } else {
                 if (this.paintBorderValue >= 0f) {
                     this.paintBorderValue -= 0.002;
                     if (this.paintBorderValue <= 0f) {
@@ -145,7 +149,7 @@ public abstract class NotificationPanel<T,C> extends JPanel implements AsSubscri
                 }
             }
             this.repaint();
-        }else {
+        } else {
             super.paintBorder(g);
         }
     }

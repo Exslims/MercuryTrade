@@ -8,23 +8,24 @@ import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public abstract class AdrPagePanel<T> extends JPanel {
-    @Getter @Setter
+    @Getter
+    @Setter
     protected boolean fromGroup;
     protected T payload;
     protected ComponentsFactory componentsFactory = new ComponentsFactory();
     protected boolean advancedExpanded;
     protected AdrComponentsFactory adrComponentsFactory = new AdrComponentsFactory(this.componentsFactory);
+
     public AdrPagePanel() {
         this.setLayout(new BorderLayout());
         this.setBackground(AppThemeColor.FRAME);
     }
 
     protected abstract void init();
-    public void setPayload(T payload){
+
+    public void setPayload(T payload) {
         this.adrComponentsFactory = new AdrComponentsFactory(this.componentsFactory);
         this.payload = payload;
         this.removeAll();

@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.components.panel.grid;
 
-import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
+import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.ViewInit;
 import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
@@ -21,7 +21,7 @@ public class ItemsGridPanel extends JPanel implements ViewInit {
     private ComponentsFactory componentsFactory;
     private List<ItemCell> defaultCells;
     private List<ItemCell> quadCells;
-    private Map<String,ItemInfoPanel> tabButtons;
+    private Map<String, ItemInfoPanel> tabButtons;
     private StashTabsContainer stashTabsContainer;
     private JPanel navBar;
 
@@ -37,7 +37,8 @@ public class ItemsGridPanel extends JPanel implements ViewInit {
         stashTabsContainer = new StashTabsContainer();
         onViewInit();
     }
-    public ItemsGridPanel(@NonNull ComponentsFactory factory){
+
+    public ItemsGridPanel(@NonNull ComponentsFactory factory) {
         super(new BorderLayout());
         this.componentsFactory = factory;
         defaultCells = new ArrayList<>();
@@ -52,7 +53,7 @@ public class ItemsGridPanel extends JPanel implements ViewInit {
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.setBorder(null);
 
-        defaultGrid = componentsFactory.getTransparentPanel(new GridLayout(12,12));
+        defaultGrid = componentsFactory.getTransparentPanel(new GridLayout(12, 12));
         defaultGrid.setBorder(null);
         for (int y = 0; y < 12; y++) {
             for (int x = 0; x < 12; x++) {
@@ -61,7 +62,7 @@ public class ItemsGridPanel extends JPanel implements ViewInit {
                 defaultGrid.add(gridCell.getCell());
             }
         }
-        quadTabGrid = componentsFactory.getTransparentPanel(new GridLayout(24,24));
+        quadTabGrid = componentsFactory.getTransparentPanel(new GridLayout(24, 24));
         quadTabGrid.setBorder(null);
         for (int y = 0; y < 24; y++) {
             for (int x = 0; x < 24; x++) {
@@ -72,34 +73,34 @@ public class ItemsGridPanel extends JPanel implements ViewInit {
         }
         JPanel rightPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         rightPanel.setBackground(AppThemeColor.TRANSPARENT);
-        rightPanel.setPreferredSize(new Dimension(18,668));
+        rightPanel.setPreferredSize(new Dimension(18, 668));
         JPanel downPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        downPanel.setBorder(BorderFactory.createEmptyBorder(-10,0,0,0));
+        downPanel.setBorder(BorderFactory.createEmptyBorder(-10, 0, 0, 0));
         downPanel.setBackground(AppThemeColor.TRANSPARENT);
-        downPanel.setPreferredSize(new Dimension(661,16));
+        downPanel.setPreferredSize(new Dimension(661, 16));
 
-        this.add(getHeaderPanel(),BorderLayout.PAGE_START);
+        this.add(getHeaderPanel(), BorderLayout.PAGE_START);
         this.add(defaultGrid, BorderLayout.CENTER);
-        this.add(rightPanel,BorderLayout.LINE_END);
-        this.add(downPanel,BorderLayout.PAGE_END);
+        this.add(rightPanel, BorderLayout.LINE_END);
+        this.add(downPanel, BorderLayout.PAGE_END);
         this.setPreferredSize(this.getMaximumSize());
     }
 
-    public void add(@NonNull ItemTradeNotificationDescriptor message, ItemInfoPanelController controller){
+    public void add(@NonNull ItemTradeNotificationDescriptor message, ItemInfoPanelController controller) {
         String nickname = message.getWhisperNickname();
         if (!tabButtons.containsKey(nickname + message.getTabName())) {
             int x = message.getLeft();
             int y = message.getTop();
             StashTabDescriptor stashTabDescriptor;
-            if(stashTabsContainer.containsTab(message.getTabName())) {
+            if (stashTabsContainer.containsTab(message.getTabName())) {
                 stashTabDescriptor = stashTabsContainer.getStashTab(message.getTabName());
-            }else {
-                stashTabDescriptor = new StashTabDescriptor(message.getTabName(),false,true);
+            } else {
+                stashTabDescriptor = new StashTabDescriptor(message.getTabName(), false, true);
             }
             Optional<ItemCell> cellByCoordinates = getCellByCoordinates(stashTabDescriptor, x, y);
-            if(cellByCoordinates.isPresent()) {
+            if (cellByCoordinates.isPresent()) {
                 ItemInfoPanel cellHeader = createGridItem(message, cellByCoordinates.get(), stashTabDescriptor);
-                if(controller != null){
+                if (controller != null) {
                     cellHeader.setController(controller);
                 }
                 navBar.add(cellHeader);
@@ -108,10 +109,12 @@ public class ItemsGridPanel extends JPanel implements ViewInit {
             }
         }
     }
-    public void remove(@NonNull ItemTradeNotificationDescriptor message){
+
+    public void remove(@NonNull ItemTradeNotificationDescriptor message) {
         closeGridItem(message);
     }
-    public void changeTabType(@NonNull ItemInfoPanel itemInfoPanel){
+
+    public void changeTabType(@NonNull ItemInfoPanel itemInfoPanel) {
         ItemCell itemCell = itemInfoPanel.getItemCell();
         int x = itemCell.getX();
         int y = itemCell.getY();
@@ -119,31 +122,33 @@ public class ItemsGridPanel extends JPanel implements ViewInit {
         cellByCoordinates.ifPresent(itemCell1 -> itemInfoPanel.setCell(itemCell1.getCell()));
         MercuryStoreUI.repaintSubject.onNext(ItemsGridFrame.class);
     }
-    public int getActiveTabsCount(){
+
+    public int getActiveTabsCount() {
         return navBar.getComponentCount();
     }
-    private ItemCell getGridCell(int x, int y){
+
+    private ItemCell getGridCell(int x, int y) {
         JPanel cellPanel = new JPanel();
         cellPanel.setOpaque(true);
         cellPanel.setBackground(AppThemeColor.TRANSPARENT);
-        return new ItemCell(x+1,y+1,cellPanel);
+        return new ItemCell(x + 1, y + 1, cellPanel);
     }
 
-    private JPanel getHeaderPanel(){
+    private JPanel getHeaderPanel() {
         JPanel root = componentsFactory.getTransparentPanel();
-        root.setLayout(new BoxLayout(root,BoxLayout.Y_AXIS));
+        root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
         navBar = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        navBar.setBorder(BorderFactory.createEmptyBorder(20,0,26,0));
+        navBar.setBorder(BorderFactory.createEmptyBorder(20, 0, 26, 0));
         root.add(navBar);
         return root;
     }
 
-    private Optional<ItemCell> getCellByCoordinates(@NonNull StashTabDescriptor tab, int x, int y){
+    private Optional<ItemCell> getCellByCoordinates(@NonNull StashTabDescriptor tab, int x, int y) {
         Optional<ItemCell> targetCell;
-        if(x > 12 || y > 12) {
+        if (x > 12 || y > 12) {
             tab.setQuad(true);
         }
-        if(tab.isQuad()){
+        if (tab.isQuad()) {
             targetCell = quadCells
                     .stream()
                     .filter(cell -> (cell.getX() == x && cell.getY() == y))
@@ -157,29 +162,30 @@ public class ItemsGridPanel extends JPanel implements ViewInit {
         return targetCell;
     }
 
-    private ItemInfoPanel createGridItem(@NonNull ItemTradeNotificationDescriptor message, @NonNull ItemCell cell, @NonNull StashTabDescriptor stashTabDescriptor){
-        ItemInfoPanel itemInfoPanel = new ItemInfoPanel(message,cell, stashTabDescriptor,componentsFactory);
+    private ItemInfoPanel createGridItem(@NonNull ItemTradeNotificationDescriptor message, @NonNull ItemCell cell, @NonNull StashTabDescriptor stashTabDescriptor) {
+        ItemInfoPanel itemInfoPanel = new ItemInfoPanel(message, cell, stashTabDescriptor, componentsFactory);
         itemInfoPanel.setAlignmentY(SwingConstants.CENTER);
         itemInfoPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                if(stashTabDescriptor.isQuad()){
-                    remove(((BorderLayout)getLayout()).getLayoutComponent(BorderLayout.CENTER));
-                    add(quadTabGrid,BorderLayout.CENTER);
-                }else {
-                    remove(((BorderLayout)getLayout()).getLayoutComponent(BorderLayout.CENTER));
-                    add(defaultGrid,BorderLayout.CENTER);
+                if (stashTabDescriptor.isQuad()) {
+                    remove(((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.CENTER));
+                    add(quadTabGrid, BorderLayout.CENTER);
+                } else {
+                    remove(((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.CENTER));
+                    add(defaultGrid, BorderLayout.CENTER);
                 }
                 MercuryStoreUI.repaintSubject.onNext(ItemsGridFrame.class);
             }
         });
         return itemInfoPanel;
     }
+
     private void closeGridItem(@NonNull ItemTradeNotificationDescriptor message) {
         String nickname = message.getWhisperNickname();
         ItemInfoPanel itemInfoPanel = tabButtons.get(nickname + message.getTabName());
         if (itemInfoPanel != null) {
-            if(itemInfoPanel.getStashTabDescriptor().isUndefined()){
+            if (itemInfoPanel.getStashTabDescriptor().isUndefined()) {
                 itemInfoPanel.getStashTabDescriptor().setUndefined(false);
                 stashTabsContainer.addTab(itemInfoPanel.getStashTabDescriptor());
                 stashTabsContainer.save();

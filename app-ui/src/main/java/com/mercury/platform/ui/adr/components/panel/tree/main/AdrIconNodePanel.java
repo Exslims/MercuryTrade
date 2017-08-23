@@ -43,12 +43,12 @@ public class AdrIconNodePanel extends AdrNodePanel<AdrIconDescriptor> {
         this.titleLabel = this.componentsFactory.getTextLabel(this.descriptor.getTitle());
         this.titleLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
         this.titleLabel.setFont(componentsFactory.getFont(FontStyle.REGULAR, 16));
-        this.titleLabel.setBorder(BorderFactory.createEmptyBorder(0,4,0,0));
-        root.add(tracker,BorderLayout.LINE_START);
-        root.add(this.titleLabel,BorderLayout.CENTER);
-        this.add(root,BorderLayout.CENTER);
-        this.add(this.adrComponentsFactory.getLeftComponentOperationsPanel(this.treeNode),BorderLayout.LINE_START);
+        this.titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+        root.add(tracker, BorderLayout.LINE_START);
+        root.add(this.titleLabel, BorderLayout.CENTER);
+        this.add(root, BorderLayout.CENTER);
+        this.add(this.adrComponentsFactory.getLeftComponentOperationsPanel(this.treeNode), BorderLayout.LINE_START);
         this.add(this.adrComponentsFactory
-                .getRightComponentOperationsPanel(this.descriptor),BorderLayout.LINE_END);
+                .getRightComponentOperationsPanel(this.descriptor), BorderLayout.LINE_END);
     }
 }

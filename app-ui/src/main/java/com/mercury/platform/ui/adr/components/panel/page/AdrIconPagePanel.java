@@ -1,17 +1,15 @@
 package com.mercury.platform.ui.adr.components.panel.page;
 
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
-import com.mercury.platform.ui.adr.validator.DoubleFieldValidator;
-import com.mercury.platform.ui.adr.validator.DoubleFormatFieldValidator;
-import com.mercury.platform.ui.adr.validator.IntegerFieldValidator;
-import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
@@ -19,7 +17,7 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
     protected void init() {
         JPanel container = new VerticalScrollContainer();
         container.setBackground(AppThemeColor.FRAME);
-        container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
+        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         JScrollPane verticalContainer = this.componentsFactory.getVerticalContainer(container);
 
         JLabel titleLabel = this.componentsFactory.getTextLabel("Title:");
@@ -45,7 +43,7 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
 
         JTextField titleField = this.adrComponentsFactory.getTitleField(this.payload);
         JSlider opacitySlider = this.adrComponentsFactory.getOpacitySlider(this.payload);
-        JPanel iconSizePanel = this.adrComponentsFactory.getComponentSizePanel(this.payload,this.fromGroup);
+        JPanel iconSizePanel = this.adrComponentsFactory.getComponentSizePanel(this.payload, this.fromGroup);
         JPanel hotKeyPanel = this.adrComponentsFactory.getHotKeyPanel(this.payload);
         JPanel locationPanel = this.adrComponentsFactory.getLocationPanel(this.payload, this.fromGroup);
         JPanel iconSelectPanel = this.adrComponentsFactory.getIconPanel(this.payload);
@@ -64,19 +62,19 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
 
         JPanel borderColorPanel = this.adrComponentsFactory.getBorderColorPanel(this.payload);
 
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2,0,6));
-        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2,0,6));
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2, 0, 6));
+        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2, 0, 6));
         generalPanel.setBackground(AppThemeColor.SLIDE_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK),
-                BorderFactory.createEmptyBorder(4,2,4,2)));
+                BorderFactory.createEmptyBorder(4, 2, 4, 2)));
 
         specPanel.setBackground(AppThemeColor.SLIDE_BG);
-        specPanel.setBorder(BorderFactory.createEmptyBorder(0,0,4,2));
+        specPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 2));
 
         generalPanel.add(titleLabel);
         generalPanel.add(titleField);
-        if(!this.fromGroup) {
+        if (!this.fromGroup) {
             generalPanel.add(locationLabel);
             generalPanel.add(locationPanel);
             generalPanel.add(sizeLabel);
@@ -89,7 +87,7 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         generalPanel.add(durationLabel);
         generalPanel.add(durationField);
 
-        if(!this.fromGroup) {
+        if (!this.fromGroup) {
             specPanel.add(opacityLabel);
             specPanel.add(opacitySlider);
         }
@@ -132,7 +130,7 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
             }
         });
 
-        JPanel advancedPanel = this.adrComponentsFactory.getCounterPanel(specPanel, "Advanced:", AppThemeColor.ADR_BG,this.advancedExpanded);
+        JPanel advancedPanel = this.adrComponentsFactory.getCounterPanel(specPanel, "Advanced:", AppThemeColor.ADR_BG, this.advancedExpanded);
         advancedPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
 
         container.add(this.componentsFactory.wrapToSlide(generalPanel));
@@ -143,7 +141,7 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
                 requestFocus();
             }
         });
-        this.add(verticalContainer,BorderLayout.CENTER);
+        this.add(verticalContainer, BorderLayout.CENTER);
     }
 
 }

@@ -5,7 +5,6 @@ import com.mercury.platform.shared.config.configration.AdrConfigurationService;
 import com.mercury.platform.shared.config.configration.BaseConfigurationService;
 import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.*;
-import com.mercury.platform.shared.config.descriptor.adr.AdrCaptureDescriptor;
 import com.mercury.platform.shared.config.json.JSONHelper;
 
 import java.awt.*;
@@ -15,6 +14,7 @@ import java.util.stream.Collectors;
 
 public class AdrConfigurationServiceMock extends BaseConfigurationService<List<AdrProfileDescriptor>> implements AdrConfigurationService {
     private List<AdrProfileDescriptor> currentProfiles;
+
     public AdrConfigurationServiceMock(ProfileDescriptor selectedProfile) {
         super(selectedProfile);
     }
@@ -37,12 +37,13 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
 
     @Override
     public void validate() {
-        this.currentProfiles = Arrays.stream(new AdrProfileDescriptor[]{this.getShowCaseProfile(),this.getDefaultProfile("Default profile")}).collect(Collectors.toList());
-        if(this.selectedProfile.getAdrProfileDescriptorList() == null){
+        this.currentProfiles = Arrays.stream(new AdrProfileDescriptor[]{this.getShowCaseProfile(), this.getDefaultProfile("Default profile")}).collect(Collectors.toList());
+        if (this.selectedProfile.getAdrProfileDescriptorList() == null) {
             this.selectedProfile.setAdrProfileDescriptorList(this.getDefault());
         }
     }
-    private AdrProfileDescriptor getDefaultProfile(String profileName){
+
+    private AdrProfileDescriptor getDefaultProfile(String profileName) {
         AdrProfileDescriptor profileDescriptor = new AdrProfileDescriptor();
         profileDescriptor.setProfileName(profileName);
         profileDescriptor.setSelected(true);
@@ -62,7 +63,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         progressBar.setTitle("progress bar");
         progressBar.setSize(new Dimension(240, 30));
         progressBar.setType(AdrComponentType.PROGRESS_BAR);
-        progressBar.setForegroundColor(new Color(22,126,138));
+        progressBar.setForegroundColor(new Color(22, 126, 138));
         return progressBar;
     }
 
@@ -78,18 +79,20 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
     public AdrTrackerGroupDescriptor getDefaultPBGroup() {
         AdrTrackerGroupDescriptor groupDescriptor = this.getDefaultGroup();
         groupDescriptor.setTitle("progress bar group");
-        groupDescriptor.setSize(new Dimension(240,30));
+        groupDescriptor.setSize(new Dimension(240, 30));
         groupDescriptor.setContentType(AdrTrackerGroupContentType.PROGRESS_BARS);
         return groupDescriptor;
     }
-    private AdrTrackerGroupDescriptor getDefaultGroup(){
+
+    private AdrTrackerGroupDescriptor getDefaultGroup() {
         AdrTrackerGroupDescriptor groupDescriptor = new AdrTrackerGroupDescriptor();
         groupDescriptor.setTitle("group");
         groupDescriptor.setType(AdrComponentType.TRACKER_GROUP);
         groupDescriptor.setOrientation(AdrComponentOrientation.VERTICAL);
         return groupDescriptor;
     }
-    private AdrProfileDescriptor getShowCaseProfile(){
+
+    private AdrProfileDescriptor getShowCaseProfile() {
         AdrProfileDescriptor profileDescriptor = new AdrProfileDescriptor();
         profileDescriptor.setProfileName("Showcase");
         profileDescriptor.setSelected(false);
@@ -103,7 +106,7 @@ public class AdrConfigurationServiceMock extends BaseConfigurationService<List<A
         AdrCaptureDescriptor descriptor = new AdrCaptureDescriptor();
         descriptor.setTitle("Capture");
         descriptor.setType(AdrComponentType.CAPTURE);
-        descriptor.setCaptureLocation(new Point(descriptor.getLocation().x + 80,descriptor.getLocation().y));
+        descriptor.setCaptureLocation(new Point(descriptor.getLocation().x + 80, descriptor.getLocation().y));
         return descriptor;
     }
 }

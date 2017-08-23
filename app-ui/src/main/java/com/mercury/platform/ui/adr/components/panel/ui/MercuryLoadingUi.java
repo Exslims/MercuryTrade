@@ -15,8 +15,9 @@ public class MercuryLoadingUi extends ComponentUI {
         this.component = component;
     }
 
-    @Override public void paint(Graphics g, JComponent c) {
-        if(component.getWidth() == 0){
+    @Override
+    public void paint(Graphics g, JComponent c) {
+        if (component.getWidth() == 0) {
             return;
         }
 
@@ -30,8 +31,8 @@ public class MercuryLoadingUi extends ComponentUI {
         double innerR = outerR * .78;
         double pointX = component.getWidth() * .5;
         double pointY = component.getHeight() * .5;
-        Shape inner  = new Ellipse2D.Double(pointX - innerR, pointY - innerR, innerR * 2, innerR * 2);
-        Shape outer  = new Ellipse2D.Double(pointX - outerR, pointY - outerR, size, size);
+        Shape inner = new Ellipse2D.Double(pointX - innerR, pointY - innerR, innerR * 2, innerR * 2);
+        Shape outer = new Ellipse2D.Double(pointX - outerR, pointY - outerR, size, size);
         Shape sector = new Arc2D.Double(pointX - outerR, pointY - outerR, size, size, 90 - degree, degree, Arc2D.PIE);
 
         Area foreground = new Area(sector);

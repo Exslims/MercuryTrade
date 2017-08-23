@@ -7,7 +7,7 @@ import javax.swing.*;
 
 @Data
 @AllArgsConstructor
-public class ItemCell{
+public class ItemCell {
     private int x;
     private int y;
     private JPanel cell;

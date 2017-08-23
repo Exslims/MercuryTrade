@@ -14,7 +14,8 @@ import java.util.List;
 
 public class AdrNewProfileDialog extends BaseDialog<String, List<String>> {
     private AdrComponentsFactory adrComponentsFactory;
-    public AdrNewProfileDialog(DialogCallback<String> callback, Component relative,  List<String> payload) {
+
+    public AdrNewProfileDialog(DialogCallback<String> callback, Component relative, List<String> payload) {
         super(callback, relative, payload);
         this.setTitle("Create new profile");
         this.setResizable(false);
@@ -29,19 +30,19 @@ public class AdrNewProfileDialog extends BaseDialog<String, List<String>> {
 
         ProfileNameValidator profileNameValidator = new ProfileNameValidator(this.payload);
         JTextField nameField = this.componentsFactory.getTextField("", FontStyle.REGULAR, 16f);
-        nameField.setPreferredSize(new Dimension(300,20));
+        nameField.setPreferredSize(new Dimension(300, 20));
         JPanel fieldPanel = this.componentsFactory.getJPanel(new BorderLayout());
-        fieldPanel.add(this.componentsFactory.getTextLabel("Profile name: "),BorderLayout.LINE_START);
-        fieldPanel.add(nameField,BorderLayout.CENTER);
+        fieldPanel.add(this.componentsFactory.getTextLabel("Profile name: "), BorderLayout.LINE_START);
+        fieldPanel.add(nameField, BorderLayout.CENTER);
         fieldPanel.setBackground(AppThemeColor.ADR_BG);
 
         JPanel buttonsPanel = this.componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER));
         buttonsPanel.setBackground(AppThemeColor.ADR_BG);
         JButton createButton = this.componentsFactory.getBorderedButton("Create");
-        createButton.setPreferredSize(new Dimension(100,26));
-        createButton.setFont(this.componentsFactory.getFont(FontStyle.BOLD,16f));
+        createButton.setPreferredSize(new Dimension(100, 26));
+        createButton.setFont(this.componentsFactory.getFont(FontStyle.BOLD, 16f));
         createButton.addActionListener(action -> {
-            if(!nameField.getText().isEmpty() && profileNameValidator.validate(nameField.getText())){
+            if (!nameField.getText().isEmpty() && profileNameValidator.validate(nameField.getText())) {
                 this.callback.onAction(nameField.getText());
                 this.setVisible(false);
                 this.dispose();
@@ -53,15 +54,15 @@ public class AdrNewProfileDialog extends BaseDialog<String, List<String>> {
                 BorderFactory.createLineBorder(AppThemeColor.BORDER),
                 "Cancel",
                 16f);
-        cancelButton.setPreferredSize(new Dimension(100,26));
+        cancelButton.setPreferredSize(new Dimension(100, 26));
         cancelButton.addActionListener(action -> {
-                this.setVisible(false);
+            this.setVisible(false);
         });
         buttonsPanel.add(createButton);
         buttonsPanel.add(cancelButton);
 
-        root.add(this.componentsFactory.wrapToSlide(fieldPanel,AppThemeColor.ADR_BG),BorderLayout.CENTER);
-        root.add(this.componentsFactory.wrapToSlide(buttonsPanel,AppThemeColor.ADR_BG),BorderLayout.PAGE_END);
-        this.add(root,BorderLayout.CENTER);
+        root.add(this.componentsFactory.wrapToSlide(fieldPanel, AppThemeColor.ADR_BG), BorderLayout.CENTER);
+        root.add(this.componentsFactory.wrapToSlide(buttonsPanel, AppThemeColor.ADR_BG), BorderLayout.PAGE_END);
+        this.add(root, BorderLayout.CENTER);
     }
 }

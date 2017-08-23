@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 
 public class MenuPanel extends JPanel implements ViewInit {
     private ComponentsFactory componentsFactory = new ComponentsFactory();
+
     public MenuPanel() {
         super();
         this.setBackground(AppThemeColor.FRAME);
@@ -21,6 +22,7 @@ public class MenuPanel extends JPanel implements ViewInit {
         this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, AppThemeColor.ADR_PANEL_BORDER));
         this.onViewInit();
     }
+
     @Override
     public void onViewInit() {
         JList<MenuEntry> list = new JList<>(getEntries());

@@ -19,7 +19,7 @@ public class HotKeyPanel extends JPanel {
     public HotKeyPanel(HotKeyDescriptor descriptor) {
         super(new BorderLayout());
         this.descriptor = descriptor;
-        this.setPreferredSize(new Dimension(110,26));
+        this.setPreferredSize(new Dimension(110, 26));
 
         ComponentsFactory componentsFactory = new ComponentsFactory();
         JButton button = componentsFactory.getBorderedButton(this.descriptor.getTitle());
@@ -27,7 +27,7 @@ public class HotKeyPanel extends JPanel {
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     button.setBackground(AppThemeColor.ADR_BG);
                     button.setText("Press any key");
                     hotKeyAllowed = true;
@@ -57,6 +57,6 @@ public class HotKeyPanel extends JPanel {
                 button.addMouseListener(mouseAdapter);
             }
         });
-        this.add(button,BorderLayout.CENTER);
+        this.add(button, BorderLayout.CENTER);
     }
 }

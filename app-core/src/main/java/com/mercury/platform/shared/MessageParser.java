@@ -7,6 +7,7 @@ import com.mercury.platform.shared.entity.message.NotificationType;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 public class MessageParser {
     private final static String poeTradeStashTabPattern = "^(.*\\s)?(.+):.+ to buy your\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\)\\s*?(.*)$";
     private final static String poeTradePattern = "^(.*\\s)?(.+):.+ to buy your\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.*?)$";
@@ -24,22 +25,22 @@ public class MessageParser {
         this.poeTradeCurrencyPattern = Pattern.compile(poeCurrencyPattern);
     }
 
-    public NotificationDescriptor parse(String fullMessage){
+    public NotificationDescriptor parse(String fullMessage) {
         Matcher poeAppItemMatcher = poeAppItemPattern.matcher(fullMessage);
-        if(poeAppItemMatcher.find()){
+        if (poeAppItemMatcher.find()) {
             ItemTradeNotificationDescriptor tradeNotification = new ItemTradeNotificationDescriptor();
             tradeNotification.setSourceString(fullMessage);
             tradeNotification.setWhisperNickname(poeAppItemMatcher.group(2));
             tradeNotification.setItemName(poeAppItemMatcher.group(3));
-            if(poeAppItemMatcher.group(5) != null) {
+            if (poeAppItemMatcher.group(5) != null) {
                 tradeNotification.setCurCount(Double.parseDouble(poeAppItemMatcher.group(5)));
                 tradeNotification.setCurrency(poeAppItemMatcher.group(6));
-            }else {
+            } else {
                 tradeNotification.setCurCount(0d);
                 tradeNotification.setCurrency("???");
             }
             tradeNotification.setLeague(poeAppItemMatcher.group(7));
-            if(poeAppItemMatcher.group(8) != null) {
+            if (poeAppItemMatcher.group(8) != null) {
                 tradeNotification.setTabName(poeAppItemMatcher.group(8));
                 tradeNotification.setLeft(Integer.parseInt(poeAppItemMatcher.group(9)));
                 tradeNotification.setTop(Integer.parseInt(poeAppItemMatcher.group(10)));
@@ -49,15 +50,15 @@ public class MessageParser {
             return tradeNotification;
         }
         Matcher poeTradeStashItemMatcher = poeTradeStashItemPattern.matcher(fullMessage);
-        if(poeTradeStashItemMatcher.find()){
+        if (poeTradeStashItemMatcher.find()) {
             ItemTradeNotificationDescriptor tradeNotification = new ItemTradeNotificationDescriptor();
             tradeNotification.setSourceString(fullMessage);
             tradeNotification.setWhisperNickname(poeTradeStashItemMatcher.group(2));
             tradeNotification.setItemName(poeTradeStashItemMatcher.group(3));
-            if(poeTradeStashItemMatcher.group(4) != null){
+            if (poeTradeStashItemMatcher.group(4) != null) {
                 tradeNotification.setCurCount(Double.parseDouble(poeTradeStashItemMatcher.group(5)));
                 tradeNotification.setCurrency(poeTradeStashItemMatcher.group(6));
-            }else {
+            } else {
                 tradeNotification.setCurCount(0d);
                 tradeNotification.setCurrency("???");
             }
@@ -70,7 +71,7 @@ public class MessageParser {
             return tradeNotification;
         }
         Matcher poeTradeCurrencyMatcher = poeTradeCurrencyPattern.matcher(fullMessage);
-        if(poeTradeCurrencyMatcher.find()){
+        if (poeTradeCurrencyMatcher.find()) {
             CurrencyTradeNotificationDescriptor tradeNotification = new CurrencyTradeNotificationDescriptor();
             tradeNotification.setSourceString(fullMessage);
             tradeNotification.setWhisperNickname(poeTradeCurrencyMatcher.group(2));
@@ -84,15 +85,15 @@ public class MessageParser {
             return tradeNotification;
         }
         Matcher poeTradeItemMatcher = poeTradeItemPattern.matcher(fullMessage);
-        if(poeTradeItemMatcher.find()){
+        if (poeTradeItemMatcher.find()) {
             ItemTradeNotificationDescriptor tradeNotification = new ItemTradeNotificationDescriptor();
             tradeNotification.setSourceString(fullMessage);
             tradeNotification.setWhisperNickname(poeTradeItemMatcher.group(2));
             tradeNotification.setItemName(poeTradeItemMatcher.group(3));
-            if(poeTradeItemMatcher.group(4) != null){
+            if (poeTradeItemMatcher.group(4) != null) {
                 tradeNotification.setCurCount(Double.parseDouble(poeTradeItemMatcher.group(5)));
                 tradeNotification.setCurrency(poeTradeItemMatcher.group(6));
-            }else {
+            } else {
                 tradeNotification.setCurCount(0d);
                 tradeNotification.setCurrency("???");
             }

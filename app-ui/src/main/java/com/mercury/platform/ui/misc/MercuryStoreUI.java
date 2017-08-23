@@ -23,7 +23,7 @@ public class MercuryStoreUI {
     public static final PublishSubject<Boolean> expandMessageSubject = PublishSubject.create();
     public static final PublishSubject<ItemInfoPanel> itemCellStateSubject = PublishSubject.create();
     //Scale
-    public static final PublishSubject<Map<String,Float>> saveScaleSubject = PublishSubject.create();
+    public static final PublishSubject<Map<String, Float>> saveScaleSubject = PublishSubject.create();
     public static final PublishSubject<Float> notificationScaleSubject = PublishSubject.create();
     public static final PublishSubject<Float> taskBarScaleSubject = PublishSubject.create();
     public static final PublishSubject<Float> itemPanelScaleSubject = PublishSubject.create();

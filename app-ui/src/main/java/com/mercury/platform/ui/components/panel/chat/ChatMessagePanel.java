@@ -35,7 +35,7 @@ public class ChatMessagePanel extends JPanel implements ViewInit {
         this.message = message;
 
         this.componentsFactory = componentsFactory;
-        this.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        this.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         this.setBackground(AppThemeColor.TRANSPARENT);
         onViewInit();
     }
@@ -43,7 +43,7 @@ public class ChatMessagePanel extends JPanel implements ViewInit {
     @Override
     public void onViewInit() {
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
-        root.setBorder(BorderFactory.createMatteBorder(1,1,1,1,AppThemeColor.HEADER));
+        root.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, AppThemeColor.HEADER));
         root.setBackground(AppThemeColor.SLIDE_BG);
 
         JPanel miscPanel = componentsFactory.getTransparentPanel(new BorderLayout());
@@ -53,7 +53,7 @@ public class ChatMessagePanel extends JPanel implements ViewInit {
         quickResponse.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     MercuryStoreCore.chatCommandSubject.onNext("@" + nickName + " " + scannerService.get().getResponseMessage());
                 }
             }
@@ -62,7 +62,7 @@ public class ChatMessagePanel extends JPanel implements ViewInit {
         openChat.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     MercuryStoreCore.openChatSubject.onNext(nickName);
                 }
             }
@@ -75,7 +75,7 @@ public class ChatMessagePanel extends JPanel implements ViewInit {
                 TextAlignment.LEFTOP,
                 15f,
                 nickName);
-        nicknameLabel.setPreferredSize(new Dimension(75,nicknameLabel.getPreferredSize().height));
+        nicknameLabel.setPreferredSize(new Dimension(75, nicknameLabel.getPreferredSize().height));
         nicknameLabel.setBorder(null);
         quickResponse.setBorder(null);
         openChat.setBorder(null);
@@ -85,17 +85,17 @@ public class ChatMessagePanel extends JPanel implements ViewInit {
         JPanel nicknamePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
         nicknamePanel.add(nicknameLabel);
 
-        miscPanel.add(operationsPanel,BorderLayout.LINE_START);
-        miscPanel.add(nicknamePanel,BorderLayout.CENTER);
-        nicknamePanel.setMaximumSize(new Dimension(75,30));
+        miscPanel.add(operationsPanel, BorderLayout.LINE_START);
+        miscPanel.add(nicknamePanel, BorderLayout.CENTER);
+        nicknamePanel.setMaximumSize(new Dimension(75, 30));
         JLabel messageLabel = new JLabel(message);
         messageLabel.setBackground(AppThemeColor.TRANSPARENT);
         messageLabel.setBorder(null);
-        messageLabel.setFont(componentsFactory.getFont(FontStyle.REGULAR,16f));
+        messageLabel.setFont(componentsFactory.getFont(FontStyle.REGULAR, 16f));
         messageLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
 
-        root.add(miscPanel,BorderLayout.LINE_START);
+        root.add(miscPanel, BorderLayout.LINE_START);
         root.add(messageLabel, BorderLayout.CENTER);
-        this.add(root,BorderLayout.CENTER);
+        this.add(root, BorderLayout.CENTER);
     }
 }

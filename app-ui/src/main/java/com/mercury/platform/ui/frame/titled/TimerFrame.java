@@ -21,6 +21,7 @@ public class TimerFrame extends AbstractTitledComponentFrame {
     private int hours = 0;
     private int mapCount = 0;
     private int chaosSpend = 0;
+
     public TimerFrame() {
         super();
     }
@@ -29,27 +30,27 @@ public class TimerFrame extends AbstractTitledComponentFrame {
     protected void initialize() {
         super.initialize();
         JPanel root = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton play = componentsFactory.getIconButton("app/timer-play.png", 16,AppThemeColor.FRAME_ALPHA, TooltipConstants.PLAY);
+        JButton play = componentsFactory.getIconButton("app/timer-play.png", 16, AppThemeColor.FRAME_ALPHA, TooltipConstants.PLAY);
         play.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 getNewTimer().start();
             }
         });
-        JButton pause = componentsFactory.getIconButton("app/timer-pause.png", 16,AppThemeColor.FRAME_ALPHA,TooltipConstants.PAUSE);
+        JButton pause = componentsFactory.getIconButton("app/timer-pause.png", 16, AppThemeColor.FRAME_ALPHA, TooltipConstants.PAUSE);
         pause.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(timeAgo != null){
+                if (timeAgo != null) {
                     timeAgo.stop();
                 }
             }
         });
-        JButton stop = componentsFactory.getIconButton("app/timer-stop.png", 16,AppThemeColor.FRAME_ALPHA,TooltipConstants.STOP);
+        JButton stop = componentsFactory.getIconButton("app/timer-stop.png", 16, AppThemeColor.FRAME_ALPHA, TooltipConstants.STOP);
         stop.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(timeAgo != null){
+                if (timeAgo != null) {
                     timeAgo.stop();
                     seconds = 0;
                     minutes = 0;
@@ -59,11 +60,11 @@ public class TimerFrame extends AbstractTitledComponentFrame {
         });
         JLabel mapCountLabel = componentsFactory.getTextLabel("Map count: 0");
         JLabel chaosSpendLabel = componentsFactory.getTextLabel("Chaos spend: 0");
-        JButton reset = componentsFactory.getIconButton("app/timer-reset.png", 16,AppThemeColor.FRAME_ALPHA, TooltipConstants.RESET);
+        JButton reset = componentsFactory.getIconButton("app/timer-reset.png", 16, AppThemeColor.FRAME_ALPHA, TooltipConstants.RESET);
         reset.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(timeAgo != null){
+                if (timeAgo != null) {
                     timeAgo.stop();
                 }
                 timeLabel.setText("00:00:00");
@@ -82,10 +83,10 @@ public class TimerFrame extends AbstractTitledComponentFrame {
         root.add(pause);
         root.add(stop);
         root.add(reset);
-        this.add(root,BorderLayout.CENTER);
+        this.add(root, BorderLayout.CENTER);
 
         JPanel miscPanel = componentsFactory.getTransparentPanel(null);
-        miscPanel.setLayout(new BoxLayout(miscPanel,BoxLayout.Y_AXIS));
+        miscPanel.setLayout(new BoxLayout(miscPanel, BoxLayout.Y_AXIS));
 
         JPanel mapCountPanel = getIncrementRow(mapCountLabel, new MouseAdapter() {
             @Override
@@ -97,7 +98,7 @@ public class TimerFrame extends AbstractTitledComponentFrame {
         }, new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(mapCount > 0) {
+                if (mapCount > 0) {
                     mapCount--;
                     mapCountLabel.setText("Map count: " + mapCount);
                     TimerFrame.this.repaint();
@@ -124,10 +125,11 @@ public class TimerFrame extends AbstractTitledComponentFrame {
 
         miscPanel.add(mapCountPanel);
         miscPanel.add(chaosSpendPanel);
-        this.add(miscPanel,BorderLayout.PAGE_END);
+        this.add(miscPanel, BorderLayout.PAGE_END);
         this.pack();
     }
-    private Timer getNewTimer(){
+
+    private Timer getNewTimer() {
         timeAgo = new Timer(1000, e -> {
             String labelText = "";
             seconds++;
@@ -139,9 +141,9 @@ public class TimerFrame extends AbstractTitledComponentFrame {
                     minutes = 0;
                 }
             }
-            String secLabel = ((seconds/10.0) >= 1f)?String.valueOf(seconds) : "0" + seconds;
-            String minLabel = ((minutes/10.0) >= 1f)?String.valueOf(minutes) : "0" + minutes;
-            String hLabel = ((hours/10.0) >= 1f)?String.valueOf(hours) : "0" + hours;
+            String secLabel = ((seconds / 10.0) >= 1f) ? String.valueOf(seconds) : "0" + seconds;
+            String minLabel = ((minutes / 10.0) >= 1f) ? String.valueOf(minutes) : "0" + minutes;
+            String hLabel = ((hours / 10.0) >= 1f) ? String.valueOf(hours) : "0" + hours;
             if (minutes == 0 && hours == 0) {
                 labelText = "00:00:" + secLabel;
             } else if (minutes > 0) {
@@ -154,11 +156,12 @@ public class TimerFrame extends AbstractTitledComponentFrame {
         });
         return timeAgo;
     }
-    private JPanel getIncrementRow(JLabel label, MouseAdapter plusListener, MouseAdapter minusListener){
+
+    private JPanel getIncrementRow(JLabel label, MouseAdapter plusListener, MouseAdapter minusListener) {
         JPanel panel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton plus = componentsFactory.getIconButton("app/invite.png", 14,AppThemeColor.FRAME_ALPHA,"");
+        JButton plus = componentsFactory.getIconButton("app/invite.png", 14, AppThemeColor.FRAME_ALPHA, "");
         plus.addMouseListener(plusListener);
-        JButton minus = componentsFactory.getIconButton("app/kick.png", 14,AppThemeColor.FRAME_ALPHA,"");
+        JButton minus = componentsFactory.getIconButton("app/kick.png", 14, AppThemeColor.FRAME_ALPHA, "");
         minus.addMouseListener(minusListener);
         panel.add(label);
         panel.add(plus);
@@ -166,15 +169,15 @@ public class TimerFrame extends AbstractTitledComponentFrame {
         return panel;
     }
 
-    private JPanel getTimePanel(){
+    private JPanel getTimePanel() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panel.setBackground(AppThemeColor.TRANSPARENT);
         timeLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MISC, TextAlignment.CENTER, 18, "00:00:00");
         timeLabel.setVerticalAlignment(SwingConstants.CENTER);
         timeLabel.setHorizontalAlignment(SwingConstants.CENTER);
         panel.setBorder(BorderFactory.createLineBorder(AppThemeColor.BUTTON, 1));
-        panel.setMinimumSize(new Dimension(100,30));
-        panel.setPreferredSize(new Dimension(100,30));
+        panel.setMinimumSize(new Dimension(100, 30));
+        panel.setPreferredSize(new Dimension(100, 30));
         panel.add(timeLabel);
         return panel;
     }

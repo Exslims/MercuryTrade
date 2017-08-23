@@ -11,10 +11,10 @@ public class AdrComponentJsonAdapter implements JsonDeserializer<AdrComponentDes
     public AdrComponentDescriptor deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         JsonPrimitive jsonObj = jsonElement.getAsJsonObject().getAsJsonPrimitive("type");
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(AdrTrackerGroupDescriptor.class,new AdrTrackerGroupDeserializer())
+                .registerTypeAdapter(AdrTrackerGroupDescriptor.class, new AdrTrackerGroupDeserializer())
                 .create();
-        switch (AdrComponentType.valueOf(jsonObj.getAsString())){
-            case TRACKER_GROUP:{
+        switch (AdrComponentType.valueOf(jsonObj.getAsString())) {
+            case TRACKER_GROUP: {
                 return gson.fromJson(jsonElement.getAsJsonObject(), AdrTrackerGroupDescriptor.class);
             }
             case ICON: {
@@ -23,7 +23,7 @@ public class AdrComponentJsonAdapter implements JsonDeserializer<AdrComponentDes
             case PROGRESS_BAR: {
                 return gson.fromJson(jsonElement.getAsJsonObject(), AdrProgressBarDescriptor.class);
             }
-            case CAPTURE:{
+            case CAPTURE: {
                 return gson.fromJson(jsonElement.getAsJsonObject(), AdrCaptureDescriptor.class);
             }
         }
@@ -33,8 +33,8 @@ public class AdrComponentJsonAdapter implements JsonDeserializer<AdrComponentDes
     @Override
     public JsonElement serialize(AdrComponentDescriptor descriptor, Type type, JsonSerializationContext jsonSerializationContext) {
         Gson gson = new Gson();
-        switch (descriptor.getType()){
-            case TRACKER_GROUP:{
+        switch (descriptor.getType()) {
+            case TRACKER_GROUP: {
                 return gson.toJsonTree(descriptor, AdrTrackerGroupDescriptor.class);
             }
             case ICON: {
@@ -43,7 +43,7 @@ public class AdrComponentJsonAdapter implements JsonDeserializer<AdrComponentDes
             case PROGRESS_BAR: {
                 return gson.toJsonTree(descriptor, AdrProgressBarDescriptor.class);
             }
-            case CAPTURE:{
+            case CAPTURE: {
                 return gson.toJsonTree(descriptor, AdrCaptureDescriptor.class);
             }
         }

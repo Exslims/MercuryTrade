@@ -9,5 +9,6 @@ import java.io.IOException;
  * Created by Frost on 25.01.2017.
  */
 public interface UpdateEventHandler {
-    @Subscribe void onUpdateReceived(UpdateReceivedEvent jarFile) throws IOException;
+    @Subscribe
+    void onUpdateReceived(UpdateReceivedEvent jarFile) throws IOException;
 }

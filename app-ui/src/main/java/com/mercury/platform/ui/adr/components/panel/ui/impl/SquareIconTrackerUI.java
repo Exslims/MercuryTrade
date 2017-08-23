@@ -17,33 +17,33 @@ import java.io.IOException;
 public class SquareIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescriptor> {
     @Override
     public void paint(Graphics g, JComponent c) {
-        if(!tracker.isShowCase()){
-            if(!descriptor.isVisible()) {
+        if (!tracker.isShowCase()) {
+            if (!descriptor.isVisible()) {
                 return;
             }
         }
-        int barRectWidth  = tracker.getWidth();
+        int barRectWidth = tracker.getWidth();
         int barRectHeight = tracker.getHeight();
         if (barRectWidth <= 0 || barRectHeight <= 0) {
             return;
         }
 
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setComposite(AlphaComposite.getInstance(descriptor.getBackgroundColor().getAlpha() == 0? AlphaComposite.CLEAR : AlphaComposite.SRC));
-        if(this.tracker.isShowCase()){
-            if (descriptor.getBackgroundColor().getAlpha() < 10){
+        g2.setComposite(AlphaComposite.getInstance(descriptor.getBackgroundColor().getAlpha() == 0 ? AlphaComposite.CLEAR : AlphaComposite.SRC));
+        if (this.tracker.isShowCase()) {
+            if (descriptor.getBackgroundColor().getAlpha() < 10) {
                 g2.setColor(AppThemeColor.ADR_TEXT_ARE_BG);
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
-            }else {
+            } else {
                 g2.setColor(descriptor.getBackgroundColor());
             }
-        }else {
+        } else {
             g2.setColor(descriptor.getBackgroundColor());
         }
-        g2.fillRect(0,0,barRectWidth,barRectHeight);
+        g2.fillRect(0, 0, barRectWidth, barRectHeight);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         double sz = Math.max(barRectWidth, barRectHeight);
-        if(descriptor.isIconEnable()) {
+        if (descriptor.isIconEnable()) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
             try {
                 BufferedImage read = ImageIO.read(this.config.getIcon(descriptor.getIconPath()));
@@ -53,11 +53,11 @@ public class SquareIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescri
                 e.printStackTrace();
             }
         }
-        if(tracker.isMaskPainted() && descriptor.isMaskEnable() && !tracker.isShowCase()) {
+        if (tracker.isMaskPainted() && descriptor.isMaskEnable() && !tracker.isShowCase()) {
             double degree;
-            if(descriptor.isInvertMask()) {
+            if (descriptor.isInvertMask()) {
                 degree = 360 * tracker.getPercentComplete();
-            }else {
+            } else {
                 degree = 360 * (1f - tracker.getPercentComplete());
             }
             Shape outer = new Rectangle2D.Double(0, 0, sz, sz);

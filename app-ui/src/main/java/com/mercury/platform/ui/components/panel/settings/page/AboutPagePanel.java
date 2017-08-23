@@ -16,27 +16,27 @@ public class AboutPagePanel extends SettingsPagePanel {
     @Override
     public void onViewInit() {
         super.onViewInit();
-        this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JPanel imgPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         imgPanel.add(componentsFactory.getIconLabel("app/app-icon-big.png"));
 //        this.add(imgPanel,BorderLayout.CENTER);
         this.container.add(this.componentsFactory.wrapToSlide(getInfoPanel()));
     }
 
-    private JPanel getInfoPanel(){
+    private JPanel getInfoPanel() {
         JPanel panel = componentsFactory.getTransparentPanel();
         panel.setBackground(AppThemeColor.ADR_BG);
         panel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
-        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JPanel titlePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        titlePanel.add(componentsFactory.getTextLabel("MercuryTrade", FontStyle.REGULAR,15));
+        titlePanel.add(componentsFactory.getTextLabel("MercuryTrade", FontStyle.REGULAR, 15));
         panel.add(titlePanel);
         JPanel versionPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        versionPanel.add(componentsFactory.getTextLabel("App version: " + MercuryConstants.APP_VERSION, FontStyle.REGULAR,15));
+        versionPanel.add(componentsFactory.getTextLabel("App version: " + MercuryConstants.APP_VERSION, FontStyle.REGULAR, 15));
         panel.add(versionPanel);
 
-        JLabel redditButton = componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,16f,"Reddit");
+        JLabel redditButton = componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP, 16f, "Reddit");
         redditButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -57,7 +57,7 @@ public class AboutPagePanel extends SettingsPagePanel {
                 setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
-        JLabel githubButton = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,16f,"Github");
+        JLabel githubButton = componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP, 16f, "Github");
         githubButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -67,6 +67,7 @@ public class AboutPagePanel extends SettingsPagePanel {
                     e1.printStackTrace();
                 }
             }
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -78,7 +79,7 @@ public class AboutPagePanel extends SettingsPagePanel {
             }
         });
 
-        JLabel discordButton = componentsFactory.getTextLabel(FontStyle.REGULAR,AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP,16f,"Discord");
+        JLabel discordButton = componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_MESSAGE, TextAlignment.LEFTOP, 16f, "Discord");
         discordButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -88,6 +89,7 @@ public class AboutPagePanel extends SettingsPagePanel {
                     e1.printStackTrace();
                 }
             }
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -100,7 +102,7 @@ public class AboutPagePanel extends SettingsPagePanel {
         });
 
         JPanel feedbackPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        feedbackPanel.add(componentsFactory.getTextLabel("Feedback & Suggestions: ", FontStyle.REGULAR,15));
+        feedbackPanel.add(componentsFactory.getTextLabel("Feedback & Suggestions: ", FontStyle.REGULAR, 15));
         feedbackPanel.add(redditButton);
         feedbackPanel.add(githubButton);
         feedbackPanel.add(discordButton);

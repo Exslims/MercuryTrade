@@ -7,13 +7,12 @@ import com.mercury.platform.ui.adr.components.panel.tree.model.AdrTreeNode;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
-import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import java.awt.*;
 
 
-public class AdrDialogGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescriptor>{
+public class AdrDialogGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescriptor> {
     private JLabel groupLabel;
     private JPanel container;
 
@@ -33,8 +32,8 @@ public class AdrDialogGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescrip
     public void onViewInit() {
         this.container = this.componentsFactory.getJPanel(new GridLayout(descriptor.getCells().size(), 1));
         this.container.setVisible(false);
-        this.add(this.container,BorderLayout.CENTER);
-        this.add(this.getTopPanel(),BorderLayout.PAGE_START);
+        this.add(this.container, BorderLayout.CENTER);
+        this.add(this.getTopPanel(), BorderLayout.PAGE_START);
     }
 
     @Override
@@ -42,15 +41,15 @@ public class AdrDialogGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescrip
         return this.container.add(comp);
     }
 
-    private JPanel getTopPanel(){
+    private JPanel getTopPanel() {
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         JButton expandButton = this.componentsFactory.getIconButton("app/adr/node_expand.png", 16, AppThemeColor.FRAME, "");
         expandButton.addActionListener(action -> {
-            if(this.container.isVisible()){
-                expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_expand.png",16));
+            if (this.container.isVisible()) {
+                expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_expand.png", 16));
                 this.container.setVisible(false);
-            }else {
-                expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_collapse.png",16));
+            } else {
+                expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_collapse.png", 16));
                 this.container.setVisible(true);
             }
             MercuryStoreUI.adrManagerPack.onNext(true);
@@ -65,8 +64,8 @@ public class AdrDialogGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescrip
         this.groupLabel.setPreferredSize(new Dimension(170, 30));
         this.groupLabel.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 2));
 
-        root.add(expandButton,BorderLayout.LINE_START);
-        root.add(this.groupLabel,BorderLayout.CENTER);
+        root.add(expandButton, BorderLayout.LINE_START);
+        root.add(this.groupLabel, BorderLayout.CENTER);
         return root;
     }
 }

@@ -13,6 +13,7 @@ public class CurrencyOutPanelProvider extends NotificationPanelProvider<Currency
     public boolean isSuitable(NotificationType type) {
         return type.equals(NotificationType.OUT_CURRENCY_MESSAGE);
     }
+
     @Override
     protected NotificationPanel<CurrencyTradeNotificationDescriptor, OutgoingPanelController> getPanel() {
         CurrencyOutNotificationPanel panel = new CurrencyOutNotificationPanel();

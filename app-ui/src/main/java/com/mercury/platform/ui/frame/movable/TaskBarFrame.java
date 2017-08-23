@@ -15,7 +15,9 @@ import org.pushingpixels.trident.ease.Spline;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Map;
 
 public class TaskBarFrame extends AbstractMovableComponentFrame {
@@ -35,14 +37,16 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
         this.prevState = FrameVisibleState.SHOW;
     }
 
-    private void enableCollapseAnimation(){
+    private void enableCollapseAnimation() {
         this.setWidth(MIN_WIDTH);
         this.addMouseListener(collapseListener);
     }
-    private void disableCollapseAnimation(){
+
+    private void disableCollapseAnimation() {
         this.setWidth(MAX_WIDTH);
         this.removeMouseListener(collapseListener);
     }
+
     @Override
     protected LayoutManager getFrameLayout() {
         return new BorderLayout();
@@ -51,30 +55,33 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
     @Override
     public void subscribe() {
     }
-    private void initCollapseAnimations(String state){
+
+    private void initCollapseAnimations(String state) {
         collapseAnimation = new Timeline(this);
-        switch (state){
-            case "expand":{
-                collapseAnimation.addPropertyToInterpolate("width",this.getWidth(),MAX_WIDTH);
+        switch (state) {
+            case "expand": {
+                collapseAnimation.addPropertyToInterpolate("width", this.getWidth(), MAX_WIDTH);
                 break;
             }
-            case "collapse":{
-                collapseAnimation.addPropertyToInterpolate("width",this.getWidth(),MIN_WIDTH);
+            case "collapse": {
+                collapseAnimation.addPropertyToInterpolate("width", this.getWidth(), MIN_WIDTH);
             }
         }
         collapseAnimation.setEase(new Spline(1f));
         collapseAnimation.setDuration(150);
     }
-    private boolean withInPanel(JPanel panel){
-        return new Rectangle(panel.getLocationOnScreen(),panel.getSize()).contains(MouseInfo.getPointerInfo().getLocation());
+
+    private boolean withInPanel(JPanel panel) {
+        return new Rectangle(panel.getLocationOnScreen(), panel.getSize()).contains(MouseInfo.getPointerInfo().getLocation());
     }
 
     /**
      * For 'trident' property animations
+     *
      * @param width next width
      */
-    public void setWidth(int width){
-        this.setSize(new Dimension(width,this.getHeight()));
+    public void setWidth(int width) {
+        this.setSize(new Dimension(width, this.getHeight()));
     }
 
     @Override
@@ -86,7 +93,7 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
     @Override
     protected JPanel getPanelForPINSettings() {
         this.disableCollapseAnimation();
-        JPanel panel = this.componentsFactory.getJPanel(new BorderLayout(),AppThemeColor.FRAME);
+        JPanel panel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.FRAME);
         JLabel textLabel = this.componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER, 22f, "Task Bar");
         textLabel.setHorizontalAlignment(SwingConstants.CENTER);
         panel.add(textLabel);
@@ -100,7 +107,7 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
     }
 
     @Override
-    protected void performScaling(Map<String,Float> scaleData) {
+    protected void performScaling(Map<String, Float> scaleData) {
         this.componentsFactory.setScale(scaleData.get("taskbar"));
         onViewInit();
     }
@@ -108,7 +115,7 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
     @Override
     public void onViewInit() {
         JPanel panel = componentsFactory.getTransparentPanel(new BorderLayout());
-        taskBarPanel = new TaskBarPanel(new MercuryTaskBarController(),componentsFactory);
+        taskBarPanel = new TaskBarPanel(new MercuryTaskBarController(), componentsFactory);
         panel.add(taskBarPanel, BorderLayout.CENTER);
         panel.setBackground(AppThemeColor.FRAME);
         mainContainer = panel;
@@ -134,7 +141,7 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
             @Override
             public void mouseExited(MouseEvent e) {
                 TaskBarFrame.this.repaint();
-                if(isVisible() && !withInPanel((JPanel)TaskBarFrame.this.getContentPane()) && !EResizeSpace) {
+                if (isVisible() && !withInPanel((JPanel) TaskBarFrame.this.getContentPane()) && !EResizeSpace) {
                     if (collapseAnimation != null) {
                         collapseAnimation.abort();
                     }
@@ -150,35 +157,54 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
     protected JPanel defaultView(ComponentsFactory factory) {
         TaskBarController controller = new TaskBarController() {
             @Override
-            public void enableDND() {}
+            public void enableDND() {
+            }
+
             @Override
-            public void disableDND() {}
+            public void disableDND() {
+            }
+
             @Override
-            public void showITH() {}
+            public void showITH() {
+            }
+
             @Override
-            public void performHideout() {}
+            public void performHideout() {
+            }
+
             @Override
-            public void showChatFiler() {}
+            public void showChatFiler() {
+            }
+
             @Override
-            public void showHistory() {}
+            public void showHistory() {
+            }
+
             @Override
-            public void openPINSettings() {}
+            public void openPINSettings() {
+            }
+
             @Override
-            public void openScaleSettings() {}
+            public void openScaleSettings() {
+            }
+
             @Override
-            public void showSettings() {}
+            public void showSettings() {
+            }
+
             @Override
-            public void exit() {}
+            public void exit() {
+            }
         };
         JPanel panel = factory.getTransparentPanel(new BorderLayout());
         TaskBarPanel taskBarPanel = new TaskBarPanel(controller, factory);
-        panel.add(new TaskBarPanel(controller,factory), BorderLayout.CENTER);
+        panel.add(new TaskBarPanel(controller, factory), BorderLayout.CENTER);
         panel.setBackground(AppThemeColor.FRAME);
         this.MIN_WIDTH = taskBarPanel.getWidthOf(4);
         this.MAX_WIDTH = taskBarPanel.getPreferredSize().width;
-        this.setSize(new Dimension(MIN_WIDTH,this.getHeight()));
-        this.setMinimumSize(new Dimension(MIN_WIDTH,taskBarPanel.getHeight()));
-        this.setMaximumSize(new Dimension(MAX_WIDTH,taskBarPanel.getHeight()));
+        this.setSize(new Dimension(MIN_WIDTH, this.getHeight()));
+        this.setMinimumSize(new Dimension(MIN_WIDTH, taskBarPanel.getHeight()));
+        this.setMaximumSize(new Dimension(MAX_WIDTH, taskBarPanel.getHeight()));
         return panel;
     }
 }

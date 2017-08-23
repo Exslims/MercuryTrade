@@ -13,10 +13,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
-public class AdrDurationCellPanel extends AdrDurationComponentPanel<AdrDurationComponentDescriptor>{
+public class AdrDurationCellPanel extends AdrDurationComponentPanel<AdrDurationComponentDescriptor> {
     private MercuryTracker tracker;
+
     public AdrDurationCellPanel(AdrDurationComponentDescriptor cellDescriptor, ComponentsFactory componentsFactory) {
-        super(cellDescriptor,componentsFactory);
+        super(cellDescriptor, componentsFactory);
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.setBorder(null);
         this.setVisible(false);
@@ -55,13 +56,13 @@ public class AdrDurationCellPanel extends AdrDurationComponentPanel<AdrDurationC
     protected void onHotKeyPressed() {
         this.tracker.setStringPainted(descriptor.isTextEnable());
         this.tracker.setMaskPainted(descriptor.isMaskEnable());
-        if(this.descriptor.isHotKeyRefresh()) {
+        if (this.descriptor.isHotKeyRefresh()) {
             this.tracker.abort();
         }
         this.tracker.play();
-        if(this.getParent() instanceof AdrTrackerGroupPanel){
+        if (this.getParent() instanceof AdrTrackerGroupPanel) {
             AdrTrackerGroupPanel parent = (AdrTrackerGroupPanel) this.getParent();
-            if(parent.getDescriptor().getGroupType().equals(AdrTrackerGroupType.DYNAMIC)) {
+            if (parent.getDescriptor().getGroupType().equals(AdrTrackerGroupType.DYNAMIC)) {
                 parent.setComponentZOrder(this, parent.getComponentCount() - 1);
             }
         }
@@ -75,7 +76,7 @@ public class AdrDurationCellPanel extends AdrDurationComponentPanel<AdrDurationC
 
     @Override
     public void onViewInit() {
-        this.setLayout(new GridLayout(1,1));
+        this.setLayout(new GridLayout(1, 1));
         this.setPreferredSize(this.descriptor.getSize());
         this.tracker = new MercuryTracker(this.descriptor);
         this.add(this.tracker);
@@ -83,14 +84,14 @@ public class AdrDurationCellPanel extends AdrDurationComponentPanel<AdrDurationC
             @Override
             public void onTimelineStateChanged(Timeline.TimelineState oldState, Timeline.TimelineState newState, float durationFraction, float timelinePosition) {
                 if (newState.equals(Timeline.TimelineState.IDLE) && !inSettings) {
-                    if(!descriptor.isAlwaysVisible()) {
+                    if (!descriptor.isAlwaysVisible()) {
                         setVisible(false);
-                    }else {
+                    } else {
                         tracker.setStringPainted(!descriptor.isAlwaysVisible());
                         tracker.setMaskPainted(!descriptor.isAlwaysVisible());
                     }
                     MercuryStoreUI.adrRepaintSubject.onNext(true);
-                }else if(newState.equals(Timeline.TimelineState.PLAYING_FORWARD)){
+                } else if (newState.equals(Timeline.TimelineState.PLAYING_FORWARD)) {
                     setVisible(true);
                     JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(AdrDurationCellPanel.this);
                     parent.pack();

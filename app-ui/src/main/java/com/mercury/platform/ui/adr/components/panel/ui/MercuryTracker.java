@@ -1,7 +1,10 @@
 package com.mercury.platform.ui.adr.components.panel.ui;
 
-import com.mercury.platform.shared.config.descriptor.adr.*;
-import com.mercury.platform.ui.adr.components.panel.ui.impl.*;
+import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
+import com.mercury.platform.ui.adr.components.panel.ui.impl.ProgressBarUI;
+import com.mercury.platform.ui.adr.components.panel.ui.impl.SquareIconTrackerUI;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -16,17 +19,23 @@ import javax.swing.*;
 public class MercuryTracker extends JComponent {
     @Getter
     private int value;
-    @Setter @Getter
+    @Setter
+    @Getter
     private int maximum;
-    @Setter @Getter
+    @Setter
+    @Getter
     private int minimum;
-    @Setter @Getter
+    @Setter
+    @Getter
     private AdrDurationComponentDescriptor descriptor;
-    @Setter @Getter
+    @Setter
+    @Getter
     private boolean stringPainted = true;
-    @Setter @Getter
+    @Setter
+    @Getter
     private boolean maskPainted = true;
-    @Setter @Getter
+    @Setter
+    @Getter
     private boolean showCase = false;
 
     private Timeline progressTl;
@@ -41,14 +50,15 @@ public class MercuryTracker extends JComponent {
         this.progressTl = new Timeline(this);
         this.progressTl.setInitialDelay((long) (descriptor.getDelay() * 1000));
         this.progressTl.setDuration((int) (descriptor.getDuration() * 1000));
-        if(this.descriptor.isInvertTimer()) {
+        if (this.descriptor.isInvertTimer()) {
             this.setValue((int) (this.descriptor.getDuration() * 1000));
             this.progressTl.addPropertyToInterpolate("value", 0, this.getMaximum());
-        }else {
+        } else {
             this.setValue(0);
             this.progressTl.addPropertyToInterpolate("value", this.getMaximum(), 0);
         }
     }
+
     private void initUI() {
         BasicMercuryIconTrackerUI ui;
         if (descriptor instanceof AdrIconDescriptor) {
@@ -61,7 +71,7 @@ public class MercuryTracker extends JComponent {
         this.setUI(ui);
     }
 
-    public void setUI(BasicMercuryIconTrackerUI ui){
+    public void setUI(BasicMercuryIconTrackerUI ui) {
         super.setUI(ui);
     }
 
@@ -76,23 +86,28 @@ public class MercuryTracker extends JComponent {
         setUI(this.ui);
     }
 
-    public float getPercentComplete(){
+    public float getPercentComplete() {
         long span = maximum - minimum;
         return (value - minimum) / (span * 1f);
     }
-    public void addTimelineCallback(TimelineCallback callback){
+
+    public void addTimelineCallback(TimelineCallback callback) {
         this.progressTl.addCallback(callback);
     }
-    public void abort(){
+
+    public void abort() {
         this.progressTl.abort();
     }
-    public void playLoop(){
+
+    public void playLoop() {
         this.progressTl.playLoop(Timeline.RepeatBehavior.LOOP);
     }
-    public void play(){
+
+    public void play() {
         this.progressTl.play();
     }
-    public void cancel(){
+
+    public void cancel() {
         this.progressTl.cancel();
     }
 }

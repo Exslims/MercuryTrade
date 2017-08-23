@@ -23,13 +23,14 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
 
     private JSlider minSlider;
     private JSlider maxSlider;
+
     @Override
     public void onViewInit() {
         super.onViewInit();
         this.applicationConfig = Configuration.get().applicationConfiguration();
         this.applicationSnapshot = CloneHelper.cloneObject(this.applicationConfig.get());
 
-        JPanel root = componentsFactory.getJPanel(new GridLayout(0,2,4,4));
+        JPanel root = componentsFactory.getJPanel(new GridLayout(0, 2, 4, 4));
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
         root.setBackground(AppThemeColor.ADR_BG);
 
@@ -37,32 +38,32 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
         checkEnable.addActionListener(action -> {
             this.applicationSnapshot.setCheckOutUpdate(checkEnable.isSelected());
         });
-        JSlider fadeTimeSlider = this.componentsFactory.getSlider(0,10, this.applicationSnapshot.getFadeTime(),AppThemeColor.SLIDE_BG);
+        JSlider fadeTimeSlider = this.componentsFactory.getSlider(0, 10, this.applicationSnapshot.getFadeTime(), AppThemeColor.SLIDE_BG);
         fadeTimeSlider.addChangeListener(e -> {
             this.applicationSnapshot.setFadeTime(fadeTimeSlider.getValue());
         });
 
-        this.minSlider = this.componentsFactory.getSlider(40,100,this.applicationSnapshot.getMinOpacity(),AppThemeColor.SLIDE_BG);
+        this.minSlider = this.componentsFactory.getSlider(40, 100, this.applicationSnapshot.getMinOpacity(), AppThemeColor.SLIDE_BG);
         this.minSlider.addChangeListener(e -> {
-            if(!(this.minSlider.getValue() > this.maxSlider.getValue())) {
+            if (!(this.minSlider.getValue() > this.maxSlider.getValue())) {
                 this.applicationSnapshot.setMinOpacity(this.minSlider.getValue());
-            }else {
-                minSlider.setValue(minSlider.getValue()-1);
+            } else {
+                minSlider.setValue(minSlider.getValue() - 1);
             }
         });
 
-        this.maxSlider = this.componentsFactory.getSlider(40,100,this.applicationSnapshot.getMaxOpacity(),AppThemeColor.SLIDE_BG);
+        this.maxSlider = this.componentsFactory.getSlider(40, 100, this.applicationSnapshot.getMaxOpacity(), AppThemeColor.SLIDE_BG);
         this.maxSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                if(minSlider.getValue() > maxSlider.getValue()){
+                if (minSlider.getValue() > maxSlider.getValue()) {
                     minSlider.setValue(maxSlider.getValue());
                 }
                 applicationSnapshot.setMaxOpacity(maxSlider.getValue());
             }
         });
 
-        JComboBox notifierStatusPicker = this.componentsFactory.getComboBox(new String[]{"Always play a sound", "Only when tabbed out","Never"});
+        JComboBox notifierStatusPicker = this.componentsFactory.getComboBox(new String[]{"Always play a sound", "Only when tabbed out", "Never"});
         notifierStatusPicker.setSelectedItem(this.applicationSnapshot.getNotifierStatus().asPretty());
         notifierStatusPicker.addActionListener(action -> {
             this.applicationSnapshot.setNotifierStatus(WhisperNotifierStatus.valueOfPretty((String) notifierStatusPicker.getSelectedItem()));
@@ -70,8 +71,8 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
 
         JTextField gamePathField = this.componentsFactory.getTextField(this.applicationSnapshot.getGamePath());
         gamePathField.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(AppThemeColor.BORDER,1),
-                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2)
+                BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 2)
         ));
         gamePathField.addKeyListener(new KeyAdapter() {
             @Override
@@ -80,7 +81,7 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
             }
         });
 
-        JPanel poeFolderPanel = componentsFactory.getTransparentPanel(new BorderLayout(4,4));
+        JPanel poeFolderPanel = componentsFactory.getTransparentPanel(new BorderLayout(4, 4));
         poeFolderPanel.add(gamePathField, BorderLayout.CENTER);
         JButton changeButton = this.componentsFactory.getBorderedButton("Change");
         poeFolderPanel.add(changeButton, BorderLayout.LINE_END);
@@ -89,31 +90,31 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         changeButton.addActionListener(e -> {
             int returnVal = fileChooser.showOpenDialog(this);
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
                 gamePathField.setText(fileChooser.getSelectedFile().getPath());
                 applicationSnapshot.setGamePath(fileChooser.getSelectedFile().getPath());
             }
         });
 
-        root.add(this.componentsFactory.getTextLabel("Notify me when an update is available", FontStyle.REGULAR,16));
+        root.add(this.componentsFactory.getTextLabel("Notify me when an update is available", FontStyle.REGULAR, 16));
         root.add(checkEnable);
-        root.add(this.componentsFactory.getTextLabel("Component fade out time: ", FontStyle.REGULAR,16));
+        root.add(this.componentsFactory.getTextLabel("Component fade out time: ", FontStyle.REGULAR, 16));
         root.add(fadeTimeSlider);
-        root.add(this.componentsFactory.getTextLabel("Min opacity: ", FontStyle.REGULAR,16));
+        root.add(this.componentsFactory.getTextLabel("Min opacity: ", FontStyle.REGULAR, 16));
         root.add(this.minSlider);
-        root.add(this.componentsFactory.getTextLabel("Max opacity: ", FontStyle.REGULAR,16));
+        root.add(this.componentsFactory.getTextLabel("Max opacity: ", FontStyle.REGULAR, 16));
         root.add(this.maxSlider);
-        root.add(this.componentsFactory.getTextLabel("Notification sound alerts: ", FontStyle.REGULAR,16));
-        root.add(this.componentsFactory.wrapToSlide(notifierStatusPicker,AppThemeColor.ADR_BG,0,0,0,2));
-        root.add(this.componentsFactory.getTextLabel("Path of Exile folder: ", FontStyle.REGULAR,16));
-        root.add(this.componentsFactory.wrapToSlide(poeFolderPanel,AppThemeColor.ADR_BG,0,0,2,2));
+        root.add(this.componentsFactory.getTextLabel("Notification sound alerts: ", FontStyle.REGULAR, 16));
+        root.add(this.componentsFactory.wrapToSlide(notifierStatusPicker, AppThemeColor.ADR_BG, 0, 0, 0, 2));
+        root.add(this.componentsFactory.getTextLabel("Path of Exile folder: ", FontStyle.REGULAR, 16));
+        root.add(this.componentsFactory.wrapToSlide(poeFolderPanel, AppThemeColor.ADR_BG, 0, 0, 2, 2));
 
         this.container.add(this.componentsFactory.wrapToSlide(root));
     }
 
     @Override
     public void onSave() {
-        HideSettingsManager.INSTANCE.apply(applicationSnapshot.getFadeTime(),applicationSnapshot.getMinOpacity(),applicationSnapshot.getMaxOpacity());
+        HideSettingsManager.INSTANCE.apply(applicationSnapshot.getFadeTime(), applicationSnapshot.getMinOpacity(), applicationSnapshot.getMaxOpacity());
         this.applicationConfig.set(CloneHelper.cloneObject(this.applicationSnapshot));
     }
 

@@ -36,5 +36,6 @@ public abstract class AdrNodePanel<D extends AdrComponentDescriptor> extends JPa
         this.setBorder(BorderFactory.createLineBorder(AppThemeColor.MSG_HEADER_BORDER));
         this.onViewInit();
     }
+
     protected abstract void update();
 }

@@ -25,6 +25,7 @@ public class UpdaterClient {
     private EventLoopGroup group;
     private Channel channel;
     private boolean connectionEstablished;
+
     public UpdaterClient(String host, String mercuryVersion, int port) {
         this.host = host;
         this.port = port;
@@ -33,22 +34,22 @@ public class UpdaterClient {
         connectionEstablished = false;
 
         MercuryStoreCore.requestPatchSubject.subscribe(state -> {
-            if(!connectionEstablished){
+            if (!connectionEstablished) {
                 ApplicationHolder.getInstance().setManualRequest(false);
                 MercuryStoreCore.stringAlertSubject.onNext("Server is currently down, please try again later.");
-            }else {
+            } else {
                 MercuryStoreCore.checkOutPatchSubject.onNext(true);
             }
         });
     }
 
-    public void start(){
+    public void start() {
         ClientChannelInitializer clientChannelInitializer = new ClientChannelInitializer();
         group = new NioEventLoopGroup();
         bootstrap = new Bootstrap();
         bootstrap.group(group).channel(NioSocketChannel.class)
                 .remoteAddress(new InetSocketAddress(host, port))
-                .option(ChannelOption.SO_KEEPALIVE,true)
+                .option(ChannelOption.SO_KEEPALIVE, true)
                 .handler(clientChannelInitializer)
         ;
         try {
@@ -58,7 +59,8 @@ public class UpdaterClient {
         }
         doConnect();
     }
-    private void doConnect(){
+
+    private void doConnect() {
         try {
             ChannelFuture channelFuture = bootstrap.connect();
             channelFuture.addListener(new ChannelFutureListener() {
@@ -69,7 +71,7 @@ public class UpdaterClient {
                         future.channel().close();
                         future.channel().eventLoop().schedule(() -> {
                             bootstrap.connect().addListener(this);
-                        },new Random().nextInt(5),TimeUnit.MINUTES);
+                        }, new Random().nextInt(5), TimeUnit.MINUTES);
                     } else {
                         channel = future.channel();
                         connectionEstablished = true;
@@ -86,22 +88,27 @@ public class UpdaterClient {
                     });
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             doConnect();
         }
     }
+
     public void shutdown() {
         try {
             if (group != null)
                 group.shutdownGracefully().sync();
-        }catch (InterruptedException e){}
+        } catch (InterruptedException e) {
+        }
     }
+
     public int getMercuryVersion() {
         return ApplicationHolder.getInstance().getVersion();
     }
+
     public void registerListener(UpdateEventHandler handler) {
         UpdaterClientEventBus.getInstance().register(handler);
     }
+
     public void removeListener(UpdateEventHandler handler) {
         UpdaterClientEventBus.getInstance().unregister(handler);
     }

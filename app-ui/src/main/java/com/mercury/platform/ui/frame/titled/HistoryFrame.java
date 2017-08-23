@@ -15,28 +15,32 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseWheelEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class HistoryFrame extends AbstractTitledComponentFrame{
+public class HistoryFrame extends AbstractTitledComponentFrame {
     private JPanel mainContainer;
     private NotificationPanelFactory factory;
     private List<NotificationDescriptor> currentMessages;
+
     public HistoryFrame() {
         super();
         FrameDescriptor frameDescriptor = this.framesConfig.get(this.getClass().getSimpleName());
         this.setPreferredSize(frameDescriptor.getFrameSize());
         this.componentsFactory.setScale(this.scaleConfig.get("other"));
     }
+
     @Override
     public void onViewInit() {
         this.factory = new NotificationPanelFactory();
         this.currentMessages = new ArrayList<>();
         this.mainContainer = new VerticalScrollContainer();
         this.mainContainer.setBackground(AppThemeColor.FRAME);
-        this.mainContainer.setLayout(new BoxLayout(this.mainContainer,BoxLayout.Y_AXIS));
+        this.mainContainer.setLayout(new BoxLayout(this.mainContainer, BoxLayout.Y_AXIS));
 
         JScrollPane scrollPane = new JScrollPane(this.mainContainer);
         scrollPane.setBorder(null);
@@ -54,10 +58,10 @@ public class HistoryFrame extends AbstractTitledComponentFrame{
         vBar.setUI(new MercuryScrollBarUI());
         vBar.setPreferredSize(new Dimension(16, Integer.MAX_VALUE));
         vBar.setUnitIncrement(3);
-        vBar.setBorder(BorderFactory.createEmptyBorder(1,1,1,2));
+        vBar.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 2));
         vBar.addAdjustmentListener(e -> repaint());
 
-        this.add(scrollPane,BorderLayout.CENTER);
+        this.add(scrollPane, BorderLayout.CENTER);
         mainContainer.getParent().setBackground(AppThemeColor.FRAME);
 
         String[] messages = HistoryManager.INSTANCE.fetchNext(10);
@@ -65,7 +69,7 @@ public class HistoryFrame extends AbstractTitledComponentFrame{
         for (String message : messages) {
             MessageParser parser = new MessageParser();
             NotificationDescriptor parsedNotificationDescriptor = parser.parse(message);
-            if(parsedNotificationDescriptor != null) {
+            if (parsedNotificationDescriptor != null) {
                 NotificationPanel panel = this.factory.getProviderFor(NotificationType.HISTORY)
                         .setData(parsedNotificationDescriptor)
                         .setComponentsFactory(this.componentsFactory)
@@ -74,7 +78,7 @@ public class HistoryFrame extends AbstractTitledComponentFrame{
                 mainContainer.add(panel);
             }
         }
-        this.miscPanel.add(getClearButton(),0);
+        this.miscPanel.add(getClearButton(), 0);
         this.pack();
         vBar.setValue(vBar.getMaximum());
         vBar.addAdjustmentListener((AdjustmentEvent e) -> {
@@ -83,20 +87,21 @@ public class HistoryFrame extends AbstractTitledComponentFrame{
                 for (String message : nextMessages) {
                     MessageParser parser = new MessageParser();
                     NotificationDescriptor parsedNotificationDescriptor = parser.parse(message);
-                    if(parsedNotificationDescriptor != null) {
+                    if (parsedNotificationDescriptor != null) {
                         NotificationPanel panel = this.factory.getProviderFor(NotificationType.HISTORY)
                                 .setData(parsedNotificationDescriptor)
                                 .setComponentsFactory(this.componentsFactory)
                                 .build();
                         this.currentMessages.add(parsedNotificationDescriptor);
-                        mainContainer.add(panel,0);
+                        mainContainer.add(panel, 0);
                     }
                     vBar.setValue(vBar.getValue() + 100);
                 }
             }
         });
     }
-    private JButton getClearButton(){
+
+    private JButton getClearButton() {
         JButton clearHistory =
                 componentsFactory.getIconButton("app/clear-history.png",
                         13,
@@ -117,8 +122,8 @@ public class HistoryFrame extends AbstractTitledComponentFrame{
 
     @Override
     public void subscribe() {
-        MercuryStoreCore.newNotificationSubject.subscribe(message -> SwingUtilities.invokeLater(()-> {
-            if(!currentMessages.contains(message)) {
+        MercuryStoreCore.newNotificationSubject.subscribe(message -> SwingUtilities.invokeLater(() -> {
+            if (!currentMessages.contains(message)) {
                 HistoryManager.INSTANCE.add(message);
                 NotificationPanel panel = this.factory.getProviderFor(NotificationType.HISTORY)
                         .setData(message)
@@ -131,8 +136,9 @@ public class HistoryFrame extends AbstractTitledComponentFrame{
             }
         }));
     }
-    private void trimContainer(){
-        if(mainContainer.getComponentCount() > 40){
+
+    private void trimContainer() {
+        if (mainContainer.getComponentCount() > 40) {
             for (int i = 0; i < 5; i++) {
                 mainContainer.remove(0);
             }

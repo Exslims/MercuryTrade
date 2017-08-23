@@ -13,6 +13,7 @@ import java.awt.event.MouseWheelEvent;
 public abstract class TransparentPanel extends JPanel {
     protected ComponentsFactory componentsFactory;
     protected VerticalScrollContainer verticalScrollContainer;
+
     public TransparentPanel() {
         this.componentsFactory = new ComponentsFactory();
 
@@ -21,7 +22,7 @@ public abstract class TransparentPanel extends JPanel {
         this.setBorder(null);
         this.verticalScrollContainer = new VerticalScrollContainer();
         verticalScrollContainer.setBackground(AppThemeColor.SLIDE_BG);
-        verticalScrollContainer.setLayout(new BoxLayout(verticalScrollContainer,BoxLayout.Y_AXIS));
+        verticalScrollContainer.setLayout(new BoxLayout(verticalScrollContainer, BoxLayout.Y_AXIS));
 
 
         JScrollPane scrollPane = new JScrollPane(verticalScrollContainer);
@@ -42,9 +43,9 @@ public abstract class TransparentPanel extends JPanel {
         vBar.setUI(new MercuryScrollBarUI());
         vBar.setPreferredSize(new Dimension(14, Integer.MAX_VALUE));
         vBar.setUnitIncrement(3);
-        vBar.setBorder(BorderFactory.createEmptyBorder(1,1,1,2));
+        vBar.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 2));
         vBar.addAdjustmentListener(e -> repaint());
-        this.add(scrollPane,BorderLayout.CENTER);
+        this.add(scrollPane, BorderLayout.CENTER);
 
     }
 }

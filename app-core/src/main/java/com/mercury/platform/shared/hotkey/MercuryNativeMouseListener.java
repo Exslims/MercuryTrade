@@ -15,7 +15,7 @@ public class MercuryNativeMouseListener implements NativeMouseListener {
         HotKeyDescriptor hotKeyDescriptor = new HotKeyDescriptor();
         hotKeyDescriptor.setVirtualKeyCode(nativeMouseEvent.getButton() + 10000);
         hotKeyDescriptor.setTitle(this.getModifiersText(nativeMouseEvent.getButton()));
-        if(!hotKeyDescriptor.getTitle().equals("Mouse left")) {
+        if (!hotKeyDescriptor.getTitle().equals("Mouse left")) {
             MercuryStoreCore.hotKeySubject.onNext(hotKeyDescriptor);
         }
     }

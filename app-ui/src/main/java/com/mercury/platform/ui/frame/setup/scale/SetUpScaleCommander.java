@@ -4,13 +4,14 @@ package com.mercury.platform.ui.frame.setup.scale;
 import com.mercury.platform.ui.frame.AbstractScalableComponentFrame;
 import com.mercury.platform.ui.frame.setup.SetUpCommander;
 
-public class SetUpScaleCommander extends SetUpCommander<AbstractScalableComponentFrame>{
+public class SetUpScaleCommander extends SetUpCommander<AbstractScalableComponentFrame> {
     public SetUpScaleCommander() {
         super();
     }
+
     @Override
     public void setUpAll() {
-        this.frames.forEach((k,v) -> {
+        this.frames.forEach((k, v) -> {
             v.setState(ScaleState.ENABLE);
         });
     }
@@ -27,7 +28,7 @@ public class SetUpScaleCommander extends SetUpCommander<AbstractScalableComponen
 
     @Override
     public void endUpAll() {
-        this.frames.forEach((k,v) -> {
+        this.frames.forEach((k, v) -> {
             v.setState(ScaleState.DEFAULT);
         });
     }

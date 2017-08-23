@@ -19,13 +19,13 @@ public class NotificationPanelFactory {
         this.providers.add(new HistoryPanelProvider());
     }
 
-    public NotificationPanelProvider getProviderFor(NotificationType type){
+    public NotificationPanelProvider getProviderFor(NotificationType type) {
         NotificationPanelProvider provider = this.providers.stream()
                 .filter(it -> it.isSuitable(type))
                 .findAny().orElse(null);
-        if(provider != null){
+        if (provider != null) {
             return provider;
-        }else {
+        } else {
             throw new NoSuchElementException("Notification panel provider for <" + type + "> doesn't exist.");
         }
     }

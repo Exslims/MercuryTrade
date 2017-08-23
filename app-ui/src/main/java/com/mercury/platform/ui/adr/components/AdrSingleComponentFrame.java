@@ -7,13 +7,13 @@ import lombok.Getter;
 import rx.Subscription;
 
 import javax.swing.*;
-import java.awt.*;
 
 
 public class AdrSingleComponentFrame extends AbstractAdrComponentFrame<AdrComponentDescriptor> {
     @Getter
     private AdrComponentPanel component;
     private Subscription adrReloadSubscription;
+
     public AdrSingleComponentFrame(AdrComponentDescriptor descriptor) {
         super(descriptor);
     }
@@ -34,7 +34,7 @@ public class AdrSingleComponentFrame extends AbstractAdrComponentFrame<AdrCompon
     public void subscribe() {
         super.subscribe();
         this.adrReloadSubscription = MercuryStoreUI.adrReloadSubject.subscribe(descriptor -> {
-            if(descriptor.equals(this.descriptor)){
+            if (descriptor.equals(this.descriptor)) {
                 this.setOpacity(this.descriptor.getOpacity());
                 this.setLocation(descriptor.getLocation());
                 this.setPreferredSize(this.descriptor.getSize());
@@ -60,7 +60,7 @@ public class AdrSingleComponentFrame extends AbstractAdrComponentFrame<AdrCompon
         this.component.removeMouseListener(this.mouseListener);
         this.component.removeMouseMotionListener(this.motionListener);
         this.component.removeMouseListener(this.mouseOverListener);
-        this.getRootPane().setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+        this.getRootPane().setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         this.pack();
         this.repaint();
     }

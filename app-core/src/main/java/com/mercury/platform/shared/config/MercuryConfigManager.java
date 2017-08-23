@@ -6,7 +6,6 @@ import com.mercury.platform.shared.config.configration.*;
 import com.mercury.platform.shared.config.configration.impl.*;
 import com.mercury.platform.shared.config.configration.impl.adr.AdrConfigurationServiceMock;
 import com.mercury.platform.shared.config.descriptor.*;
-import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
 import com.mercury.platform.shared.config.json.JSONHelper;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.commons.io.FileUtils;
@@ -16,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,8 +31,8 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
     private PlainConfigurationService<NotificationSettingsDescriptor> notificationConfigurationService;
     private PlainConfigurationService<TaskBarDescriptor> taskBarConfigurationService;
     private PlainConfigurationService<ScannerDescriptor> scannerConfigurationService;
-    private KeyValueConfigurationService<String,SoundDescriptor> soundConfigurationService;
-    private KeyValueConfigurationService<String,Float> scaleConfigurationService;
+    private KeyValueConfigurationService<String, SoundDescriptor> soundConfigurationService;
+    private KeyValueConfigurationService<String, Float> scaleConfigurationService;
     private PlainConfigurationService<HotKeysSettingsDescriptor> hotKeyConfigurationService;
     private ListConfigurationService<StashTabDescriptor> stashTabConfigurationService;
     private IconBundleConfigurationService iconBundleConfigurationService;
@@ -41,11 +40,12 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
 
     private List<BaseConfigurationService> services = new ArrayList<>();
 
-    public MercuryConfigManager(ConfigurationSource dataSource){
+    public MercuryConfigManager(ConfigurationSource dataSource) {
         this.dataSource = dataSource;
         this.jsonHelper = new JSONHelper(dataSource.getConfigurationFilePath());
         this.subscribe();
     }
+
     @Override
     public FramesConfigurationService framesConfiguration() {
         return this.framesConfigurationService;
@@ -72,12 +72,12 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
     }
 
     @Override
-    public KeyValueConfigurationService<String,SoundDescriptor> soundConfiguration() {
+    public KeyValueConfigurationService<String, SoundDescriptor> soundConfiguration() {
         return this.soundConfigurationService;
     }
 
     @Override
-    public KeyValueConfigurationService<String,Float> scaleConfiguration() {
+    public KeyValueConfigurationService<String, Float> scaleConfiguration() {
         return this.scaleConfigurationService;
     }
 
@@ -107,12 +107,12 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
     }
 
 
-    public void load(){
+    public void load() {
         try {
             File configFile = new File(dataSource.getConfigurationFilePath());
             File configFolder = new File(dataSource.getConfigurationPath());
             File iconFolder = new File(dataSource.getConfigurationPath() + "\\icons");
-            if(!configFolder.exists() || !configFile.exists() || !iconFolder.exists()) {
+            if (!configFolder.exists() || !configFile.exists() || !iconFolder.exists()) {
                 new File(dataSource.getConfigurationPath() + "\\temp").mkdir();
                 new File(dataSource.getConfigurationPath() + "\\icons").mkdir();
                 new File(dataSource.getConfigurationFilePath()).createNewFile();
@@ -120,24 +120,27 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
                 ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
                 InputStream resourceAsStream = classLoader.getResourceAsStream("app/local-updater.jar");
                 File dest = new File(dataSource.getConfigurationPath() + "\\local-updater.jar");
-                FileUtils.copyInputStreamToFile(resourceAsStream,dest);
+                FileUtils.copyInputStreamToFile(resourceAsStream, dest);
             }
-            this.profileDescriptors = this.jsonHelper.readArrayData(new TypeToken<List<ProfileDescriptor>>(){});
-            if(this.profileDescriptors == null){
+            this.profileDescriptors = this.jsonHelper.readArrayData(new TypeToken<List<ProfileDescriptor>>() {
+            });
+            if (this.profileDescriptors == null) {
                 this.profileDescriptors = new ArrayList<>();
                 ProfileDescriptor defaultProfile = this.getDefaultProfile();
                 this.selectedProfile = defaultProfile;
                 this.profileDescriptors.add(defaultProfile);
-                this.jsonHelper.writeListObject(this.profileDescriptors,new TypeToken<List<ProfileDescriptor>>(){});
-            }else {
+                this.jsonHelper.writeListObject(this.profileDescriptors, new TypeToken<List<ProfileDescriptor>>() {
+                });
+            } else {
                 this.selectedProfile = this.profileDescriptors.stream()
                         .filter(ProfileDescriptor::isSelected)
                         .findAny().orElse(null);
-                if(this.selectedProfile == null){
+                if (this.selectedProfile == null) {
                     ProfileDescriptor defaultProfile = this.getDefaultProfile();
                     this.selectedProfile = defaultProfile;
                     this.profileDescriptors.add(defaultProfile);
-                    this.jsonHelper.writeListObject(this.profileDescriptors,new TypeToken<List<ProfileDescriptor>>(){});
+                    this.jsonHelper.writeListObject(this.profileDescriptors, new TypeToken<List<ProfileDescriptor>>() {
+                    });
                 }
             }
 
@@ -168,16 +171,18 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
             this.services.forEach(BaseConfigurationService::validate);
 
 
-            this.jsonHelper.writeListObject(this.profileDescriptors,new TypeToken<List<ProfileDescriptor>>(){});
-        }catch (IOException e) {
-            logger.error("Error while processing file:{}",dataSource.getConfigurationPath(),e);
+            this.jsonHelper.writeListObject(this.profileDescriptors, new TypeToken<List<ProfileDescriptor>>() {
+            });
+        } catch (IOException e) {
+            logger.error("Error while processing file:{}", dataSource.getConfigurationPath(), e);
         }
     }
 
     @Override
     public void subscribe() {
         MercuryStoreCore.saveConfigSubject.subscribe(state -> {
-            this.jsonHelper.writeListObject(this.profileDescriptors,new TypeToken<List<ProfileDescriptor>>(){});
+            this.jsonHelper.writeListObject(this.profileDescriptors, new TypeToken<List<ProfileDescriptor>>() {
+            });
         });
         MercuryStoreCore.toDefaultSubject.subscribe(state -> {
             this.services.forEach(BaseConfigurationService::toDefault);
@@ -190,10 +195,12 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
                 service.setSelectedProfile(profile);
                 service.validate();
             });
-            this.jsonHelper.writeListObject(this.profileDescriptors,new TypeToken<List<ProfileDescriptor>>(){});
+            this.jsonHelper.writeListObject(this.profileDescriptors, new TypeToken<List<ProfileDescriptor>>() {
+            });
         });
     }
-    private ProfileDescriptor getDefaultProfile(){
+
+    private ProfileDescriptor getDefaultProfile() {
         ProfileDescriptor defaultProfile = new ProfileDescriptor();
         defaultProfile.setSelected(true);
         defaultProfile.setName("Profile1");

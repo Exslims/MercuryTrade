@@ -18,9 +18,11 @@ import java.awt.datatransfer.StringSelection;
 public class NotificationIncomingController implements IncomingPanelController {
     private static final Logger log = LogManager.getLogger(NotificationIncomingController.class);
     private NotificationDescriptor notificationDescriptor;
-    public NotificationIncomingController(NotificationDescriptor notificationDescriptor){
+
+    public NotificationIncomingController(NotificationDescriptor notificationDescriptor) {
         this.notificationDescriptor = notificationDescriptor;
     }
+
     @Override
     public void performInvite() {
         MercuryStoreCore.chatCommandSubject.onNext("/invite " + notificationDescriptor.getWhisperNickname());
@@ -54,7 +56,7 @@ public class NotificationIncomingController implements IncomingPanelController {
 
     @Override
     public void showITH() {
-        if(notificationDescriptor instanceof ItemTradeNotificationDescriptor) {
+        if (notificationDescriptor instanceof ItemTradeNotificationDescriptor) {
             this.copyItemNameToClipboard(((ItemTradeNotificationDescriptor) notificationDescriptor).getItemName());
             if (((ItemTradeNotificationDescriptor) notificationDescriptor).getTabName() != null) {
                 MercuryStoreUI.showItemGridSubject.onNext((ItemTradeNotificationDescriptor) notificationDescriptor);
@@ -62,13 +64,13 @@ public class NotificationIncomingController implements IncomingPanelController {
         }
     }
 
-    private void copyItemNameToClipboard(@NonNull String itemName){
+    private void copyItemNameToClipboard(@NonNull String itemName) {
         Timer timer = new Timer(30, action -> {
             try {
                 StringSelection selection = new StringSelection(itemName);
                 Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
                 clipboard.setContents(selection, null);
-            }catch (IllegalStateException e){
+            } catch (IllegalStateException e) {
                 MercuryStoreCore.errorHandlerSubject.onNext(new MercuryError(e));
             }
         });
@@ -76,7 +78,7 @@ public class NotificationIncomingController implements IncomingPanelController {
         timer.start();
     }
 
-    private void closeMessagePanel(){
+    private void closeMessagePanel() {
         Timer timer = new Timer(30, action -> {
             MercuryStoreCore.removeNotificationSubject.onNext(notificationDescriptor);
         });

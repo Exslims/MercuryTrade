@@ -20,7 +20,7 @@ public class RIconHProgressBarTrackerUI extends MercuryProgressBarTrackerUI {
         Shape sector = new Rectangle2D.Double(insets.left, insets.top, sectorWidth - insets.right * 2, barRectHeight - insets.bottom * 2);
         try {
             BufferedImage read = ImageIO.read(this.config.getIcon(descriptor.getIconPath()));
-            g2.drawImage(read,iconX,iconY,tracker.getHeight(),tracker.getHeight(),null);
+            g2.drawImage(read, iconX, iconY, tracker.getHeight(), tracker.getHeight(), null);
         } catch (IOException e) {
             e.printStackTrace();
         }

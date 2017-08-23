@@ -26,11 +26,12 @@ public abstract class SettingsPagePanel extends JPanel implements ViewInit {
     public void onViewInit() {
         this.container = new VerticalScrollContainer();
         this.container.setBackground(AppThemeColor.FRAME);
-        this.container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
-        JScrollPane verticalContainer = this.componentsFactory.getVerticalContainer( this.container);
-        this.add(verticalContainer,BorderLayout.CENTER);
+        this.container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        JScrollPane verticalContainer = this.componentsFactory.getVerticalContainer(this.container);
+        this.add(verticalContainer, BorderLayout.CENTER);
     }
 
     public abstract void onSave();
+
     public abstract void restore();
 }

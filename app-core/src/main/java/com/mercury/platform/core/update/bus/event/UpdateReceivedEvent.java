@@ -8,7 +8,7 @@ public class UpdateReceivedEvent {
     private byte[] bytes;
 
 
-    public UpdateReceivedEvent(byte [] bytes) {
+    public UpdateReceivedEvent(byte[] bytes) {
         this.bytes = bytes;
     }
 

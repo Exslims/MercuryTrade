@@ -5,18 +5,17 @@ import com.google.common.eventbus.EventBus;
 /**
  * Created by Frost on 25.01.2017.
  */
-public class UpdaterClientEventBus extends EventBus{
+public class UpdaterClientEventBus extends EventBus {
 
     private static final UpdaterClientEventBus instance = new UpdaterClientEventBus();
-
-    public static UpdaterClientEventBus getInstance() {
-        return instance;
-    }
-
     private EventBus eventBus;
 
     private UpdaterClientEventBus() {
         this.eventBus = new EventBus();
+    }
+
+    public static UpdaterClientEventBus getInstance() {
+        return instance;
     }
 
     @Override

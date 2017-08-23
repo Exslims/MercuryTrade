@@ -5,7 +5,7 @@ import com.mercury.platform.core.update.core.holder.ApplicationHolder;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
-import com.mercury.platform.ui.components.panel.settings.*;
+import com.mercury.platform.ui.components.panel.settings.MenuPanel;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
@@ -16,13 +16,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 
 public class SettingsFrame extends AbstractTitledComponentFrame {
     private JPanel currentPanel;
     private MenuPanel menuPanel;
     private JPanel root;
-    public SettingsFrame(){
+
+    public SettingsFrame() {
         super();
         this.setFocusable(true);
         this.setFocusableWindowState(true);
@@ -30,13 +30,13 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         this.processingHideEvent = false;
         this.processHideEffect = false;
 //        FrameDescriptor frameDescriptor = this.framesConfig.get(this.getClass().getSimpleName());
-        this.setPreferredSize(new Dimension(1000,600));
+        this.setPreferredSize(new Dimension(1000, 600));
     }
 
     @Override
     protected void initialize() {
         super.initialize();
-        this.setPreferredSize(new Dimension(1000,600));
+        this.setPreferredSize(new Dimension(1000, 600));
     }
 
     @Override
@@ -44,11 +44,11 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         this.root = new JPanel(new BorderLayout());
         this.menuPanel = new MenuPanel();
         JPanel leftPanel = this.componentsFactory.getJPanel(new BorderLayout());
-        leftPanel.add(this.menuPanel,BorderLayout.CENTER);
-        leftPanel.add(this.getOperationsButtons(),BorderLayout.PAGE_END);
-        this.add(leftPanel,BorderLayout.LINE_START);
-        this.add(this.root,BorderLayout.CENTER);
-        this.add(this.getBottomPanel(),BorderLayout.PAGE_END);
+        leftPanel.add(this.menuPanel, BorderLayout.CENTER);
+        leftPanel.add(this.getOperationsButtons(), BorderLayout.PAGE_END);
+        this.add(leftPanel, BorderLayout.LINE_START);
+        this.add(this.root, BorderLayout.CENTER);
+        this.add(this.getBottomPanel(), BorderLayout.PAGE_END);
         this.pack();
     }
 
@@ -59,25 +59,27 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         this.setPreferredSize(frameDescriptor.getFrameSize());
     }
 
-    public void setContentPanel(JPanel panel){
-        if(currentPanel != null){
+    public void setContentPanel(JPanel panel) {
+        if (currentPanel != null) {
             this.root.remove(currentPanel);
         }
-        this.root.add(panel,BorderLayout.CENTER);
+        this.root.add(panel, BorderLayout.CENTER);
         this.currentPanel = panel;
         this.pack();
         this.repaint();
     }
-    private JPanel getBottomPanel(){
+
+    private JPanel getBottomPanel() {
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
-        root.setBorder(BorderFactory.createMatteBorder(1,0,0,0,AppThemeColor.MSG_HEADER_BORDER));
+        root.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.MSG_HEADER_BORDER));
         root.setBackground(AppThemeColor.ADR_FOOTER_BG);
         root.add(this.getSaveButtonPanel(), BorderLayout.LINE_END);
         return root;
     }
-    private JPanel getSaveButtonPanel(){
-        JPanel root = componentsFactory.getTransparentPanel(new GridLayout(1,0));
-        JButton saveButton = componentsFactory.getBorderedButton("Save",16);
+
+    private JPanel getSaveButtonPanel() {
+        JPanel root = componentsFactory.getTransparentPanel(new GridLayout(1, 0));
+        JButton saveButton = componentsFactory.getBorderedButton("Save", 16);
         saveButton.addActionListener(e -> {
             MercuryStoreUI.settingsSaveSubject.onNext(true);
             MercuryStoreCore.showingDelaySubject.onNext(true);
@@ -96,15 +98,15 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         });
         saveButton.setPreferredSize(new Dimension(110, 26));
         cancelButton.setPreferredSize(new Dimension(110, 26));
-        root.add(this.componentsFactory.wrapToSlide(cancelButton,AppThemeColor.HEADER,2,2,2,2));
-        root.add(this.componentsFactory.wrapToSlide(saveButton,AppThemeColor.HEADER,2,2,2,2));
+        root.add(this.componentsFactory.wrapToSlide(cancelButton, AppThemeColor.HEADER, 2, 2, 2, 2));
+        root.add(this.componentsFactory.wrapToSlide(saveButton, AppThemeColor.HEADER, 2, 2, 2, 2));
         return root;
     }
 
-    private JPanel getOperationsButtons(){
-        JPanel root = componentsFactory.getTransparentPanel(new GridLayout(0,1,4,2));
-        root.setBorder(BorderFactory.createMatteBorder(0,0,0,1,AppThemeColor.BORDER));
-        JButton openTutorial = this.getOperationButton("Open tutorial","app/tutorial.png");
+    private JPanel getOperationsButtons() {
+        JPanel root = componentsFactory.getTransparentPanel(new GridLayout(0, 1, 4, 2));
+        root.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, AppThemeColor.BORDER));
+        JButton openTutorial = this.getOperationButton("Open tutorial", "app/tutorial.png");
         openTutorial.addActionListener(action -> {
             FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
             FramesManager.INSTANCE.preShowFrame(NotesFrame.class);
@@ -114,7 +116,7 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
             ApplicationHolder.getInstance().setManualRequest(true);
             MercuryStoreCore.requestPatchSubject.onNext(true);
         });
-        JButton openTests = this.getOperationButton("Open tests","app/open-tests.png");
+        JButton openTests = this.getOperationButton("Open tests", "app/open-tests.png");
         openTests.addActionListener(action -> {
             FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
             FramesManager.INSTANCE.showFrame(TestCasesFrame.class);
@@ -128,10 +130,10 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         patchNotes.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)){
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     NotesLoader notesLoader = new NotesLoader();
                     java.util.List<Note> patchNotes = notesLoader.getPatchNotes();
-                    if(patchNotes.size() != 0){
+                    if (patchNotes.size() != 0) {
                         NotesFrame patchNotesFrame = new NotesFrame(patchNotes, NotesFrame.NotesType.PATCH);
                         patchNotesFrame.init();
                         patchNotesFrame.showComponent();
@@ -143,17 +145,17 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         return root;
     }
 
-    private JButton getOperationButton(String title, String iconPath){
+    private JButton getOperationButton(String title, String iconPath) {
         JButton button = this.componentsFactory.getButton(title);
-        button.setPreferredSize(new Dimension(210,35));
+        button.setPreferredSize(new Dimension(210, 35));
         button.setForeground(AppThemeColor.TEXT_DEFAULT);
         button.setHorizontalAlignment(SwingConstants.LEFT);
         button.setBackground(AppThemeColor.ADR_BG);
-        button.setFont(this.componentsFactory.getFont(FontStyle.BOLD,16f));
-        button.setIcon(this.componentsFactory.getIcon(iconPath,22));
+        button.setFont(this.componentsFactory.getFont(FontStyle.BOLD, 16f));
+        button.setIcon(this.componentsFactory.getIcon(iconPath, 22));
         button.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1,1,1,1,AppThemeColor.ADR_PANEL_BORDER),
-                BorderFactory.createEmptyBorder(2,10,2,2)));
+                BorderFactory.createMatteBorder(1, 1, 1, 1, AppThemeColor.ADR_PANEL_BORDER),
+                BorderFactory.createEmptyBorder(2, 10, 2, 2)));
         return button;
     }
 

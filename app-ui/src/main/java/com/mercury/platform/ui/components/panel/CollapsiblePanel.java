@@ -27,13 +27,13 @@ public class CollapsiblePanel<InnerPanel extends JPanel> extends JPanel {
         this.componentsFactory = new ComponentsFactory();
 
         this.setBackground(AppThemeColor.TRANSPARENT);
-        this.setBorder(BorderFactory.createMatteBorder(1,0,1,0,AppThemeColor.BORDER));
+        this.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, AppThemeColor.BORDER));
         this.setLayout(new BorderLayout());
         createUI();
     }
 
     private void createUI() {
-        JPanel header = componentsFactory.getBorderedTransparentPanel(BorderFactory.createEmptyBorder(-4,0,-4,0),new FlowLayout(FlowLayout.LEFT));
+        JPanel header = componentsFactory.getBorderedTransparentPanel(BorderFactory.createEmptyBorder(-4, 0, -4, 0), new FlowLayout(FlowLayout.LEFT));
 
         header.add(getExpandButton());
         header.add(componentsFactory.getTextLabel(title));
@@ -42,16 +42,17 @@ public class CollapsiblePanel<InnerPanel extends JPanel> extends JPanel {
         this.add(header, BorderLayout.PAGE_START);
         this.add(innerPanel, BorderLayout.CENTER);
     }
-    private JButton getExpandButton(){
-        String iconPath = expand ? "app/collapse.png":"app/expand.png";
-        JButton expandButton = componentsFactory.getIconButton(iconPath, 16,AppThemeColor.FRAME_ALPHA, TooltipConstants.EXPAND_COLLAPSE);
+
+    private JButton getExpandButton() {
+        String iconPath = expand ? "app/collapse.png" : "app/expand.png";
+        JButton expandButton = componentsFactory.getIconButton(iconPath, 16, AppThemeColor.FRAME_ALPHA, TooltipConstants.EXPAND_COLLAPSE);
         expandButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(!innerPanel.isVisible()) {
+                if (!innerPanel.isVisible()) {
                     expandButton.setIcon(componentsFactory.getIcon("app/collapse.png", 16));
                     innerPanel.setVisible(true);
-                }else {
+                } else {
                     expandButton.setIcon(componentsFactory.getIcon("app/expand.png", 16));
                     innerPanel.setVisible(false);
                 }

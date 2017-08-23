@@ -15,13 +15,14 @@ public enum AdrComponentOrientation {
         }
     };
 
-    public abstract String asPretty();
-    public static AdrComponentOrientation valueOfPretty(String s){
+    public static AdrComponentOrientation valueOfPretty(String s) {
         for (AdrComponentOrientation orientation : AdrComponentOrientation.values()) {
-            if(orientation.asPretty().equals(s)){
+            if (orientation.asPretty().equals(s)) {
                 return orientation;
             }
         }
         return null;
     }
+
+    public abstract String asPretty();
 }

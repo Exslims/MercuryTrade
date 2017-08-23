@@ -11,13 +11,14 @@ import rx.Subscription;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class AdrTrackerGroupPanel extends AdrComponentPanel<AdrTrackerGroupDescriptor> {
     private List<AdrComponentPanel> cells;
     private Subscription adrPostOpSubscription;
+
     public AdrTrackerGroupPanel(AdrTrackerGroupDescriptor descriptor, ComponentsFactory componentsFactory) {
         super(descriptor, componentsFactory);
         this.setBackground(AppThemeColor.TRANSPARENT);
@@ -28,10 +29,10 @@ public class AdrTrackerGroupPanel extends AdrComponentPanel<AdrTrackerGroupDescr
     public void subscribe() {
         super.subscribe();
         this.adrPostOpSubscription = MercuryStoreUI.adrPostOperationsComponentSubject.subscribe(target -> {
-            if(this.cells.stream()
+            if (this.cells.stream()
                     .map(AdrComponentPanel::getDescriptor)
                     .collect(Collectors.toList())
-                    .size() != this.descriptor.getCells().size()){
+                    .size() != this.descriptor.getCells().size()) {
                 this.removeAll();
                 this.onViewInit();
                 MercuryStoreCore.saveConfigSubject.onNext(true);
@@ -40,21 +41,21 @@ public class AdrTrackerGroupPanel extends AdrComponentPanel<AdrTrackerGroupDescr
         });
     }
 
-    private void init(){
-        switch (this.descriptor.getOrientation()){
-            case VERTICAL:{
-                if(this.descriptor.getGroupType().equals(AdrTrackerGroupType.STATIC)) {
-                    this.setLayout(new GridLayout(0, 1,this.descriptor.getHGap(),this.descriptor.getVGap()));
-                }else {
-                    this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+    private void init() {
+        switch (this.descriptor.getOrientation()) {
+            case VERTICAL: {
+                if (this.descriptor.getGroupType().equals(AdrTrackerGroupType.STATIC)) {
+                    this.setLayout(new GridLayout(0, 1, this.descriptor.getHGap(), this.descriptor.getVGap()));
+                } else {
+                    this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
                 }
                 break;
             }
-            case HORIZONTAL:{
-                if(this.descriptor.getGroupType().equals(AdrTrackerGroupType.STATIC)) {
-                    this.setLayout(new GridLayout(1,0,this.descriptor.getHGap(),this.descriptor.getVGap()));
-                }else {
-                    this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
+            case HORIZONTAL: {
+                if (this.descriptor.getGroupType().equals(AdrTrackerGroupType.STATIC)) {
+                    this.setLayout(new GridLayout(1, 0, this.descriptor.getHGap(), this.descriptor.getVGap()));
+                } else {
+                    this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
                 }
                 break;
             }
@@ -75,7 +76,7 @@ public class AdrTrackerGroupPanel extends AdrComponentPanel<AdrTrackerGroupDescr
             AdrDurationCellPanel adrDurationCellPanel = new AdrDurationCellPanel((AdrDurationComponentDescriptor) component, this.componentsFactory);
             this.add(adrDurationCellPanel);
             this.cells.add(adrDurationCellPanel);
-            if(inSettings){
+            if (inSettings) {
                 adrDurationCellPanel.enableSettings();
             }
         });

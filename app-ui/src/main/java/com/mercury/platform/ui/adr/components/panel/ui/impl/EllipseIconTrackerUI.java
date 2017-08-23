@@ -13,11 +13,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 
-public class EllipseIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescriptor>{
+public class EllipseIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescriptor> {
     @Override
     public void paint(Graphics g, JComponent c) {
         Insets b = tracker.getInsets();
-        int barRectWidth  = tracker.getWidth();
+        int barRectWidth = tracker.getWidth();
         int barRectHeight = tracker.getHeight();
         if (barRectWidth <= 0 || barRectHeight <= 0) {
             return;
@@ -26,7 +26,7 @@ public class EllipseIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescr
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
         g.setColor(tracker.getBackground());
-        g2.fillRect(0,0,barRectWidth,barRectHeight);
+        g2.fillRect(0, 0, barRectWidth, barRectHeight);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -38,8 +38,8 @@ public class EllipseIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescr
         g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         double degree = 360 * (1f - tracker.getPercentComplete());
         double sz = Math.max(barRectWidth, barRectHeight) - 2;
-        Shape outer  = new Ellipse2D.Double(1, 1, sz, sz);
-        Shape sector = new Arc2D.Double(-sz, -sz, sz *3, sz *3, 90 - degree, degree, Arc2D.PIE);
+        Shape outer = new Ellipse2D.Double(1, 1, sz, sz);
+        Shape sector = new Arc2D.Double(-sz, -sz, sz * 3, sz * 3, 90 - degree, degree, Arc2D.PIE);
 
         Area foreground = new Area(sector);
         Area background = new Area(outer);
@@ -47,36 +47,37 @@ public class EllipseIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescr
         foreground.intersect(background);
 
         g2.setPaint(new Color(59, 59, 59));
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.7f));
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
         try {
-            BufferedImage read = ImageIO.read(getClass().getClassLoader().getResource("app/adr/icons/" +descriptor.getIconPath() + ".png"));
+            BufferedImage read = ImageIO.read(getClass().getClassLoader().getResource("app/adr/icons/" + descriptor.getIconPath() + ".png"));
 
-            Shape imageEllipse  = new Ellipse2D.Double(1, 1, sz, sz);
+            Shape imageEllipse = new Ellipse2D.Double(1, 1, sz, sz);
             g2.setClip(imageEllipse);
-            g2.drawImage(read,0,0,(int)sz,(int)sz,null);
+            g2.drawImage(read, 0, 0, (int) sz, (int) sz, null);
             g2.setClip(null);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.7f));
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
         g2.fill(foreground);
-        this.paintOvalBorder(g,barRectWidth,barRectHeight);
+        this.paintOvalBorder(g, barRectWidth, barRectHeight);
         g2.dispose();
         this.paintString(g, 0, 0, barRectWidth, barRectHeight, 0);
     }
-    private void paintOvalBorder(Graphics g,int width, int height){
+
+    private void paintOvalBorder(Graphics g, int width, int height) {
         int thickness = descriptor.getThickness();
-        if(thickness > 0) {
+        if (thickness > 0) {
             Graphics2D g2 = (Graphics2D) g;
             Stroke oldStroke = g2.getStroke();
-            if(!descriptor.isBindToTextColor()) {
+            if (!descriptor.isBindToTextColor()) {
                 g2.setPaint(this.descriptor.getBorderColor());
             }
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC,1f));
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC, 1f));
             g2.setStroke(new BasicStroke(thickness + 1));
-            g2.drawOval(1,1,width-1 ,height-1);
+            g2.drawOval(1, 1, width - 1, height - 1);
             g2.setStroke(oldStroke);
         }
     }

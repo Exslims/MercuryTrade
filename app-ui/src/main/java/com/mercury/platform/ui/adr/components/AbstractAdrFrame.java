@@ -16,10 +16,10 @@ import rx.Subscription;
 
 import java.awt.*;
 
-public abstract class AbstractAdrFrame<T extends AdrComponentDescriptor> extends AbstractOverlaidFrame implements DestroySubscription{
-    private int settingWl;
+public abstract class AbstractAdrFrame<T extends AdrComponentDescriptor> extends AbstractOverlaidFrame implements DestroySubscription {
     @Getter
     protected T descriptor;
+    private int settingWl;
     private WinDef.HWND componentHwnd;
 
     private Subscription adrRepaintSubscription;
@@ -30,6 +30,13 @@ public abstract class AbstractAdrFrame<T extends AdrComponentDescriptor> extends
         this.descriptor = descriptor;
         AWTUtilities.setWindowOpaque(this, false);
     }
+
+    private static WinDef.HWND getHWnd(Component w) {
+        WinDef.HWND hwnd = new WinDef.HWND();
+        hwnd.setPointer(Native.getComponentPointer(w));
+        return hwnd;
+    }
+
     @Override
     protected void initialize() {
         this.setLocation(descriptor.getLocation());
@@ -66,11 +73,6 @@ public abstract class AbstractAdrFrame<T extends AdrComponentDescriptor> extends
                 WinUser.WS_EX_TRANSPARENT;
         User32.INSTANCE.SetWindowLong(componentHwnd, WinUser.GWL_EXSTYLE, transparentWl);
     }
-    private static WinDef.HWND getHWnd(Component w) {
-        WinDef.HWND hwnd = new WinDef.HWND();
-        hwnd.setPointer(Native.getComponentPointer(w));
-        return hwnd;
-    }
 
     @Override
     public void onDestroy() {
@@ -83,6 +85,7 @@ public abstract class AbstractAdrFrame<T extends AdrComponentDescriptor> extends
     public void enableSettings() {
         User32.INSTANCE.SetWindowLong(componentHwnd, WinUser.GWL_EXSTYLE, settingWl);
     }
+
     public void disableSettings() {
         this.showComponent();
         setTransparent(this);

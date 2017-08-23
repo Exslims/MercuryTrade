@@ -1,6 +1,6 @@
 package com.mercury.platform.ui.adr.components;
 
-import com.mercury.platform.shared.config.descriptor.adr.*;
+import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
 import com.mercury.platform.ui.adr.components.panel.AdrComponentPanel;
 import com.mercury.platform.ui.adr.components.panel.AdrTrackerGroupPanel;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
@@ -8,19 +8,19 @@ import lombok.NonNull;
 import rx.Subscription;
 
 import javax.swing.*;
-import java.awt.*;
 
 
 public class AdrTrackerGroupFrame extends AbstractAdrComponentFrame<AdrTrackerGroupDescriptor> {
     private AdrTrackerGroupPanel trackerGroupPanel;
     private Subscription adrReloadSubscription;
+
     public AdrTrackerGroupFrame(@NonNull AdrTrackerGroupDescriptor descriptor) {
         super(descriptor);
     }
 
     @Override
     public void setPanel(AdrComponentPanel panel) {
-        this.trackerGroupPanel = new AdrTrackerGroupPanel(this.descriptor,this.componentsFactory);
+        this.trackerGroupPanel = new AdrTrackerGroupPanel(this.descriptor, this.componentsFactory);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class AdrTrackerGroupFrame extends AbstractAdrComponentFrame<AdrTrackerGr
     public void subscribe() {
         super.subscribe();
         this.adrReloadSubscription = MercuryStoreUI.adrReloadSubject.subscribe(descriptor -> {
-            if(descriptor.equals(this.descriptor)){
+            if (descriptor.equals(this.descriptor)) {
                 this.setLocation(descriptor.getLocation());
                 this.setOpacity(this.descriptor.getOpacity());
                 this.repaint();
@@ -61,7 +61,7 @@ public class AdrTrackerGroupFrame extends AbstractAdrComponentFrame<AdrTrackerGr
         this.trackerGroupPanel.removeMouseListener(this.mouseListener);
         this.trackerGroupPanel.removeMouseListener(this.mouseOverListener);
         this.trackerGroupPanel.removeMouseMotionListener(this.motionListener);
-        this.getRootPane().setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+        this.getRootPane().setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         this.pack();
         this.repaint();
     }

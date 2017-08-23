@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseButtonDescriptor implements Comparable<ResponseButtonDescriptor>,Serializable{
+public class ResponseButtonDescriptor implements Comparable<ResponseButtonDescriptor>, Serializable {
     private long id;
     private boolean close;
     private String title = "label";
@@ -18,11 +18,11 @@ public class ResponseButtonDescriptor implements Comparable<ResponseButtonDescri
 
     @Override
     public int compareTo(ResponseButtonDescriptor o) {
-        if(this.getId() > o.getId()) {
+        if (this.getId() > o.getId()) {
             return 1;
-        }else if(this.getId() < o.getId()){
+        } else if (this.getId() < o.getId()) {
             return -1;
-        }else {
+        } else {
             return 0;
         }
     }

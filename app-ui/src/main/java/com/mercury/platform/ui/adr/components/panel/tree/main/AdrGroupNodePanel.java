@@ -35,16 +35,16 @@ public class AdrGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescriptor> {
     @Override
     public void onViewInit() {
         MercuryStoreUI.adrSelectSubject.subscribe(descriptor -> {
-            if(this.descriptor.equals(descriptor)){
+            if (this.descriptor.equals(descriptor)) {
                 this.container.setVisible(true);
-                this.expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_collapse.png",16));
+                this.expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_collapse.png", 16));
             }
         });
         this.container = this.componentsFactory.getJPanel(new GridLayout(0, 1));
         this.container.setVisible(false);
 
-        this.add(this.container,BorderLayout.CENTER);
-        this.add(this.getTopPanel(),BorderLayout.PAGE_START);
+        this.add(this.container, BorderLayout.CENTER);
+        this.add(this.getTopPanel(), BorderLayout.PAGE_START);
     }
 
     @Override
@@ -57,30 +57,30 @@ public class AdrGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescriptor> {
         this.container.remove(comp);
     }
 
-    private JPanel getTopPanel(){
+    private JPanel getTopPanel() {
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         this.expandButton = this.componentsFactory.getIconButton("app/adr/node_expand.png", 16, AppThemeColor.FRAME, "");
         this.expandButton.addActionListener(action -> {
-            if(this.container.isVisible()){
-                this.expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_expand.png",16));
+            if (this.container.isVisible()) {
+                this.expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_expand.png", 16));
                 this.container.setVisible(false);
-            }else {
-                this.expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_collapse.png",16));
+            } else {
+                this.expandButton.setIcon(this.componentsFactory.getIcon("app/adr/node_collapse.png", 16));
                 this.container.setVisible(true);
             }
             MercuryStoreUI.adrManagerPack.onNext(true);
         });
         JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 14, AppThemeColor.FRAME, TooltipConstants.ADR_REMOVE_BUTTON);
         removeButton.addActionListener(action -> new AlertDialog(success -> {
-            if(success) {
+            if (success) {
                 MercuryStoreUI.adrRemoveComponentSubject.onNext(descriptor);
                 MercuryStoreUI.adrManagerPack.onNext(true);
             }
-        },"Do you want to delete this component?",this).setVisible(true));
+        }, "Do you want to delete this component?", this).setVisible(true));
         JButton addButton = this.componentsFactory.getIconButton("app/adr/add_node.png", 14, AppThemeColor.FRAME, TooltipConstants.ADR_ADD_BUTTON);
         addButton.addActionListener(action -> {
             MercuryStoreUI.adrSelectSubject.onNext(this.descriptor);
-            MercuryStoreUI.adrStateSubject.onNext(new AdrPageDefinition<>(AdrPageState.MAIN,this.descriptor));
+            MercuryStoreUI.adrStateSubject.onNext(new AdrPageDefinition<>(AdrPageState.MAIN, this.descriptor));
         });
         JButton exportButton = this.componentsFactory.getIconButton("app/adr/export_node.png", 14, AppThemeColor.FRAME, TooltipConstants.ADR_EXPORT_BUTTON);
         exportButton.addActionListener(action -> {
@@ -100,9 +100,9 @@ public class AdrGroupNodePanel extends AdrNodePanel<AdrTrackerGroupDescriptor> {
         this.groupLabel.setPreferredSize(new Dimension(170, 30));
         this.groupLabel.setIcon(componentsFactory.getIcon(this.adrComponentsFactory.getGroupTypeIconPath(this.descriptor), 36));
         this.groupLabel.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 2));
-        root.add(this.expandButton,BorderLayout.LINE_START);
-        root.add(this.groupLabel,BorderLayout.CENTER);
-        root.add(buttonsPanel,BorderLayout.LINE_END);
+        root.add(this.expandButton, BorderLayout.LINE_START);
+        root.add(this.groupLabel, BorderLayout.CENTER);
+        root.add(buttonsPanel, BorderLayout.LINE_END);
         return root;
     }
 }

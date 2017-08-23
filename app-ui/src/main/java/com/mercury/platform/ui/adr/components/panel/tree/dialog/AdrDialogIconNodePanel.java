@@ -8,7 +8,6 @@ import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,9 +38,9 @@ public class AdrDialogIconNodePanel extends AdrNodePanel<AdrIconDescriptor> {
         JLabel titleLabel = this.componentsFactory.getTextLabel(this.descriptor.getTitle());
         titleLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
         titleLabel.setFont(componentsFactory.getFont(FontStyle.REGULAR, 16));
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(0,4,0,0));
-        root.add(tracker,BorderLayout.LINE_START);
-        root.add(titleLabel,BorderLayout.CENTER);
-        this.add(root,BorderLayout.CENTER);
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+        root.add(tracker, BorderLayout.LINE_START);
+        root.add(titleLabel, BorderLayout.CENTER);
+        this.add(root, BorderLayout.CENTER);
     }
 }

@@ -5,13 +5,22 @@ package com.mercury.platform.ui.components.panel.taskbar;
  */
 public interface TaskBarController {
     void enableDND();
+
     void disableDND();
+
     void showITH();
+
     void performHideout();
+
     void showChatFiler();
+
     void showHistory();
+
     void openPINSettings();
+
     void openScaleSettings();
+
     void showSettings();
+
     void exit();
 }

@@ -19,6 +19,7 @@ import java.awt.event.MouseEvent;
 
 public class HelpPanel extends JPanel implements ViewInit {
     private ComponentsFactory componentsFactory;
+
     public HelpPanel() {
         super();
         componentsFactory = new ComponentsFactory();
@@ -33,7 +34,7 @@ public class HelpPanel extends JPanel implements ViewInit {
         openTutorial.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)){
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
                     FramesManager.INSTANCE.preShowFrame(NotesFrame.class);
                 }
@@ -43,7 +44,7 @@ public class HelpPanel extends JPanel implements ViewInit {
         openTests.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)){
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
                     FramesManager.INSTANCE.preShowFrame(TestCasesFrame.class);
                     MercuryStoreCore.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
@@ -54,10 +55,10 @@ public class HelpPanel extends JPanel implements ViewInit {
         patchNotes.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)){
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     NotesLoader notesLoader = new NotesLoader();
                     java.util.List<Note> patchNotes = notesLoader.getPatchNotes();
-                    if(patchNotes.size() != 0){
+                    if (patchNotes.size() != 0) {
                         NotesFrame patchNotesFrame = new NotesFrame(patchNotes, NotesFrame.NotesType.PATCH);
                         patchNotesFrame.init();
                         patchNotesFrame.showComponent();
@@ -69,7 +70,7 @@ public class HelpPanel extends JPanel implements ViewInit {
         updateEvent.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)){
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     MercuryStoreCore.updateInfoSubject.onNext(123);
                     FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
                 }

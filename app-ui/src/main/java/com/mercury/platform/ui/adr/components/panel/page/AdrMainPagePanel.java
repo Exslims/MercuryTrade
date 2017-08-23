@@ -2,7 +2,10 @@ package com.mercury.platform.ui.adr.components.panel.page;
 
 
 import com.mercury.platform.shared.config.configration.AdrConfigurationService;
-import com.mercury.platform.shared.config.descriptor.adr.*;
+import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
 import com.mercury.platform.ui.adr.dialog.AdrImportDialog;
 import com.mercury.platform.ui.adr.routing.AdrComponentDefinition;
 import com.mercury.platform.ui.adr.routing.AdrComponentOperations;
@@ -20,6 +23,7 @@ import java.awt.event.MouseEvent;
 
 public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
     private AdrConfigurationService config;
+
     public AdrMainPagePanel(AdrConfigurationService config) {
         super();
         this.config = config;
@@ -27,15 +31,15 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
 
     @Override
     protected void init() {
-        if(this.fromGroup){
+        if (this.fromGroup) {
             JLabel header = this.componentsFactory.getTextLabel(this.payload.getTitle() + " >", FontStyle.REGULAR, 20);
-            header.setBorder(BorderFactory.createEmptyBorder(4,6,0,4));
+            header.setBorder(BorderFactory.createEmptyBorder(4, 6, 0, 4));
             this.add(header, BorderLayout.PAGE_START);
         }
         JPanel container = new VerticalScrollContainer();
         container.setBackground(AppThemeColor.FRAME_RGB);
-        container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
-        container.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        container.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
         JScrollPane verticalContainer = this.componentsFactory.getVerticalContainer(container);
 
         JPanel createIconsGroup = this.getButton(
@@ -45,7 +49,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
             @Override
             public void mouseClicked(MouseEvent e) {
                 MercuryStoreUI.adrComponentStateSubject.onNext(
-                        new AdrComponentDefinition(config.getDefaultIconGroup(), AdrComponentOperations.NEW_COMPONENT,payload)
+                        new AdrComponentDefinition(config.getDefaultIconGroup(), AdrComponentOperations.NEW_COMPONENT, payload)
                 );
             }
         });
@@ -56,7 +60,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
             @Override
             public void mouseClicked(MouseEvent e) {
                 MercuryStoreUI.adrComponentStateSubject.onNext(
-                        new AdrComponentDefinition(config.getDefaultPBGroup(), AdrComponentOperations.NEW_COMPONENT,payload)
+                        new AdrComponentDefinition(config.getDefaultPBGroup(), AdrComponentOperations.NEW_COMPONENT, payload)
                 );
             }
         });
@@ -67,7 +71,7 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
             @Override
             public void mouseClicked(MouseEvent e) {
                 MercuryStoreUI.adrComponentStateSubject.onNext(
-                        new AdrComponentDefinition(config.getDefaultCapture(), AdrComponentOperations.NEW_COMPONENT,payload)
+                        new AdrComponentDefinition(config.getDefaultCapture(), AdrComponentOperations.NEW_COMPONENT, payload)
                 );
             }
         });
@@ -109,29 +113,29 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
             }
         });
         JPanel root = this.componentsFactory.getJPanel(new GridLayout(0, 1), AppThemeColor.FRAME);
-        if(this.fromGroup) {
-            switch (((AdrTrackerGroupDescriptor) this.payload).getContentType()){
-                case ICONS:{
+        if (this.fromGroup) {
+            switch (((AdrTrackerGroupDescriptor) this.payload).getContentType()) {
+                case ICONS: {
                     root.add(this.componentsFactory.wrapToSlide(createIcon));
                     break;
                 }
-                case PROGRESS_BARS:{
+                case PROGRESS_BARS: {
                     root.add(this.componentsFactory.wrapToSlide(createPb));
                     break;
                 }
             }
-        }else {
+        } else {
             root.add(this.componentsFactory.wrapToSlide(createIcon));
             root.add(this.componentsFactory.wrapToSlide(createPb));
         }
-        if(!this.fromGroup) {
+        if (!this.fromGroup) {
             root.add(this.componentsFactory.wrapToSlide(createCaptureComponent));
             root.add(this.componentsFactory.wrapToSlide(createIconsGroup));
             root.add(this.componentsFactory.wrapToSlide(createPbGroup));
         }
         root.add(this.componentsFactory.wrapToSlide(importButton));
         container.add(root);
-        this.add(verticalContainer,BorderLayout.CENTER);
+        this.add(verticalContainer, BorderLayout.CENTER);
     }
 
     private JPanel getButton(String iconPath, String title) {
@@ -139,12 +143,12 @@ public class AdrMainPagePanel extends AdrPagePanel<AdrComponentDescriptor> {
         root.setBackground(AppThemeColor.SLIDE_BG);
         JLabel iconLabel = this.componentsFactory.getIconLabel(iconPath, 64);
         iconLabel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(4,4,4,4),
+                BorderFactory.createEmptyBorder(4, 4, 4, 4),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK)
         ));
         iconLabel.setBackground(AppThemeColor.FRAME_RGB);
-        root.add(iconLabel,BorderLayout.LINE_START);
-        root.add(this.componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,20,title),BorderLayout.CENTER);
+        root.add(iconLabel, BorderLayout.LINE_START);
+        root.add(this.componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP, 20, title), BorderLayout.CENTER);
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK));
         root.addMouseListener(new MouseAdapter() {
             @Override

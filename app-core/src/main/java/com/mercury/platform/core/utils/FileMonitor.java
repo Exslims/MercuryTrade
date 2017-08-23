@@ -12,14 +12,14 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 
 public class FileMonitor {
-    private Logger logger = LogManager.getLogger(FileMonitor.class.getSimpleName());
-
     private static final long POLLING_INTERVAL = 350;
+    private Logger logger = LogManager.getLogger(FileMonitor.class.getSimpleName());
     private MessageFileHandler fileHandler;
     private FileAlterationMonitor monitor;
-    public FileMonitor(){
+
+    public FileMonitor() {
         MercuryStoreCore.poeFolderChangedSubject.subscribe(state -> {
-            if(monitor != null){
+            if (monitor != null) {
                 try {
                     monitor.stop();
                 } catch (Exception e) {
@@ -29,14 +29,15 @@ public class FileMonitor {
             }
         });
     }
-    public void start(){
+
+    public void start() {
         String gamePath = Configuration.get().applicationConfiguration().get().getGamePath();
 
-        File folder = new File(gamePath+"logs");
+        File folder = new File(gamePath + "logs");
         this.fileHandler = new MessageFileHandler(gamePath + "logs/Client.txt");
         FileAlterationObserver observer = new FileAlterationObserver(folder);
         monitor = new FileAlterationMonitor(POLLING_INTERVAL);
-        FileAlterationListener listener = new FileAlterationListenerAdaptor(){
+        FileAlterationListener listener = new FileAlterationListenerAdaptor() {
             @Override
             public void onFileChange(File file) {
                 fileHandler.parse();

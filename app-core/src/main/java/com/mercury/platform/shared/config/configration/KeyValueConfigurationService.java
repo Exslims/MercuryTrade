@@ -5,6 +5,8 @@ import java.util.Map;
 
 public interface KeyValueConfigurationService<K, T> {
     T get(K key);
-    Map<K,T> getMap();
-    void set(Map<K,T> map);
+
+    Map<K, T> getMap();
+
+    void set(Map<K, T> map);
 }

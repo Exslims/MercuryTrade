@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public enum HotKeyType implements Serializable{
+public enum HotKeyType implements Serializable {
     N_TRADE_PLAYER {
         @Override
         public String getIconPath() {
@@ -87,11 +87,13 @@ public enum HotKeyType implements Serializable{
             return "app/visible-dnd-mode.png";
         }
     };
-    public abstract String getIconPath();
-    public static boolean contains(HotKeyType entry){
+
+    public static boolean contains(HotKeyType entry) {
         return Arrays.stream(HotKeyType.values())
                 .filter(it -> it.equals(entry))
                 .collect(Collectors.toList())
                 .size() != 0;
     }
+
+    public abstract String getIconPath();
 }

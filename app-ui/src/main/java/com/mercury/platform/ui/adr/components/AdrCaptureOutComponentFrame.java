@@ -14,7 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 
-public class AdrCaptureOutComponentFrame extends AbstractAdrFrame<AdrCaptureDescriptor>{
+public class AdrCaptureOutComponentFrame extends AbstractAdrFrame<AdrCaptureDescriptor> {
     private int x;
     private int y;
     @Getter
@@ -25,12 +25,13 @@ public class AdrCaptureOutComponentFrame extends AbstractAdrFrame<AdrCaptureDesc
     private AdrMouseOverListener mouseOverListener;
 
     private Subscription adrReloadSubscription;
+
     public AdrCaptureOutComponentFrame(AdrCaptureDescriptor descriptor) {
         super(descriptor);
 
         this.mouseListener = new CaptureDraggedFrameMouseListener();
         this.motionListener = new CaptureDraggedFrameMotionListener();
-        this.mouseOverListener = new AdrMouseOverListener<>(this.getRootPane(),this.descriptor,false);
+        this.mouseOverListener = new AdrMouseOverListener<>(this.getRootPane(), this.descriptor, false);
     }
 
     @Override
@@ -40,22 +41,23 @@ public class AdrCaptureOutComponentFrame extends AbstractAdrFrame<AdrCaptureDesc
 
     @Override
     protected LayoutManager getFrameLayout() {
-        return new GridLayout(1,1);
+        return new GridLayout(1, 1);
     }
 
     @Override
     protected void initialize() {
         this.setLocation(descriptor.getCaptureLocation());
         this.componentsFactory.setScale(descriptor.getScale());
-        this.setLayout(new GridLayout(1,1));
+        this.setLayout(new GridLayout(1, 1));
         this.add(this.component);
         this.pack();
     }
+
     @Override
     public void subscribe() {
         super.subscribe();
         this.adrReloadSubscription = MercuryStoreUI.adrReloadSubject.subscribe(descriptor -> {
-            if(descriptor.equals(this.descriptor)){
+            if (descriptor.equals(this.descriptor)) {
                 this.setLocation(this.descriptor.getCaptureLocation());
                 this.setPreferredSize(this.descriptor.getCaptureSize());
                 this.repaint();
@@ -63,6 +65,7 @@ public class AdrCaptureOutComponentFrame extends AbstractAdrFrame<AdrCaptureDesc
             }
         });
     }
+
     @Override
     public void enableSettings() {
         super.enableSettings();
@@ -89,7 +92,7 @@ public class AdrCaptureOutComponentFrame extends AbstractAdrFrame<AdrCaptureDesc
         this.component.removeMouseListener(this.mouseOverListener);
         this.component.removeMouseMotionListener(this.motionListener);
 
-        this.getRootPane().setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+        this.getRootPane().setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         this.pack();
         this.repaint();
     }
@@ -110,17 +113,18 @@ public class AdrCaptureOutComponentFrame extends AbstractAdrFrame<AdrCaptureDesc
     public class CaptureDraggedFrameMotionListener extends MouseAdapter {
         @Override
         public void mouseDragged(MouseEvent e) {
-            if(SwingUtilities.isLeftMouseButton(e)) {
+            if (SwingUtilities.isLeftMouseButton(e)) {
                 e.translatePoint(AdrCaptureOutComponentFrame.this.getLocation().x - x, AdrCaptureOutComponentFrame.this.getLocation().y - y);
                 Point point = e.getPoint();
                 AdrCaptureOutComponentFrame.this.setLocation(point);
             }
         }
     }
-    public class CaptureDraggedFrameMouseListener extends MouseAdapter{
+
+    public class CaptureDraggedFrameMouseListener extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
-            if(SwingUtilities.isLeftMouseButton(e)) {
+            if (SwingUtilities.isLeftMouseButton(e)) {
                 x = e.getX();
                 y = e.getY();
             }
@@ -128,7 +132,7 @@ public class AdrCaptureOutComponentFrame extends AbstractAdrFrame<AdrCaptureDesc
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            if(SwingUtilities.isLeftMouseButton(e)) {
+            if (SwingUtilities.isLeftMouseButton(e)) {
                 Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
                 if (getLocationOnScreen().y + getSize().height > dimension.height) {
                     setLocation(getLocationOnScreen().x, dimension.height - getSize().height);

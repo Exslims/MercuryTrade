@@ -14,14 +14,14 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class MercuryAppLoadingUI extends ComponentUI{
+public class MercuryAppLoadingUI extends ComponentUI {
     private MercuryLoading component;
 
     public MercuryAppLoadingUI(MercuryLoading component) {
         this.component = component;
     }
 
-    public ImageIcon getIcon(String iconPath, int size){
+    public ImageIcon getIcon(String iconPath, int size) {
         BufferedImage icon = null;
         try {
             BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
@@ -31,7 +31,9 @@ public class MercuryAppLoadingUI extends ComponentUI{
         }
         return new ImageIcon(icon);
     }
-    @Override public void paint(Graphics g, JComponent c) {
+
+    @Override
+    public void paint(Graphics g, JComponent c) {
         if (component.getWidth() == 0) {
             return;
         }

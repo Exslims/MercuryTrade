@@ -4,10 +4,9 @@ import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Map;
 
 @Data
-public class ApplicationDescriptor implements Serializable{
+public class ApplicationDescriptor implements Serializable {
     private WhisperNotifierStatus notifierStatus;
     private int minOpacity;
     private int maxOpacity;

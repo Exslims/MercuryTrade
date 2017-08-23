@@ -1,6 +1,5 @@
 package com.mercury.platform.core.utils.interceptor;
 
-import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.config.Configuration;
@@ -30,11 +29,11 @@ public class TradeOutMessagesInterceptor extends MessageInterceptor {
 
     @Override
     protected void process(String message) {
-        if(this.config.get().isOutNotificationEnable()) {
+        if (this.config.get().isOutNotificationEnable()) {
             LocalizationMatcher localizationMatcher = this.clients.stream()
                     .filter(matcher -> matcher.isSuitableFor(message))
                     .findAny().orElse(null);
-            if(localizationMatcher != null){
+            if (localizationMatcher != null) {
                 localizationMatcher.processMessage(message);
             }
         }
@@ -47,17 +46,21 @@ public class TradeOutMessagesInterceptor extends MessageInterceptor {
                         .filter(matcher -> matcher.isSuitableFor(message))
                         .findAny().orElse(null) != null;
     }
+
     private abstract class LocalizationMatcher {
-        public boolean isSuitableFor(String message){
+        public boolean isSuitableFor(String message) {
             return message.contains("Hi, I would like") ||
                     message.contains("Hi, I'd like") ||
                     (message.contains("wtb") && message.contains("(stash"));
         }
+
         public abstract String trimString(String src);
-        public NotificationDescriptor getDescriptor(String message){
+
+        public NotificationDescriptor getDescriptor(String message) {
             return messageParser.parse(this.trimString(message));
         }
-        public void processMessage(String message){
+
+        public void processMessage(String message) {
             NotificationDescriptor notificationDescriptor = this.getDescriptor(message);
             if (notificationDescriptor != null) {
                 MercuryStoreCore.newNotificationSubject.onNext(notificationDescriptor);
@@ -65,7 +68,7 @@ public class TradeOutMessagesInterceptor extends MessageInterceptor {
         }
     }
 
-    private class EngOutLocalizationMatcher extends LocalizationMatcher{
+    private class EngOutLocalizationMatcher extends LocalizationMatcher {
         @Override
         public boolean isSuitableFor(String message) {
             return message.contains("@To") && super.isSuitableFor(message);
@@ -79,15 +82,16 @@ public class TradeOutMessagesInterceptor extends MessageInterceptor {
         @Override
         public NotificationDescriptor getDescriptor(String message) {
             NotificationDescriptor descriptor = messageParser.parse(this.trimString(message));
-            if(descriptor instanceof ItemTradeNotificationDescriptor){
+            if (descriptor instanceof ItemTradeNotificationDescriptor) {
                 descriptor.setType(NotificationType.OUT_ITEM_MESSAGE);
-            }else {
+            } else {
                 descriptor.setType(NotificationType.OUT_CURRENCY_MESSAGE);
             }
             return descriptor;
         }
     }
-    private class RuOutLocalizationMatcher extends LocalizationMatcher{
+
+    private class RuOutLocalizationMatcher extends LocalizationMatcher {
         @Override
         public boolean isSuitableFor(String message) {
             return message.contains("@Кому") && super.isSuitableFor(message);
@@ -101,15 +105,16 @@ public class TradeOutMessagesInterceptor extends MessageInterceptor {
         @Override
         public NotificationDescriptor getDescriptor(String message) {
             NotificationDescriptor descriptor = messageParser.parse(this.trimString(message));
-            if(descriptor instanceof ItemTradeNotificationDescriptor){
+            if (descriptor instanceof ItemTradeNotificationDescriptor) {
                 descriptor.setType(NotificationType.OUT_ITEM_MESSAGE);
-            }else {
+            } else {
                 descriptor.setType(NotificationType.OUT_CURRENCY_MESSAGE);
             }
             return descriptor;
         }
     }
-    private class ArabicOutLocalizationMatcher extends LocalizationMatcher{
+
+    private class ArabicOutLocalizationMatcher extends LocalizationMatcher {
         @Override
         public boolean isSuitableFor(String message) {
             return message.contains("@ถึง") && super.isSuitableFor(message);
@@ -123,15 +128,16 @@ public class TradeOutMessagesInterceptor extends MessageInterceptor {
         @Override
         public NotificationDescriptor getDescriptor(String message) {
             NotificationDescriptor descriptor = messageParser.parse(this.trimString(message));
-            if(descriptor instanceof ItemTradeNotificationDescriptor){
+            if (descriptor instanceof ItemTradeNotificationDescriptor) {
                 descriptor.setType(NotificationType.OUT_ITEM_MESSAGE);
-            }else {
+            } else {
                 descriptor.setType(NotificationType.OUT_CURRENCY_MESSAGE);
             }
             return descriptor;
         }
     }
-    private class BZOutLocalizationMatcher extends LocalizationMatcher{
+
+    private class BZOutLocalizationMatcher extends LocalizationMatcher {
         @Override
         public boolean isSuitableFor(String message) {
             return message.contains("@Para") && super.isSuitableFor(message);
@@ -145,9 +151,9 @@ public class TradeOutMessagesInterceptor extends MessageInterceptor {
         @Override
         public NotificationDescriptor getDescriptor(String message) {
             NotificationDescriptor descriptor = messageParser.parse(this.trimString(message));
-            if(descriptor instanceof ItemTradeNotificationDescriptor){
+            if (descriptor instanceof ItemTradeNotificationDescriptor) {
                 descriptor.setType(NotificationType.OUT_ITEM_MESSAGE);
-            }else {
+            } else {
                 descriptor.setType(NotificationType.OUT_CURRENCY_MESSAGE);
             }
             return descriptor;

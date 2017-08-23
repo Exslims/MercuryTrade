@@ -5,6 +5,8 @@ package com.mercury.platform.ui.components.panel.chat;
  */
 public interface ChatScannerController {
     void clearChat();
+
     void enableSound();
+
     void setupChunks();
 }

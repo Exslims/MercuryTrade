@@ -7,6 +7,7 @@ import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.callback.TimelineCallback;
+
 import java.awt.*;
 
 
@@ -14,6 +15,7 @@ public class MercuryLoadingFrame extends AbstractOverlaidFrame {
     private Timeline hideAnimation;
     private Timeline showAnimation;
     private MercuryLoading loadingTracker;
+
     public MercuryLoadingFrame() {
         super();
         processingHideEvent = false;
@@ -55,19 +57,20 @@ public class MercuryLoadingFrame extends AbstractOverlaidFrame {
         this.loadingTracker.playLoop();
         this.loadingTracker.setForeground(AppThemeColor.ADR_FOOTER_BG);
         this.loadingTracker.setBackground(AppThemeColor.BORDER_GREEN);
-        this.loadingTracker.setPreferredSize(new Dimension(200,200));
+        this.loadingTracker.setPreferredSize(new Dimension(200, 200));
         hideAnimation = new Timeline(this);
         hideAnimation.setDuration(400);
         hideAnimation.addPropertyToInterpolate("opacity", 1f, 0f);
         hideAnimation.addCallback(new TimelineCallback() {
             @Override
             public void onTimelineStateChanged(Timeline.TimelineState oldState, Timeline.TimelineState newState, float durationFraction, float timelinePosition) {
-                if(newState.equals(Timeline.TimelineState.DONE)){
+                if (newState.equals(Timeline.TimelineState.DONE)) {
                     setAlwaysOnTop(false);
                     setVisible(false);
                     loadingTracker.abort();
                 }
             }
+
             @Override
             public void onTimelinePulse(float durationFraction, float timelinePosition) {
             }
@@ -79,6 +82,6 @@ public class MercuryLoadingFrame extends AbstractOverlaidFrame {
         this.add(this.loadingTracker);
         this.pack();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
     }
 }

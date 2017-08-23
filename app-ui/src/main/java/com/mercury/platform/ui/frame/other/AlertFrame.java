@@ -11,13 +11,16 @@ import java.awt.event.MouseEvent;
 
 public class AlertFrame extends AbstractOverlaidFrame {
     private JLabel messageLabel;
+
     public AlertFrame() {
         super();
     }
+
     @Override
     protected void initialize() {
         this.getRootPane().setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER));
     }
+
     @Override
     public void onViewInit() {
         JPanel messagePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
@@ -34,8 +37,8 @@ public class AlertFrame extends AbstractOverlaidFrame {
         });
         close.setPreferredSize(new Dimension(80, 26));
         closePanel.add(close);
-        this.add(messagePanel,BorderLayout.CENTER);
-        this.add(closePanel,BorderLayout.PAGE_END);
+        this.add(messagePanel, BorderLayout.CENTER);
+        this.add(closePanel, BorderLayout.PAGE_END);
         this.pack();
     }
 
@@ -47,7 +50,7 @@ public class AlertFrame extends AbstractOverlaidFrame {
             this.pack();
             this.setVisible(true);
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-            this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+            this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         });
     }
 

@@ -6,10 +6,7 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
-
-public class MercuryNativeKeyListener implements NativeKeyListener{
+public class MercuryNativeKeyListener implements NativeKeyListener {
     private boolean menuPressed;
     private boolean shiftPressed;
     private boolean ctrlpressed;
@@ -22,8 +19,8 @@ public class MercuryNativeKeyListener implements NativeKeyListener{
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-        switch (nativeKeyEvent.getKeyCode()){
-            case 42 : {
+        switch (nativeKeyEvent.getKeyCode()) {
+            case 42: {
                 this.shiftPressed = true;
                 break;
             }
@@ -35,8 +32,8 @@ public class MercuryNativeKeyListener implements NativeKeyListener{
                 this.menuPressed = true;
                 break;
             }
-            default:{
-                if(!this.block) {
+            default: {
+                if (!this.block) {
                     MercuryStoreCore.hotKeySubject.onNext(this.getDescriptor(nativeKeyEvent));
                 }
             }
@@ -45,8 +42,8 @@ public class MercuryNativeKeyListener implements NativeKeyListener{
 
     @Override
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
-        switch (nativeKeyEvent.getKeyCode()){
-            case 42 : {
+        switch (nativeKeyEvent.getKeyCode()) {
+            case 42: {
                 this.shiftPressed = false;
                 break;
             }
@@ -64,17 +61,19 @@ public class MercuryNativeKeyListener implements NativeKeyListener{
     @Override
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
     }
-    private String getButtonText(HotKeyDescriptor descriptor){
+
+    private String getButtonText(HotKeyDescriptor descriptor) {
         String text = descriptor.getTitle();
-        if(descriptor.isShiftPressed())
+        if (descriptor.isShiftPressed())
             text = "Shift + " + text;
-        if(descriptor.isMenuPressed())
+        if (descriptor.isMenuPressed())
             text = "Alt + " + text;
-        if(descriptor.isControlPressed())
+        if (descriptor.isControlPressed())
             text = "Ctrl + " + text;
         return text;
     }
-    private HotKeyDescriptor getDescriptor(NativeKeyEvent nativeKeyEvent){
+
+    private HotKeyDescriptor getDescriptor(NativeKeyEvent nativeKeyEvent) {
         HotKeyDescriptor hotKeyDescriptor = new HotKeyDescriptor();
         hotKeyDescriptor.setTitle(NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode()));
         hotKeyDescriptor.setVirtualKeyCode(nativeKeyEvent.getKeyCode());

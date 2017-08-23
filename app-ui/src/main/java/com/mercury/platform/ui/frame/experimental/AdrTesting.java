@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
@@ -21,25 +20,28 @@ import java.util.Random;
 
 public class AdrTesting extends JPanel {
     protected final JProgressBar progress1 = new JProgressBar() {
-        @Override public void updateUI() {
+        @Override
+        public void updateUI() {
             super.updateUI();
             setUI(new ProgressCircleUI());
             setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         }
     };
     protected final JProgressBar progress2 = new JProgressBar() {
-        @Override public void updateUI() {
+        @Override
+        public void updateUI() {
             super.updateUI();
             setUI(new ProgressCircleUI());
             setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         }
     };
+
     public AdrTesting() {
         super(new BorderLayout());
         progress2.setStringPainted(true);
         progress1.setBackground(AppThemeColor.TRANSPARENT);
         progress1.setBorder(null);
-        progress2.setFont(new ComponentsFactory().getFont(FontStyle.BOLD,82));
+        progress2.setFont(new ComponentsFactory().getFont(FontStyle.BOLD, 82));
         progress2.setForeground(AppThemeColor.TEXT_DEFAULT);
 
         JSlider slider = new JSlider();
@@ -51,7 +53,8 @@ public class AdrTesting extends JPanel {
             JButton b = (JButton) e.getSource();
             b.setEnabled(false);
             SwingWorker<String, Void> worker = new Task() {
-                @Override public void done() {
+                @Override
+                public void done() {
                     if (b.isDisplayable()) {
                         b.setEnabled(true);
                     }
@@ -71,13 +74,16 @@ public class AdrTesting extends JPanel {
         add(button, BorderLayout.SOUTH);
         setPreferredSize(new Dimension(320, 240));
     }
+
     public static void main(String... args) {
         EventQueue.invokeLater(new Runnable() {
-            @Override public void run() {
+            @Override
+            public void run() {
                 createAndShowGUI();
             }
         });
     }
+
     public static void createAndShowGUI() {
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -91,7 +97,8 @@ public class AdrTesting extends JPanel {
 }
 
 class ProgressCircleUI extends BasicProgressBarUI {
-    @Override public Dimension getPreferredSize(JComponent c) {
+    @Override
+    public Dimension getPreferredSize(JComponent c) {
         Dimension d = super.getPreferredSize(c);
         int v = Math.max(d.width, d.height);
         d.setSize(v, v);
@@ -100,7 +107,7 @@ class ProgressCircleUI extends BasicProgressBarUI {
 
     @Override
     protected void paintString(Graphics g, int x, int y, int width, int height, int amountFull, Insets b) {
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D) g;
         String progressString = String.valueOf(progressBar.getValue());
         g2.setFont(progressBar.getFont());
         Point renderLocation = getStringPlacement(g2, progressString,
@@ -116,10 +123,11 @@ class ProgressCircleUI extends BasicProgressBarUI {
         g2.setClip(oldClip);
     }
 
-    @Override public void paint(Graphics g, JComponent c) {
+    @Override
+    public void paint(Graphics g, JComponent c) {
         //public void paintDeterminate(Graphics g, JComponent c) {
         Insets b = progressBar.getInsets(); // area for border
-        int barRectWidth  = progressBar.getWidth()  - b.right - b.left;
+        int barRectWidth = progressBar.getWidth() - b.right - b.left;
         int barRectHeight = progressBar.getHeight() - b.top - b.bottom;
         if (barRectWidth <= 0 || barRectHeight <= 0) {
             return;
@@ -130,8 +138,8 @@ class ProgressCircleUI extends BasicProgressBarUI {
 
         double degree = 360 * progressBar.getPercentComplete();
         double sz = Math.max(barRectWidth, barRectHeight);
-        Shape outer  = new Rectangle2D.Double(0, 0, sz, sz);
-        Shape sector = new Arc2D.Double(-sz, -sz, sz *3, sz *3, 90 - degree, degree, Arc2D.PIE);
+        Shape outer = new Rectangle2D.Double(0, 0, sz, sz);
+        Shape sector = new Arc2D.Double(-sz, -sz, sz * 3, sz * 3, 90 - degree, degree, Arc2D.PIE);
 
         Area foreground = new Area(sector);
         Area background = new Area(outer);
@@ -139,17 +147,17 @@ class ProgressCircleUI extends BasicProgressBarUI {
         foreground.intersect(background);
 
         g2.setPaint(new Color(0x505050));
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.7f));
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
         g2.fill(background);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
         try {
             BufferedImage read = ImageIO.read(getClass().getClassLoader().getResource("app/adr/vessel_vinktar.png"));
-            g2.drawImage(read,0,0,(int)sz,(int)sz,null);
+            g2.drawImage(read, 0, 0, (int) sz, (int) sz, null);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.7f));
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
         g2.fill(foreground);
 
         g2.dispose();
@@ -163,7 +171,9 @@ class ProgressCircleUI extends BasicProgressBarUI {
 
 class Task extends SwingWorker<String, Void> {
     private final Random rnd = new Random();
-    @Override public String doInBackground() {
+
+    @Override
+    public String doInBackground() {
         int current = 0;
         int lengthOfTask = 200;
         while (current <= lengthOfTask && !isCancelled()) {
@@ -181,11 +191,14 @@ class Task extends SwingWorker<String, Void> {
 
 class ProgressListener implements PropertyChangeListener {
     private final JProgressBar progressBar;
+
     protected ProgressListener(JProgressBar progressBar) {
         this.progressBar = progressBar;
         this.progressBar.setValue(0);
     }
-    @Override public void propertyChange(PropertyChangeEvent e) {
+
+    @Override
+    public void propertyChange(PropertyChangeEvent e) {
         String strPropertyName = e.getPropertyName();
         if ("progress".equals(strPropertyName)) {
             progressBar.setIndeterminate(false);

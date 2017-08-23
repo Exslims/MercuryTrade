@@ -12,28 +12,29 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class HistoryNotificationPanel extends NotificationPanel<NotificationDescriptor,HistoryController> {
+public class HistoryNotificationPanel extends NotificationPanel<NotificationDescriptor, HistoryController> {
     @Override
     public void onViewInit() {
         super.onViewInit();
-        this.add(this.getHeader(),BorderLayout.PAGE_START);
-        JLabel sourceLabel = this.componentsFactory.getTextLabel(StringUtils.substringAfter(this.data.getSourceString(),":"),FontStyle.REGULAR,17f);
+        this.add(this.getHeader(), BorderLayout.PAGE_START);
+        JLabel sourceLabel = this.componentsFactory.getTextLabel(StringUtils.substringAfter(this.data.getSourceString(), ":"), FontStyle.REGULAR, 17f);
         sourceLabel.setBackground(AppThemeColor.FRAME);
         sourceLabel.setHorizontalAlignment(SwingConstants.LEFT);
         sourceLabel.setVerticalAlignment(SwingConstants.TOP);
-        this.add(sourceLabel,BorderLayout.CENTER);
+        this.add(sourceLabel, BorderLayout.CENTER);
     }
-    private JPanel getHeader(){
+
+    private JPanel getHeader() {
         JPanel root = new JPanel(new BorderLayout());
         root.setBackground(AppThemeColor.MSG_HEADER);
-        root.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+        root.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        JLabel nicknameLabel = this.componentsFactory.getTextLabel(FontStyle.BOLD,AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP,15f,this.data.getWhisperNickname());
-        nicknameLabel.setBorder(BorderFactory.createEmptyBorder(0,4,0,5));
-        root.add(nicknameLabel,BorderLayout.CENTER);
+        JLabel nicknameLabel = this.componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP, 15f, this.data.getWhisperNickname());
+        nicknameLabel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 5));
+        root.add(nicknameLabel, BorderLayout.CENTER);
 
-        JPanel opPanel = this.componentsFactory.getJPanel(new BorderLayout(),AppThemeColor.MSG_HEADER);
-        JPanel interactionPanel = new JPanel(new GridLayout(1,0,4,0));
+        JPanel opPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.MSG_HEADER);
+        JPanel interactionPanel = new JPanel(new GridLayout(1, 0, 4, 0));
         interactionPanel.setBackground(AppThemeColor.MSG_HEADER);
         JButton reloadButton = componentsFactory.getIconButton("app/reload-history.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.INVITE);
         reloadButton.addActionListener(e -> {
@@ -43,10 +44,11 @@ public class HistoryNotificationPanel extends NotificationPanel<NotificationDesc
         openChatButton.addActionListener(e -> controller.performOpenChat());
         interactionPanel.add(reloadButton);
         interactionPanel.add(openChatButton);
-        opPanel.add(interactionPanel,BorderLayout.CENTER);
-        root.add(opPanel,BorderLayout.LINE_END);
+        opPanel.add(interactionPanel, BorderLayout.CENTER);
+        root.add(opPanel, BorderLayout.LINE_END);
         return root;
     }
+
     @Override
     protected void updateHotKeyPool() {
         /*NOP*/

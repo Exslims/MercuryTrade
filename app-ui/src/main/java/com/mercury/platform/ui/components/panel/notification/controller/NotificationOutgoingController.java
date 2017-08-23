@@ -6,7 +6,7 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 
 import javax.swing.*;
 
-public class NotificationOutgoingController implements OutgoingPanelController{
+public class NotificationOutgoingController implements OutgoingPanelController {
     private NotificationDescriptor notificationDescriptor;
 
     public NotificationOutgoingController(NotificationDescriptor notificationDescriptor) {
@@ -43,7 +43,7 @@ public class NotificationOutgoingController implements OutgoingPanelController{
         MercuryStoreCore.chatCommandSubject.onNext("@" + notificationDescriptor.getWhisperNickname() + " " + response);
     }
 
-    private void closeMessagePanel(){
+    private void closeMessagePanel() {
         Timer timer = new Timer(30, action -> {
             MercuryStoreCore.removeNotificationSubject.onNext(notificationDescriptor);
         });

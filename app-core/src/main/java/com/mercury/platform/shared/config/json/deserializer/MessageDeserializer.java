@@ -9,7 +9,7 @@ import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 
 import java.lang.reflect.Type;
 
-public class MessageDeserializer implements JsonDeserializer<NotificationDescriptor>{
+public class MessageDeserializer implements JsonDeserializer<NotificationDescriptor> {
     @Override
     public NotificationDescriptor deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         return null;

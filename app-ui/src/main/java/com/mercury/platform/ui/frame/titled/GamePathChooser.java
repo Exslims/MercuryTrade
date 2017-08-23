@@ -31,27 +31,28 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
     @Override
     public void onViewInit() {
         this.removeHideButton();
-        this.add(getChooserPanel(),BorderLayout.CENTER);
-        this.add(getMiscPanel(),BorderLayout.PAGE_END);
+        this.add(getChooserPanel(), BorderLayout.CENTER);
+        this.add(getMiscPanel(), BorderLayout.PAGE_END);
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         this.pack();
         this.setVisible(true);
     }
-    private JPanel getChooserPanel(){
+
+    private JPanel getChooserPanel() {
         JPanel panel = componentsFactory.getTransparentPanel(new BorderLayout());
 
         this.statusLabel = componentsFactory.getTextLabel("");
         this.statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
         this.statusLabel.setForeground(AppThemeColor.TEXT_IMPORTANT);
-        panel.add(this.statusLabel,BorderLayout.CENTER);
+        panel.add(this.statusLabel, BorderLayout.CENTER);
 
         JPanel chooserPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
 
         JTextField textField = componentsFactory.getTextField("Example: \"C:/Path of Exile\"");
-        textField.setPreferredSize(new Dimension(450,26));
-        textField.setMinimumSize(new Dimension(450,26));
+        textField.setPreferredSize(new Dimension(450, 26));
+        textField.setMinimumSize(new Dimension(450, 26));
         textField.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -66,7 +67,7 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
         JButton selectButton = componentsFactory.getBorderedButton("Select");
         selectButton.addActionListener(e -> {
             int returnVal = fileChooser.showOpenDialog(GamePathChooser.this);
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
                 this.gamePath = fileChooser.getSelectedFile().getPath();
                 textField.setText(gamePath);
                 this.repaint();
@@ -74,11 +75,11 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
             }
         });
         chooserPanel.add(selectButton);
-        panel.add(chooserPanel,BorderLayout.PAGE_START);
+        panel.add(chooserPanel, BorderLayout.PAGE_START);
         return panel;
     }
 
-    private JPanel getMiscPanel(){
+    private JPanel getMiscPanel() {
         JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         JButton cancelButton = componentsFactory.getButton(
                 FontStyle.BOLD,
@@ -87,16 +88,16 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
                 "Cancel",
                 16f);
         cancelButton.addActionListener(action -> {
-            if(!this.readyToStart) {
+            if (!this.readyToStart) {
                 System.exit(0);
             }
         });
-        cancelButton.setPreferredSize(new Dimension(120,26));
+        cancelButton.setPreferredSize(new Dimension(120, 26));
         JButton saveButton = componentsFactory.getBorderedButton("Save");
         saveButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(!readyToStart) {
+                if (!readyToStart) {
                     if (isValidGamePath(gamePath)) {
                         readyToStart = true;
                         statusLabel.setText("Success!");
@@ -123,12 +124,13 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
                 }
             }
         });
-        saveButton.setPreferredSize(new Dimension(120,26));
+        saveButton.setPreferredSize(new Dimension(120, 26));
         miscPanel.add(saveButton);
         miscPanel.add(cancelButton);
         return miscPanel;
     }
-    private boolean isValidGamePath(String gamePath){
+
+    private boolean isValidGamePath(String gamePath) {
         File file = new File(gamePath + File.separator + "logs" + File.separator + "Client.txt");
         return file.exists();
     }

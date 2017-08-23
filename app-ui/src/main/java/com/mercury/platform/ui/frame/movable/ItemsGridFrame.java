@@ -1,16 +1,16 @@
 package com.mercury.platform.ui.frame.movable;
 
+import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
+import com.mercury.platform.ui.components.fields.font.FontStyle;
+import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.fields.style.MercuryScrollBarUI;
 import com.mercury.platform.ui.components.panel.HorizontalScrollContainer;
 import com.mercury.platform.ui.components.panel.grid.*;
-import com.mercury.platform.ui.misc.MercuryStoreUI;
-import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
-import com.mercury.platform.ui.components.fields.font.FontStyle;
-import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.NonNull;
 
 import javax.swing.*;
@@ -22,6 +22,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
     private ItemsGridPanel itemsGridPanel;
     private HorizontalScrollContainer tabsContainer;
     private StashTabsContainer stashTabsContainer;
+
     public ItemsGridFrame() {
         super();
         componentsFactory.setScale(this.scaleConfig.get("itemcell"));
@@ -41,7 +42,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
     public void onViewInit() {
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.getRootPane().setBorder(null);
-        this.add(itemsGridPanel,BorderLayout.CENTER);
+        this.add(itemsGridPanel, BorderLayout.CENTER);
         this.setPreferredSize(this.getMaximumSize());
         this.pack();
     }
@@ -49,16 +50,16 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
     @Override
     public void subscribe() {
         MercuryStoreUI.showItemGridSubject.subscribe(message -> {
-            if(this.applicationConfig.get().isItemsGridEnable()) {
+            if (this.applicationConfig.get().isItemsGridEnable()) {
                 if (itemsGridPanel.getActiveTabsCount() == 0) {
                     this.setVisible(true);
                 }
-                this.itemsGridPanel.add(message,null);
+                this.itemsGridPanel.add(message, null);
                 this.pack();
             }
         });
         MercuryStoreCore.removeNotificationSubject.subscribe(message -> {
-            if(message instanceof ItemTradeNotificationDescriptor) {
+            if (message instanceof ItemTradeNotificationDescriptor) {
                 this.itemsGridPanel.remove((ItemTradeNotificationDescriptor) message);
                 if (itemsGridPanel.getActiveTabsCount() == 0) {
                     this.setVisible(false);
@@ -78,10 +79,11 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
             this.pack();
         });
     }
+
     @Override
     protected void onLock() {
         super.onLock();
-        if(itemsGridPanel.getActiveTabsCount() > 0){
+        if (itemsGridPanel.getActiveTabsCount() > 0) {
             this.setVisible(true);
         }
     }
@@ -92,7 +94,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         JPanel topPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         topPanel.setBackground(AppThemeColor.FRAME);
         JPanel headerPanel = componentsFactory.getTransparentPanel(new BorderLayout());
-        JPanel defaultGridPanel = componentsFactory.getTransparentPanel(new GridLayout(12,12));
+        JPanel defaultGridPanel = componentsFactory.getTransparentPanel(new GridLayout(12, 12));
         defaultGridPanel.setBorder(null);
         for (int x = 0; x < 12; x++) {
             for (int y = 0; y < 12; y++) {
@@ -101,7 +103,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         }
         defaultGridPanel.setBackground(AppThemeColor.FRAME_ALPHA);
 
-        JPanel quadGridPanel = componentsFactory.getTransparentPanel(new GridLayout(24,24));
+        JPanel quadGridPanel = componentsFactory.getTransparentPanel(new GridLayout(24, 24));
         quadGridPanel.setBorder(null);
         for (int x = 0; x < 24; x++) {
             for (int y = 0; y < 24; y++) {
@@ -112,14 +114,14 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         JPanel labelPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         JComboBox tabType = componentsFactory.getComboBox(new String[]{"1x1", "4x4"});
         tabType.addItemListener(e -> {
-            if(e.getStateChange() == ItemEvent.SELECTED){
-                String item = (String)e.getItem();
-                if(item.equals("4x4")){
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                String item = (String) e.getItem();
+                if (item.equals("4x4")) {
                     panel.remove(defaultGridPanel);
                     panel.add(quadGridPanel, BorderLayout.CENTER);
                     this.pack();
                     this.repaint();
-                }else {
+                } else {
                     panel.remove(quadGridPanel);
                     panel.add(defaultGridPanel, BorderLayout.CENTER);
                     this.pack();
@@ -127,17 +129,17 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
                 }
             }
         });
-        tabType.setPreferredSize(new Dimension((int)(componentsFactory.getScale() * 70),tabType.getHeight()));
+        tabType.setPreferredSize(new Dimension((int) (componentsFactory.getScale() * 70), tabType.getHeight()));
 
-        labelPanel.add(this.componentsFactory.wrapToSlide(tabType,AppThemeColor.FRAME),BorderLayout.LINE_START);
-        Color titleColor = this.applicationConfig.get().isItemsGridEnable()?AppThemeColor.TEXT_NICKNAME:AppThemeColor.TEXT_DISABLE;
+        labelPanel.add(this.componentsFactory.wrapToSlide(tabType, AppThemeColor.FRAME), BorderLayout.LINE_START);
+        Color titleColor = this.applicationConfig.get().isItemsGridEnable() ? AppThemeColor.TEXT_NICKNAME : AppThemeColor.TEXT_DISABLE;
         JLabel titleLabel = componentsFactory.getTextLabel(FontStyle.BOLD, titleColor, TextAlignment.LEFTOP, 20f, "Align this grid(approximately)");
-        labelPanel.add(titleLabel,BorderLayout.CENTER);
+        labelPanel.add(titleLabel, BorderLayout.CENTER);
         headerPanel.add(labelPanel, BorderLayout.CENTER);
 
-        String title = (this.applicationConfig.get().isItemsGridEnable())?"Disable" : "Enable";
+        String title = (this.applicationConfig.get().isItemsGridEnable()) ? "Disable" : "Enable";
         JButton disableButton = componentsFactory.getBorderedButton(title);
-        disableButton.setPreferredSize(new Dimension((int)(90*componentsFactory.getScale()),(int)(24*componentsFactory.getScale())));
+        disableButton.setPreferredSize(new Dimension((int) (90 * componentsFactory.getScale()), (int) (24 * componentsFactory.getScale())));
         componentsFactory.setUpToggleCallbacks(disableButton,
                 () -> {
                     disableButton.setText("Enable");
@@ -150,13 +152,13 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
                     titleLabel.setForeground(AppThemeColor.TEXT_NICKNAME);
                     applicationConfig.get().setItemsGridEnable(true);
                     repaint();
-                },this.applicationConfig.get().isItemsGridEnable());
-        JButton hideButton  = componentsFactory.getBorderedButton("Save");
-        hideButton.setPreferredSize(new Dimension((int)(90*componentsFactory.getScale()),(int)(24*componentsFactory.getScale())));
+                }, this.applicationConfig.get().isItemsGridEnable());
+        JButton hideButton = componentsFactory.getBorderedButton("Save");
+        hideButton.setPreferredSize(new Dimension((int) (90 * componentsFactory.getScale()), (int) (24 * componentsFactory.getScale())));
         hideButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e)) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     stashTabsContainer.save();
                     MercuryStoreCore.saveConfigSubject.onNext(true);
                     FramesManager.INSTANCE.disableMovement(ItemsGridFrame.class);
@@ -168,7 +170,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         disablePanel.add(hideButton);
 
         JPanel savedTabsPanel = componentsFactory.getTransparentPanel(new BorderLayout());
-        savedTabsPanel.setPreferredSize(new Dimension(50,(int)(56*componentsFactory.getScale())));
+        savedTabsPanel.setPreferredSize(new Dimension(50, (int) (56 * componentsFactory.getScale())));
         tabsContainer = new HorizontalScrollContainer();
         tabsContainer.setLayout(new FlowLayout(FlowLayout.LEFT));
         tabsContainer.setBackground(AppThemeColor.TRANSPARENT);
@@ -188,26 +190,26 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         hBar.setUI(new MercuryScrollBarUI());
         hBar.setPreferredSize(new Dimension(Integer.MAX_VALUE, 16));
         hBar.setUnitIncrement(3);
-        hBar.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        hBar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         hBar.addAdjustmentListener(e -> repaint());
 
-        savedTabsPanel.add(scrollPane,BorderLayout.CENTER);
+        savedTabsPanel.add(scrollPane, BorderLayout.CENTER);
         tabsContainer.getParent().setBackground(AppThemeColor.TRANSPARENT);
         stashTabsContainer.getStashTabDescriptors().forEach(stashTab -> {
-            TabInfoPanel tabInfoPanel = new TabInfoPanel(stashTab,componentsFactory);
+            TabInfoPanel tabInfoPanel = new TabInfoPanel(stashTab, componentsFactory);
             tabsContainer.add(tabInfoPanel);
         });
 
-        headerPanel.add(disablePanel,BorderLayout.LINE_END);
-        topPanel.add(headerPanel,BorderLayout.PAGE_START);
-        topPanel.add(savedTabsPanel,BorderLayout.CENTER);
-        panel.add(topPanel,BorderLayout.PAGE_START);
-        panel.add(defaultGridPanel,BorderLayout.CENTER);
+        headerPanel.add(disablePanel, BorderLayout.LINE_END);
+        topPanel.add(headerPanel, BorderLayout.PAGE_START);
+        topPanel.add(savedTabsPanel, BorderLayout.CENTER);
+        panel.add(topPanel, BorderLayout.PAGE_START);
+        panel.add(defaultGridPanel, BorderLayout.CENTER);
         setUpResizePanels(panel);
         return panel;
     }
 
-    private JPanel getCellPlaceholder(){
+    private JPanel getCellPlaceholder() {
         JPanel cell = new JPanel();
         cell.setOpaque(true);
         cell.setBackground(AppThemeColor.TRANSPARENT);
@@ -215,25 +217,25 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         return cell;
     }
 
-    private void setUpResizePanels(JPanel root){
-        JLabel rightArrow = componentsFactory.getIconLabel("app/default-mp.png",16); //todo
+    private void setUpResizePanels(JPanel root) {
+        JLabel rightArrow = componentsFactory.getIconLabel("app/default-mp.png", 16); //todo
         JPanel rightPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         rightPanel.setBackground(AppThemeColor.FRAME);
-        rightPanel.add(rightArrow,BorderLayout.CENTER);
+        rightPanel.add(rightArrow, BorderLayout.CENTER);
 
-        rightPanel.addMouseListener(new ArrowMouseListener(rightPanel,new Cursor(Cursor.E_RESIZE_CURSOR)));
+        rightPanel.addMouseListener(new ArrowMouseListener(rightPanel, new Cursor(Cursor.E_RESIZE_CURSOR)));
         rightPanel.addMouseMotionListener(new ResizeByWidthMouseMotionListener());
-        JLabel downArrow = componentsFactory.getIconLabel("app/expand-mp.png",16); //todo
+        JLabel downArrow = componentsFactory.getIconLabel("app/expand-mp.png", 16); //todo
         JPanel downPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
-        downPanel.setBorder(BorderFactory.createEmptyBorder(-10,0,0,0));
+        downPanel.setBorder(BorderFactory.createEmptyBorder(-10, 0, 0, 0));
         downPanel.setBackground(AppThemeColor.FRAME);
         downPanel.add(downArrow);
 
         downPanel.addMouseListener(new ArrowMouseListener(downPanel, new Cursor(Cursor.N_RESIZE_CURSOR)));
         downPanel.addMouseMotionListener(new ResizeByHeightMouseMotionListener());
 
-        root.add(rightPanel,BorderLayout.LINE_END);
-        root.add(downPanel,BorderLayout.PAGE_END);
+        root.add(rightPanel, BorderLayout.LINE_END);
+        root.add(downPanel, BorderLayout.PAGE_END);
     }
 
     @Override
@@ -259,17 +261,20 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
 
         ItemInfoPanelController controller = new ItemInfoPanelController() {
             @Override
-            public void hidePanel() {}
+            public void hidePanel() {
+            }
+
             @Override
-            public void changeTabType(@NonNull ItemInfoPanel panel) {}
+            public void changeTabType(@NonNull ItemInfoPanel panel) {
+            }
         };
-        defaultView.add(message,controller);
-        root.add(defaultView,BorderLayout.CENTER);
+        defaultView.add(message, controller);
+        root.add(defaultView, BorderLayout.CENTER);
         return root;
     }
 
     @Override
-    protected void performScaling(Map<String,Float> scaleData) {
+    protected void performScaling(Map<String, Float> scaleData) {
         this.componentsFactory.setScale(scaleData.get("itemcell"));
     }
 
@@ -281,14 +286,16 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
             setSize(new Dimension(e.getLocationOnScreen().x - frameLocation.x + source.getWidth(), getHeight()));
         }
     }
+
     private class ResizeByHeightMouseMotionListener extends MouseMotionAdapter {
         @Override
         public void mouseDragged(MouseEvent e) {
             JPanel source = (JPanel) e.getSource();
             Point frameLocation = getLocation();
-            setSize(new Dimension(getWidth(),e.getLocationOnScreen().y - frameLocation.y + source.getHeight()));
+            setSize(new Dimension(getWidth(), e.getLocationOnScreen().y - frameLocation.y + source.getHeight()));
         }
     }
+
     private class ArrowMouseListener extends MouseAdapter {
         private JPanel panel;
         private Cursor cursor;

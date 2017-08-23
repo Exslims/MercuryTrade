@@ -17,8 +17,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class IconBundleConfigurationServiceImpl extends BaseConfigurationService<List<String>> implements IconBundleConfigurationService {
-    private Map<String, URL> iconBundle = new HashMap<>();
     private static final String ICONS_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\icons\\";
+    private Map<String, URL> iconBundle = new HashMap<>();
+
     public IconBundleConfigurationServiceImpl(ProfileDescriptor selectedProfile) {
         super(selectedProfile);
     }
@@ -26,7 +27,7 @@ public class IconBundleConfigurationServiceImpl extends BaseConfigurationService
     @Override
     public URL getIcon(String iconPath) {
         URL url = this.iconBundle.get(iconPath);
-        if(url == null){
+        if (url == null) {
             url = this.iconBundle.get("default_icon.png");
         }
         return url;
@@ -45,25 +46,27 @@ public class IconBundleConfigurationServiceImpl extends BaseConfigurationService
 
             File file = new File(ICONS_PATH + iconName);
             BufferedImage image = ImageIO.read(url);
-            ImageIO.write(image,"png",file);
+            ImageIO.write(image, "png", file);
             this.getEntities().add(iconName);
             this.iconBundle.put(iconName, url);
         } catch (IOException e) {
             MercuryStoreCore.errorHandlerSubject.onNext(
-                    new MercuryError("Error while add icon: " + iconPath,e));
+                    new MercuryError("Error while add icon: " + iconPath, e));
         }
     }
 
     @Override
     public void removeIcon(String iconPath) {
     }
+
     @Override
     public List<String> getDefault() {
         return new ArrayList<>();
     }
+
     @Override
-    public List<String> getDefaultBundle(){
-        return Arrays.stream(new String[] {
+    public List<String> getDefaultBundle() {
+        return Arrays.stream(new String[]{
                 "default_icon.png",
                 "Abyssal_Cry_skill_icon.png",
                 "Ancestral_Protector_skill_icon.png",
@@ -187,30 +190,31 @@ public class IconBundleConfigurationServiceImpl extends BaseConfigurationService
 
     @Override
     public void validate() {
-        if(this.selectedProfile.getIconBundleList() == null){
+        if (this.selectedProfile.getIconBundleList() == null) {
             this.selectedProfile.setIconBundleList(this.getDefault());
         }
         this.initIconBundle(this.iconBundle);
     }
-    private void initIconBundle(Map<String,URL> iconBundle){
+
+    private void initIconBundle(Map<String, URL> iconBundle) {
         this.getDefaultBundle().forEach(it -> {
             URL resource = this.getClass().getClassLoader().getResource("app/adr/icons/" + it);
-            if(resource != null) {
+            if (resource != null) {
                 iconBundle.put(it, resource);
             }
         });
         this.getEntities().forEach(it -> {
             try {
-                if(new File(ICONS_PATH + it).exists()) {
+                if (new File(ICONS_PATH + it).exists()) {
                     URL resource = new URL("file:///" + ICONS_PATH + it);
                     iconBundle.put(it, resource);
-                }else {
+                } else {
                     URL resource = this.getClass().getClassLoader().getResource("app/adr/icons/" + "default_icon.png");
                     iconBundle.put(it, resource);
                 }
             } catch (MalformedURLException e) {
                 MercuryStoreCore.errorHandlerSubject.onNext(
-                        new MercuryError("Error while initializing icon: " + it,e));
+                        new MercuryError("Error while initializing icon: " + it, e));
             }
         });
     }

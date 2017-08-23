@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class AdrTreeNode<T extends AdrComponentDescriptor> implements Iterable<AdrTreeNode<T>>{
+public class AdrTreeNode<T extends AdrComponentDescriptor> implements Iterable<AdrTreeNode<T>> {
     @Getter
     private JPanel panel;
     @Getter
@@ -26,55 +26,61 @@ public class AdrTreeNode<T extends AdrComponentDescriptor> implements Iterable<A
         this.panel = panel;
         this.children = new ArrayList<>();
     }
-    public void setPanel(JPanel panel){
-        if(this.parent.getPanel() != null){
+
+    public void setPanel(JPanel panel) {
+        if (this.parent.getPanel() != null) {
             parent.getPanel().remove(this.panel);
             this.panel = panel;
             parent.getPanel().add(panel);
         }
     }
-    public AdrTreeNode<T> addChild(T data, JPanel panel){
+
+    public AdrTreeNode<T> addChild(T data, JPanel panel) {
         AdrTreeNode<T> childNode = new AdrTreeNode<>(data, panel);
         childNode.parent = this;
         this.panel.add(panel);
         this.children.add(childNode);
         return childNode;
     }
-    public AdrTreeNode<T> addChild(T data){
+
+    public AdrTreeNode<T> addChild(T data) {
         AdrTreeNode<T> childNode = new AdrTreeNode<>(data, panel);
         childNode.parent = this;
         this.children.add(childNode);
         return childNode;
     }
-    public void removeChild(T data){
+
+    public void removeChild(T data) {
         new ArrayList<>(this.children).forEach(it -> {
-            if(it.getData().equals(data)){
-                if(this.data != null && this.data.getType().equals(AdrComponentType.TRACKER_GROUP)){
-                    ((AdrTrackerGroupDescriptor)this.data).getCells().remove(data);
+            if (it.getData().equals(data)) {
+                if (this.data != null && this.data.getType().equals(AdrComponentType.TRACKER_GROUP)) {
+                    ((AdrTrackerGroupDescriptor) this.data).getCells().remove(data);
                 }
                 this.panel.remove(it.getPanel());
                 this.children.remove(it);
             }
         });
     }
-    public void duplicateChild(AdrComponentDescriptor descriptor){
+
+    public void duplicateChild(AdrComponentDescriptor descriptor) {
         this.forEach(it -> {
-            if(it.getData().equals(descriptor)){
+            if (it.getData().equals(descriptor)) {
                 try {
-                    AdrTreeNode<T> clone = (AdrTreeNode<T>)it.clone();
+                    AdrTreeNode<T> clone = (AdrTreeNode<T>) it.clone();
                     this.children.add(clone);
                     this.panel.add(clone.getPanel());
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
-            }else {
+            } else {
                 it.duplicateChild(descriptor);
             }
         });
     }
-    public boolean contains(T data){
+
+    public boolean contains(T data) {
         for (AdrTreeNode<T> child : this.children) {
-            if(child.getData().equals(data)){
+            if (child.getData().equals(data)) {
                 return true;
             }
         }

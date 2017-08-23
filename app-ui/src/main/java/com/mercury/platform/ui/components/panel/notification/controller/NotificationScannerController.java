@@ -42,7 +42,8 @@ public class NotificationScannerController implements ScannerPanelController {
     public void performResponse(String response) {
         MercuryStoreCore.chatCommandSubject.onNext("@" + notificationDescriptor.getNickName() + " " + response);
     }
-    private void closeMessagePanel(){
+
+    private void closeMessagePanel() {
         Timer timer = new Timer(30, action -> {
             MercuryStoreCore.removeScannerNotificationSubject.onNext(notificationDescriptor);
         });

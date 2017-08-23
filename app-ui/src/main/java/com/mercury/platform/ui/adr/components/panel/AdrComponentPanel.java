@@ -12,7 +12,7 @@ import rx.Subscription;
 import javax.swing.*;
 
 
-public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extends JPanel implements ViewInit,AsSubscriber,DestroySubscription {
+public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extends JPanel implements ViewInit, AsSubscriber, DestroySubscription {
     @Getter
     protected T descriptor;
     protected ComponentsFactory componentsFactory;
@@ -20,6 +20,7 @@ public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extend
 
     private Subscription adrReloadSubscription;
     private Subscription adrSelectSubscription;
+
     public AdrComponentPanel(T descriptor, ComponentsFactory componentsFactory) {
         this.descriptor = descriptor;
         this.componentsFactory = componentsFactory;
@@ -30,15 +31,15 @@ public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extend
     @Override
     public void subscribe() {
         this.adrReloadSubscription = MercuryStoreUI.adrReloadSubject.subscribe(it -> {
-            if(this.descriptor.equals(it)){
+            if (this.descriptor.equals(it)) {
                 this.onUpdate();
                 this.onSelect();
             }
         });
         this.adrSelectSubscription = MercuryStoreUI.adrSelectSubject.subscribe(it -> {
-            if(this.descriptor.equals(it)){
+            if (this.descriptor.equals(it)) {
                 this.onSelect();
-            }else {
+            } else {
                 this.onUnSelect();
             }
         });
@@ -47,11 +48,15 @@ public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extend
     public void enableSettings() {
         this.inSettings = true;
     }
+
     public void disableSettings() {
         this.inSettings = false;
     }
+
     public abstract void onSelect();
+
     public abstract void onUnSelect();
+
     protected abstract void onUpdate();
 
     @Override

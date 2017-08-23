@@ -18,8 +18,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,7 +30,7 @@ public class ChatScannerFrame extends AbstractTitledComponentFrame {
     private PlainConfigurationService<ScannerDescriptor> scannerService;
     private PlainConfigurationService<NotificationSettingsDescriptor> notificationConfig;
     private MessageInterceptor currentInterceptor;
-    private Map<String,String> expiresMessages;
+    private Map<String, String> expiresMessages;
     private HtmlMessageBuilder messageBuilder;
     private boolean running;
 
@@ -51,7 +53,7 @@ public class ChatScannerFrame extends AbstractTitledComponentFrame {
         this.initHeaderBar();
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
         JPanel setupArea = componentsFactory.getTransparentPanel(new BorderLayout());
-        setupArea.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+        setupArea.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
         JLabel title = componentsFactory.getTextLabel(
                 FontStyle.REGULAR,
@@ -59,14 +61,14 @@ public class ChatScannerFrame extends AbstractTitledComponentFrame {
                 TextAlignment.LEFTOP,
                 15f,
                 "Show messages containing the following words:");
-        title.setBorder(BorderFactory.createEmptyBorder(2,0,6,0));
+        title.setBorder(BorderFactory.createEmptyBorder(2, 0, 6, 0));
         JTextArea words = componentsFactory.getSimpleTextArea(this.scannerService.get().getWords());
         words.setEditable(true);
         words.setCaretColor(AppThemeColor.TEXT_DEFAULT);
         words.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
         words.setBackground(AppThemeColor.SLIDE_BG);
 
-        JPanel navBar = componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER),AppThemeColor.FRAME);
+        JPanel navBar = componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER), AppThemeColor.FRAME);
         Dimension buttonSize = new Dimension(90, 24);
         JButton save = componentsFactory.getBorderedButton("Save");
         save.addActionListener(action -> {
@@ -91,19 +93,19 @@ public class ChatScannerFrame extends AbstractTitledComponentFrame {
         navBar.add(cancel);
         navBar.add(save);
 
-        setupArea.add(title,BorderLayout.PAGE_START);
-        setupArea.add(words,BorderLayout.CENTER);
+        setupArea.add(title, BorderLayout.PAGE_START);
+        setupArea.add(words, BorderLayout.CENTER);
 
-        root.add(setupArea,BorderLayout.CENTER);
-        root.add(getMemo(),BorderLayout.LINE_END);
+        root.add(setupArea, BorderLayout.CENTER);
+        root.add(getMemo(), BorderLayout.LINE_END);
 
-        this.add(root,BorderLayout.CENTER);
-        this.add(navBar,BorderLayout.PAGE_END);
+        this.add(root, BorderLayout.CENTER);
+        this.add(navBar, BorderLayout.PAGE_END);
         this.pack();
     }
 
-    private void initHeaderBar(){
-        JPanel root = this.componentsFactory.getJPanel(new GridLayout(1, 0, 4, 0),AppThemeColor.HEADER);
+    private void initHeaderBar() {
+        JPanel root = this.componentsFactory.getJPanel(new GridLayout(1, 0, 4, 0), AppThemeColor.HEADER);
         JLabel statusLabel = componentsFactory.getTextLabel(
                 FontStyle.BOLD,
                 AppThemeColor.TEXT_DEFAULT,
@@ -112,17 +114,17 @@ public class ChatScannerFrame extends AbstractTitledComponentFrame {
                 "Status: stopped");
 
         JButton processButton = componentsFactory.getBorderedButton("Start");
-        processButton.setFont(this.componentsFactory.getFont(FontStyle.BOLD,16f));
-        processButton.setPreferredSize(new Dimension(80,20));
+        processButton.setFont(this.componentsFactory.getFont(FontStyle.BOLD, 16f));
+        processButton.setPreferredSize(new Dimension(80, 20));
         processButton.addActionListener(action -> {
-            if(this.running){
+            if (this.running) {
                 this.running = false;
                 processButton.setText("Start");
                 statusLabel.setText("Status: stopped");
                 if (this.currentInterceptor != null) {
                     MercuryStoreCore.removeInterceptorSubject.onNext(this.currentInterceptor);
                 }
-            }else {
+            } else {
                 this.running = true;
                 processButton.setText("Stop");
                 statusLabel.setText("Status: running");
@@ -131,10 +133,11 @@ public class ChatScannerFrame extends AbstractTitledComponentFrame {
         });
         root.add(statusLabel);
         root.add(processButton);
-        this.miscPanel.add(root,BorderLayout.CENTER);
+        this.miscPanel.add(root, BorderLayout.CENTER);
     }
-    private void performNewStrings(String[] strings){
-        if(this.running) {
+
+    private void performNewStrings(String[] strings) {
+        if (this.running) {
             List<String> contains = new ArrayList<>();
             List<String> notContains = new ArrayList<>();
 
@@ -168,7 +171,7 @@ public class ChatScannerFrame extends AbstractTitledComponentFrame {
                             descriptor.setMessage(messageBuilder.build(matcher.group(3)));
 
                             expiresMessages.put(descriptor.getNickName(), message);
-                            if(notificationConfig.get().isScannerNotificationEnable()) {
+                            if (notificationConfig.get().isScannerNotificationEnable()) {
                                 MercuryStoreCore.newScannerMessageSubject.onNext(descriptor);
                             }
                             MercuryStoreCore.soundSubject.onNext(SoundType.CHAT_SCANNER);
@@ -195,25 +198,25 @@ public class ChatScannerFrame extends AbstractTitledComponentFrame {
     @Override
     protected void initialize() {
         super.initialize();
-        this.setPreferredSize(new Dimension(350,300));
+        this.setPreferredSize(new Dimension(350, 300));
     }
 
-    private JPanel getMemo(){
+    private JPanel getMemo() {
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
         JLabel title = componentsFactory.getTextLabel(
                 "Memo:",
                 FontStyle.REGULAR);
-        title.setBorder(BorderFactory.createEmptyBorder(6,0,2,0));
+        title.setBorder(BorderFactory.createEmptyBorder(6, 0, 2, 0));
 
 
         JPanel itemsPanel = componentsFactory.getTransparentPanel();
-        itemsPanel.setLayout(new BoxLayout(itemsPanel,BoxLayout.Y_AXIS));
+        itemsPanel.setLayout(new BoxLayout(itemsPanel, BoxLayout.Y_AXIS));
 
-        itemsPanel.add(componentsFactory.getTextLabel("not case sensitive",FontStyle.REGULAR,17));
-        itemsPanel.add(componentsFactory.getTextLabel("! - NOT (!wtb,!wts)",FontStyle.REGULAR,17));
-        itemsPanel.add(componentsFactory.getTextLabel(", - separator",FontStyle.REGULAR,17));
-        root.add(title,BorderLayout.PAGE_START);
-        root.add(itemsPanel,BorderLayout.CENTER);
+        itemsPanel.add(componentsFactory.getTextLabel("not case sensitive", FontStyle.REGULAR, 17));
+        itemsPanel.add(componentsFactory.getTextLabel("! - NOT (!wtb,!wts)", FontStyle.REGULAR, 17));
+        itemsPanel.add(componentsFactory.getTextLabel(", - separator", FontStyle.REGULAR, 17));
+        root.add(title, BorderLayout.PAGE_START);
+        root.add(itemsPanel, BorderLayout.CENTER);
         return root;
     }
 

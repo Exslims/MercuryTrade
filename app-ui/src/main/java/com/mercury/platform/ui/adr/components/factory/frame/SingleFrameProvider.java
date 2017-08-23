@@ -8,17 +8,18 @@ import com.mercury.platform.ui.adr.components.panel.AdrComponentPanel;
 import com.mercury.platform.ui.adr.components.panel.AdrDurationCellPanel;
 import com.mercury.platform.ui.components.ComponentsFactory;
 
-public abstract class SingleFrameProvider implements FrameProvider{
+public abstract class SingleFrameProvider implements FrameProvider {
     protected AdrComponentDescriptor descriptor;
+
     @Override
     public AbstractAdrFrame getFrame(boolean showSettings) {
         AdrSingleComponentFrame frame = new AdrSingleComponentFrame(descriptor);
         frame.setPanel(this.getPanel());
         frame.init();
-        if(showSettings) {
+        if (showSettings) {
             frame.showComponent();
             frame.enableSettings();
-        }else {
+        } else {
             frame.disableSettings();
         }
         return frame;
@@ -26,6 +27,6 @@ public abstract class SingleFrameProvider implements FrameProvider{
 
     @Override
     public AdrComponentPanel getPanel() {
-        return new AdrDurationCellPanel((AdrDurationComponentDescriptor) this.descriptor,new ComponentsFactory());
+        return new AdrDurationCellPanel((AdrDurationComponentDescriptor) this.descriptor, new ComponentsFactory());
     }
 }

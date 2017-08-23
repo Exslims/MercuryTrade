@@ -25,7 +25,7 @@ public enum ProgressBarUI implements ProgressBarUIFactory {
             return descriptor.isIconEnable()
                     && descriptor.getIconAlignment().equals(AdrIconAlignment.RIGHT)
                     && descriptor.getOrientation().equals(AdrComponentOrientation.HORIZONTAL);
-    }
+        }
 
         @Override
         public MercuryProgressBarTrackerUI getUI() {
@@ -81,7 +81,7 @@ public enum ProgressBarUI implements ProgressBarUIFactory {
         }
     };
 
-    public static MercuryProgressBarTrackerUI getUIBy(AdrProgressBarDescriptor descriptor){
+    public static MercuryProgressBarTrackerUI getUIBy(AdrProgressBarDescriptor descriptor) {
         for (ProgressBarUI progressBarUI : ProgressBarUI.values()) {
             if (progressBarUI.isSuitable(descriptor)) {
                 return progressBarUI.getUI();

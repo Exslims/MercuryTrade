@@ -7,7 +7,8 @@ import java.io.*;
 
 public class CloneHelper {
     private static Logger log = LogManager.getLogger("CloneHelper");
-    public static <T> T cloneObject(T source){
+
+    public static <T> T cloneObject(T source) {
         T cloned = null;
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -18,7 +19,7 @@ public class CloneHelper {
             ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
             ObjectInputStream ois = new ObjectInputStream(bais);
 
-            cloned = (T)ois.readObject();
+            cloned = (T) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
             log.error("Error while cloning object: ", e);
         }

@@ -27,13 +27,14 @@ public enum AdrIconAlignment {
         }
     };
 
-    public abstract String asPretty();
-    public static AdrIconAlignment valueOfPretty(String s){
+    public static AdrIconAlignment valueOfPretty(String s) {
         for (AdrIconAlignment adrIconAlignment : AdrIconAlignment.values()) {
-            if(adrIconAlignment.asPretty().equals(s)){
+            if (adrIconAlignment.asPretty().equals(s)) {
                 return adrIconAlignment;
             }
         }
         return null;
     }
+
+    public abstract String asPretty();
 }

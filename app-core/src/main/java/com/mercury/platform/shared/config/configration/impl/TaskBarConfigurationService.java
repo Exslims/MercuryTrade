@@ -32,7 +32,7 @@ public class TaskBarConfigurationService extends BaseConfigurationService<TaskBa
 
     @Override
     public void validate() {
-        if(this.selectedProfile.getTaskBarDescriptor() == null){
+        if (this.selectedProfile.getTaskBarDescriptor() == null) {
             this.selectedProfile.setTaskBarDescriptor(this.getDefault());
         }
     }

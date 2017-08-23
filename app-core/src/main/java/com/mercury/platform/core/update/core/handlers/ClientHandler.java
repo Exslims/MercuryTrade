@@ -25,6 +25,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
     private ResponseDispatcher responseDispatcher;
 
     private ChannelHandlerContext context;
+
     public ClientHandler() {
         chunks = new byte[0];
         responseDispatcher = new ResponseDispatcher();
@@ -35,11 +36,11 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
         responseDispatcher.process(object);
         if (object instanceof Integer) {
             this.length = (int) object;
-            this.percentDelta = getPercentOf(this.length,800 * 1024);
+            this.percentDelta = getPercentOf(this.length, 800 * 1024);
         }
         if (object instanceof byte[]) {
             byte[] bytes = (byte[]) object;
-            chunks = Bytes.concat(chunks,bytes);
+            chunks = Bytes.concat(chunks, bytes);
             MercuryStoreCore.chunkLoadedSubject.onNext(percentDelta);
             if (chunks.length == length) {
                 UpdateReceivedEvent event = new UpdateReceivedEvent(chunks);
@@ -47,16 +48,17 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
             }
         }
     }
-    private int getPercentOf(int length, int value){
-        return (value * 100)/length;
+
+    private int getPercentOf(int length, int value) {
+        return (value * 100) / length;
     }
 
 
     @Override
     public void channelActive(ChannelHandlerContext context) throws Exception {
         this.context = context;
-        if(context != null){
-            if(Configuration.get().applicationConfiguration().get().isCheckOutUpdate()) {
+        if (context != null) {
+            if (Configuration.get().applicationConfiguration().get().isCheckOutUpdate()) {
                 LOGGER.info("Requesting update info from server");
                 Integer version = ApplicationHolder.getInstance().getVersion();
                 context.channel().writeAndFlush(new UpdateDescriptor(UpdateType.REQUEST_INFO, version));
@@ -65,15 +67,17 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
             MercuryStoreCore.startUpdateSubject.subscribe(state -> this.getLatestUpdate());
         }
     }
-    private void checkOutPatchNotes(){
+
+    private void checkOutPatchNotes() {
         Integer version = ApplicationHolder.getInstance().getVersion();
-        if(context != null) {
+        if (context != null) {
             LOGGER.debug("Requesting patch notes message from server");
-            context.channel().writeAndFlush(new UpdateDescriptor(UpdateType.REQUEST_PATCH_NOTES,version));
+            context.channel().writeAndFlush(new UpdateDescriptor(UpdateType.REQUEST_PATCH_NOTES, version));
         }
     }
-    private void getLatestUpdate(){
-        if(context != null) {
+
+    private void getLatestUpdate() {
+        if (context != null) {
             LOGGER.debug("Requesting update message from server");
             Integer version = ApplicationHolder.getInstance().getVersion();
             context.channel().writeAndFlush(new UpdateDescriptor(UpdateType.REQUEST_UPDATE, version));
@@ -90,7 +94,6 @@ public class ClientHandler extends SimpleChannelInboundHandler<Object> {
     public void exceptionCaught(ChannelHandlerContext context, Throwable cause) throws Exception {
         LOGGER.error(cause);
     }
-
 
 
 }

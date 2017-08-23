@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SoundDescriptor implements Serializable{
+public class SoundDescriptor implements Serializable {
     private String wavPath;
     private Float db;
 }

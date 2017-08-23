@@ -10,13 +10,13 @@ import java.util.Map;
 public class ProfileDescriptor {
     private String name;
     private boolean selected;
-    private Map<String,FrameDescriptor> frameDescriptorMap;
-    private Map<String,SoundDescriptor> soundDescriptorMap;
+    private Map<String, FrameDescriptor> frameDescriptorMap;
+    private Map<String, SoundDescriptor> soundDescriptorMap;
     private ApplicationDescriptor applicationDescriptor;
     private NotificationSettingsDescriptor notificationDescriptor;
     private TaskBarDescriptor taskBarDescriptor;
     private ScannerDescriptor scannerDescriptor;
-    private Map<String,Float> scaleDataMap;
+    private Map<String, Float> scaleDataMap;
     private HotKeysSettingsDescriptor hotKeysSettingsDescriptor;
     private List<StashTabDescriptor> stashTabDescriptors;
     private List<AdrProfileDescriptor> adrProfileDescriptorList;

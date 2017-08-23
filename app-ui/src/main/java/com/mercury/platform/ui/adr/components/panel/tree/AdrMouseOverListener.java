@@ -15,7 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 
-public class AdrMouseOverListener<T extends AdrComponentDescriptor> extends MouseAdapter implements DestroySubscription{
+public class AdrMouseOverListener<T extends AdrComponentDescriptor> extends MouseAdapter implements DestroySubscription {
     private JComponent source;
     private T descriptor;
     private Cursor overCursor = new Cursor(Cursor.HAND_CURSOR);
@@ -32,19 +32,20 @@ public class AdrMouseOverListener<T extends AdrComponentDescriptor> extends Mous
         this.source = source;
         this.descriptor = descriptor;
         this.adrSelectSubscription = MercuryStoreUI.adrSelectSubject.subscribe(selected -> {
-            if(!descriptor.equals(selected)){
-                this.source.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+            if (!descriptor.equals(selected)) {
+                this.source.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
                 this.clicked = false;
-            }else {
+            } else {
                 this.source.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER));
                 this.clicked = true;
             }
         });
     }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         this.source.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER));
-        if(this.processSelect) {
+        if (this.processSelect) {
             this.clicked = !this.clicked;
             this.source.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER));
             MercuryStoreUI.adrSelectSubject.onNext(this.descriptor);
@@ -58,7 +59,7 @@ public class AdrMouseOverListener<T extends AdrComponentDescriptor> extends Mous
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        if(!this.clicked) {
+        if (!this.clicked) {
             this.source.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, AppThemeColor.ADR_MOUSE_OVER_BORDER));
         }
         this.source.setCursor(this.overCursor);
@@ -66,8 +67,8 @@ public class AdrMouseOverListener<T extends AdrComponentDescriptor> extends Mous
 
     @Override
     public void mouseExited(MouseEvent e) {
-        if(!this.clicked) {
-            this.source.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+        if (!this.clicked) {
+            this.source.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         }
         this.source.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }

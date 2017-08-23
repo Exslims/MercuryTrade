@@ -15,13 +15,14 @@ public enum AdrTrackerGroupType {
         }
     };
 
-    public abstract String asPretty();
-    public static AdrTrackerGroupType valueOfPretty(String s){
+    public static AdrTrackerGroupType valueOfPretty(String s) {
         for (AdrTrackerGroupType adrTrackerGroupType : AdrTrackerGroupType.values()) {
-            if(adrTrackerGroupType.asPretty().equals(s)){
+            if (adrTrackerGroupType.asPretty().equals(s)) {
                 return adrTrackerGroupType;
             }
         }
         return null;
     }
+
+    public abstract String asPretty();
 }

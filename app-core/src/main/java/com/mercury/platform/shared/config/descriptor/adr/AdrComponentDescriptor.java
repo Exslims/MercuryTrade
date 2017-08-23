@@ -1,7 +1,6 @@
 package com.mercury.platform.shared.config.descriptor.adr;
 
 
-import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdrComponentDescriptor implements Serializable{
+public class AdrComponentDescriptor implements Serializable {
     private String componentId = UUID.randomUUID().toString();
     private String title = "component";
     private AdrComponentType type;

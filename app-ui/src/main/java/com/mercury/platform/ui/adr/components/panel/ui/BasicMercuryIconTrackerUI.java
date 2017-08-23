@@ -4,36 +4,32 @@ import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.IconBundleConfigurationService;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentOrientation;
 import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDescriptor;
-import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
-import com.mercury.platform.ui.misc.AppThemeColor;
-import lombok.Getter;
 import lombok.Setter;
 import sun.swing.SwingUtilities2;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicProgressBarUI;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
-import java.awt.geom.AffineTransform;
 import java.text.DecimalFormat;
 
 
-public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDescriptor> extends ComponentUI{
+public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDescriptor> extends ComponentUI {
     @Setter
     protected T descriptor;
     @Setter
     protected MercuryTracker tracker;
     protected IconBundleConfigurationService config;
 
-    protected BasicMercuryIconTrackerUI(){
+    protected BasicMercuryIconTrackerUI() {
         this.config = Configuration.get().iconBundleConfiguration();
     }
+
     @Override
     public Dimension getPreferredSize(JComponent c) {
         Dimension dimension = super.getPreferredSize(c);
-        if(dimension == null){
+        if (dimension == null) {
             dimension = new Dimension(150, 26);
         }
         int value = Math.max(dimension.width, dimension.height);
@@ -43,7 +39,7 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
 
     protected void paintString(Graphics g, int x, int y, int width, int height, int amountFull) {
 
-        if(descriptor.isTextEnable() && tracker.isStringPainted()) {
+        if (descriptor.isTextEnable() && tracker.isStringPainted()) {
             float value = tracker.getValue() / 1000f;
 
             Graphics2D g2 = this.prepareAdapter(g);
@@ -55,7 +51,7 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
             g2.setColor(this.getColorByValue());
             SwingUtilities2.drawString(tracker, g2, progressString,
                     renderLocation.x, renderLocation.y);
-            if(this.descriptor.getOutlineThickness() > 0) {
+            if (this.descriptor.getOutlineThickness() > 0) {
                 FontRenderContext frc = g2.getFontRenderContext();
                 TextLayout textTl = new TextLayout(progressString, tracker.getFont(), frc);
                 Shape outline = textTl.getOutline(null);
@@ -70,13 +66,14 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
             }
         }
     }
-    protected void paintBorder(Graphics g){
+
+    protected void paintBorder(Graphics g) {
         int thickness = descriptor.getThickness();
-        if(thickness > 0) {
+        if (thickness > 0) {
             Graphics2D g2 = this.prepareAdapter(g);
             g2.setColor(getColorByValue());
             Stroke oldStroke = g2.getStroke();
-            if(!descriptor.isBindToTextColor()) {
+            if (!descriptor.isBindToTextColor()) {
                 g2.setPaint(this.descriptor.getBorderColor());
             }
             g2.setStroke(new BasicStroke(thickness));
@@ -84,7 +81,8 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
             g2.setStroke(oldStroke);
         }
     }
-    private Color getColorByValue(){
+
+    private Color getColorByValue() {
         float value = tracker.getValue() / 1000f;
         if (value >= descriptor.getDefaultValueTextThreshold()) {
             return this.descriptor.getDefaultValueTextColor();
@@ -96,20 +94,20 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
     }
 
     protected Point getStringPlacement(Graphics g, String progressString,
-                                       int x,int y,int width,int height) {
+                                       int x, int y, int width, int height) {
         FontMetrics fontSizer = SwingUtilities2.getFontMetrics(tracker, g,
                 tracker.getFont());
         int stringWidth = SwingUtilities2.stringWidth(tracker, fontSizer,
                 progressString);
 
         if (descriptor.getOrientation() == AdrComponentOrientation.HORIZONTAL) {
-            return new Point(x + Math.round(width/2 - stringWidth/2),
+            return new Point(x + Math.round(width / 2 - stringWidth / 2),
                     y + ((height +
                             fontSizer.getAscent() -
                             fontSizer.getLeading() -
                             fontSizer.getDescent()) / 2));
         } else {
-            return new Point(x + ((width  -
+            return new Point(x + ((width -
                     fontSizer.getAscent() -
                     fontSizer.getLeading() -
                     fontSizer.getDescent()) / 2),
@@ -119,7 +117,8 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
                             fontSizer.getDescent()) / 2));
         }
     }
-    protected Graphics2D prepareAdapter(Graphics g){
+
+    protected Graphics2D prepareAdapter(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

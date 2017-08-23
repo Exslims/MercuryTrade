@@ -3,7 +3,7 @@ package com.mercury.platform.ui.adr.validator;
 
 import lombok.Getter;
 
-public abstract class FieldValidator<F,T> {
+public abstract class FieldValidator<F, T> {
     @Getter
     protected T value;
 

@@ -12,6 +12,7 @@ import com.mercury.platform.ui.components.ComponentsFactory;
 
 public class TrackerGroupFrameProvider implements FrameProvider {
     private AdrComponentDescriptor descriptor;
+
     @Override
     public boolean isSuitable(AdrComponentDescriptor descriptor) {
         this.descriptor = descriptor;
@@ -24,10 +25,10 @@ public class TrackerGroupFrameProvider implements FrameProvider {
                 new AdrTrackerGroupFrame((AdrTrackerGroupDescriptor) descriptor);
         adrTrackerGroupFrame.setPanel(this.getPanel());
         adrTrackerGroupFrame.init();
-        if(showSettings) {
+        if (showSettings) {
             adrTrackerGroupFrame.showComponent();
             adrTrackerGroupFrame.enableSettings();
-        }else {
+        } else {
             adrTrackerGroupFrame.disableSettings();
         }
         return adrTrackerGroupFrame;
@@ -35,6 +36,6 @@ public class TrackerGroupFrameProvider implements FrameProvider {
 
     @Override
     public AdrComponentPanel getPanel() {
-        return new AdrTrackerGroupPanel((AdrTrackerGroupDescriptor) this.descriptor,new ComponentsFactory());
+        return new AdrTrackerGroupPanel((AdrTrackerGroupDescriptor) this.descriptor, new ComponentsFactory());
     }
 }

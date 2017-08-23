@@ -6,8 +6,9 @@ import com.mercury.platform.ui.adr.components.panel.ui.MercuryLoading;
 
 import java.awt.*;
 
-public class AdrLoadingPage extends AdrPagePanel<AdrComponentDescriptor>{
+public class AdrLoadingPage extends AdrPagePanel<AdrComponentDescriptor> {
     private MercuryLoading mercuryLoading;
+
     public AdrLoadingPage() {
         super();
         this.mercuryLoading = new MercuryLoading();
@@ -17,10 +18,12 @@ public class AdrLoadingPage extends AdrPagePanel<AdrComponentDescriptor>{
     @Override
     protected void init() {
     }
-    public void playLoop(){
+
+    public void playLoop() {
         this.mercuryLoading.playLoop();
     }
-    public void abort(){
+
+    public void abort() {
         this.mercuryLoading.abort();
     }
 }

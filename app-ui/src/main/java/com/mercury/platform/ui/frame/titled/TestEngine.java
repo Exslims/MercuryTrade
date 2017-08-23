@@ -15,10 +15,10 @@ import java.util.Random;
 
 public class TestEngine {
     private List<String> items = new ArrayList<>();
-    private List<String> currency= new ArrayList<>();
-    private List<String> nickNames= new ArrayList<>();
-    private List<String> offer= new ArrayList<>();
-    private List<String> leagues= new ArrayList<>();
+    private List<String> currency = new ArrayList<>();
+    private List<String> nickNames = new ArrayList<>();
+    private List<String> offer = new ArrayList<>();
+    private List<String> leagues = new ArrayList<>();
     private HtmlMessageBuilder messageBuilder = new HtmlMessageBuilder();
     private MessageParser parser = new MessageParser();
     private Random random = new Random();
@@ -26,7 +26,7 @@ public class TestEngine {
     private String currencyTemplate = "%s: Hi, I'd like to buy your %d %s for my %d %s in %s. %s";
 
     public TestEngine() {
-        this.messageBuilder.setChunkStrings(Arrays.asList("Hi","buy","listed","like"));
+        this.messageBuilder.setChunkStrings(Arrays.asList("Hi", "buy", "listed", "like"));
 
         items.add("Wondertrap Velvet Slippers");
         items.add("Rain of Arrows");
@@ -129,7 +129,8 @@ public class TestEngine {
         leagues.add("1 Week Legacy (JRE055)");
         leagues.add("1 Week Legacy HC (JRE055)");
     }
-    public NotificationDescriptor getRandomItemIncMessage(){
+
+    public NotificationDescriptor getRandomItemIncMessage() {
         NotificationDescriptor notificationDescriptor = parser.parse(String.format(poeTradeTemplate,
                 nickNames.get(random.nextInt(nickNames.size())),
                 items.get(random.nextInt(items.size())),
@@ -143,7 +144,8 @@ public class TestEngine {
         ));
         return notificationDescriptor;
     }
-    public NotificationDescriptor getRandomCurrencyIncMessage(){
+
+    public NotificationDescriptor getRandomCurrencyIncMessage() {
         NotificationDescriptor notificationDescriptor = parser.parse(String.format(currencyTemplate,
                 nickNames.get(random.nextInt(nickNames.size())),
                 random.nextInt(200) + 1,
@@ -156,7 +158,7 @@ public class TestEngine {
         return notificationDescriptor;
     }
 
-    public NotificationDescriptor getRandomItemOutMessage(){
+    public NotificationDescriptor getRandomItemOutMessage() {
         NotificationDescriptor notificationDescriptor = parser.parse(String.format(poeTradeTemplate,
                 nickNames.get(random.nextInt(nickNames.size())),
                 items.get(random.nextInt(items.size())),
@@ -171,7 +173,8 @@ public class TestEngine {
         notificationDescriptor.setType(NotificationType.OUT_ITEM_MESSAGE);
         return notificationDescriptor;
     }
-    public NotificationDescriptor getRandomCurrencyOutMessage(){
+
+    public NotificationDescriptor getRandomCurrencyOutMessage() {
         NotificationDescriptor notificationDescriptor = parser.parse(String.format(currencyTemplate,
                 nickNames.get(random.nextInt(nickNames.size())),
                 random.nextInt(200) + 1,
@@ -184,7 +187,8 @@ public class TestEngine {
         notificationDescriptor.setType(NotificationType.OUT_CURRENCY_MESSAGE);
         return notificationDescriptor;
     }
-    public PlainMessageDescriptor getRandomScannerMessage(){
+
+    public PlainMessageDescriptor getRandomScannerMessage() {
         NotificationDescriptor notificationDescriptor = parser.parse(String.format(poeTradeTemplate,
                 nickNames.get(random.nextInt(nickNames.size())),
                 items.get(random.nextInt(items.size())),
@@ -197,7 +201,7 @@ public class TestEngine {
                 offer.get(random.nextInt(offer.size()))
         ));
         PlainMessageDescriptor descriptor = new PlainMessageDescriptor();
-        descriptor.setMessage(messageBuilder.build(StringUtils.substringAfter(notificationDescriptor.getSourceString(),notificationDescriptor.getWhisperNickname()+":")));
+        descriptor.setMessage(messageBuilder.build(StringUtils.substringAfter(notificationDescriptor.getSourceString(), notificationDescriptor.getWhisperNickname() + ":")));
         descriptor.setNickName(notificationDescriptor.getWhisperNickname());
         return descriptor;
     }

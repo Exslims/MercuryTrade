@@ -25,7 +25,7 @@ public class StashTabConfigurationService extends BaseConfigurationService<List<
 
     @Override
     public void validate() {
-        if(this.selectedProfile.getStashTabDescriptors() == null) {
+        if (this.selectedProfile.getStashTabDescriptors() == null) {
             this.selectedProfile.setStashTabDescriptors(this.getDefault());
         }
     }

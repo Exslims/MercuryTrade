@@ -26,25 +26,25 @@ public class TabInfoPanel extends JPanel implements ViewInit {
         this.setLayout(new BorderLayout());
         this.setBackground(AppThemeColor.FRAME);
         JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME, "Dismiss");
-        hideButton.addActionListener((action)->{
+        hideButton.addActionListener((action) -> {
             stashTabDescriptor.setUndefined(true);
             MercuryStoreUI.dismissTabInfoPanelSubject.onNext(this);
         });
         JPanel tabInfoPanel = componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel tabLabel = componentsFactory.getTextLabel(stashTabDescriptor.getTitle());
         tabLabel.setBorder(null);
-        tabLabel.setFont(componentsFactory.getFont(FontStyle.BOLD,15f));
+        tabLabel.setFont(componentsFactory.getFont(FontStyle.BOLD, 15f));
         tabInfoPanel.add(tabLabel);
         JCheckBox isItQuad = componentsFactory.getCheckBox("Is it Quad?");
         isItQuad.setSelected(stashTabDescriptor.isQuad());
-        isItQuad.setPreferredSize(new Dimension(16,16));
-        isItQuad.addActionListener(action->{
+        isItQuad.setPreferredSize(new Dimension(16, 16));
+        isItQuad.addActionListener(action -> {
             stashTabDescriptor.setQuad(isItQuad.isSelected());
         });
         tabInfoPanel.add(isItQuad);
         tabInfoPanel.add(hideButton);
 
-        this.add(tabInfoPanel,BorderLayout.PAGE_END);
+        this.add(tabInfoPanel, BorderLayout.PAGE_END);
         this.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
     }
 

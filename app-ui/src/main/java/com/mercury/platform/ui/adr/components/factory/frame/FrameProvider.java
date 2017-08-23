@@ -7,6 +7,8 @@ import com.mercury.platform.ui.adr.components.panel.AdrComponentPanel;
 
 public interface FrameProvider {
     boolean isSuitable(AdrComponentDescriptor descriptor);
+
     AbstractAdrFrame getFrame(boolean showSettings);
+
     AdrComponentPanel getPanel();
 }

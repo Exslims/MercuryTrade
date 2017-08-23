@@ -17,7 +17,7 @@ public class FrameProviderFactory {
         this.providers.add(new CaptureInFrameProvider());
     }
 
-    public FrameProvider getProviderFor(AdrComponentDescriptor descriptor){
+    public FrameProvider getProviderFor(AdrComponentDescriptor descriptor) {
         return this.providers
                 .stream()
                 .filter(it -> it.isSuitable(descriptor))

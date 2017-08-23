@@ -1,13 +1,13 @@
 package com.mercury.platform.ui.components.panel.grid;
 
 import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
-import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
-import com.mercury.platform.ui.misc.MercuryStoreUI;
-import com.mercury.platform.ui.misc.TooltipConstants;
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.panel.misc.ViewInit;
+import com.mercury.platform.ui.frame.movable.ItemsGridFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
+import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +24,7 @@ public class ItemInfoPanel extends JPanel implements ViewInit {
 
     private ItemInfoPanelController controller;
 
-    public ItemInfoPanel(ItemTradeNotificationDescriptor message, ItemCell itemCell, StashTabDescriptor stashTabDescriptor, ComponentsFactory factory){
+    public ItemInfoPanel(ItemTradeNotificationDescriptor message, ItemCell itemCell, StashTabDescriptor stashTabDescriptor, ComponentsFactory factory) {
         this.componentsFactory = factory;
         this.controller = new ItemInfoPanelControllerImpl(message);
         this.message = message;
@@ -44,25 +44,25 @@ public class ItemInfoPanel extends JPanel implements ViewInit {
         JPanel nicknamePanel = componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER));
         nicknameLabel.setForeground(AppThemeColor.TEXT_NICKNAME);
         nicknamePanel.add(nicknameLabel);
-        nicknamePanel.setBorder(BorderFactory.createEmptyBorder(-6,0,-6,0));
-        this.add(nicknamePanel,BorderLayout.CENTER);
+        nicknamePanel.setBorder(BorderFactory.createEmptyBorder(-6, 0, -6, 0));
+        this.add(nicknamePanel, BorderLayout.CENTER);
 
         JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME, "Close");
-        hideButton.addActionListener((action)-> {
+        hideButton.addActionListener((action) -> {
             controller.hidePanel();
         });
-        this.add(hideButton,BorderLayout.LINE_END);
+        this.add(hideButton, BorderLayout.LINE_END);
 
         JPanel tabInfoPanel = componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel tabLabel = componentsFactory.getTextLabel("Tab: " + message.getTabName());
         tabInfoPanel.add(tabLabel);
-        tabInfoPanel.setBorder(BorderFactory.createEmptyBorder(-8,0,-6,0));
-        if(stashTabDescriptor.isUndefined()) {
+        tabInfoPanel.setBorder(BorderFactory.createEmptyBorder(-8, 0, -6, 0));
+        if (stashTabDescriptor.isUndefined()) {
             JCheckBox isItQuad = componentsFactory.getCheckBox(TooltipConstants.IS_IT_QUAD);
-            isItQuad.setPreferredSize(new Dimension(16,16));
+            isItQuad.setPreferredSize(new Dimension(16, 16));
             tabInfoPanel.add(isItQuad);
 
-            isItQuad.addActionListener(action->{
+            isItQuad.addActionListener(action -> {
                 stashTabDescriptor.setQuad(isItQuad.isSelected());
                 if (timer != null && timer.isRunning()) {
                     timer.stop();
@@ -72,10 +72,11 @@ public class ItemInfoPanel extends JPanel implements ViewInit {
             });
         }
 
-        this.add(tabInfoPanel,BorderLayout.PAGE_END);
+        this.add(tabInfoPanel, BorderLayout.PAGE_END);
         this.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
     }
-    private void setupMouseOverListener(){
+
+    private void setupMouseOverListener() {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -88,7 +89,7 @@ public class ItemInfoPanel extends JPanel implements ViewInit {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                if(!getBounds().contains(e.getPoint())) {
+                if (!getBounds().contains(e.getPoint())) {
                     setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER, 1));
                 }
                 timer = new Timer(1500, null);

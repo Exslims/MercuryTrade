@@ -11,6 +11,7 @@ import com.mercury.platform.shared.config.MercuryConfigManager;
 import com.mercury.platform.shared.config.MercuryConfigurationSource;
 import com.mercury.platform.shared.hotkey.HotKeysInterceptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
+
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 

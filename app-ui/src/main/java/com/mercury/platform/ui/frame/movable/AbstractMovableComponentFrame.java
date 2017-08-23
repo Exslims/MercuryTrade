@@ -11,27 +11,31 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public abstract class AbstractMovableComponentFrame extends AbstractScalableComponentFrame {
-    private MovableFrameConstraints prevConstraints;
-    private LocationState moveState = LocationState.DEFAULT;
     protected boolean locationWasChanged = false;
     protected boolean inMoveMode = false;
     protected boolean enableMouseOverBorder = true;
+    private MovableFrameConstraints prevConstraints;
+    private LocationState moveState = LocationState.DEFAULT;
+
     protected AbstractMovableComponentFrame() {
         super();
     }
 
-    protected void onUnlock(){
+    protected void onUnlock() {
         this.pack();
         this.repaint();
     }
-    protected void onLock(){
+
+    protected void onLock() {
         this.repaint();
         this.pack();
     }
+
     protected abstract JPanel getPanelForPINSettings();
-    public void setState(LocationState state){
-        switch (state){
-            case MOVING:{
+
+    public void setState(LocationState state) {
+        switch (state) {
+            case MOVING: {
                 this.moveState = LocationState.MOVING;
                 inMoveMode = true;
                 this.prevConstraints = new MovableFrameConstraints(
@@ -73,17 +77,17 @@ public abstract class AbstractMovableComponentFrame extends AbstractScalableComp
     @Override
     public void onLocationChange(Point location) {
         super.onLocationChange(location);
-        if(inMoveMode) {
+        if (inMoveMode) {
             prevConstraints.location = location;
             locationWasChanged = true;
         }
     }
 
-    private JPanel setUpMoveListeners(JPanel panel){
+    private JPanel setUpMoveListeners(JPanel panel) {
         panel.addMouseMotionListener(new DraggedFrameMotionListener());
         panel.addMouseListener(new DraggedFrameMouseListener());
 
-        if(this.enableMouseOverBorder) {
+        if (this.enableMouseOverBorder) {
             panel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
@@ -129,12 +133,12 @@ public abstract class AbstractMovableComponentFrame extends AbstractScalableComp
             this.location = location;
         }
 
-        public void setLocation(Point location) {
-            this.location = location;
-        }
-
         public Point getLocation() {
             return location;
+        }
+
+        public void setLocation(Point location) {
+            this.location = location;
         }
     }
 }

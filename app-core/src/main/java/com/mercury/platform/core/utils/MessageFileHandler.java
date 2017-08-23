@@ -9,7 +9,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.RandomAccessFile;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -69,10 +72,10 @@ public class MessageFileHandler implements AsSubscriber {
                 .collect(Collectors.toList());
 
         List<String> resultMessages = filteredMessages.stream().filter(message -> {
-            if(message.contains("2017") || message.contains("2018")) { //todo
+            if (message.contains("2017") || message.contains("2018")) { //todo
                 Date date = new Date(StringUtils.substring(message, 0, 20));
                 return date.after(lastMessageDate);
-            }else {
+            } else {
                 return false;
             }
         }).collect(Collectors.toList());

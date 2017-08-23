@@ -1,4 +1,5 @@
 package com.mercury.platform.ui.adr.components.panel.ui;
+
 import com.mercury.platform.ui.misc.AppThemeColor;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,9 +15,11 @@ import java.awt.*;
 public class MercuryLoading extends JComponent {
     @Getter
     private int value;
-    @Setter @Getter
+    @Setter
+    @Getter
     private int maximum;
-    @Setter @Getter
+    @Setter
+    @Getter
     private int minimum;
     private Timeline progressTl;
     @Setter
@@ -41,11 +44,13 @@ public class MercuryLoading extends JComponent {
             }
         });
     }
+
     public void setValue(int value) {
         this.value = value;
         this.updateUI();
     }
-    public void setLoadingUI(ComponentUI componentUI){
+
+    public void setLoadingUI(ComponentUI componentUI) {
         this.setUI(componentUI);
     }
 
@@ -54,24 +59,29 @@ public class MercuryLoading extends JComponent {
         setUI(this.ui);
     }
 
-    public float getPercentComplete(){
+    public float getPercentComplete() {
         long span = maximum - minimum;
         return (value - minimum) / (span * 1f);
     }
-    public void abort(){
+
+    public void abort() {
         this.progressTl.abort();
     }
-    public void playLoop(){
+
+    public void playLoop() {
         this.progressTl.playLoop(Timeline.RepeatBehavior.LOOP);
     }
-    public void play(){
+
+    public void play() {
         this.progressTl.play();
     }
-    public void cancel(){
+
+    public void cancel() {
         this.progressTl.cancel();
     }
-    public void swapColors(){
-        if(swapEnable) {
+
+    public void swapColors() {
+        if (swapEnable) {
             Color temp = new Color(this.getBackground().getRGB());
             this.setBackground(this.getForeground());
             this.setForeground(temp);

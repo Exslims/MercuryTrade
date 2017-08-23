@@ -15,13 +15,14 @@ public enum AdrIconType {
         }
     };
 
-    public abstract String asPretty();
-    public static AdrIconType valueOfPretty(String s){
+    public static AdrIconType valueOfPretty(String s) {
         for (AdrIconType iconType : AdrIconType.values()) {
-            if(iconType.asPretty().equals(s)){
+            if (iconType.asPretty().equals(s)) {
                 return iconType;
             }
         }
         return null;
     }
+
+    public abstract String asPretty();
 }

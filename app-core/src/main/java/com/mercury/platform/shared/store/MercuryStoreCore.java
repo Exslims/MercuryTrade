@@ -5,11 +5,10 @@ import com.mercury.platform.core.utils.interceptor.MessageInterceptor;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
+import com.mercury.platform.shared.config.descriptor.SoundDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrVisibleState;
 import com.mercury.platform.shared.entity.message.MercuryError;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
-import com.mercury.platform.shared.config.descriptor.SoundDescriptor;
-import com.mercury.platform.shared.entity.message.NotificationDefinition;
 import com.mercury.platform.shared.entity.message.PlainMessageDescriptor;
 import rx.subjects.PublishSubject;
 

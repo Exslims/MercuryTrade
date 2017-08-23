@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 public class PlayerJoinInterceptor extends MessageInterceptor {
     @Override
     protected void process(String message) {
-        MercuryStoreCore.playerJoinSubject.onNext(StringUtils.substringBetween(message," : ", " has joined the area."));
+        MercuryStoreCore.playerJoinSubject.onNext(StringUtils.substringBetween(message, " : ", " has joined the area."));
     }
 
     @Override

@@ -10,9 +10,11 @@ import javax.swing.*;
 //todo generic for components constructor
 public class ControlsFactory {
     private ComponentsFactory componentsFactory;
-    public ControlsFactory(@NonNull ComponentsFactory factory){
+
+    public ControlsFactory(@NonNull ComponentsFactory factory) {
         this.componentsFactory = factory;
     }
+
     public void getInviteButton(float iconSize) {
         JButton invite = componentsFactory.getIconButton(
                 "app/invite.png",

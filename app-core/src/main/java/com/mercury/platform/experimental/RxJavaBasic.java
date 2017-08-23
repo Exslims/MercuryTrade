@@ -11,7 +11,8 @@ public class RxJavaBasic {
     public static void main(String[] args) {
         method5();
     }
-    public static void method1(){
+
+    public static void method1() {
         Observable<String> observable = Observable.create(subscriber -> {
             subscriber.onNext("Hello World!");
             subscriber.onCompleted();
@@ -35,27 +36,31 @@ public class RxJavaBasic {
         };
         observable.subscribe(subscriber);
     }
-    public static void method2(){
+
+    public static void method2() {
         Observable<String> observable = Observable.just("Hello world");
         Action1<String> onNextAction = System.out::println;
         observable.subscribe(onNextAction);
     }
-    public static void method3(){
+
+    public static void method3() {
         Observable.just("Hello world").subscribe(System.out::println);
     }
 
     //Operators
-    public static void method4(){
+    public static void method4() {
         Observable.just("Hello world").map(s -> s + " -Dan").subscribe(System.out::println);
     }
-    public static void method5(){
+
+    public static void method5() {
         Observable.just("Hello world")
                 .map(s -> s + " -Dan")
                 .map(String::hashCode)
                 .map(i -> Integer.toString(i))
                 .subscribe(System.out::println);
     }
-    public static void method6(){
+
+    public static void method6() {
         Observable.just("Hello world").subscribe(System.out::println);
     }
 }

@@ -6,6 +6,12 @@ package com.mercury.platform.core.update.core.holder;
 public class ApplicationHolder {
 
     private static volatile ApplicationHolder instance;
+    private volatile int version;
+    private volatile boolean manualRequest;
+
+    private ApplicationHolder() {
+        manualRequest = false;
+    }
 
     public static ApplicationHolder getInstance() {
         ApplicationHolder localInstance = instance;
@@ -19,14 +25,6 @@ public class ApplicationHolder {
         }
         return localInstance;
     }
-
-    private volatile int version;
-    private volatile boolean manualRequest;
-
-    private ApplicationHolder() {
-        manualRequest = false;
-    }
-
 
     public int getVersion() {
         return version;

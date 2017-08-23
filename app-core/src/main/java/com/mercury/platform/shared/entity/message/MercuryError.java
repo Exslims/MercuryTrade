@@ -8,7 +8,8 @@ import lombok.Data;
 public class MercuryError {
     private String errorMessage;
     private Throwable stackTrace;
-    public MercuryError(Throwable stackTrace){
+
+    public MercuryError(Throwable stackTrace) {
         this.stackTrace = stackTrace;
     }
 }

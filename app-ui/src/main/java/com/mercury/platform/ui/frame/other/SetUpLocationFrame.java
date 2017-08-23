@@ -17,7 +17,7 @@ public class SetUpLocationFrame extends AbstractOverlaidFrame {
     @Override
     protected void initialize() {
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 2),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1)));
     }
 
@@ -25,12 +25,12 @@ public class SetUpLocationFrame extends AbstractOverlaidFrame {
     public void onViewInit() {
 
         JPanel rootPanel = componentsFactory.getTransparentPanel(new BorderLayout());
-        rootPanel.setBorder(BorderFactory.createEmptyBorder(6,6,0,6));
+        rootPanel.setBorder(BorderFactory.createEmptyBorder(6, 6, 0, 6));
 
         JPanel root = componentsFactory.getTransparentPanel(new BorderLayout());
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER));
         root.setBackground(AppThemeColor.SLIDE_BG);
-        root.add(componentsFactory.getSimpleTextArea("Panels UNLOCKED Move them and click Lock when done."),BorderLayout.CENTER);
+        root.add(componentsFactory.getSimpleTextArea("Panels UNLOCKED Move them and click Lock when done."), BorderLayout.CENTER);
 
         JPanel miscPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         JButton restoreDefault = componentsFactory.getBorderedButton("Restore defaults");
@@ -60,13 +60,13 @@ public class SetUpLocationFrame extends AbstractOverlaidFrame {
 
         miscPanel.add(restoreDefault);
         miscPanel.add(lock);
-        rootPanel.add(root,BorderLayout.CENTER);
-        this.add(rootPanel,BorderLayout.CENTER);
-        this.add(miscPanel,BorderLayout.PAGE_END);
-        this.setPreferredSize(new Dimension(300,100));
+        rootPanel.add(root, BorderLayout.CENTER);
+        this.add(rootPanel, BorderLayout.CENTER);
+        this.add(miscPanel, BorderLayout.PAGE_END);
+        this.setPreferredSize(new Dimension(300, 100));
         this.pack();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/4-this.getSize().height/2);
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 4 - this.getSize().height / 2);
     }
 
     @Override

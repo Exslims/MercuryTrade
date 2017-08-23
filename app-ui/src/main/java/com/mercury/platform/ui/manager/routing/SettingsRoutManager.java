@@ -6,7 +6,7 @@ import com.mercury.platform.ui.components.panel.settings.page.*;
 import com.mercury.platform.ui.frame.titled.SettingsFrame;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 
-public class SettingsRoutManager implements AsSubscriber{
+public class SettingsRoutManager implements AsSubscriber {
     private SettingsPagePanel generalSettings;
     private SettingsPagePanel soundSettings;
     private SettingsPagePanel notificationSettings;
@@ -35,28 +35,28 @@ public class SettingsRoutManager implements AsSubscriber{
     @Override
     public void subscribe() {
         MercuryStoreUI.settingsStateSubject.subscribe(state -> {
-            switch (state){
-                case GENERAL_SETTINGS:{
+            switch (state) {
+                case GENERAL_SETTINGS: {
                     this.settingsFrame.setContentPanel(this.generalSettings);
                     break;
                 }
-                case SOUND_SETTING:{
+                case SOUND_SETTING: {
                     this.settingsFrame.setContentPanel(this.soundSettings);
                     break;
                 }
-                case NOTIFICATION_SETTINGS:{
+                case NOTIFICATION_SETTINGS: {
                     this.settingsFrame.setContentPanel(this.notificationSettings);
                     break;
                 }
-                case TASK_BAR_SETTINGS:{
+                case TASK_BAR_SETTINGS: {
                     this.settingsFrame.setContentPanel(this.taskBarSettings);
                     break;
                 }
-                case SUPPORT:{
+                case SUPPORT: {
                     this.settingsFrame.setContentPanel(this.supportPanel);
                     break;
                 }
-                case ABOUT:{
+                case ABOUT: {
                     this.settingsFrame.setContentPanel(this.aboutPanel);
                     break;
                 }

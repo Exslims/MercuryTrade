@@ -17,7 +17,7 @@ public class AdrCapturePagePanel extends AdrPagePanel<AdrCaptureDescriptor> {
     protected void init() {
         JPanel container = new VerticalScrollContainer();
         container.setBackground(AppThemeColor.FRAME);
-        container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
+        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         JScrollPane verticalContainer = this.componentsFactory.getVerticalContainer(container);
 
         JLabel titleLabel = this.componentsFactory.getTextLabel("Title:");
@@ -36,15 +36,15 @@ public class AdrCapturePagePanel extends AdrPagePanel<AdrCaptureDescriptor> {
         JPanel sectorLocationPanel = this.adrComponentsFactory.getCaptureLocationPanel(this.payload);
         JPanel fpsPanel = this.adrComponentsFactory.getFpsSliderPanel(this.payload);
 
-        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2,0,6));
-        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2,0,6));
+        JPanel generalPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2, 0, 6));
+        JPanel specPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2, 0, 6));
         generalPanel.setBackground(AppThemeColor.SLIDE_BG);
         generalPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER_DARK),
-                BorderFactory.createEmptyBorder(4,2,4,2)));
+                BorderFactory.createEmptyBorder(4, 2, 4, 2)));
 
         specPanel.setBackground(AppThemeColor.SLIDE_BG);
-        specPanel.setBorder(BorderFactory.createEmptyBorder(0,0,4,2));
+        specPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 2));
 
         generalPanel.add(titleLabel);
         generalPanel.add(titleField);
@@ -76,7 +76,7 @@ public class AdrCapturePagePanel extends AdrPagePanel<AdrCaptureDescriptor> {
             }
         });
 
-        JPanel advancedPanel = this.adrComponentsFactory.getCounterPanel(specPanel, "Advanced:", AppThemeColor.ADR_BG,this.advancedExpanded);
+        JPanel advancedPanel = this.adrComponentsFactory.getCounterPanel(specPanel, "Advanced:", AppThemeColor.ADR_BG, this.advancedExpanded);
         advancedPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
 
         container.add(this.componentsFactory.wrapToSlide(generalPanel));
@@ -87,6 +87,6 @@ public class AdrCapturePagePanel extends AdrPagePanel<AdrCaptureDescriptor> {
                 requestFocus();
             }
         });
-        this.add(verticalContainer,BorderLayout.CENTER);
+        this.add(verticalContainer, BorderLayout.CENTER);
     }
 }

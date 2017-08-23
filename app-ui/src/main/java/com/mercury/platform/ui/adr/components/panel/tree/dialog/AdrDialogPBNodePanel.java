@@ -7,12 +7,11 @@ import com.mercury.platform.ui.adr.components.panel.tree.AdrNodePanel;
 import com.mercury.platform.ui.adr.components.panel.tree.model.AdrTreeNode;
 import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class AdrDialogPBNodePanel extends AdrNodePanel<AdrProgressBarDescriptor>{
+public class AdrDialogPBNodePanel extends AdrNodePanel<AdrProgressBarDescriptor> {
     public AdrDialogPBNodePanel(AdrTreeNode<AdrComponentDescriptor> treeNode) {
         super(treeNode);
         this.mouseListener.setProcessSelect(false);
@@ -28,10 +27,10 @@ public class AdrDialogPBNodePanel extends AdrNodePanel<AdrProgressBarDescriptor>
         JPanel root = this.componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER));
         root.setBackground(AppThemeColor.SLIDE_BG);
         MercuryTracker tracker = new MercuryTracker(descriptor);
-        tracker.setValue((int) ((descriptor.getDuration()/2) * 1000));
+        tracker.setValue((int) ((descriptor.getDuration() / 2) * 1000));
         tracker.setPreferredSize(new Dimension(180, 30));
         tracker.setShowCase(true);
         root.add(tracker);
-        this.add(root,BorderLayout.CENTER);
+        this.add(root, BorderLayout.CENTER);
     }
 }

@@ -22,16 +22,18 @@ public class UpdateReadyFrame extends AbstractOverlaidFrame {
     @Override
     protected void initialize() {
         this.getRootPane().setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT,2),
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 2),
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1)));
     }
+
     @Override
     public void onViewInit() {
         this.add(getUpdatePanel());
-        this.setOpacity(this.applicationConfig.get().getMaxOpacity()/100f);
+        this.setOpacity(this.applicationConfig.get().getMaxOpacity() / 100f);
         this.pack();
     }
-    private JPanel getUpdatePanel(){
+
+    private JPanel getUpdatePanel() {
         JPanel panel = componentsFactory.getTransparentPanel();
         panel.setLayout(new FlowLayout(FlowLayout.LEFT));
         JLabel label = componentsFactory.getTextLabel(
@@ -76,13 +78,13 @@ public class UpdateReadyFrame extends AbstractOverlaidFrame {
             FrameDescriptor tbSettings = this.framesConfig.get("TaskBarFrame");
             Point tbLocation = tbSettings.getFrameLocation();
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-            if(tbLocation.y + 30 + this.getHeight() > dim.height){
-                this.setLocation(tbLocation.x,tbLocation.y - 44);
-            }else {
+            if (tbLocation.y + 30 + this.getHeight() > dim.height) {
+                this.setLocation(tbLocation.x, tbLocation.y - 44);
+            } else {
                 this.setLocation(tbLocation.x, tbLocation.y + 44);
             }
             int deltaWidth = dim.width - (this.getLocation().x + this.getWidth());
-            if(deltaWidth < 0){
+            if (deltaWidth < 0) {
                 this.setLocation(tbLocation.x - Math.abs(deltaWidth), this.getLocation().y);
             }
             if (!this.isVisible() && ProdStarter.APP_STATUS == FrameVisibleState.SHOW) {
