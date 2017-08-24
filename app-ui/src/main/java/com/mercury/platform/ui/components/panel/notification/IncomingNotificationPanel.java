@@ -24,12 +24,9 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class IncomingNotificationPanel<T extends TradeNotificationDescriptor> extends NotificationPanel<T, IncomingPanelController> {
-    private PlainConfigurationService<NotificationSettingsDescriptor> config;
+    protected PlainConfigurationService<NotificationSettingsDescriptor> config;
     private PlainConfigurationService<HotKeysSettingsDescriptor> hotKeysConfig;
-    private JPanel messagePanel;
     private JPanel responseButtonsPanel;
-    private JPanel chatPanel;
-    private JPanel chatContainer;
     private Subscription chatSubscription;
 
     @Override
@@ -37,24 +34,24 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
         super.onViewInit();
         this.config = Configuration.get().notificationConfiguration();
         this.hotKeysConfig = Configuration.get().hotKeysConfiguration();
-        this.messagePanel = this.getMessagePanel();
-        this.responseButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 2));
-        this.responseButtonsPanel.setBackground(AppThemeColor.FRAME);
+        this.responseButtonsPanel = this.componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER, 5, 2), AppThemeColor.FRAME);
         this.chatPanel = this.getChatPanel();
         this.chatPanel.setVisible(false);
+        this.contentPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.FRAME);
         switch (config.get().getFlowDirections()) {
             case DOWNWARDS: {
                 this.add(this.getHeader(), BorderLayout.PAGE_START);
-                this.add(this.responseButtonsPanel, BorderLayout.PAGE_END);
+                this.contentPanel.add(this.responseButtonsPanel, BorderLayout.PAGE_END);
                 break;
             }
             case UPWARDS: {
                 this.add(this.getHeader(), BorderLayout.PAGE_END);
-                this.add(this.responseButtonsPanel, BorderLayout.PAGE_START);
+                this.contentPanel.add(this.responseButtonsPanel, BorderLayout.PAGE_START);
                 break;
             }
         }
-        this.add(this.messagePanel, BorderLayout.CENTER);
+        this.contentPanel.add(this.getMessagePanel(), BorderLayout.CENTER);
+        this.add(this.contentPanel, BorderLayout.CENTER);
         this.updateHotKeyPool();
     }
 
@@ -95,11 +92,9 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
             if (this.chatPanel.isVisible()) {
                 this.chatPanel.setVisible(false);
                 this.remove(this.chatPanel);
-                this.add(this.messagePanel, BorderLayout.CENTER);
-                this.add(this.responseButtonsPanel, BorderLayout.PAGE_END);
+                this.add(this.contentPanel, BorderLayout.CENTER);
             } else {
-                this.remove(this.messagePanel);
-                this.remove(this.responseButtonsPanel);
+                this.remove(this.contentPanel);
                 this.chatPanel.setVisible(true);
                 this.add(this.chatPanel, BorderLayout.CENTER);
             }
@@ -301,23 +296,5 @@ public abstract class IncomingNotificationPanel<T extends TradeNotificationDescr
             }
         }
         return result;
-    }
-
-    private JButton getExpandButton() {
-        String iconPath = "app/expand-mp.png";
-        JButton expandButton = componentsFactory.getIconButton(iconPath, 18f, AppThemeColor.MSG_HEADER, "");
-        expandButton.addActionListener(action -> {
-            if (this.messagePanel.isVisible()) {
-                this.messagePanel.setVisible(false);
-                this.responseButtonsPanel.setVisible(false);
-                expandButton.setIcon(this.componentsFactory.getIcon("app/default-mp.png", 18f));
-            } else {
-                this.messagePanel.setVisible(true);
-                this.responseButtonsPanel.setVisible(true);
-                expandButton.setIcon(this.componentsFactory.getIcon("app/expand-mp.png", 18f));
-            }
-            SwingUtilities.getWindowAncestor(IncomingNotificationPanel.this).pack();
-        });
-        return expandButton;
     }
 }

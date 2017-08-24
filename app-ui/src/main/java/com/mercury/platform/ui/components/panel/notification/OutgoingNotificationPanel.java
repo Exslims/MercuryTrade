@@ -22,7 +22,6 @@ public abstract class OutgoingNotificationPanel<T extends TradeNotificationDescr
     private PlainConfigurationService<NotificationSettingsDescriptor> config;
     private PlainConfigurationService<HotKeysSettingsDescriptor> hotKeysConfig;
     private JPanel responseButtonsPanel;
-    private JPanel bottomPanel;
 
     @Override
     public void onViewInit() {
@@ -33,10 +32,10 @@ public abstract class OutgoingNotificationPanel<T extends TradeNotificationDescr
 
         this.responseButtonsPanel = new JPanel(new GridLayout(1, 0, 0, 5));
         this.responseButtonsPanel.setBackground(AppThemeColor.FRAME);
-        this.bottomPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.FRAME);
-        this.bottomPanel.add(this.getContentPanel(), BorderLayout.CENTER);
-        this.bottomPanel.add(this.componentsFactory.wrapToSlide(this.responseButtonsPanel, AppThemeColor.FRAME), BorderLayout.LINE_END);
-        this.add(bottomPanel, BorderLayout.CENTER);
+        this.contentPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.FRAME);
+        this.contentPanel.add(this.getContentPanel(), BorderLayout.CENTER);
+        this.contentPanel.add(this.componentsFactory.wrapToSlide(this.responseButtonsPanel, AppThemeColor.FRAME), BorderLayout.LINE_END);
+        this.add(contentPanel, BorderLayout.CENTER);
         this.updateHotKeyPool();
     }
 
@@ -197,21 +196,5 @@ public abstract class OutgoingNotificationPanel<T extends TradeNotificationDescr
     @Override
     public void onViewDestroy() {
         super.onViewDestroy();
-    }
-
-    private JButton getExpandButton() {
-        String iconPath = "app/expand-mp.png";
-        JButton expandButton = componentsFactory.getIconButton(iconPath, 18f, AppThemeColor.MSG_HEADER, "");
-        expandButton.addActionListener(action -> {
-            if (this.bottomPanel.isVisible()) {
-                this.bottomPanel.setVisible(false);
-                expandButton.setIcon(this.componentsFactory.getIcon("app/default-mp.png", 18f));
-            } else {
-                this.bottomPanel.setVisible(true);
-                expandButton.setIcon(this.componentsFactory.getIcon("app/expand-mp.png", 18f));
-            }
-            SwingUtilities.getWindowAncestor(OutgoingNotificationPanel.this).pack();
-        });
-        return expandButton;
     }
 }

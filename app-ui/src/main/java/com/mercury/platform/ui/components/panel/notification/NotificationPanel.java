@@ -9,6 +9,7 @@ import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.misc.ViewDestroy;
 import com.mercury.platform.ui.components.panel.misc.ViewInit;
+import com.mercury.platform.ui.frame.movable.NotificationFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import lombok.Getter;
@@ -37,6 +38,9 @@ public abstract class NotificationPanel<T, C> extends JPanel implements AsSubscr
     protected boolean blurReverse;
     @Setter
     protected boolean duplicate;
+    protected JPanel chatPanel;
+    protected JPanel chatContainer;
+    protected JPanel contentPanel;
     @Setter
     private float paintAlphaValue = 1f;
     private Subscription settingsPostSubscription;
@@ -112,6 +116,25 @@ public abstract class NotificationPanel<T, C> extends JPanel implements AsSubscr
         timeAgo.start();
         root.add(timeLabel, BorderLayout.CENTER);
         return root;
+    }
+
+    protected JButton getExpandButton() {
+        String iconPath = "app/expand-mp.png";
+        JButton expandButton = componentsFactory.getIconButton(iconPath, 18f, AppThemeColor.MSG_HEADER, "");
+        expandButton.addActionListener(action -> {
+            NotificationFrame frame = (NotificationFrame) SwingUtilities.getWindowAncestor(NotificationPanel.this);
+            if (this.contentPanel.isVisible()) {
+                this.contentPanel.setVisible(false);
+                expandButton.setIcon(this.componentsFactory.getIcon("app/default-mp.png", 18f));
+                frame.changeBufferSize(this.contentPanel.getPreferredSize().height);
+            } else {
+                this.contentPanel.setVisible(true);
+                expandButton.setIcon(this.componentsFactory.getIcon("app/expand-mp.png", 18f));
+                frame.changeBufferSize(-this.contentPanel.getPreferredSize().height);
+            }
+            frame.pack();
+        });
+        return expandButton;
     }
 
     protected void onBlur() {

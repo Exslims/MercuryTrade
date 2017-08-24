@@ -6,6 +6,7 @@ import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
 import com.mercury.platform.shared.entity.message.FlowDirections;
+import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
@@ -28,6 +29,7 @@ import java.util.Map;
 
 
 public class NotificationFrame extends AbstractMovableComponentFrame {
+    private static int BUFFER_DEFAULT_HEIGHT = 1500;
     private List<NotificationPanel> notificationPanels;
     private List<String> currentOffers;
     private PlainConfigurationService<NotificationSettingsDescriptor> config;
@@ -35,7 +37,11 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
     private JPanel container;
     private JPanel expandPanel;
     private JPanel stubExpandPanel;
+    private JPanel root;
     private boolean expanded;
+    private FlowDirections flowDirections;
+
+    private JPanel buffer;
 
     @Override
     protected void initialize() {
@@ -52,15 +58,24 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
     public void onViewInit() {
         this.getRootPane().setBorder(null);
         this.setBackground(AppThemeColor.TRANSPARENT);
+        this.flowDirections = this.config.get().getFlowDirections();
         this.currentOffers = new ArrayList<>();
         this.container = new JPanel();
         this.container.setBackground(AppThemeColor.TRANSPARENT);
         this.container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+
+        this.buffer = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.TRANSPARENT);
+        this.buffer.setPreferredSize(new Dimension(10, BUFFER_DEFAULT_HEIGHT));
+        this.setLocation(new Point(this.getLocation().x, this.getLocation().y - BUFFER_DEFAULT_HEIGHT));
+
         this.expandPanel = this.getExpandPanel();
         this.stubExpandPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.TRANSPARENT);
-        this.stubExpandPanel.setPreferredSize(this.expandPanel.getPreferredSize());
-        this.add(this.stubExpandPanel, BorderLayout.LINE_START);
-        this.add(this.container, BorderLayout.CENTER);
+        this.stubExpandPanel.setPreferredSize(new Dimension(this.expandPanel.getPreferredSize().width, 5));
+        this.root = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.TRANSPARENT);
+        this.root.add(this.stubExpandPanel, BorderLayout.LINE_START);
+        this.root.add(this.container, BorderLayout.CENTER);
+        this.add(this.buffer, BorderLayout.CENTER);
+        this.add(root, BorderLayout.PAGE_END);
         this.setVisible(true);
         this.pack();
     }
@@ -106,7 +121,9 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                         .filter(it -> it.getData().equals(notification))
                         .findAny().orElse(null);
                 this.currentOffers.remove(StringUtils.substringAfter(notification.getSourceString(), ":"));
-                this.removeNotification(notificationPanel);
+                if (notificationPanel != null) {
+                    this.removeNotification(notificationPanel);
+                }
             });
         });
         MercuryStoreCore.removeScannerNotificationSubject.subscribe(message -> {
@@ -125,48 +142,79 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
             });
         });
         MercuryStoreUI.settingsPostSubject.subscribe(state -> {
-            if (this.config.get().getFlowDirections().equals(FlowDirections.DOWNWARDS)) {
-                this.setLocation(this.framesConfig.get("NotificationFrame").getFrameLocation());
+            this.validateContainer();
+        });
+    }
+
+    @SuppressWarnings("all")
+    private void validateContainer() {
+        List<NotificationPanel> currentPanels = new ArrayList<>(this.notificationPanels);
+        currentPanels.forEach(this::removeNotification);
+        this.flowDirections = this.config.get().getFlowDirections();
+        currentPanels.forEach(it -> {
+            NotificationPanel notificationPanel = null;
+            if (it.getData() instanceof NotificationDescriptor) {
+                notificationPanel = this.providersFactory.getProviderFor(((NotificationDescriptor) it.getData()).getType())
+                        .setData(it.getData())
+                        .setComponentsFactory(this.componentsFactory)
+                        .build();
+            } else {
+                notificationPanel = this.providersFactory.getProviderFor(NotificationType.SCANNER_MESSAGE)
+                        .setData(it.getData())
+                        .setComponentsFactory(this.componentsFactory)
+                        .build();
             }
+            this.addNotification(notificationPanel);
         });
     }
 
     private void addNotification(NotificationPanel notificationPanel) {
         this.notificationPanels.add(notificationPanel);
-        this.container.add(notificationPanel);
+        if (this.flowDirections.equals(FlowDirections.UPWARDS)) {
+            this.container.add(
+                    this.componentsFactory.wrapToSlide(
+                            notificationPanel, AppThemeColor.TRANSPARENT, 1, 1, 1, 1), 0);
+        } else {
+            this.container.add(this.componentsFactory.wrapToSlide(notificationPanel, AppThemeColor.TRANSPARENT, 1, 1, 1, 1));
+        }
+        int delta = -notificationPanel.getParent().getPreferredSize().height;
         if (this.notificationPanels.size() > this.config.get().getLimitCount()) {
             if (!this.expanded) {
-                notificationPanel.setVisible(false);
+                notificationPanel.getParent().setVisible(false);
+                delta = 0;
             }
-            this.remove(this.stubExpandPanel);
-            this.add(this.expandPanel, BorderLayout.LINE_START);
+            this.root.remove(this.stubExpandPanel);
+            this.root.add(this.expandPanel, BorderLayout.LINE_START);
+        }
+        if (this.flowDirections.equals(FlowDirections.UPWARDS) &&
+                this.notificationPanels.size() > 1) {
+            this.changeBufferSize(delta);
         }
         this.pack();
         this.repaint();
-        if (this.notificationPanels.size() > 1
-                && this.config.get().getFlowDirections().equals(FlowDirections.UPWARDS)) {
-            this.setLocation(new Point(this.getLocation().x, this.getLocation().y - notificationPanel.getSize().height));
-        }
     }
 
     private void removeNotification(NotificationPanel notificationPanel) {
+        int delta = notificationPanel.getParent().getPreferredSize().height;
         notificationPanel.onViewDestroy();
         int limitCount = this.config.get().getLimitCount();
         if (!this.expanded && this.notificationPanels.size() > limitCount) {
-            this.notificationPanels.get(limitCount).setVisible(true);
+            NotificationPanel panel = this.notificationPanels.get(limitCount);
+            panel.getParent().setVisible(true);
+            delta -= panel.getParent().getPreferredSize().height;
         }
-        this.container.remove(notificationPanel);
+        this.container.remove(notificationPanel.getParent());
         this.notificationPanels.remove(notificationPanel);
+        if (this.flowDirections.equals(FlowDirections.UPWARDS)
+                && this.notificationPanels.size() > 0) {
+            this.changeBufferSize(delta);
+        }
         if (this.notificationPanels.size() - 1 < this.config.get().getLimitCount()) {
-            this.remove(this.expandPanel);
-            this.add(this.stubExpandPanel, BorderLayout.LINE_START);
+            this.root.remove(this.expandPanel);
+            this.root.add(this.stubExpandPanel, BorderLayout.LINE_START);
         }
         this.pack();
         this.repaint();
-        if (this.config.get().getFlowDirections().equals(FlowDirections.UPWARDS)
-                && this.notificationPanels.size() == 0) {
-            this.setLocation(this.framesConfig.get("NotificationFrame").getFrameLocation());
-        }
     }
 
     @Override
@@ -179,6 +227,12 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
             this.add(this.expandPanel, BorderLayout.LINE_START);
         }
         super.onScaleLock();
+    }
+
+    public void changeBufferSize(int delta) {
+        if (this.flowDirections.equals(FlowDirections.UPWARDS)) {
+            this.buffer.setPreferredSize(new Dimension(10, this.buffer.getPreferredSize().height + delta));
+        }
     }
 
     @Override
@@ -196,8 +250,16 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         limitPanel.add(expandIconLabel, BorderLayout.CENTER);
         root.add(panel, BorderLayout.CENTER);
         root.add(limitPanel, BorderLayout.LINE_START);
-        root.setPreferredSize(new Dimension((int) (400 * componentsFactory.getScale()), (int) (110 * componentsFactory.getScale())));
+        root.setPreferredSize(new Dimension((int) (400 * componentsFactory.getScale()), (int) (92 * componentsFactory.getScale())));
         return root;
+    }
+
+    @Override
+    protected void onLock() {
+        super.onLock();
+        if (this.getLocation().y > 0) {
+            this.setLocation(new Point(this.getLocation().x, this.getLocation().y - BUFFER_DEFAULT_HEIGHT));
+        }
     }
 
     @Override
@@ -246,7 +308,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setBackground(AppThemeColor.MSG_HEADER);
         root.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 0, AppThemeColor.FRAME),
+                BorderFactory.createMatteBorder(1, 1, 1, 1, AppThemeColor.FRAME),
                 BorderFactory.createMatteBorder(1, 1, 1, 1, AppThemeColor.MSG_HEADER_BORDER)));
         String iconPath = "app/collapse-all.png";
         JButton expandButton = componentsFactory.getIconButton(iconPath, 22, AppThemeColor.MSG_HEADER, "");
@@ -256,14 +318,25 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                 this.notificationPanels
                         .stream()
                         .skip(this.config.get().getLimitCount())
-                        .forEach(it -> it.setVisible(false));
+                        .forEach(it -> it.getParent().setVisible(false));
+                if (this.flowDirections.equals(FlowDirections.UPWARDS)) {
+                    this.changeBufferSize(this.notificationPanels
+                            .stream()
+                            .skip(this.config.get().getLimitCount())
+                            .mapToInt(it -> it.getParent().getPreferredSize().height).sum());
+                }
             } else {
                 expandButton.setIcon(this.componentsFactory.getIcon("app/expand-all.png", 22));
-                this.notificationPanels.forEach(it -> {
-                    if (!it.isVisible()) {
-                        it.setVisible(true);
+                int delta = 0;
+                for (NotificationPanel it : this.notificationPanels) {
+                    if (!it.getParent().isVisible()) {
+                        it.getParent().setVisible(true);
+                        delta += it.getParent().getPreferredSize().height;
                     }
-                });
+                }
+                if (this.flowDirections.equals(FlowDirections.UPWARDS)) {
+                    this.changeBufferSize(-delta);
+                }
             }
             this.expanded = !this.expanded;
             this.pack();
@@ -271,6 +344,6 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         });
         expandButton.setAlignmentY(SwingConstants.CENTER);
         root.add(expandButton, BorderLayout.CENTER);
-        return root;
+        return this.componentsFactory.wrapToSlide(root, AppThemeColor.TRANSPARENT, 1, 1, 1, 1);
     }
 }

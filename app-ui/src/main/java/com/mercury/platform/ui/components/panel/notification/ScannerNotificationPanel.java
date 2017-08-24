@@ -18,7 +18,6 @@ public class ScannerNotificationPanel extends NotificationPanel<PlainMessageDesc
     private PlainConfigurationService<ScannerDescriptor> config;
     private PlainConfigurationService<NotificationSettingsDescriptor> nConfig;
     private PlainConfigurationService<HotKeysSettingsDescriptor> hotKeysConfig;
-    private JPanel contentPanel;
 
     @Override
     public void onViewInit() {
@@ -117,21 +116,5 @@ public class ScannerNotificationPanel extends NotificationPanel<PlainMessageDesc
     @Override
     public void onViewDestroy() {
         super.onViewDestroy();
-    }
-
-    private JButton getExpandButton() {
-        String iconPath = "app/expand-mp.png";
-        JButton expandButton = componentsFactory.getIconButton(iconPath, 18f, AppThemeColor.MSG_HEADER, "");
-        expandButton.addActionListener(action -> {
-            if (this.contentPanel.isVisible()) {
-                this.contentPanel.setVisible(false);
-                expandButton.setIcon(this.componentsFactory.getIcon("app/default-mp.png", 18f));
-            } else {
-                this.contentPanel.setVisible(true);
-                expandButton.setIcon(this.componentsFactory.getIcon("app/expand-mp.png", 18f));
-            }
-            SwingUtilities.getWindowAncestor(ScannerNotificationPanel.this).pack();
-        });
-        return expandButton;
     }
 }

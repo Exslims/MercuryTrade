@@ -15,14 +15,12 @@ public class ItemIncNotificationPanel extends IncomingNotificationPanel<ItemTrad
 
     @Override
     protected JPanel getMessagePanel() {
-        this.labelsPanel = new JPanel();
-        this.labelsPanel.setLayout(new BorderLayout());
-        this.labelsPanel.setBackground(AppThemeColor.FRAME);
+        this.labelsPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.FRAME);
 
         JButton itemButton = componentsFactory.getButton(
                 FontStyle.BOLD,
                 AppThemeColor.BUTTON,
-                BorderFactory.createEmptyBorder(0, 4, 0, 2),
+                BorderFactory.createEmptyBorder(4, 4, 4, 4),
                 this.data.getItemName(), 16f);
 
         itemButton.setForeground(AppThemeColor.TEXT_IMPORTANT);
@@ -33,7 +31,6 @@ public class ItemIncNotificationPanel extends IncomingNotificationPanel<ItemTrad
         itemButton.addActionListener(action -> {
             this.controller.showITH();
         });
-        this.labelsPanel.add(itemButton, BorderLayout.CENTER);
 
         JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.FRAME, TooltipConstants.OPEN_CHAT);
         openChatButton.addActionListener(e -> controller.performOpenChat());
@@ -42,15 +39,17 @@ public class ItemIncNotificationPanel extends IncomingNotificationPanel<ItemTrad
         buttons.add(stillInterestedButton);
         buttons.add(openChatButton);
 
+        JPanel miscPanel = this.componentsFactory.getJPanel(new GridLayout(1, 0, 4, 0), AppThemeColor.FRAME);
+        miscPanel.add(itemButton);
         JLabel offerLabel = this.getOfferLabel();
         if (offerLabel != null) {
-            this.labelsPanel.add(offerLabel, BorderLayout.PAGE_END);
+            miscPanel.add(offerLabel);
         }
-        labelsPanel.add(buttons, BorderLayout.LINE_END);
+        this.labelsPanel.add(miscPanel, BorderLayout.CENTER);
+        this.labelsPanel.add(buttons, BorderLayout.LINE_END);
         return labelsPanel;
     }
 
-    @Override
     public void setDuplicate(boolean duplicate) {
         if (duplicate) {
             JButton ignoreButton = componentsFactory.getIconButton("app/adr/visible_node_off.png", 15, AppThemeColor.FRAME, "Ignore item 1 hour");
