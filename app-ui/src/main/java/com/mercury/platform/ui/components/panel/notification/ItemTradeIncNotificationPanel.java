@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.components.panel.notification;
 
+import com.mercury.platform.shared.config.descriptor.HotKeyType;
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -10,9 +11,8 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class ItemIncNotificationPanel extends IncomingNotificationPanel<ItemTradeNotificationDescriptor> {
+public class ItemTradeIncNotificationPanel extends TradeIncNotificationPanel<ItemTradeNotificationDescriptor> {
     private JPanel labelsPanel;
-
     @Override
     protected JPanel getMessagePanel() {
         this.labelsPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.FRAME);
@@ -34,7 +34,7 @@ public class ItemIncNotificationPanel extends IncomingNotificationPanel<ItemTrad
 
         JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.FRAME, TooltipConstants.OPEN_CHAT);
         openChatButton.addActionListener(e -> controller.performOpenChat());
-        JButton stillInterestedButton = getStillInterestedButton();
+        JButton stillInterestedButton = this.getStillInterestedButton();
         JPanel buttons = this.componentsFactory.getJPanel(new GridLayout(1, 0, 5, 0), AppThemeColor.FRAME);
         buttons.add(stillInterestedButton);
         buttons.add(openChatButton);
@@ -45,6 +45,10 @@ public class ItemIncNotificationPanel extends IncomingNotificationPanel<ItemTrad
         if (offerLabel != null) {
             miscPanel.add(offerLabel);
         }
+
+        this.interactButtonMap.put(HotKeyType.N_OPEN_CHAT, openChatButton);
+        this.interactButtonMap.put(HotKeyType.N_STILL_INTERESTING, stillInterestedButton);
+
         this.labelsPanel.add(miscPanel, BorderLayout.CENTER);
         this.labelsPanel.add(buttons, BorderLayout.LINE_END);
         return labelsPanel;

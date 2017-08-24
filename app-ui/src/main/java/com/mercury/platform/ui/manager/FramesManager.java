@@ -72,6 +72,7 @@ public class FramesManager implements AsSubscriber {
         this.framesMap.put(SettingsFrame.class, settingsFrame);
         this.framesMap.put(TestCasesFrame.class, new TestCasesFrame());
         this.framesMap.put(TooltipFrame.class, new TooltipFrame());
+        this.framesMap.put(ChatHistoryFrame.class, new ChatHistoryFrame());
         this.framesMap.put(NotificationAlertFrame.class, new NotificationAlertFrame());
         this.framesMap.put(MercuryLoadingFrame.class, new MercuryLoadingFrame());
         this.framesMap.put(ChatScannerFrame.class, new ChatScannerFrame());

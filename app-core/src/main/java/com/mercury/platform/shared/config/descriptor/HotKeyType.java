@@ -43,6 +43,12 @@ public enum HotKeyType implements Serializable {
             return "app/still-interesting.png";
         }
     },
+    N_REPEAT_MESSAGE {
+        @Override
+        public String getIconPath() {
+            return "app/reload-history.png";
+        }
+    },
     N_SWITCH_CHAT {
         @Override
         public String getIconPath() {

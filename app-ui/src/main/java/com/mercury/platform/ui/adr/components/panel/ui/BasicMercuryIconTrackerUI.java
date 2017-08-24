@@ -45,6 +45,9 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
             Graphics2D g2 = this.prepareAdapter(g);
             DecimalFormat decimalFormat = new DecimalFormat(descriptor.getTextFormat());
             String progressString = String.valueOf(decimalFormat.format(value));
+            if (descriptor.isCustomTextEnable()) {
+                progressString = String.valueOf(descriptor.getCustomText());
+            }
             g2.setFont(tracker.getFont());
             Point renderLocation = getStringPlacement(g2, progressString,
                     x, y, width, height);

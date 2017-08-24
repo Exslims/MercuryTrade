@@ -368,6 +368,10 @@ public class ComponentsFactory {
         return getTextLabel(style, AppThemeColor.TEXT_DEFAULT, TextAlignment.LEFTOP, size, text);
     }
 
+    public JLabel getTextLabel(String text, FontStyle style, Color color, float size) {
+        return getTextLabel(style, color, TextAlignment.LEFTOP, size, text);
+    }
+
     /**
      * Get label with icon
      *

@@ -107,9 +107,6 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                 this.addNotification(notificationPanel);
                 Timer packTimer = new Timer(5, action -> {
                     this.pack();
-                    if (this.notificationPanels.size() > 1 && this.config.get().getFlowDirections().equals(FlowDirections.UPWARDS)) {
-                        this.setLocation(new Point(this.getLocation().x, this.getLocation().y - notificationPanel.getSize().height));
-                    }
                 });
                 packTimer.setRepeats(false);
                 packTimer.start();
@@ -212,6 +209,9 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         if (this.notificationPanels.size() - 1 < this.config.get().getLimitCount()) {
             this.root.remove(this.expandPanel);
             this.root.add(this.stubExpandPanel, BorderLayout.LINE_START);
+        }
+        if (this.notificationPanels.size() == 0) {
+            this.buffer.setPreferredSize(new Dimension(10, BUFFER_DEFAULT_HEIGHT));
         }
         this.pack();
         this.repaint();

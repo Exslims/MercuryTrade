@@ -2,8 +2,13 @@ package com.mercury.platform.ui.components.panel.notification;
 
 
 import com.mercury.platform.shared.AsSubscriber;
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.config.descriptor.HotKeyType;
+import com.mercury.platform.shared.config.descriptor.HotKeysSettingsDescriptor;
+import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
+import com.mercury.platform.shared.entity.message.FlowDirections;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -24,6 +29,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class NotificationPanel<T, C> extends JPanel implements AsSubscriber, ViewInit, ViewDestroy {
+    protected PlainConfigurationService<NotificationSettingsDescriptor> notificationConfig;
+    protected PlainConfigurationService<HotKeysSettingsDescriptor> hotKeysConfig;
     @Setter
     @Getter
     protected T data;
@@ -38,8 +45,6 @@ public abstract class NotificationPanel<T, C> extends JPanel implements AsSubscr
     protected boolean blurReverse;
     @Setter
     protected boolean duplicate;
-    protected JPanel chatPanel;
-    protected JPanel chatContainer;
     protected JPanel contentPanel;
     @Setter
     private float paintAlphaValue = 1f;
@@ -52,6 +57,8 @@ public abstract class NotificationPanel<T, C> extends JPanel implements AsSubscr
         this.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(1, 1, 1, 1),
                 BorderFactory.createLineBorder(AppThemeColor.MSG_HEADER_BORDER, 1)));
+        this.notificationConfig = Configuration.get().notificationConfiguration();
+        this.hotKeysConfig = Configuration.get().hotKeysConfiguration();
     }
 
     public void setComponentsFactory(ComponentsFactory factory) {
@@ -119,7 +126,7 @@ public abstract class NotificationPanel<T, C> extends JPanel implements AsSubscr
     }
 
     protected JButton getExpandButton() {
-        String iconPath = "app/expand-mp.png";
+        String iconPath = this.notificationConfig.get().getFlowDirections().equals(FlowDirections.UPWARDS) ? "app/collapse-mp.png" : "app/expand-mp.png";
         JButton expandButton = componentsFactory.getIconButton(iconPath, 18f, AppThemeColor.MSG_HEADER, "");
         expandButton.addActionListener(action -> {
             NotificationFrame frame = (NotificationFrame) SwingUtilities.getWindowAncestor(NotificationPanel.this);
@@ -129,7 +136,7 @@ public abstract class NotificationPanel<T, C> extends JPanel implements AsSubscr
                 frame.changeBufferSize(this.contentPanel.getPreferredSize().height);
             } else {
                 this.contentPanel.setVisible(true);
-                expandButton.setIcon(this.componentsFactory.getIcon("app/expand-mp.png", 18f));
+                expandButton.setIcon(this.componentsFactory.getIcon(iconPath, 18f));
                 frame.changeBufferSize(-this.contentPanel.getPreferredSize().height);
             }
             frame.pack();

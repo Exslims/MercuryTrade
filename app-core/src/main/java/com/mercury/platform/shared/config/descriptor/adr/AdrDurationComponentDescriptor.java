@@ -11,6 +11,8 @@ import java.io.Serializable;
 @Data
 public class AdrDurationComponentDescriptor extends AdrColoredComponentDescriptor implements Serializable {
     private HotKeyDescriptor hotKeyDescriptor = new HotKeyDescriptor();
+    private String customText = "";
+    private boolean customTextEnable;
     private boolean hotKeyRefresh = true;
     private String iconPath = "default_icon.png";
     private Double duration = 3.4d;

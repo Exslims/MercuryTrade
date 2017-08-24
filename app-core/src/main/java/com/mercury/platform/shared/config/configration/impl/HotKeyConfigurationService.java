@@ -22,7 +22,6 @@ public class HotKeyConfigurationService extends BaseConfigurationService<HotKeys
         incNDataList.add(new HotKeyPair(HotKeyType.N_KICK_PLAYER, new HotKeyDescriptor()));
         incNDataList.add(new HotKeyPair(HotKeyType.N_STILL_INTERESTING, new HotKeyDescriptor()));
         incNDataList.add(new HotKeyPair(HotKeyType.N_OPEN_CHAT, new HotKeyDescriptor()));
-        incNDataList.add(new HotKeyPair(HotKeyType.N_SWITCH_CHAT, new HotKeyDescriptor()));
         incNDataList.add(new HotKeyPair(HotKeyType.N_CLOSE_NOTIFICATION, new HotKeyDescriptor()));
 
         List<HotKeyPair> outNDataList = new ArrayList<>();
@@ -30,6 +29,7 @@ public class HotKeyConfigurationService extends BaseConfigurationService<HotKeys
         outNDataList.add(new HotKeyPair(HotKeyType.N_TRADE_PLAYER, new HotKeyDescriptor()));
         outNDataList.add(new HotKeyPair(HotKeyType.N_LEAVE, new HotKeyDescriptor()));
         outNDataList.add(new HotKeyPair(HotKeyType.N_OPEN_CHAT, new HotKeyDescriptor()));
+        outNDataList.add(new HotKeyPair(HotKeyType.N_REPEAT_MESSAGE, new HotKeyDescriptor()));
         outNDataList.add(new HotKeyPair(HotKeyType.N_CLOSE_NOTIFICATION, new HotKeyDescriptor()));
 
         List<HotKeyPair> scannerNDataList = new ArrayList<>();
@@ -55,6 +55,17 @@ public class HotKeyConfigurationService extends BaseConfigurationService<HotKeys
     public void validate() {
         if (this.selectedProfile.getHotKeysSettingsDescriptor() == null) {
             this.selectedProfile.setHotKeysSettingsDescriptor(this.getDefault());
+        }
+        List<HotKeyPair> stubNList = new ArrayList<>(this.selectedProfile.getHotKeysSettingsDescriptor().getIncNHotKeysList());
+        stubNList.forEach(it -> {
+            if (it.getType().equals(HotKeyType.N_SWITCH_CHAT)) {
+                this.selectedProfile.getHotKeysSettingsDescriptor().getIncNHotKeysList().remove(it);
+            }
+        });
+        List<HotKeyPair> stubOList = new ArrayList<>(this.selectedProfile.getHotKeysSettingsDescriptor().getOutNHotKeysList());
+        HotKeyPair hotKeyPair = stubOList.stream().filter(it -> it.getType().equals(HotKeyType.N_REPEAT_MESSAGE)).findAny().orElse(null);
+        if (hotKeyPair == null) {
+            this.selectedProfile.getHotKeysSettingsDescriptor().getOutNHotKeysList().add(new HotKeyPair(HotKeyType.N_REPEAT_MESSAGE, new HotKeyDescriptor()));
         }
     }
 

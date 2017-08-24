@@ -10,6 +10,7 @@ import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
 import com.mercury.platform.ui.components.panel.grid.ItemInfoPanel;
 import com.mercury.platform.ui.components.panel.grid.TabInfoPanel;
 import com.mercury.platform.ui.dialog.DialogCallback;
+import com.mercury.platform.ui.frame.other.ChatHistoryDefinition;
 import com.mercury.platform.ui.manager.routing.SettingsPage;
 import rx.subjects.PublishSubject;
 
@@ -59,4 +60,7 @@ public class MercuryStoreUI {
     public static final PublishSubject<Boolean> settingsPostSubject = PublishSubject.create();
 
     public static final PublishSubject<Boolean> onDestroySubject = PublishSubject.create();
+
+    public static final PublishSubject<ChatHistoryDefinition> showChatHistorySubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> hideChatHistorySubject = PublishSubject.create();
 }

@@ -2,7 +2,7 @@ package com.mercury.platform.ui.components.panel.notification.factory;
 
 import com.mercury.platform.shared.entity.message.CurrencyTradeNotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;
-import com.mercury.platform.ui.components.panel.notification.CurrencyOutNotificationPanel;
+import com.mercury.platform.ui.components.panel.notification.CurrencyTradeOutNotificationPanel;
 import com.mercury.platform.ui.components.panel.notification.NotificationPanel;
 import com.mercury.platform.ui.components.panel.notification.controller.NotificationOutgoingController;
 import com.mercury.platform.ui.components.panel.notification.controller.OutgoingPanelController;
@@ -16,7 +16,7 @@ public class CurrencyOutPanelProvider extends NotificationPanelProvider<Currency
 
     @Override
     protected NotificationPanel<CurrencyTradeNotificationDescriptor, OutgoingPanelController> getPanel() {
-        CurrencyOutNotificationPanel panel = new CurrencyOutNotificationPanel();
+        CurrencyTradeOutNotificationPanel panel = new CurrencyTradeOutNotificationPanel();
         panel.setController(new NotificationOutgoingController(this.data));
         return panel;
     }

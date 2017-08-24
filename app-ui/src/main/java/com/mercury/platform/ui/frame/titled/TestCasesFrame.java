@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.frame.titled;
 
+import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -95,8 +96,29 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
         JLabel chatScannerLabel = componentsFactory.getTextLabel("Random chat scanner message");
         testPanel.add(chatScannerLabel, titleColumn);
         titleColumn.gridy++;
-        testPanel.setBackground(AppThemeColor.TRANSPARENT);
 
+        JButton accessibilityStatusButton = componentsFactory.getBorderedButton("Click");
+        accessibilityStatusButton.addActionListener(action -> {
+            NotificationDescriptor randomItemIncMessage = this.testEngine.getRandomItemIncMessage();
+            MercuryStoreCore.newNotificationSubject.onNext(randomItemIncMessage);
+            Timer timer = new Timer(1000, event -> {
+                MercuryStoreCore.playerJoinSubject.onNext(randomItemIncMessage.getWhisperNickname());
+            });
+            Timer timer2 = new Timer(2000, event -> {
+                MercuryStoreCore.playerLeftSubject.onNext(randomItemIncMessage.getWhisperNickname());
+            });
+            timer.setRepeats(false);
+            timer2.setRepeats(false);
+            timer.start();
+            timer2.start();
+        });
+        testPanel.add(accessibilityStatusButton, buttonColumn);
+        buttonColumn.gridy++;
+        JLabel accessibilityStatusLabel = componentsFactory.getTextLabel("Accessibility status test");
+        testPanel.add(accessibilityStatusLabel, titleColumn);
+        titleColumn.gridy++;
+
+        testPanel.setBackground(AppThemeColor.TRANSPARENT);
         return testPanel;
     }
 

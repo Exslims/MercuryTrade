@@ -104,11 +104,11 @@ public class TestEngine {
         currency.add("xoph's breachstone");
         currency.add("yriel's");
 
-        nickNames.add("Example1");
+        nickNames.add("<QWE> Example1");
         nickNames.add("Example2");
-        nickNames.add("Example3");
+        nickNames.add("<QWE> Example3");
         nickNames.add("Example4");
-        nickNames.add("Example5");
+        nickNames.add("<QWE> Example5");
         nickNames.add("Example6");
 
         offer.add("offer");
@@ -142,6 +142,7 @@ public class TestEngine {
                 random.nextInt(12) + 1,
                 offer.get(random.nextInt(offer.size()))
         ));
+        notificationDescriptor.setRelatedMessages(this.getChatHistory());
         return notificationDescriptor;
     }
 
@@ -155,6 +156,7 @@ public class TestEngine {
                 leagues.get(random.nextInt(leagues.size())),
                 offer.get(random.nextInt(offer.size()))
         ));
+        notificationDescriptor.setRelatedMessages(this.getChatHistory());
         return notificationDescriptor;
     }
 
@@ -170,6 +172,7 @@ public class TestEngine {
                 random.nextInt(12) + 1,
                 offer.get(random.nextInt(offer.size()))
         ));
+        notificationDescriptor.setRelatedMessages(this.getChatHistory());
         notificationDescriptor.setType(NotificationType.OUT_ITEM_MESSAGE);
         return notificationDescriptor;
     }
@@ -184,6 +187,7 @@ public class TestEngine {
                 leagues.get(random.nextInt(leagues.size())),
                 offer.get(random.nextInt(offer.size()))
         ));
+        notificationDescriptor.setRelatedMessages(this.getChatHistory());
         notificationDescriptor.setType(NotificationType.OUT_CURRENCY_MESSAGE);
         return notificationDescriptor;
     }
@@ -204,6 +208,46 @@ public class TestEngine {
         descriptor.setMessage(messageBuilder.build(StringUtils.substringAfter(notificationDescriptor.getSourceString(), notificationDescriptor.getWhisperNickname() + ":")));
         descriptor.setNickName(notificationDescriptor.getWhisperNickname());
         return descriptor;
+    }
+
+    private List<PlainMessageDescriptor> getChatHistory() {
+        List<PlainMessageDescriptor> list = new ArrayList<>();
+        PlainMessageDescriptor descriptor = new PlainMessageDescriptor();
+        descriptor.setMessage("offer 1c");
+        descriptor.setIncoming(true);
+
+        PlainMessageDescriptor descriptor1 = new PlainMessageDescriptor();
+        descriptor1.setMessage("nope");
+
+        PlainMessageDescriptor descriptor2 = new PlainMessageDescriptor();
+        descriptor2.setMessage("offer 2c");
+        descriptor2.setIncoming(true);
+
+        PlainMessageDescriptor descriptor3 = new PlainMessageDescriptor();
+        descriptor3.setMessage("nope");
+
+        PlainMessageDescriptor descriptor6 = new PlainMessageDescriptor();
+        descriptor6.setMessage("wtf man");
+        descriptor6.setIncoming(true);
+
+        PlainMessageDescriptor descriptor7 = new PlainMessageDescriptor();
+        descriptor7.setMessage("nope");
+
+        PlainMessageDescriptor descriptor4 = new PlainMessageDescriptor();
+        descriptor4.setMessage("offer 100c");
+        descriptor4.setIncoming(true);
+
+        PlainMessageDescriptor descriptor5 = new PlainMessageDescriptor();
+        descriptor5.setMessage("deal");
+        list.add(descriptor);
+        list.add(descriptor1);
+        list.add(descriptor2);
+        list.add(descriptor3);
+        list.add(descriptor6);
+        list.add(descriptor7);
+        list.add(descriptor4);
+        list.add(descriptor5);
+        return list;
     }
 
 }

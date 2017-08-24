@@ -2,7 +2,9 @@ package com.mercury.platform.ui.components.panel.notification;
 
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
-import com.mercury.platform.shared.config.descriptor.*;
+import com.mercury.platform.shared.config.descriptor.HotKeyPair;
+import com.mercury.platform.shared.config.descriptor.HotKeyType;
+import com.mercury.platform.shared.config.descriptor.ScannerDescriptor;
 import com.mercury.platform.shared.entity.message.PlainMessageDescriptor;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -16,21 +18,26 @@ import java.awt.*;
 
 public class ScannerNotificationPanel extends NotificationPanel<PlainMessageDescriptor, ScannerPanelController> {
     private PlainConfigurationService<ScannerDescriptor> config;
-    private PlainConfigurationService<NotificationSettingsDescriptor> nConfig;
-    private PlainConfigurationService<HotKeysSettingsDescriptor> hotKeysConfig;
 
     @Override
     public void onViewInit() {
         super.onViewInit();
         this.config = Configuration.get().scannerConfiguration();
-        this.nConfig = Configuration.get().notificationConfiguration();
-        this.hotKeysConfig = Configuration.get().hotKeysConfiguration();
-        this.add(this.getHeader(), BorderLayout.PAGE_START);
         JLabel sourceLabel = this.componentsFactory.getTextLabel(this.data.getMessage(), FontStyle.REGULAR, 17f);
         sourceLabel.setBackground(AppThemeColor.FRAME);
         sourceLabel.setHorizontalAlignment(SwingConstants.LEFT);
         sourceLabel.setVerticalAlignment(SwingConstants.TOP);
         this.contentPanel = this.componentsFactory.wrapToSlide(sourceLabel, AppThemeColor.FRAME, 2, 2, 2, 2);
+        switch (this.notificationConfig.get().getFlowDirections()) {
+            case DOWNWARDS: {
+                this.add(this.getHeader(), BorderLayout.PAGE_START);
+                break;
+            }
+            case UPWARDS: {
+                this.add(this.getHeader(), BorderLayout.PAGE_END);
+                break;
+            }
+        }
         this.add(this.contentPanel, BorderLayout.CENTER);
         this.updateHotKeyPool();
     }
@@ -56,8 +63,8 @@ public class ScannerNotificationPanel extends NotificationPanel<PlainMessageDesc
         tradeButton.addActionListener(e -> this.controller.performOfferTrade());
         JButton leaveButton = componentsFactory.getIconButton("app/leave.png", 17, AppThemeColor.MSG_HEADER, TooltipConstants.LEAVE);
         leaveButton.addActionListener(e -> {
-            this.controller.performLeave(this.nConfig.get().getPlayerNickname());
-            if (this.nConfig.get().isDismissAfterLeave()) {
+            this.controller.performLeave(this.notificationConfig.get().getPlayerNickname());
+            if (this.notificationConfig.get().isDismissAfterLeave()) {
                 this.controller.performHide();
             }
         });
@@ -71,7 +78,6 @@ public class ScannerNotificationPanel extends NotificationPanel<PlainMessageDesc
         interactionPanel.add(visiteHideout);
         interactionPanel.add(tradeButton);
         interactionPanel.add(leaveButton);
-//        interactionPanel.add(backToHo);
         interactionPanel.add(openChatButton);
         interactionPanel.add(hideButton);
 
@@ -80,7 +86,6 @@ public class ScannerNotificationPanel extends NotificationPanel<PlainMessageDesc
         this.interactButtonMap.put(HotKeyType.N_VISITE_HIDEOUT, visiteHideout);
         this.interactButtonMap.put(HotKeyType.N_TRADE_PLAYER, tradeButton);
         this.interactButtonMap.put(HotKeyType.N_LEAVE, leaveButton);
-//        this.interactButtonMap.put(HotKeyType.N_BACK_TO_HIDEOUT,backToHo);
         this.interactButtonMap.put(HotKeyType.N_OPEN_CHAT, openChatButton);
         this.interactButtonMap.put(HotKeyType.N_CLOSE_NOTIFICATION, hideButton);
 

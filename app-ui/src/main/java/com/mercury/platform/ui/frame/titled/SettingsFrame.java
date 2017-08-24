@@ -3,7 +3,11 @@ package com.mercury.platform.ui.frame.titled;
 
 import com.mercury.platform.core.update.core.holder.ApplicationHolder;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrComponentType;
+import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDescriptor;
+import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
+import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.settings.MenuPanel;
 import com.mercury.platform.ui.manager.FramesManager;
@@ -16,10 +20,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URI;
 
 public class SettingsFrame extends AbstractTitledComponentFrame {
     private JPanel currentPanel;
-    private MenuPanel menuPanel;
     private JPanel root;
 
     public SettingsFrame() {
@@ -29,7 +33,6 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         this.setAlwaysOnTop(false);
         this.processingHideEvent = false;
         this.processHideEffect = false;
-//        FrameDescriptor frameDescriptor = this.framesConfig.get(this.getClass().getSimpleName());
         this.setPreferredSize(new Dimension(1000, 600));
     }
 
@@ -42,9 +45,9 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
     @Override
     public void onViewInit() {
         this.root = new JPanel(new BorderLayout());
-        this.menuPanel = new MenuPanel();
+        MenuPanel menuPanel = new MenuPanel();
         JPanel leftPanel = this.componentsFactory.getJPanel(new BorderLayout());
-        leftPanel.add(this.menuPanel, BorderLayout.CENTER);
+        leftPanel.add(menuPanel, BorderLayout.CENTER);
         leftPanel.add(this.getOperationsButtons(), BorderLayout.PAGE_END);
         this.add(leftPanel, BorderLayout.LINE_START);
         this.add(this.root, BorderLayout.CENTER);
@@ -73,6 +76,27 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         root.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, AppThemeColor.MSG_HEADER_BORDER));
         root.setBackground(AppThemeColor.ADR_FOOTER_BG);
+
+        AdrDurationComponentDescriptor donateDescriptor = new AdrProgressBarDescriptor();
+        donateDescriptor.setIconEnable(false);
+        donateDescriptor.setDuration(10d);
+        donateDescriptor.setSize(new Dimension(100, 20));
+        donateDescriptor.setType(AdrComponentType.PROGRESS_BAR);
+        donateDescriptor.setCustomTextEnable(true);
+        donateDescriptor.setCustomText("5$/150$");
+        donateDescriptor.setFontSize(21);
+        donateDescriptor.setLowValueTextColor(AppThemeColor.TEXT_DEFAULT);
+        donateDescriptor.setMediumValueTextColor(AppThemeColor.TEXT_DEFAULT);
+        donateDescriptor.setDefaultValueTextColor(AppThemeColor.TEXT_DEFAULT);
+        donateDescriptor.setBorderColor(AppThemeColor.ADR_DEFAULT_BORDER);
+        donateDescriptor.setBackgroundColor(AppThemeColor.FRAME);
+        donateDescriptor.setForegroundColor(AppThemeColor.BUTTON);
+        MercuryTracker tracker = new MercuryTracker(donateDescriptor);
+        float percent = 150 * (5 / 100f);
+        tracker.setValue((int) (percent * 100));
+        tracker.setPreferredSize(donateDescriptor.getSize());
+        root.add(this.componentsFactory.getTextLabel("Monthly donations:", FontStyle.BOLD, 16), BorderLayout.LINE_START);
+        root.add(this.componentsFactory.wrapToSlide(tracker, AppThemeColor.ADR_FOOTER_BG, 2, 2, 2, 1), BorderLayout.CENTER);
         root.add(this.getSaveButtonPanel(), BorderLayout.LINE_END);
         return root;
     }
@@ -96,8 +120,20 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
             this.hideComponent();
             MercuryStoreUI.settingsRestoreSubject.onNext(true);
         });
+        JButton donate = componentsFactory.getIconButton("app/paypal.png", 70f, AppThemeColor.ADR_FOOTER_BG, "Donate");
+        donate.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().browse(new URI("https://www.paypal.me/mercurytrade"));
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
         saveButton.setPreferredSize(new Dimension(110, 26));
         cancelButton.setPreferredSize(new Dimension(110, 26));
+        root.add(this.componentsFactory.wrapToSlide(donate, AppThemeColor.HEADER, 0, 2, 0, 2));
         root.add(this.componentsFactory.wrapToSlide(cancelButton, AppThemeColor.HEADER, 2, 2, 2, 2));
         root.add(this.componentsFactory.wrapToSlide(saveButton, AppThemeColor.HEADER, 2, 2, 2, 2));
         return root;

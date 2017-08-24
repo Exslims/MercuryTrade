@@ -2,7 +2,7 @@ package com.mercury.platform.ui.components.panel.notification.factory;
 
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;
-import com.mercury.platform.ui.components.panel.notification.ItemIncNotificationPanel;
+import com.mercury.platform.ui.components.panel.notification.ItemTradeIncNotificationPanel;
 import com.mercury.platform.ui.components.panel.notification.NotificationPanel;
 import com.mercury.platform.ui.components.panel.notification.controller.IncomingPanelController;
 import com.mercury.platform.ui.components.panel.notification.controller.NotificationIncomingController;
@@ -16,7 +16,7 @@ public class ItemIncPanelProvider extends NotificationPanelProvider<ItemTradeNot
 
     @Override
     protected NotificationPanel<ItemTradeNotificationDescriptor, IncomingPanelController> getPanel() {
-        ItemIncNotificationPanel panel = new ItemIncNotificationPanel();
+        ItemTradeIncNotificationPanel panel = new ItemTradeIncNotificationPanel();
         panel.setController(new NotificationIncomingController(this.data));
         return panel;
     }
