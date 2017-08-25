@@ -17,9 +17,11 @@ import java.util.List;
 public class ResponseButtonsPanel extends JPanel implements ViewInit {
     private List<ResponseButtonDescriptor> buttons;
     private ComponentsFactory componentsFactory = new ComponentsFactory();
+    private HotKeyGroup hotKeyGroup;
 
-    public ResponseButtonsPanel(List<ResponseButtonDescriptor> buttons) {
+    public ResponseButtonsPanel(List<ResponseButtonDescriptor> buttons, HotKeyGroup hotKeyGroup) {
         super(new BorderLayout(4, 4));
+        this.hotKeyGroup = hotKeyGroup;
         this.buttons = buttons;
     }
 
@@ -101,7 +103,9 @@ public class ResponseButtonsPanel extends JPanel implements ViewInit {
             descriptor.setClose(checkBox.isSelected());
         });
         miscPanel.add(checkBox, BorderLayout.LINE_START);
-        miscPanel.add(this.componentsFactory.wrapToSlide(new HotKeyPanel(descriptor.getHotKeyDescriptor()), AppThemeColor.SETTINGS_BG, 0, 0, 2, 0), BorderLayout.CENTER);
+        HotKeyPanel hotKeyPanel = new HotKeyPanel(descriptor.getHotKeyDescriptor());
+        this.hotKeyGroup.registerHotkey(hotKeyPanel);
+        miscPanel.add(this.componentsFactory.wrapToSlide(hotKeyPanel, AppThemeColor.SETTINGS_BG, 0, 0, 2, 0), BorderLayout.CENTER);
 
         JButton removeButton = this.componentsFactory.getIconButton("app/adr/remove_node.png", 17, AppThemeColor.SETTINGS_BG, "Remove button");
         removeButton.addActionListener(action -> {

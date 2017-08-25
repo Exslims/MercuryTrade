@@ -5,7 +5,6 @@ import com.mercury.platform.shared.entity.message.CurrencyTradeNotificationDescr
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,12 +16,11 @@ public class CurrencyTradeOutNotificationPanel extends TradeOutNotificationPanel
     protected JPanel getMessagePanel() {
         JPanel labelsPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.FRAME);
 
-        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.FRAME, TooltipConstants.OPEN_CHAT);
-        openChatButton.addActionListener(e -> controller.performOpenChat());
+        JLabel historyLabel = this.getHistoryButton();
         JButton repeatButton = this.getRepeatButton();
         JPanel buttons = this.componentsFactory.getJPanel(new GridLayout(1, 0, 5, 0), AppThemeColor.FRAME);
         buttons.add(repeatButton);
-        buttons.add(openChatButton);
+        buttons.add(historyLabel);
 
         JPanel miscPanel = this.componentsFactory.getJPanel(new GridLayout(1, 0, 4, 0), AppThemeColor.FRAME);
         miscPanel.add(this.getFromPanel(), BorderLayout.CENTER);
@@ -30,8 +28,6 @@ public class CurrencyTradeOutNotificationPanel extends TradeOutNotificationPanel
         if (offerLabel != null) {
             miscPanel.add(offerLabel);
         }
-
-        this.interactButtonMap.put(HotKeyType.N_OPEN_CHAT, openChatButton);
         this.interactButtonMap.put(HotKeyType.N_REPEAT_MESSAGE, repeatButton);
 
         labelsPanel.add(miscPanel, BorderLayout.CENTER);

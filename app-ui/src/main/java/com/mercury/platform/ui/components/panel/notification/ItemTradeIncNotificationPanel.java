@@ -19,7 +19,7 @@ public class ItemTradeIncNotificationPanel extends TradeIncNotificationPanel<Ite
 
         JButton itemButton = componentsFactory.getButton(
                 FontStyle.BOLD,
-                AppThemeColor.BUTTON,
+                AppThemeColor.TEXT_IMPORTANT,
                 BorderFactory.createEmptyBorder(4, 4, 4, 4),
                 this.data.getItemName(), 16f);
 
@@ -32,12 +32,11 @@ public class ItemTradeIncNotificationPanel extends TradeIncNotificationPanel<Ite
             this.controller.showITH();
         });
 
-        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.FRAME, TooltipConstants.OPEN_CHAT);
-        openChatButton.addActionListener(e -> controller.performOpenChat());
         JButton stillInterestedButton = this.getStillInterestedButton();
+        JLabel historyLabel = this.getHistoryButton();
         JPanel buttons = this.componentsFactory.getJPanel(new GridLayout(1, 0, 5, 0), AppThemeColor.FRAME);
         buttons.add(stillInterestedButton);
-        buttons.add(openChatButton);
+        buttons.add(historyLabel);
 
         JPanel miscPanel = this.componentsFactory.getJPanel(new GridLayout(1, 0, 4, 0), AppThemeColor.FRAME);
         miscPanel.add(itemButton);
@@ -46,7 +45,6 @@ public class ItemTradeIncNotificationPanel extends TradeIncNotificationPanel<Ite
             miscPanel.add(offerLabel);
         }
 
-        this.interactButtonMap.put(HotKeyType.N_OPEN_CHAT, openChatButton);
         this.interactButtonMap.put(HotKeyType.N_STILL_INTERESTING, stillInterestedButton);
 
         this.labelsPanel.add(miscPanel, BorderLayout.CENTER);

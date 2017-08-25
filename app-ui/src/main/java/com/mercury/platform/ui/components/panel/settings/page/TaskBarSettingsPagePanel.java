@@ -14,7 +14,6 @@ import java.awt.*;
 public class TaskBarSettingsPagePanel extends SettingsPagePanel {
     private PlainConfigurationService<TaskBarDescriptor> taskBarService;
     private TaskBarDescriptor taskBarSnapshot;
-
     @Override
     public void onViewInit() {
         super.onViewInit();
@@ -39,7 +38,10 @@ public class TaskBarSettingsPagePanel extends SettingsPagePanel {
         JPanel hotKeysPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2, 4, 4), AppThemeColor.SETTINGS_BG);
         hotKeysPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
         root.add(this.componentsFactory.getIconLabel("app/hideout.png", 24, SwingConstants.CENTER));
-        root.add(this.componentsFactory.wrapToSlide(new HotKeyPanel(this.taskBarSnapshot.getHideoutHotkey()), AppThemeColor.SETTINGS_BG, 2, 4, 1, 1));
+        HotKeyGroup hotKeyGroup = new HotKeyGroup(true);
+        HotKeyPanel hotKeyPanel = new HotKeyPanel(this.taskBarSnapshot.getHideoutHotkey());
+        hotKeyGroup.registerHotkey(hotKeyPanel);
+        root.add(this.componentsFactory.wrapToSlide(hotKeyPanel, AppThemeColor.SETTINGS_BG, 2, 4, 1, 1));
         this.container.add(this.componentsFactory.wrapToSlide(root));
         this.container.add(this.componentsFactory.wrapToSlide(hotKeysPanel));
     }

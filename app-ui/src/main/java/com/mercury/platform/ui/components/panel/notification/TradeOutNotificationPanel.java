@@ -9,7 +9,6 @@ import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.notification.controller.OutgoingPanelController;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
-import org.apache.commons.lang3.StringUtils;
 import rx.Subscription;
 
 import javax.swing.*;
@@ -47,7 +46,8 @@ public abstract class TradeOutNotificationPanel<T extends TradeNotificationDescr
                 this.controller.performHide();
             }
         });
-        JLabel historyLabel = this.getHistoryButton();
+        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
+        openChatButton.addActionListener(e -> controller.performOpenChat());
         JButton hideButton = componentsFactory.getIconButton("app/close.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.HIDE_PANEL);
         hideButton.addActionListener(action -> {
             this.controller.performHide();
@@ -55,12 +55,13 @@ public abstract class TradeOutNotificationPanel<T extends TradeNotificationDescr
         interactionPanel.add(visiteHideout);
         interactionPanel.add(tradeButton);
         interactionPanel.add(leaveButton);
-        interactionPanel.add(historyLabel);
+        interactionPanel.add(openChatButton);
         interactionPanel.add(hideButton);
         this.interactButtonMap.clear();
         this.interactButtonMap.put(HotKeyType.N_VISITE_HIDEOUT, visiteHideout);
         this.interactButtonMap.put(HotKeyType.N_TRADE_PLAYER, tradeButton);
         this.interactButtonMap.put(HotKeyType.N_LEAVE, leaveButton);
+        this.interactButtonMap.put(HotKeyType.N_OPEN_CHAT, openChatButton);
         this.interactButtonMap.put(HotKeyType.N_CLOSE_NOTIFICATION, hideButton);
 
         JPanel timePanel = this.getTimePanel();
@@ -94,9 +95,15 @@ public abstract class TradeOutNotificationPanel<T extends TradeNotificationDescr
     }
 
     protected JButton getRepeatButton() {
-        JButton repeatButton = componentsFactory.getIconButton("app/reload-history.png", 15, AppThemeColor.FRAME, TooltipConstants.STILL_INTERESTED);
+        JButton repeatButton = componentsFactory.getIconButton("app/reload-history.png", 15, AppThemeColor.FRAME, TooltipConstants.REPEAT_MESSAGE);
         repeatButton.addActionListener(action -> {
-            this.controller.performResponse(StringUtils.substringAfter(this.data.getSourceString(), ":"));
+            this.controller.performResponse(this.data.getSourceString());
+            repeatButton.setEnabled(false);
+            Timer timer = new Timer(5000, event -> {
+                repeatButton.setEnabled(true);
+            });
+            timer.setRepeats(false);
+            timer.start();
         });
         return repeatButton;
     }

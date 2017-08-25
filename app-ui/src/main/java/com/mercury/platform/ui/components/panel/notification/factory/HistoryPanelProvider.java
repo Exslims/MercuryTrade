@@ -2,10 +2,10 @@ package com.mercury.platform.ui.components.panel.notification.factory;
 
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;
-import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.panel.notification.HistoryNotificationPanel;
 import com.mercury.platform.ui.components.panel.notification.NotificationPanel;
 import com.mercury.platform.ui.components.panel.notification.controller.HistoryController;
+import com.mercury.platform.ui.components.panel.notification.controller.HistoryPanelController;
 
 
 public class HistoryPanelProvider extends NotificationPanelProvider<NotificationDescriptor, HistoryController> {
@@ -17,17 +17,7 @@ public class HistoryPanelProvider extends NotificationPanelProvider<Notification
     @Override
     protected NotificationPanel<NotificationDescriptor, HistoryController> getPanel() {
         HistoryNotificationPanel panel = new HistoryNotificationPanel();
-        panel.setController(new HistoryController() {
-            @Override
-            public void reload() {
-                MercuryStoreCore.newNotificationSubject.onNext(data);
-            }
-
-            @Override
-            public void performOpenChat() {
-                MercuryStoreCore.openChatSubject.onNext(data.getWhisperNickname());
-            }
-        });
+        panel.setController(new HistoryPanelController(this.data));
         return panel;
     }
 }

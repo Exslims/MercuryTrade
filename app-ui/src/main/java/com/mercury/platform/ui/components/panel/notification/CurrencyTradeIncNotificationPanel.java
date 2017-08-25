@@ -2,6 +2,7 @@ package com.mercury.platform.ui.components.panel.notification;
 
 import com.mercury.platform.shared.config.descriptor.HotKeyType;
 import com.mercury.platform.shared.entity.message.CurrencyTradeNotificationDescriptor;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -13,16 +14,16 @@ import java.text.DecimalFormat;
 
 
 public class CurrencyTradeIncNotificationPanel extends TradeIncNotificationPanel<CurrencyTradeNotificationDescriptor> {
+    private JPanel labelsPanel;
     @Override
     protected JPanel getMessagePanel() {
-        JPanel labelsPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.FRAME);
+        this.labelsPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.FRAME);
 
-        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.FRAME, TooltipConstants.OPEN_CHAT);
-        openChatButton.addActionListener(e -> controller.performOpenChat());
+        JLabel historyLabel = this.getHistoryButton();
         JButton stillInterestedButton = this.getStillInterestedButton();
         JPanel buttons = this.componentsFactory.getJPanel(new GridLayout(1, 0, 5, 0), AppThemeColor.FRAME);
         buttons.add(stillInterestedButton);
-        buttons.add(openChatButton);
+        buttons.add(historyLabel);
 
         JPanel miscPanel = this.componentsFactory.getJPanel(new GridLayout(1, 0, 4, 0), AppThemeColor.FRAME);
         miscPanel.add(this.getFromPanel(), BorderLayout.CENTER);
@@ -31,11 +32,10 @@ public class CurrencyTradeIncNotificationPanel extends TradeIncNotificationPanel
             miscPanel.add(offerLabel);
         }
 
-        this.interactButtonMap.put(HotKeyType.N_OPEN_CHAT, openChatButton);
         this.interactButtonMap.put(HotKeyType.N_STILL_INTERESTING, stillInterestedButton);
 
-        labelsPanel.add(miscPanel, BorderLayout.CENTER);
-        labelsPanel.add(buttons, BorderLayout.LINE_END);
+        this.labelsPanel.add(miscPanel, BorderLayout.CENTER);
+        this.labelsPanel.add(buttons, BorderLayout.LINE_END);
         return labelsPanel;
     }
 
@@ -77,5 +77,16 @@ public class CurrencyTradeIncNotificationPanel extends TradeIncNotificationPanel
             this.controller.performResponse(responseText);
         });
         return stillIntButton;
+    }
+
+    public void setDuplicate(boolean duplicate) {
+        if (duplicate) {
+            JButton ignoreButton = componentsFactory.getIconButton("app/adr/visible_node_off.png", 15, AppThemeColor.FRAME, "Ignore item 1 hour");
+            ignoreButton.addActionListener(e -> {
+                MercuryStoreCore.expiredNotificationSubject.onNext(this.data);
+                this.controller.performHide();
+            });
+            this.labelsPanel.add(ignoreButton, BorderLayout.LINE_START);
+        }
     }
 }

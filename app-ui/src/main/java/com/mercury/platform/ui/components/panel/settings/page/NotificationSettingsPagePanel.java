@@ -24,6 +24,10 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
     private List<HotKeyPair> outHotKeySnapshot;
     private List<HotKeyPair> scannerHotKeySnapshot;
 
+    private HotKeyGroup incHotkeyGroup;
+    private HotKeyGroup outHotkeyGroup;
+    private HotKeyGroup scannerHotkeyGroup;
+
     @Override
     public void onViewInit() {
         super.onViewInit();
@@ -33,6 +37,11 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         this.incHotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getIncNHotKeysList());
         this.outHotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getOutNHotKeysList());
         this.scannerHotKeySnapshot = CloneHelper.cloneObject(hotKeyService.get().getScannerNHotKeysList());
+
+        this.incHotkeyGroup = new HotKeyGroup();
+        this.outHotkeyGroup = new HotKeyGroup();
+        this.scannerHotkeyGroup = new HotKeyGroup();
+
         JPanel inPanel = this.adrComponentsFactory.getCounterPanel(this.getIncomingPanel(), "Incoming notification:", AppThemeColor.ADR_BG, false);
         inPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
         JPanel outPanel = this.adrComponentsFactory.getCounterPanel(this.getOutgoingPanel(), "Outgoing notification:", AppThemeColor.ADR_BG, false);
@@ -131,7 +140,7 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         propertiesPanel.add(showLeague);
         root.add(propertiesPanel, BorderLayout.PAGE_START);
 
-        ResponseButtonsPanel responseButtonsPanel = new ResponseButtonsPanel(this.generalSnapshot.getButtons());
+        ResponseButtonsPanel responseButtonsPanel = new ResponseButtonsPanel(this.generalSnapshot.getButtons(), this.incHotkeyGroup);
         responseButtonsPanel.onViewInit();
         root.add(this.wrapToCounter(this.componentsFactory.wrapToSlide(responseButtonsPanel, AppThemeColor.ADR_BG), "Response buttons:"), BorderLayout.CENTER);
         root.add(this.wrapToCounter(this.componentsFactory.wrapToSlide(this.getInNotificationHotKeysPanel(), AppThemeColor.ADR_BG), "Hotkeys"), BorderLayout.PAGE_END);
@@ -151,8 +160,9 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
         this.incHotKeySnapshot.forEach(pair -> {
             root.add(this.componentsFactory.getIconLabel(pair.getType().getIconPath(), 18, SwingConstants.CENTER));
-            root.add(this.componentsFactory.wrapToSlide(new HotKeyPanel(pair.getDescriptor()), AppThemeColor.SETTINGS_BG, 2, 4, 1, 1));
-
+            HotKeyPanel hotKeyPanel = new HotKeyPanel(pair.getDescriptor());
+            this.incHotkeyGroup.registerHotkey(hotKeyPanel);
+            root.add(this.componentsFactory.wrapToSlide(hotKeyPanel, AppThemeColor.SETTINGS_BG, 2, 4, 1, 1));
         });
         return root;
     }
@@ -162,7 +172,9 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
         this.outHotKeySnapshot.forEach(pair -> {
             root.add(this.componentsFactory.getIconLabel(pair.getType().getIconPath(), 18, SwingConstants.CENTER));
-            root.add(this.componentsFactory.wrapToSlide(new HotKeyPanel(pair.getDescriptor()), AppThemeColor.SETTINGS_BG, 2, 4, 1, 1));
+            HotKeyPanel hotKeyPanel = new HotKeyPanel(pair.getDescriptor());
+            this.outHotkeyGroup.registerHotkey(hotKeyPanel);
+            root.add(this.componentsFactory.wrapToSlide(hotKeyPanel, AppThemeColor.SETTINGS_BG, 2, 4, 1, 1));
         });
         return root;
     }
@@ -172,8 +184,9 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
         this.scannerHotKeySnapshot.forEach(pair -> {
             root.add(this.componentsFactory.getIconLabel(pair.getType().getIconPath(), 18, SwingConstants.CENTER));
-            root.add(this.componentsFactory.wrapToSlide(new HotKeyPanel(pair.getDescriptor()), AppThemeColor.SETTINGS_BG, 2, 4, 1, 1));
-
+            HotKeyPanel hotKeyPanel = new HotKeyPanel(pair.getDescriptor());
+            this.scannerHotkeyGroup.registerHotkey(hotKeyPanel);
+            root.add(this.componentsFactory.wrapToSlide(hotKeyPanel, AppThemeColor.SETTINGS_BG, 2, 4, 1, 1));
         });
         return root;
     }
@@ -194,7 +207,7 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         });
         propertiesPanel.add(closeAfterLeave);
 
-        ResponseButtonsPanel responseButtonsPanel = new ResponseButtonsPanel(this.generalSnapshot.getOutButtons());
+        ResponseButtonsPanel responseButtonsPanel = new ResponseButtonsPanel(this.generalSnapshot.getOutButtons(), this.outHotkeyGroup);
         responseButtonsPanel.onViewInit();
         root.add(propertiesPanel, BorderLayout.PAGE_START);
         root.add(this.wrapToCounter(this.componentsFactory.wrapToSlide(responseButtonsPanel, AppThemeColor.ADR_BG), "Response buttons:"), BorderLayout.CENTER);

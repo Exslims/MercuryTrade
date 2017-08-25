@@ -70,6 +70,8 @@ public class AdrDurationCellPanel extends AdrDurationComponentPanel<AdrDurationC
 
     @Override
     protected void onUpdate() {
+        this.tracker.abort();
+        this.tracker.setVisible(false);
         this.remove(this.tracker);
         this.onViewInit();
     }

@@ -2,9 +2,10 @@ package com.mercury.platform.ui.frame.titled;
 
 import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.core.utils.interceptor.MessageInterceptor;
-import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
+import com.mercury.platform.core.utils.interceptor.filter.MessageMatcher;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
+import com.mercury.platform.shared.config.descriptor.HotKeyType;
 import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
 import com.mercury.platform.shared.config.descriptor.ScannerDescriptor;
 import com.mercury.platform.shared.entity.message.PlainMessageDescriptor;
@@ -18,6 +19,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -99,6 +102,24 @@ public class ChatScannerFrame extends AbstractTitledComponentFrame {
         root.add(setupArea, BorderLayout.CENTER);
         root.add(getMemo(), BorderLayout.LINE_END);
 
+        JPanel propertiesPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.FRAME);
+
+        JLabel quickResponseLabel = this.componentsFactory.getIconLabel(HotKeyType.N_QUICK_RESPONSE.getIconPath(), 18);
+        quickResponseLabel.setFont(this.componentsFactory.getFont(FontStyle.REGULAR, 16));
+        quickResponseLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
+        quickResponseLabel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+        quickResponseLabel.setText("Response message:");
+        propertiesPanel.add(quickResponseLabel, BorderLayout.LINE_START);
+        JTextField quickResponseField = this.componentsFactory.getTextField(this.scannerService.get().getResponseMessage(), FontStyle.BOLD, 15f);
+        quickResponseField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                scannerService.get().setResponseMessage(quickResponseField.getText());
+            }
+        });
+        propertiesPanel.add(this.componentsFactory.wrapToSlide(quickResponseField, AppThemeColor.FRAME, 0, 4, 0, 4), BorderLayout.CENTER);
+
+        root.add(propertiesPanel, BorderLayout.PAGE_END);
         this.add(root, BorderLayout.CENTER);
         this.add(navBar, BorderLayout.PAGE_END);
         this.pack();
@@ -180,7 +201,7 @@ public class ChatScannerFrame extends AbstractTitledComponentFrame {
                 }
 
                 @Override
-                protected MessageFilter getFilter() {
+                protected MessageMatcher match() {
                     return message -> {
                         if (!message.contains("] $") && !message.contains("] #")) {
                             return false;

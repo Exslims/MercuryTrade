@@ -63,8 +63,6 @@ public abstract class NotificationPanel<T, C> extends JPanel implements AsSubscr
 
     public void setComponentsFactory(ComponentsFactory factory) {
         this.componentsFactory = factory;
-        this.removeAll();
-        this.onViewInit();
     }
 
     public void onHotKeyPressed(HotKeyDescriptor descriptor) {

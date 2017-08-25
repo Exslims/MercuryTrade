@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.frame.movable;
 
 import com.mercury.platform.core.ProdStarter;
+import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
@@ -19,7 +20,6 @@ import com.mercury.platform.ui.components.panel.notification.factory.Notificatio
 import com.mercury.platform.ui.frame.titled.TestEngine;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,15 +31,16 @@ import java.util.Map;
 public class NotificationFrame extends AbstractMovableComponentFrame {
     private static int BUFFER_DEFAULT_HEIGHT = 1500;
     private List<NotificationPanel> notificationPanels;
-    private List<String> currentOffers;
     private PlainConfigurationService<NotificationSettingsDescriptor> config;
     private NotificationPanelFactory providersFactory;
+    private NotificationPreProcessor preProcessor;
     private JPanel container;
     private JPanel expandPanel;
     private JPanel stubExpandPanel;
     private JPanel root;
     private boolean expanded;
     private FlowDirections flowDirections;
+    private boolean dnd;
 
     private JPanel buffer;
 
@@ -49,17 +50,17 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         this.processSEResize = false;
         this.notificationPanels = new ArrayList<>();
         this.config = Configuration.get().notificationConfiguration();
+        this.flowDirections = this.config.get().getFlowDirections();
         this.componentsFactory.setScale(this.scaleConfig.get("notification"));
         this.stubComponentsFactory.setScale(this.scaleConfig.get("notification"));
         this.providersFactory = new NotificationPanelFactory();
+        this.preProcessor = new NotificationPreProcessor();
     }
 
     @Override
     public void onViewInit() {
         this.getRootPane().setBorder(null);
         this.setBackground(AppThemeColor.TRANSPARENT);
-        this.flowDirections = this.config.get().getFlowDirections();
-        this.currentOffers = new ArrayList<>();
         this.container = new JPanel();
         this.container.setBackground(AppThemeColor.TRANSPARENT);
         this.container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
@@ -83,19 +84,36 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
     @Override
     @SuppressWarnings("all")
     public void subscribe() {
+        MercuryStoreCore.dndSubject.subscribe(state -> {
+            this.dnd = state;
+            if (!this.dnd && this.notificationPanels.size() > 0) {
+                this.setVisible(true);
+            } else {
+                this.setVisible(false);
+            }
+        });
+        MercuryStoreCore.expiredNotificationSubject.subscribe(notification -> {
+            List<NotificationPanel> stubList = new ArrayList<>(this.notificationPanels);
+            String descriptorData = this.preProcessor.getDescriptorData(notification);
+            stubList.forEach(it -> {
+                if (this.preProcessor.getDescriptorData((NotificationDescriptor) it.getData()).equals(descriptorData)) {
+                    MercuryStoreCore.removeNotificationSubject.onNext((NotificationDescriptor) it.getData());
+                }
+            });
+        });
         MercuryStoreCore.newNotificationSubject.subscribe(notification -> {
             SwingUtilities.invokeLater(() -> {
                 NotificationPanel notificationPanel = this.providersFactory.getProviderFor(notification.getType())
                         .setData(notification)
                         .setComponentsFactory(this.componentsFactory)
                         .build();
-                String message = StringUtils.substringAfter(notification.getSourceString(), ":");
-                if (this.currentOffers.contains(message)) {
+                if (preProcessor.isDuplicate(notification)) {
                     notificationPanel.setDuplicate(true);
-                } else {
-                    this.currentOffers.add(message);
                 }
-                this.addNotification(notificationPanel);
+                if (this.preProcessor.isAllowed(notification)) {
+                    MercuryStoreCore.soundSubject.onNext(SoundType.MESSAGE);
+                    this.addNotification(notificationPanel);
+                }
             });
         });
         MercuryStoreCore.newScannerMessageSubject.subscribe(message -> {
@@ -105,11 +123,6 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                         .setComponentsFactory(this.componentsFactory)
                         .build();
                 this.addNotification(notificationPanel);
-                Timer packTimer = new Timer(5, action -> {
-                    this.pack();
-                });
-                packTimer.setRepeats(false);
-                packTimer.start();
             });
         });
         MercuryStoreCore.removeNotificationSubject.subscribe(notification -> {
@@ -117,7 +130,6 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                 NotificationPanel notificationPanel = this.notificationPanels.stream()
                         .filter(it -> it.getData().equals(notification))
                         .findAny().orElse(null);
-                this.currentOffers.remove(StringUtils.substringAfter(notification.getSourceString(), ":"));
                 if (notificationPanel != null) {
                     this.removeNotification(notificationPanel);
                 }
@@ -226,7 +238,16 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
             this.remove(var);
             this.add(this.expandPanel, BorderLayout.LINE_START);
         }
+        if (this.getLocation().y > 0) {
+            this.setLocation(new Point(this.getLocation().x, this.getLocation().y - BUFFER_DEFAULT_HEIGHT));
+        }
         super.onScaleLock();
+    }
+
+    @Override
+    protected void onScaleUnlock() {
+        this.setLocation(this.framesConfig.get(this.getClass().getSimpleName()).getFrameLocation());
+        super.onScaleUnlock();
     }
 
     public void changeBufferSize(int delta) {
@@ -270,9 +291,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
     @Override
     protected void performScaling(Map<String, Float> scaleData) {
         this.componentsFactory.setScale(scaleData.get("notification"));
-        this.notificationPanels.forEach(it -> {
-            it.setComponentsFactory(this.componentsFactory);
-        });
+        this.validateContainer();
         this.pack();
         this.repaint();
     }

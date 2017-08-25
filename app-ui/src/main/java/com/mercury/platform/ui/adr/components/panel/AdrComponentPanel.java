@@ -31,7 +31,7 @@ public abstract class AdrComponentPanel<T extends AdrComponentDescriptor> extend
     @Override
     public void subscribe() {
         this.adrReloadSubscription = MercuryStoreUI.adrReloadSubject.subscribe(it -> {
-            if (this.descriptor.equals(it)) {
+            if (this.descriptor.equals(it) && this.inSettings) {
                 this.onUpdate();
                 this.onSelect();
             }

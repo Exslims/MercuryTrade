@@ -22,16 +22,15 @@ public class ChatHistoryFrame extends AbstractOverlaidFrame {
 
     @Override
     protected void initialize() {
-
+        this.componentsFactory.setScale(this.scaleConfig.get("notification"));
     }
 
     @Override
     public void onViewInit() {
         this.setBackground(AppThemeColor.TRANSPARENT);
         this.setOpacity(this.applicationConfig.get().getMaxOpacity() / 100f);
-
+        this.setPreferredSize(new Dimension((int) (300 * this.componentsFactory.getScale()), (int) (150 * this.componentsFactory.getScale())));
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.FRAME);
-        root.setPreferredSize(new Dimension(300, 150));
         root.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
                 BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 2)));
@@ -71,10 +70,17 @@ public class ChatHistoryFrame extends AbstractOverlaidFrame {
                 this.hideTimer.stop();
             }
             this.showTimer = new Timer(300, action -> {
-                this.setLocation(new Point(definition.getLocation().x + 10, definition.getLocation().y));
+                Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+                if (definition.getLocation().y + this.getPreferredSize().height > dim.height) {
+                    this.setLocation(definition.getLocation().x + 4, definition.getLocation().y - this.getPreferredSize().height);
+                } else {
+                    this.setLocation(new Point(definition.getLocation().x + 4, definition.getLocation().y));
+                }
                 this.chatContainer.removeAll();
+                this.componentsFactory.setScale(this.scaleConfig.get("notification"));
+                this.setPreferredSize(new Dimension((int) (300 * this.componentsFactory.getScale()), (int) (150 * this.componentsFactory.getScale())));
                 definition.getMessages().forEach(it -> {
-                    this.chatContainer.add(this.componentsFactory.getTextLabel((it.isIncoming() ? "From: " : "To: ") + it.getMessage()));
+                    this.chatContainer.add(this.componentsFactory.getTextLabel((it.isIncoming() ? "> " : "") + it.getMessage()));
                 });
                 this.pack();
                 this.setVisible(true);

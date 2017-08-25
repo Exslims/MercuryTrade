@@ -52,7 +52,7 @@ public class SoundSettingsPagePanel extends SettingsPagePanel {
                 BorderFactory.createMatteBorder(0, 0, 1, 0, AppThemeColor.MSG_HEADER_BORDER),
                 BorderFactory.createEmptyBorder(3, 0, 3, 0)));
 
-        notificationSlider = componentsFactory.getSlider(-40, 6, soundSnapshot.get("notification").getDb().intValue(), AppThemeColor.SETTINGS_BG);
+        notificationSlider = componentsFactory.getSlider(-40, 6, soundSnapshot.get("notification").getDb().intValue(), AppThemeColor.ADR_BG);
         notificationSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -62,7 +62,7 @@ public class SoundSettingsPagePanel extends SettingsPagePanel {
                 ));
             }
         });
-        chatScannerSlider = componentsFactory.getSlider(-40, 6, soundSnapshot.get("chat_scanner").getDb().intValue(), AppThemeColor.SETTINGS_BG);
+        chatScannerSlider = componentsFactory.getSlider(-40, 6, soundSnapshot.get("chat_scanner").getDb().intValue(), AppThemeColor.ADR_BG);
         chatScannerSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -72,7 +72,7 @@ public class SoundSettingsPagePanel extends SettingsPagePanel {
                 ));
             }
         });
-        clicksSlider = componentsFactory.getSlider(-40, 6, soundSnapshot.get("clicks").getDb().intValue(), AppThemeColor.SETTINGS_BG);
+        clicksSlider = componentsFactory.getSlider(-40, 6, soundSnapshot.get("clicks").getDb().intValue(), AppThemeColor.ADR_BG);
         clicksSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -82,7 +82,7 @@ public class SoundSettingsPagePanel extends SettingsPagePanel {
                 ));
             }
         });
-        updateSlider = componentsFactory.getSlider(-40, 6, soundSnapshot.get("update").getDb().intValue(), AppThemeColor.SETTINGS_BG);
+        updateSlider = componentsFactory.getSlider(-40, 6, soundSnapshot.get("update").getDb().intValue(), AppThemeColor.ADR_BG);
         updateSlider.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {

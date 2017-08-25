@@ -34,6 +34,7 @@ public class MessageFileHandler implements AsSubscriber {
         this.interceptors.add(new PlainMessageInterceptor());
         this.interceptors.add(new PlayerJoinInterceptor());
         this.interceptors.add(new PlayerLeftInterceptor());
+        this.interceptors.add(new PlayerInaccessibleInterceptor());
 
         this.subscribe();
     }

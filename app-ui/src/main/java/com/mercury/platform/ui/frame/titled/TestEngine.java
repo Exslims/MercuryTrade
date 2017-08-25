@@ -6,7 +6,6 @@ import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;
 import com.mercury.platform.shared.entity.message.PlainMessageDescriptor;
 import com.mercury.platform.ui.components.panel.chat.HtmlMessageBuilder;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -205,7 +204,7 @@ public class TestEngine {
                 offer.get(random.nextInt(offer.size()))
         ));
         PlainMessageDescriptor descriptor = new PlainMessageDescriptor();
-        descriptor.setMessage(messageBuilder.build(StringUtils.substringAfter(notificationDescriptor.getSourceString(), notificationDescriptor.getWhisperNickname() + ":")));
+        descriptor.setMessage(messageBuilder.build(notificationDescriptor.getSourceString()));
         descriptor.setNickName(notificationDescriptor.getWhisperNickname());
         return descriptor;
     }

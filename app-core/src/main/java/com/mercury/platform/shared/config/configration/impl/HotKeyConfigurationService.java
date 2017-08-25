@@ -48,34 +48,23 @@ public class HotKeyConfigurationService extends BaseConfigurationService<HotKeys
 
     @Override
     public void toDefault() {
-        this.selectedProfile.setHotKeysSettingsDescriptor(this.getDefault());
+        this.selectedProfile.setHotkeysSettingsDescriptor(this.getDefault());
     }
 
     @Override
     public void validate() {
-        if (this.selectedProfile.getHotKeysSettingsDescriptor() == null) {
-            this.selectedProfile.setHotKeysSettingsDescriptor(this.getDefault());
-        }
-        List<HotKeyPair> stubNList = new ArrayList<>(this.selectedProfile.getHotKeysSettingsDescriptor().getIncNHotKeysList());
-        stubNList.forEach(it -> {
-            if (it.getType().equals(HotKeyType.N_SWITCH_CHAT)) {
-                this.selectedProfile.getHotKeysSettingsDescriptor().getIncNHotKeysList().remove(it);
-            }
-        });
-        List<HotKeyPair> stubOList = new ArrayList<>(this.selectedProfile.getHotKeysSettingsDescriptor().getOutNHotKeysList());
-        HotKeyPair hotKeyPair = stubOList.stream().filter(it -> it.getType().equals(HotKeyType.N_REPEAT_MESSAGE)).findAny().orElse(null);
-        if (hotKeyPair == null) {
-            this.selectedProfile.getHotKeysSettingsDescriptor().getOutNHotKeysList().add(new HotKeyPair(HotKeyType.N_REPEAT_MESSAGE, new HotKeyDescriptor()));
+        if (this.selectedProfile.getHotkeysSettingsDescriptor() == null) {
+            this.selectedProfile.setHotkeysSettingsDescriptor(this.getDefault());
         }
     }
 
     @Override
     public HotKeysSettingsDescriptor get() {
-        return this.selectedProfile.getHotKeysSettingsDescriptor();
+        return this.selectedProfile.getHotkeysSettingsDescriptor();
     }
 
     @Override
     public void set(HotKeysSettingsDescriptor descriptor) {
-        this.selectedProfile.setHotKeysSettingsDescriptor(descriptor);
+        this.selectedProfile.setHotkeysSettingsDescriptor(descriptor);
     }
 }

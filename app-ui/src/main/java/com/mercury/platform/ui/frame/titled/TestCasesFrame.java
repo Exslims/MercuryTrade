@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.frame.titled;
 
+import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -90,6 +91,7 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
         JButton chatScannerButton = componentsFactory.getBorderedButton("Click");
         chatScannerButton.addActionListener(action -> {
             MercuryStoreCore.newScannerMessageSubject.onNext(this.testEngine.getRandomScannerMessage());
+            MercuryStoreCore.soundSubject.onNext(SoundType.CHAT_SCANNER);
         });
         testPanel.add(chatScannerButton, buttonColumn);
         buttonColumn.gridy++;

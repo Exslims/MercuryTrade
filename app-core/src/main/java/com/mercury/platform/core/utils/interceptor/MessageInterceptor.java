@@ -1,15 +1,15 @@
 package com.mercury.platform.core.utils.interceptor;
 
-import com.mercury.platform.core.utils.interceptor.filter.MessageFilter;
+import com.mercury.platform.core.utils.interceptor.filter.MessageMatcher;
 
 /**
  * Created by Константин on 11.01.2017.
  */
 public abstract class MessageInterceptor {
-    protected MessageFilter filter;
+    protected MessageMatcher filter;
 
     public MessageInterceptor() {
-        filter = getFilter();
+        filter = match();
     }
 
     public boolean match(String message) {
@@ -22,5 +22,5 @@ public abstract class MessageInterceptor {
 
     protected abstract void process(String message);
 
-    protected abstract MessageFilter getFilter();
+    protected abstract MessageMatcher match();
 }

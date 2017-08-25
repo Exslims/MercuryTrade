@@ -52,7 +52,8 @@ public abstract class TradeIncNotificationPanel<T extends TradeNotificationDescr
         tradeButton.addActionListener(e -> {
             this.controller.performOfferTrade();
         });
-        JLabel historyLabel = this.getHistoryButton();
+        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
+        openChatButton.addActionListener(e -> controller.performOpenChat());
         JButton hideButton = componentsFactory.getIconButton("app/close.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.HIDE_PANEL);
         hideButton.addActionListener(action -> {
             this.controller.performHide();
@@ -60,13 +61,14 @@ public abstract class TradeIncNotificationPanel<T extends TradeNotificationDescr
         interactionPanel.add(inviteButton);
         interactionPanel.add(tradeButton);
         interactionPanel.add(kickButton);
-        interactionPanel.add(historyLabel);
+        interactionPanel.add(openChatButton);
         interactionPanel.add(hideButton);
 
         this.interactButtonMap.clear();
         this.interactButtonMap.put(HotKeyType.N_INVITE_PLAYER, inviteButton);
         this.interactButtonMap.put(HotKeyType.N_TRADE_PLAYER, tradeButton);
         this.interactButtonMap.put(HotKeyType.N_KICK_PLAYER, kickButton);
+        this.interactButtonMap.put(HotKeyType.N_OPEN_CHAT, openChatButton);
         this.interactButtonMap.put(HotKeyType.N_CLOSE_NOTIFICATION, hideButton);
 
         JPanel timePanel = this.getTimePanel();

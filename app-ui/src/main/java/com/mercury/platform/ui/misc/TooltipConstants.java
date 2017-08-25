@@ -26,6 +26,7 @@ public class TooltipConstants {
     //MessagePanel tooltips
     public static final String INVITE = "Invite player";
     public static final String STILL_INTERESTED = "Still interested?";
+    public static final String REPEAT_MESSAGE = "Repeat message";
     public static final String KICK = "Kick player";
     public static final String TRADE = "Offer Trade";
     public static final String EXPAND_COLLAPSE = "Expand / collapse";
@@ -35,6 +36,7 @@ public class TooltipConstants {
     public static final String LEAVE = "Leave from party";
     public static final String QUICK_RESPONSE = "Quick response";
     public static final String HIDE_PANEL = "Close";
+    public static final String HISTORY_RELOAD = "Restore message";
 
     //OutMessage tooltips
     public static final String HO_IN = "Travel to this player's hideout";

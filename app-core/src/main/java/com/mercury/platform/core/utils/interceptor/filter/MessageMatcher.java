@@ -1,6 +1,6 @@
 package com.mercury.platform.core.utils.interceptor.filter;
 
 
-public interface MessageFilter {
+public interface MessageMatcher {
     boolean isMatching(String message);
 }

@@ -17,7 +17,7 @@ public class ProfileDescriptor {
     private TaskBarDescriptor taskBarDescriptor;
     private ScannerDescriptor scannerDescriptor;
     private Map<String, Float> scaleDataMap;
-    private HotKeysSettingsDescriptor hotKeysSettingsDescriptor;
+    private HotKeysSettingsDescriptor hotkeysSettingsDescriptor;
     private List<StashTabDescriptor> stashTabDescriptors;
     private List<AdrProfileDescriptor> adrProfileDescriptorList;
     private List<String> iconBundleList;

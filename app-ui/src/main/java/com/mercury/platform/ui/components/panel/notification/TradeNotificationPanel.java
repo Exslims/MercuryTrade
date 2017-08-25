@@ -100,6 +100,11 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
         this.chatSubscription = MercuryStoreCore.plainMessageSubject.subscribe(message -> {
             if (this.data.getWhisperNickname().equals(message.getNickName())) {
                 this.data.getRelatedMessages().add(message);
+                if (message.getMessage().contains("This player has DND mode enabled")
+                        || message.getMessage().contains("That character is not online.")
+                        || message.getMessage().contains("This player is AFK.")) {
+                    this.controller.performHide();
+                }
             }
         });
     }
@@ -159,7 +164,7 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
         if (!Objects.equals(curCountStr, "") && curIconPath != null) {
             JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + curIconPath + ".png", 26);
             JPanel curPanel = new JPanel(new BorderLayout());
-            curPanel.setPreferredSize(new Dimension((int) (this.componentsFactory.getScale() * 66), (int) (this.componentsFactory.getScale() * 26)));
+            curPanel.setPreferredSize(new Dimension((int) (this.componentsFactory.getScale() * 70), (int) (this.componentsFactory.getScale() * 26)));
             curPanel.setBackground(AppThemeColor.MSG_HEADER);
             JLabel countLabel = this.componentsFactory.getTextLabel(curCountStr, FontStyle.BOLD, 17f);
             countLabel.setHorizontalAlignment(SwingConstants.RIGHT);

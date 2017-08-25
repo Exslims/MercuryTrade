@@ -10,6 +10,7 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.settings.MenuPanel;
+import com.mercury.platform.ui.components.panel.settings.page.GlobalHotkeyGroup;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
@@ -83,7 +84,7 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         donateDescriptor.setSize(new Dimension(100, 20));
         donateDescriptor.setType(AdrComponentType.PROGRESS_BAR);
         donateDescriptor.setCustomTextEnable(true);
-        donateDescriptor.setCustomText("5$/150$");
+        donateDescriptor.setCustomText("5$");
         donateDescriptor.setFontSize(21);
         donateDescriptor.setLowValueTextColor(AppThemeColor.TEXT_DEFAULT);
         donateDescriptor.setMediumValueTextColor(AppThemeColor.TEXT_DEFAULT);
@@ -116,6 +117,7 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
                 "Cancel",
                 16f);
         cancelButton.addActionListener(e -> {
+            GlobalHotkeyGroup.INSTANCE.clear();
             MercuryStoreCore.showingDelaySubject.onNext(true);
             this.hideComponent();
             MercuryStoreUI.settingsRestoreSubject.onNext(true);
