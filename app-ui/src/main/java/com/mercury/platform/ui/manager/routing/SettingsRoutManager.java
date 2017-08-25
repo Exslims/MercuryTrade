@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.manager.routing;
 
 import com.mercury.platform.shared.AsSubscriber;
+import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.panel.settings.page.*;
 import com.mercury.platform.ui.frame.titled.SettingsFrame;
@@ -19,6 +20,10 @@ public class SettingsRoutManager implements AsSubscriber {
 
     public SettingsRoutManager(SettingsFrame settingsFrame) {
         this.settingsFrame = settingsFrame;
+
+        if (Configuration.get().applicationConfiguration().get().isShowOnStartUp()) {
+            Configuration.get().applicationConfiguration().get().setShowOnStartUp(false);
+        }
 
         this.generalSettings = new GeneralSettingsPagePanel();
         this.soundSettings = new SoundSettingsPagePanel();

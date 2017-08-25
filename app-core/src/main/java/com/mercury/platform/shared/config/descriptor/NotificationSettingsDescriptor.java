@@ -16,7 +16,7 @@ public class NotificationSettingsDescriptor implements Serializable {
     private int unfoldCount = 2;
     private FlowDirections flowDirections = FlowDirections.DOWNWARDS;
     private boolean dismissAfterKick = true;
-    private boolean dismissAfterLeave = true;
+    private boolean dismissAfterLeave = false;
     private boolean showLeague;
     private List<ResponseButtonDescriptor> buttons = new ArrayList<>();
     private List<ResponseButtonDescriptor> outButtons = new ArrayList<>();

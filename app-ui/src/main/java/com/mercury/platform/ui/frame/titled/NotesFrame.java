@@ -24,8 +24,6 @@ public class NotesFrame extends AbstractTitledComponentFrame {
     private ProgressBarFrame progressBarFrame;
     private boolean lastNote = false;
 
-    private JCheckBox showOnStartUp;
-
     public NotesFrame(List<Note> notes, NotesType type) {
         super();
         this.currentNotes = notes;
@@ -52,20 +50,6 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         this.contentPanel = new ContentPanel();
         rootPanel.add(contentPanel, BorderLayout.CENTER);
         JPanel miscPanel = componentsFactory.getTransparentPanel(new BorderLayout());
-
-        this.showOnStartUp = new JCheckBox();
-        this.showOnStartUp.setBackground(AppThemeColor.TRANSPARENT);
-        this.showOnStartUp.setSelected(this.applicationConfig.get().isShowOnStartUp());
-        this.showOnStartUp.addActionListener(action -> {
-            this.applicationConfig.get().setShowOnStartUp(showOnStartUp.isSelected());
-        });
-
-        JPanel showOnStartPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
-        showOnStartPanel.add(showOnStartUp);
-        showOnStartPanel.add(componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_DEFAULT, TextAlignment.LEFTOP, 15f, "Show on StartUp"));
-        if (type.equals(NotesType.INFO)) {
-            miscPanel.add(showOnStartPanel, BorderLayout.CENTER);
-        }
         miscPanel.add(getNavBar(), BorderLayout.PAGE_END);
         rootPanel.add(miscPanel, BorderLayout.PAGE_END);
         this.add(rootPanel, BorderLayout.CENTER);

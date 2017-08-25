@@ -82,7 +82,7 @@ public class FramesConfigurationServiceImpl extends BaseConfigurationService<Map
 
     private void initDefaultMap() {
         defaultFramesSettings.put("TaskBarFrame", new FrameDescriptor(new Point(400, 500), new Dimension(109, 20)));
-        defaultFramesSettings.put("NotificationFrame", new FrameDescriptor(new Point(700, 600), new Dimension(350, 0)));
+        defaultFramesSettings.put("NotificationFrame", new FrameDescriptor(new Point(700, 600), new Dimension(450, 0)));
         defaultFramesSettings.put("OutMessageFrame", new FrameDescriptor(new Point(200, 500), new Dimension(280, 115)));
         defaultFramesSettings.put("TestCasesFrame", new FrameDescriptor(new Point(1400, 500), new Dimension(400, 100)));
         defaultFramesSettings.put("SettingsFrame", new FrameDescriptor(new Point(600, 600), new Dimension(800, 600)));

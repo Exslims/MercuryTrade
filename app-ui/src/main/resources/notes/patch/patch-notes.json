@@ -2,8 +2,8 @@
   "version": "1.0.1.9.0",
   "notes":[
     {
-      "title" : "Hotfix",
-      "text" : "Hotfixes for the recent big update (check github/reddit):\n\n1. Now \"Escape\" is not a viable hotkey (lmao), will clear the hotkey instead.\n2. Fixed a bug with Item Grid boxes not being removed properly.\n3. Fixed a bug with panel resizing not working.\n4. Fixed Notification's Upwards Flow Direction option is not working properly.",
+      "title": "Update",
+      "text": "- Improved all trade notification layouts - now way cooler.\n- Now outgoing notifications will be automatically discarded if DND/AFK/NotOnline has been detected.\n- Player proximity status is now working again (when a buyer visits your h/o).\n- The Ignore Item thing now works for currency trades as well.\n- Reworked the History-with-this-guy window - now opens a subwindow with a scroll.\n- Fixed Upwards flow direction not working.\nA full listing of fixes you can find on the github page.\n\nDo your part and support MercuryTrade! More features soon!",
       "image" : "",
       "layout" : "VERTICAL"
     }
