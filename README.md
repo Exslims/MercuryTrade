@@ -42,7 +42,7 @@ Recently Overseer has got a new component: **Capture** - allows you to literally
 &nbsp; *Major feature:* **Notification**
 
 <p align="center">
-  <img src="http://i.imgur.com/meezpbE.png"/>
+  <img src="http://i.imgur.com/4XIGPYh.png"/>
 </p>
 
 When you receive a trade related message or scanner message this notification panel pops up. It contains all the information you need to make a decision. It offers a set of fully customizable "quick response buttons" - such as "Sold" / "No" / "Wait 3m" / etc - as well as buttons to invite, kick and trade with the person who made the offer. There are also "?" - "Still Interested?" and a chat-history button. 
@@ -55,7 +55,7 @@ You can ignore an item: sold an item 5 hours ago yet people are still spamming y
 Outgoing trade offers and messages from chat scanner to be diplayed as notifications as well. It has a different panel layout for the essentials such as "Visit Hideout" and "Leave" buttons.
 
 <p align="center">
-  <img src="http://i.imgur.com/UPncdtt.png"/>
+  <img src="http://i.imgur.com/4fcWtwm.png"/>
 </p>
 
 <p align="center"> <i>Multiple notifications</i> </p>
