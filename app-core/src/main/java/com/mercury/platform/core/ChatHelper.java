@@ -8,6 +8,7 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.User32;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -60,7 +61,7 @@ public class ChatHelper implements AsSubscriber {
         Clipboard clipboard = toolkit.getSystemClipboard();
         try {
             String result = (String) clipboard.getData(DataFlavor.stringFlavor);
-            if (result.contains("listed for") || result.contains("for my")) {
+            if (result != null && (result.contains("listed for") || result.contains("for my"))) {
                 this.gameToFront();
                 MercuryStoreCore.blockHotkeySubject.onNext(true);
                 robot.keyRelease(KeyEvent.VK_ALT);
@@ -81,6 +82,14 @@ public class ChatHelper implements AsSubscriber {
                 robot.keyRelease(KeyEvent.VK_CONTROL);
                 robot.keyPress(KeyEvent.VK_ENTER);
                 robot.keyRelease(KeyEvent.VK_ENTER);
+
+                Timer timer = new Timer(300, action -> {
+                    StringSelection selection = new StringSelection("");
+                    clipboard.setContents(selection, null);
+                });
+                timer.setRepeats(false);
+                timer.start();
+
                 MercuryStoreCore.blockHotkeySubject.onNext(false);
             }
         } catch (UnsupportedFlavorException | IOException e) {
