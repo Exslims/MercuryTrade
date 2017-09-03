@@ -17,12 +17,16 @@ public class PlayerInaccessibleInterceptor extends MessageInterceptor {
 
     @Override
     protected void process(String message) {
-        this.lastPlainMessage.setMessage(StringUtils.substringAfter(message, " : "));
-        MercuryStoreCore.plainMessageSubject.onNext(this.lastPlainMessage);
+        if (lastPlainMessage != null) {
+            PlainMessageDescriptor descriptor = new PlainMessageDescriptor();
+            descriptor.setNickName(this.lastPlainMessage.getNickName());
+            descriptor.setMessage(StringUtils.substringAfter(message, " : "));
+            MercuryStoreCore.plainMessageSubject.onNext(descriptor);
+        }
     }
 
     @Override
     protected MessageMatcher match() {
-        return message -> message.contains("That character is not online.");
+        return message -> true;
     }
 }

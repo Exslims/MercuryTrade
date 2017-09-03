@@ -80,8 +80,8 @@ public abstract class TradeOutNotificationPanel<T extends TradeNotificationDescr
             if (this.data.getWhisperNickname().equals(message.getNickName())) {
                 if (this.notificationConfig.get()
                         .getAutoCloseTriggers().stream()
-                        .anyMatch(it -> StringUtils.normalizeSpace(it.toLowerCase())
-                                .equals(StringUtils.normalizeSpace(message.getMessage().toLowerCase())))) {
+                        .anyMatch(it -> message.getMessage().toLowerCase()
+                                .contains(StringUtils.normalizeSpace(it.toLowerCase())))) {
                     this.controller.performHide();
                 }
             }

@@ -44,6 +44,8 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         this.outHotkeyGroup = new HotKeyGroup();
         this.scannerHotkeyGroup = new HotKeyGroup();
 
+        JPanel whisperHelperPanel = this.adrComponentsFactory.getCounterPanel(this.getWhisperHelperPanel(), "Whisper helper:", AppThemeColor.ADR_BG, false);
+        whisperHelperPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
         JPanel inPanel = this.adrComponentsFactory.getCounterPanel(this.getIncomingPanel(), "Incoming notification:", AppThemeColor.ADR_BG, false);
         inPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
         JPanel outPanel = this.adrComponentsFactory.getCounterPanel(this.getOutgoingPanel(), "Outgoing notification:", AppThemeColor.ADR_BG, false);
@@ -51,6 +53,7 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         JPanel scannerPanel = this.adrComponentsFactory.getCounterPanel(this.getChatScannerPanel(), "Chat scanner notification:", AppThemeColor.ADR_BG, false);
         scannerPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
         this.container.add(this.componentsFactory.wrapToSlide(this.getGeneralPanel(), 4, 4, 2, 4));
+        this.container.add(this.componentsFactory.wrapToSlide(whisperHelperPanel, 2, 4, 2, 4));
         this.container.add(this.componentsFactory.wrapToSlide(inPanel, 2, 4, 2, 4));
         this.container.add(this.componentsFactory.wrapToSlide(outPanel, 2, 4, 2, 4));
         this.container.add(this.componentsFactory.wrapToSlide(scannerPanel, 2, 4, 2, 4));
@@ -119,6 +122,16 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         return root;
     }
 
+    private JPanel getWhisperHelperPanel() {
+        JPanel root = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.ADR_BG);
+        root.add(this.componentsFactory.getTextLabel("When you release CTRL key clipboard content will be transferred to chat.", FontStyle.REGULAR, 16), BorderLayout.PAGE_START);
+        JLabel img = new JLabel();
+        img.setIcon(this.componentsFactory.getImage("app/whisper-helper.png"));
+        root.add(this.componentsFactory.wrapToSlide(img, AppThemeColor.ADR_BG, 4, 4, 4, 4), BorderLayout.CENTER);
+        root.add(this.componentsFactory.getTextLabel("Example: press CTRL => click on 'Whisper' button => release CTRL.", FontStyle.REGULAR, 16), BorderLayout.PAGE_END);
+        root.setVisible(false);
+        return root;
+    }
     private JPanel getIncomingPanel() {
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.ADR_BG);
         JPanel propertiesPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2, 4, 4), AppThemeColor.ADR_BG);

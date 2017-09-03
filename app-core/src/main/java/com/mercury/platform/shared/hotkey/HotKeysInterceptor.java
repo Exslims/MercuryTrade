@@ -17,6 +17,7 @@ public class HotKeysInterceptor {
         } catch (NativeHookException e) {
             e.printStackTrace();
         }
+
         GlobalScreen.addNativeKeyListener(new MercuryNativeKeyListener());
         GlobalScreen.addNativeMouseListener(new MercuryNativeMouseListener());
     }

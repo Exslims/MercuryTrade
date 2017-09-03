@@ -10,6 +10,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SoundDescriptor implements Serializable {
-    private String wavPath;
-    private Float db;
+    private String wavPath = "...";
+    private Float db = 0f;
 }

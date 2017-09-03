@@ -33,6 +33,8 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         JLabel textOutlineLabel = this.componentsFactory.getTextLabel("Text outline:");
         JLabel fontSizeLabel = this.componentsFactory.getTextLabel("Font size:");
         JLabel durationLabel = this.componentsFactory.getTextLabel("Duration:");
+        JLabel soundLabel = this.componentsFactory.getTextLabel("Sound alert:");
+        JLabel soundVolumeLabel = this.componentsFactory.getTextLabel("Sound volume");
         JLabel delayLabel = this.componentsFactory.getTextLabel("Delay:");
         JLabel invertTimerLabel = this.componentsFactory.getTextLabel("Invert timer:");
         JLabel textColorLabel = this.componentsFactory.getTextLabel("Text color:");
@@ -48,6 +50,8 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
         JPanel locationPanel = this.adrComponentsFactory.getLocationPanel(this.payload, this.fromGroup);
         JPanel hotKeyPanel = this.adrComponentsFactory.getHotKeyPanel(this.payload);
         JPanel iconPanel = this.adrComponentsFactory.getIconPanel(this.payload);
+        JPanel soundPanel = this.adrComponentsFactory.getSoundPanel(this.payload);
+        JSlider soundVolumeSlider = this.adrComponentsFactory.getVolumeSlider(this.payload);
         JPanel insetsPanel = this.adrComponentsFactory.getInsetsPanel(this.payload);
         JComboBox iconAlignment = this.adrComponentsFactory.getIconAlignment(this.payload);
         JTextField fontSizeField = this.adrComponentsFactory.getFontSizeField(this.payload);
@@ -91,6 +95,10 @@ public class AdrProgressBarPagePanel extends AdrPagePanel<AdrProgressBarDescript
             specPanel.add(opacityLabel);
             specPanel.add(opacitySlider);
         }
+        specPanel.add(soundLabel);
+        specPanel.add(soundPanel);
+        specPanel.add(soundVolumeLabel);
+        specPanel.add(soundVolumeSlider);
         specPanel.add(delayLabel);
         specPanel.add(delayField);
         specPanel.add(pbOrientationLabel);

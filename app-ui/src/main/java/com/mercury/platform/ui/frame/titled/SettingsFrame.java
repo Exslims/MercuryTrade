@@ -93,8 +93,7 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         donateDescriptor.setBackgroundColor(AppThemeColor.FRAME);
         donateDescriptor.setForegroundColor(AppThemeColor.BUTTON);
         MercuryTracker tracker = new MercuryTracker(donateDescriptor);
-        float percent = 200 * (77 / 100f);
-        tracker.setValue((int) (percent * 100));
+        tracker.setValue(87 * 1000);
         tracker.setPreferredSize(donateDescriptor.getSize());
         root.add(this.componentsFactory.getTextLabel("Monthly donations:", FontStyle.BOLD, 16), BorderLayout.LINE_START);
         root.add(this.componentsFactory.wrapToSlide(tracker, AppThemeColor.ADR_FOOTER_BG, 2, 2, 2, 1), BorderLayout.CENTER);

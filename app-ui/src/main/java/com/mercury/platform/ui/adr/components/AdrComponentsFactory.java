@@ -20,6 +20,7 @@ import com.mercury.platform.ui.dialog.DialogCallback;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.TooltipConstants;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
@@ -77,6 +78,55 @@ public class AdrComponentsFactory {
             heightField.setEnabled(false);
         }
         return root;
+    }
+
+    public JPanel getSoundPanel(AdrDurationComponentDescriptor descriptor) {
+        String[] soundPaths = {
+                "...",
+                "Button-chime",
+                "Corsica-ding",
+                "Foolboy-notification",
+                "Nenadsimic"
+        };
+        JComboBox soundPathBox = this.componentsFactory.getComboBox(soundPaths);
+        String selectedPath = "...";
+        if (!descriptor.getSoundDescriptor().getWavPath().equals("...")) {
+            selectedPath = StringUtils.substringBetween(descriptor.getSoundDescriptor().getWavPath(), "app/sounds/", ".wav");
+        }
+        soundPathBox.setSelectedItem(selectedPath);
+        soundPathBox.addActionListener(action -> {
+            if (!soundPathBox.getSelectedItem().equals("...")) {
+                descriptor.getSoundDescriptor().setWavPath("app/sounds/" + soundPathBox.getSelectedItem() + ".wav");
+                MercuryStoreCore.soundDescriptorSubject.onNext(descriptor.getSoundDescriptor());
+                MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+            } else {
+                descriptor.getSoundDescriptor().setWavPath("...");
+            }
+        });
+        JPanel root = this.componentsFactory.getJPanel(new BorderLayout(4, 0), AppThemeColor.ADR_BG);
+        JTextField durationField =
+                this.getSmartField(descriptor.getSoundThreshold(),
+                        new DoubleFieldValidator(0.0, 1000.0), descriptor::setSoundThreshold);
+        durationField.setPreferredSize(new Dimension(36, 26));
+        root.add(soundPathBox, BorderLayout.LINE_START);
+        root.add(this.componentsFactory.getTextLabel("when duration ="), BorderLayout.CENTER);
+        root.add(durationField, BorderLayout.LINE_END);
+        return root;
+    }
+
+    public JSlider getVolumeSlider(AdrDurationComponentDescriptor descriptor) {
+        JSlider notificationSlider = this.componentsFactory.getSlider(-40, 6, descriptor.getSoundDescriptor().getDb().intValue(), AppThemeColor.ADR_BG);
+        notificationSlider.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (!descriptor.getSoundDescriptor().getWavPath().equals("...")) {
+                    descriptor.getSoundDescriptor().setDb(notificationSlider.getValue() == -40 ? -80f : (float) notificationSlider.getValue());
+                    MercuryStoreCore.soundDescriptorSubject.onNext(descriptor.getSoundDescriptor());
+                    MercuryStoreUI.adrReloadSubject.onNext(descriptor);
+                }
+            }
+        });
+        return notificationSlider;
     }
 
     public JPanel getCaptureSizePanel(AdrCaptureDescriptor descriptor) {

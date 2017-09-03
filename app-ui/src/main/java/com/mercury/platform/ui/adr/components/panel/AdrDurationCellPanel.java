@@ -1,5 +1,7 @@
 package com.mercury.platform.ui.adr.components.panel;
 
+import com.mercury.platform.core.ProdStarter;
+import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupType;
 import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
@@ -54,16 +56,18 @@ public class AdrDurationCellPanel extends AdrDurationComponentPanel<AdrDurationC
 
     @Override
     protected void onHotKeyPressed() {
-        this.tracker.setStringPainted(descriptor.isTextEnable());
-        this.tracker.setMaskPainted(descriptor.isMaskEnable());
-        if (this.descriptor.isHotKeyRefresh()) {
-            this.tracker.abort();
-        }
-        this.tracker.play();
-        if (this.getParent() instanceof AdrTrackerGroupPanel) {
-            AdrTrackerGroupPanel parent = (AdrTrackerGroupPanel) this.getParent();
-            if (parent.getDescriptor().getGroupType().equals(AdrTrackerGroupType.DYNAMIC)) {
-                parent.setComponentZOrder(this, parent.getComponentCount() - 1);
+        if (ProdStarter.APP_STATUS.equals(FrameVisibleState.SHOW)) {
+            this.tracker.setStringPainted(descriptor.isTextEnable());
+            this.tracker.setMaskPainted(descriptor.isMaskEnable());
+            if (this.descriptor.isHotKeyRefresh()) {
+                this.tracker.abort();
+            }
+            this.tracker.play();
+            if (this.getParent() instanceof AdrTrackerGroupPanel) {
+                AdrTrackerGroupPanel parent = (AdrTrackerGroupPanel) this.getParent();
+                if (parent.getDescriptor().getGroupType().equals(AdrTrackerGroupType.DYNAMIC)) {
+                    parent.setComponentZOrder(this, parent.getComponentCount() - 1);
+                }
             }
         }
     }

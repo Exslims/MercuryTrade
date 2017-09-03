@@ -22,6 +22,9 @@ public class SoundNotifier {
                 .subscribe(data -> play(data.getWavPath(), data.getDb()));
         MercuryStoreCore.dndSubject
                 .subscribe(value -> this.dnd = value);
+        MercuryStoreCore.soundDescriptorSubject.subscribe(soundDescriptor -> {
+            this.play(soundDescriptor.getWavPath(), soundDescriptor.getDb());
+        });
     }
 
     private void play(String wavPath, float db) {

@@ -33,6 +33,8 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         JLabel fontSizeLabel = this.componentsFactory.getTextLabel("Font size:");
         JLabel invertTimerLabel = this.componentsFactory.getTextLabel("Invert timer:");
         JLabel durationLabel = this.componentsFactory.getTextLabel("Duration:");
+        JLabel soundLabel = this.componentsFactory.getTextLabel("Sound alert:");
+        JLabel soundVolumeLabel = this.componentsFactory.getTextLabel("Sound volume");
         JLabel delayLabel = this.componentsFactory.getTextLabel("Delay:");
         JLabel backgroundColorLabel = this.componentsFactory.getTextLabel("Background color:");
         JLabel textColorLabel = this.componentsFactory.getTextLabel("Text color:");
@@ -50,6 +52,8 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         JTextField fontSizeField = this.adrComponentsFactory.getFontSizeField(this.payload);
         JPanel textOutlinePanel = this.adrComponentsFactory.getTextOutlinePanel(this.payload);
         JTextField durationField = this.adrComponentsFactory.getDurationField(this.payload);
+        JPanel soundPanel = this.adrComponentsFactory.getSoundPanel(this.payload);
+        JSlider soundVolumeSlider = this.adrComponentsFactory.getVolumeSlider(this.payload);
         JTextField delayField = this.adrComponentsFactory.getDelayField(this.payload);
         JComboBox textFormatBox = this.adrComponentsFactory.getTextFormatBox(this.payload);
         JPanel backgroundColorPanel = this.adrComponentsFactory.getBackgroundColorPanel(this.payload);
@@ -93,6 +97,10 @@ public class AdrIconPagePanel extends AdrPagePanel<AdrIconDescriptor> {
         }
         specPanel.add(alwaysVisibleLabel);
         specPanel.add(alwaysVisibleBox);
+        specPanel.add(soundLabel);
+        specPanel.add(soundPanel);
+        specPanel.add(soundVolumeLabel);
+        specPanel.add(soundVolumeSlider);
         specPanel.add(delayLabel);
         specPanel.add(delayField);
         specPanel.add(fontSizeLabel);

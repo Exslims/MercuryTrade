@@ -1,6 +1,7 @@
 package com.mercury.platform.shared.config.descriptor.adr;
 
 import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
+import com.mercury.platform.shared.config.descriptor.SoundDescriptor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -35,4 +36,6 @@ public class AdrDurationComponentDescriptor extends AdrColoredComponentDescripto
     private Double defaultValueTextThreshold = 5d;
     private Insets insets = new Insets(0, 0, 0, 0);
     private boolean bindToTextColor;
+    private SoundDescriptor soundDescriptor = new SoundDescriptor();
+    private Double soundThreshold = 0d;
 }

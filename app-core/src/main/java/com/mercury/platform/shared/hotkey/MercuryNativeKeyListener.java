@@ -6,6 +6,8 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
+import javax.swing.*;
+
 public class MercuryNativeKeyListener implements NativeKeyListener {
     private boolean menuPressed;
     private boolean shiftPressed;
@@ -21,15 +23,15 @@ public class MercuryNativeKeyListener implements NativeKeyListener {
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
         switch (nativeKeyEvent.getKeyCode()) {
             case 42: {
-                this.shiftPressed = true;
+                shiftPressed = true;
                 break;
             }
             case 29: {
-                this.ctrlpressed = true;
+                ctrlpressed = true;
                 break;
             }
             case 56: {
-                this.menuPressed = true;
+                menuPressed = true;
                 break;
             }
             default: {
@@ -44,18 +46,28 @@ public class MercuryNativeKeyListener implements NativeKeyListener {
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
         switch (nativeKeyEvent.getKeyCode()) {
             case 42: {
-                this.shiftPressed = false;
+                shiftPressed = false;
                 break;
             }
             case 29: {
-                this.ctrlpressed = false;
+                ctrlpressed = false;
                 break;
             }
             case 56: {
-                this.menuPressed = false;
+                menuPressed = false;
                 break;
             }
         }
+        if (!this.block) {
+            if (nativeKeyEvent.getKeyCode() == 29) {
+                Timer timer = new Timer(500, action -> {
+                    MercuryStoreCore.tradeWhisperSubject.onNext(true);
+                });
+                timer.setRepeats(false);
+                timer.start();
+            }
+        }
+
     }
 
     @Override
@@ -77,9 +89,9 @@ public class MercuryNativeKeyListener implements NativeKeyListener {
         HotKeyDescriptor hotKeyDescriptor = new HotKeyDescriptor();
         hotKeyDescriptor.setTitle(NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode()));
         hotKeyDescriptor.setVirtualKeyCode(nativeKeyEvent.getKeyCode());
-        hotKeyDescriptor.setControlPressed(this.ctrlpressed);
-        hotKeyDescriptor.setShiftPressed(this.shiftPressed);
-        hotKeyDescriptor.setMenuPressed(this.menuPressed);
+        hotKeyDescriptor.setControlPressed(ctrlpressed);
+        hotKeyDescriptor.setShiftPressed(shiftPressed);
+        hotKeyDescriptor.setMenuPressed(menuPressed);
 
         hotKeyDescriptor.setTitle(this.getButtonText(hotKeyDescriptor));
         return hotKeyDescriptor;

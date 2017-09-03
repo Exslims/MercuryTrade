@@ -3,6 +3,7 @@ package com.mercury.platform.ui.adr.components.panel.ui;
 import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.ui.impl.ProgressBarUI;
 import com.mercury.platform.ui.adr.components.panel.ui.impl.SquareIconTrackerUI;
 import com.mercury.platform.ui.components.ComponentsFactory;
@@ -10,8 +11,10 @@ import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.Range;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.callback.TimelineCallback;
+import org.pushingpixels.trident.callback.TimelineCallbackAdapter;
 
 import javax.swing.*;
 
@@ -40,6 +43,8 @@ public class MercuryTracker extends JComponent {
 
     private Timeline progressTl;
 
+    private boolean soundPlayed;
+
     public MercuryTracker(AdrDurationComponentDescriptor descriptor) {
         this.descriptor = descriptor;
         this.setMaximum((int) (this.descriptor.getDuration() * 1000));
@@ -51,12 +56,41 @@ public class MercuryTracker extends JComponent {
         this.progressTl.setInitialDelay((long) (descriptor.getDelay() * 1000));
         this.progressTl.setDuration((int) (descriptor.getDuration() * 1000));
         if (this.descriptor.isInvertTimer()) {
-            this.setValue((int) (this.descriptor.getDuration() * 1000));
             this.progressTl.addPropertyToInterpolate("value", 0, this.getMaximum());
+            this.value = 0;
         } else {
-            this.setValue(0);
             this.progressTl.addPropertyToInterpolate("value", this.getMaximum(), 0);
+            this.value = this.maximum;
         }
+
+        this.progressTl.addCallback(new TimelineCallbackAdapter() {
+            @Override
+            public void onTimelineStateChanged(Timeline.TimelineState oldState, Timeline.TimelineState newState, float durationFraction, float timelinePosition) {
+                if (newState.equals(Timeline.TimelineState.IDLE)) {
+                    if (descriptor.isInvertTimer()) {
+                        value = 0;
+                    } else {
+                        value = maximum;
+                    }
+                }
+            }
+
+            @Override
+            public void onTimelinePulse(float durationFraction, float timelinePosition) {
+                if (!descriptor.getSoundDescriptor().getWavPath().equals("...") && !soundPlayed) {
+                    if (valueInSoundRange() && !showCase) {
+                        soundPlayed = true;
+                        MercuryStoreCore.soundDescriptorSubject.onNext(descriptor.getSoundDescriptor());
+                    }
+                }
+            }
+        });
+    }
+
+    private boolean valueInSoundRange() {
+        float value = getValue() / 1000f;
+        float threshold = this.descriptor.getSoundThreshold().floatValue();
+        return Range.between(threshold - 0.1, threshold + 0.1).contains((double) value);
     }
 
     private void initUI() {
@@ -104,6 +138,7 @@ public class MercuryTracker extends JComponent {
     }
 
     public void play() {
+        this.soundPlayed = false;
         this.progressTl.play();
     }
 

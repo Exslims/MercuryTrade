@@ -51,6 +51,8 @@ public class MercuryStoreCore {
     public static final PublishSubject<Boolean> blockHotkeySubject = PublishSubject.create();
     public static final PublishSubject<MercuryError> errorHandlerSubject = PublishSubject.create();
     public static final PublishSubject<AdrVisibleState> adrVisibleSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> tradeWhisperSubject = PublishSubject.create();
+    public static final PublishSubject<SoundDescriptor> soundDescriptorSubject = PublishSubject.create();
 
     public static final PublishSubject<NotificationDescriptor> newNotificationSubject = PublishSubject.create();
     public static final PublishSubject<NotificationDescriptor> removeNotificationSubject = PublishSubject.create();
