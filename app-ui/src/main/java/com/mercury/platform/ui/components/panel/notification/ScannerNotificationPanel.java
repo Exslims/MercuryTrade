@@ -58,6 +58,11 @@ public class ScannerNotificationPanel extends NotificationPanel<PlainMessageDesc
         interactionPanel.setBackground(AppThemeColor.MSG_HEADER);
         JButton inviteMeButton = componentsFactory.getIconButton("app/chat_scanner_response.png", 16, AppThemeColor.MSG_HEADER, TooltipConstants.QUICK_RESPONSE);
         inviteMeButton.addActionListener(e -> this.controller.performResponse(this.config.get().getResponseMessage()));
+        JButton inviteButton = componentsFactory.getIconButton("app/invite.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.INVITE);
+        inviteButton.addActionListener(e -> {
+            this.controller.performInvite();
+            root.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER_SELECTED_BORDER));
+        });
         JButton visiteHideout = componentsFactory.getIconButton("app/visiteHideout.png", 16, AppThemeColor.MSG_HEADER, TooltipConstants.VISIT_HO);
         visiteHideout.addActionListener(e -> this.controller.visitHideout());
         JButton tradeButton = componentsFactory.getIconButton("app/trade.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
@@ -76,6 +81,7 @@ public class ScannerNotificationPanel extends NotificationPanel<PlainMessageDesc
             this.controller.performHide();
         });
         interactionPanel.add(inviteMeButton);
+        interactionPanel.add(inviteButton);
         interactionPanel.add(visiteHideout);
         interactionPanel.add(tradeButton);
         interactionPanel.add(leaveButton);

@@ -9,6 +9,8 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 
 public class TaskBarSettingsPagePanel extends SettingsPagePanel {
@@ -25,6 +27,12 @@ public class TaskBarSettingsPagePanel extends SettingsPagePanel {
 
         JTextField responseField = componentsFactory.getTextField(this.taskBarSnapshot.getDndResponseText(), FontStyle.REGULAR, 16f);
         responseField.setEnabled(this.taskBarSnapshot.isInGameDnd());
+        responseField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                taskBarSnapshot.setDndResponseText(responseField.getText());
+            }
+        });
         JCheckBox inGameDND = this.componentsFactory.getCheckBox(this.taskBarSnapshot.isInGameDnd());
         inGameDND.addActionListener(action -> {
             this.taskBarSnapshot.setInGameDnd(inGameDND.isSelected());

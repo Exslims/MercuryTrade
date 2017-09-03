@@ -342,7 +342,8 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                     this.changeBufferSize(this.notificationPanels
                             .stream()
                             .skip(this.config.get().getLimitCount())
-                            .mapToInt(it -> it.getParent().getPreferredSize().height).sum());
+                            .mapToInt(it -> it.getParent().getPreferredSize().height)
+                            .sum());
                 }
             } else {
                 expandButton.setIcon(this.componentsFactory.getIcon("app/expand-all.png", 22));

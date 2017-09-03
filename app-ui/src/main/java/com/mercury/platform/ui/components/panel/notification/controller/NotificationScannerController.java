@@ -19,6 +19,11 @@ public class NotificationScannerController implements ScannerPanelController {
     }
 
     @Override
+    public void performInvite() {
+        MercuryStoreCore.chatCommandSubject.onNext("/invite " + notificationDescriptor.getNickName());
+    }
+
+    @Override
     public void performLeave(String nickName) {
         MercuryStoreCore.chatCommandSubject.onNext("/kick " + nickName);
     }

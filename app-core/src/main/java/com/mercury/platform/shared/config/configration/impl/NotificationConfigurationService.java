@@ -28,6 +28,12 @@ public class NotificationConfigurationService extends BaseConfigurationService<N
         defaultOutButtons.add(new ResponseButtonDescriptor(0, false, "thanks", "thanks", new HotKeyDescriptor()));
         notificationSettingsDescriptor.setButtons(defaultButtons);
         notificationSettingsDescriptor.setOutButtons(defaultOutButtons);
+
+        List<String> autoCloseTriggers = new ArrayList<>();
+        autoCloseTriggers.add("This player has DND mode enabled");
+        autoCloseTriggers.add("That character is not online.");
+        autoCloseTriggers.add("This player is AFK.");
+        notificationSettingsDescriptor.setAutoCloseTriggers(autoCloseTriggers);
         return notificationSettingsDescriptor;
     }
 
@@ -48,6 +54,11 @@ public class NotificationConfigurationService extends BaseConfigurationService<N
         });
         if (this.get().getOutButtons().size() == 0) {
             this.get().getOutButtons().add(new ResponseButtonDescriptor(0, false, "thanks", "thanks", new HotKeyDescriptor()));
+        }
+        if (this.get().getAutoCloseTriggers().size() == 0) {
+            this.get().getAutoCloseTriggers().add("This player has DND mode enabled");
+            this.get().getAutoCloseTriggers().add("That character is not online.");
+            this.get().getAutoCloseTriggers().add("This player is AFK.");
         }
     }
 

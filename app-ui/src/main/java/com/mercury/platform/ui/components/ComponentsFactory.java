@@ -410,13 +410,14 @@ public class ComponentsFactory {
         return iconLabel;
     }
 
-    public JLabel getIconLabel(String iconPath, int size, String tooltip) {
+    public JLabel getIconLabel(String iconPath, int size, int alignment, String tooltip) {
         JLabel iconLabel = new JLabel();
         try {
             iconLabel.setIcon(getIcon(iconPath, (int) (scale * size)));
         } catch (Exception e) {
             return getTextLabel(StringUtils.substringBetween(iconPath, "/", "."));
         }
+        iconLabel.setHorizontalAlignment(alignment);
         iconLabel.addMouseListener(new TooltipMouseListener(tooltip));
         return iconLabel;
     }

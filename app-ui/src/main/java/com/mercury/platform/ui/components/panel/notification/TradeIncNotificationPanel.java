@@ -3,23 +3,17 @@ package com.mercury.platform.ui.components.panel.notification;
 import com.mercury.platform.shared.config.descriptor.HotKeyPair;
 import com.mercury.platform.shared.config.descriptor.HotKeyType;
 import com.mercury.platform.shared.entity.message.TradeNotificationDescriptor;
-import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.notification.controller.IncomingPanelController;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
-import rx.Subscription;
 
 import javax.swing.*;
 import java.awt.*;
 
 
 public abstract class TradeIncNotificationPanel<T extends TradeNotificationDescriptor> extends TradeNotificationPanel<T, IncomingPanelController> {
-    private JLabel nicknameLabel;
-    private Subscription playerJoinSubscription;
-    private Subscription playerLeaveSubscription;
-
     protected JPanel getHeader() {
         JPanel root = new JPanel(new BorderLayout());
         root.setBackground(AppThemeColor.MSG_HEADER);
@@ -29,8 +23,10 @@ public abstract class TradeIncNotificationPanel<T extends TradeNotificationDescr
         this.nicknameLabel = this.componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP, 15f, this.getNicknameText());
         nicknameLabel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 5));
         nickNamePanel.add(this.getExpandButton(), BorderLayout.LINE_START);
-        nickNamePanel.add(this.nicknameLabel, BorderLayout.CENTER);
-        nickNamePanel.add(this.getForPanel("app/incoming_arrow.png"), BorderLayout.LINE_END);
+        JPanel headerPanel = this.componentsFactory.getJPanel(new GridLayout(1, 0, 3, 0), AppThemeColor.MSG_HEADER);
+        headerPanel.add(this.nicknameLabel);
+        headerPanel.add(this.getForPanel("app/incoming_arrow.png"));
+        nickNamePanel.add(headerPanel, BorderLayout.CENTER);
         root.add(nickNamePanel, BorderLayout.CENTER);
 
         JPanel opPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.MSG_HEADER);
@@ -79,27 +75,6 @@ public abstract class TradeIncNotificationPanel<T extends TradeNotificationDescr
         return root;
     }
 
-    @Override
-    public void subscribe() {
-        super.subscribe();
-        this.playerJoinSubscription = MercuryStoreCore.playerJoinSubject.subscribe(nickname -> {
-            if (this.data.getWhisperNickname().equals(nickname)) {
-                this.nicknameLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
-            }
-        });
-        this.playerLeaveSubscription = MercuryStoreCore.playerLeftSubject.subscribe(nickname -> {
-            if (this.data.getWhisperNickname().equals(nickname)) {
-                this.nicknameLabel.setForeground(AppThemeColor.TEXT_DISABLE);
-            }
-        });
-    }
-
-    @Override
-    public void onViewDestroy() {
-        super.onViewDestroy();
-        this.playerLeaveSubscription.unsubscribe();
-        this.playerJoinSubscription.unsubscribe();
-    }
 
     protected abstract JButton getStillInterestedButton();
 

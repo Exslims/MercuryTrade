@@ -80,11 +80,11 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
 
         AdrDurationComponentDescriptor donateDescriptor = new AdrProgressBarDescriptor();
         donateDescriptor.setIconEnable(false);
-        donateDescriptor.setDuration(10d);
+        donateDescriptor.setDuration(200d);
         donateDescriptor.setSize(new Dimension(100, 20));
         donateDescriptor.setType(AdrComponentType.PROGRESS_BAR);
         donateDescriptor.setCustomTextEnable(true);
-        donateDescriptor.setCustomText("5$");
+        donateDescriptor.setCustomText("77$");
         donateDescriptor.setFontSize(21);
         donateDescriptor.setLowValueTextColor(AppThemeColor.TEXT_DEFAULT);
         donateDescriptor.setMediumValueTextColor(AppThemeColor.TEXT_DEFAULT);
@@ -93,7 +93,7 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         donateDescriptor.setBackgroundColor(AppThemeColor.FRAME);
         donateDescriptor.setForegroundColor(AppThemeColor.BUTTON);
         MercuryTracker tracker = new MercuryTracker(donateDescriptor);
-        float percent = 150 * (5 / 100f);
+        float percent = 200 * (77 / 100f);
         tracker.setValue((int) (percent * 100));
         tracker.setPreferredSize(donateDescriptor.getSize());
         root.add(this.componentsFactory.getTextLabel("Monthly donations:", FontStyle.BOLD, 16), BorderLayout.LINE_START);

@@ -32,6 +32,11 @@ public class ScannerStubController implements ScannerPanelController {
     }
 
     @Override
+    public void performInvite() {
+
+    }
+
+    @Override
     public void performLeave(String nickName) {
 
     }

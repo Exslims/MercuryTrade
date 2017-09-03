@@ -9,6 +9,7 @@ import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.notification.controller.OutgoingPanelController;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.TooltipConstants;
+import org.apache.commons.lang3.StringUtils;
 import rx.Subscription;
 
 import javax.swing.*;
@@ -16,9 +17,7 @@ import java.awt.*;
 
 
 public abstract class TradeOutNotificationPanel<T extends TradeNotificationDescriptor> extends TradeNotificationPanel<T, OutgoingPanelController> {
-    private JLabel nicknameLabel;
-    private Subscription playerJoinSubscription;
-    private Subscription playerLeaveSubscription;
+    private Subscription autoCloseSubscription;
 
     @Override
     protected JPanel getHeader() {
@@ -28,8 +27,10 @@ public abstract class TradeOutNotificationPanel<T extends TradeNotificationDescr
         JPanel nickNamePanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.MSG_HEADER);
         this.nicknameLabel = this.componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP, 15f, this.data.getWhisperNickname());
         nickNamePanel.add(this.getExpandButton(), BorderLayout.LINE_START);
-        nickNamePanel.add(this.nicknameLabel, BorderLayout.CENTER);
-        nickNamePanel.add(this.getForPanel("app/outgoing_arrow.png"), BorderLayout.LINE_END);
+        JPanel headerPanel = this.componentsFactory.getJPanel(new GridLayout(1, 0, 3, 0), AppThemeColor.MSG_HEADER);
+        headerPanel.add(this.nicknameLabel);
+        headerPanel.add(this.getForPanel("app/outgoing_arrow.png"));
+        nickNamePanel.add(headerPanel, BorderLayout.CENTER);
         root.add(nickNamePanel, BorderLayout.CENTER);
 
         JPanel opPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.MSG_HEADER);
@@ -75,14 +76,14 @@ public abstract class TradeOutNotificationPanel<T extends TradeNotificationDescr
     @Override
     public void subscribe() {
         super.subscribe();
-        this.playerJoinSubscription = MercuryStoreCore.playerJoinSubject.subscribe(nickname -> {
-            if (this.data.getWhisperNickname().equals(nickname)) {
-                this.nicknameLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
-            }
-        });
-        this.playerLeaveSubscription = MercuryStoreCore.playerLeftSubject.subscribe(nickname -> {
-            if (this.data.getWhisperNickname().equals(nickname)) {
-                this.nicknameLabel.setForeground(AppThemeColor.TEXT_DISABLE);
+        this.autoCloseSubscription = MercuryStoreCore.plainMessageSubject.subscribe(message -> {
+            if (this.data.getWhisperNickname().equals(message.getNickName())) {
+                if (this.notificationConfig.get()
+                        .getAutoCloseTriggers().stream()
+                        .anyMatch(it -> StringUtils.normalizeSpace(it.toLowerCase())
+                                .equals(StringUtils.normalizeSpace(message.getMessage().toLowerCase())))) {
+                    this.controller.performHide();
+                }
             }
         });
     }
@@ -90,8 +91,7 @@ public abstract class TradeOutNotificationPanel<T extends TradeNotificationDescr
     @Override
     public void onViewDestroy() {
         super.onViewDestroy();
-        this.playerLeaveSubscription.unsubscribe();
-        this.playerJoinSubscription.unsubscribe();
+        this.autoCloseSubscription.unsubscribe();
     }
 
     protected JButton getRepeatButton() {

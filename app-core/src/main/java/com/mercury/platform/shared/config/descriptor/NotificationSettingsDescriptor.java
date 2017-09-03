@@ -21,4 +21,5 @@ public class NotificationSettingsDescriptor implements Serializable {
     private List<ResponseButtonDescriptor> buttons = new ArrayList<>();
     private List<ResponseButtonDescriptor> outButtons = new ArrayList<>();
     private String playerNickname = "Set up your nickname in settings";
+    private List<String> autoCloseTriggers = new ArrayList<>();
 }

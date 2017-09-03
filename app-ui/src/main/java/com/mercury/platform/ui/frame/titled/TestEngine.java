@@ -102,6 +102,16 @@ public class TestEngine {
         currency.add("wisdom");
         currency.add("xoph's breachstone");
         currency.add("yriel's");
+        currency.add("Mirror Shard");
+        currency.add("Exalted Shard");
+        currency.add("Annulment Shard");
+        currency.add("Ancient Orb");
+        currency.add("Engineer's Orb");
+        currency.add("Harbinger's Orb");
+        currency.add("Orb of Horizons");
+        currency.add("Orb of Binding");
+        currency.add("Orb of Annulment");
+        currency.add("Divine Vessel");
 
         nickNames.add("<QWE> Example1");
         nickNames.add("Example2");

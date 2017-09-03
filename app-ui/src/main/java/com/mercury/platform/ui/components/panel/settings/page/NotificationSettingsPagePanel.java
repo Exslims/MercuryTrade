@@ -14,7 +14,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class NotificationSettingsPagePanel extends SettingsPagePanel {
     private PlainConfigurationService<NotificationSettingsDescriptor> notificationService;
@@ -159,7 +161,7 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         JPanel root = this.componentsFactory.getJPanel(new GridLayout(0, 2, 4, 4), AppThemeColor.SETTINGS_BG);
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
         this.incHotKeySnapshot.forEach(pair -> {
-            root.add(this.componentsFactory.getIconLabel(pair.getType().getIconPath(), 18, SwingConstants.CENTER));
+            root.add(this.componentsFactory.getIconLabel(pair.getType().getIconPath(), 18, SwingConstants.CENTER, pair.getType().getTooltip()));
             HotKeyPanel hotKeyPanel = new HotKeyPanel(pair.getDescriptor());
             this.incHotkeyGroup.registerHotkey(hotKeyPanel);
             root.add(this.componentsFactory.wrapToSlide(hotKeyPanel, AppThemeColor.SETTINGS_BG, 2, 4, 1, 1));
@@ -171,7 +173,7 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         JPanel root = this.componentsFactory.getJPanel(new GridLayout(0, 2, 4, 4), AppThemeColor.SETTINGS_BG);
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
         this.outHotKeySnapshot.forEach(pair -> {
-            root.add(this.componentsFactory.getIconLabel(pair.getType().getIconPath(), 18, SwingConstants.CENTER));
+            root.add(this.componentsFactory.getIconLabel(pair.getType().getIconPath(), 18, SwingConstants.CENTER, pair.getType().getTooltip()));
             HotKeyPanel hotKeyPanel = new HotKeyPanel(pair.getDescriptor());
             this.outHotkeyGroup.registerHotkey(hotKeyPanel);
             root.add(this.componentsFactory.wrapToSlide(hotKeyPanel, AppThemeColor.SETTINGS_BG, 2, 4, 1, 1));
@@ -183,7 +185,7 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         JPanel root = this.componentsFactory.getJPanel(new GridLayout(0, 2, 4, 4), AppThemeColor.SETTINGS_BG);
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
         this.scannerHotKeySnapshot.forEach(pair -> {
-            root.add(this.componentsFactory.getIconLabel(pair.getType().getIconPath(), 18, SwingConstants.CENTER));
+            root.add(this.componentsFactory.getIconLabel(pair.getType().getIconPath(), 18, SwingConstants.CENTER, pair.getType().getTooltip()));
             HotKeyPanel hotKeyPanel = new HotKeyPanel(pair.getDescriptor());
             this.scannerHotkeyGroup.registerHotkey(hotKeyPanel);
             root.add(this.componentsFactory.wrapToSlide(hotKeyPanel, AppThemeColor.SETTINGS_BG, 2, 4, 1, 1));
@@ -206,6 +208,20 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
             this.generalSnapshot.setDismissAfterLeave(closeAfterLeave.isSelected());
         });
         propertiesPanel.add(closeAfterLeave);
+        propertiesPanel.add(this.componentsFactory.getTextLabel("Auto-close triggers:", FontStyle.REGULAR, 16));
+        String collect = this.generalSnapshot.getAutoCloseTriggers()
+                .stream()
+                .collect(Collectors.joining(","));
+        JTextField triggersField = this.componentsFactory.getTextField(collect, FontStyle.DEFAULT, 15f);
+        triggersField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                generalSnapshot.setAutoCloseTriggers(Arrays.stream(triggersField.getText().split(","))
+                        .filter(it -> !it.isEmpty())
+                        .collect(Collectors.toList()));
+            }
+        });
+        propertiesPanel.add(triggersField);
 
         ResponseButtonsPanel responseButtonsPanel = new ResponseButtonsPanel(this.generalSnapshot.getOutButtons(), this.outHotkeyGroup);
         responseButtonsPanel.onViewInit();

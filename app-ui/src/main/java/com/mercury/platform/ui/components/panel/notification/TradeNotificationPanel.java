@@ -23,8 +23,11 @@ import java.util.Objects;
 
 public abstract class TradeNotificationPanel<T extends TradeNotificationDescriptor, C extends NotificationController> extends NotificationPanel<T, C> {
     protected JPanel responseButtonsPanel;
-    private Subscription chatSubscription;
+    protected JLabel nicknameLabel;
 
+    private Subscription chatSubscription;
+    private Subscription playerJoinSubscription;
+    private Subscription playerLeaveSubscription;
     @Override
     public void onViewInit() {
         super.onViewInit();
@@ -100,11 +103,16 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
         this.chatSubscription = MercuryStoreCore.plainMessageSubject.subscribe(message -> {
             if (this.data.getWhisperNickname().equals(message.getNickName())) {
                 this.data.getRelatedMessages().add(message);
-                if (message.getMessage().contains("This player has DND mode enabled")
-                        || message.getMessage().contains("That character is not online.")
-                        || message.getMessage().contains("This player is AFK.")) {
-                    this.controller.performHide();
-                }
+            }
+        });
+        this.playerJoinSubscription = MercuryStoreCore.playerJoinSubject.subscribe(nickname -> {
+            if (this.data.getWhisperNickname().equals(nickname)) {
+                this.nicknameLabel.setForeground(AppThemeColor.TEXT_SUCCESS);
+            }
+        });
+        this.playerLeaveSubscription = MercuryStoreCore.playerLeftSubject.subscribe(nickname -> {
+            if (this.data.getWhisperNickname().equals(nickname)) {
+                this.nicknameLabel.setForeground(AppThemeColor.TEXT_DISABLE);
             }
         });
     }
@@ -113,6 +121,8 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
     public void onViewDestroy() {
         super.onViewDestroy();
         this.chatSubscription.unsubscribe();
+        this.playerLeaveSubscription.unsubscribe();
+        this.playerJoinSubscription.unsubscribe();
     }
 
     protected JLabel getHistoryButton() {
@@ -145,11 +155,11 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
         JPanel forPanel = new JPanel(new BorderLayout());
         forPanel.setBackground(AppThemeColor.MSG_HEADER);
         JLabel separator = componentsFactory.getIconLabel(signIconPath, 16);
-        forPanel.add(separator, BorderLayout.CENTER);
+        forPanel.add(separator, BorderLayout.LINE_START);
         separator.setHorizontalAlignment(SwingConstants.CENTER);
         JPanel currencyPanel = this.getCurrencyPanel(this.data.getCurCount(), this.data.getCurrency());
         if (currencyPanel != null) {
-            forPanel.add(currencyPanel, BorderLayout.LINE_END);
+            forPanel.add(currencyPanel, BorderLayout.CENTER);
         }
         return forPanel;
     }
@@ -163,13 +173,13 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
         }
         if (!Objects.equals(curCountStr, "") && curIconPath != null) {
             JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + curIconPath + ".png", 26);
-            JPanel curPanel = new JPanel(new BorderLayout());
+            JPanel curPanel = this.componentsFactory.getJPanel(new GridLayout(1, 0, 4, 0), AppThemeColor.MSG_HEADER);
+            curPanel.setAlignmentX(SwingConstants.LEFT);
             curPanel.setPreferredSize(new Dimension((int) (this.componentsFactory.getScale() * 70), (int) (this.componentsFactory.getScale() * 26)));
-            curPanel.setBackground(AppThemeColor.MSG_HEADER);
             JLabel countLabel = this.componentsFactory.getTextLabel(curCountStr, FontStyle.BOLD, 17f);
             countLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-            curPanel.add(countLabel, BorderLayout.CENTER);
-            curPanel.add(currencyLabel, BorderLayout.LINE_END);
+            curPanel.add(countLabel);
+            curPanel.add(currencyLabel);
             return curPanel;
         }
         return null;

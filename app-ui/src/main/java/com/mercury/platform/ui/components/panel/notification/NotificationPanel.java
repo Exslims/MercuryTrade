@@ -105,7 +105,7 @@ public abstract class NotificationPanel<T, C> extends JPanel implements AsSubscr
 
     protected JPanel getTimePanel() {
         JPanel root = new JPanel(new BorderLayout());
-        root.setPreferredSize(new Dimension((int) (46 * this.componentsFactory.getScale()), (int) (26 * this.componentsFactory.getScale())));
+        root.setPreferredSize(new Dimension((int) (38 * this.componentsFactory.getScale()), (int) (26 * this.componentsFactory.getScale())));
         root.setBackground(AppThemeColor.MSG_HEADER);
         JLabel timeLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_MISC, TextAlignment.CENTER, 14, "0s");
         Timer timeAgo = new Timer(1000, new ActionListener() {
@@ -114,7 +114,15 @@ public abstract class NotificationPanel<T, C> extends JPanel implements AsSubscr
             @Override
             public void actionPerformed(ActionEvent e) {
                 seconds++;
-                String labelText = seconds + "s ";
+                String labelText = seconds + "s";
+                if (seconds > 59) {
+                    int minutes = seconds / 60;
+                    if (minutes > 59) {
+                        labelText = minutes / 60 + "h";
+                    } else {
+                        labelText = seconds / 60 + "m";
+                    }
+                }
                 timeLabel.setText(labelText);
             }
         });
