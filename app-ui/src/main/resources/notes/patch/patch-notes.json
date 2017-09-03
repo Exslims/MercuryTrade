@@ -1,9 +1,9 @@
 {
-  "version": "1.0.1.9.0",
+  "version": "1.0.2.0.0",
   "notes":[
     {
       "title": "Update",
-      "text": "- Improved all trade notification layouts - now way cooler.\n- Now outgoing notifications will be automatically discarded if DND/AFK/NotOnline has been detected.\n- Player proximity status is now working again (when a buyer visits your h/o).\n- The Ignore Item thing now works for currency trades as well.\n- Reworked the History-with-this-guy window - now opens a subwindow with a scroll.\n- Fixed Upwards flow direction not working.\nA full listing of fixes you can find on the github page.\n\nDo your part and support MercuryTrade! More features soon!",
+      "text": "More than 20k unique users, thank you a lot for support!\n\n- New feature - Whisper helper! Now you can send a trade message directly to the chat from browser. More info in notification's settings.\n- Added sound alerts to overseer.\n- Added invite button to scanner panel.\n- Added new currency icons to notification panels.\n- Auto-close notification now as option in settings.\n- Fixed a bug when settings (like DND or max/min opacity) not saved properly.",
       "image" : "",
       "layout" : "VERTICAL"
     }
