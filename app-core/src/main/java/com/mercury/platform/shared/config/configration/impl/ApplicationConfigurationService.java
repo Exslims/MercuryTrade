@@ -5,6 +5,9 @@ import com.mercury.platform.shared.config.configration.BaseConfigurationService;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
 import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.File;
 
 
 public class ApplicationConfigurationService extends BaseConfigurationService<ApplicationDescriptor> implements PlainConfigurationService<ApplicationDescriptor> {
@@ -16,6 +19,10 @@ public class ApplicationConfigurationService extends BaseConfigurationService<Ap
     public void validate() {
         if (this.selectedProfile.getApplicationDescriptor() == null) {
             this.selectedProfile.setApplicationDescriptor(this.getDefault());
+        }
+        ApplicationDescriptor applicationDescriptor = this.selectedProfile.getApplicationDescriptor();
+        if (!StringUtils.substringAfterLast(applicationDescriptor.getGamePath(), "\\").equals("")) {
+            applicationDescriptor.setGamePath(applicationDescriptor.getGamePath() + File.separatorChar);
         }
     }
 
