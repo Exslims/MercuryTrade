@@ -11,6 +11,7 @@ import com.mercury.platform.shared.config.MercuryConfigManager;
 import com.mercury.platform.shared.config.MercuryConfigurationSource;
 import com.mercury.platform.shared.hotkey.HotKeysInterceptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
+import com.mercury.platform.shared.wh.WhisperHelperHandler;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -29,6 +30,7 @@ public class DevStarter {
         new SoundNotifier();
         new ChatHelper();
         new HotKeysInterceptor();
+        new WhisperHelperHandler();
 
         Executor executor = Executors.newSingleThreadExecutor();
         UpdateClientStarter updateClientStarter = new UpdateClientStarter();

@@ -124,11 +124,25 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
 
     private JPanel getWhisperHelperPanel() {
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.ADR_BG);
-        root.add(this.componentsFactory.getTextLabel("When you release CTRL key clipboard content will be transferred to chat.", FontStyle.REGULAR, 16), BorderLayout.PAGE_START);
+
+        JPanel parametersPanel = this.componentsFactory.getJPanel(new GridLayout(2, 2), AppThemeColor.ADR_BG);
+        JCheckBox enableCheckbox = this.componentsFactory.getCheckBox(this.generalSnapshot.isWhisperHelperEnable());
+        enableCheckbox.addActionListener(action -> {
+            this.generalSnapshot.setWhisperHelperEnable(enableCheckbox.isSelected());
+        });
+        parametersPanel.add(this.componentsFactory.getTextLabel("Enabled:", FontStyle.REGULAR, 16));
+        parametersPanel.add(enableCheckbox);
+        parametersPanel.add(this.componentsFactory.getTextLabel("Hotkey:", FontStyle.REGULAR, 16));
+        parametersPanel.add(new HotKeyPanel(this.generalSnapshot.getWhisperHelperHotKey()));
+
+        JPanel showcasePanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.ADR_BG);
+        showcasePanel.add(this.componentsFactory.getTextLabel("When you release hotkey button clipboard content will be transferred to chat.", FontStyle.REGULAR, 16), BorderLayout.PAGE_START);
         JLabel img = new JLabel();
         img.setIcon(this.componentsFactory.getImage("app/whisper-helper.png"));
-        root.add(this.componentsFactory.wrapToSlide(img, AppThemeColor.ADR_BG, 4, 4, 4, 4), BorderLayout.CENTER);
-        root.add(this.componentsFactory.getTextLabel("Example: press CTRL => click on 'Whisper' button => release CTRL.", FontStyle.REGULAR, 16), BorderLayout.PAGE_END);
+        showcasePanel.add(this.componentsFactory.wrapToSlide(img, AppThemeColor.ADR_BG, 4, 4, 4, 4), BorderLayout.CENTER);
+        showcasePanel.add(this.componentsFactory.getTextLabel("Example: press hotkey button => click on 'Whisper' button => release hotkey button.", FontStyle.REGULAR, 16), BorderLayout.PAGE_END);
+        root.add(parametersPanel, BorderLayout.PAGE_START);
+        root.add(showcasePanel, BorderLayout.CENTER);
         root.setVisible(false);
         return root;
     }
