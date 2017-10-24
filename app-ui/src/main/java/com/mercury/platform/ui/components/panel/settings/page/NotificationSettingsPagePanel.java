@@ -28,6 +28,7 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
 
     private HotKeyGroup incHotkeyGroup;
     private HotKeyGroup outHotkeyGroup;
+    private HotKeyGroup whHotkeyGroup;
     private HotKeyGroup scannerHotkeyGroup;
 
     @Override
@@ -42,6 +43,7 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
 
         this.incHotkeyGroup = new HotKeyGroup();
         this.outHotkeyGroup = new HotKeyGroup();
+        this.whHotkeyGroup = new HotKeyGroup();
         this.scannerHotkeyGroup = new HotKeyGroup();
 
         JPanel whisperHelperPanel = this.adrComponentsFactory.getCounterPanel(this.getWhisperHelperPanel(), "Whisper helper:", AppThemeColor.ADR_BG, false);
@@ -133,7 +135,9 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         parametersPanel.add(this.componentsFactory.getTextLabel("Enabled:", FontStyle.REGULAR, 16));
         parametersPanel.add(enableCheckbox);
         parametersPanel.add(this.componentsFactory.getTextLabel("Hotkey:", FontStyle.REGULAR, 16));
-        parametersPanel.add(new HotKeyPanel(this.generalSnapshot.getWhisperHelperHotKey()));
+        HotKeyPanel hotKeyPanel = new HotKeyPanel(this.generalSnapshot.getWhisperHelperHotKey());
+        this.whHotkeyGroup.registerHotkey(hotKeyPanel);
+        parametersPanel.add(hotKeyPanel);
 
         JPanel showcasePanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.ADR_BG);
         showcasePanel.add(this.componentsFactory.getTextLabel("When you release hotkey button clipboard content will be transferred to chat.", FontStyle.REGULAR, 16), BorderLayout.PAGE_START);

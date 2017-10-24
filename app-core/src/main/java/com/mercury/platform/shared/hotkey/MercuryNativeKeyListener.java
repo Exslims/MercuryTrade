@@ -41,6 +41,9 @@ public class MercuryNativeKeyListener implements NativeKeyListener {
 
     @Override
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
+        if (!this.block) {
+            MercuryStoreCore.hotKeyReleaseSubject.onNext(this.getDescriptor(nativeKeyEvent));
+        }
         switch (nativeKeyEvent.getKeyCode()) {
             case 42: {
                 shiftPressed = false;
@@ -55,10 +58,6 @@ public class MercuryNativeKeyListener implements NativeKeyListener {
                 break;
             }
         }
-        if (!this.block) {
-            MercuryStoreCore.hotKeyReleaseSubject.onNext(this.getDescriptor(nativeKeyEvent));
-        }
-
     }
 
     @Override
