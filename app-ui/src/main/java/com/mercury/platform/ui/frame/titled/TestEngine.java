@@ -158,9 +158,9 @@ public class TestEngine {
     public NotificationDescriptor getRandomCurrencyIncMessage() {
         NotificationDescriptor notificationDescriptor = parser.parse(String.format(currencyTemplate,
                 nickNames.get(random.nextInt(nickNames.size())),
-                random.nextInt(200) + 1,
+                random.nextInt(1500) + 1,
                 currency.get(random.nextInt(currency.size())),
-                random.nextInt(200) + 1,
+                random.nextInt(1500) + 1,
                 currency.get(random.nextInt(currency.size())),
                 leagues.get(random.nextInt(leagues.size())),
                 offer.get(random.nextInt(offer.size()))
@@ -189,9 +189,9 @@ public class TestEngine {
     public NotificationDescriptor getRandomCurrencyOutMessage() {
         NotificationDescriptor notificationDescriptor = parser.parse(String.format(currencyTemplate,
                 nickNames.get(random.nextInt(nickNames.size())),
-                random.nextInt(200) + 1,
+                random.nextInt(1500) + 1,
                 currency.get(random.nextInt(currency.size())),
-                random.nextInt(200) + 1,
+                random.nextInt(1500) + 1,
                 currency.get(random.nextInt(currency.size())),
                 leagues.get(random.nextInt(leagues.size())),
                 offer.get(random.nextInt(offer.size()))

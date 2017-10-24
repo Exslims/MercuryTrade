@@ -175,7 +175,6 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
             JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + curIconPath + ".png", 26);
             JPanel curPanel = this.componentsFactory.getJPanel(new GridLayout(1, 0, 4, 0), AppThemeColor.MSG_HEADER);
             curPanel.setAlignmentX(SwingConstants.LEFT);
-            curPanel.setPreferredSize(new Dimension((int) (this.componentsFactory.getScale() * 70), (int) (this.componentsFactory.getScale() * 26)));
             JLabel countLabel = this.componentsFactory.getTextLabel(curCountStr, FontStyle.BOLD, 17f);
             countLabel.setHorizontalAlignment(SwingConstants.RIGHT);
             curPanel.add(countLabel);
