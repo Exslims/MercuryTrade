@@ -9,6 +9,7 @@ import com.mercury.platform.ui.components.datatable.MColumn;
 import com.mercury.platform.ui.components.datatable.MDataTable;
 import com.mercury.platform.ui.components.datatable.data.DataRequest;
 import com.mercury.platform.ui.components.datatable.data.MDataService;
+import com.mercury.platform.ui.components.datatable.renderer.NotificationTypeRenderer;
 import com.mercury.platform.ui.components.panel.notification.NotificationPanel;
 import com.mercury.platform.ui.components.panel.notification.factory.NotificationPanelFactory;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -32,21 +33,35 @@ public class HistoryFrame extends AbstractTitledComponentFrame {
 
     @Override
     public void onViewInit() {
+        JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         MColumn[] columns = {
-                new MColumn("1", null, false, false, String.class),
-                new MColumn("2", null, false, false, String.class),
-                new MColumn("3", null, false, false, String.class),
-                new MColumn("4", null, false, false, String.class),
-                new MColumn("5", null, false, false, String.class),
+                new MColumn("Type", "Type", false, false, NotificationType.class),
+                new MColumn("Item name", "ItemName", false, true, String.class),
+                new MColumn("Currency", "CurCount:Currency", false, true, ImageIcon.class),
+                new MColumn("League", "League", false, true, String.class),
+                new MColumn("Nickname", "WhisperNickname", false, true, String.class),
+                new MColumn("Offer", "Offer", false, true, String.class),
+                new MColumn("Tab name", "TabName", false, true, String.class),
         };
         MDataService<NotificationDescriptor> dataService = new MDataService<NotificationDescriptor>() {
             @Override
             public NotificationDescriptor[] getData(DataRequest request) {
-                return new NotificationDescriptor[0];
+                TestEngine testEngine = new TestEngine();
+                NotificationDescriptor[] notificationDescriptors = new NotificationDescriptor[8];
+                for (int i = 0; i < 8; i++) {
+                    notificationDescriptors[i] = testEngine.getRandomItemIncMessage();
+                }
+                return notificationDescriptors;
             }
         };
         MDataTable<NotificationDescriptor> dataTable = new MDataTable<>(columns, dataService, 10);
-        this.add(this.componentsFactory.wrapToSlide(dataTable), BorderLayout.CENTER);
+        dataTable.addCellRenderer(NotificationType.class, new NotificationTypeRenderer());
+
+        root.add(this.componentsFactory.wrapToSlide(this.getToolBar(), 0, 0, 2, 0), BorderLayout.PAGE_START);
+        root.add(dataTable, BorderLayout.CENTER);
+
+        this.add(this.componentsFactory.wrapToSlide(root), BorderLayout.CENTER);
+        this.pack();
 //        this.factory = new NotificationPanelFactory();
 //        this.currentMessages = new ArrayList<>();
 //        this.mainContainer = new VerticalScrollContainer();
@@ -110,6 +125,33 @@ public class HistoryFrame extends AbstractTitledComponentFrame {
 //                }
 //            }
 //        });
+    }
+
+    private JPanel getToolBar() {
+        JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
+        JPanel leftToolbar = this.componentsFactory.getJPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel rightToolbar = this.componentsFactory.getJPanel(new FlowLayout(FlowLayout.RIGHT));
+
+        JButton test1 = componentsFactory.getBorderedButton("Test1", 16);
+        test1.addActionListener(e -> {
+        });
+        test1.setPreferredSize(new Dimension(110, 26));
+
+        JButton test2 = componentsFactory.getBorderedButton("Test2", 16);
+        test2.addActionListener(e -> {
+        });
+        test2.setPreferredSize(new Dimension(110, 26));
+        JButton test3 = componentsFactory.getBorderedButton("Test3", 16);
+        test3.addActionListener(e -> {
+        });
+        test3.setPreferredSize(new Dimension(110, 26));
+
+        leftToolbar.add(test1);
+        rightToolbar.add(test2);
+        rightToolbar.add(test3);
+        root.add(leftToolbar, BorderLayout.LINE_START);
+        root.add(rightToolbar, BorderLayout.LINE_END);
+        return root;
     }
 
     private JButton getClearButton() {

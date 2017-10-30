@@ -44,4 +44,9 @@ public class AppThemeColor {
     public static final Color ADR_TEXT_ARE_BG = new Color(50, 52, 51);
     public static final Color ADR_FOOTER_BG = new Color(55, 65, 64);
     public static final Color ADR_CAPTURE_BG = new Color(42, 44, 43, 1);
+
+    public static final Color TABLE_HEADER_BG = new Color(62, 72, 71);
+    public static final Color TABLE_CELL_BG = new Color(55, 65, 64);
+    public static final Color TABLE_BORDER = new Color(78, 89, 88);
+    public static final Color TABLE_MOUSEOVER_BORDER = new Color(122, 133, 132);
 }

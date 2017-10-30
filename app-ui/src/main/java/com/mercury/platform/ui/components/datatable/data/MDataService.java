@@ -2,14 +2,13 @@ package com.mercury.platform.ui.components.datatable.data;
 
 import com.mercury.platform.ui.components.panel.misc.ViewDestroy;
 import lombok.Getter;
-import rx.subjects.AsyncSubject;
 import rx.subjects.ReplaySubject;
 
 public abstract class MDataService<T> implements ViewDestroy {
     @Getter
-    private AsyncSubject<Integer> totalValues = AsyncSubject.create();
+    private ReplaySubject<Integer> totalValues = ReplaySubject.create();
     @Getter
-    private AsyncSubject<T[]> values = AsyncSubject.create();
+    private ReplaySubject<T[]> values = ReplaySubject.create();
 
     private ReplaySubject<DataRequest> updateStream = ReplaySubject.create();
 

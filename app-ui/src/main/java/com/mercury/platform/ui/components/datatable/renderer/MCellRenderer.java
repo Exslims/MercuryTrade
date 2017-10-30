@@ -1,7 +1,7 @@
 package com.mercury.platform.ui.components.datatable.renderer;
 
-import java.awt.*;
+import javax.swing.*;
 
 public interface MCellRenderer<T> {
-    Component getComponent(T data);
+    JComponent getComponent(T data);
 }

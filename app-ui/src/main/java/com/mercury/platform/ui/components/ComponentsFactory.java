@@ -372,6 +372,7 @@ public class ComponentsFactory {
         return getTextLabel(style, color, TextAlignment.LEFTOP, size, text);
     }
 
+
     /**
      * Get label with icon
      *
@@ -599,7 +600,7 @@ public class ComponentsFactory {
         JScrollBar vBar = scrollPane.getVerticalScrollBar();
         vBar.setBackground(AppThemeColor.SLIDE_BG);
         vBar.setUI(new MercuryScrollBarUI());
-        vBar.setPreferredSize(new Dimension(15, Integer.MAX_VALUE));
+        vBar.setPreferredSize(new Dimension(11, Integer.MAX_VALUE));
         vBar.setUnitIncrement(3);
         vBar.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         return scrollPane;
@@ -665,10 +666,18 @@ public class ComponentsFactory {
         area.setEditable(false);
         area.setWrapStyleWord(true);
         area.setLineWrap(true);
-        area.setBackground(AppThemeColor.TRANSPARENT);
+        area.setBackground(AppThemeColor.FRAME);
         area.setBorder(null);
         area.setFont(REGULAR_FONT.deriveFont(scale * 16f));
         area.setForeground(AppThemeColor.TEXT_DEFAULT);
+        return area;
+    }
+
+    public JTextArea getSimpleTextArea(String text, FontStyle style, float size) {
+        JTextArea area = this.getSimpleTextArea(text);
+        area.setFont(this.getFont(style, size));
+        area.setAlignmentX(SwingConstants.LEFT);
+        area.setAlignmentY(SwingConstants.CENTER);
         return area;
     }
 
