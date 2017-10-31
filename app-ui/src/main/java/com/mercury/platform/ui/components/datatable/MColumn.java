@@ -10,5 +10,5 @@ public class MColumn {
     private String selector;
     private boolean sort;
     private boolean filter;
-    private Class<?> type;
+    private Class<?> rendererClass;
 }

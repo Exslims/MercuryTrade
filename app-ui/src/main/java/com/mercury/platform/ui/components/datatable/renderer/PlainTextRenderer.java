@@ -13,7 +13,7 @@ public class PlainTextRenderer implements MCellRenderer<String> {
     private ComponentsFactory componentsFactory = new ComponentsFactory();
     @Override
     public JComponent getComponent(String data) {
-        JTextArea simpleTextArea = this.componentsFactory.getSimpleTextArea(data, FontStyle.REGULAR, 14f);
+        JTextArea simpleTextArea = this.componentsFactory.getSimpleTextArea(data, FontStyle.REGULAR, 15f);
         simpleTextArea.setBackground(AppThemeColor.TABLE_CELL_BG);
         simpleTextArea.addMouseListener(new MouseAdapter() {
             @Override

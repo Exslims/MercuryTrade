@@ -10,6 +10,8 @@ import com.mercury.platform.ui.components.datatable.MDataTable;
 import com.mercury.platform.ui.components.datatable.data.DataRequest;
 import com.mercury.platform.ui.components.datatable.data.MDataService;
 import com.mercury.platform.ui.components.datatable.renderer.NotificationTypeRenderer;
+import com.mercury.platform.ui.components.datatable.renderer.PlainIconRenderer;
+import com.mercury.platform.ui.components.datatable.renderer.PlainTextRenderer;
 import com.mercury.platform.ui.components.panel.notification.NotificationPanel;
 import com.mercury.platform.ui.components.panel.notification.factory.NotificationPanelFactory;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -17,12 +19,14 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Random;
 
 
 public class HistoryFrame extends AbstractTitledComponentFrame {
     private JPanel mainContainer;
     private NotificationPanelFactory factory;
     private List<NotificationDescriptor> currentMessages;
+    private MDataTable<NotificationDescriptor> dataTable;
 
     public HistoryFrame() {
         super();
@@ -35,30 +39,48 @@ public class HistoryFrame extends AbstractTitledComponentFrame {
     public void onViewInit() {
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         MColumn[] columns = {
-                new MColumn("Type", "Type", false, false, NotificationType.class),
-                new MColumn("Item name", "ItemName", false, true, String.class),
-                new MColumn("Currency", "CurCount:Currency", false, true, ImageIcon.class),
-                new MColumn("League", "League", false, true, String.class),
-                new MColumn("Nickname", "WhisperNickname", false, true, String.class),
-                new MColumn("Offer", "Offer", false, true, String.class),
-                new MColumn("Tab name", "TabName", false, true, String.class),
+                new MColumn("Item name", "ItemName|(CurrForSaleCount+CurrForSaleTitle)", false, true, PlainIconRenderer.class),
+                new MColumn("Type", "Type", false, false, NotificationTypeRenderer.class),
+                new MColumn("Currency", "CurCount+Currency", false, true, PlainIconRenderer.class),
+                new MColumn("League", "League", false, true, PlainTextRenderer.class),
+                new MColumn("Nickname", "WhisperNickname", false, true, PlainTextRenderer.class),
+                new MColumn("Offer", "Offer", false, true, PlainTextRenderer.class),
+                new MColumn("Tab name", "TabName", false, true, PlainTextRenderer.class),
         };
         MDataService<NotificationDescriptor> dataService = new MDataService<NotificationDescriptor>() {
             @Override
             public NotificationDescriptor[] getData(DataRequest request) {
                 TestEngine testEngine = new TestEngine();
-                NotificationDescriptor[] notificationDescriptors = new NotificationDescriptor[8];
-                for (int i = 0; i < 8; i++) {
-                    notificationDescriptors[i] = testEngine.getRandomItemIncMessage();
+                NotificationDescriptor[] notificationDescriptors = new NotificationDescriptor[15];
+                Random random = new Random();
+                for (int i = 0; i < 15; i++) {
+                    switch (random.nextInt(4)) {
+                        case 0: {
+                            notificationDescriptors[i] = testEngine.getRandomItemIncMessage();
+                            break;
+                        }
+                        case 1: {
+                            notificationDescriptors[i] = testEngine.getRandomCurrencyIncMessage();
+                            break;
+                        }
+                        case 2: {
+                            notificationDescriptors[i] = testEngine.getRandomItemOutMessage();
+                            break;
+                        }
+                        case 3: {
+                            notificationDescriptors[i] = testEngine.getRandomCurrencyOutMessage();
+                            break;
+                        }
+                    }
                 }
                 return notificationDescriptors;
             }
         };
-        MDataTable<NotificationDescriptor> dataTable = new MDataTable<>(columns, dataService, 10);
-        dataTable.addCellRenderer(NotificationType.class, new NotificationTypeRenderer());
+        this.dataTable = new MDataTable<>(columns, dataService, 10);
+        this.dataTable.addCellRenderer(NotificationType.class, new NotificationTypeRenderer());
 
         root.add(this.componentsFactory.wrapToSlide(this.getToolBar(), 0, 0, 2, 0), BorderLayout.PAGE_START);
-        root.add(dataTable, BorderLayout.CENTER);
+        root.add(this.dataTable, BorderLayout.CENTER);
 
         this.add(this.componentsFactory.wrapToSlide(root), BorderLayout.CENTER);
         this.pack();
@@ -134,6 +156,7 @@ public class HistoryFrame extends AbstractTitledComponentFrame {
 
         JButton test1 = componentsFactory.getBorderedButton("Test1", 16);
         test1.addActionListener(e -> {
+            this.dataTable.reload();
         });
         test1.setPreferredSize(new Dimension(110, 26));
 

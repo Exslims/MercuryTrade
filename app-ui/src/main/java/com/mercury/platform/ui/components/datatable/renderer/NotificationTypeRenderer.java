@@ -11,14 +11,13 @@ public class NotificationTypeRenderer implements MCellRenderer<String> {
     @Override
     public JComponent getComponent(String data) {
         NotificationType notificationType = NotificationType.valueOf(data);
-        switch (notificationType) {
-            case INC_ITEM_MESSAGE: {
-                JLabel iconLabel = componentsFactory.getIconLabel("app/incoming_arrow.png", 18);
-                iconLabel.setVerticalAlignment(SwingConstants.CENTER);
-                iconLabel.setHorizontalAlignment(SwingConstants.CENTER);
-                return iconLabel;
-            }
+        JLabel iconLabel = componentsFactory.getIconLabel("app/outgoing_arrow.png", 17);
+        iconLabel.setVerticalAlignment(SwingConstants.CENTER);
+        iconLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        if (notificationType.equals(NotificationType.INC_CURRENCY_MESSAGE) ||
+                notificationType.equals(NotificationType.INC_ITEM_MESSAGE)) {
+            iconLabel.setIcon(this.componentsFactory.getIcon("app/incoming_arrow.png", 17));
         }
-        return null;
+        return iconLabel;
     }
 }

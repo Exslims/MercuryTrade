@@ -1,16 +1,17 @@
 package com.mercury.platform.ui.components.datatable;
 
-import com.mercury.platform.shared.entity.message.NotificationType;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.datatable.data.DataRequest;
 import com.mercury.platform.ui.components.datatable.data.LazyLoadParams;
 import com.mercury.platform.ui.components.datatable.data.MDataService;
 import com.mercury.platform.ui.components.datatable.renderer.*;
+import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.components.panel.misc.AfterViewInit;
 import com.mercury.platform.ui.components.panel.misc.ViewDestroy;
 import com.mercury.platform.ui.components.panel.misc.ViewInit;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import org.apache.commons.lang3.StringUtils;
 import rx.subjects.ReplaySubject;
 
 import javax.swing.*;
@@ -19,9 +20,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MDataTable<T> extends JPanel implements ViewInit, ViewDestroy, AfterViewInit {
     private ComponentsFactory componentsFactory = new ComponentsFactory();
@@ -64,9 +65,15 @@ public class MDataTable<T> extends JPanel implements ViewInit, ViewDestroy, Afte
 
     @Override
     public void onAfterViewInit() {
+        this.reload();
+    }
+
+    public void reload() {
+        this.container.removeAll();
         DataRequest dataRequest = new DataRequest();
         dataRequest.setLazyLoadParams(new LazyLoadParams((this.currentPage - 1) * this.pageSize, this.pageSize));
         this.dataService.update(dataRequest);
+        this.repaint();
     }
 
     private JPanel getHeaderPanel() {
@@ -86,14 +93,16 @@ public class MDataTable<T> extends JPanel implements ViewInit, ViewDestroy, Afte
         return root;
     }
 
+    @SuppressWarnings("all")
     private void initDataProviders() {
         this.dataService.getValues()
+                .takeUntil(this.unsubscribe$)
                 .subscribe(data -> {
                     Arrays.stream(data).forEach(it -> {
                         JPanel root = this.componentsFactory.getJPanel(new GridLayout(), AppThemeColor.TABLE_CELL_BG);
                         Arrays.stream(this.columns).forEach(column -> {
                             try {
-                                String[] selectors = column.getSelector().split(":");
+                                String[] selectors = this.parseSelector(column.getSelector(), it);
                                 StringBuilder result = new StringBuilder();
                                 for (String selector : selectors) {
                                     Method method = it.getClass().getMethod("get" + selector);
@@ -102,12 +111,18 @@ public class MDataTable<T> extends JPanel implements ViewInit, ViewDestroy, Afte
                                         result.append(":");
                                     }
                                 }
-                                JComponent component =
-                                        this.cellRendererMap.get(column.getType()).getComponent(result.toString());
-                                component.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, AppThemeColor.TABLE_BORDER));
-                                root.add(component);
+                                if (!result.toString().trim().equals("")) {
+                                    JComponent component =
+                                            this.componentsFactory.wrapToSlide(this.cellRendererMap
+                                                    .get(column.getRendererClass())
+                                                    .getComponent(result.toString()), AppThemeColor.TABLE_CELL_BG);
+                                    component.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, AppThemeColor.TABLE_BORDER));
+                                    root.add(component);
+                                } else {
+                                    root.add(this.getDefaultComponent());
+                                }
                             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                                e.printStackTrace();
+                                root.add(this.getDefaultComponent());
                             }
                         });
                         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.TABLE_BORDER));
@@ -127,6 +142,10 @@ public class MDataTable<T> extends JPanel implements ViewInit, ViewDestroy, Afte
                         ((JComponent) root.getComponent(0)).setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
                         this.container.add(this.componentsFactory.wrapToSlide(root, 2, 0, 0, 0));
                     });
+                    JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
+                    if (parent != null) {
+                        parent.pack();
+                    }
                 });
         this.dataService.getTotalValues()
                 .takeUntil(this.unsubscribe$)
@@ -135,15 +154,48 @@ public class MDataTable<T> extends JPanel implements ViewInit, ViewDestroy, Afte
                 });
     }
 
+    private JComponent getDefaultComponent() {
+        JPanel root = this.componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER, 0, 0), AppThemeColor.TABLE_CELL_BG);
+        root.add(this.componentsFactory.getTextLabel("-", FontStyle.REGULAR));
+        JComponent component =
+                this.componentsFactory.wrapToSlide(root, AppThemeColor.TABLE_CELL_BG);
+        component.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, AppThemeColor.TABLE_BORDER));
+        return component;
+    }
+
+    private String[] parseSelector(String query, T data) {
+        String[] parsedQuery = query.split("\\|");
+        List<String> methodsName = Arrays.stream(data.getClass().getMethods())
+                .map(Method::getName)
+                .collect(Collectors.toList());
+        if (parsedQuery.length == 1 && !parsedQuery[0].contains("+")) {
+            return parsedQuery;
+        } else {
+            List<String> selectors = new ArrayList<>();
+            Arrays.stream(parsedQuery).forEach(it -> {
+                if (it.contains("(") && it.contains(")")) {
+                    it = StringUtils.substringBetween(it, "(", ")");
+                }
+                String[] split = it.split("\\+");
+                for (String item : split) {
+                    if (methodsName.contains("get" + item)) {
+                        selectors.add(item);
+                    }
+                }
+            });
+            return selectors.toArray(new String[0]);
+        }
+    }
+
     private JPanel getPeginator() {
         return null;
     }
 
     private void fillRendererMap() {
-        this.cellRendererMap.put(String.class, new PlainTextRenderer());
-        this.cellRendererMap.put(ImageIcon.class, new PlainIconRenderer());
-        this.cellRendererMap.put(NotificationType.class, new NotificationTypeRenderer());
-        this.cellRendererMap.put(Double.class, new PlainDoubleRenderer());
+        this.cellRendererMap.put(PlainTextRenderer.class, new PlainTextRenderer());
+        this.cellRendererMap.put(PlainIconRenderer.class, new PlainIconRenderer());
+        this.cellRendererMap.put(NotificationTypeRenderer.class, new NotificationTypeRenderer());
+        this.cellRendererMap.put(PlainDoubleRenderer.class, new PlainDoubleRenderer());
     }
 
     public void addCellRenderer(Class classType, MCellRenderer renderer) {
