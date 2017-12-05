@@ -11,6 +11,7 @@ public abstract class MDataService<T> implements ViewDestroy {
     private ReplaySubject<T[]> values = ReplaySubject.create();
 
     private ReplaySubject<DataRequest> updateStream = ReplaySubject.create();
+    private ReplaySubject<T> removeStream = ReplaySubject.create();
 
     private ReplaySubject<?> unsubscribe$ = ReplaySubject.create();
 
@@ -22,13 +23,22 @@ public abstract class MDataService<T> implements ViewDestroy {
                     this.values.onNext(data);
                     this.totalValues.onNext(data.length);
                 });
+        this.removeStream
+                .takeUntil(this.unsubscribe$)
+                .subscribe(this::removeData);
     }
 
     public void update(DataRequest dataRequest) {
         this.updateStream.onNext(dataRequest);
     }
 
+    public void remove(T data) {
+        this.removeStream.onNext(data);
+    }
+
     public abstract T[] getData(DataRequest request);
+
+    public abstract void removeData(T data);
 
     @Override
     public void onViewDestroy() {

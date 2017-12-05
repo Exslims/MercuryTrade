@@ -39,13 +39,13 @@ public class HistoryFrame extends AbstractTitledComponentFrame {
     public void onViewInit() {
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout());
         MColumn[] columns = {
-                new MColumn("Item name", "ItemName|(CurrForSaleCount+CurrForSaleTitle)", false, true, PlainIconRenderer.class),
+                new MColumn("Item name", "ItemName|(CurrForSaleCount+CurrForSaleTitle)", false, false, PlainIconRenderer.class),
                 new MColumn("Type", "Type", false, false, NotificationTypeRenderer.class),
-                new MColumn("Currency", "CurCount+Currency", false, true, PlainIconRenderer.class),
-                new MColumn("League", "League", false, true, PlainTextRenderer.class),
-                new MColumn("Nickname", "WhisperNickname", false, true, PlainTextRenderer.class),
-                new MColumn("Offer", "Offer", false, true, PlainTextRenderer.class),
-                new MColumn("Tab name", "TabName", false, true, PlainTextRenderer.class),
+                new MColumn("Currency", "CurCount+Currency", false, false, PlainIconRenderer.class),
+                new MColumn("League", "League", false, false, PlainTextRenderer.class),
+                new MColumn("Nickname", "WhisperNickname", false, false, PlainTextRenderer.class),
+                new MColumn("Offer", "Offer", false, false, PlainTextRenderer.class),
+                new MColumn("Tab name", "TabName", false, false, PlainTextRenderer.class),
         };
         MDataService<NotificationDescriptor> dataService = new MDataService<NotificationDescriptor>() {
             @Override
@@ -74,6 +74,11 @@ public class HistoryFrame extends AbstractTitledComponentFrame {
                     }
                 }
                 return notificationDescriptors;
+            }
+
+            @Override
+            public void removeData(NotificationDescriptor data) {
+
             }
         };
         this.dataTable = new MDataTable<>(columns, dataService, 10);

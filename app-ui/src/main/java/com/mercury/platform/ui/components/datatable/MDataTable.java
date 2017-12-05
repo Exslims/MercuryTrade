@@ -5,6 +5,7 @@ import com.mercury.platform.ui.components.datatable.data.DataRequest;
 import com.mercury.platform.ui.components.datatable.data.LazyLoadParams;
 import com.mercury.platform.ui.components.datatable.data.MDataService;
 import com.mercury.platform.ui.components.datatable.renderer.*;
+import com.mercury.platform.ui.components.datatable.ui.RowBorderListener;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.components.panel.misc.AfterViewInit;
@@ -16,8 +17,6 @@ import rx.subjects.ReplaySubject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -61,6 +60,7 @@ public class MDataTable<T> extends JPanel implements ViewInit, ViewDestroy, Afte
 
         this.add(this.getHeaderPanel(), BorderLayout.PAGE_START);
         this.add(this.componentsFactory.wrapToSlide(verticalContainer, 2, 0, 0, 0), BorderLayout.CENTER);
+        this.add(this.getPeginator(), BorderLayout.PAGE_END);
     }
 
     @Override
@@ -126,19 +126,7 @@ public class MDataTable<T> extends JPanel implements ViewInit, ViewDestroy, Afte
                             }
                         });
                         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.TABLE_BORDER));
-                        root.addMouseListener(new MouseAdapter() {
-                            @Override
-                            public void mouseEntered(MouseEvent e) {
-                                root.setBorder(BorderFactory.createLineBorder(AppThemeColor.TABLE_MOUSEOVER_BORDER));
-                                root.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                            }
-
-                            @Override
-                            public void mouseExited(MouseEvent e) {
-                                root.setBorder(BorderFactory.createLineBorder(AppThemeColor.TABLE_BORDER));
-                                root.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-                            }
-                        });
+                        root.addMouseListener(new RowBorderListener(root));
                         ((JComponent) root.getComponent(0)).setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
                         this.container.add(this.componentsFactory.wrapToSlide(root, 2, 0, 0, 0));
                     });
@@ -188,7 +176,10 @@ public class MDataTable<T> extends JPanel implements ViewInit, ViewDestroy, Afte
     }
 
     private JPanel getPeginator() {
-        return null;
+        JPanel paginator = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.TABLE_HEADER_BG);
+        paginator.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, AppThemeColor.TABLE_BORDER));
+        paginator.add(this.componentsFactory.getTextLabel("1 2 3"));
+        return this.componentsFactory.wrapToSlide(paginator, 2, 0, 0, 0);
     }
 
     private void fillRendererMap() {
