@@ -49,6 +49,8 @@ public abstract class TradeOutNotificationPanel<T extends TradeNotificationDescr
         });
         JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
         openChatButton.addActionListener(e -> controller.performOpenChat());
+        JButton whoIsButton = componentsFactory.getIconButton("app/who-is.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.WHO_IS);
+        whoIsButton.addActionListener(e -> controller.performWhoIs());
         JButton hideButton = componentsFactory.getIconButton("app/close.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.HIDE_PANEL);
         hideButton.addActionListener(action -> {
             this.controller.performHide();
@@ -56,12 +58,14 @@ public abstract class TradeOutNotificationPanel<T extends TradeNotificationDescr
         interactionPanel.add(visiteHideout);
         interactionPanel.add(tradeButton);
         interactionPanel.add(leaveButton);
+        interactionPanel.add(whoIsButton);
         interactionPanel.add(openChatButton);
         interactionPanel.add(hideButton);
         this.interactButtonMap.clear();
         this.interactButtonMap.put(HotKeyType.N_VISITE_HIDEOUT, visiteHideout);
         this.interactButtonMap.put(HotKeyType.N_TRADE_PLAYER, tradeButton);
         this.interactButtonMap.put(HotKeyType.N_LEAVE, leaveButton);
+        this.interactButtonMap.put(HotKeyType.N_WHO_IS, whoIsButton);
         this.interactButtonMap.put(HotKeyType.N_OPEN_CHAT, openChatButton);
         this.interactButtonMap.put(HotKeyType.N_CLOSE_NOTIFICATION, hideButton);
 
