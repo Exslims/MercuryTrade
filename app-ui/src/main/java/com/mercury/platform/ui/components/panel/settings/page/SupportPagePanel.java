@@ -105,6 +105,7 @@ public class SupportPagePanel extends SettingsPagePanel {
 
     private List<DonationPair> getDonations() {
         List<DonationPair> donations = new ArrayList<>();
+        donations.add(new DonationPair("Sklifan", AppThemeColor.TEXT_DEFAULT));
         donations.add(new DonationPair("222Craft", AppThemeColor.TEXT_DEFAULT));
         donations.add(new DonationPair("Xagulz", AppThemeColor.TEXT_DEFAULT));
         donations.add(new DonationPair("Taw", AppThemeColor.TEXT_DEFAULT));
@@ -112,6 +113,7 @@ public class SupportPagePanel extends SettingsPagePanel {
         donations.add(new DonationPair("Blightsand", AppThemeColor.TEXT_DEFAULT));
         donations.add(new DonationPair("Mattc3303", AppThemeColor.TEXT_DEFAULT));
         donations.add(new DonationPair("StubenZocker", AppThemeColor.TEXT_DEFAULT));
+        donations.add(new DonationPair("Bjertsjö", AppThemeColor.TEXT_DEFAULT));
         donations.add(new DonationPair("SirKultan", AppThemeColor.TEXT_DEFAULT));
         return donations;
     }

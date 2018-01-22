@@ -1,9 +1,9 @@
 {
-  "version": "1.0.3.1.0",
+  "version": "1.0.3.2.0",
   "notes":[
     {
       "title": "Update",
-      "text": "- Added /whois button to outgoing notification panel.\n- Fixed a bug when sometimes notification panel won't show orb icons.\n- Many backend improvements for rework \"History\" feature in next version.\n- Support tab updated.\n\nHappy new year! If you love MercuryTrade so much it has become your favourite application to play the game - show your appreciation by supporting it! Thanks!",
+      "text": "- Added /whois button to scanner notification panel. \n- Fixed a bug when chat scanner is not ignore nickname from chat.\n- Now notification panel works with french POE client.\n- Support tab updated.\n\nDon't forget to [support ](https://www.paypal.me/mercurytrade) the app, we really appreciate it! Thanks!",
       "image" : "",
       "layout" : "VERTICAL"
     }
