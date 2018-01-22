@@ -206,7 +206,9 @@ public class ChatScannerFrame extends AbstractTitledComponentFrame {
                         if (!message.contains("] $") && !message.contains("] #")) {
                             return false;
                         }
-                        message = StringUtils.substringAfter(message, ":").toLowerCase();
+                        final String separator = message.contains("] $") ? "] $" : "] #";
+                        message = StringUtils.substringAfter(message, separator).toLowerCase();
+                        message = StringUtils.substringAfter(message, ": ").toLowerCase();
                         return notContains.stream().noneMatch(message::contains)
                                 && contains.stream().anyMatch(message::contains);
                     };
