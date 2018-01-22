@@ -23,6 +23,7 @@ public class TradeIncMessagesInterceptor extends MessageInterceptor {
         this.clients.add(new RuIncLocalizationMatcher());
         this.clients.add(new ArabicInLocalizationMatcher());
         this.clients.add(new BZIncLocalizationMatcher());
+        this.clients.add(new FrenchIncLocalizationMatcher());
     }
 
     @Override
@@ -103,6 +104,18 @@ public class TradeIncMessagesInterceptor extends MessageInterceptor {
     }
 
     private class BZIncLocalizationMatcher extends LocalizationMatcher {
+        @Override
+        public boolean isSuitableFor(String message) {
+            return message.contains("@De") && super.isSuitableFor(message);
+        }
+
+        @Override
+        public String trimString(String src) {
+            return StringUtils.substringAfter(src, "@De");
+        }
+    }
+
+    private class FrenchIncLocalizationMatcher extends LocalizationMatcher {
         @Override
         public boolean isSuitableFor(String message) {
             return message.contains("@De") && super.isSuitableFor(message);

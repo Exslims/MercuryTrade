@@ -64,6 +64,14 @@ public class HotKeyConfigurationService extends BaseConfigurationService<HotKeys
             this.selectedProfile.getHotkeysSettingsDescriptor()
                     .getOutNHotKeysList().add(new HotKeyPair(HotKeyType.N_WHO_IS, new HotKeyDescriptor()));
         }
+
+        if (this.selectedProfile.getHotkeysSettingsDescriptor()
+                .getScannerNHotKeysList().stream()
+                .filter(it -> it.getType().equals(HotKeyType.N_WHO_IS))
+                .findAny().orElse(null) == null) {
+            this.selectedProfile.getHotkeysSettingsDescriptor()
+                    .getScannerNHotKeysList().add(new HotKeyPair(HotKeyType.N_WHO_IS, new HotKeyDescriptor()));
+        }
     }
 
     @Override
