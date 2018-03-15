@@ -26,6 +26,7 @@ public class TradeOutMessagesInterceptor extends MessageInterceptor {
         this.clients.add(new ArabicOutLocalizationMatcher());
         this.clients.add(new BZOutLocalizationMatcher());
         this.clients.add(new FrenchOutLocalizationMatcher());
+        this.clients.add(new GermanOutLocalizationMatcher());
     }
 
     @Override
@@ -170,6 +171,29 @@ public class TradeOutMessagesInterceptor extends MessageInterceptor {
         @Override
         public String trimString(String src) {
             return StringUtils.substringAfter(src, "@À");
+        }
+
+        @Override
+        public NotificationDescriptor getDescriptor(String message) {
+            NotificationDescriptor descriptor = messageParser.parse(this.trimString(message));
+            if (descriptor instanceof ItemTradeNotificationDescriptor) {
+                descriptor.setType(NotificationType.OUT_ITEM_MESSAGE);
+            } else {
+                descriptor.setType(NotificationType.OUT_CURRENCY_MESSAGE);
+            }
+            return descriptor;
+        }
+    }
+
+    private class GermanOutLocalizationMatcher extends LocalizationMatcher {
+        @Override
+        public boolean isSuitableFor(String message) {
+            return message.contains("@An") && super.isSuitableFor(message);
+        }
+
+        @Override
+        public String trimString(String src) {
+            return StringUtils.substringAfter(src, "@An");
         }
 
         @Override
