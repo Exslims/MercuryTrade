@@ -24,7 +24,7 @@ public class TradeIncMessagesInterceptor extends MessageInterceptor {
         this.clients.add(new ArabicInLocalizationMatcher());
         this.clients.add(new BZIncLocalizationMatcher());
         this.clients.add(new FrenchIncLocalizationMatcher());
-        this.clients.add(new GermanIncLocalizationMatcher();
+        this.clients.add(new GermanIncLocalizationMatcher());
     }
 
     @Override
@@ -127,7 +127,8 @@ public class TradeIncMessagesInterceptor extends MessageInterceptor {
             return StringUtils.substringAfter(src, "@De");
         }
     }
-private class GermanIncLocalizationMatcher extends LocalizationMatcher {
+
+    private class GermanIncLocalizationMatcher extends LocalizationMatcher {
         @Override
         public boolean isSuitableFor(String message) {
             return message.contains("@Von") && super.isSuitableFor(message);

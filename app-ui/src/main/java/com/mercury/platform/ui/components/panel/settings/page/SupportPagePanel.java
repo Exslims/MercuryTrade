@@ -105,6 +105,7 @@ public class SupportPagePanel extends SettingsPagePanel {
 
     private List<DonationPair> getDonations() {
         List<DonationPair> donations = new ArrayList<>();
+        donations.add(new DonationPair("LiftingNerdBro", AppThemeColor.TEXT_DEFAULT));
         donations.add(new DonationPair("Sklifan", AppThemeColor.TEXT_DEFAULT));
         donations.add(new DonationPair("222Craft", AppThemeColor.TEXT_DEFAULT));
         donations.add(new DonationPair("Xagulz", AppThemeColor.TEXT_DEFAULT));
