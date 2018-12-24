@@ -1,10 +1,11 @@
 {
-  "version": "1.0.3.0.0",
+  "version": "1.0.3.3.0",
   "notes":[
     {
       "title": "Update",
-      "text": "- Fixed a bug when the amount of currency is not displayed correctly in the notification panel.\n- Fixed a bug when notification panel sometimes did not work.\n- Whisper helper now have own hotkey button.\n- And minor backend improvements.\n\nThank you for staying with us.",
+      "text": "Hi, sorry for the long absence.\n\n- Fix critical bug when sometimes MT hangs on boot.\n- Fixed a bug when notification panel doesn't show up after altabing.\n- Now notification panel works with german POE client.\n- Support tab updated.\n\nDon't forget to support the app, we really appreciate it! Thanks!",
       "image" : "",
       "layout" : "VERTICAL"
     }
-  ]}
+  ]
+}

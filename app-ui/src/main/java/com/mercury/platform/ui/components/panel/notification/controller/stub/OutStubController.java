@@ -32,6 +32,11 @@ public class OutStubController implements OutgoingPanelController {
     }
 
     @Override
+    public void performWhoIs() {
+
+    }
+
+    @Override
     public void performLeave(String nickName) {
 
     }

@@ -8,6 +8,7 @@ public class TooltipConstants {
     public static final String TRADE_MODE = "SuperTradeMode. All notifications you receive will be unfolded.";
     public static final String CHAT_FILTER = "Chat Scanner. All chat messages with matching words will be displayed in a separate window.";
     public static final String HIDEOUT = "Travel to your hideout";
+    public static final String HELPIG = "See IG help";
     public static final String ADR_SETTINGS = "Overseer settings";
     public static final String TIMER = "Timer. Just a simple timer.";
     public static final String HISTORY = "History. Browse through all notifications you received previously.";
@@ -31,6 +32,7 @@ public class TooltipConstants {
     public static final String TRADE = "Offer Trade";
     public static final String EXPAND_COLLAPSE = "Expand / collapse";
     public static final String OPEN_CHAT = "Message this player";
+    public static final String WHO_IS = "Who is?";
     public static final String SWITCH_CHAT = "Show chat history";
     public static final String VISIT_HO = "Visit player's hideout";
     public static final String LEAVE = "Leave from party";
