@@ -173,6 +173,10 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
             }
 
             @Override
+            public void showHelpIG() {
+            }
+
+            @Override
             public void showChatFiler() {
             }
 

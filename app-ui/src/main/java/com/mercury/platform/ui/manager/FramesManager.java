@@ -81,6 +81,7 @@ public class FramesManager implements AsSubscriber {
         this.framesMap.put(SetUpLocationFrame.class, new SetUpLocationFrame());
         this.framesMap.put(SetUpScaleFrame.class, new SetUpScaleFrame());
         this.framesMap.put(AlertFrame.class, new AlertFrame());
+        this.framesMap.put(HelpIGFrame.class, new HelpIGFrame());
 
         this.framesMap.forEach((k, v) -> v.init());
 

@@ -12,6 +12,8 @@ public interface TaskBarController {
 
     void performHideout();
 
+    void showHelpIG();
+
     void showChatFiler();
 
     void showHistory();
