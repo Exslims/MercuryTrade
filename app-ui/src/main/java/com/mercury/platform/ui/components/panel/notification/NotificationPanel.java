@@ -50,6 +50,10 @@ public abstract class NotificationPanel<T, C> extends JPanel implements AsSubscr
     private float paintAlphaValue = 1f;
     private Subscription settingsPostSubscription;
 
+    @Setter
+    @Getter
+    private int additionalHeightDelta = 0;
+
     @Override
     public void onViewInit() {
         this.setLayout(new BorderLayout());

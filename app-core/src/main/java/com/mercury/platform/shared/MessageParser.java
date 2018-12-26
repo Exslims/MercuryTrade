@@ -4,14 +4,18 @@ import com.mercury.platform.shared.entity.message.CurrencyTradeNotificationDescr
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class MessageParser {
     private final static String poeTradeStashTabPattern = "^(.*\\s)?(.+): (.+ to buy your\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\)\\s*?(.*))$";
     private final static String poeTradePattern = "^(.*\\s)?(.+): (.+ to buy your\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.*?))$";
     private final static String poeAppPattern = "^(.*\\s)?(.+): (\\s*?wtb\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash\\s+?\"(.*?)\";\\s+?left\\s+?(\\d+?),\\s+?top\\s+(\\d+?)\\)\\s*?(.*))$";
+    private final static String poeAppBulkCurrenciesPattern = "^(.*\\s)?(.+): (\\s*?wtb\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash\\s+?\"(.*?)\";\\s+?left\\s+?(\\d+?),\\s+?top\\s+(\\d+?)\\)\\s*?(.*))$";
     private final static String poeCurrencyPattern = "^(.*\\s)?(.+): (.+ to buy your (\\d+(\\.\\d+)?)? (.+) for my (\\d+(\\.\\d+)?)? (.+) in (.*?)\\.\\s*(.*))$";
     private Pattern poeAppItemPattern;
     private Pattern poeTradeStashItemPattern;
@@ -73,10 +77,17 @@ public class MessageParser {
         Matcher poeTradeCurrencyMatcher = poeTradeCurrencyPattern.matcher(fullMessage);
         if (poeTradeCurrencyMatcher.find()) {
             CurrencyTradeNotificationDescriptor tradeNotification = new CurrencyTradeNotificationDescriptor();
+
+            if (poeTradeCurrencyMatcher.group(6).contains("&") || poeTradeCurrencyMatcher.group(6).contains(",")) {  //todo this shit for bulk map
+                String bulkItems = poeTradeCurrencyMatcher.group(4) + " " + poeTradeCurrencyMatcher.group(6);
+                tradeNotification.setItems(Arrays.stream(StringUtils.split(bulkItems, ",&")).map(String::trim).collect(Collectors.toList()));
+            } else {
+                tradeNotification.setCurrForSaleCount(Double.parseDouble(poeTradeCurrencyMatcher.group(4)));
+                tradeNotification.setCurrForSaleTitle(poeTradeCurrencyMatcher.group(6));
+            }
+
             tradeNotification.setWhisperNickname(poeTradeCurrencyMatcher.group(2));
             tradeNotification.setSourceString(poeTradeCurrencyMatcher.group(3));
-            tradeNotification.setCurrForSaleCount(Double.parseDouble(poeTradeCurrencyMatcher.group(4)));
-            tradeNotification.setCurrForSaleTitle(poeTradeCurrencyMatcher.group(6));
             tradeNotification.setCurCount(Double.parseDouble(poeTradeCurrencyMatcher.group(7)));
             tradeNotification.setCurrency(poeTradeCurrencyMatcher.group(9));
             tradeNotification.setLeague(poeTradeCurrencyMatcher.group(10));

@@ -187,6 +187,8 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
             this.container.add(this.componentsFactory.wrapToSlide(notificationPanel, AppThemeColor.TRANSPARENT, 1, 1, 1, 1));
         }
         int delta = -notificationPanel.getParent().getPreferredSize().height;
+
+
         if (this.notificationPanels.size() > this.config.get().getLimitCount()) {
             if (!this.expanded) {
                 notificationPanel.getParent().setVisible(false);
@@ -197,7 +199,14 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         }
         if (this.flowDirections.equals(FlowDirections.UPWARDS) &&
                 this.notificationPanels.size() > 1) {
+            this.pack();
             this.changeBufferSize(delta);
+        }
+
+        if (this.flowDirections.equals(FlowDirections.UPWARDS) &&
+                (notificationPanel.getAdditionalHeightDelta() > 0) && this.notificationPanels.size() == 1) {
+            this.pack();
+            this.changeBufferSize(-notificationPanel.getAdditionalHeightDelta());
         }
         this.pack();
         this.repaint();
