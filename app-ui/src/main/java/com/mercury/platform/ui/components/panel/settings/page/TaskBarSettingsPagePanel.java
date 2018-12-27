@@ -6,6 +6,7 @@ import com.mercury.platform.shared.config.configration.PlainConfigurationService
 import com.mercury.platform.shared.config.descriptor.TaskBarDescriptor;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,9 +17,11 @@ import java.awt.event.FocusEvent;
 public class TaskBarSettingsPagePanel extends SettingsPagePanel {
     private PlainConfigurationService<TaskBarDescriptor> taskBarService;
     private TaskBarDescriptor taskBarSnapshot;
+
     @Override
     public void onViewInit() {
         super.onViewInit();
+
         this.taskBarService = Configuration.get().taskBarConfiguration();
         this.taskBarSnapshot = CloneHelper.cloneObject(this.taskBarService.get());
 
@@ -57,6 +60,14 @@ public class TaskBarSettingsPagePanel extends SettingsPagePanel {
         HotKeyPanel hotKeyHelpIGPanel = new HotKeyPanel(this.taskBarSnapshot.getHelpIGHotkey());
         hotKeyGroup.registerHotkey(hotKeyHelpIGPanel);
         root.add(this.componentsFactory.wrapToSlide(hotKeyHelpIGPanel, AppThemeColor.SETTINGS_BG, 2, 4, 1, 1));
+
+        JButton selectIcon = this.componentsFactory.getBorderedButton("Select Picture");
+        selectIcon.addActionListener(action -> {
+            MercuryStoreUI.adrOpenPictureSelectSubject.onNext(selectedIconPath -> {
+                //TODO Save selected
+            });
+        });
+        root.add(selectIcon, BorderLayout.LINE_END);
 
         this.container.add(this.componentsFactory.wrapToSlide(root));
         this.container.add(this.componentsFactory.wrapToSlide(hotKeysPanel));

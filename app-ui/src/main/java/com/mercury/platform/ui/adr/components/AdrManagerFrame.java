@@ -11,6 +11,7 @@ import com.mercury.platform.ui.adr.components.panel.tree.main.AdrMainTreeNodeRen
 import com.mercury.platform.ui.adr.dialog.AdrExportDialog;
 import com.mercury.platform.ui.adr.dialog.AdrIconSelectDialog;
 import com.mercury.platform.ui.adr.dialog.AdrNewProfileDialog;
+import com.mercury.platform.ui.adr.dialog.AdrPictureSelectDialog;
 import com.mercury.platform.ui.adr.routing.AdrPageDefinition;
 import com.mercury.platform.ui.adr.routing.AdrPageState;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -38,6 +39,7 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame {
     private JComboBox profileSelector;
     private AdrExportDialog exportDialog;
     private AdrIconSelectDialog iconSelectDialog;
+    private AdrPictureSelectDialog pictureSelectDialog;
     @Getter
     private AdrProfileDescriptor selectedProfile;
 
@@ -52,6 +54,8 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame {
         this.exportDialog = new AdrExportDialog(this, new ArrayList<>());
         this.iconSelectDialog = new AdrIconSelectDialog();
         this.iconSelectDialog.setLocationRelativeTo(null);
+        this.pictureSelectDialog = new AdrPictureSelectDialog();
+        this.pictureSelectDialog.setLocationRelativeTo(null);
         FrameDescriptor frameDescriptor = this.framesConfig.get(this.getClass().getSimpleName());
         this.setPreferredSize(frameDescriptor.getFrameSize());
         UIManager.put("MenuItem.background", AppThemeColor.ADR_BG);
@@ -133,7 +137,12 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame {
             this.iconSelectDialog.setCallback(callback);
             this.iconSelectDialog.setVisible(true);
         });
+        MercuryStoreUI.adrOpenPictureSelectSubject.subscribe(callback -> {
+            this.pictureSelectDialog.setCallback(callback);
+            this.pictureSelectDialog.setVisible(true);
+        });
     }
+
 
     public void setSelectedProfile(AdrProfileDescriptor profile) {
         this.selectedProfile = profile;

@@ -51,6 +51,7 @@ public class MercuryStoreUI {
     public static final PublishSubject<AdrComponentDescriptor> adrExportSubject = PublishSubject.create();
     public static final PublishSubject<AdrComponentDescriptor> adrUpdateSubject = PublishSubject.create();
     public static final PublishSubject<DialogCallback<String>> adrOpenIconSelectSubject = PublishSubject.create();
+    public static final PublishSubject<DialogCallback<String>> adrOpenPictureSelectSubject = PublishSubject.create();
 
     public static final PublishSubject<SettingsPage> settingsStateSubject = PublishSubject.create();
     public static final PublishSubject<Boolean> settingsRepaintSubject = PublishSubject.create();

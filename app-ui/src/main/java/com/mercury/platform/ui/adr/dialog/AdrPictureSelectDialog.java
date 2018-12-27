@@ -2,7 +2,7 @@ package com.mercury.platform.ui.adr.dialog;
 
 
 import com.mercury.platform.shared.config.Configuration;
-import com.mercury.platform.ui.adr.components.panel.ui.IconsListCellRenderer;
+import com.mercury.platform.ui.adr.components.panel.ui.PicturesListCellRenderer;
 import com.mercury.platform.ui.components.panel.VerticalScrollContainer;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -10,15 +10,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class AdrIconSelectDialog extends AdrSelectDialog {
-    public AdrIconSelectDialog() {
+public class AdrPictureSelectDialog extends AdrSelectDialog {
+    public AdrPictureSelectDialog() {
         super();
-        this.setTitle("Select icon");
+        this.setTitle("Select picture");
     }
 
     @Override
     protected void createView() {
-        this.config = Configuration.get().iconBundleConfiguration();
+        this.config = Configuration.get().pictureBundleConfiguration();
         this.setPreferredSize(new Dimension(530, 400));
 
         VerticalScrollContainer container = new VerticalScrollContainer();
@@ -32,7 +32,7 @@ public class AdrIconSelectDialog extends AdrSelectDialog {
         this.iconsList.setBackground(AppThemeColor.SLIDE_BG);
         this.iconsList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         this.iconsList.setVisibleRowCount(-1);
-        this.iconsList.setCellRenderer(new IconsListCellRenderer());
+        this.iconsList.setCellRenderer(new PicturesListCellRenderer());
         this.iconsList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 
         container.add(this.iconsList, BorderLayout.CENTER);
