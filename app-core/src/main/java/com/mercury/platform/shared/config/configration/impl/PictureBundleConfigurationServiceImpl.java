@@ -17,7 +17,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class PictureBundleConfigurationServiceImpl extends BaseConfigurationService<List<String>> implements IconBundleConfigurationService {
-    private static final String ICONS_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\pictures\\";
+    private static final String PICTURES_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\pictures\\";
     private Map<String, URL> pictureBundle = new HashMap<>();
 
     public PictureBundleConfigurationServiceImpl(ProfileDescriptor selectedProfile) {
@@ -44,7 +44,7 @@ public class PictureBundleConfigurationServiceImpl extends BaseConfigurationServ
             URL url = new URL("file:///" + iconPath);
             String iconName = StringUtils.substringAfterLast(iconPath, "\\");
 
-            File file = new File(ICONS_PATH + iconName);
+            File file = new File(PICTURES_PATH + iconName);
             BufferedImage image = ImageIO.read(url);
             ImageIO.write(image, "png", file);
             this.getEntities().add(iconName);
@@ -98,8 +98,8 @@ public class PictureBundleConfigurationServiceImpl extends BaseConfigurationServ
         });
         this.getEntities().forEach(it -> {
             try {
-                if (new File(ICONS_PATH + it).exists()) {
-                    URL resource = new URL("file:///" + ICONS_PATH + it);
+                if (new File(PICTURES_PATH + it).exists()) {
+                    URL resource = new URL("file:///" + PICTURES_PATH + it);
                     pictureBundle.put(it, resource);
                 } else {
                     URL resource = this.getClass().getClassLoader().getResource("app/adr/pictures/" + "default_syndicate.png");
