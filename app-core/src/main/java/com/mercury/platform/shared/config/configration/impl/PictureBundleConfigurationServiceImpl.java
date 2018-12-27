@@ -68,6 +68,8 @@ public class PictureBundleConfigurationServiceImpl extends BaseConfigurationServ
     public List<String> getDefaultBundle() {
         return Arrays.stream(new String[]{
                 "default_syndicate.png",
+                "syndicate_colored.png",
+                "betrayal_reference_guide.png",
         }).collect(Collectors.toList());
     }
 
