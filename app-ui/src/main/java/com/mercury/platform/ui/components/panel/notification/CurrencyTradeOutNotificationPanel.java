@@ -7,6 +7,7 @@ import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.text.DecimalFormat;
 
@@ -37,10 +38,34 @@ public class CurrencyTradeOutNotificationPanel extends TradeOutNotificationPanel
 
     private JPanel getFromPanel() {
         JPanel fromPanel = this.componentsFactory.getJPanel(new BorderLayout(4, 0), AppThemeColor.FRAME);
-        JPanel currencyPanel = this.getCurrencyPanel(this.data.getCurrForSaleCount(), this.data.getCurrForSaleTitle());
-        currencyPanel.setBackground(AppThemeColor.FRAME);
-        fromPanel.add(currencyPanel, BorderLayout.LINE_START);
-        fromPanel.add(getCurrencyRatePanel(), BorderLayout.CENTER);
+        JLabel currencyLabel = this.componentsFactory.getIconLabel("currency/" + this.data.getCurrForSaleTitle() + ".png", 26);
+
+        if (this.data.getItems().size() > 0) {
+            JPanel itemsPanel = new JPanel();
+            itemsPanel.setBackground(AppThemeColor.FRAME);
+            itemsPanel.setLayout(new BoxLayout(itemsPanel, BoxLayout.Y_AXIS));
+            itemsPanel.setBorder(new EmptyBorder(0, 0, 2, 0));
+
+            this.data.getItems().forEach((item) -> {
+                itemsPanel.add(this.componentsFactory.getTextLabel(item));
+            });
+            fromPanel.add(itemsPanel, BorderLayout.LINE_START);
+
+            if (this.data.getItems().size() > 1) {
+                this.setAdditionalHeightDelta((this.data.getItems().size() - 1) * 15);
+            }
+        } else if (currencyLabel.getIcon() == null) {
+            JPanel itemsPanel = new JPanel();
+            itemsPanel.setBackground(AppThemeColor.FRAME);
+            itemsPanel.setLayout(new BoxLayout(itemsPanel, BoxLayout.Y_AXIS));
+            itemsPanel.add(this.componentsFactory.getTextLabel(this.data.getCurrForSaleCount().intValue() + " " + this.data.getCurrForSaleTitle()));
+            fromPanel.add(itemsPanel, BorderLayout.LINE_START);
+        } else {
+            JPanel currencyPanel = this.getCurrencyPanel(this.data.getCurrForSaleCount(), this.data.getCurrForSaleTitle());
+            currencyPanel.setBackground(AppThemeColor.FRAME);
+            fromPanel.add(currencyPanel, BorderLayout.LINE_START);
+            fromPanel.add(getCurrencyRatePanel(), BorderLayout.CENTER);
+        }
         return fromPanel;
     }
 

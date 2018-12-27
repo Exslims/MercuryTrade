@@ -23,6 +23,7 @@ public class TestEngine {
     private Random random = new Random();
     private String poeTradeTemplate = "%s: Hi, I would like to buy your %s listed for %d %s in %s (stash tab \"%d\"; position: left %d, top %d) %s";
     private String currencyTemplate = "%s: Hi, I'd like to buy your %d %s for my %d %s in %s. %s";
+    private String currencyMapBulkTemplate = "%s: Hi, I'd like to buy your %s for my %d %s in %s. %s";
 
     public TestEngine() {
         this.messageBuilder.setChunkStrings(Arrays.asList("Hi", "buy", "listed", "like"));
@@ -257,6 +258,19 @@ public class TestEngine {
         list.add(descriptor4);
         list.add(descriptor5);
         return list;
+    }
+
+    public NotificationDescriptor getRandomMapBulkMessage() {
+        NotificationDescriptor notificationDescriptor = parser.parse(String.format(currencyMapBulkTemplate,
+                nickNames.get(random.nextInt(nickNames.size())),
+                "1 Ivory Temple Map (T12), 1 Lava Lake Map (T15), 1 Zana's Precinct Map (T6) & 1 Burial Chambers Map (T11)",
+                random.nextInt(1500) + 1,
+                currency.get(random.nextInt(currency.size())),
+                leagues.get(random.nextInt(leagues.size())),
+                offer.get(random.nextInt(offer.size()))
+        ));
+        notificationDescriptor.setRelatedMessages(this.getChatHistory());
+        return notificationDescriptor;
     }
 
 }

@@ -99,6 +99,16 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
         testPanel.add(chatScannerLabel, titleColumn);
         titleColumn.gridy++;
 
+        JButton mapBulkButton = componentsFactory.getBorderedButton("Click");
+        mapBulkButton.addActionListener(action -> {
+            MercuryStoreCore.newNotificationSubject.onNext(this.testEngine.getRandomMapBulkMessage());
+        });
+        testPanel.add(mapBulkButton, buttonColumn);
+        buttonColumn.gridy++;
+        JLabel mapBulkLabel = componentsFactory.getTextLabel("Random bulk map message");
+        testPanel.add(mapBulkLabel, titleColumn);
+        titleColumn.gridy++;
+
         JButton accessibilityStatusButton = componentsFactory.getBorderedButton("Click");
         accessibilityStatusButton.addActionListener(action -> {
             NotificationDescriptor randomItemIncMessage = this.testEngine.getRandomItemIncMessage();
