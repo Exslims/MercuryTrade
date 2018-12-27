@@ -1,9 +1,9 @@
 {
-  "version": "1.0.3.3.0",
+  "version": "1.0.3.4.0",
   "notes":[
     {
       "title": "Update",
-      "text": "Hi, sorry for the long absence.\n\n- Fix critical bug when sometimes MT hangs on boot.\n- Fixed a bug when notification panel doesn't show up after altabing.\n- Now notification panel works with german POE client.\n- Support tab updated.\n\nDon't forget to support the app, we really appreciate it! Thanks!",
+      "text": "- New feature: Syndicate rewards matrix overlay (see in taskbar) + hotkey (settings -> taskbar). Thanks @Etuldan for contributing.\n- Added support for buying bulk maps from one seller in poeapp.com\n- Fix notification panel layout when buying/selling maps from poe trade/poeapp\n- Added some new icons for currencies.\n\nHappy holidays! Don't forget to support the app. Thanks!",
       "image" : "",
       "layout" : "VERTICAL"
     }
