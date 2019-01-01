@@ -16,6 +16,8 @@ I have a problem: [Troubleshooting](https://github.com/Exslims/MercuryTrade/wiki
 
 Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issues) [Discord](https://discord.gg/aG9C8XJ)
 
+User-agreement: [Link](https://github.com/Exslims/MercuryTrade/wiki/User-agreement)
+
 
 ---
  <p align="center">
