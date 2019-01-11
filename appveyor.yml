@@ -1,0 +1,28 @@
+# http://www.appveyor.com/docs/appveyor-yml
+# This is the standard AppVeyor project for the SDK
+# It builds pulls requests and merges to master to ensure that no tests have broken
+#
+# This follows the 3-project AppVeyor/Maven pattern established in https://github.com/dblock/log4jna/blob/master/AppVeyorMavenRelease.md
+
+# https://www.appveyor.com/docs/build-environment/#java
+# Use the standard "Visual Studio 2015" image, since that has all the required Maven tools
+
+environment:
+  JAVA_HOME: C:\Program Files\Java\jdk1.8.0
+  M2: $(USERPROFILE)\.m2
+
+install:
+  # Log versions for debugging
+  - java -version
+  - mvn --version
+
+build_script:
+  - mvn -B clean install -Djna.nosys=true
+
+# Maven runs the tests as part of the build, so we don't need to run them again
+test: off
+
+cache:
+  # Cache Maven and m.2
+  - '%MAVEN_HOME%'
+  - '%M2%'
