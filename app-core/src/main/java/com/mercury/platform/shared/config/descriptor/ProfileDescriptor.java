@@ -21,4 +21,5 @@ public class ProfileDescriptor {
     private List<StashTabDescriptor> stashTabDescriptors;
     private List<AdrProfileDescriptor> adrProfileDescriptorList;
     private List<String> iconBundleList;
+    private List<String> pictureBundleList;
 }

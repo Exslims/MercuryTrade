@@ -60,4 +60,6 @@ public class MercuryStoreCore {
     public static final PublishSubject<PlainMessageDescriptor> newScannerMessageSubject = PublishSubject.create();
     public static final PublishSubject<PlainMessageDescriptor> removeScannerNotificationSubject = PublishSubject.create();
     public static final PublishSubject<NotificationDescriptor> expiredNotificationSubject = PublishSubject.create();
+
+    public static final PublishSubject<Boolean> pictureChange = PublishSubject.create();
 }

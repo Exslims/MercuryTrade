@@ -10,4 +10,5 @@ public class TaskBarDescriptor implements Serializable {
     private String dndResponseText = "Response message";
     private HotKeyDescriptor hideoutHotkey = new HotKeyDescriptor();
     private HotKeyDescriptor helpIGHotkey = new HotKeyDescriptor();
+    private String helpIGPath = "...";
 }
