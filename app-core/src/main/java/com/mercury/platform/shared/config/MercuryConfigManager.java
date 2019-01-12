@@ -118,7 +118,8 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
             File configFile = new File(dataSource.getConfigurationFilePath());
             File configFolder = new File(dataSource.getConfigurationPath());
             File iconFolder = new File(dataSource.getConfigurationPath() + "\\icons");
-            if (!configFolder.exists() || !configFile.exists() || !iconFolder.exists()) {
+            File pictureFolder = new File(dataSource.getConfigurationPath() + "\\pictures");
+            if (!configFolder.exists() || !configFile.exists() || !iconFolder.exists() || !pictureFolder.exists()) {
                 new File(dataSource.getConfigurationPath() + "\\temp").mkdir();
                 new File(dataSource.getConfigurationPath() + "\\icons").mkdir();
                 new File(dataSource.getConfigurationPath() + "\\pictures").mkdir();
