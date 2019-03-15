@@ -11,6 +11,7 @@ import com.mercury.platform.shared.config.MercuryConfigurationSource;
 import com.mercury.platform.shared.config.descriptor.adr.AdrVisibleState;
 import com.mercury.platform.shared.hotkey.HotKeysInterceptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
+import com.mercury.platform.shared.wh.WhisperHelperHandler;
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
@@ -36,6 +37,7 @@ public class ProdStarter {
         new SoundNotifier();
         new ChatHelper();
         new HotKeysInterceptor();
+        new WhisperHelperHandler();
 
         Executor executor = Executors.newSingleThreadExecutor();
         UpdateClientStarter updateClientStarter = new UpdateClientStarter();

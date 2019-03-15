@@ -84,7 +84,7 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         donateDescriptor.setSize(new Dimension(100, 20));
         donateDescriptor.setType(AdrComponentType.PROGRESS_BAR);
         donateDescriptor.setCustomTextEnable(true);
-        donateDescriptor.setCustomText("77$");
+        donateDescriptor.setCustomText("0$");
         donateDescriptor.setFontSize(21);
         donateDescriptor.setLowValueTextColor(AppThemeColor.TEXT_DEFAULT);
         donateDescriptor.setMediumValueTextColor(AppThemeColor.TEXT_DEFAULT);
@@ -93,7 +93,7 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         donateDescriptor.setBackgroundColor(AppThemeColor.FRAME);
         donateDescriptor.setForegroundColor(AppThemeColor.BUTTON);
         MercuryTracker tracker = new MercuryTracker(donateDescriptor);
-        tracker.setValue(87 * 1000);
+        tracker.setValue(1000);
         tracker.setPreferredSize(donateDescriptor.getSize());
         root.add(this.componentsFactory.getTextLabel("Monthly donations:", FontStyle.BOLD, 16), BorderLayout.LINE_START);
         root.add(this.componentsFactory.wrapToSlide(tracker, AppThemeColor.ADR_FOOTER_BG, 2, 2, 2, 1), BorderLayout.CENTER);
@@ -156,8 +156,8 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         JButton openTests = this.getOperationButton("Open tests", "app/open-tests.png");
         openTests.addActionListener(action -> {
             FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
-//            FramesManager.INSTANCE.showFrame(TestCasesFrame.class);
-            FramesManager.INSTANCE.preShowFrame(TestCasesFrame.class);
+            FramesManager.INSTANCE.showFrame(TestCasesFrame.class);
+//            FramesManager.INSTANCE.preShowFrame(TestCasesFrame.class);
         });
         root.add(this.componentsFactory.wrapToSlide(openTutorial));
         root.add(this.componentsFactory.wrapToSlide(checkUpdates));

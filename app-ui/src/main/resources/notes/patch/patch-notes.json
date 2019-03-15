@@ -1,9 +1,9 @@
 {
-  "version": "1.0.2.0.0",
+  "version": "1.0.3.0.0",
   "notes":[
     {
       "title": "Update",
-      "text": "More than 20k unique users, thank you a lot for support!\n\n- New feature - Whisper helper! Now you can send a trade message directly to the chat from browser. More info in notification's settings.\n- Added sound alerts to overseer.\n- Added invite button to scanner panel.\n- Added new currency icons to notification panels.\n- Auto-close notification now as option in settings.\n- Fixed a bug when settings (like DND or max/min opacity) not saved properly.",
+      "text": "- Fixed a bug when the amount of currency is not displayed correctly in the notification panel.\n- Fixed a bug when notification panel sometimes did not work.\n- Whisper helper now have own hotkey button.\n- And minor backend improvements.\n\nThank you for staying with us.",
       "image" : "",
       "layout" : "VERTICAL"
     }

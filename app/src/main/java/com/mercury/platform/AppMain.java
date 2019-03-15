@@ -10,38 +10,33 @@ import com.mercury.platform.ui.frame.other.MercuryLoadingFrame;
 import com.mercury.platform.ui.frame.titled.GamePathChooser;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.sun.jna.Native;
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.DesktopWindow;
 import com.sun.jna.platform.WindowUtils;
 import com.sun.jna.platform.win32.User32;
-import com.sun.jna.platform.win32.WinDef;
-import com.sun.jna.platform.win32.WinUser;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.util.List;
 
 public class AppMain {
     public static void main(String[] args) {
-        System.setProperty("sun.java2d.d3d","false");
-        System.setProperty("jna.nosys","true");
+        System.setProperty("sun.java2d.d3d", "false");
+        System.setProperty("jna.nosys", "true");
         new ErrorHandler();
         MercuryLoadingFrame mercuryLoadingFrame = new MercuryLoadingFrame();
         mercuryLoadingFrame.init();
         mercuryLoadingFrame.showComponent();
-        if(args.length == 0) {
+        if (args.length == 0) {
             new ProdStarter().startApplication();
-        }else {
+        } else {
             new DevStarter().startApplication();
         }
         String configGamePath = Configuration.get().applicationConfiguration().get().getGamePath();
-        if(configGamePath.equals("") || !isValidGamePath(configGamePath)){
+        if (configGamePath.equals("") || !isValidGamePath(configGamePath)) {
             String gamePath = getGamePath();
-            if(gamePath == null) {
+            if (gamePath == null) {
                 MercuryStoreCore.appLoadingSubject.onNext(false);
                 GamePathChooser gamePathChooser = new GamePathChooser();
                 gamePathChooser.init();
-            }else {
+            } else {
                 gamePath = gamePath + "\\";
                 Configuration.get().applicationConfiguration().get().setGamePath(gamePath);
                 MercuryStoreCore.saveConfigSubject.onNext(true);
@@ -49,17 +44,19 @@ public class AppMain {
                 FramesManager.INSTANCE.start();
                 MercuryStoreCore.appLoadingSubject.onNext(false);
             }
-        }else {
+        } else {
             new FileMonitor().start();
             FramesManager.INSTANCE.start();
             MercuryStoreCore.appLoadingSubject.onNext(false);
         }
     }
-    private static boolean isValidGamePath(String gamePath){
+
+    private static boolean isValidGamePath(String gamePath) {
         File file = new File(gamePath + File.separator + "logs" + File.separator + "Client.txt");
         return file.exists();
     }
-    private static String getGamePath(){
+
+    private static String getGamePath() {
         return WindowUtils.getAllWindows(false).stream().filter(window -> {
             char[] className = new char[512];
             User32.INSTANCE.GetClassName(window.getHWND(), className, 512);

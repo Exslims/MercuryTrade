@@ -12,6 +12,8 @@ public class NotificationSettingsDescriptor implements Serializable {
     private boolean incNotificationEnable = true;
     private boolean outNotificationEnable = true;
     private boolean scannerNotificationEnable = true;
+    private boolean whisperHelperEnable = false;
+    private HotKeyDescriptor whisperHelperHotKey = new HotKeyDescriptor("F2", 60, false, false, false);
     private int limitCount = 3;
     private int unfoldCount = 2;
     private FlowDirections flowDirections = FlowDirections.DOWNWARDS;

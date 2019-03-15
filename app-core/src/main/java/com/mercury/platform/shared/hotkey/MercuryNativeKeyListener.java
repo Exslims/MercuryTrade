@@ -1,12 +1,9 @@
 package com.mercury.platform.shared.hotkey;
 
-
 import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
-
-import javax.swing.*;
 
 public class MercuryNativeKeyListener implements NativeKeyListener {
     private boolean menuPressed;
@@ -44,6 +41,9 @@ public class MercuryNativeKeyListener implements NativeKeyListener {
 
     @Override
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
+        if (!this.block) {
+            MercuryStoreCore.hotKeyReleaseSubject.onNext(this.getDescriptor(nativeKeyEvent));
+        }
         switch (nativeKeyEvent.getKeyCode()) {
             case 42: {
                 shiftPressed = false;
@@ -58,16 +58,6 @@ public class MercuryNativeKeyListener implements NativeKeyListener {
                 break;
             }
         }
-        if (!this.block) {
-            if (nativeKeyEvent.getKeyCode() == 29) {
-                Timer timer = new Timer(500, action -> {
-                    MercuryStoreCore.tradeWhisperSubject.onNext(true);
-                });
-                timer.setRepeats(false);
-                timer.start();
-            }
-        }
-
     }
 
     @Override
