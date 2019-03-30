@@ -17,16 +17,19 @@ public class MessageParser {
     private final static String poeAppPattern = "^(.*\\s)?(.+): (\\s*?wtb\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash\\s+?\"(.*?)\";\\s+?left\\s+?(\\d+?),\\s+?top\\s+(\\d+?)\\)\\s*?(.*))$";
     private final static String poeAppBulkCurrenciesPattern = "^(.*\\s)?(.+): (\\s*?wtb\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash\\s+?\"(.*?)\";\\s+?left\\s+?(\\d+?),\\s+?top\\s+(\\d+?)\\)\\s*?(.*))$";
     private final static String poeCurrencyPattern = "^(.*\\s)?(.+): (.+ to buy your (\\d+(\\.\\d+)?)? (.+) for my (\\d+(\\.\\d+)?)? (.+) in (.*?)\\.\\s*(.*))$";
+    private final static String poeMapLiveRegex = "^(.*\\s)?(.+): (I'd like to exchange my (T\\d\\d:\\s\\([\\s\\S]+) for your (T\\d\\d:\\s\\([\\S,]+) in\\s+?(.+?)\\.)";
     private Pattern poeAppItemPattern;
     private Pattern poeTradeStashItemPattern;
     private Pattern poeTradeItemPattern;
     private Pattern poeTradeCurrencyPattern;
+    private Pattern poeMapLivePattern;
 
     public MessageParser() {
         this.poeAppItemPattern = Pattern.compile(poeAppPattern);
         this.poeTradeStashItemPattern = Pattern.compile(poeTradeStashTabPattern);
         this.poeTradeItemPattern = Pattern.compile(poeTradePattern);
         this.poeTradeCurrencyPattern = Pattern.compile(poeCurrencyPattern);
+        this.poeMapLivePattern = Pattern.compile(poeMapLiveRegex);
     }
 
     public NotificationDescriptor parse(String fullMessage) {
@@ -112,6 +115,20 @@ public class MessageParser {
             tradeNotification.setType(NotificationType.INC_ITEM_MESSAGE);
             return tradeNotification;
         }
+        Matcher poeTradeMapLiveMatcher = poeMapLivePattern.matcher(fullMessage);
+		if (poeTradeMapLiveMatcher.find()) {
+			ItemTradeNotificationDescriptor tradeNotification = new ItemTradeNotificationDescriptor();
+			tradeNotification.setWhisperNickname(poeTradeMapLiveMatcher.group(2));
+			tradeNotification.setSourceString(poeTradeMapLiveMatcher.group(3));
+			tradeNotification.setItemName(poeTradeMapLiveMatcher.group(5));
+			tradeNotification.setOffer(poeTradeMapLiveMatcher.group(4));
+			tradeNotification.setLeague(poeTradeMapLiveMatcher.group(6));
+			tradeNotification.setType(NotificationType.INC_ITEM_MESSAGE);
+			tradeNotification.setCurCount(0d);
+			tradeNotification.setCurrency("");
+			tradeNotification.setType(NotificationType.INC_ITEM_MESSAGE);
+			return tradeNotification;
+		}
         return null;
     }
 }
