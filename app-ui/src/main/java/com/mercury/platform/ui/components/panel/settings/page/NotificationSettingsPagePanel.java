@@ -120,6 +120,32 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
             }
         });
         propertiesPanel.add(nickNameField);
+        propertiesPanel.add(this.componentsFactory.getTextLabel("Pushbullet Trade Notifications", FontStyle.REGULAR, 16));
+        JCheckBox enableCheckbox = this.componentsFactory.getCheckBox(this.generalSnapshot.isPushbulletNotificationEnable());
+        enableCheckbox.addActionListener(action -> {
+            this.generalSnapshot.setPushbulletNotificationEnable(enableCheckbox.isSelected());
+        });
+        propertiesPanel.add(enableCheckbox);
+        propertiesPanel.add(this.componentsFactory.getTextLabel("Pushbullet API Key:", FontStyle.REGULAR, 16));
+        JPasswordField pushbulletAPIKey = this.componentsFactory.getPasswordField(this.generalSnapshot.getPushbulletAPIKey(), FontStyle.DEFAULT, 15f);
+        pushbulletAPIKey.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                generalSnapshot.setPushbulletAPIKey(pushbulletAPIKey.getText());
+            }
+        });
+        propertiesPanel.add(pushbulletAPIKey);
+
+        propertiesPanel.add(this.componentsFactory.getTextLabel("Pushbullet Device:", FontStyle.REGULAR, 16));
+        JTextField pushbulletDevice = this.componentsFactory.getTextField(this.generalSnapshot.getPushbulletDevice(), FontStyle.DEFAULT, 15f);
+        pushbulletDevice.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                generalSnapshot.setPushbulletDevice(pushbulletDevice.getText());
+            }
+        });
+        propertiesPanel.add(pushbulletDevice);
+
         root.add(this.componentsFactory.wrapToSlide(propertiesPanel, AppThemeColor.ADR_BG, 2, 0, 2, 2), BorderLayout.PAGE_START);
         return root;
     }

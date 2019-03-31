@@ -808,4 +808,26 @@ public class ComponentsFactory {
             MercuryStoreCore.tooltipSubject.onNext(null);
         }
     }
+
+    public JPasswordField getPasswordField(String text) {
+        JPasswordField textField = getPasswordField(text, null, scale * 16);
+        textField.setFont(DEFAULT_FONT);
+        return textField;
+    }
+
+    public JPasswordField getPasswordField(String text, FontStyle style, float fontSize) {
+        JPasswordField textField = new JPasswordField(text);
+        if (style != null) {
+            textField.setFont(getSelectedFont(style).deriveFont(scale * fontSize));
+        }
+        textField.setForeground(AppThemeColor.TEXT_DEFAULT);
+        textField.setCaretColor(AppThemeColor.TEXT_DEFAULT);
+        textField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 3)
+        ));
+        textField.setBackground(AppThemeColor.HEADER);
+        return textField;
+    }
+
 }

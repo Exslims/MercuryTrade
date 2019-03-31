@@ -13,6 +13,7 @@ public class NotificationSettingsDescriptor implements Serializable {
     private boolean outNotificationEnable = true;
     private boolean scannerNotificationEnable = true;
     private boolean whisperHelperEnable = false;
+    private boolean pushbulletNotificationEnable = false;
     private HotKeyDescriptor whisperHelperHotKey = new HotKeyDescriptor("F2", 60, false, false, false);
     private int limitCount = 3;
     private int unfoldCount = 2;
@@ -23,5 +24,8 @@ public class NotificationSettingsDescriptor implements Serializable {
     private List<ResponseButtonDescriptor> buttons = new ArrayList<>();
     private List<ResponseButtonDescriptor> outButtons = new ArrayList<>();
     private String playerNickname = "Set up your nickname in settings";
+    private String pushbulletAPIKey = "Set your Pushbullet API Key";
+    private String pushbulletDevice = "Set your Device to notify";
     private List<String> autoCloseTriggers = new ArrayList<>();
+
 }
