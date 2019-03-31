@@ -1,5 +1,6 @@
 package com.mercury.platform.core.utils.interceptor;
 
+import com.mercury.platform.core.misc.PushBulletNotifier;
 import com.mercury.platform.core.utils.interceptor.filter.MessageMatcher;
 import com.mercury.platform.shared.MessageParser;
 import com.mercury.platform.shared.config.Configuration;
@@ -9,13 +10,16 @@ import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class TradeIncMessagesInterceptor extends MessageInterceptor {
     private MessageParser messageParser = new MessageParser();
     private PlainConfigurationService<NotificationSettingsDescriptor> config;
     private List<LocalizationMatcher> clients = new ArrayList<>();
+    private PushBulletNotifier pb;
 
     public TradeIncMessagesInterceptor() {
         this.config = Configuration.get().notificationConfiguration();
@@ -25,6 +29,13 @@ public class TradeIncMessagesInterceptor extends MessageInterceptor {
         this.clients.add(new BZIncLocalizationMatcher());
         this.clients.add(new FrenchIncLocalizationMatcher());
         this.clients.add(new GermanIncLocalizationMatcher());
+
+        HashMap<String, String> settings = new HashMap<String, String>();
+        settings.put("api-key", this.config.get().getPushbulletAPIKey());
+        settings.put("devices", "all");
+        this.pb = new PushBulletNotifier();
+        this.pb.enabled = this.config.get().isPushbulletNotificationEnable();
+        pb.setSettings(settings);
     }
 
     @Override
@@ -34,7 +45,7 @@ public class TradeIncMessagesInterceptor extends MessageInterceptor {
                     .filter(matcher -> matcher.isSuitableFor(message))
                     .findAny().orElse(null);
             if (localizationMatcher != null) {
-                localizationMatcher.processMessage(message);
+                localizationMatcher.processMessage(message, this.pb);
             }
         }
     }
@@ -60,10 +71,11 @@ public class TradeIncMessagesInterceptor extends MessageInterceptor {
             return messageParser.parse(this.trimString(message));
         }
 
-        public void processMessage(String message) {
+        public void processMessage(String message, PushBulletNotifier pb) {
             NotificationDescriptor notificationDescriptor = this.getDescriptor(message);
             if (notificationDescriptor != null) {
                 MercuryStoreCore.newNotificationSubject.onNext(notificationDescriptor);
+                pb.sendNotification(notificationDescriptor);
             }
         }
     }

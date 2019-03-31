@@ -9,6 +9,7 @@ import com.mercury.platform.shared.config.descriptor.SoundDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrVisibleState;
 import com.mercury.platform.shared.entity.message.MercuryError;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
+import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
 import com.mercury.platform.shared.entity.message.PlainMessageDescriptor;
 import rx.subjects.PublishSubject;
 
@@ -54,6 +55,7 @@ public class MercuryStoreCore {
     public static final PublishSubject<Boolean> tradeWhisperSubject = PublishSubject.create();
     public static final PublishSubject<SoundDescriptor> soundDescriptorSubject = PublishSubject.create();
 
+    public static final PublishSubject<NotificationSettingsDescriptor> notificationSettingsSubject = PublishSubject.create();
     public static final PublishSubject<NotificationDescriptor> newNotificationSubject = PublishSubject.create();
     public static final PublishSubject<NotificationDescriptor> removeNotificationSubject = PublishSubject.create();
     public static final PublishSubject<PlainMessageDescriptor> plainMessageSubject = PublishSubject.create();
