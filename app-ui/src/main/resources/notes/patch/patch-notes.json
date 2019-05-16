@@ -1,10 +1,11 @@
 {
-  "version": "1.0.3.0.0",
+  "version": "1.0.3.1.0",
   "notes":[
     {
       "title": "Update",
-      "text": "- Fixed a bug when the amount of currency is not displayed correctly in the notification panel.\n- Fixed a bug when notification panel sometimes did not work.\n- Whisper helper now have own hotkey button.\n- And minor backend improvements.\n\nThank you for staying with us.",
+      "text": "- Added /whois button to outgoing notification panel.\n- Fixed a bug when sometimes notification panel won't show orb icons.\n- Many backend improvements for rework \"History\" feature in next version.\n- Support tab updated.\n\nHappy new year! If you love MercuryTrade so much it has become your favourite application to play the game - show your appreciation by supporting it! Thanks!",
       "image" : "",
       "layout" : "VERTICAL"
     }
-  ]}
+  ]
+}

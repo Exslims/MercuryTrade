@@ -156,8 +156,8 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         JButton openTests = this.getOperationButton("Open tests", "app/open-tests.png");
         openTests.addActionListener(action -> {
             FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
-            FramesManager.INSTANCE.showFrame(TestCasesFrame.class);
-//            FramesManager.INSTANCE.preShowFrame(TestCasesFrame.class);
+//            FramesManager.INSTANCE.showFrame(TestCasesFrame.class);
+            FramesManager.INSTANCE.preShowFrame(TestCasesFrame.class);
         });
         root.add(this.componentsFactory.wrapToSlide(openTutorial));
         root.add(this.componentsFactory.wrapToSlide(checkUpdates));
@@ -178,7 +178,6 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
                 }
             }
         });
-//        root.add(patchNotes);
         return root;
     }
 

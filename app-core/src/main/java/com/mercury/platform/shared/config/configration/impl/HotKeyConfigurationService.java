@@ -29,6 +29,7 @@ public class HotKeyConfigurationService extends BaseConfigurationService<HotKeys
         outNDataList.add(new HotKeyPair(HotKeyType.N_TRADE_PLAYER, new HotKeyDescriptor()));
         outNDataList.add(new HotKeyPair(HotKeyType.N_LEAVE, new HotKeyDescriptor()));
         outNDataList.add(new HotKeyPair(HotKeyType.N_OPEN_CHAT, new HotKeyDescriptor()));
+        outNDataList.add(new HotKeyPair(HotKeyType.N_WHO_IS, new HotKeyDescriptor()));
         outNDataList.add(new HotKeyPair(HotKeyType.N_REPEAT_MESSAGE, new HotKeyDescriptor()));
         outNDataList.add(new HotKeyPair(HotKeyType.N_CLOSE_NOTIFICATION, new HotKeyDescriptor()));
 
@@ -55,6 +56,13 @@ public class HotKeyConfigurationService extends BaseConfigurationService<HotKeys
     public void validate() {
         if (this.selectedProfile.getHotkeysSettingsDescriptor() == null) {
             this.selectedProfile.setHotkeysSettingsDescriptor(this.getDefault());
+        }
+        if (this.selectedProfile.getHotkeysSettingsDescriptor()
+                .getOutNHotKeysList().stream()
+                .filter(it -> it.getType().equals(HotKeyType.N_WHO_IS))
+                .findAny().orElse(null) == null) {
+            this.selectedProfile.getHotkeysSettingsDescriptor()
+                    .getOutNHotKeysList().add(new HotKeyPair(HotKeyType.N_WHO_IS, new HotKeyDescriptor()));
         }
     }
 
