@@ -12,7 +12,7 @@
         <module>app</module>
         <module>app-ui</module>
         <module>app-core</module>
-        <module>app-shared</module>
+        <!--<module>app-shared</module>-->
         <module>app-local-updater</module>
     </modules>
     <packaging>pom</packaging>
