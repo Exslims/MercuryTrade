@@ -1,3 +1,6 @@
+### This project is no longer maintained but it will still work until there are some breaking changes in the game, please use alternative app.
+___
+
 [![Donate](https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_150x38.png)](https://www.paypal.me/mercurytrade) 
 
 Already more than 10k happy users! Don't forget to support it! And if you want your name to be featured in our in-app Hall of Fame (see Support tab) please provide this information within the transaction!
