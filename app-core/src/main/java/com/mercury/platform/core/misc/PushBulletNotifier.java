@@ -1,105 +1,111 @@
 package com.mercury.platform.core.misc;
+
+import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.PlainConfigurationService;
+import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
-import com.mercury.platform.shared.store.MercuryStoreCore;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.Authenticator;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.PasswordAuthentication;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class PushBulletNotifier {
-	
-	public PushBulletNotifier() {
-        MercuryStoreCore.notificationSettingsSubject.subscribe(data -> setSettings(data.getPushbulletAPIKey(), data.getPushbulletDevice(), data.isPushbulletNotificationEnable()));
-	}
 
-	public static final String API_KEY = "api-key", DEVICES = "devices";
-	private Map<String, String> settings;
-	public Boolean enabled = true;
+    private PlainConfigurationService<NotificationSettingsDescriptor> settings;
 
-	public void sendNotification(NotificationDescriptor notificationDescriptor) {
-		String subject = "Buying request from: " + notificationDescriptor.getWhisperNickname();
-		String content = notificationDescriptor.getSourceString();
-		try {
-			this.sendNotification(subject, content);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+    public PushBulletNotifier() {
+        settings = Configuration.get().notificationConfiguration();
+    }
 
-
-	public void sendNotification(String title, String content) throws IOException {
-		if (!enabled)
-			return;
-		Authenticator.setDefault(new Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(settings.get(API_KEY), "".toCharArray());
-			}
-		});
-        String device = getSettings().get("devices");
-		String encodedTitle = URLEncoder.encode(title, "UTF-8");
-		String encodedContent = URLEncoder.encode(content, "UTF-8");
-		String encodedDevice = URLEncoder.encode("ufhYsa6sjApZfm8TCe", "UTF-8");
-
-		String url = "https://api.pushbullet.com/v2/pushes";
-		URL obj = new URL(url);
-		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-		// add request header
-		con.setRequestMethod("POST");
-		con.setRequestProperty("User-Agent", "Mozilla/5.0");
-		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-
-		String urlParameters = "type=note&title=" + encodedTitle + "&body=" + encodedContent + "&device_iden=" + encodedDevice;
-
-        // Send post request
-        con.setDoOutput(true);
-        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        System.out.println(urlParameters);
-        wr.writeBytes(urlParameters);
-        wr.flush();
-        wr.close();
-
-        int responseCode = con.getResponseCode();
-        System.out.println("Response Code : " + responseCode);
-
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
+    public void sendNotification(NotificationDescriptor notificationDescriptor) {
+        String subject = "Buying request from: " + notificationDescriptor.getWhisperNickname();
+        String content = notificationDescriptor.getSourceString();
+        try {
+            this.sendNotification(subject, content);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        in.close();
+    }
 
-        // print result
-        System.out.println(response.toString());
-	}
-	
-	public boolean setSettings(String apikey, String device, Boolean enabled) {
-		HashMap<String,String> settings = new HashMap<String, String>();
-		settings.put("api-key", apikey);
-		settings.put("devices", device);
-		this.enabled = enabled;
-		this.settings = settings;
-		return settings.containsKey(API_KEY) && !settings.get(API_KEY).trim().equalsIgnoreCase("");
-	}
-	
-	public boolean setSettings(Map<String, String> settings) {
-		this.settings = settings;
-		return settings.containsKey(API_KEY) && !settings.get(API_KEY).trim().equalsIgnoreCase("");
-	}
-	
-    public Map<String, String> getSettings() {
-        return this.settings;
+    private String getDeviceID() {
+        try {
+            StringBuilder result = new StringBuilder();
+            URL urld = new URL("https://api.pushbullet.com/v2/devices");
+            HttpURLConnection conn = (HttpURLConnection) urld.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Access-Token", settings.get().getPushbulletAPIKey());
+            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line;
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+            rd.close();
+            JSONParser parser = new JSONParser();
+            JSONObject jsonresponse;
+            jsonresponse = (JSONObject) parser.parse(result.toString());
+            JSONArray arr = (JSONArray) jsonresponse.get("devices");
+            for (Object object : arr) {
+                JSONObject tmp = (JSONObject) object;
+                String nickname = (String) tmp.get("nickname");
+                if (nickname.equals("htc_10")) {
+                    return (String) tmp.get("iden");
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    private void sendNotificationPOST(String title, String content, String device_id) {
+        try {
+            String encodedTitle = URLEncoder.encode(title, "UTF-8");
+            String encodedContent = URLEncoder.encode(content, "UTF-8");
+            String encodedDevice = URLEncoder.encode(device_id, "UTF-8");
+
+            String rawData = "type=note&title=" + encodedTitle + "&body=" + encodedContent + "&device_iden="
+                    + encodedDevice;
+            URL u = new URL("https://api.pushbullet.com/v2/pushes");
+            HttpURLConnection conn = (HttpURLConnection) u.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Access-Token", URLEncoder.encode(settings.get().getPushbulletAPIKey(), "UTF-8"));
+            conn.setRequestProperty("Content-Length", String.valueOf(rawData.length()));
+            OutputStream os = conn.getOutputStream();
+
+            os.write(rawData.getBytes());
+            os.flush();
+            os.close();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendNotification(String title, String content) throws IOException {
+        if (!settings.get().isPushbulletNotificationEnable()) {
+            return;
+        }
+
+        String device_id = getDeviceID();
+        sendNotificationPOST(title, content, device_id);
     }
 
 }

@@ -30,12 +30,8 @@ public class TradeIncMessagesInterceptor extends MessageInterceptor {
         this.clients.add(new FrenchIncLocalizationMatcher());
         this.clients.add(new GermanIncLocalizationMatcher());
 
-        HashMap<String, String> settings = new HashMap<String, String>();
-        settings.put("api-key", this.config.get().getPushbulletAPIKey());
-        settings.put("devices", "all");
         this.pb = new PushBulletNotifier();
-        this.pb.enabled = this.config.get().isPushbulletNotificationEnable();
-        pb.setSettings(settings);
+
     }
 
     @Override
