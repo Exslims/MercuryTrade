@@ -38,6 +38,7 @@ public class MercuryTaskBarController implements TaskBarController {
     @Override
     public void showHelpIG() {
         FramesManager.INSTANCE.hideOrShowFrame(HelpIGFrame.class);
+        MercuryStoreCore.pictureChange.onNext(false);
     }
 
     @Override

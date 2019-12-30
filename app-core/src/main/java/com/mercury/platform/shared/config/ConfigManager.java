@@ -29,5 +29,7 @@ public interface ConfigManager {
 
     IconBundleConfigurationService iconBundleConfiguration();
 
+    IconBundleConfigurationService pictureBundleConfiguration();
+
     List<ProfileDescriptor> profiles();
 }

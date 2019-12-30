@@ -36,6 +36,7 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
     private PlainConfigurationService<HotKeysSettingsDescriptor> hotKeyConfigurationService;
     private ListConfigurationService<StashTabDescriptor> stashTabConfigurationService;
     private IconBundleConfigurationService iconBundleConfigurationService;
+    private IconBundleConfigurationService pictureBundleConfigurationService;
     private AdrConfigurationService adrConfigurationService;
 
     private List<BaseConfigurationService> services = new ArrayList<>();
@@ -97,6 +98,11 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
     }
 
     @Override
+    public IconBundleConfigurationService pictureBundleConfiguration() {
+        return this.pictureBundleConfigurationService;
+    }
+
+    @Override
     public PlainConfigurationService<HotKeysSettingsDescriptor> hotKeysConfiguration() {
         return this.hotKeyConfigurationService;
     }
@@ -112,9 +118,11 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
             File configFile = new File(dataSource.getConfigurationFilePath());
             File configFolder = new File(dataSource.getConfigurationPath());
             File iconFolder = new File(dataSource.getConfigurationPath() + "\\icons");
-            if (!configFolder.exists() || !configFile.exists() || !iconFolder.exists()) {
+            File pictureFolder = new File(dataSource.getConfigurationPath() + "\\pictures");
+            if (!configFolder.exists() || !configFile.exists() || !iconFolder.exists() || !pictureFolder.exists()) {
                 new File(dataSource.getConfigurationPath() + "\\temp").mkdir();
                 new File(dataSource.getConfigurationPath() + "\\icons").mkdir();
+                new File(dataSource.getConfigurationPath() + "\\pictures").mkdir();
                 new File(dataSource.getConfigurationFilePath()).createNewFile();
 
                 ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -155,6 +163,7 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
             this.hotKeyConfigurationService = new HotKeyConfigurationService(selectedProfile);
             this.adrConfigurationService = new AdrConfigurationServiceMock(selectedProfile);
             this.iconBundleConfigurationService = new IconBundleConfigurationServiceImpl(selectedProfile);
+            this.pictureBundleConfigurationService = new PictureBundleConfigurationServiceImpl(selectedProfile);
 
             this.services.add((BaseConfigurationService) this.framesConfigurationService);
             this.services.add((BaseConfigurationService) this.soundConfigurationService);
@@ -167,6 +176,7 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
             this.services.add((BaseConfigurationService) this.hotKeyConfigurationService);
             this.services.add((BaseConfigurationService) this.adrConfigurationService);
             this.services.add((BaseConfigurationService) this.iconBundleConfigurationService);
+            this.services.add((BaseConfigurationService) this.pictureBundleConfigurationService);
 
             this.services.forEach(BaseConfigurationService::validate);
 
