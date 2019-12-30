@@ -61,7 +61,11 @@ public class ChatHelper implements AsSubscriber {
         Clipboard clipboard = toolkit.getSystemClipboard();
         try {
             String result = (String) clipboard.getData(DataFlavor.stringFlavor);
-            if (result != null && (result.contains("listed for") || result.contains("for my"))) {
+            if (result != null && (result.contains("listed for") ||
+                    result.contains("for my") ||
+                    result.contains("Bonjour") ||
+                    result.contains("안녕") ||
+                    result.contains("Зд"))) {
                 this.gameToFront();
                 MercuryStoreCore.blockHotkeySubject.onNext(true);
                 robot.keyRelease(KeyEvent.VK_ALT);
