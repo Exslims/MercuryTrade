@@ -74,22 +74,34 @@ public class PushBulletNotifier {
 
     private void sendNotificationPOST(String title, String content, String device_id) {
         try {
+            String token = settings.get().getPushbulletAPIKey();
+
             String encodedTitle = URLEncoder.encode(title, "UTF-8");
             String encodedContent = URLEncoder.encode(content, "UTF-8");
             String encodedDevice = URLEncoder.encode(device_id, "UTF-8");
+            String encodedToken = URLEncoder.encode(token, "UTF-8");
 
-            String rawData = "type=note&title=" + encodedTitle + "&body=" + encodedContent + "&device_iden="
-                    + encodedDevice;
+            String rawData = "type=note&title=" + encodedTitle + "&body=" + encodedContent + "&device_iden=" + encodedDevice;
             URL u = new URL("https://api.pushbullet.com/v2/pushes");
             HttpURLConnection conn = (HttpURLConnection) u.openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
-            conn.setRequestProperty("Access-Token", URLEncoder.encode(settings.get().getPushbulletAPIKey(), "UTF-8"));
+            conn.setRequestProperty("Access-Token", encodedToken);
             conn.setRequestProperty("Content-Length", String.valueOf(rawData.length()));
             OutputStream os = conn.getOutputStream();
 
             os.write(rawData.getBytes());
             os.flush();
+
+            int responseCode = conn.getResponseCode();
+            System.out.println("Response Code : " + responseCode);
+            BufferedReader reader = new BufferedReader( new InputStreamReader(conn.getInputStream()) );
+
+            for ( String line; (line = reader.readLine()) != null; ) {
+                System.out.println( line );
+            }
+
+            reader.close();
             os.close();
 
         } catch (MalformedURLException e) {
