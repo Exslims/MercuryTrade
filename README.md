@@ -1,4 +1,4 @@
-[![Donate](https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_150x38.png)](https://www.paypal.me/mercurytrade) 
+[![Donate](https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_150x38.png)](https://www.paypal.me/fmeier1337) 
 
 Already more than 10k happy users! Don't forget to support it! And if you want your name to be featured in our in-app Hall of Fame (see Support tab) please provide this information within the transaction!
 

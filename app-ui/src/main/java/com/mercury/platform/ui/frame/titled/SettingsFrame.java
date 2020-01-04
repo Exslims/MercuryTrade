@@ -126,7 +126,7 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 try {
-                    Desktop.getDesktop().browse(new URI("https://www.paypal.me/mercurytrade"));
+                    Desktop.getDesktop().browse(new URI("https://www.paypal.me/fmeier1337"));
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }

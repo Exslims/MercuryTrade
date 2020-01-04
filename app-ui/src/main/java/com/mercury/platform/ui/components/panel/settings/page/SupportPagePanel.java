@@ -42,7 +42,7 @@ public class SupportPagePanel extends SettingsPagePanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 try {
-                    Desktop.getDesktop().browse(new URI("https://www.paypal.me/mercurytrade"));
+                    Desktop.getDesktop().browse(new URI("https://www.paypal.me/fmeier1338"));
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
