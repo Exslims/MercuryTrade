@@ -1,0 +1,3500 @@
+[
+  {
+    "name": "Profile1",
+    "selected": true,
+    "frameDescriptorMap": {
+      "AdrCellSettingsFrame": {
+        "frameLocation": {
+          "x": 400,
+          "y": 600
+        },
+        "frameSize": {
+          "width": 300,
+          "height": 210
+        }
+      },
+      "AdrManagerFrame": {
+        "frameLocation": {
+          "x": 500,
+          "y": 300
+        },
+        "frameSize": {
+          "width": 1000,
+          "height": 500
+        }
+      },
+      "OutMessageFrame": {
+        "frameLocation": {
+          "x": 200,
+          "y": 500
+        },
+        "frameSize": {
+          "width": 280,
+          "height": 115
+        }
+      },
+      "TestCasesFrame": {
+        "frameLocation": {
+          "x": 1400,
+          "y": 500
+        },
+        "frameSize": {
+          "width": 400,
+          "height": 100
+        }
+      },
+      "ChatScannerFrame": {
+        "frameLocation": {
+          "x": 400,
+          "y": 600
+        },
+        "frameSize": {
+          "width": 550,
+          "height": 220
+        }
+      },
+      "ChatFilterSettingsFrame": {
+        "frameLocation": {
+          "x": 400,
+          "y": 600
+        },
+        "frameSize": {
+          "width": 320,
+          "height": 200
+        }
+      },
+      "HistoryFrame": {
+        "frameLocation": {
+          "x": 600,
+          "y": 500
+        },
+        "frameSize": {
+          "width": 280,
+          "height": 400
+        }
+      },
+      "TimerFrame": {
+        "frameLocation": {
+          "x": 400,
+          "y": 600
+        },
+        "frameSize": {
+          "width": 240,
+          "height": 102
+        }
+      },
+      "SettingsFrame": {
+        "frameLocation": {
+          "x": 1959,
+          "y": 321
+        },
+        "frameSize": {
+          "width": 800,
+          "height": 600
+        }
+      },
+      "ItemsGridFrame": {
+        "frameLocation": {
+          "x": 12,
+          "y": 79
+        },
+        "frameSize": {
+          "width": 641,
+          "height": 718
+        }
+      },
+      "GamePathChooser": {
+        "frameLocation": {
+          "x": 400,
+          "y": 600
+        },
+        "frameSize": {
+          "width": 520,
+          "height": 30
+        }
+      },
+      "TaskBarFrame": {
+        "frameLocation": {
+          "x": 400,
+          "y": 500
+        },
+        "frameSize": {
+          "width": 109,
+          "height": 20
+        }
+      },
+      "NotificationFrame": {
+        "frameLocation": {
+          "x": 762,
+          "y": 652
+        },
+        "frameSize": {
+          "width": 438,
+          "height": 0
+        }
+      },
+      "CurrencySearchFrame": {
+        "frameLocation": {
+          "x": 400,
+          "y": 600
+        },
+        "frameSize": {
+          "width": 400,
+          "height": 300
+        }
+      },
+      "NotesFrame": {
+        "frameLocation": {
+          "x": 400,
+          "y": 600
+        },
+        "frameSize": {
+          "width": 540,
+          "height": 100
+        }
+      }
+    },
+    "soundDescriptorMap": {
+      "notification": {
+        "wavPath": "app/notification.wav",
+        "db": 0.0
+      },
+      "clicks": {
+        "wavPath": "default",
+        "db": 0.0
+      },
+      "update": {
+        "wavPath": "default",
+        "db": 0.0
+      },
+      "chat_scanner": {
+        "wavPath": "app/chat-filter.wav",
+        "db": 0.0
+      }
+    },
+    "applicationDescriptor": {
+      "notifierStatus": "ALWAYS",
+      "minOpacity": 100,
+      "maxOpacity": 100,
+      "fadeTime": 0,
+      "gamePath": "C:\\Program Files (x86)\\Grinding Gear Games\\Path of Exile\\",
+      "showOnStartUp": false,
+      "itemsGridEnable": true,
+      "checkOutUpdate": true
+    },
+    "notificationDescriptor": {
+      "incNotificationEnable": true,
+      "outNotificationEnable": true,
+      "scannerNotificationEnable": true,
+      "whisperHelperEnable": false,
+      "limitCount": 3,
+      "unfoldCount": 2,
+      "flowDirections": "UPWARDS",
+      "dismissAfterKick": true,
+      "dismissAfterLeave": false,
+      "showLeague": false,
+      "buttons": [
+        {
+          "id": 0,
+          "close": false,
+          "title": "1m",
+          "responseText": "one minute",
+          "hotKeyDescriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "id": 1,
+          "close": true,
+          "title": "thx",
+          "responseText": "thanks",
+          "hotKeyDescriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "id": 2,
+          "close": false,
+          "title": "no thx",
+          "responseText": "no thanks",
+          "hotKeyDescriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "id": 3,
+          "close": false,
+          "title": "sold",
+          "responseText": "sold",
+          "hotKeyDescriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        }
+      ],
+      "outButtons": [
+        {
+          "id": 0,
+          "close": false,
+          "title": "thanks",
+          "responseText": "thanks",
+          "hotKeyDescriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        }
+      ],
+      "playerNickname": "Set up your nickname in settings",
+      "autoCloseTriggers": [
+        "This player has DND mode enabled",
+        "That character is not online.",
+        "This player is AFK."
+      ]
+    },
+    "taskBarDescriptor": {
+      "inGameDnd": false,
+      "dndResponseText": "Response message",
+      "hideoutHotkey": {
+        "title": "...",
+        "virtualKeyCode": 0,
+        "menuPressed": false,
+        "shiftPressed": false,
+        "controlPressed": false
+      }
+    },
+    "scannerDescriptor": {
+      "words": "!wtb, uber, boss, perandus",
+      "responseMessage": "invite me pls"
+    },
+    "scaleDataMap": {
+      "notification": 1.0,
+      "taskbar": 1.0,
+      "other": 1.0,
+      "itemcell": 1.0
+    },
+    "hotkeysSettingsDescriptor": {
+      "incNHotKeysList": [
+        {
+          "type": "N_INVITE_PLAYER",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "type": "N_TRADE_PLAYER",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "type": "N_KICK_PLAYER",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "type": "N_STILL_INTERESTING",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "type": "N_OPEN_CHAT",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "type": "N_CLOSE_NOTIFICATION",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        }
+      ],
+      "outNHotKeysList": [
+        {
+          "type": "N_VISITE_HIDEOUT",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "type": "N_TRADE_PLAYER",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "type": "N_LEAVE",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "type": "N_OPEN_CHAT",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "type": "N_REPEAT_MESSAGE",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "type": "N_CLOSE_NOTIFICATION",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        }
+      ],
+      "scannerNHotKeysList": [
+        {
+          "type": "N_QUICK_RESPONSE",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "type": "N_VISITE_HIDEOUT",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "type": "N_TRADE_PLAYER",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "type": "N_LEAVE",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "type": "N_OPEN_CHAT",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        },
+        {
+          "type": "N_CLOSE_NOTIFICATION",
+          "descriptor": {
+            "title": "...",
+            "virtualKeyCode": 0,
+            "menuPressed": false,
+            "shiftPressed": false,
+            "controlPressed": false
+          }
+        }
+      ]
+    },
+    "stashTabDescriptors": [],
+    "adrProfileDescriptorList": [
+      {
+        "profileName": "Showcase",
+        "contents": [
+          {
+            "cells": [
+              {
+                "iconType": "SQUARE",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 117,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Vaal_Discipline_skill_icon.png",
+                "duration": 3.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 36,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -12895429,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1103414469,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -15700381,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "8eb2e3fc-d507-43d1-9a99-b8c0823d34db",
+                "title": "component",
+                "type": "ICON",
+                "location": {
+                  "x": 269,
+                  "y": 173
+                },
+                "size": {
+                  "width": 64,
+                  "height": 64
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconType": "SQUARE",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 117,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Vaal_Clarity_skill_icon.png",
+                "duration": 5.0,
+                "delay": 1.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 28,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 1.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -12895429,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1103414469,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -15700381,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "d64fb8ab-39d9-4234-adf4-2370c903cecb",
+                "title": "component",
+                "type": "ICON",
+                "location": {
+                  "x": 269,
+                  "y": 173
+                },
+                "size": {
+                  "width": 64,
+                  "height": 64
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconType": "SQUARE",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 117,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Vaal_Haste_skill_icon.png",
+                "duration": 8.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 22,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.00",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -12895429,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1103414469,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -15700381,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "5b544478-5f87-46b1-899b-ab2240a8317c",
+                "title": "component",
+                "type": "ICON",
+                "location": {
+                  "x": 269,
+                  "y": 173
+                },
+                "size": {
+                  "width": 64,
+                  "height": 64
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconType": "SQUARE",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 117,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Vaal_Grace_skill_icon.png",
+                "duration": 5.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 20,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.000",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -12895429,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1103414469,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -15700381,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "95f0734e-ef15-4c07-8a23-fce70b40206e",
+                "title": "component",
+                "type": "ICON",
+                "location": {
+                  "x": 269,
+                  "y": 173
+                },
+                "size": {
+                  "width": 64,
+                  "height": 64
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              }
+            ],
+            "contentType": "ICONS",
+            "groupType": "STATIC",
+            "vGap": 1,
+            "hGap": 2,
+            "componentId": "7a984436-1b65-4111-ad7d-1f0ccfb7a758",
+            "title": "Horizontal icon group",
+            "type": "TRACKER_GROUP",
+            "location": {
+              "x": 269,
+              "y": 173
+            },
+            "size": {
+              "width": 64,
+              "height": 64
+            },
+            "visible": true,
+            "scale": 1.0,
+            "opacity": 1.0,
+            "orientation": "HORIZONTAL"
+          },
+          {
+            "cells": [
+              {
+                "iconAlignment": "BOTTOM",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 117,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Tempest_Shield_skill_icon.png",
+                "duration": 3.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 18,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.0",
+                "lowValueTextColor": {
+                  "value": -1,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 2,
+                  "left": 2,
+                  "bottom": 2,
+                  "right": 2
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -13552323,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -12298120,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -9988443,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "f3569dfe-7a26-40fc-8771-5c1ea9d725f0",
+                "title": "progress bar",
+                "type": "PROGRESS_BAR",
+                "location": {
+                  "x": 740,
+                  "y": 243
+                },
+                "size": {
+                  "width": 30,
+                  "height": 248
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "VERTICAL"
+              },
+              {
+                "iconAlignment": "TOP",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 117,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Conversion_Trap_skill_icon.png",
+                "duration": 6.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 20,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 1.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": true,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -13683653,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -6310708,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -15700381,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "5092f7af-3451-467a-ae0f-ab73b96dbe35",
+                "title": "progress bar",
+                "type": "PROGRESS_BAR",
+                "location": {
+                  "x": 740,
+                  "y": 243
+                },
+                "size": {
+                  "width": 30,
+                  "height": 248
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "VERTICAL"
+              },
+              {
+                "iconAlignment": "LEFT",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 117,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "default_icon.png",
+                "duration": 10.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 18,
+                "textEnable": true,
+                "iconEnable": false,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -13683653,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -8486278,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -8486278,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "906d1008-c7af-47f1-b0f7-4137a50c1383",
+                "title": "progress bar",
+                "type": "PROGRESS_BAR",
+                "location": {
+                  "x": 740,
+                  "y": 243
+                },
+                "size": {
+                  "width": 30,
+                  "height": 248
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "VERTICAL"
+              }
+            ],
+            "contentType": "PROGRESS_BARS",
+            "groupType": "STATIC",
+            "vGap": 2,
+            "hGap": 2,
+            "componentId": "14107b08-8c81-40ef-9880-f8d01c2d3d43",
+            "title": "Horizontal PB group",
+            "type": "TRACKER_GROUP",
+            "location": {
+              "x": 740,
+              "y": 243
+            },
+            "size": {
+              "width": 30,
+              "height": 248
+            },
+            "visible": true,
+            "scale": 1.0,
+            "opacity": 1.0,
+            "orientation": "HORIZONTAL"
+          },
+          {
+            "cells": [
+              {
+                "iconAlignment": "RIGHT",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 117,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Shockwave_Totem_skill_icon.png",
+                "duration": 8.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 28,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -13224404,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -8235724,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -10729722,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "15529fec-18e9-4802-9826-d71be30bb835",
+                "title": "progress bar",
+                "type": "PROGRESS_BAR",
+                "location": {
+                  "x": 435,
+                  "y": 243
+                },
+                "size": {
+                  "width": 300,
+                  "height": 30
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconAlignment": "LEFT",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 117,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Granite_Flask_status_icon.png",
+                "duration": 20.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 22,
+                "textEnable": true,
+                "iconEnable": false,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -13683653,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -5790850,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1053494,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -1645905,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "a7a7d84e-ddd6-4da5-9503-1e8d3d462cbb",
+                "title": "progress bar",
+                "type": "PROGRESS_BAR",
+                "location": {
+                  "x": 435,
+                  "y": 243
+                },
+                "size": {
+                  "width": 300,
+                  "height": 30
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              }
+            ],
+            "contentType": "PROGRESS_BARS",
+            "groupType": "STATIC",
+            "vGap": 5,
+            "hGap": 0,
+            "componentId": "27e579bf-eb2a-462b-aec6-0a611a519d24",
+            "title": "Bigger VPB group",
+            "type": "TRACKER_GROUP",
+            "location": {
+              "x": 435,
+              "y": 243
+            },
+            "size": {
+              "width": 300,
+              "height": 30
+            },
+            "visible": true,
+            "scale": 1.0,
+            "opacity": 1.0,
+            "orientation": "VERTICAL"
+          },
+          {
+            "iconType": "SQUARE",
+            "hotKeyDescriptor": {
+              "title": "...",
+              "virtualKeyCode": 117,
+              "menuPressed": false,
+              "shiftPressed": false,
+              "controlPressed": false
+            },
+            "customText": "",
+            "customTextEnable": false,
+            "hotKeyRefresh": true,
+            "iconPath": "Flame_Dash_skill_icon.png",
+            "duration": 8.0,
+            "delay": 0.0,
+            "outlineThickness": 0.2,
+            "outlineColor": {
+              "value": -1272105162,
+              "falpha": 0.0
+            },
+            "fontSize": 28,
+            "textEnable": true,
+            "iconEnable": true,
+            "maskEnable": true,
+            "alwaysVisible": false,
+            "invertMask": false,
+            "invertTimer": false,
+            "textFormat": "0.0",
+            "lowValueTextColor": {
+              "value": -2075076,
+              "falpha": 0.0
+            },
+            "mediumValueTextColor": {
+              "value": -11442,
+              "falpha": 0.0
+            },
+            "defaultValueTextColor": {
+              "value": -1323,
+              "falpha": 0.0
+            },
+            "lowValueTextThreshold": 1.0,
+            "mediumValueTextThreshold": 3.0,
+            "defaultValueTextThreshold": 5.0,
+            "insets": {
+              "top": 0,
+              "left": 0,
+              "bottom": 0,
+              "right": 0
+            },
+            "bindToTextColor": false,
+            "soundDescriptor": {
+              "wavPath": "...",
+              "db": 0.0
+            },
+            "soundThreshold": 0.0,
+            "backgroundColor": {
+              "value": -12895429,
+              "falpha": 0.0
+            },
+            "foregroundColor": {
+              "value": -1103414469,
+              "falpha": 0.0
+            },
+            "borderColor": {
+              "value": -15700381,
+              "falpha": 0.0
+            },
+            "thickness": 1,
+            "componentId": "de402b2c-39f9-47e7-902a-b94df1b1e1b1",
+            "title": "component",
+            "type": "ICON",
+            "location": {
+              "x": 172,
+              "y": 238
+            },
+            "size": {
+              "width": 96,
+              "height": 96
+            },
+            "visible": true,
+            "scale": 1.0,
+            "opacity": 1.0,
+            "orientation": "HORIZONTAL"
+          },
+          {
+            "cells": [
+              {
+                "iconType": "SQUARE",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 117,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Sapphire_Flask_status_icon.png",
+                "duration": 3.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 36,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": false,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -12895429,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1103414469,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -15110255,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "4478af6a-21a7-4726-ac13-aa09a9239c8b",
+                "title": "component",
+                "type": "ICON",
+                "location": {
+                  "x": 368,
+                  "y": 240
+                },
+                "size": {
+                  "width": 64,
+                  "height": 64
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconType": "SQUARE",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 117,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Topaz_Flask_status_icon.png",
+                "duration": 5.0,
+                "delay": 1.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 28,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 1.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -12895429,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1103414469,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -6121942,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "15b7d0d7-274c-40ed-8f36-efc7943d47fd",
+                "title": "component",
+                "type": "ICON",
+                "location": {
+                  "x": 368,
+                  "y": 240
+                },
+                "size": {
+                  "width": 64,
+                  "height": 64
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconType": "SQUARE",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 117,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Aquamarine_Flask_status_icon.png",
+                "duration": 8.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 22,
+                "textEnable": false,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.00",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -12895429,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1103414469,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -13928360,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "ee118669-932e-4359-b622-15ef4af69a88",
+                "title": "component",
+                "type": "ICON",
+                "location": {
+                  "x": 368,
+                  "y": 240
+                },
+                "size": {
+                  "width": 64,
+                  "height": 64
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconType": "SQUARE",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 117,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Jade_Flask_status_icon.png",
+                "duration": 5.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 20,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.000",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": true,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -12895429,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1103414469,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -15700381,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "f2bbade1-17ae-465c-a732-330431d28f6e",
+                "title": "component",
+                "type": "ICON",
+                "location": {
+                  "x": 368,
+                  "y": 240
+                },
+                "size": {
+                  "width": 64,
+                  "height": 64
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              }
+            ],
+            "contentType": "ICONS",
+            "groupType": "STATIC",
+            "vGap": 1,
+            "hGap": 2,
+            "componentId": "62b7340c-d69d-47ab-9920-7c8466ca38fd",
+            "title": "Horizontal icon group",
+            "type": "TRACKER_GROUP",
+            "location": {
+              "x": 368,
+              "y": 241
+            },
+            "size": {
+              "width": 64,
+              "height": 64
+            },
+            "visible": true,
+            "scale": 1.0,
+            "opacity": 1.0,
+            "orientation": "VERTICAL"
+          },
+          {
+            "cells": [
+              {
+                "iconType": "SQUARE",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 0,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Abyssal_Cry_skill_icon.png",
+                "duration": 15.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 36,
+                "textEnable": true,
+                "iconEnable": false,
+                "maskEnable": false,
+                "alwaysVisible": true,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": 11800078,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1103414469,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": 945763,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "50f5e502-44e1-4660-aaa5-e17c2bc4c973",
+                "title": "component",
+                "type": "ICON",
+                "location": {
+                  "x": 271,
+                  "y": 106
+                },
+                "size": {
+                  "width": 64,
+                  "height": 64
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconType": "SQUARE",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 0,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Ancestral_Protector_skill_icon.png",
+                "duration": 5.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 28,
+                "textEnable": true,
+                "iconEnable": false,
+                "maskEnable": false,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 1.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": 3881787,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1103414469,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": 1011299,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "9caed4eb-3771-4393-a1fe-e7fae79556ba",
+                "title": "component",
+                "type": "ICON",
+                "location": {
+                  "x": 271,
+                  "y": 106
+                },
+                "size": {
+                  "width": 64,
+                  "height": 64
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconType": "SQUARE",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 0,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Molten_Shell_skill_icon.png",
+                "duration": 8.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 22,
+                "textEnable": true,
+                "iconEnable": false,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.00",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": 3881787,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1103414469,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -2573996,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "8d16d98b-7ef1-4171-bcb2-8e20767350c9",
+                "title": "component",
+                "type": "ICON",
+                "location": {
+                  "x": 271,
+                  "y": 106
+                },
+                "size": {
+                  "width": 64,
+                  "height": 64
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconType": "SQUARE",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 0,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Static_Strike_skill_icon.png",
+                "duration": 5.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 20,
+                "textEnable": true,
+                "iconEnable": false,
+                "maskEnable": false,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": true,
+                "textFormat": "0.000",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -1908720837,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1103414469,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -1872070,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "f231882e-1f2e-4a8f-a797-5c360c1b9ca8",
+                "title": "component",
+                "type": "ICON",
+                "location": {
+                  "x": 271,
+                  "y": 106
+                },
+                "size": {
+                  "width": 64,
+                  "height": 64
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              }
+            ],
+            "contentType": "ICONS",
+            "groupType": "DYNAMIC",
+            "vGap": 1,
+            "hGap": 2,
+            "componentId": "b54c39b5-d484-4900-927a-180475c36c65",
+            "title": "Horizontal icon group",
+            "type": "TRACKER_GROUP",
+            "location": {
+              "x": 271,
+              "y": 106
+            },
+            "size": {
+              "width": 64,
+              "height": 64
+            },
+            "visible": true,
+            "scale": 1.0,
+            "opacity": 1.0,
+            "orientation": "HORIZONTAL"
+          },
+          {
+            "cells": [
+              {
+                "iconAlignment": "RIGHT",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 118,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Stibnite_Flask_status_icon.png",
+                "duration": 8.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 28,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -13683653,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -8486278,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -8486278,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "0ad46f7d-0252-4bd6-a83c-652175912a06",
+                "title": "progress bar",
+                "type": "PROGRESS_BAR",
+                "location": {
+                  "x": 436,
+                  "y": 312
+                },
+                "size": {
+                  "width": 300,
+                  "height": 25
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 0.71,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconAlignment": "RIGHT",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 118,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Granite_Flask_status_icon.png",
+                "duration": 20.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 22,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -13683653,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -5790850,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1053494,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -1645905,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "38b647dc-97dc-4f5c-8ad0-4ebd1296f1ef",
+                "title": "progress bar",
+                "type": "PROGRESS_BAR",
+                "location": {
+                  "x": 436,
+                  "y": 312
+                },
+                "size": {
+                  "width": 300,
+                  "height": 25
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 0.71,
+                "orientation": "HORIZONTAL"
+              }
+            ],
+            "contentType": "PROGRESS_BARS",
+            "groupType": "STATIC",
+            "vGap": 5,
+            "hGap": 0,
+            "componentId": "e8087205-7cd1-42ab-8733-4c6988f21add",
+            "title": "Bigger VPB group",
+            "type": "TRACKER_GROUP",
+            "location": {
+              "x": 436,
+              "y": 312
+            },
+            "size": {
+              "width": 300,
+              "height": 25
+            },
+            "visible": true,
+            "scale": 1.0,
+            "opacity": 0.71,
+            "orientation": "VERTICAL"
+          },
+          {
+            "iconType": "SQUARE",
+            "hotKeyDescriptor": {
+              "title": "...",
+              "virtualKeyCode": 118,
+              "menuPressed": false,
+              "shiftPressed": false,
+              "controlPressed": false
+            },
+            "customText": "",
+            "customTextEnable": false,
+            "hotKeyRefresh": true,
+            "iconPath": "kappa_icon.png",
+            "duration": 8.0,
+            "delay": 0.0,
+            "outlineThickness": 0.2,
+            "outlineColor": {
+              "value": -1272105162,
+              "falpha": 0.0
+            },
+            "fontSize": 28,
+            "textEnable": false,
+            "iconEnable": true,
+            "maskEnable": true,
+            "alwaysVisible": false,
+            "invertMask": false,
+            "invertTimer": false,
+            "textFormat": "0.0",
+            "lowValueTextColor": {
+              "value": -2075076,
+              "falpha": 0.0
+            },
+            "mediumValueTextColor": {
+              "value": -11442,
+              "falpha": 0.0
+            },
+            "defaultValueTextColor": {
+              "value": -1323,
+              "falpha": 0.0
+            },
+            "lowValueTextThreshold": 1.0,
+            "mediumValueTextThreshold": 3.0,
+            "defaultValueTextThreshold": 5.0,
+            "insets": {
+              "top": 0,
+              "left": 0,
+              "bottom": 0,
+              "right": 0
+            },
+            "bindToTextColor": false,
+            "soundDescriptor": {
+              "wavPath": "...",
+              "db": 0.0
+            },
+            "soundThreshold": 0.0,
+            "backgroundColor": {
+              "value": 3881787,
+              "falpha": 0.0
+            },
+            "foregroundColor": {
+              "value": -1103414469,
+              "falpha": 0.0
+            },
+            "borderColor": {
+              "value": 1011299,
+              "falpha": 0.0
+            },
+            "thickness": 1,
+            "componentId": "f609c544-7cb2-43bf-8c8c-29d9a1a4339f",
+            "title": "kappa",
+            "type": "ICON",
+            "location": {
+              "x": 270,
+              "y": 240
+            },
+            "size": {
+              "width": 96,
+              "height": 96
+            },
+            "visible": true,
+            "scale": 1.0,
+            "opacity": 1.0,
+            "orientation": "HORIZONTAL"
+          },
+          {
+            "cells": [
+              {
+                "iconAlignment": "LEFT",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 118,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Vaal_Summon_Skeletons_skill_icon.png",
+                "duration": 8.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 28,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 4,
+                  "left": 4,
+                  "bottom": 4,
+                  "right": 4
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -16777216,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -8486278,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -8486278,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "059cf2bd-8d9b-4e02-9a32-37a2383e14b1",
+                "title": "progress bar",
+                "type": "PROGRESS_BAR",
+                "location": {
+                  "x": 436,
+                  "y": 372
+                },
+                "size": {
+                  "width": 300,
+                  "height": 36
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 0.45,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconAlignment": "LEFT",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 118,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Puncture_skill_icon.png",
+                "duration": 20.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 22,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -13683653,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 4,
+                  "left": 4,
+                  "bottom": 4,
+                  "right": 4
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -14978461,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -2083782,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -1645905,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "ea4b7d25-5eb3-4cbb-a79d-22635787bcd2",
+                "title": "progress bar",
+                "type": "PROGRESS_BAR",
+                "location": {
+                  "x": 436,
+                  "y": 372
+                },
+                "size": {
+                  "width": 300,
+                  "height": 36
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 0.45,
+                "orientation": "HORIZONTAL"
+              }
+            ],
+            "contentType": "PROGRESS_BARS",
+            "groupType": "STATIC",
+            "vGap": 5,
+            "hGap": 0,
+            "componentId": "78fb5f91-1444-48b6-af8a-6758c5243505",
+            "title": "Bigger VPB group",
+            "type": "TRACKER_GROUP",
+            "location": {
+              "x": 436,
+              "y": 372
+            },
+            "size": {
+              "width": 300,
+              "height": 36
+            },
+            "visible": true,
+            "scale": 1.0,
+            "opacity": 0.45,
+            "orientation": "VERTICAL"
+          },
+          {
+            "cells": [
+              {
+                "iconAlignment": "RIGHT",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 118,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Stibnite_Flask_status_icon.png",
+                "duration": 8.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 28,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 4,
+                  "left": 2,
+                  "bottom": 4,
+                  "right": 4
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": 3093563,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -8486278,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": 8290938,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "fc14edca-dbd0-48f3-9481-cc66b06fd26e",
+                "title": "progress bar",
+                "type": "PROGRESS_BAR",
+                "location": {
+                  "x": 64,
+                  "y": 339
+                },
+                "size": {
+                  "width": 300,
+                  "height": 36
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconAlignment": "RIGHT",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 118,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Granite_Flask_status_icon.png",
+                "duration": 20.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 22,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -12222771,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 4,
+                  "left": 2,
+                  "bottom": 4,
+                  "right": 4
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": 10986365,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1053494,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": 15131311,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "1a9116c6-a76f-4ad2-8029-2a7792690a26",
+                "title": "progress bar",
+                "type": "PROGRESS_BAR",
+                "location": {
+                  "x": 64,
+                  "y": 339
+                },
+                "size": {
+                  "width": 300,
+                  "height": 36
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconAlignment": "RIGHT",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 118,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Stibnite_Flask_status_icon.png",
+                "duration": 8.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 22,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.00",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 4,
+                  "left": 2,
+                  "bottom": 4,
+                  "right": 4
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": 3093563,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -8486278,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": 8290938,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "3e33525a-715a-46bf-a93e-230c49e23bf9",
+                "title": "progress bar",
+                "type": "PROGRESS_BAR",
+                "location": {
+                  "x": 64,
+                  "y": 339
+                },
+                "size": {
+                  "width": 300,
+                  "height": 36
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconAlignment": "RIGHT",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 118,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Stibnite_Flask_status_icon.png",
+                "duration": 8.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 22,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.000",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 4,
+                  "left": 2,
+                  "bottom": 4,
+                  "right": 4
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": 3093563,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -8486278,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": 8290938,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "47af191f-8349-490a-9605-f46005cf7d3b",
+                "title": "progress bar",
+                "type": "PROGRESS_BAR",
+                "location": {
+                  "x": 64,
+                  "y": 339
+                },
+                "size": {
+                  "width": 300,
+                  "height": 36
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 1.0,
+                "orientation": "HORIZONTAL"
+              }
+            ],
+            "contentType": "PROGRESS_BARS",
+            "groupType": "STATIC",
+            "vGap": 5,
+            "hGap": 0,
+            "componentId": "3482d579-b161-43c6-9321-581c0c738c17",
+            "title": "Alpha H group",
+            "type": "TRACKER_GROUP",
+            "location": {
+              "x": 64,
+              "y": 339
+            },
+            "size": {
+              "width": 300,
+              "height": 36
+            },
+            "visible": true,
+            "scale": 1.0,
+            "opacity": 1.0,
+            "orientation": "VERTICAL"
+          },
+          {
+            "cells": [
+              {
+                "iconType": "SQUARE",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 118,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Ancestral_Protector_skill_icon.png",
+                "duration": 3.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 36,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -12895429,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1103414469,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -15503516,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "fe7f7eeb-8ce4-45e6-bf74-b3d87ab8b84e",
+                "title": "component",
+                "type": "ICON",
+                "location": {
+                  "x": 269,
+                  "y": 501
+                },
+                "size": {
+                  "width": 64,
+                  "height": 64
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 0.81,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconType": "SQUARE",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 118,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Ancestral_Warchief_skill_icon.png",
+                "duration": 5.0,
+                "delay": 1.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 28,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 1.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -12895429,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1103414469,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -16222196,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "088d1f0b-e807-419b-9c8c-56ffdf9f73b1",
+                "title": "component",
+                "type": "ICON",
+                "location": {
+                  "x": 269,
+                  "y": 501
+                },
+                "size": {
+                  "width": 64,
+                  "height": 64
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 0.81,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconType": "SQUARE",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 118,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Decoy_Totem_skill_icon.png",
+                "duration": 8.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 22,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.00",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -12895429,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1103414469,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -15700381,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "aaba438e-ce19-4ab7-90c1-025ba707c003",
+                "title": "component",
+                "type": "ICON",
+                "location": {
+                  "x": 269,
+                  "y": 501
+                },
+                "size": {
+                  "width": 64,
+                  "height": 64
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 0.81,
+                "orientation": "HORIZONTAL"
+              },
+              {
+                "iconType": "SQUARE",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 118,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Devouring_Totem_skill_icon.png",
+                "duration": 5.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 20,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.000",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -1323,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 0,
+                  "left": 0,
+                  "bottom": 0,
+                  "right": 0
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": -12895429,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1103414469,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -9545201,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "dd05c038-effd-4434-a59f-8c94b6d80ece",
+                "title": "component",
+                "type": "ICON",
+                "location": {
+                  "x": 269,
+                  "y": 501
+                },
+                "size": {
+                  "width": 64,
+                  "height": 64
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 0.81,
+                "orientation": "HORIZONTAL"
+              }
+            ],
+            "contentType": "ICONS",
+            "groupType": "DYNAMIC",
+            "vGap": 1,
+            "hGap": 2,
+            "componentId": "af90f93e-5b0b-4d66-815e-c48165db395c",
+            "title": "Dynamic group",
+            "type": "TRACKER_GROUP",
+            "location": {
+              "x": 269,
+              "y": 502
+            },
+            "size": {
+              "width": 64,
+              "height": 64
+            },
+            "visible": true,
+            "scale": 1.0,
+            "opacity": 0.81,
+            "orientation": "HORIZONTAL"
+          },
+          {
+            "cells": [
+              {
+                "iconAlignment": "LEFT",
+                "hotKeyDescriptor": {
+                  "title": "...",
+                  "virtualKeyCode": 118,
+                  "menuPressed": false,
+                  "shiftPressed": false,
+                  "controlPressed": false
+                },
+                "customText": "",
+                "customTextEnable": false,
+                "hotKeyRefresh": true,
+                "iconPath": "Granite_Flask_status_icon.png",
+                "duration": 20.0,
+                "delay": 0.0,
+                "outlineThickness": 0.2,
+                "outlineColor": {
+                  "value": -1272105162,
+                  "falpha": 0.0
+                },
+                "fontSize": 22,
+                "textEnable": true,
+                "iconEnable": true,
+                "maskEnable": true,
+                "alwaysVisible": false,
+                "invertMask": false,
+                "invertTimer": false,
+                "textFormat": "0.0",
+                "lowValueTextColor": {
+                  "value": -2075076,
+                  "falpha": 0.0
+                },
+                "mediumValueTextColor": {
+                  "value": -11442,
+                  "falpha": 0.0
+                },
+                "defaultValueTextColor": {
+                  "value": -13683653,
+                  "falpha": 0.0
+                },
+                "lowValueTextThreshold": 1.0,
+                "mediumValueTextThreshold": 3.0,
+                "defaultValueTextThreshold": 5.0,
+                "insets": {
+                  "top": 4,
+                  "left": 4,
+                  "bottom": 4,
+                  "right": 4
+                },
+                "bindToTextColor": false,
+                "soundDescriptor": {
+                  "wavPath": "...",
+                  "db": 0.0
+                },
+                "soundThreshold": 0.0,
+                "backgroundColor": {
+                  "value": 10986365,
+                  "falpha": 0.0
+                },
+                "foregroundColor": {
+                  "value": -1053494,
+                  "falpha": 0.0
+                },
+                "borderColor": {
+                  "value": -1645905,
+                  "falpha": 0.0
+                },
+                "thickness": 1,
+                "componentId": "4eb3857c-8cd1-47d5-9fee-5f4ac1ee1ed5",
+                "title": "progress bar",
+                "type": "PROGRESS_BAR",
+                "location": {
+                  "x": 531,
+                  "y": 495
+                },
+                "size": {
+                  "width": 300,
+                  "height": 36
+                },
+                "visible": true,
+                "scale": 1.0,
+                "opacity": 0.45,
+                "orientation": "HORIZONTAL"
+              }
+            ],
+            "contentType": "PROGRESS_BARS",
+            "groupType": "STATIC",
+            "vGap": 5,
+            "hGap": 0,
+            "componentId": "89a7822d-6777-4b2c-80fb-944e4445afe0",
+            "title": "Alpha Bordered group",
+            "type": "TRACKER_GROUP",
+            "location": {
+              "x": 435,
+              "y": 453
+            },
+            "size": {
+              "width": 300,
+              "height": 36
+            },
+            "visible": true,
+            "scale": 1.0,
+            "opacity": 0.45,
+            "orientation": "VERTICAL"
+          }
+        ],
+        "selected": false
+      },
+      {
+        "profileName": "Default profile",
+        "contents": [
+          {
+            "iconType": "SQUARE",
+            "hotKeyDescriptor": {
+              "title": "...",
+              "virtualKeyCode": 0,
+              "menuPressed": false,
+              "shiftPressed": false,
+              "controlPressed": false
+            },
+            "customText": "",
+            "customTextEnable": false,
+            "hotKeyRefresh": true,
+            "iconPath": "Immortal_Call_skill_icon.png",
+            "duration": 3.4,
+            "delay": 0.0,
+            "outlineThickness": 0.2,
+            "outlineColor": {
+              "value": -1272105162,
+              "falpha": 0.0
+            },
+            "fontSize": 28,
+            "textEnable": true,
+            "iconEnable": true,
+            "maskEnable": true,
+            "alwaysVisible": false,
+            "invertMask": false,
+            "invertTimer": false,
+            "textFormat": "0.0",
+            "lowValueTextColor": {
+              "value": -2075076,
+              "falpha": 0.0
+            },
+            "mediumValueTextColor": {
+              "value": -11442,
+              "falpha": 0.0
+            },
+            "defaultValueTextColor": {
+              "value": -1323,
+              "falpha": 0.0
+            },
+            "lowValueTextThreshold": 1.0,
+            "mediumValueTextThreshold": 3.0,
+            "defaultValueTextThreshold": 5.0,
+            "insets": {
+              "top": 0,
+              "left": 0,
+              "bottom": 0,
+              "right": 0
+            },
+            "bindToTextColor": false,
+            "soundDescriptor": {
+              "wavPath": "app/sounds/Button-chime.wav",
+              "db": -9.0
+            },
+            "soundThreshold": 0.0,
+            "backgroundColor": {
+              "value": -12895429,
+              "falpha": 0.0
+            },
+            "foregroundColor": {
+              "value": -1103414469,
+              "falpha": 0.0
+            },
+            "borderColor": {
+              "value": -15700381,
+              "falpha": 0.0
+            },
+            "thickness": 1,
+            "componentId": "5942ce9e-e6e8-4f05-a3d4-7d883ec9be0a",
+            "title": "component",
+            "type": "ICON",
+            "location": {
+              "x": 355,
+              "y": 572
+            },
+            "size": {
+              "width": 64,
+              "height": 64
+            },
+            "visible": true,
+            "scale": 1.0,
+            "opacity": 1.0,
+            "orientation": "HORIZONTAL"
+          }
+        ],
+        "selected": true
+      }
+    ],
+    "iconBundleList": []
+  }
+]
