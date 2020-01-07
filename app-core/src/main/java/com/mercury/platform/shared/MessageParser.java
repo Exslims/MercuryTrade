@@ -17,7 +17,7 @@ public class MessageParser {
     private final static String poeAppPattern = "^(.*\\s)?(.+): (\\s*?wtb\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash\\s+?\"(.*?)\";\\s+?left\\s+?(\\d+?),\\s+?top\\s+(\\d+?)\\)\\s*?(.*))$";
     private final static String poeAppBulkCurrenciesPattern = "^(.*\\s)?(.+): (\\s*?wtb\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash\\s+?\"(.*?)\";\\s+?left\\s+?(\\d+?),\\s+?top\\s+(\\d+?)\\)\\s*?(.*))$";
     private final static String poeCurrencyPattern = "^(.*\\s)?(.+): (.+ to buy your (\\d+(\\.\\d+)?)? (.+) for my (\\d+(\\.\\d+)?)? (.+) in (.*?)\\.\\s*(.*))$";
-    private final static String poeMapLiveRegex = "^(.*\\s)?(.+): (I'd like to exchange my (T\\d+:\\s\\([\\s\\S,]+) for your (T\\d+:\\s\\([\\S,\\s]+) in\\s+?(.+?)\\.)";
+    private final static String poeMapLiveRegex = "^(.*\\s)?(.+): (I'd like to exchange my (.+:\\s\\([\\s\\S,]+) for your (.+:\\s\\([\\S,\\s]+) in\\s+?(.+?)\\.)";
     private Pattern poeAppItemPattern;
     private Pattern poeTradeStashItemPattern;
     private Pattern poeTradeItemPattern;
