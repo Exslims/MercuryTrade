@@ -2,6 +2,7 @@ package com.mercury.platform.core.utils;
 
 import com.mercury.platform.core.utils.interceptor.*;
 import com.mercury.platform.shared.AsSubscriber;
+import com.mercury.platform.shared.entity.message.MercuryError;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -9,6 +10,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.RandomAccessFile;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -73,9 +77,19 @@ public class MessageFileHandler implements AsSubscriber {
                 .collect(Collectors.toList());
 
         List<String> resultMessages = filteredMessages.stream().filter(message -> {
+            if (message == null) {
+                return false;
+            }
             if ( message.contains("2019") || message.contains("2020" ) || message.contains("2021" )) { //todo
-                Date date = new Date(StringUtils.substring(message, 0, 20));
-                return date.after(lastMessageDate);
+                try {
+                    DateFormat df = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+                    Date date = df.parse(StringUtils.substring(message, 0, 20).trim());
+                    return date.after(lastMessageDate);
+                } catch (ParseException e) {
+                    System.out.println("Error while parsing message, #datefix in message: " + message);
+                    MercuryStoreCore.errorHandlerSubject.onNext(new MercuryError(e));
+                    return false;
+                }
             } else {
                 return false;
             }
@@ -84,7 +98,13 @@ public class MessageFileHandler implements AsSubscriber {
         this.interceptors.forEach(interceptor -> {
             resultMessages.forEach(message -> {
                 if (interceptor.match(message)) {
-                    this.lastMessageDate = new Date(StringUtils.substring(message, 0, 20));
+                    try {
+                        DateFormat df = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+                        this.lastMessageDate = df.parse(StringUtils.substring(message, 0, 20).trim());
+                    } catch (ParseException e) {
+                        System.out.println("Error while parsing message, #datefix in message: " + message);
+                        MercuryStoreCore.errorHandlerSubject.onNext(new MercuryError(e));
+                    }
                 }
             });
         });

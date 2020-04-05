@@ -66,37 +66,45 @@ public class ChatHelper implements AsSubscriber {
                     result.contains("Bonjour") ||
                     result.contains("안녕") ||
                     result.contains("Зд"))) {
-                this.gameToFront();
-                MercuryStoreCore.blockHotkeySubject.onNext(true);
-                robot.keyRelease(KeyEvent.VK_ALT);
-                robot.keyPress(KeyEvent.VK_ENTER);
-                robot.keyRelease(KeyEvent.VK_ENTER);
+                if (this.gameToFront() == true) {
+                    MercuryStoreCore.blockHotkeySubject.onNext(true);
+                    robot.keyRelease(KeyEvent.VK_ALT);
+                    robot.keyPress(KeyEvent.VK_ENTER);
+                    robot.keyRelease(KeyEvent.VK_ENTER);
 
-                robot.keyPress(KeyEvent.VK_CONTROL);
-                robot.keyPress(KeyEvent.VK_A);
-                robot.keyRelease(KeyEvent.VK_CONTROL);
-                robot.keyRelease(KeyEvent.VK_A);
+                    robot.keyPress(KeyEvent.VK_CONTROL);
+                    robot.keyPress(KeyEvent.VK_A);
+                    robot.keyRelease(KeyEvent.VK_CONTROL);
+                    robot.keyRelease(KeyEvent.VK_A);
 
-                robot.keyPress(KeyEvent.VK_BACK_SPACE);
-                robot.keyRelease(KeyEvent.VK_BACK_SPACE);
+                    robot.keyPress(KeyEvent.VK_BACK_SPACE);
+                    robot.keyRelease(KeyEvent.VK_BACK_SPACE);
 
-                robot.keyPress(KeyEvent.VK_CONTROL);
-                robot.keyPress(KeyEvent.VK_V);
-                robot.keyRelease(KeyEvent.VK_V);
-                robot.keyRelease(KeyEvent.VK_CONTROL);
-                robot.keyPress(KeyEvent.VK_ENTER);
-                robot.keyRelease(KeyEvent.VK_ENTER);
+                    robot.keyPress(KeyEvent.VK_CONTROL);
+                    robot.keyPress(KeyEvent.VK_V);
+                    robot.keyRelease(KeyEvent.VK_V);
+                    robot.keyRelease(KeyEvent.VK_CONTROL);
+                    robot.keyPress(KeyEvent.VK_ENTER);
+                    robot.keyRelease(KeyEvent.VK_ENTER);
 
-                Timer timer = new Timer(300, action -> {
-                    StringSelection selection = new StringSelection("");
-                    clipboard.setContents(selection, null);
-                });
-                timer.setRepeats(false);
-                timer.start();
+                    Timer timer = new Timer(300, action -> {
+                        StringSelection selection = new StringSelection("");
+                        clipboard.setContents(selection, null);
+                    });
+                    timer.setRepeats(false);
+                    timer.start();
 
-                MercuryStoreCore.blockHotkeySubject.onNext(false);
+                    MercuryStoreCore.blockHotkeySubject.onNext(false);
+                } else {
+                    System.out.println("Failed to bring game to front!");
+                }
+
             }
-        } catch (UnsupportedFlavorException | IOException e) {
+        } catch (UnsupportedFlavorException e) {
+            System.out.println("Unsupported Flavor Exception occured, logging it");
+            MercuryStoreCore.errorHandlerSubject.onNext(new MercuryError(e));
+        } catch (IOException e) {
+            System.out.println("IOException occured, logging it");
             MercuryStoreCore.errorHandlerSubject.onNext(new MercuryError(e));
         }
     }
@@ -128,8 +136,8 @@ public class ChatHelper implements AsSubscriber {
         MercuryStoreCore.blockHotkeySubject.onNext(false);
     }
 
-    private void gameToFront() {
-        User32.INSTANCE.EnumWindows((hWnd, arg1) -> {
+    private boolean gameToFront() {
+        return !User32.INSTANCE.EnumWindows((hWnd, arg1) -> {
             char[] className = new char[512];
             User32.INSTANCE.GetClassName(hWnd, className, 512);
             String wText = Native.toString(className);
@@ -137,9 +145,9 @@ public class ChatHelper implements AsSubscriber {
             if (wText.isEmpty()) {
                 return true;
             }
+            //System.out.println(wText);
             if (wText.equals("POEWindowClass")) {
-                User32.INSTANCE.SetForegroundWindow(hWnd);
-                return false;
+                return !User32.INSTANCE.SetForegroundWindow(hWnd);
             }
             return true;
         }, null);
