@@ -18,6 +18,8 @@ import com.sun.jna.platform.win32.WinDef;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.swing.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executor;
@@ -44,7 +46,6 @@ public class ProdStarter {
         executor.execute(updateClientStarter);
         HistoryManager.INSTANCE.load();
         UpdateManager updateManager = new UpdateManager();
-
         MercuryStoreCore.uiLoadedSubject.subscribe((Boolean state) -> {
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
