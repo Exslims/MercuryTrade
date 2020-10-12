@@ -6,4 +6,6 @@ public interface ScannerPanelController extends NotificationController {
     void performInvite();
 
     void performLeave(String nickName);
+
+    void performWhoIs();
 }

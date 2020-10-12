@@ -129,6 +129,17 @@ public enum HotKeyType implements Serializable {
             return null;
         }
     },
+    N_WHO_IS {
+        @Override
+        public String getIconPath() {
+            return "app/who-is.png";
+        }
+
+        @Override
+        public String getTooltip() {
+            return "Who is?";
+        }
+    },
     //scanner
     N_QUICK_RESPONSE {
         @Override

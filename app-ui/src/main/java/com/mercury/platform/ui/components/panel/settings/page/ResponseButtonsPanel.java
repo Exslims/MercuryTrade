@@ -39,7 +39,7 @@ public class ResponseButtonsPanel extends JPanel implements ViewInit {
         JLabel valueLabel = componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_DEFAULT, null, 15f, "Response text");
         valueLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JLabel hotKeyLabel = componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_DEFAULT, null, 15f, "");
+        JLabel hotKeyLabel = componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_DEFAULT, null, 15f, "Hot Key");
         hotKeyLabel.setHorizontalAlignment(SwingConstants.CENTER);
         hotKeyLabel.setPreferredSize(new Dimension(130, 20));
 
@@ -98,11 +98,24 @@ public class ResponseButtonsPanel extends JPanel implements ViewInit {
         root.add(this.componentsFactory.wrapToSlide(responseField, AppThemeColor.SETTINGS_BG, 0, 0, 2, 0), BorderLayout.CENTER);
 
         JPanel miscPanel = this.componentsFactory.getJPanel(new BorderLayout(4, 4), AppThemeColor.SETTINGS_BG);
-        JCheckBox checkBox = this.componentsFactory.getCheckBox(descriptor.isClose(), "Close notification panel after click?");
-        checkBox.addActionListener(action -> {
-            descriptor.setClose(checkBox.isSelected());
+
+        JPanel checkboxPanel = this.componentsFactory.getJPanel(new BorderLayout(4,4), AppThemeColor.SETTINGS_BG);
+
+        JCheckBox checkBoxClose = this.componentsFactory.getCheckBox(descriptor.isClose(), "Close notification panel after click?");
+        checkBoxClose.addActionListener(action -> {
+            descriptor.setClose(checkBoxClose.isSelected());
         });
-        miscPanel.add(checkBox, BorderLayout.LINE_START);
+        checkboxPanel.add(checkBoxClose, BorderLayout.LINE_START);
+
+
+        JCheckBox checkBoxKick = this.componentsFactory.getCheckBox(descriptor.isKick(), "Kick after click?");
+        checkBoxKick.addActionListener(action -> {
+            descriptor.setKick(checkBoxKick.isSelected());
+        });
+        checkboxPanel.add(checkBoxKick, BorderLayout.LINE_END);
+
+        miscPanel.add(checkboxPanel, BorderLayout.LINE_START);
+
         HotKeyPanel hotKeyPanel = new HotKeyPanel(descriptor.getHotKeyDescriptor());
         this.hotKeyGroup.registerHotkey(hotKeyPanel);
         miscPanel.add(this.componentsFactory.wrapToSlide(hotKeyPanel, AppThemeColor.SETTINGS_BG, 0, 0, 2, 0), BorderLayout.CENTER);

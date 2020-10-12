@@ -29,6 +29,11 @@ public class NotificationScannerController implements ScannerPanelController {
     }
 
     @Override
+    public void performWhoIs() {
+        MercuryStoreCore.chatCommandSubject.onNext("/whois " + notificationDescriptor.getNickName());
+    }
+
+    @Override
     public void performOfferTrade() {
         MercuryStoreCore.chatCommandSubject.onNext("/tradewith " + notificationDescriptor.getNickName());
     }
@@ -36,6 +41,11 @@ public class NotificationScannerController implements ScannerPanelController {
     @Override
     public void performHide() {
         this.closeMessagePanel();
+    }
+
+    @Override
+    public void performKick() {
+        MercuryStoreCore.chatCommandSubject.onNext("/kick " + notificationDescriptor.getNickName());
     }
 
     @Override

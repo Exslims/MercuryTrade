@@ -16,6 +16,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class NotificationSettingsPagePanel extends SettingsPagePanel {
@@ -85,7 +86,7 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
         JComboBox flowDirectionPicker = componentsFactory.getComboBox(new String[]{"Upwards", "Downwards"});
         flowDirectionPicker.addActionListener(e -> {
-            switch ((String) flowDirectionPicker.getSelectedItem()) {
+            switch ((String) Objects.requireNonNull(flowDirectionPicker.getSelectedItem())) {
                 case "Upwards": {
                     this.generalSnapshot.setFlowDirections(FlowDirections.UPWARDS);
                     break;
@@ -129,9 +130,7 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
 
         JPanel parametersPanel = this.componentsFactory.getJPanel(new GridLayout(2, 2), AppThemeColor.ADR_BG);
         JCheckBox enableCheckbox = this.componentsFactory.getCheckBox(this.generalSnapshot.isWhisperHelperEnable());
-        enableCheckbox.addActionListener(action -> {
-            this.generalSnapshot.setWhisperHelperEnable(enableCheckbox.isSelected());
-        });
+        enableCheckbox.addActionListener(action -> this.generalSnapshot.setWhisperHelperEnable(enableCheckbox.isSelected()));
         parametersPanel.add(this.componentsFactory.getTextLabel("Enabled:", FontStyle.REGULAR, 16));
         parametersPanel.add(enableCheckbox);
         parametersPanel.add(this.componentsFactory.getTextLabel("Hotkey:", FontStyle.REGULAR, 16));
@@ -240,9 +239,7 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         });
         propertiesPanel.add(closeAfterLeave);
         propertiesPanel.add(this.componentsFactory.getTextLabel("Auto-close triggers:", FontStyle.REGULAR, 16));
-        String collect = this.generalSnapshot.getAutoCloseTriggers()
-                .stream()
-                .collect(Collectors.joining(","));
+        String collect = String.join(",", this.generalSnapshot.getAutoCloseTriggers());
         JTextField triggersField = this.componentsFactory.getTextField(collect, FontStyle.DEFAULT, 15f);
         triggersField.addFocusListener(new FocusAdapter() {
             @Override

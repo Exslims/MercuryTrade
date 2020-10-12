@@ -80,7 +80,7 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
 
         AdrDurationComponentDescriptor donateDescriptor = new AdrProgressBarDescriptor();
         donateDescriptor.setIconEnable(false);
-        donateDescriptor.setDuration(200d);
+        donateDescriptor.setDuration(50d);
         donateDescriptor.setSize(new Dimension(100, 20));
         donateDescriptor.setType(AdrComponentType.PROGRESS_BAR);
         donateDescriptor.setCustomTextEnable(true);
@@ -178,7 +178,6 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
                 }
             }
         });
-//        root.add(patchNotes);
         return root;
     }
 

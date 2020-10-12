@@ -4,25 +4,32 @@ import com.mercury.platform.shared.entity.message.CurrencyTradeNotificationDescr
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class MessageParser {
     private final static String poeTradeStashTabPattern = "^(.*\\s)?(.+): (.+ to buy your\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\)\\s*?(.*))$";
     private final static String poeTradePattern = "^(.*\\s)?(.+): (.+ to buy your\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.*?))$";
     private final static String poeAppPattern = "^(.*\\s)?(.+): (\\s*?wtb\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash\\s+?\"(.*?)\";\\s+?left\\s+?(\\d+?),\\s+?top\\s+(\\d+?)\\)\\s*?(.*))$";
+    private final static String poeAppBulkCurrenciesPattern = "^(.*\\s)?(.+): (\\s*?wtb\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash\\s+?\"(.*?)\";\\s+?left\\s+?(\\d+?),\\s+?top\\s+(\\d+?)\\)\\s*?(.*))$";
     private final static String poeCurrencyPattern = "^(.*\\s)?(.+): (.+ to buy your (\\d+(\\.\\d+)?)? (.+) for my (\\d+(\\.\\d+)?)? (.+) in (.*?)\\.\\s*(.*))$";
+    private final static String poeMapLiveRegex = "^(.*\\s)?(.+): (I'd like to exchange my (T\\d+:\\s\\([\\s\\S,]+) for your (T\\d+:\\s\\([\\S,\\s]+) in\\s+?(.+?)\\.)";
     private Pattern poeAppItemPattern;
     private Pattern poeTradeStashItemPattern;
     private Pattern poeTradeItemPattern;
     private Pattern poeTradeCurrencyPattern;
+    private Pattern poeMapLivePattern;
 
     public MessageParser() {
         this.poeAppItemPattern = Pattern.compile(poeAppPattern);
         this.poeTradeStashItemPattern = Pattern.compile(poeTradeStashTabPattern);
         this.poeTradeItemPattern = Pattern.compile(poeTradePattern);
         this.poeTradeCurrencyPattern = Pattern.compile(poeCurrencyPattern);
+        this.poeMapLivePattern = Pattern.compile(poeMapLiveRegex);
     }
 
     public NotificationDescriptor parse(String fullMessage) {
@@ -73,10 +80,17 @@ public class MessageParser {
         Matcher poeTradeCurrencyMatcher = poeTradeCurrencyPattern.matcher(fullMessage);
         if (poeTradeCurrencyMatcher.find()) {
             CurrencyTradeNotificationDescriptor tradeNotification = new CurrencyTradeNotificationDescriptor();
+
+            if (poeTradeCurrencyMatcher.group(6).contains("&") || poeTradeCurrencyMatcher.group(6).contains(",")) {  //todo this shit for bulk map
+                String bulkItems = poeTradeCurrencyMatcher.group(4) + " " + poeTradeCurrencyMatcher.group(6);
+                tradeNotification.setItems(Arrays.stream(StringUtils.split(bulkItems, ",&")).map(String::trim).collect(Collectors.toList()));
+            } else {
+                tradeNotification.setCurrForSaleCount(Double.parseDouble(poeTradeCurrencyMatcher.group(4)));
+                tradeNotification.setCurrForSaleTitle(poeTradeCurrencyMatcher.group(6));
+            }
+
             tradeNotification.setWhisperNickname(poeTradeCurrencyMatcher.group(2));
             tradeNotification.setSourceString(poeTradeCurrencyMatcher.group(3));
-            tradeNotification.setCurrForSaleCount(Double.parseDouble(poeTradeCurrencyMatcher.group(4)));
-            tradeNotification.setCurrForSaleTitle(poeTradeCurrencyMatcher.group(6));
             tradeNotification.setCurCount(Double.parseDouble(poeTradeCurrencyMatcher.group(7)));
             tradeNotification.setCurrency(poeTradeCurrencyMatcher.group(9));
             tradeNotification.setLeague(poeTradeCurrencyMatcher.group(10));
@@ -101,6 +115,20 @@ public class MessageParser {
             tradeNotification.setType(NotificationType.INC_ITEM_MESSAGE);
             return tradeNotification;
         }
+        Matcher poeTradeMapLiveMatcher = poeMapLivePattern.matcher(fullMessage);
+		if (poeTradeMapLiveMatcher.find()) {
+			ItemTradeNotificationDescriptor tradeNotification = new ItemTradeNotificationDescriptor();
+			tradeNotification.setWhisperNickname(poeTradeMapLiveMatcher.group(2));
+			tradeNotification.setSourceString(poeTradeMapLiveMatcher.group(3));
+			tradeNotification.setItemName(poeTradeMapLiveMatcher.group(5));
+			tradeNotification.setOffer(poeTradeMapLiveMatcher.group(4));
+			tradeNotification.setLeague(poeTradeMapLiveMatcher.group(6));
+			tradeNotification.setType(NotificationType.INC_ITEM_MESSAGE);
+			tradeNotification.setCurCount(0d);
+			tradeNotification.setCurrency("");
+			tradeNotification.setType(NotificationType.INC_ITEM_MESSAGE);
+			return tradeNotification;
+		}
         return null;
     }
 }

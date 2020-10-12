@@ -6,6 +6,7 @@ import com.mercury.platform.ui.frame.movable.TaskBarFrame;
 import com.mercury.platform.ui.frame.titled.ChatScannerFrame;
 import com.mercury.platform.ui.frame.titled.HistoryFrame;
 import com.mercury.platform.ui.frame.titled.SettingsFrame;
+import com.mercury.platform.ui.frame.other.HelpIGFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 
@@ -32,6 +33,11 @@ public class MercuryTaskBarController implements TaskBarController {
     @Override
     public void performHideout() {
         MercuryStoreCore.chatCommandSubject.onNext("/hideout");
+    }
+
+    @Override
+    public void showHelpIG() {
+        FramesManager.INSTANCE.hideOrShowFrame(HelpIGFrame.class);
     }
 
     @Override

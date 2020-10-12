@@ -17,6 +17,11 @@ public class ScannerStubController implements ScannerPanelController {
     }
 
     @Override
+    public void performKick() {
+
+    }
+
+    @Override
     public void performOpenChat() {
 
     }
@@ -38,6 +43,11 @@ public class ScannerStubController implements ScannerPanelController {
 
     @Override
     public void performLeave(String nickName) {
+
+    }
+
+    @Override
+    public void performWhoIs() {
 
     }
 }

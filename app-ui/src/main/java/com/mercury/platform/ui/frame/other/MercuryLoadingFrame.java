@@ -23,7 +23,6 @@ public class MercuryLoadingFrame extends AbstractOverlaidFrame {
 
     @Override
     protected void initialize() {
-        this.setOpacity(0f);
         this.setBackground(AppThemeColor.TRANSPARENT);
     }
 

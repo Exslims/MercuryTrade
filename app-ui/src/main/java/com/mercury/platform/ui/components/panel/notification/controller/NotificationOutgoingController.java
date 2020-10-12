@@ -19,6 +19,11 @@ public class NotificationOutgoingController implements OutgoingPanelController {
     }
 
     @Override
+    public void performWhoIs() {
+        MercuryStoreCore.chatCommandSubject.onNext("/whois " + notificationDescriptor.getWhisperNickname());
+    }
+
+    @Override
     public void performLeave(String nickName) {
         MercuryStoreCore.chatCommandSubject.onNext("/kick " + nickName);
     }
@@ -31,6 +36,11 @@ public class NotificationOutgoingController implements OutgoingPanelController {
     @Override
     public void performHide() {
         this.closeMessagePanel();
+    }
+
+    @Override
+    public void performKick() {
+        MercuryStoreCore.chatCommandSubject.onNext("/kick " + notificationDescriptor.getWhisperNickname());
     }
 
     @Override

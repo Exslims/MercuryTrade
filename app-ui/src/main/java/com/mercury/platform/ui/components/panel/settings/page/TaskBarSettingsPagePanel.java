@@ -47,9 +47,17 @@ public class TaskBarSettingsPagePanel extends SettingsPagePanel {
         hotKeysPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
         root.add(this.componentsFactory.getIconLabel("app/hideout.png", 24, SwingConstants.CENTER));
         HotKeyGroup hotKeyGroup = new HotKeyGroup(true);
-        HotKeyPanel hotKeyPanel = new HotKeyPanel(this.taskBarSnapshot.getHideoutHotkey());
-        hotKeyGroup.registerHotkey(hotKeyPanel);
-        root.add(this.componentsFactory.wrapToSlide(hotKeyPanel, AppThemeColor.SETTINGS_BG, 2, 4, 1, 1));
+        HotKeyPanel hotKeyHideoutPanel = new HotKeyPanel(this.taskBarSnapshot.getHideoutHotkey());
+        hotKeyGroup.registerHotkey(hotKeyHideoutPanel);
+        root.add(this.componentsFactory.wrapToSlide(hotKeyHideoutPanel, AppThemeColor.SETTINGS_BG, 2, 4, 1, 1));
+        this.container.add(this.componentsFactory.wrapToSlide(root));
+        this.container.add(this.componentsFactory.wrapToSlide(hotKeysPanel));
+
+        root.add(this.componentsFactory.getIconLabel("app/helpIG_icon.png", 24, SwingConstants.CENTER));
+        HotKeyPanel hotKeyHelpIGPanel = new HotKeyPanel(this.taskBarSnapshot.getHelpIGHotkey());
+        hotKeyGroup.registerHotkey(hotKeyHelpIGPanel);
+        root.add(this.componentsFactory.wrapToSlide(hotKeyHelpIGPanel, AppThemeColor.SETTINGS_BG, 2, 4, 1, 1));
+
         this.container.add(this.componentsFactory.wrapToSlide(root));
         this.container.add(this.componentsFactory.wrapToSlide(hotKeysPanel));
     }

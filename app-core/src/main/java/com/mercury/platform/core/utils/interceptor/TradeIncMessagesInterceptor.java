@@ -23,6 +23,8 @@ public class TradeIncMessagesInterceptor extends MessageInterceptor {
         this.clients.add(new RuIncLocalizationMatcher());
         this.clients.add(new ArabicInLocalizationMatcher());
         this.clients.add(new BZIncLocalizationMatcher());
+        this.clients.add(new FrenchIncLocalizationMatcher());
+        this.clients.add(new GermanIncLocalizationMatcher());
     }
 
     @Override
@@ -48,7 +50,7 @@ public class TradeIncMessagesInterceptor extends MessageInterceptor {
     private abstract class LocalizationMatcher {
         public boolean isSuitableFor(String message) {
             return message.contains("Hi, I would like") ||
-                    message.contains("Hi, I'd like") ||
+                    message.contains("Hi, I'd like") || message.contains("I'd like") ||
                     (message.contains("wtb") && message.contains("(stash"));
         }
 
@@ -111,6 +113,30 @@ public class TradeIncMessagesInterceptor extends MessageInterceptor {
         @Override
         public String trimString(String src) {
             return StringUtils.substringAfter(src, "@De");
+        }
+    }
+
+    private class FrenchIncLocalizationMatcher extends LocalizationMatcher {
+        @Override
+        public boolean isSuitableFor(String message) {
+            return message.contains("@De") && super.isSuitableFor(message);
+        }
+
+        @Override
+        public String trimString(String src) {
+            return StringUtils.substringAfter(src, "@De");
+        }
+    }
+
+    private class GermanIncLocalizationMatcher extends LocalizationMatcher {
+        @Override
+        public boolean isSuitableFor(String message) {
+            return message.contains("@Von") && super.isSuitableFor(message);
+        }
+
+        @Override
+        public String trimString(String src) {
+            return StringUtils.substringAfter(src, "@Von");
         }
     }
 }

@@ -17,6 +17,11 @@ public class OutStubController implements OutgoingPanelController {
     }
 
     @Override
+    public void performKick() {
+
+    }
+
+    @Override
     public void performOpenChat() {
 
     }
@@ -28,6 +33,11 @@ public class OutStubController implements OutgoingPanelController {
 
     @Override
     public void visitHideout() {
+
+    }
+
+    @Override
+    public void performWhoIs() {
 
     }
 

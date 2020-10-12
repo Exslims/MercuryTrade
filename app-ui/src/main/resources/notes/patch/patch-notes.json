@@ -1,10 +1,11 @@
 {
-  "version": "1.0.3.0.0",
+  "version": "1.0.3.4.0",
   "notes":[
     {
       "title": "Update",
-      "text": "- Fixed a bug when the amount of currency is not displayed correctly in the notification panel.\n- Fixed a bug when notification panel sometimes did not work.\n- Whisper helper now have own hotkey button.\n- And minor backend improvements.\n\nThank you for staying with us.",
+      "text": "-Fix \"notification panel not working\"\n- New feature: Syndicate rewards matrix overlay (see in taskbar) + hotkey (settings -> taskbar). Thanks @Etuldan for contributing.\n- Added support for buying bulk maps from one seller in poeapp.com\n- Fix notification panel layout when buying/selling maps from poe trade/poeapp\n- Added some new icons for currencies.\n\nHappy holidays! Don't forget to support the app. Thanks!",
       "image" : "",
       "layout" : "VERTICAL"
     }
-  ]}
+  ]
+}
