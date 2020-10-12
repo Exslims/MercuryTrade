@@ -70,3 +70,5 @@ out/
 target/
 logs/
 *.iml
+
+*dependency-reduced-pom.xml
