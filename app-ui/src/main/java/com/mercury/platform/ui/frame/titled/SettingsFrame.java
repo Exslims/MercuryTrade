@@ -92,11 +92,11 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         donateDescriptor.setBorderColor(AppThemeColor.ADR_DEFAULT_BORDER);
         donateDescriptor.setBackgroundColor(AppThemeColor.FRAME);
         donateDescriptor.setForegroundColor(AppThemeColor.BUTTON);
-        MercuryTracker tracker = new MercuryTracker(donateDescriptor);
-        tracker.setValue(1000);
-        tracker.setPreferredSize(donateDescriptor.getSize());
-        root.add(this.componentsFactory.getTextLabel("Monthly donations:", FontStyle.BOLD, 16), BorderLayout.LINE_START);
-        root.add(this.componentsFactory.wrapToSlide(tracker, AppThemeColor.ADR_FOOTER_BG, 2, 2, 2, 1), BorderLayout.CENTER);
+//        MercuryTracker tracker = new MercuryTracker(donateDescriptor);
+//        tracker.setValue(1000);
+//        tracker.setPreferredSize(donateDescriptor.getSize());
+//        root.add(this.componentsFactory.getTextLabel("Monthly donations:", FontStyle.BOLD, 16), BorderLayout.LINE_START);
+//        root.add(this.componentsFactory.wrapToSlide(tracker, AppThemeColor.ADR_FOOTER_BG, 2, 2, 2, 1), BorderLayout.CENTER);
         root.add(this.getSaveButtonPanel(), BorderLayout.LINE_END);
         return root;
     }
@@ -121,20 +121,9 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
             this.hideComponent();
             MercuryStoreUI.settingsRestoreSubject.onNext(true);
         });
-        JButton donate = componentsFactory.getIconButton("app/paypal.png", 70f, AppThemeColor.ADR_FOOTER_BG, "Donate");
-        donate.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                try {
-                    Desktop.getDesktop().browse(new URI("https://www.paypal.me/mercurytrade"));
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
+
         saveButton.setPreferredSize(new Dimension(110, 26));
         cancelButton.setPreferredSize(new Dimension(110, 26));
-        root.add(this.componentsFactory.wrapToSlide(donate, AppThemeColor.HEADER, 0, 2, 0, 2));
         root.add(this.componentsFactory.wrapToSlide(cancelButton, AppThemeColor.HEADER, 2, 2, 2, 2));
         root.add(this.componentsFactory.wrapToSlide(saveButton, AppThemeColor.HEADER, 2, 2, 2, 2));
         return root;
