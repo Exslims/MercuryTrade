@@ -17,6 +17,11 @@ public class OutStubController implements OutgoingPanelController {
     }
 
     @Override
+    public void performKick() {
+
+    }
+
+    @Override
     public void performOpenChat() {
 
     }

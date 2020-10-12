@@ -39,6 +39,11 @@ public class NotificationOutgoingController implements OutgoingPanelController {
     }
 
     @Override
+    public void performKick() {
+        MercuryStoreCore.chatCommandSubject.onNext("/kick " + notificationDescriptor.getWhisperNickname());
+    }
+
+    @Override
     public void performOpenChat() {
         MercuryStoreCore.openChatSubject.onNext(notificationDescriptor.getWhisperNickname());
     }

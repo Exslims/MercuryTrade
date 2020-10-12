@@ -88,6 +88,9 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
             });
             button.addActionListener(e -> {
                 this.controller.performResponse(buttonConfig.getResponseText());
+                if (buttonConfig.isKick()) {
+                    this.controller.performKick();
+                }
                 if (buttonConfig.isClose()) {
                     this.controller.performHide();
                 }

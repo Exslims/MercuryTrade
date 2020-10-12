@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HotKeyGroup {
-    private List<HotKeyPanel> hotKeyPanels = new ArrayList<>();
+    private final List<HotKeyPanel> hotKeyPanels = new ArrayList<>();
     @Getter
-    private boolean global;
+    private final boolean global;
 
     public HotKeyGroup(boolean global) {
         this.global = global;

@@ -20,12 +20,12 @@ public class NotificationConfigurationService extends BaseConfigurationService<N
     public NotificationSettingsDescriptor getDefault() {
         NotificationSettingsDescriptor notificationSettingsDescriptor = new NotificationSettingsDescriptor();
         List<ResponseButtonDescriptor> defaultButtons = new ArrayList<>();
-        defaultButtons.add(new ResponseButtonDescriptor(0, false, "1m", "one minute", new HotKeyDescriptor()));
-        defaultButtons.add(new ResponseButtonDescriptor(1, true, "thx", "thanks", new HotKeyDescriptor()));
-        defaultButtons.add(new ResponseButtonDescriptor(2, false, "no thx", "no thanks", new HotKeyDescriptor()));
-        defaultButtons.add(new ResponseButtonDescriptor(3, false, "sold", "sold", new HotKeyDescriptor()));
+        defaultButtons.add(new ResponseButtonDescriptor(0, false, false, "1m", "one minute", new HotKeyDescriptor()));
+        defaultButtons.add(new ResponseButtonDescriptor(1, true, false, "thx", "thanks", new HotKeyDescriptor()));
+        defaultButtons.add(new ResponseButtonDescriptor(2, false, false, "no thx", "no thanks", new HotKeyDescriptor()));
+        defaultButtons.add(new ResponseButtonDescriptor(3, false, false, "sold", "sold", new HotKeyDescriptor()));
         List<ResponseButtonDescriptor> defaultOutButtons = new ArrayList<>();
-        defaultOutButtons.add(new ResponseButtonDescriptor(0, false, "thanks", "thanks", new HotKeyDescriptor()));
+        defaultOutButtons.add(new ResponseButtonDescriptor(0, false, false, "thanks", "thanks", new HotKeyDescriptor()));
         notificationSettingsDescriptor.setButtons(defaultButtons);
         notificationSettingsDescriptor.setOutButtons(defaultOutButtons);
 
@@ -53,7 +53,7 @@ public class NotificationConfigurationService extends BaseConfigurationService<N
             }
         });
         if (this.get().getOutButtons().size() == 0) {
-            this.get().getOutButtons().add(new ResponseButtonDescriptor(0, false, "thanks", "thanks", new HotKeyDescriptor()));
+            this.get().getOutButtons().add(new ResponseButtonDescriptor(0, false, false, "thanks", "thanks", new HotKeyDescriptor()));
         }
         if (this.get().getAutoCloseTriggers().size() == 0) {
             this.get().getAutoCloseTriggers().add("This player has DND mode enabled");

@@ -9,4 +9,6 @@ public interface NotificationController {
     void performOpenChat();
 
     void performResponse(String response);
+
+    void performKick();
 }
