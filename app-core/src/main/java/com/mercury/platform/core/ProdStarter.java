@@ -9,7 +9,6 @@ import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.MercuryConfigManager;
 import com.mercury.platform.shared.config.MercuryConfigurationSource;
 import com.mercury.platform.shared.config.descriptor.adr.AdrVisibleState;
-import com.mercury.platform.shared.hotkey.HotKeysInterceptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.shared.wh.WhisperHelperHandler;
 import com.sun.jna.Native;
@@ -18,8 +17,6 @@ import com.sun.jna.platform.win32.WinDef;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.swing.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executor;
@@ -38,14 +35,15 @@ public class ProdStarter {
         Configuration.set(configuration);
         new SoundNotifier();
         new ChatHelper();
-        new HotKeysInterceptor();
+//        new HotKeysInterceptor();
         new WhisperHelperHandler();
 
-        Executor executor = Executors.newSingleThreadExecutor();
-        UpdateClientStarter updateClientStarter = new UpdateClientStarter();
-        executor.execute(updateClientStarter);
+//        Executor executor = Executors.newSingleThreadExecutor();
+//        UpdateClientStarter updateClientStarter = new UpdateClientStarter();
+//        executor.execute(updateClientStarter);
+
         HistoryManager.INSTANCE.load();
-        UpdateManager updateManager = new UpdateManager();
+//        UpdateManager updateManager = new UpdateManager();
         MercuryStoreCore.uiLoadedSubject.subscribe((Boolean state) -> {
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
@@ -53,10 +51,12 @@ public class ProdStarter {
                 public void run() {
                     if (shutdown) {
                         timer.cancel();
-                        updateClientStarter.shutdown();
-                        if (updating) {
-                            updateManager.doUpdate();
-                        }
+
+                        //Updates are turned off
+//                        updateClientStarter.shutdown();
+//                        if (updating) {
+//                            updateManager.doUpdate();
+//                        }
                         System.exit(0);
                     }
                     char[] className = new char[512];
@@ -94,9 +94,9 @@ public class ProdStarter {
         });
         MercuryStoreCore.showingDelaySubject.subscribe(state -> this.delay = 300);
         MercuryStoreCore.shutdownAppSubject.subscribe(state -> this.shutdown = true);
-        MercuryStoreCore.shutdownForUpdateSubject.subscribe(state -> {
-            this.updating = true;
-            this.shutdown = true;
-        });
+//        MercuryStoreCore.shutdownForUpdateSubject.subscribe(state -> {
+//            this.updating = true;
+//            this.shutdown = true;
+//        });
     }
 }
