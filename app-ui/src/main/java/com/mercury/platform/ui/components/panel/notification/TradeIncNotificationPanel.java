@@ -91,7 +91,7 @@ public abstract class TradeIncNotificationPanel<T extends TradeNotificationDescr
                 this.hotKeysPool.put(hotKeyPair.getDescriptor(), button);
             }
         });
-        this.initResponseButtonsPanel(this.notificationConfig.get().getButtons());
+        this.initResponseButtonsPanel(this.notificationConfig.get().getButtons(), false);
         Window windowAncestor = SwingUtilities.getWindowAncestor(TradeIncNotificationPanel.this);
         if (windowAncestor != null) {
             windowAncestor.pack();

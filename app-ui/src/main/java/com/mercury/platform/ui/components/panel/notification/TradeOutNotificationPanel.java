@@ -125,7 +125,7 @@ public abstract class TradeOutNotificationPanel<T extends TradeNotificationDescr
                 this.hotKeysPool.put(hotKeyPair.getDescriptor(), button);
             }
         });
-        this.initResponseButtonsPanel(this.notificationConfig.get().getOutButtons());
+        this.initResponseButtonsPanel(this.notificationConfig.get().getOutButtons(), true);
         Window windowAncestor = SwingUtilities.getWindowAncestor(TradeOutNotificationPanel.this);
         if (windowAncestor != null) {
             windowAncestor.pack();

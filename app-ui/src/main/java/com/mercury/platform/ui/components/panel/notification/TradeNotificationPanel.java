@@ -10,6 +10,7 @@ import com.mercury.platform.ui.components.panel.notification.controller.Notifica
 import com.mercury.platform.ui.frame.other.ChatHistoryDefinition;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
+import org.apache.commons.lang3.StringUtils;
 import rx.Subscription;
 
 import javax.swing.*;
@@ -28,10 +29,12 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
     private Subscription chatSubscription;
     private Subscription playerJoinSubscription;
     private Subscription playerLeaveSubscription;
+
     @Override
     public void onViewInit() {
         super.onViewInit();
-        this.responseButtonsPanel = this.componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER, 5, 2), AppThemeColor.FRAME);
+        this.responseButtonsPanel = this.componentsFactory.getJPanel(new FlowLayout(FlowLayout.CENTER, 5, 2),
+                                                                     AppThemeColor.FRAME);
         this.contentPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.FRAME);
         switch (notificationConfig.get().getFlowDirections()) {
             case DOWNWARDS: {
@@ -54,22 +57,26 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
 
     protected abstract JPanel getMessagePanel();
 
-    protected void initResponseButtonsPanel(List<ResponseButtonDescriptor> buttonsConfig) {
+    protected void initResponseButtonsPanel(List<ResponseButtonDescriptor> buttonsConfig, boolean out) {
         this.responseButtonsPanel.removeAll();
         Collections.sort(buttonsConfig);
         buttonsConfig.forEach((buttonConfig) -> {
-            JButton button = componentsFactory.getBorderedButton(buttonConfig.getTitle(), 16f, AppThemeColor.RESPONSE_BUTTON, AppThemeColor.RESPONSE_BUTTON_BORDER, AppThemeColor.RESPONSE_BUTTON);
+            JButton button = componentsFactory.getBorderedButton(buttonConfig.getTitle(),
+                                                                 16f,
+                                                                 AppThemeColor.RESPONSE_BUTTON,
+                                                                 AppThemeColor.RESPONSE_BUTTON_BORDER,
+                                                                 AppThemeColor.RESPONSE_BUTTON);
             button.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON_BORDER, 1),
                     BorderFactory.createMatteBorder(3, 9, 3, 9, AppThemeColor.RESPONSE_BUTTON)
-            ));
+                                                               ));
             button.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     button.setBorder(BorderFactory.createCompoundBorder(
                             BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER, 1),
                             BorderFactory.createMatteBorder(3, 9, 3, 9, AppThemeColor.RESPONSE_BUTTON)
-                    ));
+                                                                       ));
                 }
 
                 @Override
@@ -77,20 +84,28 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
                     button.setBorder(BorderFactory.createCompoundBorder(
                             BorderFactory.createLineBorder(AppThemeColor.RESPONSE_BUTTON_BORDER, 1),
                             BorderFactory.createMatteBorder(3, 9, 3, 9, AppThemeColor.RESPONSE_BUTTON)
-                    ));
+                                                                       ));
                 }
             });
             button.addActionListener(action -> {
                 button.setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER, 1),
                         BorderFactory.createMatteBorder(3, 9, 3, 9, AppThemeColor.RESPONSE_BUTTON)
-                ));
+                                                                   ));
             });
             button.addActionListener(e -> {
                 this.controller.performResponse(buttonConfig.getResponseText());
                 if (buttonConfig.isKickLeave()) {
                     waitForNextAction();
-                    this.controller.performKickLeave(nicknameLabel.getText());
+                    if (out) {
+                        String playerNickname = this.notificationConfig.get().getPlayerNickname();
+                        if (StringUtils.isNotEmpty(playerNickname)) {
+                            this.controller.performKickLeave(playerNickname);
+                        }
+                    } else {
+                        this.controller.performKickLeave(nicknameLabel.getText());
+
+                    }
                 }
                 if (buttonConfig.isClose()) {
                     this.controller.performHide();
@@ -142,7 +157,8 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
                         BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER),
                         BorderFactory.createEmptyBorder(3, 3, 3, 3)));
                 chatHistory.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                MercuryStoreUI.showChatHistorySubject.onNext(new ChatHistoryDefinition(data.getRelatedMessages(), e.getLocationOnScreen()));
+                MercuryStoreUI.showChatHistorySubject.onNext(new ChatHistoryDefinition(data.getRelatedMessages(),
+                                                                                       e.getLocationOnScreen()));
             }
 
             @Override
@@ -172,8 +188,8 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
         String curCountStr = " ";
         if (curCount > 0) {
             curCountStr = curCount % 1 == 0 ?
-                    String.valueOf(curCount.intValue()) :
-                    String.valueOf(curCount);
+                          String.valueOf(curCount.intValue()) :
+                          String.valueOf(curCount);
         }
         if (!Objects.equals(curCountStr, "") && curIconPath != null) {
             JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + curIconPath + ".png", 26);
@@ -191,7 +207,11 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
     protected JLabel getOfferLabel() {
         String offer = this.data.getOffer();
         if (offer != null && offer.trim().length() > 0) {
-            JLabel offerLabel = componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER, 16f, offer);
+            JLabel offerLabel = componentsFactory.getTextLabel(FontStyle.BOLD,
+                                                               AppThemeColor.TEXT_DEFAULT,
+                                                               TextAlignment.CENTER,
+                                                               16f,
+                                                               offer);
             offerLabel.setHorizontalAlignment(SwingConstants.CENTER);
             return offerLabel;
         }
