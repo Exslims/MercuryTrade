@@ -72,3 +72,6 @@ logs/
 *.iml
 
 *dependency-reduced-pom.xml
+
+release_files/MercuryTrade.exe
+release_files/MercuryTrade.jar

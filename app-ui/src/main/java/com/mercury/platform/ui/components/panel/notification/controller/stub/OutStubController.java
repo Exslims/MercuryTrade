@@ -17,7 +17,7 @@ public class OutStubController implements OutgoingPanelController {
     }
 
     @Override
-    public void performKick() {
+    public void performKickLeave(String nickName) {
 
     }
 

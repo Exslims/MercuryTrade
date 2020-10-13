@@ -72,15 +72,7 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         JButton gitHub = componentsFactory.getBorderedButton("GitHub");
         gitHub.addActionListener(action -> {
             try {
-                Desktop.getDesktop().browse(new URI("https://github.com/Exslims/MercuryTrade/releases"));
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-        });
-        JButton donate = componentsFactory.getBorderedButton("Donate");
-        donate.addActionListener(action -> {
-            try {
-                Desktop.getDesktop().browse(new URI("https://www.paypal.me/mercurytrade"));
+                Desktop.getDesktop().browse(new URI("https://github.com/Morph21/MercuryTrade-Community-Fork/releases"));
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
@@ -146,14 +138,12 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         close.setBackground(AppThemeColor.FRAME);
 
         download.setPreferredSize(componentsFactory.convertSize(dimension));
-        donate.setPreferredSize(componentsFactory.convertSize(dimension));
         gitHub.setPreferredSize(componentsFactory.convertSize(dimension));
         previous.setPreferredSize(componentsFactory.convertSize(dimension));
         next.setPreferredSize(componentsFactory.convertSize(dimension));
         close.setPreferredSize(componentsFactory.convertSize(dimension));
 
         if (type.equals(NotesType.PATCH)) {
-            navBar.add(donate);
             navBar.add(gitHub);
             navBar.add(download);
         }

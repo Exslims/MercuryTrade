@@ -17,7 +17,7 @@ public class ScannerStubController implements ScannerPanelController {
     }
 
     @Override
-    public void performKick() {
+    public void performKickLeave(String nickName) {
 
     }
 

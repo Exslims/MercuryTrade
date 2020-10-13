@@ -29,7 +29,7 @@ public class IncStubController implements IncomingPanelController {
     }
 
     @Override
-    public void performKick() {
+    public void performKickLeave(String nickName) {
 
     }
 

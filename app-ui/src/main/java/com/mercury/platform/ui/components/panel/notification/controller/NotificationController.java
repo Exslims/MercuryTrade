@@ -10,5 +10,5 @@ public interface NotificationController {
 
     void performResponse(String response);
 
-    void performKick();
+    void performKickLeave(String nickName);
 }

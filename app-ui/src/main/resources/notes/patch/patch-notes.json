@@ -1,9 +1,9 @@
 {
-  "version": "1.0.3.4.0",
+  "version": "1.1.0",
   "notes":[
     {
       "title": "Update",
-      "text": "-Fix \"notification panel not working\"\n- New feature: Syndicate rewards matrix overlay (see in taskbar) + hotkey (settings -> taskbar). Thanks @Etuldan for contributing.\n- Added support for buying bulk maps from one seller in poeapp.com\n- Fix notification panel layout when buying/selling maps from poe trade/poeapp\n- Added some new icons for currencies.\n\nHappy holidays! Don't forget to support the app. Thanks!",
+      "text": " - Fixed occasional crashes\n - Expanded scale values from 90-150% to 50-200%\n - Added kick feature which can be set up for incoming messages",
       "image" : "",
       "layout" : "VERTICAL"
     }

@@ -2,6 +2,7 @@ package com.mercury.platform.ui.frame.titled;
 
 
 import com.mercury.platform.core.update.core.holder.ApplicationHolder;
+import com.mercury.platform.shared.UpdateManager;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentType;
 import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDescriptor;
@@ -16,6 +17,8 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.note.Note;
 import com.mercury.platform.ui.misc.note.NotesLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +27,7 @@ import java.awt.event.MouseEvent;
 import java.net.URI;
 
 public class SettingsFrame extends AbstractTitledComponentFrame {
+    private final static Logger logger = LogManager.getLogger(SettingsFrame.class.getSimpleName());
     private JPanel currentPanel;
     private JPanel root;
 
@@ -139,8 +143,11 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         });
         JButton checkUpdates = this.getOperationButton("Check for updates", "app/check-update.png");
         checkUpdates.addActionListener(action -> {
-            ApplicationHolder.getInstance().setManualRequest(true);
-            MercuryStoreCore.requestPatchSubject.onNext(true);
+            try {
+                Desktop.getDesktop().browse(new URI("https://github.com/Morph21/MercuryTrade-Community-Fork/releases"));
+            } catch (Exception e) {
+                logger.error("Opening browser failed", e);
+            }
         });
         JButton openTests = this.getOperationButton("Open tests", "app/open-tests.png");
         openTests.addActionListener(action -> {

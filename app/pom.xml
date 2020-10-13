@@ -25,7 +25,7 @@
         <dependency>
             <groupId>com.home.mercury</groupId>
             <artifactId>app-shared</artifactId>
-            <version>1.0.0.5</version>
+            <version>1.1.0</version>
         </dependency>
         <!--external-->
         <!--<dependency>-->
