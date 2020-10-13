@@ -48,8 +48,8 @@ public class ComponentsFactory {
     private float scale;
 
     public ComponentsFactory() {
-        loadFonts();
         this.scale = 1.0f;
+        loadFonts();
 
 //        UIManager.getDefaults().put("Slider.horizontalThumbIcon",this.getImage("app/slider_thumb.png"));
         UIManager.put("ComboBox.selectionBackground", AppThemeColor.HEADER);
@@ -66,7 +66,7 @@ public class ComponentsFactory {
             ITALIC_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-Italic.ttf"));
             REGULAR_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-Regular.ttf"));
             SMALLCAPS_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-SmallCaps.ttf"));
-            DEFAULT_FONT = new Font("Tahoma", Font.BOLD, (int) (scale * 16));
+            DEFAULT_FONT = new Font("Tahoma", Font.BOLD, (int) (scale * 14));
 
         } catch (Exception e) {
             log.error(e);

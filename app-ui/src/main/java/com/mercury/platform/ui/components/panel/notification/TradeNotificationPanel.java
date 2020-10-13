@@ -88,8 +88,9 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
             });
             button.addActionListener(e -> {
                 this.controller.performResponse(buttonConfig.getResponseText());
-                if (buttonConfig.isKick()) {
-                    this.controller.performKick();
+                if (buttonConfig.isKickLeave()) {
+                    waitForNextAction();
+                    this.controller.performKickLeave(nicknameLabel.getText());
                 }
                 if (buttonConfig.isClose()) {
                     this.controller.performHide();
@@ -220,5 +221,13 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
             }
         }
         return result;
+    }
+
+    private void waitForNextAction() {
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            //silence in case of error and go on
+        }
     }
 }

@@ -84,6 +84,9 @@ public class TradeOutMessagesInterceptor extends MessageInterceptor {
         @Override
         public NotificationDescriptor getDescriptor(String message) {
             NotificationDescriptor descriptor = messageParser.parse(this.trimString(message));
+            if (descriptor == null) {
+                return null;
+            }
             if (descriptor instanceof ItemTradeNotificationDescriptor) {
                 descriptor.setType(NotificationType.OUT_ITEM_MESSAGE);
             } else {

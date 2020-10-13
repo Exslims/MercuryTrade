@@ -17,6 +17,9 @@ import java.util.Map;
 public class SetUpScaleFrame extends AbstractOverlaidFrame {
     private Map<String, Float> scaleData;
 
+    private final static int MIN_SCALE = 5;
+    private final static int MAX_SCALE = 20;
+
     public SetUpScaleFrame() {
         super();
     }
@@ -89,7 +92,7 @@ public class SetUpScaleFrame extends AbstractOverlaidFrame {
                 TextAlignment.LEFTOP,
                 17f,
                 "Notification panel: ");
-        JSlider notificationSlider = componentsFactory.getSlider(9, 15, (int) (scaleData.get("notification") * 10));
+        JSlider notificationSlider = componentsFactory.getSlider(MIN_SCALE, MAX_SCALE, (int) (scaleData.get("notification") * 10));
         JLabel notificationValue = componentsFactory.getTextLabel(
                 FontStyle.REGULAR,
                 AppThemeColor.TEXT_DEFAULT,
@@ -120,7 +123,7 @@ public class SetUpScaleFrame extends AbstractOverlaidFrame {
                 17f,
                 "Task panel: ");
 
-        JSlider taskBarSlider = componentsFactory.getSlider(9, 15, (int) (scaleData.get("taskbar") * 10));
+        JSlider taskBarSlider = componentsFactory.getSlider(MIN_SCALE, MAX_SCALE, (int) (scaleData.get("taskbar") * 10));
         JLabel taskBarValue = componentsFactory.getTextLabel(
                 FontStyle.REGULAR,
                 AppThemeColor.TEXT_DEFAULT,
@@ -150,7 +153,7 @@ public class SetUpScaleFrame extends AbstractOverlaidFrame {
                 TextAlignment.LEFTOP,
                 17f,
                 "Item cell panel: ");
-        JSlider itemInfoSlider = componentsFactory.getSlider(9, 15, (int) (scaleData.get("itemcell") * 10));
+        JSlider itemInfoSlider = componentsFactory.getSlider(MIN_SCALE, MAX_SCALE, (int) (scaleData.get("itemcell") * 10));
         JLabel itemInfoValue = componentsFactory.getTextLabel(
                 FontStyle.REGULAR,
                 AppThemeColor.TEXT_DEFAULT,

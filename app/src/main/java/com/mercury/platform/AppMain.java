@@ -4,6 +4,7 @@ import com.mercury.platform.core.DevStarter;
 import com.mercury.platform.core.ProdStarter;
 import com.mercury.platform.core.utils.FileMonitor;
 import com.mercury.platform.core.utils.error.ErrorHandler;
+import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.frame.other.MercuryLoadingFrame;
@@ -13,10 +14,13 @@ import com.sun.jna.Native;
 import com.sun.jna.platform.WindowUtils;
 import com.sun.jna.platform.win32.User32;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
 public class AppMain {
+    private static final Logger logger = LogManager.getLogger(AppMain.class);
     public static void main(String[] args) {
         System.setProperty("sun.java2d.d3d", "false");
         System.setProperty("jna.nosys", "true");

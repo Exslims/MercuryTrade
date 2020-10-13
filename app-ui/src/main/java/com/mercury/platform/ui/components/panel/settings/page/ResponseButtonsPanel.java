@@ -108,9 +108,9 @@ public class ResponseButtonsPanel extends JPanel implements ViewInit {
         checkboxPanel.add(checkBoxClose, BorderLayout.LINE_START);
 
 
-        JCheckBox checkBoxKick = this.componentsFactory.getCheckBox(descriptor.isKick(), "Kick after click?");
+        JCheckBox checkBoxKick = this.componentsFactory.getCheckBox(descriptor.isKickLeave(), "Kick/Leave after click?");
         checkBoxKick.addActionListener(action -> {
-            descriptor.setKick(checkBoxKick.isSelected());
+            descriptor.setKickLeave(checkBoxKick.isSelected());
         });
         checkboxPanel.add(checkBoxKick, BorderLayout.LINE_END);
 

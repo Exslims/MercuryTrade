@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class ResponseButtonDescriptor implements Comparable<ResponseButtonDescriptor>, Serializable {
     private long id;
     private boolean close;
-    private boolean kick;
+    private boolean kickLeave;
     private String title = "label";
     private String responseText = "response";
     private HotKeyDescriptor hotKeyDescriptor = new HotKeyDescriptor();
