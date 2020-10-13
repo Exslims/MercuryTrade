@@ -45,7 +45,7 @@ public class ComponentsFactory {
     private Font SMALLCAPS_FONT;
     @Getter
     private Font DEFAULT_FONT;
-    private float scale = 1f;
+    private float scale;
 
     public ComponentsFactory() {
         loadFonts();
