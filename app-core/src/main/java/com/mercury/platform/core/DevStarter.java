@@ -19,9 +19,7 @@ import java.util.concurrent.Executors;
 public class DevStarter {
 
     public static FrameVisibleState APP_STATUS = FrameVisibleState.HIDE;
-    private boolean shutdown = false;
     private volatile int delay = 100;
-    private boolean updating = false;
 
     public void startApplication() {
         MercuryConfigManager configuration = new MercuryConfigManager(new MercuryConfigurationSource());
@@ -29,34 +27,15 @@ public class DevStarter {
         Configuration.set(configuration);
         new SoundNotifier();
         new ChatHelper();
-//        new HotKeysInterceptor();
+        new HotKeysInterceptor();
         new WhisperHelperHandler();
 
-        // Updates are turned off becouse of not working server
-//        Executor executor = Executors.newSingleThreadExecutor();
-//        UpdateClientStarter updateClientStarter = new UpdateClientStarter();
-//        executor.execute(updateClientStarter);
-
-
         HistoryManager.INSTANCE.load();
-        UpdateManager updateManager = new UpdateManager();
-
         MercuryStoreCore.uiLoadedSubject.subscribe((Boolean state) -> {
             APP_STATUS = FrameVisibleState.SHOW;
             MercuryStoreCore.frameVisibleSubject.onNext(FrameVisibleState.SHOW);
-            if (this.shutdown) {
-                //Updates turned off
-//                if (this.updating) {
-//                    updateManager.doUpdate();
-//                }
-                System.exit(0);
-            }
         });
         MercuryStoreCore.showingDelaySubject.subscribe(state -> this.delay = 300);
         MercuryStoreCore.shutdownAppSubject.subscribe(state -> System.exit(0));
-//        MercuryStoreCore.shutdownForUpdateSubject.subscribe(state -> {
-//            this.updating = true;
-//            this.shutdown = true;
-//        });
     }
 }

@@ -18,7 +18,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <project.version>1.1.0</project.version>
+        <project.version>1.1.1</project.version>
 
         <jnativehook.version>2.0.2</jnativehook.version>
         <devjna.version>4.4.0</devjna.version>
@@ -171,13 +171,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.mercury.platform.AppMain</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
             </plugin>
         </plugins>
     </build>

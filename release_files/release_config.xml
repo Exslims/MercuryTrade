@@ -14,6 +14,10 @@
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
   <icon>C:\repo\github\MercuryTrade\release_files\app-icon.ico</icon>
+  <singleInstance>
+    <mutexName>MercuryTrade</mutexName>
+    <windowTitle>MercuryTrade</windowTitle>
+  </singleInstance>
   <jre>
     <path></path>
     <bundledJre64Bit>false</bundledJre64Bit>
@@ -24,12 +28,12 @@
     <runtimeBits>64/32</runtimeBits>
   </jre>
   <versionInfo>
-    <fileVersion>1.1.0.0</fileVersion>
-    <txtFileVersion>1.1.0</txtFileVersion>
+    <fileVersion>1.1.1.0</fileVersion>
+    <txtFileVersion>1.1.1</txtFileVersion>
     <fileDescription>MercuryTrade</fileDescription>
     <copyright>Morph21</copyright>
-    <productVersion>1.1.0.0</productVersion>
-    <txtProductVersion>1.1.0</txtProductVersion>
+    <productVersion>1.1.1.0</productVersion>
+    <txtProductVersion>1.1.1</txtProductVersion>
     <productName>MercuryTrade</productName>
     <companyName>Morph</companyName>
     <internalName>MercuryTrade</internalName>
