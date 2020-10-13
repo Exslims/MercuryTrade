@@ -20,10 +20,6 @@
             <version>1.0.0.5</version>
         </dependency>
         <dependency>
-            <groupId>net.jodah</groupId>
-            <artifactId>expiringmap</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.1stleg</groupId>
             <artifactId>jnativehook</artifactId>
         </dependency>
@@ -63,10 +59,6 @@
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.juniversalchardet</groupId>
-            <artifactId>juniversalchardet</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
