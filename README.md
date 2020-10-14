@@ -3,6 +3,12 @@ ___
 
 Already more than 10k happy users! Don't forget to support it! And if you want your name to be featured in our in-app Hall of Fame (see Support tab) please provide this information within the transaction!
 
+If you want to help with development with donations it's possible to do it by paypal or liberapay
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=FPFD6SGZ2E5GU)
+<noscript><a href="https://liberapay.com/Morph21/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a></noscript>
+
+<br>
 
 # MercuryTrade
 
@@ -135,3 +141,4 @@ Activate this mode if you don't want to see (and hear!) anything from the applic
 Download and install Java on your computer, then open MercuryTrade.jar. Because the program operates on top of a Path of Exile window as an overlay, **make sure your client is not in fullscreen mode**.
 
 Upon launch you'll be greeted with a short overview of the application (identical to this ReadMe) and patch notes. Afterwards you should see **Task Panel** and **Notification Panel**.
+
