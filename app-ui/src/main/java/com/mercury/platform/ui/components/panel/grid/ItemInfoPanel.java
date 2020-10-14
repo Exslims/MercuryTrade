@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.components.panel.grid;
 
+import com.mercury.platform.shared.IconConst;
 import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.ui.components.ComponentsFactory;
@@ -47,7 +48,7 @@ public class ItemInfoPanel extends JPanel implements ViewInit {
         nicknamePanel.setBorder(BorderFactory.createEmptyBorder(-6, 0, -6, 0));
         this.add(nicknamePanel, BorderLayout.CENTER);
 
-        JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME, "Close");
+        JButton hideButton = componentsFactory.getIconButton(IconConst.CLOSE, 12, AppThemeColor.FRAME, "Close");
         hideButton.addActionListener((action) -> {
             controller.hidePanel();
         });

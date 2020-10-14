@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.components.panel.chat;
 
+import com.mercury.platform.shared.IconConst;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.ScannerDescriptor;
@@ -49,7 +50,7 @@ public class ChatMessagePanel extends JPanel implements ViewInit {
         JPanel miscPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         JPanel operationsPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
 
-        JButton quickResponse = componentsFactory.getIconButton("app/chat_scanner_response.png", 17, AppThemeColor.SLIDE_BG, "Quick response");
+        JButton quickResponse = componentsFactory.getIconButton(IconConst.CHAT_SCANNER_RESPONSE, 17, AppThemeColor.SLIDE_BG, "Quick response");
         quickResponse.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -58,7 +59,7 @@ public class ChatMessagePanel extends JPanel implements ViewInit {
                 }
             }
         });
-        JButton openChat = componentsFactory.getIconButton("app/openChat.png", 16, AppThemeColor.SLIDE_BG, TooltipConstants.OPEN_CHAT);
+        JButton openChat = componentsFactory.getIconButton(IconConst.CHAT_OPEN, 16, AppThemeColor.SLIDE_BG, TooltipConstants.OPEN_CHAT);
         openChat.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

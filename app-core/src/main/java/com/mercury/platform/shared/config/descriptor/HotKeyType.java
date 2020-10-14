@@ -1,6 +1,8 @@
 package com.mercury.platform.shared.config.descriptor;
 
 
+import com.mercury.platform.shared.IconConst;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -9,7 +11,7 @@ public enum HotKeyType implements Serializable {
     N_TRADE_PLAYER {
         @Override
         public String getIconPath() {
-            return "app/trade.png";
+            return IconConst.TRADE;
         }
 
         @Override
@@ -20,7 +22,7 @@ public enum HotKeyType implements Serializable {
     N_OPEN_CHAT {
         @Override
         public String getIconPath() {
-            return "app/openChat.png";
+            return IconConst.CHAT_OPEN;
         }
 
         @Override
@@ -31,7 +33,7 @@ public enum HotKeyType implements Serializable {
     N_CLOSE_NOTIFICATION {
         @Override
         public String getIconPath() {
-            return "app/close.png";
+            return IconConst.CLOSE;
         }
 
         @Override
@@ -43,7 +45,7 @@ public enum HotKeyType implements Serializable {
     N_INVITE_PLAYER {
         @Override
         public String getIconPath() {
-            return "app/invite.png";
+            return IconConst.INVITE;
         }
 
         @Override
@@ -54,7 +56,7 @@ public enum HotKeyType implements Serializable {
     N_KICK_PLAYER {
         @Override
         public String getIconPath() {
-            return "app/kick.png";
+            return IconConst.KICK;
         }
 
         @Override
@@ -65,7 +67,7 @@ public enum HotKeyType implements Serializable {
     N_STILL_INTERESTING {
         @Override
         public String getIconPath() {
-            return "app/still-interesting.png";
+            return IconConst.STILL_INTERESTING;
         }
 
         @Override
@@ -76,7 +78,7 @@ public enum HotKeyType implements Serializable {
     N_REPEAT_MESSAGE {
         @Override
         public String getIconPath() {
-            return "app/reload-history.png";
+            return IconConst.RELOAD_HISTORY;
         }
 
         @Override
@@ -87,7 +89,7 @@ public enum HotKeyType implements Serializable {
     N_SWITCH_CHAT {
         @Override
         public String getIconPath() {
-            return "app/chat_history.png";
+            return IconConst.CHAT_HISTORY;
         }
 
         @Override
@@ -99,7 +101,7 @@ public enum HotKeyType implements Serializable {
     N_VISITE_HIDEOUT {
         @Override
         public String getIconPath() {
-            return "app/visiteHideout.png";
+            return IconConst.VISIT_HIDEOUT;
         }
 
         @Override
@@ -110,7 +112,7 @@ public enum HotKeyType implements Serializable {
     N_LEAVE {
         @Override
         public String getIconPath() {
-            return "app/leave.png";
+            return IconConst.LEAVE;
         }
 
         @Override
@@ -121,7 +123,7 @@ public enum HotKeyType implements Serializable {
     N_BACK_TO_HIDEOUT {
         @Override
         public String getIconPath() {
-            return "app/backToHideout.png";
+            return IconConst.BACK_TO_HIDEOUT;
         }
 
         @Override
@@ -132,7 +134,7 @@ public enum HotKeyType implements Serializable {
     N_WHO_IS {
         @Override
         public String getIconPath() {
-            return "app/who-is.png";
+            return IconConst.WHO_IS;
         }
 
         @Override
@@ -144,7 +146,7 @@ public enum HotKeyType implements Serializable {
     N_QUICK_RESPONSE {
         @Override
         public String getIconPath() {
-            return "app/chat_scanner_response.png";
+            return IconConst.CHAT_SCANNER_RESPONSE;
         }
 
         @Override
@@ -155,7 +157,7 @@ public enum HotKeyType implements Serializable {
     T_TO_HIDEOUT {
         @Override
         public String getIconPath() {
-            return "app/hideout.png";
+            return IconConst.HIDEOUT;
         }
 
         @Override
@@ -166,7 +168,7 @@ public enum HotKeyType implements Serializable {
     T_DND {
         @Override
         public String getIconPath() {
-            return "app/visible-dnd-mode.png";
+            return IconConst.VISIBLE_DND_MODE;
         }
 
         @Override
@@ -177,9 +179,9 @@ public enum HotKeyType implements Serializable {
 
     public static boolean contains(HotKeyType entry) {
         return Arrays.stream(HotKeyType.values())
-                .filter(it -> it.equals(entry))
-                .collect(Collectors.toList())
-                .size() != 0;
+                       .filter(it -> it.equals(entry))
+                       .collect(Collectors.toList())
+                       .size() != 0;
     }
 
     public abstract String getIconPath();

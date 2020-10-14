@@ -3,6 +3,7 @@ package com.mercury.platform.ui.components.panel.notification;
 import com.mercury.platform.shared.config.descriptor.HotKeyPair;
 import com.mercury.platform.shared.config.descriptor.HotKeyType;
 import com.mercury.platform.shared.entity.message.TradeNotificationDescriptor;
+import com.mercury.platform.shared.IconConst;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.components.panel.notification.controller.IncomingPanelController;
@@ -32,25 +33,25 @@ public abstract class TradeIncNotificationPanel<T extends TradeNotificationDescr
         JPanel opPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.MSG_HEADER);
         JPanel interactionPanel = new JPanel(new GridLayout(1, 0, 4, 0));
         interactionPanel.setBackground(AppThemeColor.MSG_HEADER);
-        JButton inviteButton = componentsFactory.getIconButton("app/invite.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.INVITE);
+        JButton inviteButton = componentsFactory.getIconButton(IconConst.INVITE, 15, AppThemeColor.MSG_HEADER, TooltipConstants.INVITE);
         inviteButton.addActionListener(e -> {
             this.controller.performInvite();
             root.setBorder(BorderFactory.createLineBorder(AppThemeColor.HEADER_SELECTED_BORDER));
         });
-        JButton kickButton = componentsFactory.getIconButton("app/kick.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.KICK);
+        JButton kickButton = componentsFactory.getIconButton(IconConst.KICK, 15, AppThemeColor.MSG_HEADER, TooltipConstants.KICK);
         kickButton.addActionListener(e -> {
             this.controller.performKickLeave(nicknameLabel.getText());
             if (this.notificationConfig.get().isDismissAfterKick()) {
                 this.controller.performHide();
             }
         });
-        JButton tradeButton = componentsFactory.getIconButton("app/trade.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
+        JButton tradeButton = componentsFactory.getIconButton(IconConst.TRADE, 15, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
         tradeButton.addActionListener(e -> {
             this.controller.performOfferTrade();
         });
-        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
+        JButton openChatButton = componentsFactory.getIconButton(IconConst.CHAT_OPEN, 15, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
         openChatButton.addActionListener(e -> controller.performOpenChat());
-        JButton hideButton = componentsFactory.getIconButton("app/close.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.HIDE_PANEL);
+        JButton hideButton = componentsFactory.getIconButton(IconConst.CLOSE, 15, AppThemeColor.MSG_HEADER, TooltipConstants.HIDE_PANEL);
         hideButton.addActionListener(action -> {
             this.controller.performHide();
         });

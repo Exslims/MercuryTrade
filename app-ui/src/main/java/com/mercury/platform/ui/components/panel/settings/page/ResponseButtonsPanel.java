@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.components.panel.settings.page;
 
+import com.mercury.platform.shared.IconConst;
 import com.mercury.platform.shared.config.descriptor.ResponseButtonDescriptor;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -31,7 +32,7 @@ public class ResponseButtonsPanel extends JPanel implements ViewInit {
         JPanel buttonsTable = this.componentsFactory.getJPanel(new GridLayout(0, 1, 4, 4), AppThemeColor.SETTINGS_BG);
         buttonsTable.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
 
-        JPanel headerPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.SETTINGS_BG);
+        JPanel headerPanel = this.componentsFactory.getJPanel(new BorderLayout(4,4), AppThemeColor.SETTINGS_BG);
 
         JLabel titleLabel = componentsFactory.getTextLabel(FontStyle.REGULAR, AppThemeColor.TEXT_DEFAULT, null, 15f, "Label");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -49,7 +50,12 @@ public class ResponseButtonsPanel extends JPanel implements ViewInit {
         headerPanel.add(titleLabel, BorderLayout.LINE_START);
         headerPanel.add(valueLabel, BorderLayout.CENTER);
 
-        JPanel miscPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.SETTINGS_BG);
+        JPanel actionsPanel = this.componentsFactory.getJPanel(new BorderLayout(7,7), AppThemeColor.SETTINGS_BG);
+        actionsPanel.add(this.componentsFactory.getIconLabel(IconConst.CLOSE, 15), BorderLayout.LINE_START);
+        actionsPanel.add(this.componentsFactory.getIconLabel(IconConst.KICK, 15), BorderLayout.LINE_END);
+
+        JPanel miscPanel = this.componentsFactory.getJPanel(new BorderLayout(4,4), AppThemeColor.SETTINGS_BG);
+        miscPanel.add(actionsPanel, BorderLayout.LINE_START);
         miscPanel.add(hotKeyLabel, BorderLayout.CENTER);
         miscPanel.add(closeLabel, BorderLayout.LINE_END);
         headerPanel.add(miscPanel, BorderLayout.LINE_END);

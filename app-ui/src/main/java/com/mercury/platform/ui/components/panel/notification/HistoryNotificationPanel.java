@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.components.panel.notification;
 
+import com.mercury.platform.shared.IconConst;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -35,11 +36,11 @@ public class HistoryNotificationPanel extends NotificationPanel<NotificationDesc
         JPanel opPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.MSG_HEADER);
         JPanel interactionPanel = new JPanel(new GridLayout(1, 0, 4, 0));
         interactionPanel.setBackground(AppThemeColor.MSG_HEADER);
-        JButton reloadButton = componentsFactory.getIconButton("app/reload-history.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.HISTORY_RELOAD);
+        JButton reloadButton = componentsFactory.getIconButton(IconConst.RELOAD_HISTORY, 15, AppThemeColor.MSG_HEADER, TooltipConstants.HISTORY_RELOAD);
         reloadButton.addActionListener(e -> {
             this.controller.reload();
         });
-        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
+        JButton openChatButton = componentsFactory.getIconButton(IconConst.CHAT_OPEN, 15, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
         openChatButton.addActionListener(e -> controller.performOpenChat());
         interactionPanel.add(reloadButton);
         interactionPanel.add(openChatButton);

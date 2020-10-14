@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.components.panel.grid;
 
+import com.mercury.platform.shared.IconConst;
 import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
@@ -25,7 +26,7 @@ public class TabInfoPanel extends JPanel implements ViewInit {
     public void onViewInit() {
         this.setLayout(new BorderLayout());
         this.setBackground(AppThemeColor.FRAME);
-        JButton hideButton = componentsFactory.getIconButton("app/close.png", 12, AppThemeColor.FRAME, "Dismiss");
+        JButton hideButton = componentsFactory.getIconButton(IconConst.CLOSE, 12, AppThemeColor.FRAME, "Dismiss");
         hideButton.addActionListener((action) -> {
             stashTabDescriptor.setUndefined(true);
             MercuryStoreUI.dismissTabInfoPanelSubject.onNext(this);

@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.components.panel.notification;
 
+import com.mercury.platform.shared.IconConst;
 import com.mercury.platform.shared.config.descriptor.HotKeyPair;
 import com.mercury.platform.shared.config.descriptor.HotKeyType;
 import com.mercury.platform.shared.entity.message.TradeNotificationDescriptor;
@@ -36,22 +37,22 @@ public abstract class TradeOutNotificationPanel<T extends TradeNotificationDescr
         JPanel opPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.MSG_HEADER);
         JPanel interactionPanel = new JPanel(new GridLayout(1, 0, 3, 0));
         interactionPanel.setBackground(AppThemeColor.MSG_HEADER);
-        JButton visiteHideout = componentsFactory.getIconButton("app/visiteHideout.png", 16, AppThemeColor.MSG_HEADER, TooltipConstants.VISIT_HO);
+        JButton visiteHideout = componentsFactory.getIconButton(IconConst.VISIT_HIDEOUT, 16, AppThemeColor.MSG_HEADER, TooltipConstants.VISIT_HO);
         visiteHideout.addActionListener(e -> this.controller.visitHideout());
-        JButton tradeButton = componentsFactory.getIconButton("app/trade.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
+        JButton tradeButton = componentsFactory.getIconButton(IconConst.TRADE, 15, AppThemeColor.MSG_HEADER, TooltipConstants.TRADE);
         tradeButton.addActionListener(e -> this.controller.performOfferTrade());
-        JButton leaveButton = componentsFactory.getIconButton("app/leave.png", 16, AppThemeColor.MSG_HEADER, TooltipConstants.LEAVE);
+        JButton leaveButton = componentsFactory.getIconButton(IconConst.LEAVE, 16, AppThemeColor.MSG_HEADER, TooltipConstants.LEAVE);
         leaveButton.addActionListener(e -> {
             this.controller.performLeave(this.notificationConfig.get().getPlayerNickname());
             if (this.notificationConfig.get().isDismissAfterLeave()) {
                 this.controller.performHide();
             }
         });
-        JButton openChatButton = componentsFactory.getIconButton("app/openChat.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
+        JButton openChatButton = componentsFactory.getIconButton(IconConst.CHAT_OPEN, 15, AppThemeColor.MSG_HEADER, TooltipConstants.OPEN_CHAT);
         openChatButton.addActionListener(e -> controller.performOpenChat());
-        JButton whoIsButton = componentsFactory.getIconButton("app/who-is.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.WHO_IS);
+        JButton whoIsButton = componentsFactory.getIconButton(IconConst.WHO_IS, 15, AppThemeColor.MSG_HEADER, TooltipConstants.WHO_IS);
         whoIsButton.addActionListener(e -> controller.performWhoIs());
-        JButton hideButton = componentsFactory.getIconButton("app/close.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.HIDE_PANEL);
+        JButton hideButton = componentsFactory.getIconButton(IconConst.CLOSE, 15, AppThemeColor.MSG_HEADER, TooltipConstants.HIDE_PANEL);
         hideButton.addActionListener(action -> {
             this.controller.performHide();
         });
@@ -99,7 +100,7 @@ public abstract class TradeOutNotificationPanel<T extends TradeNotificationDescr
     }
 
     protected JButton getRepeatButton() {
-        JButton repeatButton = componentsFactory.getIconButton("app/reload-history.png", 15, AppThemeColor.FRAME, TooltipConstants.REPEAT_MESSAGE);
+        JButton repeatButton = componentsFactory.getIconButton(IconConst.RELOAD_HISTORY, 15, AppThemeColor.FRAME, TooltipConstants.REPEAT_MESSAGE);
         repeatButton.addActionListener(action -> {
             this.controller.performResponse(this.data.getSourceString());
             repeatButton.setEnabled(false);

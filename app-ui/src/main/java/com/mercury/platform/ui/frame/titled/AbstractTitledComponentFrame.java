@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.frame.titled;
 
+import com.mercury.platform.shared.IconConst;
 import com.mercury.platform.ui.frame.AbstractComponentFrame;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -41,7 +42,7 @@ public abstract class AbstractTitledComponentFrame extends AbstractComponentFram
             this.headerPanel.add(this.frameTitleLabel, BorderLayout.CENTER);
 
             this.miscPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.HEADER);
-            this.hideButton = componentsFactory.getIconButton("app/close.png", 14, AppThemeColor.HEADER, "");
+            this.hideButton = componentsFactory.getIconButton(IconConst.CLOSE, 14, AppThemeColor.HEADER, "");
             this.hideButton.addActionListener(action -> {
                 this.hideComponent();
             });
