@@ -7,6 +7,7 @@ import com.mercury.platform.shared.config.descriptor.HotKeyPair;
 import com.mercury.platform.shared.config.descriptor.HotKeysSettingsDescriptor;
 import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
 import com.mercury.platform.shared.entity.message.FlowDirections;
+import com.mercury.platform.shared.IconConst;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -166,7 +167,11 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         });
         propertiesPanel.add(this.componentsFactory.getTextLabel("Enabled:", FontStyle.REGULAR, 16));
         propertiesPanel.add(enabled);
-        propertiesPanel.add(this.componentsFactory.getTextLabel("Close panel on kick:", FontStyle.REGULAR, 16));
+
+        JPanel closePanelWithIcon = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.ADR_BG);
+        closePanelWithIcon.add(this.componentsFactory.getTextLabel("Close panel on kick button pressed:", FontStyle.REGULAR, 16), BorderLayout.LINE_START);
+        closePanelWithIcon.add(this.componentsFactory.getIconLabel(IconConst.KICK, 14));
+        propertiesPanel.add(closePanelWithIcon);
         propertiesPanel.add(dismiss);
         propertiesPanel.add(this.componentsFactory.getTextLabel("Show league:", FontStyle.REGULAR, 16));
         propertiesPanel.add(showLeague);
@@ -232,7 +237,12 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
         });
         propertiesPanel.add(this.componentsFactory.getTextLabel("Enabled:", FontStyle.REGULAR, 16));
         propertiesPanel.add(enabled);
-        propertiesPanel.add(this.componentsFactory.getTextLabel("Close panel after leave:", FontStyle.REGULAR, 16));
+
+        JPanel leavePanelWithIcon = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.ADR_BG);
+        leavePanelWithIcon.add(this.componentsFactory.getTextLabel("Close panel on leave button pressed:", FontStyle.REGULAR, 16), BorderLayout.LINE_START);
+        leavePanelWithIcon.add(this.componentsFactory.getIconLabel(IconConst.LEAVE, 14));
+        propertiesPanel.add(leavePanelWithIcon);
+
         JCheckBox closeAfterLeave = this.componentsFactory.getCheckBox(this.generalSnapshot.isDismissAfterLeave());
         closeAfterLeave.addActionListener(action -> {
             this.generalSnapshot.setDismissAfterLeave(closeAfterLeave.isSelected());

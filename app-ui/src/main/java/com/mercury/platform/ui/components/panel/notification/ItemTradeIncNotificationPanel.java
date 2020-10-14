@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.components.panel.notification;
 
+import com.mercury.platform.shared.IconConst;
 import com.mercury.platform.shared.config.descriptor.HotKeyType;
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
@@ -65,7 +66,7 @@ public class ItemTradeIncNotificationPanel extends TradeIncNotificationPanel<Ite
 
     @Override
     protected JButton getStillInterestedButton() {
-        JButton stillIntButton = componentsFactory.getIconButton("app/still-interesting.png", 14, AppThemeColor.FRAME, TooltipConstants.STILL_INTERESTED);
+        JButton stillIntButton = componentsFactory.getIconButton(IconConst.STILL_INTERESTING, 14, AppThemeColor.FRAME, TooltipConstants.STILL_INTERESTED);
         stillIntButton.addActionListener(action -> {
             String curCount = this.data.getCurCount().toString();
             String responseText = "Hi, are you still interested in ";

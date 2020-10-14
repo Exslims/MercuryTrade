@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.components.panel.settings.page;
 
 import com.mercury.platform.shared.CloneHelper;
+import com.mercury.platform.shared.IconConst;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.TaskBarDescriptor;
@@ -45,7 +46,7 @@ public class TaskBarSettingsPagePanel extends SettingsPagePanel {
 
         JPanel hotKeysPanel = this.componentsFactory.getJPanel(new GridLayout(0, 2, 4, 4), AppThemeColor.SETTINGS_BG);
         hotKeysPanel.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_DEFAULT_BORDER));
-        root.add(this.componentsFactory.getIconLabel("app/hideout.png", 24, SwingConstants.CENTER));
+        root.add(this.componentsFactory.getIconLabel(IconConst.HIDEOUT, 24, SwingConstants.CENTER));
         HotKeyGroup hotKeyGroup = new HotKeyGroup(true);
         HotKeyPanel hotKeyHideoutPanel = new HotKeyPanel(this.taskBarSnapshot.getHideoutHotkey());
         hotKeyGroup.registerHotkey(hotKeyHideoutPanel);
@@ -53,7 +54,7 @@ public class TaskBarSettingsPagePanel extends SettingsPagePanel {
         this.container.add(this.componentsFactory.wrapToSlide(root));
         this.container.add(this.componentsFactory.wrapToSlide(hotKeysPanel));
 
-        root.add(this.componentsFactory.getIconLabel("app/helpIG_icon.png", 24, SwingConstants.CENTER));
+        root.add(this.componentsFactory.getIconLabel(IconConst.HELP_IG, 24, SwingConstants.CENTER));
         HotKeyPanel hotKeyHelpIGPanel = new HotKeyPanel(this.taskBarSnapshot.getHelpIGHotkey());
         hotKeyGroup.registerHotkey(hotKeyHelpIGPanel);
         root.add(this.componentsFactory.wrapToSlide(hotKeyHelpIGPanel, AppThemeColor.SETTINGS_BG, 2, 4, 1, 1));
