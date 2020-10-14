@@ -24,6 +24,8 @@ import java.util.Arrays;
 public class AppMain {
     private static final Logger logger = LogManager.getLogger(AppMain.class);
     private static boolean shouldLogPerformance = false;
+    private final static String MERCURY_TRADE_FOLDER = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade";
+
     public static void main(String[] args) {
         if (Arrays.asList(args).contains("-dev")) {
             shouldLogPerformance = true;
@@ -41,6 +43,9 @@ public class AppMain {
         pf.step("mercuryLoadingFrame.init()");
         mercuryLoadingFrame.showComponent();
         pf.step("mercuryLoadingFrame.showComponent()");
+
+        checkCreateAppDataFolder();
+        pf.step("mercuryTradeFolder creation");
         if (args.length == 0) {
             new ProdStarter().startApplication();
         } else {
@@ -93,5 +98,15 @@ public class AppMain {
             String filePath = it.getFilePath();
             return StringUtils.substringBeforeLast(filePath, "\\");
         }).findAny().orElse(null);
+    }
+
+    private static void checkCreateAppDataFolder() {
+        File mercuryTradeFolder = new File(MERCURY_TRADE_FOLDER);
+        if (!mercuryTradeFolder.exists()) {
+            boolean mercuryTradeFolderCreated = mercuryTradeFolder.mkdirs();
+            if (!mercuryTradeFolderCreated) {
+                logger.error("Mercury trade folder in location %s couldn't be created - check permissions");
+            }
+        }
     }
 }
