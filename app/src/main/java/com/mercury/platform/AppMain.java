@@ -21,6 +21,7 @@ import java.io.File;
 
 public class AppMain {
     private static final Logger logger = LogManager.getLogger(AppMain.class);
+    private final static String MERCURY_TRADE_FOLDER = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade";
     public static void main(String[] args) {
         System.setProperty("sun.java2d.d3d", "false");
         System.setProperty("jna.nosys", "true");
@@ -28,6 +29,13 @@ public class AppMain {
         MercuryLoadingFrame mercuryLoadingFrame = new MercuryLoadingFrame();
         mercuryLoadingFrame.init();
         mercuryLoadingFrame.showComponent();
+        File mercuryTradeFolder = new File(MERCURY_TRADE_FOLDER);
+        if (!mercuryTradeFolder.exists()) {
+            boolean mercuryTradeFolderCreated = mercuryTradeFolder.mkdirs();
+            if (!mercuryTradeFolderCreated) {
+                logger.error("Mercury trade folder in location %s couldn't be created - check permissions");
+            }
+        }
         if (args.length == 0) {
             new ProdStarter().startApplication();
         } else {
