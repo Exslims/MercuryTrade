@@ -3,6 +3,8 @@ package com.mercury.platform.ui.manager;
 import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.FramesConfigurationService;
+import com.mercury.platform.shared.config.configration.impl.FramesConfigurationServiceImpl;
 import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
@@ -183,11 +185,14 @@ public class FramesManager implements AsSubscriber {
 
     public void restoreDefaultLocation() {
         this.framesMap.forEach((k, v) -> {
-            FrameDescriptor settings = Configuration.get().framesConfiguration().get(k.getSimpleName());
-            if (!v.getClass().equals(ItemsGridFrame.class) && settings != null) {
-                v.setLocation(settings.getFrameLocation());
-                if (v instanceof AbstractMovableComponentFrame) {
-                    ((AbstractMovableComponentFrame) v).onLocationChange(settings.getFrameLocation());
+            FramesConfigurationServiceImpl service = (FramesConfigurationServiceImpl)Configuration.get().framesConfiguration();
+            if (service != null) {
+                FrameDescriptor settings = service.getDefault().get(k.getSimpleName());
+                if (!v.getClass().equals(ItemsGridFrame.class) && settings != null) {
+                    v.setLocation(settings.getFrameLocation());
+                    if (v instanceof AbstractMovableComponentFrame) {
+                        ((AbstractMovableComponentFrame) v).onLocationChange(settings.getFrameLocation());
+                    }
                 }
             }
         });
