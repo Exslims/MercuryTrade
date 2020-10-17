@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.frame.movable;
 
+import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.ComponentsFactory;
@@ -16,6 +17,7 @@ import lombok.NonNull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 import java.util.Map;
 
 public class ItemsGridFrame extends AbstractMovableComponentFrame {
@@ -141,18 +143,18 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         JButton disableButton = componentsFactory.getBorderedButton(title);
         disableButton.setPreferredSize(new Dimension((int) (90 * componentsFactory.getScale()), (int) (24 * componentsFactory.getScale())));
         componentsFactory.setUpToggleCallbacks(disableButton,
-                () -> {
-                    disableButton.setText("Enable");
-                    titleLabel.setForeground(AppThemeColor.TEXT_DISABLE);
-                    applicationConfig.get().setItemsGridEnable(false);
-                    repaint();
-                },
-                () -> {
-                    disableButton.setText("Disable");
-                    titleLabel.setForeground(AppThemeColor.TEXT_NICKNAME);
-                    applicationConfig.get().setItemsGridEnable(true);
-                    repaint();
-                }, this.applicationConfig.get().isItemsGridEnable());
+                                               () -> {
+                                                   disableButton.setText("Enable");
+                                                   titleLabel.setForeground(AppThemeColor.TEXT_DISABLE);
+                                                   applicationConfig.get().setItemsGridEnable(false);
+                                                   repaint();
+                                               },
+                                               () -> {
+                                                   disableButton.setText("Disable");
+                                                   titleLabel.setForeground(AppThemeColor.TEXT_NICKNAME);
+                                                   applicationConfig.get().setItemsGridEnable(true);
+                                                   repaint();
+                                               }, this.applicationConfig.get().isItemsGridEnable());
         JButton hideButton = componentsFactory.getBorderedButton("Save");
         hideButton.setPreferredSize(new Dimension((int) (90 * componentsFactory.getScale()), (int) (24 * componentsFactory.getScale())));
         hideButton.addMouseListener(new MouseAdapter() {
@@ -165,9 +167,26 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
                 }
             }
         });
+
+        JButton dismissAllButton = componentsFactory.getBorderedButton("Dismiss All");
+        dismissAllButton.setPreferredSize(new Dimension((int) (90 * componentsFactory.getScale()), (int) (24 * componentsFactory.getScale())));
+        dismissAllButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    stashTabsContainer.removeAll();
+                    stashTabsContainer.save();
+                    MercuryStoreCore.saveConfigSubject.onNext(true);
+                    tabsContainer.removeAll();
+                    repaint();
+                }
+            }
+        });
+
         JPanel disablePanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.RIGHT));
         disablePanel.add(disableButton);
         disablePanel.add(hideButton);
+        disablePanel.add(dismissAllButton);
 
         JPanel savedTabsPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         savedTabsPanel.setPreferredSize(new Dimension(50, (int) (56 * componentsFactory.getScale())));

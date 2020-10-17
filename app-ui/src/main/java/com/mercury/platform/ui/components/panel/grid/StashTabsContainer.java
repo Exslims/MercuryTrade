@@ -2,9 +2,11 @@ package com.mercury.platform.ui.components.panel.grid;
 
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.ListConfigurationService;
+import com.mercury.platform.shared.config.configration.impl.StashTabConfigurationService;
 import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StashTabsContainer {
@@ -25,6 +27,10 @@ public class StashTabsContainer {
 
     public List<StashTabDescriptor> getStashTabDescriptors() {
         return this.stashTabConfig.getEntities();
+    }
+
+    public void removeAll() {
+        stashTabConfig.getEntities().removeAll(stashTabConfig.getEntities());
     }
 
     public boolean containsTab(String tabTitle) {
