@@ -20,22 +20,20 @@
     <properties>
         <project.version>1.1.1</project.version>
 
-        <jnativehook.version>2.0.2</jnativehook.version>
-        <devjna.version>4.4.0</devjna.version>
-        <commonsio.version>2.5</commonsio.version>
-        <junit.version>4.13.1</junit.version>
+        <jnativehook.version>2.1.0</jnativehook.version>
+        <devjna.version>5.6.0</devjna.version>
+        <commonsio.version>2.8.0</commonsio.version>
+        <junit.version>5.7.0</junit.version>
         <commonlang3.version>3.0</commonlang3.version>
-        <netty.version>4.1.42.Final</netty.version>
+        <netty.version>4.1.53.Final</netty.version>
         <log4j.version>1.2.17</log4j.version>
         <log4jServer.version>2.13.3</log4jServer.version>
         <trident.version>1.3</trident.version>
         <json.simple.version>1.1.1</json.simple.version>
-        <guava.version>21.0</guava.version>
-        <lombok.version>1.16.8</lombok.version>
-        <expiringmap.version>0.5.8</expiringmap.version>
+        <guava.version>29.0-jre</guava.version>
+        <lombok.version>1.18.16</lombok.version>
+        <expiringmap.version>0.5.9</expiringmap.version>
         <rxjava.version>1.2.9</rxjava.version>
-        <fastjson.version>1.2.24</fastjson.version>
-        <jackson.version>2.8.7</jackson.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -68,9 +66,10 @@
                 <version>${commonsio.version}</version>
             </dependency>
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
                 <version>${junit.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -126,6 +125,7 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>io.reactivex</groupId>
@@ -135,7 +135,7 @@
             <dependency>
                 <groupId>com.google.code.gson</groupId>
                 <artifactId>gson</artifactId>
-                <version>2.8.0</version>
+                <version>2.8.6</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
@@ -147,31 +147,53 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
+                <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <archive>
                         <manifest>
-                            <addClasspath>true</addClasspath>
                             <mainClass>com.mercury.platform.AppMain</mainClass>
                         </manifest>
                     </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.0</version>
                 <executions>
                     <execution>
+                        <id>make-assembly</id> <!-- Added to combine all MT jars into a single package -->
                         <phase>package</phase>
                         <goals>
-                            <goal>shade</goal>
+                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-jar-plugin</artifactId>-->
+            <!--                <version>3.2.0</version>-->
+            <!--                <configuration>-->
+            <!--                    <archive>-->
+            <!--                        <manifest>-->
+            <!--                            <addClasspath>true</addClasspath>-->
+            <!--                            <mainClass>com.mercury.platform.AppMain</mainClass>-->
+            <!--                        </manifest>-->
+            <!--                    </archive>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-shade-plugin</artifactId>-->
+            <!--                <version>3.2.0</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <phase>package</phase>-->
+            <!--                        <goals>-->
+            <!--                            <goal>shade</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 </project>

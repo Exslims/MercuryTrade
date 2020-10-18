@@ -84,7 +84,6 @@ public class FramesManager implements AsSubscriber {
         this.framesMap.put(HelpIGFrame.class, new HelpIGFrame());
 
         this.framesMap.forEach((k, v) -> v.init());
-
         ApplicationDescriptor config = Configuration.get().applicationConfiguration().get();
         this.framesMap.forEach((k, frame) -> {
             if (frame instanceof AbstractComponentFrame) {

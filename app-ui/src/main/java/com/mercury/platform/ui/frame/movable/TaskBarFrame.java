@@ -60,15 +60,17 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
         collapseAnimation = new Timeline(this);
         switch (state) {
             case "expand": {
+                this.setWidth(MAX_WIDTH);
                 collapseAnimation.addPropertyToInterpolate("width", this.getWidth(), MAX_WIDTH);
                 break;
             }
             case "collapse": {
+                this.setWidth(MIN_WIDTH);
                 collapseAnimation.addPropertyToInterpolate("width", this.getWidth(), MIN_WIDTH);
             }
         }
         collapseAnimation.setEase(new Spline(1f));
-        collapseAnimation.setDuration(150);
+        collapseAnimation.setDuration(0);
     }
 
     private boolean withInPanel(JPanel panel) {
