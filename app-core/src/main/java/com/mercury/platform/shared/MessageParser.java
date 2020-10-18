@@ -7,6 +7,7 @@ import com.mercury.platform.shared.entity.message.NotificationType;
 import com.sun.jna.Native;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -121,12 +122,26 @@ public class MessageParser {
 			ItemTradeNotificationDescriptor tradeNotification = new ItemTradeNotificationDescriptor();
 			tradeNotification.setWhisperNickname(poeTradeMapLiveMatcher.group(2));
 			tradeNotification.setSourceString(poeTradeMapLiveMatcher.group(3));
-			tradeNotification.setItemName(poeTradeMapLiveMatcher.group(5));
-			tradeNotification.setOffer(poeTradeMapLiveMatcher.group(4));
+
+            String itemsWanted = poeTradeMapLiveMatcher.group(5);
+            if (itemsWanted.contains(",")) {
+                String[] splitItemsWanted = itemsWanted.split(",");
+                tradeNotification.setItemsWanted(Arrays.asList(splitItemsWanted));
+            }
+            tradeNotification.setItemName(itemsWanted);
+
+
+            String itemsOffered = poeTradeMapLiveMatcher.group(4);
+            if (itemsOffered.contains(",")) {
+                String[] splitItemsWanted = itemsOffered.split(",");
+                tradeNotification.setItemsOffered(Arrays.asList(splitItemsWanted));
+            }
+            tradeNotification.setOffer(itemsOffered);
+
+
 			tradeNotification.setLeague(poeTradeMapLiveMatcher.group(6));
-			tradeNotification.setType(NotificationType.INC_ITEM_MESSAGE);
 			tradeNotification.setCurCount(0d);
-			tradeNotification.setCurrency("");
+			tradeNotification.setCurrency(itemsWanted);
 			tradeNotification.setType(NotificationType.INC_ITEM_MESSAGE);
 			return tradeNotification;
 		}

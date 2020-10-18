@@ -55,7 +55,8 @@ public class NotificationIncomingController implements IncomingPanelController {
     }
 
     @Override
-    public void showITH() {
+    public void
+    showITH() {
         if (notificationDescriptor instanceof ItemTradeNotificationDescriptor) {
             this.copyItemNameToClipboard(((ItemTradeNotificationDescriptor) notificationDescriptor).getItemName());
             if (((ItemTradeNotificationDescriptor) notificationDescriptor).getTabName() != null) {
