@@ -5,6 +5,7 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrIconDescriptor;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class CloneHelperTest {
     @Test

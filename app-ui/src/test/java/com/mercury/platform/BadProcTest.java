@@ -17,7 +17,7 @@ public class BadProcTest {
     }
 
     public interface Kernel32 extends StdCallLibrary {
-        Kernel32 INSTANCE = (Kernel32)Native.loadLibrary("kernel32", Kernel32.class);
+        Kernel32 INSTANCE = Native.load("kernel32", Kernel32.class);
         void GetSystemTime(SYSTEMTIME result);
     }
     public static class SYSTEMTIME extends Structure {

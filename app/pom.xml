@@ -27,11 +27,6 @@
             <artifactId>app-shared</artifactId>
             <version>1.1.0</version>
         </dependency>
-        <!--external-->
-        <!--<dependency>-->
-            <!--<groupId>lc.kra.system</groupId>-->
-            <!--<artifactId>system-hook</artifactId>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
@@ -45,13 +40,9 @@
             <artifactId>commons-io</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
